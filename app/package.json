@@ -1,0 +1,49 @@
+{
+  "name": "app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "gulp --gulpfile app/gulpfile.js"
+  },
+  "dependencies": {
+    "express": "~4.14.0",
+    "body-parser": "~1.15.2",
+    "cookie-parser": "~1.4.3",
+    "morgan": "~1.7.0",
+    "serve-favicon": "~2.3.2",
+    "debug": "~2.6.0",
+    "hjs": "~0.0.6",
+    "gulp-sass": "~3.0.0",
+    "node-sass": "~4.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "bootstrap-sass": "^3.3.7",
+    "css-loader": "^0.26.1",
+    "del": "~2.2.2",
+    "extract-text-webpack-plugin": "^2.0.0-beta.4",
+    "file-loader": "^0.9.0",
+    "gulp": "~3.9.1",
+    "gulp-clean": "~0.3.2",
+    "gulp-environments": "~0.1.1",
+    "gulp-livereload": "~3.8.1",
+    "gulp-nodemon": "~2.2.1",
+    "gulp-notify": "~2.2.0",
+    "gulp-plumber": "~1.1.0",
+    "gulp-watch": "~4.3.11",
+    "gulp-webpack": "~1.5.0",
+    "html-webpack-plugin": "^2.26.0",
+    "html-webpack-template": "^6.0.0",
+    "react": "^15.4.2",
+    "react-bootstrap": "^0.30.7",
+    "react-dom": "^15.4.2",
+    "resolve-url-loader": "^1.6.1",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.2.0-rc.3"
+  }
+}

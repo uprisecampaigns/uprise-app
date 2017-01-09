@@ -1,0 +1,36 @@
+version: '2'
+services:
+  web:
+    build: ./app
+    volumes:
+      - "./app:/src/app"
+      - "/src/app/node_modules"
+    ports:
+      - "3030:3000"
+    links:
+      - "db:postgres"
+    environment:
+      - DISABLE_NOTIFIER=true
+    command: npm start
+
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - /www/public
+      - ./nginx:/opt/docker
+    volumes_from:
+      - web
+    links:
+      - web:web
+    environment:
+     - NGINX_HOST=localhost
+     - NGINX_PORT=80
+    entrypoint: /opt/docker/entrypoint.sh
+
+  db:
+    image: postgres
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
