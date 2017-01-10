@@ -1,9 +1,17 @@
-var express = require('express');
-var router = express.Router();
+const path = require('path');
+const express = require('express');
+const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
-});
+// Rest API
+// TODO: todos route uses sockets
+// require(path.resolve(__dirname, 'todos'))(router);
+require(path.resolve(__dirname, 'users'))(router);
 
-module.exports = router;
+module.exports = (app, passport) => {
+  console.log('setting authentication routes...');
+	// set authentication routes
+	require('./authentication.js')(app, passport);
+
+	// set other routes
+	app.use('/', router);
+};

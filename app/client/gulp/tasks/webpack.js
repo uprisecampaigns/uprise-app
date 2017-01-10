@@ -21,8 +21,6 @@ const commonsChunkPlugin = new CommonsChunkPlugin({
   minChunks: Infinity,
 });
 
-console.log('WORKING?!?!?');
-
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
 	template: HtmlWebpackTemplate,
 	title: 'Uprise app',

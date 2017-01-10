@@ -1,9 +1,19 @@
-var express = require('express');
-var router = express.Router();
+const authenticationMiddleware = require('../middlewares/authentication.js'); //todo apply when needed
+const userModel = require('../models/User.js');
 
-/* GET users listing. */
-router.get('/', function(req, res) {
-  res.send('respond with a resource');
-});
+const setUserRoutes = function(router){
 
-module.exports = router;
+	router.get('/api/v1/users/:id', 
+		function (req, res) {
+      console.log(userModel);
+			const userId = req.params.id;
+		  userModel.getUserProfile(userId)
+      .then( (result) => {
+        console.log(result);
+        return res.json(result);
+      })
+		}
+	);
+}
+
+module.exports = setUserRoutes;

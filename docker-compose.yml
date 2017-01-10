@@ -33,7 +33,6 @@ services:
     entrypoint: /opt/docker/entrypoint.sh
 
   db:
-    image: postgres
-    volumes:
-      - ./postgres:/docker-entrypoint-initdb.d
-
+    build: ./postgres
+    environment:
+      - POSTGRES_USER=postgres

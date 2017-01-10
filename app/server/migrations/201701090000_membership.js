@@ -1,5 +1,5 @@
 module.exports.up = (knex, Promise) => {
-  console.log('hrmm');
+  console.log('running migration 201701090000_membership.js');
   // PostgreSQL extensions (may require superuser or database owner priveleges)
   return knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
   .then( () => {

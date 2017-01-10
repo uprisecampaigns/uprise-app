@@ -2,4 +2,4 @@
 
 const gulp = require('gulp');
 
-gulp.task('default', ['nodemon']);
+gulp.task('default', ['db:migrate:latest', 'nodemon']);
