@@ -3,14 +3,16 @@ services:
   web:
     build: ./app
     volumes:
-      - "./app:/src/app"
-      - "/src/app/node_modules"
+      - "./app/client:/src/app/client"
+      - "./app/server:/src/app/server"
     ports:
       - "3030:3000"
     links:
       - "db:postgres"
     environment:
       - DISABLE_NOTIFIER=true
+      - DATABASE_URL=postgres://postgres@postgres:5432/dev
+    working_dir: /src/app
     command: npm start
 
   nginx:
@@ -34,3 +36,4 @@ services:
     image: postgres
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d
+

@@ -1,11 +1,10 @@
 {
   "presets": [
-    [
-			"es2015",
-		  {
-			  "modules": false
-		  }
-		],
-		"react"
+    "es2015",
+    "stage-3"
+  ],
+  "plugins": [
+    "transform-runtime",
+    "syntax-async-functions",
   ]
 }

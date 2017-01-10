@@ -21,6 +21,8 @@ const commonsChunkPlugin = new CommonsChunkPlugin({
   minChunks: Infinity,
 });
 
+console.log('WORKING?!?!?');
+
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
 	template: HtmlWebpackTemplate,
 	title: 'Uprise app',
@@ -53,7 +55,8 @@ config.webpack = {
 				include: path.resolve(config.src),
 				query: {
 					cacheDirectory: true,
-					presets: ['react', 'es2015']
+					presets: ['es2015', 'react'],
+          plugins: ['transform-class-properties']
 				}
 			},
 			{
@@ -101,7 +104,6 @@ config.webpack = {
     commonsChunkPlugin,
     extractTextPlugin,
 		htmlWebpackPlugin,
-		definePlugin,
     new webpack.optimize.AggressiveMergingPlugin()
   ],
   bail: env.production(),

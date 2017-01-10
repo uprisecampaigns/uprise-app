@@ -1,11 +1,9 @@
 FROM node:boron
 
-RUN mkdir /src
-
 RUN npm install nodemon -g
 RUN npm install gulp -g
 
-WORKDIR /src
+WORKDIR /src/app
 ADD package.json package.json
 RUN npm install
 

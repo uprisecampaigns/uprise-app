@@ -8,7 +8,7 @@ const config = require('../config');
 
 gulp.task('nodemon', function () {
   nodemon({
-    script: path.resolve(config.appRoot, 'bin', 'www'), 
+    script: path.resolve(config.serverRoot, 'bin', 'www'), 
 		ignore: [ config.publicRoot ],
     ext: 'js json', 
     legacyWatch: true 
