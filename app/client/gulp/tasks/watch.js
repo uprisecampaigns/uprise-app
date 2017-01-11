@@ -2,8 +2,7 @@
 
 const path = require('path');
 const gulp = require('gulp');
-const config = require('../config');
-
+const config = require('config/gulp.js');
 
 gulp.task('watch', () => {
 

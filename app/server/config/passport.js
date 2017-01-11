@@ -7,13 +7,14 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const postmark = require('postmark');
 const knex = require('knex');
-const knexConfig = require('../knexfile.js');
+const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
-const config = require('./config.js');
+const config = require('config/config.js');
 
 const emailClient = postmark(config.postmark.serverKey);
 
 module.exports = function(passport) {
+
 
   // =========================================================================
   // passport session setup ==================================================

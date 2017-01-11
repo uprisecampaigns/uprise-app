@@ -1,7 +1,7 @@
 const nodemon = require('nodemon');
 const path = require('path');
 
-const config = require('../gulp/config');
+const config = require('config/gulp.js');
 
 nodemon({
   script: path.resolve(config.publicRoot, 'bin', 'gulp-start.js'),

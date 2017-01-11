@@ -2,18 +2,25 @@
 
 const gulp = require('gulp');
 const path = require('path');
+const yargs = require('yargs');
 const nodemon = require('gulp-nodemon');
 
-const config = require('../config');
+const config = require('config/gulp');
 
 gulp.task('nodemon', function () {
-  nodemon({
+
+  const nodemonOpts = {
     script: path.resolve(config.serverRoot, 'bin', 'www'), 
-    nodeArgs: ['--inspect=5857'],
 		ignore: [ config.publicRoot ],
     ext: 'js json', 
     legacyWatch: true 
-  });
+  };
+
+  if (process.env.NODE_DEBUG) {
+    nodemonOpts.nodeArgs = ['--inspect=5857']
+  }
+
+  nodemon(nodemonOpts);
 });
 
 

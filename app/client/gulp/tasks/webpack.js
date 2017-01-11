@@ -12,7 +12,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackTemplate = require('html-webpack-template');
 
-const config = require('../config');
+const config = require('config/gulp.js');
 
 const extractTextPlugin = new ExtractTextPlugin('[name].css');
 

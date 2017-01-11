@@ -3,7 +3,7 @@ const gulp = require('gulp');
 const knex = require('knex');
 const argv = require('yargs').argv;
 
-const config = require('../../knexfile.js');
+const config = require('config/knexfile');
 
 gulp.task('db:migrate:latest', (done) => {
   const db = knex(config.development);
