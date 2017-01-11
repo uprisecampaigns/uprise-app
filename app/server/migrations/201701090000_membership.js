@@ -24,26 +24,15 @@ module.exports.up = (knex, Promise) => {
   })
   .then( () => {
 
-    return knex.schema.createTable('user_logins', (table) => {
-      table.string('name', 50).notNullable();
-      table.string('key', 100).notNullable();
-      table.uuid('user_id').notNullable()
-        .references('id').inTable('users')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
-      table.primary(['name', 'key']);
-    });
-  })
-  .then( () => {
-
-    return knex.schema.createTable('user_claims', (table) => {
+    return knex.schema.createTable('user_email_verifications', (table) => {
       table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
+      table.string('token').notNullable();
+      table.boolean('used').notNullable().defaultTo(false);
+      table.timestamp('created_at').defaultTo(knex.fn.now());
       table.uuid('user_id').notNullable()
         .references('id').inTable('users')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
-      table.string('type');
-      table.string('value', 400);
     });
   })
   .then( () => {
@@ -64,10 +53,7 @@ module.exports.up = (knex, Promise) => {
 module.exports.down = (knex, Promise) => {
   return knex.schema.dropTableIfExists('user_profiles')
   .then( () => {
-    return knex.schema.dropTableIfExists('user_claims');
-  })
-  .then( () => {
-    return knex.schema.dropTableIfExists('user_logins');
+    return knex.schema.dropTableIfExists('user_email_verifications');
   })
   .then( () => {
     return knex.schema.dropTableIfExists('users');

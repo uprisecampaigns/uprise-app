@@ -10,6 +10,7 @@ const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
 const config = require('config/config.js');
+const User = require('models/User.js');
 
 const emailClient = postmark(config.postmark.serverKey);
 
@@ -30,12 +31,12 @@ module.exports = function(passport) {
   // used to deserialize the user
   passport.deserializeUser(function(id, done) {
     db.select().from('users').where('id', id)
-    .then( (rows) => {
-      done(null, rows[0]);
-    })
-    .catch( (err) => {
-      done(err);
-    });
+      .then( (rows) => {
+        done(null, rows[0]);
+      })
+      .catch( (err) => {
+        done(err);
+      });
   });
 
   // =========================================================================
@@ -54,51 +55,46 @@ module.exports = function(passport) {
       // find a user whose email is the same as the forms email
       // we are checking to see if the user trying to login already exists
       db.select().from('users').where('email', email)
-      .then( (rows) => {
-        if (rows.length) {
-          return done(null, false, { error: 'That email is already being used.' });
-        }
+        .then( (rows) => {
+          if (rows.length) {
+            return done(null, false, { error: 'That email is already being used.' });
+          }else {
 
-        else {
+            const salt = bcrypt.genSaltSync(10);
+            const passwordHash = bcrypt.hashSync(password, salt);
+            const userInfo = {
+              email: email,
+              password_hash: passwordHash
+            };
 
-          const salt = bcrypt.genSaltSync(10);
-          const passwordHash = bcrypt.hashSync(password, salt);
-          const userInfo = {
-            email: email,
-            password_hash: passwordHash
-          };
+            User.create(userInfo)
+              .then( (user) => {
 
-          db('users').insert(userInfo)
-          .then( (result) => {
-            console.log(result);
-            console.log(result.rows);
-
-            if (config.postmark.validRecipient(email)) {
-              console.log('sending email');
-              emailClient.sendEmail({
-                'From': config.postmark.from,
-                'To': email,
-                'Subject': 'Testing', 
-                'TextBody': 'This is only a test...'
-              }, (err, result) => {
-                if (err) {
-                  console.error('Unable to send via postmark: ' + err.message);
-                } else {
-                  console.info('Sent to postmark for delivery: ' + result);
+                if (config.postmark.validRecipient(email)) {
+                  console.log('sending email');
+                  emailClient.sendEmail({
+                    'From': config.postmark.from,
+                    'To': email,
+                    'Subject': 'Testing', 
+                    'TextBody': 'Verification token: ' + user.verificationToken
+                  }, (err, result) => {
+                    if (err) {
+                      console.error('Unable to send via postmark: ' + err.message);
+                    } else {
+                      console.info('Sent to postmark for delivery: ' + result);
+                    }
+                  });
                 }
-              });
-            }
-
-            return done(null, userInfo);
-          })
-          .catch( (err) => {
-            return done(err);
-          })
-        }
-      })
-      .catch( (err) => {
-        return done(err);
-      });
+                return done(null, user);
+              })
+              .catch( (err) => {
+                return done(err);
+              })
+          }
+        })
+        .catch( (err) => {
+          return done(err);
+        });
     })
   );
 
@@ -115,29 +111,29 @@ module.exports = function(passport) {
     },
     function(req, email, password, done) {
       db.select().from('users').where('email', email)
-      .then( (rows) => {
-        if (!rows.length) {
-          console.log("no user found...");
-          return done(null, false, {error: 'Email not found.'});
-        }
+        .then( (rows) => {
+          if (!rows.length) {
+            console.log("no user found...");
+            return done(null, false, {error: 'Email not found.'});
+          }
 
-        console.log(rows[0]);
+          console.log(rows[0]);
 
-        // if the user is found but the password is wrong
-        if (!bcrypt.compareSync( password, rows[0].password_hash)){
-          return done(null, false, {error: 'Incorrect password.'});
-        }
+          // if the user is found but the password is wrong
+          if (!bcrypt.compareSync( password, rows[0].password_hash)){
+            return done(null, false, {error: 'Incorrect password.'});
+          }
 
-        var userObject  = { 
-          id: rows[0].id, 
-          email: rows[0].email, 
-          displayName: rows[0].display_name
-        };
-        return done(null, userObject);  
-      })
-      .catch( (err) => {
-        return done(err);
-      })
+          var userObject  = { 
+            id: rows[0].id, 
+            email: rows[0].email, 
+            displayName: rows[0].display_name
+          };
+          return done(null, userObject);  
+        })
+        .catch( (err) => {
+          return done(err);
+        })
     })
   );
 };

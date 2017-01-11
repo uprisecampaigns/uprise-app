@@ -1,5 +1,6 @@
 // TODO create and use utility fuction that converts req.user to userObject
-var authenticationMiddleware = require('../middlewares/authentication.js');
+const authenticationMiddleware = require('../middlewares/authentication.js');
+const User = require('models/User.js');
 
 /**
 	*	Note: if user is already signed in, this will overwrite the previous session
@@ -30,7 +31,22 @@ module.exports = function(app, passport) {
   app.post('/api/logout', authenticationMiddleware.isLoggedIn, function(req, res) {
     req.logout();
     req.session.destroy();
-    return res.json('logged out :)');
+    return res.json('logged out');
+  });
+
+  app.post('/api/email-verification/:token', authenticationMiddleware.isLoggedIn, function(req, res, next) {
+    const token = req.params.token;
+
+    User.verifyEmail({token: token, userId: req.user.id})
+      .then( (result) => {
+        res.json({
+          token: token,
+          userEmail: req.user.email,
+        });
+      })
+      .catch( (err) => {
+        next(err);
+      });
   });
 
   app.post('/api/checkSession', function(req, res) {
