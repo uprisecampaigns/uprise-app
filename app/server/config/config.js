@@ -7,5 +7,10 @@ module.exports = {
       httpOnly: true, 
       maxAge: 2419200000 
     } // TODO set secure to true when https is used
-  } 
+  },
+  postmark: {
+    serverKey: process.env.POSTMARK_SECRET_KEY,
+    validRecipient: email => (email === 'bittmanmax@gmail.com'),
+    from: 'max@uprise.org'
+  }
 }

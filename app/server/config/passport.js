@@ -5,9 +5,13 @@
 
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
+const postmark = require('postmark');
 const knex = require('knex');
 const knexConfig = require('../knexfile.js');
 const db = knex(knexConfig.development);
+const config = require('./config.js');
+
+const emailClient = postmark(config.postmark.serverKey);
 
 module.exports = function(passport) {
 
@@ -62,10 +66,28 @@ module.exports = function(passport) {
             email: email,
             password_hash: passwordHash
           };
+
           db('users').insert(userInfo)
-          .then( (id) => {
-            console.log(id);
-            userInfo.id = id;
+          .then( (result) => {
+            console.log(result);
+            console.log(result.rows);
+
+            if (config.postmark.validRecipient(email)) {
+              console.log('sending email');
+              emailClient.sendEmail({
+                'From': config.postmark.from,
+                'To': email,
+                'Subject': 'Testing', 
+                'TextBody': 'This is only a test...'
+              }, (err, result) => {
+                if (err) {
+                  console.error('Unable to send via postmark: ' + err.message);
+                } else {
+                  console.info('Sent to postmark for delivery: ' + result);
+                }
+              });
+            }
+
             return done(null, userInfo);
           })
           .catch( (err) => {

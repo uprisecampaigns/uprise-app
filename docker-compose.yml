@@ -7,11 +7,11 @@ services:
       - "./app/server:/src/app/server"
     ports:
       - "3030:3000"
+      - "5859:5859"
+      - "5857:5857"
     links:
       - "db:postgres"
-    environment:
-      - DISABLE_NOTIFIER=true
-      - DATABASE_URL=postgres://postgres@postgres:5432/dev
+    env_file: ./app/dev.env
     working_dir: /src/app
     command: npm start
 

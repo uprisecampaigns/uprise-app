@@ -6,32 +6,32 @@ var authenticationMiddleware = require('../middlewares/authentication.js');
 	*				on the client side
 	*/	
 function addAuthRoute(app, passport, routePath, strategy) {
-	app.post(routePath, function(req, res, next) {
-	  passport.authenticate(strategy, function(err, user, info) {
-	    if (err) { return next(err); }
-	    if (!user) { return res.json(info); }
-	    if (user) {
-	    	req.logIn(user, function(err) {
-		    	if (err) { return next(err); }
-		      return res.json(user); 
-		    });
-	    }
-	  })(req, res, next);
-	});
+  app.post(routePath, function(req, res, next) {
+    passport.authenticate(strategy, function(err, user, info) {
+      if (err) { return next(err); }
+      if (!user) { return res.json(info); }
+      if (user) {
+        req.logIn(user, function(err) {
+          if (err) { return next(err); }
+          return res.json(user); 
+        });
+      }
+    })(req, res, next);
+  });
 }
 
 module.exports = function(app, passport) {
 
   console.log('enters authentication routing code');
-	addAuthRoute(app, passport, "/api/signup", "local-signup");
+  addAuthRoute(app, passport, "/api/signup", "local-signup");
 
-	addAuthRoute(app, passport, "/api/login", "local-login");
+  addAuthRoute(app, passport, "/api/login", "local-login");
 
-	app.post('/api/logout', authenticationMiddleware.isLoggedIn, function(req, res) {
-		req.logout();
-		req.session.destroy();
-		return res.json('logged out :)');
-	});
+  app.post('/api/logout', authenticationMiddleware.isLoggedIn, function(req, res) {
+    req.logout();
+    req.session.destroy();
+    return res.json('logged out :)');
+  });
 
   app.post('/api/checkSession', function(req, res) {
     var isLoggedIn = req.isAuthenticated();
