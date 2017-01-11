@@ -9,14 +9,14 @@ const bodyParser = require('body-parser');
 
 const LocalStrategy = require('passport-local').Strategy;
 
-const config = require('./config/config.js');
+const config = require('config/config.js');
 
 const app = express();
 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hjs');
+app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Sessions/PassportJS/Authentication
-require('./config/passport.js')(passport);
+require('./passport.js')(passport);
 
 const sessionOptions = config.sessionOptions;
 // sessionOptions.store = new RedisStore(); // TODO set up redis store

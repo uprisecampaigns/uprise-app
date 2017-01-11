@@ -6,6 +6,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const postmark = require('postmark');
+const ejs = require('ejs');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
@@ -72,18 +73,40 @@ module.exports = function(passport) {
 
                 if (config.postmark.validRecipient(email)) {
                   console.log('sending email');
-                  emailClient.sendEmail({
-                    'From': config.postmark.from,
-                    'To': email,
-                    'Subject': 'Testing', 
-                    'TextBody': 'Verification token: ' + user.verificationToken
-                  }, (err, result) => {
+
+                  const sendEmail = (textBody, htmlBody) => {
+						
+                    emailClient.sendEmail({
+                      'From': config.postmark.from,
+                      'To': email,
+                      'Subject': 'Confirm your email address', 
+                      'TextBody': textBody,
+                      'HtmlBody': htmlBody
+                    }, (err, result) => {
+                      if (err) {
+                        console.error('Unable to send via postmark: ' + err.message);
+                      } else {
+                        console.info('Sent to postmark for delivery: ' + result);
+                      }
+                    });
+                  };
+
+                  const options = {
+                    verifyURL: config.api.baseUrl + '/email-verification/' + user.verificationToken
+                  };
+
+                  ejs.renderFile(config.api.basePath + '/views/verification-email-text.ejs', options, function (err, textBody) {
                     if (err) {
-                      console.error('Unable to send via postmark: ' + err.message);
-                    } else {
-                      console.info('Sent to postmark for delivery: ' + result);
+                      throw new Error(err.message);
                     }
+                    ejs.renderFile(config.api.basePath + '/views/verification-email-html.ejs', options, function (err, htmlBody) {
+                      if (err) {
+                        throw new Error(err.message);
+                      }
+                      sendEmail(textBody, htmlBody);
+                    });
                   });
+
                 }
                 return done(null, user);
               })
