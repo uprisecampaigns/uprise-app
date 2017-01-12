@@ -15,7 +15,46 @@ const User = require('models/User.js');
 
 const emailClient = postmark(config.postmark.serverKey);
 
-module.exports = function(passport) {
+const sendVerificationEmail = (user) => {
+
+  if (config.postmark.validRecipient(user.email)) {
+
+    const sendEmail = (textBody, htmlBody) => {
+
+      emailClient.sendEmail({
+        'From': config.postmark.from,
+        'To': user.email,
+        'Subject': 'Confirm your email address', 
+        'TextBody': textBody,
+        'HtmlBody': htmlBody
+      }, (err, result) => {
+        if (err) {
+          console.error('Unable to send via postmark: ' + err.message);
+        } else {
+          console.info('Sent to postmark for delivery: ' + result);
+        }
+      });
+    };
+
+    const options = {
+      verifyURL: config.api.baseUrl + '/email-verification/' + user.verificationToken
+    };
+
+    ejs.renderFile(config.api.basePath + '/views/verification-email-text.ejs', options, function (err, textBody) {
+      if (err) {
+        throw new Error(err.message);
+      }
+      ejs.renderFile(config.api.basePath + '/views/verification-email-html.ejs', options, function (err, htmlBody) {
+        if (err) {
+          throw new Error(err.message);
+        }
+        sendEmail(textBody, htmlBody);
+      });
+    });
+  }
+};
+
+module.exports = (passport) => {
 
 
   // =========================================================================
@@ -59,7 +98,7 @@ module.exports = function(passport) {
         .then( (rows) => {
           if (rows.length) {
             return done(null, false, { error: 'That email is already being used.' });
-          }else {
+          } else {
 
             const salt = bcrypt.genSaltSync(10);
             const passwordHash = bcrypt.hashSync(password, salt);
@@ -68,50 +107,10 @@ module.exports = function(passport) {
               password_hash: passwordHash
             };
 
-            User.create(userInfo)
+            return User.create(userInfo)
               .then( (user) => {
-
-                if (config.postmark.validRecipient(email)) {
-                  console.log('sending email');
-
-                  const sendEmail = (textBody, htmlBody) => {
-						
-                    emailClient.sendEmail({
-                      'From': config.postmark.from,
-                      'To': email,
-                      'Subject': 'Confirm your email address', 
-                      'TextBody': textBody,
-                      'HtmlBody': htmlBody
-                    }, (err, result) => {
-                      if (err) {
-                        console.error('Unable to send via postmark: ' + err.message);
-                      } else {
-                        console.info('Sent to postmark for delivery: ' + result);
-                      }
-                    });
-                  };
-
-                  const options = {
-                    verifyURL: config.api.baseUrl + '/email-verification/' + user.verificationToken
-                  };
-
-                  ejs.renderFile(config.api.basePath + '/views/verification-email-text.ejs', options, function (err, textBody) {
-                    if (err) {
-                      throw new Error(err.message);
-                    }
-                    ejs.renderFile(config.api.basePath + '/views/verification-email-html.ejs', options, function (err, htmlBody) {
-                      if (err) {
-                        throw new Error(err.message);
-                      }
-                      sendEmail(textBody, htmlBody);
-                    });
-                  });
-
-                }
+                sendVerificationEmail(user);
                 return done(null, user);
-              })
-              .catch( (err) => {
-                return done(err);
               })
           }
         })
