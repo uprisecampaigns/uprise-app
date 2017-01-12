@@ -16,42 +16,51 @@ const User = require('models/User.js');
 const emailClient = postmark(config.postmark.serverKey);
 
 const sendVerificationEmail = (user) => {
+  return new Promise( (resolve, reject) => {
 
-  if (config.postmark.validRecipient(user.email)) {
+    if (config.postmark.validRecipient(user.email)) {
 
-    const sendEmail = (textBody, htmlBody) => {
+      const sendEmail = (textBody, htmlBody) => {
 
-      emailClient.sendEmail({
-        'From': config.postmark.from,
-        'To': user.email,
-        'Subject': 'Confirm your email address', 
-        'TextBody': textBody,
-        'HtmlBody': htmlBody
-      }, (err, result) => {
+        emailClient.sendEmail({
+          'From': config.postmark.from,
+          'To': user.email,
+          'Subject': 'Confirm your email address', 
+          'TextBody': textBody,
+          'HtmlBody': htmlBody
+        }, (err, result) => {
+          if (err) {
+            console.error('Unable to send via postmark: ' + err.message);
+            reject(err);
+          } else {
+            console.info('Sent to postmark for delivery: ' + result);
+            resolve(result);
+          }
+        });
+      };
+
+      const options = {
+        verifyURL: config.api.baseUrl + '/email-verification/' + user.verificationToken
+      };
+
+      ejs.renderFile(config.api.basePath + '/views/verification-email-text.ejs', options, function (err, textBody) {
         if (err) {
-          console.error('Unable to send via postmark: ' + err.message);
+          reject(err);
         } else {
-          console.info('Sent to postmark for delivery: ' + result);
+          ejs.renderFile(config.api.basePath + '/views/verification-email-html.ejs', options, function (err, htmlBody) {
+            if (err) {
+              reject(err);
+            } else {
+              sendEmail(textBody, htmlBody);
+            }
+          });
         }
       });
-    };
-
-    const options = {
-      verifyURL: config.api.baseUrl + '/email-verification/' + user.verificationToken
-    };
-
-    ejs.renderFile(config.api.basePath + '/views/verification-email-text.ejs', options, function (err, textBody) {
-      if (err) {
-        throw new Error(err.message);
-      }
-      ejs.renderFile(config.api.basePath + '/views/verification-email-html.ejs', options, function (err, htmlBody) {
-        if (err) {
-          throw new Error(err.message);
-        }
-        sendEmail(textBody, htmlBody);
-      });
-    });
-  }
+    } else {
+      console.info(user.email + ' does not pass validRecipient test so not sending email');
+      resolve();
+    }
+  });
 };
 
 module.exports = (passport) => {
@@ -64,26 +73,24 @@ module.exports = (passport) => {
   // passport needs ability to serialize and unserialize users out of session
 
   // used to serialize the user for the session
-  passport.serializeUser(function(user, done) {
+  passport.serializeUser( (user, done) => {
     done(null, user.id);
   });
 
   // used to deserialize the user
-  passport.deserializeUser(function(id, done) {
-    db.select().from('users').where('id', id)
-      .then( (rows) => {
-        done(null, rows[0]);
-      })
-      .catch( (err) => {
-        done(err);
-      });
+  passport.deserializeUser(async (id, done) => {
+    try {
+      const rows = await db.select().from('users').where('id', id);
+      done(null, rows[0]);
+    } catch (err) {
+      done(err);
+    }
   });
 
   // =========================================================================
   // LOCAL SIGNUP ============================================================
   // =========================================================================
 
-  console.log('passport.use local-signup');
   passport.use(
     'local-signup',
     new LocalStrategy({
@@ -91,32 +98,31 @@ module.exports = (passport) => {
         passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    (req, email, password, done) => {
+    async (req, email, password, done) => {
       // find a user whose email is the same as the forms email
       // we are checking to see if the user trying to login already exists
-      db.select().from('users').where('email', email)
-        .then( (rows) => {
-          if (rows.length) {
-            return done(null, false, { error: 'That email is already being used.' });
-          } else {
 
-            const salt = bcrypt.genSaltSync(10);
-            const passwordHash = bcrypt.hashSync(password, salt);
-            const userInfo = {
-              email: email,
-              password_hash: passwordHash
-            };
+      try {
+        const rows = await db.select().from('users').where('email', email);
 
-            return User.create(userInfo)
-              .then( (user) => {
-                sendVerificationEmail(user);
-                return done(null, user);
-              })
+        if (rows.length) {
+          return done(null, false, { error: 'That email is already being used.' });
+        } else {
+          const salt = bcrypt.genSaltSync(10);
+          const passwordHash = bcrypt.hashSync(password, salt);
+          const userInfo = {
+            email: email,
+            password_hash: passwordHash
+          };
+
+          const user = await User.create(userInfo);
+          await sendVerificationEmail(user);
+
+          return done(null, user);
           }
-        })
-        .catch( (err) => {
+        } catch (err) {
           return done(err);
-        });
+        }
     })
   );
 

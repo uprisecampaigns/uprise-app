@@ -6,14 +6,21 @@ const User = require('models/User.js');
 	*	Note: if user is already signed in, this will overwrite the previous session
 	*				on the client side
 	*/	
-function addAuthRoute(app, passport, routePath, strategy) {
-  app.post(routePath, function(req, res, next) {
-    passport.authenticate(strategy, function(err, user, info) {
-      if (err) { return next(err); }
-      if (!user) { return res.json(info); }
+
+const addAuthRoute = (app, passport, routePath, strategy) => {
+  app.post(routePath, (req, res, next) => {
+    passport.authenticate(strategy, (err, user, info) => {
+      if (err) { 
+        return next(err); 
+      }
+      if (!user) { 
+        return res.json(info); 
+      }
       if (user) {
-        req.logIn(user, function(err) {
-          if (err) { return next(err); }
+        req.logIn(user, (err) => {
+          if (err) { 
+            return next(err); 
+          }
           return res.json(user); 
         });
       }
@@ -21,36 +28,31 @@ function addAuthRoute(app, passport, routePath, strategy) {
   });
 }
 
-module.exports = function(app, passport) {
+module.exports = (app, passport) => {
 
-  console.log('enters authentication routing code');
   addAuthRoute(app, passport, "/api/signup", "local-signup");
 
   addAuthRoute(app, passport, "/api/login", "local-login");
 
-  app.post('/api/logout', authenticationMiddleware.isLoggedIn, function(req, res) {
+  app.post('/api/logout', authenticationMiddleware.isLoggedIn, (req, res) => {
     req.logout();
     req.session.destroy();
     return res.json('logged out');
   });
 
-  app.post('/api/email-verification/:token', authenticationMiddleware.isLoggedIn, function(req, res, next) {
+  app.get('/api/email-verification/:token', authenticationMiddleware.isLoggedIn, async (req, res, next) => {
     const token = req.params.token;
 
-    User.verifyEmail({token: token, userId: req.user.id})
-      .then( (result) => {
-        res.json({
-          token: token,
-          userEmail: req.user.email,
-        });
-      })
-      .catch( (err) => {
-        next(err);
-      });
+    try {
+      const result = await User.verifyEmail({token: token, userId: req.user.id});
+      res.redirect('/');
+    } catch(err) {
+      next(err);
+    }
   });
 
-  app.post('/api/checkSession', function(req, res) {
-    var isLoggedIn = req.isAuthenticated();
+  app.post('/api/checkSession', (req, res) => {
+    const isLoggedIn = req.isAuthenticated();
     if (isLoggedIn) {
       return res.json({	
         isLoggedIn: isLoggedIn,

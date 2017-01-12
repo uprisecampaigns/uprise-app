@@ -5,14 +5,13 @@ const argv = require('yargs').argv;
 
 const config = require('config/knexfile');
 
-gulp.task('db:migrate:latest', (done) => {
+gulp.task('db:migrate:latest', async () => {
   const db = knex(config.development);
-  return db.migrate.latest(config);
+  await db.migrate.latest(config);
 });
 
-gulp.task('db:migrate:rollback', (done) => {
+gulp.task('db:migrate:rollback', async () => {
   const db = knex(config.development);
-  return db.migrate.rollback(config);
+  await db.migrate.rollback(config);
 });
-
 
