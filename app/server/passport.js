@@ -118,11 +118,14 @@ module.exports = (passport) => {
           const user = await User.create(userInfo);
           await sendVerificationEmail(user);
 
-          return done(null, user);
-          }
-        } catch (err) {
-          return done(err);
+          return done(null, {
+            id: user.id,
+            email: user.email
+          });
         }
+      } catch (err) {
+        return done(err);
+      }
     })
   );
 

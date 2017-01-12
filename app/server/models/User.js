@@ -11,24 +11,22 @@ class User {
     return db.table('users').where(...args).first('id', 'email');
   }
 
-  static create(user) {
+  static async create(user) {
     const userInfo = {};
-    return db.table('users').insert(user, ['id', 'email'])
-      .then( (rows) => {
-        Object.assign(userInfo, rows[0]);
+    let rows = await db.table('users').insert(user, ['id', 'email']);
 
-        const verification = {
-          token: uuid(),
-          user_id: userInfo.id
-        };
+    Object.assign(userInfo, rows[0]);
 
-        return db.table('user_email_verifications').insert(verification, ['id', 'token'])
+    const verification = {
+      token: uuid(),
+      user_id: userInfo.id
+    };
 
-      })
-      .then( (rows) => {
-        userInfo.verificationToken = rows[0].token;
-        return userInfo;
-      });
+    rows = await db.table('user_email_verifications').insert(verification, ['id', 'token']);
+
+    userInfo.verificationToken = rows[0].token;
+
+    return userInfo;
   }
 
   static getUserProfile(id) {
