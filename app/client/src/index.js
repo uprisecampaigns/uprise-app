@@ -1,18 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux'
+import { createStore } from 'redux';
 import UniversalRouter from 'universal-router';
-import createBrowserHistory from 'history/createBrowserHistory';
 import queryString from 'query-string';
+import history from './history';
 
 import RedBox from 'redbox-react';
 
 import App from './components/App';
 
+import configureStore from './store/configureStore';
+
 import routes from './routes';
 
-const history = createBrowserHistory();
-
 const container = document.getElementById('app');
+
+const store = configureStore();
 
 let appInstance;
 let currentLocation = history.location;
@@ -66,12 +70,14 @@ async function onLocationChange(location) {
     }
 
     appInstance = ReactDOM.render(
-      <App context={context}>{route.component}</App>,
+      <Provider store={store}>
+        <App context={context}>{route.component}</App>
+      </Provider>,
       container,
       () => onRenderComplete(route, location),
     );
   } catch (error) {
-    console.error(error); // eslint-disable-line no-console
+    console.error(error); 
 
     // Current url has been changed during navigation process, do nothing
     if (currentLocation.key !== location.key) {
