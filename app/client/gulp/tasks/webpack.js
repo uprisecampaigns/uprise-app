@@ -42,6 +42,7 @@ config.webpack = {
   },
   output: {
     filename: '[name].js',
+    publicPath: '/',
     path: path.resolve(config.dest)
   },
   devtool: env.development() ? "source-map" : "",
@@ -53,8 +54,8 @@ config.webpack = {
 				include: path.resolve(config.src),
 				query: {
 					cacheDirectory: true,
-					presets: ['es2015', 'react'],
-          plugins: ['transform-class-properties']
+					presets: ['es2015', 'react', 'stage-3'],
+          plugins: ['transform-runtime', 'transform-class-properties']
 				}
 			},
 			{
@@ -84,7 +85,11 @@ config.webpack = {
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, 
         loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
-      }
+      },
+      { 
+        test: /\.md$/, 
+        loader: path.resolve(config.publicRoot, 'src', 'lib', 'markdown-loader.js') 
+      },
     ]
   },
   plugins: env.production() ? [
