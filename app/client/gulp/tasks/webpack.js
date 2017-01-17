@@ -17,7 +17,7 @@ const config = require('config/gulp.js');
 const extractTextPlugin = new ExtractTextPlugin('[name].css');
 
 const commonsChunkPlugin = new CommonsChunkPlugin({
-  names: ['bootstrap-loader'],
+  names: ['fonts-loader'],
   minChunks: Infinity,
 });
 
@@ -38,7 +38,7 @@ const definePlugin = new webpack.DefinePlugin({
 config.webpack = {
   entry: {
     'index': path.resolve(config.src, 'index'),
-    'bootstrap-loader': path.resolve(config.src, 'bootstrap-loader'),
+    'fonts-loader': path.resolve(config.src, 'fonts-loader'),
   },
   output: {
     filename: '[name].js',
@@ -60,7 +60,8 @@ config.webpack = {
 			},
 			{
 				test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]
+        loader: 'style-loader!css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap'
+        // loader: 'style-loader!css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap'
 			},
       { 
         test: /\.css$/, 

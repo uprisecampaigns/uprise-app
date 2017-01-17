@@ -4,7 +4,8 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux';
 import UniversalRouter from 'universal-router';
 import queryString from 'query-string';
-import history from './history';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import RedBox from 'redbox-react';
 
@@ -12,11 +13,14 @@ import App from './components/App';
 
 import configureStore from './store/configureStore';
 
+import history from './history';
 import routes from './routes';
 
 const container = document.getElementById('app');
 
 const store = configureStore();
+
+injectTapEventPlugin();
 
 let appInstance;
 let currentLocation = history.location;
@@ -70,9 +74,11 @@ async function onLocationChange(location) {
     }
 
     appInstance = ReactDOM.render(
-      <Provider store={store}>
-        <App context={context}>{route.component}</App>
-      </Provider>,
+      <MuiThemeProvider>
+        <Provider store={store}>
+          <App context={context}>{route.component}</App>
+        </Provider>
+      </MuiThemeProvider>,
       container,
       () => onRenderComplete(route, location),
     );

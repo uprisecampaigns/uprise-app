@@ -1,55 +1,38 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import {
-  Navbar,
-  Nav,
-  NavItem,
-  NavDropdown,
-  MenuItem,
-} from 'react-bootstrap';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import Link from '../Link';
 
+import s from './Header.scss';
 
 class Header extends Component {
-  constructor (props) {
-    super (props);
-    console.log(props);
-    this.state = {
-      name: props.name
-    };
-
-    // this.clickHandler = this.clickHandler.bind(this);
+  constructor(props) {
+    super(props);
   }
 
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    loginButtonHandler: PropTypes.func.isRequired,
-  };
+  handleChange = (event, index, value) => this.setState({value});
 
-  render () {
+  render() {
     return (
-      <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <Link to="/">Uprise Campaigns</Link>
-          </Navbar.Brand>
-        </Navbar.Header>
-        <Nav>
-          <NavItem eventKey={1}><Link to="/about">About</Link></NavItem>
-          <NavItem eventKey={2} href="#"></NavItem>
-          <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-            <MenuItem eventKey={3.1}>Action</MenuItem>
-            <MenuItem eventKey={3.2}>Another action!</MenuItem>
-            <MenuItem eventKey={3.3}>Something else here</MenuItem>
-            <MenuItem divider />
-            <MenuItem eventKey={3.3}>Separated link</MenuItem>
-          </NavDropdown>
-        </Nav>
-        <Nav pullRight>
-          <NavItem eventKey={1} href="#">Link Right there</NavItem>
-          <NavItem eventKey={2} href="#">Last Right Item</NavItem>
-        </Nav>
-      </Navbar>
+      <AppBar
+        title="Uprise Campaigns"
+        iconElementRight={
+          <div>
+            <FlatButton>
+              <Link useAhref={false} to='/'>Home</Link>
+            </FlatButton>
+            <FlatButton>
+              <Link useAhref={false} to='/about'>About</Link>
+            </FlatButton>
+          </div>
+        }
+      />
     );
   }
 }

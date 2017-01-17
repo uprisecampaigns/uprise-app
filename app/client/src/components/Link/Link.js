@@ -13,6 +13,7 @@ function isModifiedEvent(event) {
 class Link extends React.Component {
   static propTypes = {
     to: PropTypes.string.isRequired,
+    useAhref: PropTypes.bool,
     children: PropTypes.node,
     onClick: PropTypes.func,
   };
@@ -31,12 +32,21 @@ class Link extends React.Component {
     }
 
     event.preventDefault();
-    history.push(this.props.to);
+
+    if (this.props.external) {
+      window.location = this.props.to;
+    } else {
+      history.push(this.props.to);
+    }
   };
 
   render() {
-    const { to, children, ...props } = this.props;
-    return <a href={to} {...props} onClick={this.handleClick}>{children}</a>;
+    const { to, children, external, useAhref, ...props } = this.props;
+    if (useAhref) {
+      return <a href={to} {...props} onClick={this.handleClick}>{children}</a>;
+    } else {
+      return <span {...props} onClick={this.handleClick}>{children}</span>;
+    }
   }
 }
 
