@@ -7,8 +7,9 @@ export default {
   children: [
     require('./home').default,
     require('./about').default,
+    require('./login').default,
+    require('./signup').default,
     // require('./contact').default,
-    // require('./login').default,
     // require('./register').default,
     // require('./privacy').default,
     // require('./admin').default,

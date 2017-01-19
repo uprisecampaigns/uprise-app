@@ -43,9 +43,9 @@ class Link extends React.Component {
   render() {
     const { to, children, external, useAhref, ...props } = this.props;
     if (useAhref) {
-      return <a href={to} {...props} onClick={this.handleClick}>{children}</a>;
+      return <a href={to} {...props} onTouchTap={this.handleClick} onClick={this.handleClick}>{children}</a>;
     } else {
-      return <span {...props} onClick={this.handleClick}>{children}</span>;
+      return <span {...props} onTouchTap={this.handleClick} onClick={this.handleClick}>{children}</span>;
     }
   }
 }

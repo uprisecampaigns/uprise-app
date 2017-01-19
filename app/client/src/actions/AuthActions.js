@@ -1,10 +1,9 @@
-/*
- * action types
- */
+import fetch from 'isomorphic-fetch';
 
-export const Clicked_SignUp = 'Clicked_SignUp';
-export const SignUp_Success = 'SignUp_Success';
-export const SignUp_Fail = 'SignUp_Fail';
+
+export const Clicked_Signup = 'Clicked_Signup';
+export const Signup_Success = 'Signup_Success';
+export const Signup_Fail = 'Signup_Fail';
 
 export const Clicked_Login = 'Clicked_Login';
 export const Login_Success = 'Login_Success';
@@ -20,46 +19,47 @@ export const Logout_Success = 'Logout_Success';
 //				related actions. For now, will leave these here.
 export const Navigate_Away_From_Auth_Form = 'Navigate_Away_From_Auth_Form';
 
-/*
- * other constants
- */
-
 
 /*
  * action creators
  */
 
-export function clickedSignUp() {
-	return { type: Clicked_SignUp }
+export function clickedSignup() {
+	return { type: Clicked_Signup }
 }
 
-export function signUpSuccess(userObject) {
-	return { type: SignUp_Success, userObject };
+export function signupSuccess(userObject) {
+	return { type: Signup_Success, userObject };
 }
 
-export function signUpFail(error) {
-	return { type: SignUp_Fail, error };
+export function signupFail(error) {
+	return { type: Signup_Fail, error };
 }
 
-export function attemptSignUp(email, password, displayName) {
-  return (dispatch) => {
-    dispatch(clickedSignUp());
+export function attemptSignup(data) {
+  return async (dispatch) => {
+    try {
+      dispatch(clickedSignup());
 
-    $.ajax({
-			type: 'POST',
-			url: '/signup',
-			data: {email, password, displayName} })
-			.done(function(data) {
-				if (data.error){
-					dispatch(signUpFail(data.error));
-				} else {
-					dispatch(signUpSuccess(data));
-				}
-			})
-			.fail(function(a,b,c,d) {
-			  // console.log('failed to signup',a,b,c,d);
-			  dispatch(signUpFail("TODO find the error..."));
-			});
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(data),
+        headers: {
+          'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log(response);
+
+      const json = await response.json();
+
+      console.log(json);
+
+    } catch(err) {
+      console.log(err);
+    }
   }
 }
 
