@@ -78,6 +78,7 @@ class SignupForm extends Component {
 
   formSubmit = (event) => {
     console.log(event);
+    event.preventDefault();
     console.log(this.state.firstName);
 
     this.hasErrors = false;
@@ -108,8 +109,12 @@ class SignupForm extends Component {
     return (
       <div className={s.signupFormContainer}>
         <Paper zDepth={2}>
-          <form className={s.form}>
+          <form 
+            className={s.form}
+            onSubmit={this.formSubmit}
+          >
             <div className={s.textFieldContainer}>
+              <div> {this.props.signupError}</div>
               <TextField
                 floatingLabelText="First Name"
                 value={this.state.firstName}
@@ -165,7 +170,12 @@ class SignupForm extends Component {
                 errorText={this.state.zipErrorText}
               />
             </div>
-            <RaisedButton onTouchTap={this.formSubmit} primary={true} label="Go" />
+            <RaisedButton 
+              onTouchTap={this.formSubmit} 
+              primary={true} 
+              type="submit"
+              label="Go" 
+            />
           </form>
         </Paper>
       </div>
@@ -175,7 +185,7 @@ class SignupForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    signupError: state.userAuthSession.signupError
+    signupError: state.userAuthSession.error
   };
 }
 

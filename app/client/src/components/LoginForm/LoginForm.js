@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import Link from '../Link';
-import { clickedSignUp } from '../../actions/AuthActions';
+import { attemptLogin } from '../../actions/AuthActions';
 
 import s from './LoginForm.scss';
 
@@ -15,33 +15,63 @@ class LoginForm extends Component {
     super(props);
   }
 
-  handleChange = (event, index, value) => this.setState({value});
-
-  clickedSignup = (event) => {
-    console.log(event);
-    this.props.dispatch(clickedSignUp());
+  state = {
+    email: '',
+    password: '',
   }
+ 
+  handleInputChange = (event, type, value) => {
+    this.setState(Object.assign({},
+      this.state,
+      { [type]: value }
+    ));
+  }
+
+  formSubmit = (event) => {
+    console.log(event);
+    event.preventDefault();
+    console.log(this.state);
+
+    this.props.dispatch(attemptLogin({
+      email: this.state.email,
+      password: this.state.password,
+    }));
+  }
+
 
   render() {
     const { dispatch } = this.props;
     return (
       <div className={s.formContainer}>
         <Paper zDepth={2}>
-          <form className={s.form}>
+          { this.props.loginError }
+          <form 
+            className={s.form}
+            onSubmit={this.formSubmit}
+          >
             <div className={s.textFieldContainer}>
               <TextField
-                floatingLabelText="User Name"
+                floatingLabelText="Email"
+                value={this.state.email}
+                onChange={ (event) => { this.handleInputChange(event, 'email', event.target.value) } }
               />
             </div>
             <Divider />
             <div className={s.textFieldContainer}>
               <TextField
                 floatingLabelText="Password"
+                value={this.state.password}
+                onChange={ (event) => { this.handleInputChange(event, 'password', event.target.value) } }
                 type="password"
               />
             </div>
             <Divider />
-            <RaisedButton primary={true} label="Go" />
+            <RaisedButton 
+              onTouchTap={this.formSubmit} 
+              type="submit"
+              primary={true} 
+              label="Login" 
+            />
           </form>
         </Paper>
 
@@ -55,7 +85,7 @@ class LoginForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    showSignup: state.userAuthSession.displaySignup
+    loginError: state.userAuthSession.error
   };
 }
 

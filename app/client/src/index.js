@@ -13,6 +13,8 @@ import App from './components/App';
 
 import configureStore from './store/configureStore';
 
+import { checkSessionStatus } from 'actions/AuthActions';
+
 import history from './history';
 import routes from './routes';
 
@@ -43,6 +45,8 @@ let onRenderComplete = function initialRenderComplete() {
 
 // Re-render the app when window.location changes
 async function onLocationChange(location) {
+  store.dispatch(checkSessionStatus());
+
   // Remember the latest scroll position for the previous location
   scrollPositionsHistory[currentLocation.key] = {
     scrollX: window.pageXOffset,
@@ -61,6 +65,7 @@ async function onLocationChange(location) {
     const route = await UniversalRouter.resolve(routes, {
       path: location.pathname,
       query: queryString.parse(location.search),
+      store: store // be wary of using the store in routing considering async updates
     });
 
     // Prevent multiple page renders during the routing process

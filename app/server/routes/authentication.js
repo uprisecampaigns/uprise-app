@@ -57,7 +57,6 @@ module.exports = (app, passport) => {
       return res.json({	
         isLoggedIn: isLoggedIn,
         userObject: {	
-          displayName: req.user.display_name, 
           id:req.user.id, 
           email:req.user.email
         }

@@ -6,11 +6,10 @@ export default {
 
   path: '/login',
 
-  async action() {
+  async action(context) {
     return {
       title: 'Login',
       component: <Login/>,
     };
   },
-
 };

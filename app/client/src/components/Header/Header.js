@@ -9,15 +9,28 @@ import Toggle from 'material-ui/Toggle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import Link from '../Link';
-import { clickedSignUp } from '../../actions/AuthActions';
+import { clickedSignUp, attemptLogout } from 'actions/AuthActions';
 
 import s from './Header.scss';
 
-function SignupButton(props) {
-  if (props.show) {
-    return <FlatButton label="Signup" onClick={props.onClick}/>;
+function LoginButton(props) {
+  if (!props.loggedIn) {
+    return (
+      <Link useAhref={false} to='/login'>
+        <FlatButton label="Login" />
+      </Link>
+    )
   } else {
-    return <FlatButton label="Clicked" onClick={props.onClick}/>;
+    return (
+      <IconMenu
+        iconButtonElement={<FlatButton label={props.userObject.email} />}
+      >
+        <MenuItem value="1" primaryText="Send feedback" />
+        <MenuItem value="2" primaryText="Settings" />
+        <MenuItem value="3" primaryText="Help" />
+        <MenuItem value="4" primaryText="Sign out" onTouchTap={props.logout}/>
+      </IconMenu>
+    )
   }
 }
 
@@ -33,6 +46,10 @@ class Header extends Component {
     this.props.dispatch(clickedSignUp());
   }
 
+  clickedLogout = (event) => {
+    this.props.dispatch(attemptLogout());
+  }
+
   render() {
     const { dispatch } = this.props;
     return (
@@ -46,10 +63,10 @@ class Header extends Component {
             <Link useAhref={false} to='/about'>
               <FlatButton label="About" />
             </Link>
-            <Link useAhref={false} to='/login'>
-              <FlatButton label="Login" />
-            </Link>
-            <SignupButton show={!this.props.showSignup} onClick={this.clickedSignup} />
+            <LoginButton 
+              loggedIn={this.props.loggedIn}
+              logout={this.clickedLogout}
+              userObject={this.props.userObject}/>
           </div>
         }
       />
@@ -59,7 +76,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    showSignup: state.userAuthSession.displaySignup
+    loggedIn: state.userAuthSession.isLoggedIn,
+    userObject: state.userAuthSession.userObject
   };
 }
 
