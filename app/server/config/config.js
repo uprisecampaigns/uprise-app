@@ -12,7 +12,9 @@ module.exports = {
   },
   postmark: {
     serverKey: process.env.POSTMARK_SECRET_KEY,
-    validRecipient: email => (email === 'bittmanmax@gmail.com'),
+    validRecipient: (email) => {
+      return (email.split('@').pop() === 'uprise.org'); // only send to @uprise.org email accounts for now
+    },
     from: 'max@uprise.org'
   },
   api: {
