@@ -34,6 +34,21 @@ module.exports = (app, passport) => {
 
   addAuthRoute(app, passport, "/api/login", "local-login");
 
+  app.post('/api/checkEmailAvailability', async (req, res) => {
+    const email = req.body.email;
+    const result = await User.findOne('email', email);
+    console.log(result);
+    let available = true;
+
+    if (result) {
+      available = false;
+    }
+
+    res.json({
+      available: available
+    });
+  });
+
   app.post('/api/logout', authenticationMiddleware.isLoggedIn, (req, res) => {
     req.logout();
     req.session.destroy();

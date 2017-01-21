@@ -1,8 +1,28 @@
 
+.outerContainer {
+  width: 100%;
+  min-width: 500px; //TODO is this enough??
+  display: flex;
+  justify-content: center;
+}
+
+.innerContainer {
+  width: 500px;
+  display: block;
+  text-align: center;
+}
+
 .formContainer {
   padding: 20px;
+  text-align: center;
+}
+
+.signupButton {
+  display: block;
+  margin-top: 20px;
 }
 
 .textFieldContainer {
-  display: block;
+  display: flex;
+  text-align: left;
 }

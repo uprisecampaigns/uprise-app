@@ -15,9 +15,13 @@ class LoginForm extends Component {
     super(props);
   }
 
+  hasErrors = false
+
   state = {
     email: '',
     password: '',
+    emailErrorText: null,
+    passwordErrorText: null,
   }
  
   handleInputChange = (event, type, value) => {
@@ -27,57 +31,90 @@ class LoginForm extends Component {
     ));
   }
 
+  // TODO: this is used in SignupForm as well - DRY it out
+  validateString = (prop, errorProp, errorMsg) => {
+    if (typeof this.state[prop] !== 'string' || 
+        this.state[prop].trim() === '') {
+
+      this.setState({ 
+        [errorProp]: errorMsg 
+      });
+
+      this.hasErrors = true;
+
+    } else {
+      this.setState({ 
+        [errorProp]: null 
+      });
+    }
+  }
+
+
   formSubmit = (event) => {
     console.log(event);
     event.preventDefault();
+    this.hasErrors = false;
+
+    this.validateString('email', 'emailErrorText', 'Email is Required');
+    this.validateString('password', 'passwordErrorText', 'Password is Required');
     console.log(this.state);
 
-    this.props.dispatch(attemptLogin({
-      email: this.state.email,
-      password: this.state.password,
-    }));
+    if (!this.hasErrors) {
+      this.props.dispatch(attemptLogin({
+        email: this.state.email,
+        password: this.state.password,
+      }));
+    }
   }
 
 
   render() {
     const { dispatch } = this.props;
     return (
-      <div className={s.formContainer}>
-        <Paper zDepth={2}>
-          { this.props.loginError }
-          <form 
-            className={s.form}
-            onSubmit={this.formSubmit}
-          >
-            <div className={s.textFieldContainer}>
-              <TextField
-                floatingLabelText="Email"
-                value={this.state.email}
-                onChange={ (event) => { this.handleInputChange(event, 'email', event.target.value) } }
-              />
+      <div className={s.outerContainer}>
+        <div className={s.innerContainer}>
+          <Paper zDepth={2}>
+            <div className={s.formContainer}>
+              { this.props.loginError }
+              <form 
+                className={s.form}
+                onSubmit={this.formSubmit}
+              >
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Email"
+                    value={this.state.email}
+                    errorText={this.state.emailErrorText || this.props.loginError}
+                    onChange={ (event) => { this.handleInputChange(event, 'email', event.target.value) } }
+                  />
+                </div>
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Password"
+                    value={this.state.password}
+                    errorText={this.state.passwordErrorText}
+                    onChange={ (event) => { this.handleInputChange(event, 'password', event.target.value) } }
+                    type="password"
+                  />
+                </div>
+                <RaisedButton 
+                  onTouchTap={this.formSubmit} 
+                  type="submit"
+                  primary={true} 
+                  label="Login" 
+                />
+              </form>
             </div>
-            <Divider />
-            <div className={s.textFieldContainer}>
-              <TextField
-                floatingLabelText="Password"
-                value={this.state.password}
-                onChange={ (event) => { this.handleInputChange(event, 'password', event.target.value) } }
-                type="password"
-              />
-            </div>
-            <Divider />
-            <RaisedButton 
-              onTouchTap={this.formSubmit} 
-              type="submit"
-              primary={true} 
-              label="Login" 
-            />
-          </form>
-        </Paper>
+          </Paper>
 
-        <Link useAhref={false} to='/signup'>
-          <RaisedButton secondary={true} label="Signup" />
-        </Link>
+          <Link 
+            useAhref={false} 
+            to='/signup'
+            className={s.signupButton}
+          >
+            <RaisedButton secondary={true} label="Signup" />
+          </Link>
+        </div>
       </div>
     );
   }

@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux'
-import SignupForm from 'components/SignupForm';
+import SignupFormContainer from 'containers/SignupFormContainer';
 
 import checkRedirect from 'lib/checkRedirect';
+
 
 
 class Signup extends React.Component {
@@ -20,7 +21,7 @@ class Signup extends React.Component {
   render() {
     return (
       <div>
-        <SignupForm/>
+        <SignupFormContainer />
       </div>
     );
   }
