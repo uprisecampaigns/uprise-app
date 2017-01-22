@@ -15,7 +15,7 @@ import configureStore from './store/configureStore';
 
 import { checkSessionStatus } from 'actions/AuthActions';
 
-import history from './history';
+import history from 'lib/history';
 import routes from './routes';
 
 const container = document.getElementById('app');

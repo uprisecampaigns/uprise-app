@@ -9,8 +9,7 @@ export default {
     require('./about').default,
     require('./login').default,
     require('./signup').default,
-    // require('./contact').default,
-    // require('./register').default,
+    require('./welcome').default,
     // require('./privacy').default,
     // require('./admin').default,
 

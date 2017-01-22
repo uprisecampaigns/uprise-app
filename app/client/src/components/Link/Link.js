@@ -1,6 +1,6 @@
 
 import React, { PropTypes } from 'react';
-import history from '../../history';
+import history from 'lib/history';
 
 function isLeftClickEvent(event) {
   return event.button === 0;

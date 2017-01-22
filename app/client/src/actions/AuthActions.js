@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import history from '../history';
+import history from 'lib/history';
 
 
 export const Clicked_Signup = 'Clicked_Signup';
@@ -147,11 +147,13 @@ export function checkSessionStatus() {
         dispatch(checkedSessionStatus(json));
       } else {
         // TODO: error handler
+        console.error(json.error);
         dispatch(checkedSessionFailure(json.error));
       }
 
     } catch(err) {
       // TODO: error handler
+      console.error(err);
       dispatch(checkedSessionFailure(err));
     }
   }
