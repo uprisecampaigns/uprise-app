@@ -10,13 +10,13 @@ export default (WrappedComponent) => {
     }
 
     componentWillMount = () => {
-      if (!this.props.loggedIn) {
+      if (!this.props.fetchingUpdate && !this.props.loggedIn) {
         history.push('/');
       }
     }
 
     componentWillReceiveProps = (nextProps) => {
-      if (!nextProps.loggedIn) {
+      if (!nextProps.fetchingUpdate && !nextProps.loggedIn) {
         history.push('/');
       }
     }
@@ -31,7 +31,8 @@ export default (WrappedComponent) => {
 
   const mapStateToProps = (state) => {
     return {
-      loggedIn: state.userAuthSession.isLoggedIn
+      loggedIn: state.userAuthSession.isLoggedIn,
+      fetchingUpdate: state.userAuthSession.fetchingAuthUpdate
     };
   }
 

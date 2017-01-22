@@ -63,6 +63,9 @@ class Header extends Component {
             <Link useAhref={false} to='/about'>
               <FlatButton label="About" />
             </Link>
+            <Link useAhref={false} to='/welcome'>
+              <FlatButton label="Welcome" />
+            </Link>
             <LoginButton 
               loggedIn={this.props.loggedIn}
               logout={this.clickedLogout}
