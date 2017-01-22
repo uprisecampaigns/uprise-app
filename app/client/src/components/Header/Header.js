@@ -11,6 +11,7 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import Link from '../Link';
 import { clickedSignUp, attemptLogout } from 'actions/AuthActions';
 
+import upriseLogo from 'img/uprise-logo.png';
 import s from './Header.scss';
 
 function LoginButton(props) {
@@ -54,12 +55,16 @@ class Header extends Component {
     const { dispatch } = this.props;
     return (
       <AppBar
-        title="Uprise Campaigns"
+        iconElementLeft={
+          <Link useAhref={true} to='/'>
+            <img 
+              src={upriseLogo}
+              className={s.upriseLogo}
+            />
+          </Link>
+        }
         iconElementRight={
           <div>
-            <Link useAhref={false} to='/'>
-              <FlatButton label="Home" />
-            </Link>
             <Link useAhref={false} to='/about'>
               <FlatButton label="About" />
             </Link>
@@ -72,6 +77,9 @@ class Header extends Component {
               userObject={this.props.userObject}/>
           </div>
         }
+        style={{
+          'background-color': 'rgb(255, 255, 255)'
+        }}
       />
     );
   }
