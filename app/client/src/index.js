@@ -45,7 +45,10 @@ let onRenderComplete = function initialRenderComplete() {
 
 // Re-render the app when window.location changes
 async function onLocationChange(location) {
-  store.dispatch(checkSessionStatus());
+  const fetchingSessionStatus = store.getState().userAuthSession.fetchingAuthUpdate;
+  if (!fetchingSessionStatus) {
+    store.dispatch(checkSessionStatus());
+  }
 
   // Remember the latest scroll position for the previous location
   scrollPositionsHistory[currentLocation.key] = {
