@@ -1,5 +1,7 @@
 const express = require('express');
 const session  = require('express-session');
+const redis = require('redis');
+const RedisStore = require('connect-redis')(session);
 const passport = require('passport');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -27,7 +29,17 @@ app.use(cookieParser());
 require('./passport.js')(passport);
 
 const sessionOptions = config.sessionOptions;
-// sessionOptions.store = new RedisStore(); // TODO set up redis store
+
+const redisClient = redis.createClient(config.redis);
+
+redisClient.on('error', function(err) {
+  console.error(err);
+});
+
+sessionOptions.store = new RedisStore({
+  client: redisClient
+}); 
+
 app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());

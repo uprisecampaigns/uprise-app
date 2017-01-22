@@ -11,6 +11,7 @@ services:
       - "5857:5857"
     links:
       - "db:postgres"
+      - redis
     env_file: ./app/dev.env
     working_dir: /src/app
     command: npm start
@@ -36,3 +37,9 @@ services:
     build: ./postgres
     environment:
       - POSTGRES_USER=postgres
+
+  redis:
+    image: redis:latest
+    command: redis-server --appendonly yes
+    volumes:
+      - /data

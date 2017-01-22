@@ -10,6 +10,10 @@ module.exports = {
       maxAge: 2419200000 
     } // TODO set secure to true when https is used
   },
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT
+  },
   postmark: {
     serverKey: process.env.POSTMARK_SECRET_KEY,
     validRecipient: (email) => {
