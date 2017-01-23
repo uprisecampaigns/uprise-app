@@ -9,7 +9,7 @@
 
 import React, { PropTypes } from 'react';
 // import s from './Layout.css';
-import Header from '../Header';
+import HeaderContainer from 'containers/HeaderContainer';
 // import Feedback from '../Feedback';
 // import Footer from '../Footer';
 
@@ -21,7 +21,7 @@ class Layout extends React.Component {
   render() {
     return (
       <div>
-        <Header />
+        <HeaderContainer />
         {this.props.children}
       </div>
     );

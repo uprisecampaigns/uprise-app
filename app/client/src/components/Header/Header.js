@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -11,7 +10,6 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import TextField from 'material-ui/TextField';
 import Link from '../Link';
-import { clickedSignUp, attemptLogout } from 'actions/AuthActions';
 
 import upriseLogo from 'img/uprise-logo.png';
 import s from './Header.scss';
@@ -40,10 +38,11 @@ function LoginButton(props) {
         className={s.accountMenuContainer}
       >
         <MenuItem value="1" primaryText="Profile" />
-        <MenuItem value="2" primaryText="Preferences" />
-        <MenuItem value="3" primaryText="Settings" />
-        <MenuItem value="4" primaryText="Help" />
-        <MenuItem value="5" primaryText="Log out" onTouchTap={props.logout}/>
+        <MenuItem value="2" primaryText={props.userObject.email} />
+        <MenuItem value="3" primaryText="Preferences" />
+        <MenuItem value="4" primaryText="Settings" />
+        <MenuItem value="5" primaryText="Help" />
+        <MenuItem value="6" primaryText="Log out" onTouchTap={props.logout}/>
       </IconMenu>
     )
   }
@@ -56,7 +55,7 @@ function AuthenticatedIcons(props) {
         <div className={s.searchContainer}>
           <TextField
             hintText="Search by name or keyword"
-            value={''}
+            value={undefined}
             errorText={''}
             onChange={ (event) => { console.log(event.target.value) } }
           />
@@ -93,26 +92,18 @@ function AuthenticatedIcons(props) {
   }
 }
 
-
-
 class Header extends Component {
   constructor(props) {
     super(props);
   }
 
-  handleChange = (event, index, value) => this.setState({value});
-
-  clickedSignup = (event) => {
-    console.log(event);
-    this.props.dispatch(clickedSignUp());
-  }
-
-  clickedLogout = (event) => {
-    this.props.dispatch(attemptLogout());
+  static propTypes = {
+    userObject: PropTypes.object,
+    loggedIn: PropTypes.bool.isRequired,
+    clickedLogout: PropTypes.func.isRequired,
   }
 
   render() {
-    const { dispatch } = this.props;
     return (
       <AppBar
         iconElementLeft={
@@ -133,7 +124,7 @@ class Header extends Component {
             />
             <LoginButton 
               loggedIn={this.props.loggedIn}
-              logout={this.clickedLogout}
+              logout={this.props.clickedLogout}
               userObject={this.props.userObject}/>
           </div>
         }
@@ -150,12 +141,4 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.userAuthSession.isLoggedIn,
-    userObject: state.userAuthSession.userObject
-  };
-}
-
-
-export default connect(mapStateToProps)(Header);
+export default Header;
