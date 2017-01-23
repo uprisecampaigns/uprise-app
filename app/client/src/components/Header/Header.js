@@ -9,11 +9,17 @@ import FontIcon from 'material-ui/FontIcon';
 import Toggle from 'material-ui/Toggle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import TextField from 'material-ui/TextField';
 import Link from '../Link';
 import { clickedSignUp, attemptLogout } from 'actions/AuthActions';
 
 import upriseLogo from 'img/uprise-logo.png';
 import s from './Header.scss';
+
+
+const iconButtonStyle = {
+  fontSize: '3rem'
+}
 
 function LoginButton(props) {
   if (!props.loggedIn) {
@@ -26,9 +32,12 @@ function LoginButton(props) {
     return (
       <IconMenu
         iconButtonElement={
-          <FontIcon 
-            className={[s.headerIcon, 'material-icons'].join(' ')} 
-          >account_box</FontIcon>}
+          <IconButton 
+            iconStyle={iconButtonStyle}
+            iconClassName='material-icons'
+            className={s.iconButton}
+          >account_box</IconButton>}
+        className={s.accountMenuContainer}
       >
         <MenuItem value="1" primaryText="Profile" />
         <MenuItem value="2" primaryText="Preferences" />
@@ -43,28 +52,41 @@ function LoginButton(props) {
 function AuthenticatedIcons(props) {
   if (props.loggedIn) {
     return (
-      <span>
-        <Link useAhref={true} to='/search'>
-          <FontIcon 
-            className={[s.headerIcon, 'material-icons'].join(' ')} 
-          >search</FontIcon>
+      <div className={s.authenticatedIconsContainer}>
+        <div className={s.searchContainer}>
+          <TextField
+            hintText="Search by name or keyword"
+            value={''}
+            errorText={''}
+            onChange={ (event) => { console.log(event.target.value) } }
+          />
+          <IconButton 
+            iconClassName='material-icons'
+            className={s.iconButton}
+          >search</IconButton>
+        </div>
+        <Link useAhref={false} to='/calendar'>
+          <IconButton 
+            iconClassName='material-icons'
+            className={s.iconButton}
+            iconStyle={iconButtonStyle}
+          >event</IconButton>
         </Link>
-        <Link useAhref={true} to='/calendar'>
-          <FontIcon 
-            className={[s.headerIcon, 'material-icons'].join(' ')} 
-          >event</FontIcon>
+        <Link useAhref={false} to='/friends'>
+          <IconButton 
+            iconClassName='material-icons'
+            className={s.iconButton}
+            iconStyle={iconButtonStyle}
+          >group</IconButton>
         </Link>
-        <Link useAhref={true} to='/friends'>
-          <FontIcon 
-            className={[s.headerIcon, 'material-icons'].join(' ')} 
-          >group</FontIcon>
+        <Link useAhref={false} to='/about'>
+          <IconButton 
+            iconClassName='material-icons'
+            className={s.iconButton}
+            iconStyle={iconButtonStyle}
+          >work</IconButton>
         </Link>
-        <Link useAhref={true} to='/about'>
-          <FontIcon 
-            className={[s.headerIcon, 'material-icons'].join(' ')} 
-          >work</FontIcon>
-        </Link>
-      </span>
+      </div>
     )
   } else {
     return null;
@@ -105,7 +127,7 @@ class Header extends Component {
           marginTop: '0px'
         }}
         iconElementRight={
-          <div>
+          <div className={s.flexContainer}>
             <AuthenticatedIcons 
               loggedIn={this.props.loggedIn}
             />

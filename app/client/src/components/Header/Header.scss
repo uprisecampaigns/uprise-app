@@ -1,11 +1,24 @@
+.authenticatedIconsContainer {
+  display: inline-flex;
+}
+
+.accountMenuContainer {
+  margin-right: 20px;
+}
+
+.flexContainer {
+  display: flex;
+}
+
+.iconButton {
+  padding: 0px;
+}
 
 .upriseLogo {
   width: 100%;
   height: auto;
 }
 
-.headerIcon {
-  font-size: 3rem !important;
-  cursor: pointer;
+.searchContainer {
+  margin-right: 40px;
 }
-
