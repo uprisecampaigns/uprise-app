@@ -26,15 +26,16 @@ export const Navigate_Away_From_Auth_Form = 'Navigate_Away_From_Auth_Form';
  */
 
 export function clickedSignup() {
-	return { type: Clicked_Signup }
+  return { type: Clicked_Signup }
 }
 
 export function signupSuccess(userObject) {
-	return { type: Signup_Success, userObject };
+  history.push('/welcome');
+  return { type: Signup_Success, userObject };
 }
 
 export function signupFail(error) {
-	return { type: Signup_Fail, error };
+  return { type: Signup_Fail, error };
 }
 
 export function attemptSignup(data) {
@@ -57,7 +58,6 @@ export function attemptSignup(data) {
       // TODO: passportjs local-signup/login returns a "missing credentials" 
       // message with no explicit error 
       if (!json.error) {
-        history.push('/');
         dispatch(signupSuccess(json));
       } else {
         dispatch(signupFail(json.error));
@@ -72,15 +72,15 @@ export function attemptSignup(data) {
 
 
 export function clickedLogin() {
-	return { type: Clicked_Login };
+  return { type: Clicked_Login };
 }
 
 export function loginSuccess(userObject) {
-	return { type: Login_Success, userObject };
+  return { type: Login_Success, userObject };
 }
 
 export function loginFail(error) {
-	return { type: Login_Fail, error };
+  return { type: Login_Fail, error };
 }
 
 
@@ -119,11 +119,11 @@ export function attemptLogin(data) {
 
 
 export function startedSessionCheck() {
-	return { type: Started_Session_Check };
+  return { type: Started_Session_Check };
 }
 
 export function checkedSessionStatus(result) {
-	return { type: Checked_Session_Status, result };
+  return { type: Checked_Session_Status, result };
 }
 
 export function checkSessionStatus() {
@@ -161,11 +161,11 @@ export function checkSessionStatus() {
 
 
 export function clickedLogout() {
-	return { type: Clicked_Logout }; 
+  return { type: Clicked_Logout }; 
 }
 
 export function logoutSuccess() {
-	return { type: Logout_Success };
+  return { type: Logout_Success };
 }
 
 export function attemptLogout(){
@@ -188,7 +188,7 @@ export function attemptLogout(){
       if (!json.error) {
         dispatch(logoutSuccess());
       } else {
-      // TODO: error handler
+        // TODO: error handler
         dispatch(logoutFailure(json.error));
       }
 
@@ -201,5 +201,5 @@ export function attemptLogout(){
 
 
 export function navigatedAwayFromAuthFormPage() {
-	return { type: Navigate_Away_From_Auth_Form }
+  return { type: Navigate_Away_From_Auth_Form }
 }
