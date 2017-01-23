@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux'
-import LoginForm from 'components/LoginForm';
+import LoginFormContainer from 'containers/LoginFormContainer';
 
 
 class Login extends React.Component {
@@ -10,7 +10,7 @@ class Login extends React.Component {
   render() {
     return (
       <div>
-        <LoginForm/>
+        <LoginFormContainer/>
       </div>
     );
   }
