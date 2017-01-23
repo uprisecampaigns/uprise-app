@@ -5,6 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 import Toggle from 'material-ui/Toggle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
@@ -65,6 +66,21 @@ class Header extends Component {
         }
         iconElementRight={
           <div>
+            <Link useAhref={true} to='/'>
+              <FontIcon 
+                className={[s.headerIcon, 'material-icons'].join(' ')} 
+              >home</FontIcon>
+            </Link>
+            <Link useAhref={true} to='/search'>
+              <FontIcon 
+                className={[s.headerIcon, 'material-icons'].join(' ')} 
+              >search</FontIcon>
+            </Link>
+            <Link useAhref={true} to='/calendar'>
+              <FontIcon 
+                className={[s.headerIcon, 'material-icons'].join(' ')} 
+              >event</FontIcon>
+            </Link>
             <Link useAhref={false} to='/about'>
               <FlatButton label="About" />
             </Link>
@@ -78,7 +94,7 @@ class Header extends Component {
           </div>
         }
         style={{
-          'background-color': 'rgb(255, 255, 255)'
+          'backgroundColor': 'rgb(255, 255, 255)'
         }}
       />
     );
