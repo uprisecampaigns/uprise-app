@@ -25,16 +25,53 @@ function LoginButton(props) {
   } else {
     return (
       <IconMenu
-        iconButtonElement={<FlatButton label={props.userObject.email} />}
+        iconButtonElement={
+          <FontIcon 
+            className={[s.headerIcon, 'material-icons'].join(' ')} 
+          >account_box</FontIcon>}
       >
-        <MenuItem value="1" primaryText="Send feedback" />
-        <MenuItem value="2" primaryText="Settings" />
-        <MenuItem value="3" primaryText="Help" />
-        <MenuItem value="4" primaryText="Sign out" onTouchTap={props.logout}/>
+        <MenuItem value="1" primaryText="Profile" />
+        <MenuItem value="2" primaryText="Preferences" />
+        <MenuItem value="3" primaryText="Settings" />
+        <MenuItem value="4" primaryText="Help" />
+        <MenuItem value="5" primaryText="Log out" onTouchTap={props.logout}/>
       </IconMenu>
     )
   }
 }
+
+function AuthenticatedIcons(props) {
+  if (props.loggedIn) {
+    return (
+      <span>
+        <Link useAhref={true} to='/search'>
+          <FontIcon 
+            className={[s.headerIcon, 'material-icons'].join(' ')} 
+          >search</FontIcon>
+        </Link>
+        <Link useAhref={true} to='/calendar'>
+          <FontIcon 
+            className={[s.headerIcon, 'material-icons'].join(' ')} 
+          >event</FontIcon>
+        </Link>
+        <Link useAhref={true} to='/friends'>
+          <FontIcon 
+            className={[s.headerIcon, 'material-icons'].join(' ')} 
+          >group</FontIcon>
+        </Link>
+        <Link useAhref={true} to='/about'>
+          <FontIcon 
+            className={[s.headerIcon, 'material-icons'].join(' ')} 
+          >work</FontIcon>
+        </Link>
+      </span>
+    )
+  } else {
+    return null;
+  }
+}
+
+
 
 class Header extends Component {
   constructor(props) {
@@ -64,35 +101,25 @@ class Header extends Component {
             />
           </Link>
         }
+        iconStyleRight={{
+          marginTop: '0px'
+        }}
         iconElementRight={
           <div>
-            <Link useAhref={true} to='/'>
-              <FontIcon 
-                className={[s.headerIcon, 'material-icons'].join(' ')} 
-              >home</FontIcon>
-            </Link>
-            <Link useAhref={true} to='/search'>
-              <FontIcon 
-                className={[s.headerIcon, 'material-icons'].join(' ')} 
-              >search</FontIcon>
-            </Link>
-            <Link useAhref={true} to='/calendar'>
-              <FontIcon 
-                className={[s.headerIcon, 'material-icons'].join(' ')} 
-              >event</FontIcon>
-            </Link>
-            <Link useAhref={false} to='/about'>
-              <FlatButton label="About" />
-            </Link>
-            <Link useAhref={false} to='/welcome'>
-              <FlatButton label="Welcome" />
-            </Link>
+            <AuthenticatedIcons 
+              loggedIn={this.props.loggedIn}
+            />
             <LoginButton 
               loggedIn={this.props.loggedIn}
               logout={this.clickedLogout}
               userObject={this.props.userObject}/>
           </div>
         }
+        iconStyleRight={{
+          marginTop: '0px',
+          display: 'flex',
+          alignItems: 'center'
+        }}
         style={{
           'backgroundColor': 'rgb(255, 255, 255)'
         }}
