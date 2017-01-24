@@ -1,3 +1,4 @@
+import validator from 'validator';
 
 const assert = require('assert');
 const uuid = require('uuid/v4');
@@ -13,6 +14,11 @@ class User {
 
   static async create(user) {
     const userInfo = {};
+
+    if (!validator.isEmail(user.email)) {
+      throw new Error('Email is not valid');
+    }
+
     let rows = await db.table('users').insert(user, ['id', 'email']);
 
     Object.assign(userInfo, rows[0]);

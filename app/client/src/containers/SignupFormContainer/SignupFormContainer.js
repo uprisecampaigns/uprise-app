@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { attemptSignup } from 'actions/AuthActions';
+import isEmail from 'validator/lib/isEmail';
 
 import SignupForm from 'components/SignupForm';
 import PrivacyTerms from 'components/PrivacyTerms';
@@ -63,6 +64,23 @@ class SignupFormContainer extends Component {
     }
   }
 
+  validateEmail = () => {
+    this.setState({
+      emailErrorText: null,
+    });
+
+    this.validateString('email', 'emailErrorText', 'Email is Required');
+
+    if (typeof this.state.email === 'string' &&
+        !isEmail(this.state.email)) {
+
+      this.setState({
+        emailErrorText: 'Please enter a valid email'
+      });
+      this.hasErrors = true;
+    }
+  }
+
   validatePasswords = () => {
     this.setState({
       password1ErrorText: null,
@@ -96,8 +114,8 @@ class SignupFormContainer extends Component {
 
     this.validateString('firstName', 'firstNameErrorText', 'First Name is Required');
     this.validateString('lastName', 'lastNameErrorText', 'Last Name is Required');
-    this.validateString('email', 'emailErrorText', 'Email is Required');
-    this.validateZip('zip', 'zipErrorText', 'Zip must be less than 12 characters');
+    this.validateZip();
+    this.validateEmail();
 
     this.validatePasswords();
 
