@@ -1,8 +1,18 @@
-
-.form {
-  padding: 20px;
+.header {
+  text-align: center;
+  font-weight: 300;
+  font-size: 2.5rem;
+  text-transform: uppercase;
 }
 
-.textFieldContainer {
-  display: block;
+.termsContainer {
+  max-height: 80vh;
+  overflow-y: scroll;
+  text-align: left;
+  padding: 0px 2rem 2rem 2rem;
 }
+
+.button {
+  margin: 10px;
+}
+
