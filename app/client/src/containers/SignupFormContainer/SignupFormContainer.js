@@ -46,6 +46,23 @@ class SignupFormContainer extends Component {
     }
   }
 
+  validateZip = () => {
+    this.setState({
+      zipErrorText: null,
+    });
+
+    this.validateString('zip', 'zipErrorText', 'Zip is Required');
+
+    if (typeof this.state.zip === 'string' &&
+        this.state.zip.length > 12) {
+      this.setState({
+        zipErrorText: 'Zip must be less than 12 characters long'
+      });
+
+      this.hasErrors = true;
+    }
+  }
+
   validatePasswords = () => {
     this.setState({
       password1ErrorText: null,
@@ -80,7 +97,7 @@ class SignupFormContainer extends Component {
     this.validateString('firstName', 'firstNameErrorText', 'First Name is Required');
     this.validateString('lastName', 'lastNameErrorText', 'Last Name is Required');
     this.validateString('email', 'emailErrorText', 'Email is Required');
-    this.validateString('zip', 'zipErrorText', 'Zip is Required');
+    this.validateZip('zip', 'zipErrorText', 'Zip must be less than 12 characters');
 
     this.validatePasswords();
 

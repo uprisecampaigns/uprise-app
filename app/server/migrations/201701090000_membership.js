@@ -12,6 +12,7 @@ module.exports.up = async (knex, Promise) => {
     table.string('security_stamp', 100);
     table.uuid('concurrency_stamp').notNullable().defaultTo(knex.raw('uuid_generate_v4()'));
     table.string('phone_number', 50);
+    table.string('zip', 12).notNullable();
     table.boolean('phone_number_confirmed').notNullable().defaultTo(false);
     table.boolean('two_factor_enabled').notNullable().defaultTo(false);
     table.timestamp('lockout_end', 'without time zone');

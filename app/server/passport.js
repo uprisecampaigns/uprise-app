@@ -110,8 +110,12 @@ module.exports = (passport) => {
         } else {
           const salt = bcrypt.genSaltSync(10);
           const passwordHash = bcrypt.hashSync(password, salt);
+
+          const zip = req.body.zip;
+
           const userInfo = {
             email: email,
+            zip: zip,
             password_hash: passwordHash
           };
 
