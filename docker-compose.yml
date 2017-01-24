@@ -7,12 +7,14 @@ services:
       - "./app/server:/src/app/server"
     ports:
       - "3030:3000"
+      - "8888:8888"
       - "5859:5859"
       - "5857:5857"
     links:
       - "db:postgres"
       - redis
-    env_file: ./app/dev.env
+    env_file: ./app/prod.env
+    # env_file: ./app/dev.env
     working_dir: /src/app
     command: npm start
 
