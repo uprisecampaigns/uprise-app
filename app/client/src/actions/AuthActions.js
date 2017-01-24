@@ -62,7 +62,6 @@ export function attemptSignup(data) {
   }
 }
 
-
 export function clickedLogin() {
   return { type: CLICKED_LOGIN };
 }
@@ -74,7 +73,6 @@ export function loginSuccess(userObject) {
 export function loginFail(error) {
   return { type: LOGIN_FAIL, error };
 }
-
 
 export function attemptLogin(data) {
   return async (dispatch) => {
@@ -108,7 +106,6 @@ export function attemptLogin(data) {
     }
   }
 }
-
 
 export function startedSessionCheck() {
   return { type: STARTED_SESSION_CHECK };
@@ -151,7 +148,6 @@ export function checkSessionStatus() {
   }
 }
 
-
 export function clickedLogout() {
   return { type: CLICKED_LOGOUT }; 
 }
@@ -191,4 +187,3 @@ export function attemptLogout(){
     }
   }
 }
-
