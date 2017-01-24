@@ -38,7 +38,6 @@ const definePlugin = new webpack.DefinePlugin({
 config.webpack = {
   entry: {
     'index': path.resolve(config.src, 'index'),
-    'fonts-loader': path.resolve(config.src, 'fonts-loader'),
   },
   output: {
     filename: '[name].js',

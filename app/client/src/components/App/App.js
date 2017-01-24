@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import 'styles/global.scss';
+import 'styles/fonts-loader.scss';
 
 const ContextType = {
 };
