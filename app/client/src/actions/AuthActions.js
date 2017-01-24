@@ -2,40 +2,32 @@ import fetch from 'isomorphic-fetch';
 import history from 'lib/history';
 
 
-export const Clicked_Signup = 'Clicked_Signup';
-export const Signup_Success = 'Signup_Success';
-export const Signup_Fail = 'Signup_Fail';
+export const CLICKED_SIGNUP = 'CLICKED_SIGNUP';
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
+export const SIGNUP_FAIL = 'SIGNUP_FAIL';
 
-export const Clicked_Login = 'Clicked_Login';
-export const Login_Success = 'Login_Success';
-export const Login_Fail = 'Login_Fail';
+export const CLICKED_LOGIN = 'CLICKED_LOGIN';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
 
-export const Started_Session_Check = 'Started_Session_Check';
-export const Checked_Session_Status = 'Checked_Session_Status';
+export const STARTED_SESSION_CHECK = 'STARTED_SESSION_CHECK';
+export const CHECKED_SESSION_STATUS = 'CHECKED_SESSION_STATUS';
 
-export const Clicked_Logout = 'Clicked_Logout';
-export const Logout_Success = 'Logout_Success';
+export const CLICKED_LOGOUT = 'CLICKED_LOGOUT';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
-// Note: Considered creating a new actions file for navigation
-//				related actions. For now, will leave these here.
-export const Navigate_Away_From_Auth_Form = 'Navigate_Away_From_Auth_Form';
-
-
-/*
- * action creators
- */
 
 export function clickedSignup() {
-  return { type: Clicked_Signup }
+  return { type: CLICKED_SIGNUP }
 }
 
 export function signupSuccess(userObject) {
   history.push('/welcome');
-  return { type: Signup_Success, userObject };
+  return { type: SIGNUP_SUCCESS, userObject };
 }
 
 export function signupFail(error) {
-  return { type: Signup_Fail, error };
+  return { type: SIGNUP_FAIL, error };
 }
 
 export function attemptSignup(data) {
@@ -72,15 +64,15 @@ export function attemptSignup(data) {
 
 
 export function clickedLogin() {
-  return { type: Clicked_Login };
+  return { type: CLICKED_LOGIN };
 }
 
 export function loginSuccess(userObject) {
-  return { type: Login_Success, userObject };
+  return { type: LOGIN_SUCCESS, userObject };
 }
 
 export function loginFail(error) {
-  return { type: Login_Fail, error };
+  return { type: LOGIN_FAIL, error };
 }
 
 
@@ -119,11 +111,11 @@ export function attemptLogin(data) {
 
 
 export function startedSessionCheck() {
-  return { type: Started_Session_Check };
+  return { type: STARTED_SESSION_CHECK };
 }
 
 export function checkedSessionStatus(result) {
-  return { type: Checked_Session_Status, result };
+  return { type: CHECKED_SESSION_STATUS, result };
 }
 
 export function checkSessionStatus() {
@@ -161,11 +153,11 @@ export function checkSessionStatus() {
 
 
 export function clickedLogout() {
-  return { type: Clicked_Logout }; 
+  return { type: CLICKED_LOGOUT }; 
 }
 
 export function logoutSuccess() {
-  return { type: Logout_Success };
+  return { type: LOGOUT_SUCCESS };
 }
 
 export function attemptLogout(){
@@ -189,17 +181,14 @@ export function attemptLogout(){
         dispatch(logoutSuccess());
       } else {
         // TODO: error handler
+        console.error(json.error);
         dispatch(logoutFailure(json.error));
       }
-
     } catch(err) {
       // TODO: error handler
+      console.error(err);
       dispatch(logoutFailure(err));
     }
   }
 }
 
-
-export function navigatedAwayFromAuthFormPage() {
-  return { type: Navigate_Away_From_Auth_Form }
-}

@@ -1,8 +1,7 @@
-import {  Clicked_Signup, Signup_Success, Signup_Fail,
-          Clicked_Login, Login_Success, Login_Fail,
-          Started_Session_Check, Checked_Session_Status,
-          Clicked_Logout, Logout_Success,
-          Navigate_Away_From_Auth_Form } from '../actions/AuthActions';
+import {  CLICKED_SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL,
+          CLICKED_LOGIN, LOGIN_SUCCESS, LOGIN_FAIL,
+          STARTED_SESSION_CHECK, CHECKED_SESSION_STATUS,
+          CLICKED_LOGOUT, LOGOUT_SUCCESS } from '../actions/AuthActions';
 
 const defaultStartState = { isLoggedIn: false, 
                             displaySignup: false,
@@ -14,16 +13,16 @@ const defaultStartState = { isLoggedIn: false,
 export function updateUserInfo(userAuthState = defaultStartState , action) {
   switch (action.type){
     
-    case Started_Session_Check:
-    case Clicked_Login:
-    case Clicked_Signup:
-    case Clicked_Logout:
+    case STARTED_SESSION_CHECK:
+    case CLICKED_LOGIN:
+    case CLICKED_SIGNUP:
+    case CLICKED_LOGOUT:
       return Object.assign({}, userAuthState, {
         fetchingAuthUpdate: true
       });
 
-    case Login_Success:
-    case Signup_Success:
+    case LOGIN_SUCCESS:
+    case SIGNUP_SUCCESS:
       return Object.assign({}, userAuthState, {
         isLoggedIn: true,
         fetchingAuthUpdate: false,
@@ -31,15 +30,15 @@ export function updateUserInfo(userAuthState = defaultStartState , action) {
         error: null
       });
 
-    case Login_Fail:
-    case Signup_Fail:
+    case LOGIN_FAIL:
+    case SIGNUP_FAIL:
       return Object.assign({}, userAuthState, {
         isLoggedIn: false,
         fetchingAuthUpdate: false,
         error: action.error
       });
 
-    case Checked_Session_Status:
+    case CHECKED_SESSION_STATUS:
       if (action.result.isLoggedIn){
         return Object.assign({}, userAuthState, {
           isLoggedIn: true,
@@ -52,13 +51,8 @@ export function updateUserInfo(userAuthState = defaultStartState , action) {
       // (ignore errors and let login/signup handle server errors)
       return  Object.assign({}, defaultStartState);
 
-    case Logout_Success:
+    case LOGOUT_SUCCESS:
       return Object.assign({}, defaultStartState);
-
-    case Navigate_Away_From_Auth_Form:
-      return Object.assign({}, userAuthState, {
-        error: null
-      });
 
     default: 
       return userAuthState;
