@@ -19,6 +19,10 @@ const iconButtonStyle = {
   fontSize: '3rem'
 }
 
+const dropdownMenuItemStyle = {
+  padding: '0px'
+}
+
 function LoginButton(props) {
   if (!props.loggedIn) {
     return (
@@ -37,10 +41,26 @@ function LoginButton(props) {
           >account_box</IconButton>}
         className={s.accountMenuContainer}
       >
-        <MenuItem value="1" primaryText="Profile" />
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="1">
+          <Link 
+            to="/profile"
+            useAhref={false}
+            className={s.fillSpaceLink}
+          >Profile</Link>
+        </MenuItem>
         <MenuItem value="2" primaryText={props.userObject.email} />
         <MenuItem value="3" primaryText="Preferences" />
-        <MenuItem value="4" primaryText="Settings" />
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="4">
+          <Link 
+            to="/settings"
+            useAhref={false}
+            className={s.fillSpaceLink}
+          >Settings</Link>
+        </MenuItem>
         <MenuItem value="5" primaryText="Help" />
         <MenuItem value="6" primaryText="Log out" onTouchTap={props.logout}/>
       </IconMenu>

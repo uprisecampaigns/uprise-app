@@ -10,6 +10,7 @@ export default {
     require('./login').default,
     require('./signup').default,
     require('./welcome').default,
+    require('./settings').default,
     // require('./privacy').default,
     // require('./admin').default,
 
