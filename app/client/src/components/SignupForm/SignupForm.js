@@ -9,7 +9,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Link from '../Link';
 import { attemptSignup } from '../../actions/AuthActions';
 
-import s from '../LoginForm/LoginForm.scss';
+import s from 'styles/Form.scss';
 
 
 class SignupForm extends Component {

@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import Link from '../Link';
 
-import s from './LoginForm.scss';
+import s from 'styles/Form.scss';
 
 class LoginForm extends Component {
   constructor(props) {

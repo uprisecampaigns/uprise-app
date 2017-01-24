@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import loginStyle from '../LoginForm/LoginForm.scss';
+import formStyle from 'styles/Form.scss';
 import termsStyle from './PrivacyTerms.scss';
 
 
@@ -21,8 +21,8 @@ class PrivacyTerms extends Component {
     const { data, agreeToTerms, cancel } = this.props;
 
     return (
-      <div className={loginStyle.outerContainer}>
-        <div className={loginStyle.innerContainer}>
+      <div className={formStyle.outerContainer}>
+        <div className={formStyle.innerContainer}>
           <Paper zDepth={2}>
             <div className={termsStyle.termsContainer}>
               <h1 className={termsStyle.header}>Privacy and Terms</h1>
