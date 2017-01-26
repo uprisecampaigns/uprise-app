@@ -130,7 +130,6 @@ config.webpack = {
       threshold: 10240,
       minRatio: 0
     }),
-    bundleAnalyzerPlugin,
 		definePlugin,
     occurenceOrderPlugin,
     new webpack.optimize.AggressiveMergingPlugin()
