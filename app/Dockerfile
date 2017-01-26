@@ -1,4 +1,4 @@
-FROM node:boron
+FROM node:latest
 
 WORKDIR /src/app
 ADD package.json package.json
