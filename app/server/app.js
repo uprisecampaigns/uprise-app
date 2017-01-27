@@ -44,17 +44,8 @@ app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 // set routes
 require('./routes/index')(app, passport);
-
-// RANDOM TESTING
-app.get('/api/testing', 
-  function (req, res) {
-    console.log(req);
-    return res.json({success: 'you betcha'});
-  }
-);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

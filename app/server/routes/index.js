@@ -12,6 +12,8 @@ module.exports = (app, passport) => {
 	// set authentication routes
 	require('./authentication.js')(app, passport);
 
+	require('./graphql.js')(app);
+
 	// set other routes
 	app.use('/', router);
 };

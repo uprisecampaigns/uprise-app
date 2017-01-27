@@ -1,5 +1,5 @@
 // TODO create and use utility fuction that converts req.user to userObject
-const authenticationMiddleware = require('../middlewares/authentication.js');
+const authenticationMiddleware = require('middlewares/authentication.js');
 const User = require('models/User.js');
 
 /**
