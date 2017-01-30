@@ -22,9 +22,9 @@ class Opportunity {
         owner_id: options.ownerId
       }
 
-      const rows = await db.table('opportunities').insert(opportunity, ['id', 'title']);
+      const opportunityResult = await db.table('opportunities').insert(opportunity, ['id', 'title']).first();
 
-      return rows;
+      return opportunityResult;
     }
   }
 }

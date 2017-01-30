@@ -13,12 +13,10 @@ module.exports = (app) => {
     },
     createOpportunity: async (data, req) => {
       console.log(data);
-      const rows = await Opportunity.create({
+      const opportunity = await Opportunity.create({
         ownerId: data.userId,
         title: data.title
       });
-
-      const opportunity = rows[0];
 
       const user = await User.findOne({
         id: data.userId
