@@ -13,8 +13,8 @@ services:
     links:
       - "db:postgres"
       - redis
-    env_file: ./app/prod.env
-    # env_file: ./app/dev.env
+    # env_file: ./app/prod.env
+    env_file: ./app/dev.env
     working_dir: /src/app
     command: npm start
 
