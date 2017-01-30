@@ -11,6 +11,23 @@ module.exports = (app) => {
     hello: () => {
       return 'Hello World!';
     },
+
+    opportunity: async (data, req) => {
+
+      const opportunity = await Opportunity.findOne({
+        id: data.id
+      });
+
+      const user = await User.findOne({
+        id: opportunity.owner_id
+      });
+
+      return {
+        title: opportunity.title,
+        userEmail: user.email
+      }
+    },
+
     createOpportunity: async (data, req) => {
       console.log(data);
       const opportunity = await Opportunity.create({

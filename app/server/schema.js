@@ -4,6 +4,7 @@ const { buildSchema } = require('graphql');
 module.exports = buildSchema(`
   type Query {
     hello: String
+    opportunity(id: String): OpportunityResult
   }
 
   type OpportunityResult {
