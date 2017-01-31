@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import rootReducer from '../reducers/root'
+import apolloClient from 'store/apolloClient';
 
 const loggerMiddleware = createLogger()
 
@@ -10,6 +11,7 @@ export default function configureStore(preloadedState) {
     rootReducer,
     preloadedState,
     applyMiddleware(
+      apolloClient.middleware(),
       thunkMiddleware,
       loggerMiddleware
     )

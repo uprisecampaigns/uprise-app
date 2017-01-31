@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
-import { createStore } from 'redux';
+import { ApolloProvider } from 'react-apollo';
+
 import UniversalRouter from 'universal-router';
 import queryString from 'query-string';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -9,14 +9,15 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import RedBox from 'redbox-react';
 
-import App from './components/App';
+import App from 'components/App';
 
-import configureStore from './store/configureStore';
+import configureStore from 'store/configureStore';
+import apolloClient from 'store/apolloClient';
 
 import { checkSessionStatus } from 'actions/AuthActions';
 
 import history from 'lib/history';
-import routes from './routes';
+import routes from 'routes';
 
 const container = document.getElementById('app');
 
@@ -83,9 +84,9 @@ async function onLocationChange(location) {
 
     appInstance = ReactDOM.render(
       <MuiThemeProvider>
-        <Provider store={store}>
+        <ApolloProvider client={apolloClient} store={store}>
           <App context={context}>{route.component}</App>
-        </Provider>
+        </ApolloProvider>
       </MuiThemeProvider>,
       container,
       () => onRenderComplete(route, location),

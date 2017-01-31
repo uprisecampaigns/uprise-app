@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { attemptLogout } from 'actions/AuthActions';
+import { graphql, compose } from 'react-apollo';
+
+import { MeQuery } from 'schemas/queries';
 
 import Header from 'components/Header';
 
@@ -24,11 +27,23 @@ class HeaderContainer extends Component {
   }
 }
 
+const withMeQuery = graphql(MeQuery, {
+  props: ({ data }) => ({
+    userObject: !data.loading && data.me ? data.me : {
+      email: '',
+      zip: ''
+    }
+  }),
+  skip: (ownProps) => !ownProps.loggedIn,
+});
+
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.userAuthSession.isLoggedIn,
-    userObject: state.userAuthSession.userObject
   };
 }
 
-export default connect(mapStateToProps)(HeaderContainer);
+export default compose(
+  connect(mapStateToProps),
+  withMeQuery,
+)(HeaderContainer);

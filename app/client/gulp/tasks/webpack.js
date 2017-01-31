@@ -134,7 +134,7 @@ config.webpack = {
     occurenceOrderPlugin,
     new webpack.optimize.AggressiveMergingPlugin()
   ] : [
-    bundleAnalyzerPlugin,
+    // bundleAnalyzerPlugin,
     commonsChunkPlugin,
     extractTextPlugin,
 		htmlWebpackPlugin,
@@ -156,5 +156,9 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 });
 
 gulp.task('webpack:clean', (done) => {
-  return del([config.dest + '/*.js'], done);
+  return del([
+    config.dest + '/*.js',
+    config.dest + '/*.map',
+    config.dest + '/*.gz',
+  ], done);
 });

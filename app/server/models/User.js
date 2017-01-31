@@ -9,7 +9,7 @@ const db = knex(knexConfig.development);
 class User {
 
   static findOne(...args) {
-    return db.table('users').where(...args).first('id', 'email');
+    return db.table('users').where(...args).first('id', 'email', 'zip');
   }
 
   static async create(user) {

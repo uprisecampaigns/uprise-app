@@ -1,4 +1,9 @@
 const graphqlHTTP = require('express-graphql');
+const bodyParser = require('body-parser');
+const graphqlServer = require('graphql-server-express');
+const graphqlExpress = graphqlServer.graphqlExpress;
+const graphiqlExpress = graphqlServer.graphiqlExpress;
+
 const schema = require('../schema');
 const authenticationMiddleware = require('middlewares/authentication.js');
 
@@ -8,11 +13,19 @@ const User = require('models/User');
 module.exports = (app) => {
 
   const root = {
-    hello: () => {
-      return 'Hello World!';
+    me: async (data, context) => {
+
+      const user = await User.findOne({
+        id: context.user.id
+      });
+
+      return {
+        email: user.email,
+        zip: user.zip,
+      }
     },
 
-    opportunity: async (data, req) => {
+    opportunity: async (data, context) => {
 
       const opportunity = await Opportunity.findOne({
         id: data.id
@@ -28,8 +41,7 @@ module.exports = (app) => {
       }
     },
 
-    createOpportunity: async (data, req) => {
-      console.log(data);
+    createOpportunity: async (data, context) => {
       const opportunity = await Opportunity.create({
         ownerId: data.userId,
         title: data.title
@@ -46,9 +58,15 @@ module.exports = (app) => {
     }
   };
 
-  app.use('/api/graphql', authenticationMiddleware.isLoggedIn, graphqlHTTP({
+  app.use('/api/graphql', authenticationMiddleware.isLoggedIn, graphqlExpress(req => ({
     schema: schema,
     rootValue: root,
-    graphiql: true
+    context: { user: req.user },
+    debug: (app.get('env') === 'development')
+  })));
+
+  app.use('/api/graphiql', authenticationMiddleware.isLoggedIn, graphiqlExpress({
+    endpointURL: '/api/graphql'
   }));
+
 }
