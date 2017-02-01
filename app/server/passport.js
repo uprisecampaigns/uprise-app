@@ -1,67 +1,16 @@
 
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
-const postmark = require('postmark');
 const ejs = require('ejs');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
 const config = require('config/config.js');
 const User = require('models/User.js');
+const sendEmail = require('lib/sendEmail.js');
 
-const emailClient = postmark(config.postmark.serverKey);
-
-const sendVerificationEmail = (user) => {
-  return new Promise( (resolve, reject) => {
-
-    if (config.postmark.validRecipient(user.email)) {
-
-      const sendEmail = (textBody, htmlBody) => {
-
-        emailClient.sendEmail({
-          'From': config.postmark.from,
-          'To': user.email,
-          'Subject': 'Confirm your email address', 
-          'TextBody': textBody,
-          'HtmlBody': htmlBody
-        }, (err, result) => {
-          if (err) {
-            console.error('Unable to send via postmark: ' + err.message);
-            reject(err);
-          } else {
-            console.info('Sent to postmark for delivery: ' + result);
-            resolve(result);
-          }
-        });
-      };
-
-      const options = {
-        verifyURL: config.api.baseUrl + '/email-verification/' + user.verificationToken
-      };
-
-      ejs.renderFile(config.api.basePath + '/views/verification-email-text.ejs', options, function (err, textBody) {
-        if (err) {
-          reject(err);
-        } else {
-          ejs.renderFile(config.api.basePath + '/views/verification-email-html.ejs', options, function (err, htmlBody) {
-            if (err) {
-              reject(err);
-            } else {
-              sendEmail(textBody, htmlBody);
-            }
-          });
-        }
-      });
-    } else {
-      console.info(user.email + ' does not pass validRecipient test so not sending email');
-      resolve();
-    }
-  });
-};
 
 module.exports = (passport) => {
-
-
   // =========================================================================
   // passport session setup ==================================================
   // =========================================================================
@@ -120,7 +69,14 @@ module.exports = (passport) => {
           };
 
           const user = await User.create(userInfo);
-          await sendVerificationEmail(user);
+          await sendEmail({
+            to: user.email,
+            subject: 'Confirm your email address', 
+            templateName: 'verification-email',
+            context: {
+              verifyURL: config.api.baseUrl + '/email-verification/' + user.verificationToken
+            }
+          });
 
           return done(null, {
             id: user.id,
