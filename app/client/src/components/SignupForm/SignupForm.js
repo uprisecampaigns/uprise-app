@@ -19,11 +19,12 @@ class SignupForm extends Component {
 
   static propTypes = {
     formSubmit: PropTypes.func.isRequired,
+    cancelSignup: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
   }
 
   render() {
-    const { data, formSubmit, handleInputChange } = this.props;
+    const { data, formSubmit, handleInputChange, cancelSignup } = this.props;
 
     return (
       <div className={s.outerContainer}>
@@ -95,6 +96,13 @@ class SignupForm extends Component {
                     primary={true} 
                     type="submit"
                     label="Signup" 
+                  />
+                </div>
+                <div className={s.cancelButton}>
+                  <RaisedButton 
+                    onTouchTap={cancelSignup} 
+                    primary={false} 
+                    label="Cancel" 
                   />
                 </div>
               </form>

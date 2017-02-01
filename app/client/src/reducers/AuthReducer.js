@@ -1,22 +1,25 @@
 import {  CLICKED_SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL,
           CLICKED_LOGIN, LOGIN_SUCCESS, LOGIN_FAIL,
           STARTED_SESSION_CHECK, CHECKED_SESSION_STATUS,
-          CLICKED_LOGOUT, LOGOUT_SUCCESS } from '../actions/AuthActions';
+          SESSION_CHECK_FAIL, 
+          CLICKED_LOGOUT, LOGOUT_SUCCESS, CLICKED_RESET_PASSWORD,
+          RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL } from 'actions/AuthActions';
 
 const defaultStartState = { isLoggedIn: false, 
-                            displaySignup: false,
                             fetchingAuthUpdate: false, 
                             userObject: null,
-                            error: null
+                            error: null,
+                            message: null
                           }
 
-export function updateUserInfo(userAuthState = defaultStartState , action) {
+export function updateUserInfo(userAuthState = defaultStartState, action) {
   switch (action.type){
     
     case STARTED_SESSION_CHECK:
     case CLICKED_LOGIN:
     case CLICKED_SIGNUP:
     case CLICKED_LOGOUT:
+    case CLICKED_RESET_PASSWORD:
       return Object.assign({}, userAuthState, {
         fetchingAuthUpdate: true
       });
@@ -28,6 +31,22 @@ export function updateUserInfo(userAuthState = defaultStartState , action) {
         fetchingAuthUpdate: false,
         userObject: action.userObject,
         error: null
+      });
+
+    case RESET_PASSWORD_SUCCESS:
+      return Object.assign({}, userAuthState, {
+        isLoggedIn: false,
+        fetchingAuthUpdate: false,
+        error: null,
+        message: action.message
+      });
+
+    case SESSION_CHECK_FAIL:
+    case RESET_PASSWORD_FAIL:
+      return Object.assign({}, userAuthState, {
+        isLoggedIn: false,
+        fetchingAuthUpdate: false,
+        error: action.error
       });
 
     case LOGIN_FAIL:

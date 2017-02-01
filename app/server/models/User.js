@@ -74,6 +74,57 @@ class User {
         };
       })
   }
+
+  static async resetPassword(email) {
+
+    if (!validator.isEmail(email)) {
+      throw new Error('Email is not valid');
+    }
+
+    const user = await db.table('users').where({
+      email: email
+    }).first();
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const resetCode = {
+      code: uuid(),
+      user_id: user.id
+    };
+
+    const rows = await db.table('user_password_resets').insert(resetCode, ['id', 'code']);
+
+    return rows[0];
+  }
+
+  static async usePasswordResetCode(code) {
+
+    const reset = await db.table('user_password_resets').where({
+      code: code
+    }).first();
+  
+    if (reset.used) {
+      throw new Error('Password reset already used');
+    }
+
+    //TODO: check for expiration time?
+
+    const rows = await db.table('user_password_resets')
+      .where({
+        code: code
+      })
+      .update({
+        used: true
+      });
+
+    const user = await db.table('users').where({
+      id: reset.user_id
+    }).first();
+
+    return user;
+  }
 }
 
 module.exports = User;

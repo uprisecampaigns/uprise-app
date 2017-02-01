@@ -1,10 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import { attemptLogin } from 'actions/AuthActions';
+import isEmail from 'validator/lib/isEmail';
+import history from 'lib/history';
 
-import LoginForm from 'components/LoginForm';
+import { attemptResetPassword } from 'actions/AuthActions';
 
-class LoginFormContainer extends Component {
+import ResetPasswordForm from 'components/ResetPasswordForm';
+
+class ResetPasswordFormContainer extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,9 +16,7 @@ class LoginFormContainer extends Component {
 
   state = {
     email: '',
-    password: '',
     emailErrorText: null,
-    passwordErrorText: null,
   }
  
   handleInputChange = (event, type, value) => {
@@ -23,6 +24,24 @@ class LoginFormContainer extends Component {
       this.state,
       { [type]: value }
     ));
+  }
+
+  // TODO: this is used in SignupForm as well - DRY it out
+  validateEmail = () => {
+    this.setState({
+      emailErrorText: null,
+    });
+
+    this.validateString('email', 'emailErrorText', 'Email is Required');
+
+    if (typeof this.state.email === 'string' &&
+        !isEmail(this.state.email)) {
+
+      this.setState({
+        emailErrorText: 'Please enter a valid email'
+      });
+      this.hasErrors = true;
+    }
   }
 
   // TODO: this is used in SignupForm as well - DRY it out
@@ -48,26 +67,29 @@ class LoginFormContainer extends Component {
     event.preventDefault();
     this.hasErrors = false;
 
-    this.validateString('email', 'emailErrorText', 'Email is Required');
-    this.validateString('password', 'passwordErrorText', 'Password is Required');
+    this.validateEmail();
     console.log(this.state);
 
     if (!this.hasErrors) {
-      this.props.dispatch(attemptLogin({
+      this.props.dispatch(attemptResetPassword({
         email: this.state.email,
-        password: this.state.password,
       }));
     }
   }
 
+  cancelReset = (event) => {
+    event.preventDefault();
+    history.goBack();
+  }
+
   render() {
     return (
-      <LoginForm
+      <ResetPasswordForm
         data={this.state}
         handleInputChange={this.handleInputChange}
+        cancelReset={this.cancelReset}
         formSubmit={this.formSubmit}
-        loginError={this.props.loginError}
-        message={this.props.message}
+        resetError={this.props.resetError}
       /> 
     );
   }
@@ -75,10 +97,9 @@ class LoginFormContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loginError: state.userAuthSession.error,
-    message: state.userAuthSession.message
+    resetError: state.userAuthSession.error
   };
 }
 
 
-export default connect(mapStateToProps)(LoginFormContainer);
+export default connect(mapStateToProps)(ResetPasswordFormContainer);

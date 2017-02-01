@@ -1,7 +1,3 @@
-// TODO design what to store in the session object other than just user.id
-// TODO see what happens if someone sends a request with an invalid session but actual id
-//        - I assume the session store just rejects it or wipes it or something....
-// TODO create utility function that takes row and converts to userObject for client
 
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
@@ -112,11 +108,15 @@ module.exports = (passport) => {
           const passwordHash = bcrypt.hashSync(password, salt);
 
           const zip = req.body.zip;
+          const firstName = req.body.firstName;
+          const lastName = req.body.lastName;
 
           const userInfo = {
             email: email,
             zip: zip,
-            password_hash: passwordHash
+            password_hash: passwordHash,
+            first_name: firstName,
+            last_name: lastName
           };
 
           const user = await User.create(userInfo);

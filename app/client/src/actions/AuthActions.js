@@ -10,11 +10,17 @@ export const CLICKED_LOGIN = 'CLICKED_LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 
+export const CLICKED_RESET_PASSWORD = 'CLICKED_RESET_PASSWORD';
+export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
+export const RESET_PASSWORD_FAIL = 'RESET_PASSWORD_FAIL';
+
 export const STARTED_SESSION_CHECK = 'STARTED_SESSION_CHECK';
 export const CHECKED_SESSION_STATUS = 'CHECKED_SESSION_STATUS';
+export const SESSION_CHECK_FAIL = 'SESSION_CHECK_FAIL';
 
 export const CLICKED_LOGOUT = 'CLICKED_LOGOUT';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAIL = 'LOGOUT_FAIL';
 
 
 export function clickedSignup() {
@@ -31,33 +37,35 @@ export function signupFail(error) {
 }
 
 export function attemptSignup(data) {
-  return async (dispatch) => {
-    try {
-      dispatch(clickedSignup());
+  return async (dispatch, getState) => {
+    if (!getState().userAuthSession.fetchingAuthUpdate) {
+      try {
+        dispatch(clickedSignup());
 
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify(data),
-        headers: {
-          'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-          'Content-Type': 'application/json',
-        },
-      });
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify(data),
+          headers: {
+            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            'Content-Type': 'application/json',
+          },
+        });
 
-      const json = await response.json();
+        const json = await response.json();
 
-      // TODO: passportjs local-signup/login returns a "missing credentials" 
-      // message with no explicit error 
-      if (!json.error) {
-        dispatch(signupSuccess(json));
-      } else {
-        dispatch(signupFail(json.error));
+        // TODO: passportjs local-signup/login returns a "missing credentials" 
+        // message with no explicit error 
+        if (!json.error) {
+          dispatch(signupSuccess(json));
+        } else {
+          dispatch(signupFail(json.error));
+        }
+
+      } catch(err) {
+        console.log(err);
+        dispatch(signupFail(err));
       }
-
-    } catch(err) {
-      console.log(err);
-      dispatch(signupFail(json.err));
     }
   }
 }
@@ -75,34 +83,36 @@ export function loginFail(error) {
 }
 
 export function attemptLogin(data) {
-  return async (dispatch) => {
-    try {
-      dispatch(clickedLogin());
+  return async (dispatch, getState) => {
+    if (!getState().userAuthSession.fetchingAuthUpdate) {
+      try {
+        dispatch(clickedLogin());
 
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify(data),
-        headers: {
-          'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-          'Content-Type': 'application/json',
-        },
-      });
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify(data),
+          headers: {
+            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            'Content-Type': 'application/json',
+          },
+        });
 
-      const json = await response.json();
+        const json = await response.json();
 
-      // TODO: passportjs local-signup/login returns a "missing credentials" 
-      // message with no explicit error 
-      if (!json.error) {
-        history.push('/');
-        dispatch(loginSuccess(json));
-      } else {
-        dispatch(loginFail(json.error));
+        // TODO: passportjs local-signup/login returns a "missing credentials" 
+        // message with no explicit error 
+        if (!json.error) {
+          history.push('/');
+          dispatch(loginSuccess(json));
+        } else {
+          dispatch(loginFail(json.error));
+        }
+
+      } catch(err) {
+        console.log(err);
+        dispatch(loginFail(json.err));
       }
-
-    } catch(err) {
-      console.log(err);
-      dispatch(loginFail(json.err));
     }
   }
 }
@@ -115,35 +125,42 @@ export function checkedSessionStatus(result) {
   return { type: CHECKED_SESSION_STATUS, result };
 }
 
+export function sessionCheckFail(error) {
+  return { type: SESSION_CHECK_FAIL, error };
+}
+
 export function checkSessionStatus() {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
 
-    try {
-      dispatch(startedSessionCheck());
+    if (!getState().userAuthSession.fetchingAuthUpdate) {
+      try {
+        dispatch(startedSessionCheck());
 
-      const response = await fetch('/api/checkSession', {
-        method: 'POST',
-        credentials: 'include',
-        body: {},
-        headers: {
-          'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-        },
-      });
+        const response = await fetch('/api/checkSession', {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify({}),
+          headers: {
+            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            'Content-Type': 'application/json',
+          },
+        });
 
-      const json = await response.json();
+        const json = await response.json();
 
-      if (!json.error) {
-        dispatch(checkedSessionStatus(json));
-      } else {
+        if (!json.error) {
+          dispatch(checkedSessionStatus(json));
+        } else {
+          // TODO: error handler
+          console.error(json.error);
+          dispatch(checkSessionFail(json.error));
+        }
+
+      } catch(err) {
         // TODO: error handler
-        console.error(json.error);
-        dispatch(checkedSessionFailure(json.error));
+        console.error(err);
+        dispatch(checkSessionFail(err));
       }
-
-    } catch(err) {
-      // TODO: error handler
-      console.error(err);
-      dispatch(checkedSessionFailure(err));
     }
   }
 }
@@ -157,33 +174,86 @@ export function logoutSuccess() {
 }
 
 export function attemptLogout(){
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
 
-    try {
-      dispatch(clickedLogout());
+    if (!getState().userAuthSession.fetchingAuthUpdate) {
+      try {
+        dispatch(clickedLogout());
 
-      const response = await fetch('/api/logout', {
-        method: 'POST',
-        credentials: 'include',
-        body: {},
-        headers: {
-          'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-        },
-      });
+        const response = await fetch('/api/logout', {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify({}),
+          headers: {
+            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            'Content-Type': 'application/json',
+          },
+        });
 
-      const json = await response.json();
+        const json = await response.json();
 
-      if (!json.error) {
-        dispatch(logoutSuccess());
-      } else {
+        if (!json.error) {
+          dispatch(logoutSuccess());
+        } else {
+          // TODO: error handler
+          console.error(json.error);
+          dispatch(logoutFail(json.error));
+        }
+      } catch(err) {
         // TODO: error handler
-        console.error(json.error);
-        dispatch(logoutFailure(json.error));
+        console.error(err);
+        dispatch(logoutFail(err));
       }
-    } catch(err) {
-      // TODO: error handler
-      console.error(err);
-      dispatch(logoutFailure(err));
+    }
+  }
+}
+
+export function clickedResetPassword() {
+  return { type: CLICKED_RESET_PASSWORD }; 
+}
+
+export function resetPasswordSuccess(message) {
+  return { type: RESET_PASSWORD_SUCCESS, message };
+}
+
+export function resetPasswordFail(error) {
+  return { type: RESET_PASSWORD_FAIL, error };
+}
+
+export function attemptResetPassword(data){
+  return async (dispatch, getState) => {
+
+    if (!getState().userAuthSession.fetchingAuthUpdate) {
+      try {
+        dispatch(clickedResetPassword());
+
+        const response = await fetch('/api/reset-password', {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify({
+            email: data.email
+          }),
+          headers: {
+            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const json = await response.json();
+
+        if (!json.error) {
+          history.push('/login');
+          dispatch(resetPasswordSuccess(json));
+        } else {
+          // TODO: error handler
+          console.error(json.error);
+          dispatch(resetPasswordFail(json.error));
+        }
+      } catch(err) {
+        // TODO: error handler
+        console.error(err);
+        dispatch(resetPasswordFail(json.error));
+      }
     }
   }
 }

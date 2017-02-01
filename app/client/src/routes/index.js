@@ -9,6 +9,7 @@ export default {
     require('./about').default,
     require('./login').default,
     require('./signup').default,
+    require('./forgotPassword').default,
     require('./welcome').default,
     require('./settings').default,
     // require('./privacy').default,

@@ -7,22 +7,32 @@ module.exports.up = async (knex, Promise) => {
   await knex.schema.createTable('users', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
     table.string('email').unique();
+    table.string('first_name');
+    table.string('last_name');
     table.boolean('email_confirmed').notNullable().defaultTo(false);
     table.string('password_hash', 100);
-    table.string('security_stamp', 100);
-    table.uuid('concurrency_stamp').notNullable().defaultTo(knex.raw('uuid_generate_v4()'));
     table.string('phone_number', 50);
     table.string('zip', 12).notNullable();
-    table.boolean('phone_number_confirmed').notNullable().defaultTo(false);
-    table.boolean('two_factor_enabled').notNullable().defaultTo(false);
     table.timestamp('lockout_end', 'without time zone');
     table.boolean('lockout_enabled').notNullable().defaultTo(false);
     table.smallint('access_failed_count').notNullable().defaultTo(0);
+    table.smallint('password_reset_count').notNullable().defaultTo(0);
   });
 
   await knex.schema.createTable('user_email_verifications', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
-    table.string('token').notNullable();
+    table.string('token').unique().notNullable();
+    table.boolean('used').notNullable().defaultTo(false);
+    table.timestamp('created_at').defaultTo(knex.fn.now());
+    table.uuid('user_id').notNullable()
+      .references('id').inTable('users')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+  });
+
+  await knex.schema.createTable('user_password_resets', (table) => {
+    table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
+    table.string('code').unique().notNullable();
     table.boolean('used').notNullable().defaultTo(false);
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.uuid('user_id').notNullable()
@@ -46,6 +56,7 @@ module.exports.up = async (knex, Promise) => {
 module.exports.down = async (knex, Promise) => {
   await knex.schema.dropTableIfExists('user_profiles');
   await knex.schema.dropTableIfExists('user_email_verifications');
+  await knex.schema.dropTableIfExists('user_password_resets');
   await knex.schema.dropTableIfExists('users');
 };
 

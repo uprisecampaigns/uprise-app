@@ -17,12 +17,25 @@
   text-align: center;
 }
 
-.signupButton {
+.goToSignup {
   display: block;
   margin-top: 20px;
+}
+
+.signupButton {
+  display: inline-block;
+}
+
+.cancelButton {
+  display: inline-block;
 }
 
 .textFieldContainer {
   display: flex;
   text-align: left;
+}
+
+.forgotPassword {
+  display: block;
+  padding: 10px 0px 20px 0px;
 }

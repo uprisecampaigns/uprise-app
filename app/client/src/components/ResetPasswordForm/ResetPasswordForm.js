@@ -9,7 +9,7 @@ import Link from '../Link';
 import s from 'styles/Form.scss';
 import b from 'styles/Base.scss';
 
-class LoginForm extends Component {
+class ResetPasswordForm extends Component {
   constructor(props) {
     super(props);
   }
@@ -18,22 +18,17 @@ class LoginForm extends Component {
     data: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    loginError: PropTypes.string,
-    message: PropTypes.string,
+    cancelReset: PropTypes.func.isRequired,
+    resetError: PropTypes.string,
   }
 
   render() {
-    const { data, handleInputChange, formSubmit, loginError, message } = this.props;
+    const { data, handleInputChange, formSubmit, cancelReset, resetError } = this.props;
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
           <Paper zDepth={2}>
             <div className={s.formContainer}>
-              <div
-                className={s.messageContainer}
-              >
-                {message}
-              </div>
               <form 
                 className={s.form}
                 onSubmit={formSubmit}
@@ -42,47 +37,30 @@ class LoginForm extends Component {
                   <TextField
                     floatingLabelText="Email"
                     value={data.email}
-                    errorText={data.emailErrorText || loginError}
+                    errorText={data.emailErrorText || resetError}
                     onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
-                  />
-                </div>
-                <div className={s.textFieldContainer}>
-                  <TextField
-                    floatingLabelText="Password"
-                    value={data.password}
-                    errorText={data.passwordErrorText}
-                    onChange={ (event) => { handleInputChange(event, 'password', event.target.value) } }
-                    type="password"
                   />
                 </div>
                 <RaisedButton 
                   onTouchTap={formSubmit} 
                   type="submit"
                   primary={true} 
-                  label="Login" 
+                  label="Reset" 
                 />
+                <div className={s.cancelButton}>
+                  <RaisedButton 
+                    onTouchTap={cancelReset} 
+                    primary={false} 
+                    label="Cancel" 
+                  />
+                </div>
               </form>
             </div>
-            <Link 
-              useAhref={false} 
-              to='/forgot-password'
-              className={s.forgotPassword}
-            >
-              Forgot Password
-            </Link>
           </Paper>
-
-          <Link 
-            useAhref={false} 
-            to='/signup'
-            className={s.goToSignup}
-          >
-            <RaisedButton secondary={true} label="Signup" />
-          </Link>
         </div>
       </div>
     );
   }
 }
 
-export default LoginForm;
+export default ResetPasswordForm;

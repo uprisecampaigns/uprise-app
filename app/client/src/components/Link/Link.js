@@ -1,6 +1,7 @@
-
 import React, { PropTypes } from 'react';
 import history from 'lib/history';
+
+import s from './Link.scss';
 
 function isLeftClickEvent(event) {
   return event.button === 0;
@@ -41,11 +42,30 @@ class Link extends React.Component {
   };
 
   render() {
-    const { to, children, external, useAhref, ...props } = this.props;
+    const { to, children, external, useAhref, className, ...props } = this.props;
     if (useAhref) {
-      return <a href={to} {...props} onTouchTap={this.handleClick} onClick={this.handleClick}>{children}</a>;
+      return (
+        <a 
+          href={to} 
+          {...props} 
+          onTouchTap={this.handleClick} 
+          onClick={this.handleClick}
+          className={[className].concat([s.link]).join(' ')}
+        >
+          {children}
+        </a>
+      );
     } else {
-      return <span {...props} onTouchTap={this.handleClick} onClick={this.handleClick}>{children}</span>;
+      return (
+        <span 
+          {...props} 
+          onTouchTap={this.handleClick} 
+          onClick={this.handleClick}
+          className={[className].concat([s.link]).join(' ')}
+        >
+          {children}
+        </span>
+      );
     }
   }
 }

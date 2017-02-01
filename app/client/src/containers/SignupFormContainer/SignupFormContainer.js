@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { attemptSignup } from 'actions/AuthActions';
 import isEmail from 'validator/lib/isEmail';
+import history from 'lib/history';
 
 import SignupForm from 'components/SignupForm';
 import PrivacyTerms from 'components/PrivacyTerms';
@@ -170,11 +171,17 @@ class SignupFormContainer extends Component {
     }));
   }
 
+  cancelSignup = (event) => {
+    event.preventDefault();
+    history.goBack();
+  }
+
   render() {
     if (this.state.page === 0) {
       return (
         <SignupForm 
           handleInputChange={this.handleInputChange}
+          cancelSignup={this.cancelSignup}
           formSubmit={this.formSubmit}
           data={this.state}
         />

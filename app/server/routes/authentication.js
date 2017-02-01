@@ -35,17 +35,24 @@ module.exports = (app, passport) => {
   addAuthRoute(app, passport, "/api/login", "local-login");
 
   app.post('/api/checkEmailAvailability', async (req, res) => {
-    const email = req.body.email;
-    const result = await User.findOne('email', email);
-    let available = true;
+    try {
+      const email = req.body.email;
+      const result = await User.findOne('email', email);
+      let available = true;
 
-    if (result) {
-      available = false;
+      if (result) {
+        available = false;
+      }
+
+      res.json({
+        available: available
+      });
+
+    } catch(err) {
+      return res.json({
+        error: err.message
+      });
     }
-
-    res.json({
-      available: available
-    });
   });
 
   app.post('/api/logout', authenticationMiddleware.isLoggedIn, (req, res) => {
@@ -64,6 +71,36 @@ module.exports = (app, passport) => {
       next(err);
     }
   });
+
+  app.post('/api/reset-password', async (req, res, next) => {
+    const email = req.body.email;
+
+    try {
+      const result = await User.resetPassword(email);
+      return res.json('password reset successfully');
+    } catch(err) {
+      return res.json({
+        error: err.message
+      });
+    }
+  });
+
+  app.get('/api/use-password-reset/:code', async (req, res, next) => {
+    const code = req.params.code;
+
+    try {
+      const user = await User.usePasswordResetCode(code);
+      req.logIn(user, (err) => {
+        if (err) { 
+          return next(err); 
+        }
+        res.redirect('/');
+      });
+    } catch(err) {
+      next(err);
+    }
+  });
+
 
   app.post('/api/checkSession', (req, res) => {
     const isLoggedIn = req.isAuthenticated();
