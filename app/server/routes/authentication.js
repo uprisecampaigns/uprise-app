@@ -77,7 +77,7 @@ module.exports = (app, passport) => {
 
     try {
       const result = await User.resetPassword(email, req);
-      return res.json('password reset successfully');
+      return res.json('Password reset successfully. Please check your email for further info.');
     } catch(err) {
       return res.json({
         error: err.message
@@ -108,7 +108,7 @@ module.exports = (app, passport) => {
 
     try {
       const result = await User.changePassword(id, newPassword, oldPassword);
-      return res.json('password changed successfully');
+      return res.json('Password changed successfully.');
     } catch(err) {
       return res.json({
         error: err.message
