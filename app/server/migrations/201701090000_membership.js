@@ -17,6 +17,7 @@ module.exports.up = async (knex, Promise) => {
     table.boolean('lockout_enabled').notNullable().defaultTo(false);
     table.smallint('access_failed_count').notNullable().defaultTo(0);
     table.smallint('password_reset_count').notNullable().defaultTo(0);
+    table.boolean('password_being_reset').notNullable().defaultTo(false);
   });
 
   await knex.schema.createTable('user_email_verifications', (table) => {
@@ -33,6 +34,7 @@ module.exports.up = async (knex, Promise) => {
   await knex.schema.createTable('user_password_resets', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
     table.string('code').unique().notNullable();
+    table.specificType('ip', 'inet').notNullable();
     table.boolean('used').notNullable().defaultTo(false);
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.uuid('user_id').notNullable()

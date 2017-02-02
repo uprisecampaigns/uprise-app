@@ -10,6 +10,10 @@ export const CLICKED_LOGIN = 'CLICKED_LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 
+export const CLICKED_CHANGE_PASSWORD = 'CLICKED_CHANGE_PASSWORD';
+export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
+export const CHANGE_PASSWORD_FAIL = 'CHANGE_PASSWORD_FAIL';
+
 export const CLICKED_RESET_PASSWORD = 'CLICKED_RESET_PASSWORD';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAIL = 'RESET_PASSWORD_FAIL';
@@ -111,7 +115,7 @@ export function attemptLogin(data) {
 
       } catch(err) {
         console.log(err);
-        dispatch(loginFail(json.err));
+        dispatch(loginFail(err));
       }
     }
   }
@@ -153,13 +157,13 @@ export function checkSessionStatus() {
         } else {
           // TODO: error handler
           console.error(json.error);
-          dispatch(checkSessionFail(json.error));
+          dispatch(sessionCheckFail(json.error));
         }
 
       } catch(err) {
         // TODO: error handler
         console.error(err);
-        dispatch(checkSessionFail(err));
+        dispatch(sessionCheckFail(err));
       }
     }
   }
@@ -171,6 +175,10 @@ export function clickedLogout() {
 
 export function logoutSuccess() {
   return { type: LOGOUT_SUCCESS };
+}
+
+export function logoutFail() {
+  return { type: LOGOUT_FAIL, error };
 }
 
 export function attemptLogout(){
@@ -208,6 +216,56 @@ export function attemptLogout(){
   }
 }
 
+export function clickedChangePassword() {
+  return { type: CLICKED_CHANGE_PASSWORD }; 
+}
+
+export function changePasswordSuccess(message) {
+  return { type: CHANGE_PASSWORD_SUCCESS, message };
+}
+
+export function changePasswordFail(error) {
+  return { type: CHANGE_PASSWORD_FAIL, error };
+}
+
+export function attemptChangePassword(data){
+  return async (dispatch, getState) => {
+
+    if (!getState().userAuthSession.fetchingAuthUpdate) {
+      try {
+        dispatch(clickedChangePassword());
+
+        const response = await fetch('/api/change-password', {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify({
+            oldPassword: data.oldPassword,
+            newPassword: data.newPassword
+          }),
+          headers: {
+            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const json = await response.json();
+
+        if (!json.error) {
+          history.push('/');
+          dispatch(changePasswordSuccess(json));
+        } else {
+          // TODO: error handler
+          console.error(json.error);
+          dispatch(changePasswordFail(json.error));
+        }
+      } catch(err) {
+        // TODO: error handler
+        console.error(err);
+        dispatch(changePasswordFail(err));
+      }
+    }
+  }
+}
 export function clickedResetPassword() {
   return { type: CLICKED_RESET_PASSWORD }; 
 }
@@ -252,7 +310,7 @@ export function attemptResetPassword(data){
       } catch(err) {
         // TODO: error handler
         console.error(err);
-        dispatch(resetPasswordFail(json.error));
+        dispatch(resetPasswordFail(err));
       }
     }
   }

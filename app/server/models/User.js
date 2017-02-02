@@ -1,10 +1,13 @@
-import validator from 'validator';
-
+const validator = require('validator');
 const assert = require('assert');
 const uuid = require('uuid/v4');
 const knex = require('knex');
+const bcrypt = require('bcryptjs');
+
+const config = require('config/config.js');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
+const sendEmail = require('lib/sendEmail.js');
 
 class User {
 
@@ -75,7 +78,44 @@ class User {
       })
   }
 
-  static async resetPassword(email) {
+  static async changePassword(userId, newPassword, oldPassword) {
+
+    const user = await db.table('users').where({
+      id: userId
+    }).first();
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // if the password is being reset, we don't need an old password
+    if (!user.password_being_reset && !bcrypt.compareSync(oldPassword, user.password_hash)){
+      throw new Error('Incorrect password.');
+    }
+
+    const salt = bcrypt.genSaltSync(10);
+    const newPasswordHash = bcrypt.hashSync(newPassword, salt);
+
+    const resultRows = await db.table('users')
+      .where({
+        id: userId
+      })
+      .update({
+        password_being_reset: false,
+        password_hash: newPasswordHash
+      }, ['id']);
+
+    if (resultRows.length !== 1) {
+      throw new Error('Error changing password');
+    }
+
+    return {
+      id: user.id,
+      email: user.email
+    };
+  }
+
+  static async resetPassword(email, req) {
 
     if (!validator.isEmail(email)) {
       throw new Error('Email is not valid');
@@ -89,14 +129,28 @@ class User {
       throw new Error('User not found');
     }
 
-    const resetCode = {
+    const resetCodeData = {
       code: uuid(),
+      ip: req.ip,
       user_id: user.id
     };
 
-    const rows = await db.table('user_password_resets').insert(resetCode, ['id', 'code']);
+    const rows = await db.table('user_password_resets').insert(resetCodeData, ['id', 'code']);
 
-    return rows[0];
+    const resetCode = rows[0];
+
+    const emailResult = await sendEmail({
+      to: user.email,
+      subject: 'Reset your password', 
+      templateName: 'password-reset-email',
+      context: {
+        resetURL: config.api.baseUrl + '/use-password-reset/' + resetCode.code
+      }
+    });
+
+    return {
+      email: user.email
+    };
   }
 
   static async usePasswordResetCode(code) {
@@ -111,19 +165,27 @@ class User {
 
     //TODO: check for expiration time?
 
-    const rows = await db.table('user_password_resets')
+    const passwordResetResults = await db.table('user_password_resets')
       .where({
         code: code
       })
       .update({
         used: true
-      });
+      }, ['id']);
 
-    const user = await db.table('users').where({
-      id: reset.user_id
-    }).first();
+    const userResults = await db.table('users')
+      .where({
+        id: reset.user_id
+      })
+      .update({
+        password_being_reset: true
+      }, ['id', 'email']);
 
-    return user;
+    if (userResults.length !== 1) {
+      throw new Error('Error using password reset code');
+    }
+
+    return userResults[0];
   }
 }
 

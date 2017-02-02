@@ -1,7 +1,6 @@
 
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
-const ejs = require('ejs');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
@@ -101,24 +100,27 @@ module.exports = (passport) => {
       passReqToCallback : true
     },
     function(req, email, password, done) {
-      db.select().from('users').where('email', email)
-        .then( (rows) => {
-          if (!rows.length) {
+      db.select().from('users').where('email', email).first()
+        .then( (user) => {
+          if (!user) {
             console.log("no user found...");
             return done(null, false, {error: 'Email not found.'});
           }
 
-          console.log(rows[0]);
-
           // if the user is found but the password is wrong
-          if (!bcrypt.compareSync( password, rows[0].password_hash)){
+          if (!bcrypt.compareSync( password, user.password_hash)){
             return done(null, false, {error: 'Incorrect password.'});
           }
 
+          // if the user has used a password reset code but hasn't changed password yet
+          if (user.password_being_reset){
+            return done(null, false, {error: 'Currently resetting password.'});
+          }
+
           var userObject  = { 
-            id: rows[0].id, 
-            email: rows[0].email, 
-            displayName: rows[0].display_name
+            id: user.id, 
+            email: user.email, 
+            displayName: user.display_name
           };
           return done(null, userObject);  
         })

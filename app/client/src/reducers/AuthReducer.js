@@ -1,13 +1,13 @@
 import {  CLICKED_SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL,
           CLICKED_LOGIN, LOGIN_SUCCESS, LOGIN_FAIL,
-          STARTED_SESSION_CHECK, CHECKED_SESSION_STATUS,
-          SESSION_CHECK_FAIL, 
-          CLICKED_LOGOUT, LOGOUT_SUCCESS, CLICKED_RESET_PASSWORD,
-          RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL } from 'actions/AuthActions';
+          STARTED_SESSION_CHECK, CHECKED_SESSION_STATUS, SESSION_CHECK_FAIL, 
+          CLICKED_LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL,
+          CLICKED_CHANGE_PASSWORD, CHANGE_PASSWORD_SUCCESS, CHANGE_PASSWORD_FAIL,
+          CLICKED_RESET_PASSWORD, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL } from 'actions/AuthActions';
 
 const defaultStartState = { isLoggedIn: false, 
                             fetchingAuthUpdate: false, 
-                            userObject: null,
+                            userObject: {},
                             error: null,
                             message: null
                           }
@@ -19,6 +19,7 @@ export function updateUserInfo(userAuthState = defaultStartState, action) {
     case CLICKED_LOGIN:
     case CLICKED_SIGNUP:
     case CLICKED_LOGOUT:
+    case CLICKED_CHANGE_PASSWORD:
     case CLICKED_RESET_PASSWORD:
       return Object.assign({}, userAuthState, {
         fetchingAuthUpdate: true
@@ -33,6 +34,19 @@ export function updateUserInfo(userAuthState = defaultStartState, action) {
         error: null
       });
 
+    case CHANGE_PASSWORD_SUCCESS:
+      return Object.assign({}, userAuthState, {
+        fetchingAuthUpdate: false,
+        message: action.message,
+        error: null
+      });
+
+    case CHANGE_PASSWORD_FAIL:
+      return Object.assign({}, userAuthState, {
+        fetchingAuthUpdate: false,
+        error: action.error
+      });
+
     case RESET_PASSWORD_SUCCESS:
       return Object.assign({}, userAuthState, {
         isLoggedIn: false,
@@ -43,12 +57,6 @@ export function updateUserInfo(userAuthState = defaultStartState, action) {
 
     case SESSION_CHECK_FAIL:
     case RESET_PASSWORD_FAIL:
-      return Object.assign({}, userAuthState, {
-        isLoggedIn: false,
-        fetchingAuthUpdate: false,
-        error: action.error
-      });
-
     case LOGIN_FAIL:
     case SIGNUP_FAIL:
       return Object.assign({}, userAuthState, {

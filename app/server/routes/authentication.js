@@ -76,7 +76,7 @@ module.exports = (app, passport) => {
     const email = req.body.email;
 
     try {
-      const result = await User.resetPassword(email);
+      const result = await User.resetPassword(email, req);
       return res.json('password reset successfully');
     } catch(err) {
       return res.json({
@@ -94,13 +94,27 @@ module.exports = (app, passport) => {
         if (err) { 
           return next(err); 
         }
-        res.redirect('/');
+        res.redirect('/settings/change-password');
       });
     } catch(err) {
       next(err);
     }
   });
 
+  app.post('/api/change-password', authenticationMiddleware.isLoggedIn, async (req, res, next) => {
+    const id = req.user.id;
+    const newPassword = req.body.newPassword;
+    const oldPassword = req.body.oldPassword;
+
+    try {
+      const result = await User.changePassword(id, newPassword, oldPassword);
+      return res.json('password changed successfully');
+    } catch(err) {
+      return res.json({
+        error: err.message
+      });
+    }
+  });
 
   app.post('/api/checkSession', (req, res) => {
     const isLoggedIn = req.isAuthenticated();

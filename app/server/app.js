@@ -20,6 +20,10 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// proxy behind nginx
+// TODO: More restrictive ip list?
+app.set('trust proxy', true);
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
