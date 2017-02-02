@@ -1,8 +1,9 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import { urls} from 'config/config'
 
 const apolloClient = new ApolloClient({
   networkInterface: createNetworkInterface({
-    uri: 'http://localhost:8080/api/graphql',
+    uri: urls.api + '/graphql',
     opts: {
       credentials: 'include',
     } 

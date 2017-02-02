@@ -37,7 +37,9 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 
 const definePlugin = new webpack.DefinePlugin({
 	'process.env': {
-		'NODE_ENV': JSON.stringify('production')
+		'NODE_ENV': env.development() ? JSON.stringify('development') : JSON.stringify('production'),
+		'SERVER_BASE_URL': '"' + process.env.SERVER_BASE_URL + '"',
+		'CLIENT_BASE_URL': '"' + process.env.CLIENT_BASE_URL + '"'
 	}
 });
 
@@ -135,6 +137,7 @@ config.webpack = {
     new webpack.optimize.AggressiveMergingPlugin()
   ] : [
     // bundleAnalyzerPlugin,
+		definePlugin,
     commonsChunkPlugin,
     extractTextPlugin,
 		htmlWebpackPlugin,
