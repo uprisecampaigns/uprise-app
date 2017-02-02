@@ -9,29 +9,33 @@
 .innerContainer {
   display: block;
   text-align: center;
+  max-width: 80%;
 }
 
 .formContainer {
-  padding: 20px;
+  padding: 50px;
   text-align: center;
 }
+
+.formContainer 
 
 .goToSignup {
   display: block;
   margin-top: 20px;
 }
 
-.signupButton {
-  display: inline-block;
-}
-
-.cancelButton {
+.button {
+  margin: 30px 10px 10px 10px;
   display: inline-block;
 }
 
 .textFieldContainer {
   display: flex;
   text-align: left;
+}
+
+.loginButton {
+  margin-top: 20px;
 }
 
 .forgotPassword {

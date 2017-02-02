@@ -41,17 +41,19 @@ class ResetPasswordForm extends Component {
                     onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
                   />
                 </div>
-                <RaisedButton 
-                  onTouchTap={formSubmit} 
-                  type="submit"
-                  primary={true} 
-                  label="Reset" 
-                />
-                <div className={s.cancelButton}>
+                <div className={s.button}>
                   <RaisedButton 
                     onTouchTap={cancelReset} 
                     primary={false} 
                     label="Cancel" 
+                  />
+                </div>
+                <div className={s.button}>
+                  <RaisedButton 
+                    onTouchTap={formSubmit} 
+                    type="submit"
+                    primary={true} 
+                    label="Reset" 
                   />
                 </div>
               </form>

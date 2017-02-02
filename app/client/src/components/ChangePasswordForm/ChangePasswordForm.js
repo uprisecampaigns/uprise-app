@@ -62,17 +62,19 @@ function ChangePasswordForm({data, handleInputChange, formSubmit, passwordBeingR
                   onChange={ (event) => { handleInputChange(event, 'newPassword2', event.target.value) } }
                 />
               </div>
-              <RaisedButton 
-                onTouchTap={formSubmit} 
-                type="submit"
-                primary={true} 
-                label="Change" 
-              />
-              <div className={s.cancelButton}>
+              <div className={s.button}>
                 <RaisedButton 
                   onTouchTap={cancel} 
                   primary={false} 
                   label="Cancel" 
+                />
+              </div>
+              <div className={s.button}>
+                <RaisedButton 
+                  onTouchTap={formSubmit} 
+                  type="submit"
+                  primary={true} 
+                  label="Change" 
                 />
               </div>
             </form>

@@ -86,13 +86,13 @@ class PrivacyTerms extends Component {
             <RaisedButton 
               onTouchTap={cancel} 
               label="Cancel" 
-              className={termsStyle.button}
+              className={formStyle.button}
             />
             <RaisedButton 
               onTouchTap={agreeToTerms} 
               primary={true} 
               label="Agree" 
-              className={termsStyle.button}
+              className={formStyle.button}
             />
           </Paper>
         </div>

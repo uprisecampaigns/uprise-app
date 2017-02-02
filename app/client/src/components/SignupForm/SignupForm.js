@@ -90,19 +90,19 @@ class SignupForm extends Component {
                     fullWidth={true}
                   />
                 </div>
-                <div className={s.signupButton}>
+                <div className={s.button}>
+                  <RaisedButton 
+                    onTouchTap={cancelSignup} 
+                    primary={false} 
+                    label="Cancel" 
+                  />
+                </div>
+                <div className={s.button}>
                   <RaisedButton 
                     onTouchTap={formSubmit} 
                     primary={true} 
                     type="submit"
                     label="Signup" 
-                  />
-                </div>
-                <div className={s.cancelButton}>
-                  <RaisedButton 
-                    onTouchTap={cancelSignup} 
-                    primary={false} 
-                    label="Cancel" 
                   />
                 </div>
               </form>

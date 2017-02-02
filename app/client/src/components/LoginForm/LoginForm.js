@@ -56,6 +56,7 @@ class LoginForm extends Component {
                   />
                 </div>
                 <RaisedButton 
+                  className={[s.loginButton, s.button].join(' ')}
                   onTouchTap={formSubmit} 
                   type="submit"
                   primary={true} 
