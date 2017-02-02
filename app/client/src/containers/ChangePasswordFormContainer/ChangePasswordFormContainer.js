@@ -65,7 +65,6 @@ class ChangePasswordFormContainer extends Component {
     }
   }
 
-
   formSubmit = (event) => {
     console.log(event);
     event.preventDefault();
@@ -73,7 +72,10 @@ class ChangePasswordFormContainer extends Component {
 
     console.log(this.state);
 
-    this.validateString('oldPassword', 'oldPasswordErrorText', 'Please enter your old password');
+    if (!this.props.passwordBeingReset) {
+      this.validateString('oldPassword', 'oldPasswordErrorText', 'Please enter your old password');
+    }
+
     this.validateNewPasswords();
 
     if (!this.hasErrors) {
@@ -94,7 +96,7 @@ class ChangePasswordFormContainer extends Component {
       <ChangePasswordForm
         data={this.state}
         handleInputChange={this.handleInputChange}
-        passwordIsReset={this.props.passwordIsReset}
+        passwordBeingReset={this.props.passwordBeingReset}
         formSubmit={this.formSubmit}
         cancel={this.cancelChange}
         error={this.props.changeError}
@@ -106,7 +108,7 @@ class ChangePasswordFormContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     changeError: state.userAuthSession.error,
-    passwordIsReset: state.userAuthSession.userObject.passwordIsReset || false
+    passwordBeingReset: state.userAuthSession.userObject.passwordBeingReset || false
   };
 }
 

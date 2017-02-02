@@ -119,11 +119,13 @@ module.exports = (app, passport) => {
   app.post('/api/checkSession', (req, res) => {
     const isLoggedIn = req.isAuthenticated();
     if (isLoggedIn) {
+      console.log(req.user);
       return res.json({	
         isLoggedIn: isLoggedIn,
         userObject: {	
-          id:req.user.id, 
-          email:req.user.email
+          id: req.user.id, 
+          email: req.user.email,
+          passwordBeingReset: req.user.password_being_reset
         }
       });
     }
