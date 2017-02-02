@@ -1,13 +1,12 @@
 
 .outerContainer {
   width: 100%;
-  min-width: 500px; //TODO is this enough??
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 }
 
 .innerContainer {
-  width: 500px;
   display: block;
   text-align: center;
 }
