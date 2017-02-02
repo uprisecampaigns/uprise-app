@@ -56,7 +56,7 @@ class LoginForm extends Component {
                   />
                 </div>
                 <RaisedButton 
-                  className={[s.loginButton, s.button].join(' ')}
+                  className={s.button}
                   onTouchTap={formSubmit} 
                   type="submit"
                   primary={true} 
@@ -76,7 +76,7 @@ class LoginForm extends Component {
           <Link 
             useAhref={false} 
             to='/signup'
-            className={s.goToSignup}
+            className={s.button}
           >
             <RaisedButton secondary={true} label="Signup" />
           </Link>
