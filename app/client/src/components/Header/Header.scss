@@ -1,3 +1,5 @@
+@import '~styles/variables';
+
 .authenticatedIconsContainer {
   display: inline-flex;
 }
@@ -23,8 +25,9 @@
   margin-right: 40px;
 }
 
-.fillSpaceLink {
+.dropdownItemText {
   display: block;
   padding: 0px 1rem;
+  color: $brick-red;
 }
 

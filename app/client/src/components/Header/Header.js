@@ -45,33 +45,209 @@ function LoginButton(props) {
           innerDivStyle={dropdownMenuItemStyle}
           value="1">
           <Link 
-            to="/profile"
+            to="/account/profile"
             useAhref={false}
-            className={s.fillSpaceLink}
+            className={s.dropdownItemText}
           >Profile</Link>
         </MenuItem>
-        <MenuItem value="2" primaryText={props.userObject.email} />
-        <MenuItem value="3" primaryText="Preferences" />
+
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="2">
+          <Link 
+            to="/account/preferences"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >Preferences</Link>
+        </MenuItem>
+
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="3">
+          <Link 
+            to="/account/settings"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >Preferences</Link>
+        </MenuItem>
+ 
         <MenuItem 
           innerDivStyle={dropdownMenuItemStyle}
           value="4">
           <Link 
-            to="/settings"
+            to="/account/help"
             useAhref={false}
-            className={s.fillSpaceLink}
-          >Settings</Link>
+            className={s.dropdownItemText}
+          >Help</Link>
         </MenuItem>
-        <MenuItem value="5" primaryText="Help" />
-        <MenuItem value="6" primaryText="Log out" onTouchTap={props.logout}/>
+  
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="5">
+          <Link 
+            to="/account/help"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >Help</Link>
+        </MenuItem>
+
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="6">
+
+          <div 
+            onTouchTap={props.logout}
+            className={s.dropdownItemText}
+          >
+            Log out 
+          </div>
+        </MenuItem>
       </IconMenu>
     )
   }
 }
 
+function NotificationsDropdown(props) {
+  return (
+    <IconMenu
+      iconButtonElement={
+        <IconButton 
+          iconStyle={iconButtonStyle}
+          iconClassName='material-icons'
+          className={s.iconButton}
+        >notifications</IconButton>}
+    >
+      <MenuItem 
+        innerDivStyle={dropdownMenuItemStyle}
+        value="1">
+        <Link 
+          to="/notifications/view-calendar"
+          useAhref={false}
+          className={s.dropdownItemText}
+        >View Calendar</Link>
+      </MenuItem>
+      <MenuItem 
+        innerDivStyle={dropdownMenuItemStyle}
+        value="2">
+        <Link 
+          to="/calendar/view-list"
+          useAhref={false}
+          className={s.dropdownItemText}
+        >View List</Link>
+      </MenuItem>
+    </IconMenu>
+  )
+}
+
+function CommunicationDropdown(props) {
+  return (
+    <IconMenu
+      iconButtonElement={
+        <IconButton 
+          iconStyle={iconButtonStyle}
+          iconClassName='material-icons'
+          className={s.iconButton}
+        >notifications</IconButton>}
+    >
+      <MenuItem 
+        innerDivStyle={dropdownMenuItemStyle}
+        value="1">
+        <Link 
+          to="/communications/notifications"
+          useAhref={false}
+          className={s.dropdownItemText}
+        >Notifications</Link>
+      </MenuItem>
+      <MenuItem 
+        innerDivStyle={dropdownMenuItemStyle}
+        value="2">
+        <Link 
+          to="/communications/requests"
+          useAhref={false}
+          className={s.dropdownItemText}
+        >Requests</Link>
+      </MenuItem>
+      <MenuItem 
+        innerDivStyle={dropdownMenuItemStyle}
+        value="3">
+        <Link 
+          to="/communications/messages"
+          useAhref={false}
+          className={s.dropdownItemText}
+        >Messages</Link>
+      </MenuItem>
+    </IconMenu>
+  )
+}
+
+function CalendarDropdown(props) {
+  return (
+    <IconMenu
+      iconButtonElement={
+        <IconButton 
+          iconStyle={iconButtonStyle}
+          iconClassName='material-icons'
+          className={s.iconButton}
+        >event</IconButton>}
+    >
+      <MenuItem 
+        innerDivStyle={dropdownMenuItemStyle}
+        value="1">
+        <Link 
+          to="/calendar/view-calendar"
+          useAhref={false}
+          className={s.dropdownItemText}
+        >View Calendar</Link>
+      </MenuItem>
+      <MenuItem 
+        innerDivStyle={dropdownMenuItemStyle}
+        value="2">
+        <Link 
+          to="/calendar/view-list"
+          useAhref={false}
+          className={s.dropdownItemText}
+        >View List</Link>
+      </MenuItem>
+    </IconMenu>
+  )
+}
+
+function OrganizeDropdown(props) {
+  return (
+    <IconMenu
+      iconButtonElement={
+        <IconButton 
+          iconStyle={iconButtonStyle}
+          iconClassName='material-icons'
+          className={s.iconButton}
+        >work</IconButton>}
+    >
+      <MenuItem 
+        innerDivStyle={dropdownMenuItemStyle}
+        value="1">
+        <Link 
+          to="/organize/view-all"
+          useAhref={false}
+          className={s.dropdownItemText}
+        >View All</Link>
+      </MenuItem>
+      <MenuItem 
+        innerDivStyle={dropdownMenuItemStyle}
+        value="2">
+        <Link 
+          to="/organize/create-campaign"
+          useAhref={false}
+          className={s.dropdownItemText}
+        >Create Campaign</Link>
+      </MenuItem>
+    </IconMenu>
+  )
+}
 function AuthenticatedIcons(props) {
   if (props.loggedIn) {
     return (
       <div className={s.authenticatedIconsContainer}>
+
         <div className={s.searchContainer}>
           <TextField
             hintText="Search by name or keyword"
@@ -84,27 +260,13 @@ function AuthenticatedIcons(props) {
             className={s.iconButton}
           >search</IconButton>
         </div>
-        <Link useAhref={false} to='/calendar'>
-          <IconButton 
-            iconClassName='material-icons'
-            className={s.iconButton}
-            iconStyle={iconButtonStyle}
-          >event</IconButton>
-        </Link>
-        <Link useAhref={false} to='/friends'>
-          <IconButton 
-            iconClassName='material-icons'
-            className={s.iconButton}
-            iconStyle={iconButtonStyle}
-          >group</IconButton>
-        </Link>
-        <Link useAhref={false} to='/about'>
-          <IconButton 
-            iconClassName='material-icons'
-            className={s.iconButton}
-            iconStyle={iconButtonStyle}
-          >work</IconButton>
-        </Link>
+
+        <CommunicationDropdown />
+
+        <CalendarDropdown />
+
+        <OrganizeDropdown />
+
       </div>
     )
   } else {
