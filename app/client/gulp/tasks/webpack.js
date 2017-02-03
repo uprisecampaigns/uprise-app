@@ -28,19 +28,19 @@ const commonsChunkPlugin = new CommonsChunkPlugin({
 const bundleAnalyzerPlugin = new BundleAnalyzerPlugin();
 
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
-	template: HtmlWebpackTemplate,
-	title: 'Uprise app',
-	appMountId: 'app', // Generate #app where to mount
-	mobile: true, // Scale page on mobile
-	inject: false // html-webpack-template requires this to work
+  template: HtmlWebpackTemplate,
+  title: 'Uprise app',
+  appMountId: 'app', // Generate #app where to mount
+  mobile: true, // Scale page on mobile
+  inject: false // html-webpack-template requires this to work
 })
 
 const definePlugin = new webpack.DefinePlugin({
-	'process.env': {
-		'NODE_ENV': env.development() ? JSON.stringify('development') : JSON.stringify('production'),
-		'SERVER_BASE_URL': '"' + process.env.SERVER_BASE_URL + '"',
-		'CLIENT_BASE_URL': '"' + process.env.CLIENT_BASE_URL + '"'
-	}
+  'process.env': {
+    'NODE_ENV': env.development() ? JSON.stringify('development') : JSON.stringify('production'),
+    'SERVER_BASE_URL': '"' + process.env.SERVER_BASE_URL + '"',
+    'CLIENT_BASE_URL': '"' + process.env.CLIENT_BASE_URL + '"'
+  }
 });
 
 config.webpack = {
@@ -54,56 +54,57 @@ config.webpack = {
   },
   devtool: env.development() ? "source-map" : "",
   module: {
-		loaders: [
-			{
-				test: /\.jsx?$/,
-				loader: 'babel-loader',
-				include: path.resolve(config.src),
-				query: {
-					cacheDirectory: true,
-					presets: ['es2015', 'react', 'stage-3'],
-          plugins: ['transform-runtime', 'transform-class-properties']
-				}
-			},
-			{
-				test: /\.scss$/,
-        loader: 'style-loader!css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap'
+    loaders: [
+    {
+      test: /\.jsx?$/,
+      loader: 'babel-loader',
+      include: path.resolve(config.src),
+      query: {
+        cacheDirectory: true,
+        presets: ['es2015', 'react', 'stage-3'],
+        plugins: ['transform-runtime', 'transform-class-properties']
+      }
+    },
+    {
+      test: /\.scss$/,
+      loader: 'style-loader!css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap'
         // loader: 'style-loader!css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap'
-			},
-      { 
-        test: /\.css$/, 
-        loader: 'style-loader!css-loader' 
-        }, 
-      { 
-        test: /\.(png|jpg)$/, 
-        loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
-      }, 
-      {
-        test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, 
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
-      },
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, 
-        loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
-      },
-      {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, 
-        loader: 'file-loader'
-      },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, 
-        loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
-      },
-      { 
-        test: /\.md$/, 
-        loader: path.resolve(config.publicRoot, 'src', 'lib', 'markdown-loader.js') 
-      },
+    },
+    { 
+      test: /\.css$/, 
+      loader: 'style-loader!css-loader' 
+    }, 
+    { 
+      test: /\.(png|jpg)$/, 
+      loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
+    }, 
+    {
+      test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, 
+      loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+    },
+    {
+      test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, 
+      loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
+    },
+    {
+      test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, 
+      loader: 'file-loader'
+    },
+    {
+      test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, 
+      loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
+    },
+    { 
+      test: /\.md$/, 
+      loader: path.resolve(config.publicRoot, 'src', 'lib', 'markdown-loader.js') 
+    },
     ]
   },
   plugins: env.production() ? [
-		htmlWebpackPlugin,
+    htmlWebpackPlugin,
     extractTextPlugin,
     commonsChunkPlugin,
+
     new webpack.optimize.UglifyJsPlugin({
       mangle: true,
       compress: { 
@@ -132,18 +133,19 @@ config.webpack = {
       threshold: 10240,
       minRatio: 0
     }),
-		definePlugin,
+    definePlugin,
     occurenceOrderPlugin,
     new webpack.optimize.AggressiveMergingPlugin()
   ] : [
     // bundleAnalyzerPlugin,
-		definePlugin,
+    definePlugin,
     commonsChunkPlugin,
     extractTextPlugin,
-		htmlWebpackPlugin,
+    htmlWebpackPlugin,
     occurenceOrderPlugin,
     new webpack.optimize.AggressiveMergingPlugin()
   ],
+
   bail: env.production(),
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json'],
