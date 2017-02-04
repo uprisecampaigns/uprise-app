@@ -3,6 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import Toggle from 'material-ui/Toggle';
@@ -51,6 +52,8 @@ function LoginButton(props) {
           >Profile</Link>
         </MenuItem>
 
+        <Divider />
+
         <MenuItem 
           innerDivStyle={dropdownMenuItemStyle}
           value="2">
@@ -60,6 +63,8 @@ function LoginButton(props) {
             className={s.dropdownItemText}
           >Preferences</Link>
         </MenuItem>
+
+        <Divider />
 
         <MenuItem 
           innerDivStyle={dropdownMenuItemStyle}
@@ -71,6 +76,8 @@ function LoginButton(props) {
           >Preferences</Link>
         </MenuItem>
  
+        <Divider />
+
         <MenuItem 
           innerDivStyle={dropdownMenuItemStyle}
           value="4">
@@ -81,6 +88,8 @@ function LoginButton(props) {
           >Help</Link>
         </MenuItem>
   
+        <Divider />
+
         <MenuItem 
           innerDivStyle={dropdownMenuItemStyle}
           value="5">
@@ -90,6 +99,8 @@ function LoginButton(props) {
             className={s.dropdownItemText}
           >Help</Link>
         </MenuItem>
+
+        <Divider />
 
         <MenuItem 
           innerDivStyle={dropdownMenuItemStyle}
@@ -126,6 +137,9 @@ function NotificationsDropdown(props) {
           className={s.dropdownItemText}
         >View Calendar</Link>
       </MenuItem>
+
+      <Divider />
+
       <MenuItem 
         innerDivStyle={dropdownMenuItemStyle}
         value="2">
@@ -158,6 +172,9 @@ function CommunicationDropdown(props) {
           className={s.dropdownItemText}
         >Notifications</Link>
       </MenuItem>
+
+      <Divider />
+
       <MenuItem 
         innerDivStyle={dropdownMenuItemStyle}
         value="2">
@@ -167,6 +184,9 @@ function CommunicationDropdown(props) {
           className={s.dropdownItemText}
         >Requests</Link>
       </MenuItem>
+
+      <Divider />
+
       <MenuItem 
         innerDivStyle={dropdownMenuItemStyle}
         value="3">
@@ -199,6 +219,9 @@ function CalendarDropdown(props) {
           className={s.dropdownItemText}
         >View Calendar</Link>
       </MenuItem>
+
+      <Divider />
+
       <MenuItem 
         innerDivStyle={dropdownMenuItemStyle}
         value="2">
@@ -231,6 +254,9 @@ function OrganizeDropdown(props) {
           className={s.dropdownItemText}
         >View All</Link>
       </MenuItem>
+
+      <Divider />
+
       <MenuItem 
         innerDivStyle={dropdownMenuItemStyle}
         value="2">
