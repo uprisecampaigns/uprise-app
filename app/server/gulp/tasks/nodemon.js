@@ -21,7 +21,7 @@ gulp.task('nodemon', () => {
   const nodemonOpts = {
     script: path.resolve(config.serverRoot, 'bin', 'www'), 
     exec: exec,
-		ignore: [ config.publicRoot ],
+    ignore: [ config.publicRoot ],
     ext: 'js json', 
     legacyWatch: true 
   };

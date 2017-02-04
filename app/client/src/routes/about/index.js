@@ -13,8 +13,6 @@ export default {
       }, 'about');
     });
 
-		console.log(data);
-
     return {
       title: data.title,
       component: <Layout><Page {...data} /></Layout>,

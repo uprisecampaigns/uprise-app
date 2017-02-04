@@ -2,10 +2,8 @@
 const authenticationMiddleware = require('middlewares/authentication.js');
 const User = require('models/User.js');
 
-/**
-	*	Note: if user is already signed in, this will overwrite the previous session
-	*				on the client side
-	*/	
+// Note: if user is already signed in, this will overwrite the previous session
+// on the client side
 
 const addAuthRoute = (app, passport, routePath, strategy) => {
   app.post(routePath, (req, res, next) => {
@@ -120,9 +118,9 @@ module.exports = (app, passport) => {
     const isLoggedIn = req.isAuthenticated();
     if (isLoggedIn) {
       console.log(req.user);
-      return res.json({	
+      return res.json({
         isLoggedIn: isLoggedIn,
-        userObject: {	
+        userObject: {
           id: req.user.id, 
           email: req.user.email,
           passwordBeingReset: req.user.password_being_reset

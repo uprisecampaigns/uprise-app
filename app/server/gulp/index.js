@@ -11,5 +11,5 @@ const onlyScripts = function(name) {
 const tasks = fs.readdirSync(path.resolve(config.serverRoot, 'gulp', 'tasks')).filter(onlyScripts);
 
 tasks.forEach((task) => {
-	require('./tasks/' + task);
+  require('./tasks/' + task);
 });
