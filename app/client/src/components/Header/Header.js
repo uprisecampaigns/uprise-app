@@ -42,102 +42,69 @@ function LoginButton(props) {
           >account_box</IconButton>}
         className={s.accountMenuContainer}
       >
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="1">
-          <Link 
-            to="/account/profile"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >Profile</Link>
-        </MenuItem>
+        <div className={s.dropdownContainer}>
+          <MenuItem 
+            innerDivStyle={dropdownMenuItemStyle}
+            value="1">
+            <Link 
+              to="/account/profile"
+              useAhref={false}
+              className={s.dropdownItemText}
+            >Profile</Link>
+          </MenuItem>
 
-        <Divider />
+          <Divider />
 
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="2">
-          <Link 
-            to="/account/preferences"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >Preferences</Link>
-        </MenuItem>
+          <MenuItem 
+            innerDivStyle={dropdownMenuItemStyle}
+            value="2">
+            <Link 
+              to="/account/preferences"
+              useAhref={false}
+              className={s.dropdownItemText}
+            >Preferences</Link>
+          </MenuItem>
 
-        <Divider />
+          <Divider />
 
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="3">
-          <Link 
-            to="/account/settings"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >Settings</Link>
-        </MenuItem>
- 
-        <Divider />
+          <MenuItem 
+            innerDivStyle={dropdownMenuItemStyle}
+            value="3">
+            <Link 
+              to="/account/settings"
+              useAhref={false}
+              className={s.dropdownItemText}
+            >Settings</Link>
+          </MenuItem>
+   
+          <Divider />
 
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="4">
-          <Link 
-            to="/account/help"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >Help</Link>
-        </MenuItem>
-         <Divider />
+          <MenuItem 
+            innerDivStyle={dropdownMenuItemStyle}
+            value="4">
+            <Link 
+              to="/account/help"
+              useAhref={false}
+              className={s.dropdownItemText}
+            >Help</Link>
+          </MenuItem>
+           <Divider />
 
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="5">
+          <MenuItem 
+            innerDivStyle={dropdownMenuItemStyle}
+            value="5">
 
-          <div 
-            onTouchTap={props.logout}
-            className={s.dropdownItemText}
-          >
-            Log out 
-          </div>
-        </MenuItem>
+            <div 
+              onTouchTap={props.logout}
+              className={s.dropdownItemText}
+            >
+              Log out 
+            </div>
+          </MenuItem>
+        </div>
       </IconMenu>
     )
   }
-}
-
-function NotificationsDropdown(props) {
-  return (
-    <IconMenu
-      iconButtonElement={
-        <IconButton 
-          iconStyle={iconButtonStyle}
-          iconClassName='material-icons'
-          className={s.iconButton}
-        >notifications</IconButton>}
-    >
-      <MenuItem 
-        innerDivStyle={dropdownMenuItemStyle}
-        value="1">
-        <Link 
-          to="/notifications/view-calendar"
-          useAhref={false}
-          className={s.dropdownItemText}
-        >View Calendar</Link>
-      </MenuItem>
-
-      <Divider />
-
-      <MenuItem 
-        innerDivStyle={dropdownMenuItemStyle}
-        value="2">
-        <Link 
-          to="/calendar/view-list"
-          useAhref={false}
-          className={s.dropdownItemText}
-        >View List</Link>
-      </MenuItem>
-    </IconMenu>
-  )
 }
 
 function CommunicationDropdown(props) {
@@ -150,39 +117,41 @@ function CommunicationDropdown(props) {
           className={s.iconButton}
         >notifications</IconButton>}
     >
-      <MenuItem 
-        innerDivStyle={dropdownMenuItemStyle}
-        value="1">
-        <Link 
-          to="/communications/notifications"
-          useAhref={false}
-          className={s.dropdownItemText}
-        >Notifications</Link>
-      </MenuItem>
+      <div className={s.dropdownContainer}>
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="1">
+          <Link 
+            to="/communications/notifications"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >Notifications</Link>
+        </MenuItem>
 
-      <Divider />
+        <Divider />
 
-      <MenuItem 
-        innerDivStyle={dropdownMenuItemStyle}
-        value="2">
-        <Link 
-          to="/communications/requests"
-          useAhref={false}
-          className={s.dropdownItemText}
-        >Requests</Link>
-      </MenuItem>
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="2">
+          <Link 
+            to="/communications/requests"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >Requests</Link>
+        </MenuItem>
 
-      <Divider />
+        <Divider />
 
-      <MenuItem 
-        innerDivStyle={dropdownMenuItemStyle}
-        value="3">
-        <Link 
-          to="/communications/messages"
-          useAhref={false}
-          className={s.dropdownItemText}
-        >Messages</Link>
-      </MenuItem>
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="3">
+          <Link 
+            to="/communications/messages"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >Messages</Link>
+        </MenuItem>
+      </div>
     </IconMenu>
   )
 }
@@ -197,27 +166,29 @@ function CalendarDropdown(props) {
           className={s.iconButton}
         >event</IconButton>}
     >
-      <MenuItem 
-        innerDivStyle={dropdownMenuItemStyle}
-        value="1">
-        <Link 
-          to="/calendar/view-calendar"
-          useAhref={false}
-          className={s.dropdownItemText}
-        >View Calendar</Link>
-      </MenuItem>
+      <div className={s.dropdownContainer}>
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="1">
+          <Link 
+            to="/calendar/view-calendar"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >View Calendar</Link>
+        </MenuItem>
 
-      <Divider />
+        <Divider />
 
-      <MenuItem 
-        innerDivStyle={dropdownMenuItemStyle}
-        value="2">
-        <Link 
-          to="/calendar/view-list"
-          useAhref={false}
-          className={s.dropdownItemText}
-        >View List</Link>
-      </MenuItem>
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="2">
+          <Link 
+            to="/calendar/view-list"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >View List</Link>
+        </MenuItem>
+      </div>
     </IconMenu>
   )
 }
@@ -232,27 +203,29 @@ function OrganizeDropdown(props) {
           className={s.iconButton}
         >work</IconButton>}
     >
-      <MenuItem 
-        innerDivStyle={dropdownMenuItemStyle}
-        value="1">
-        <Link 
-          to="/organize/view-all"
-          useAhref={false}
-          className={s.dropdownItemText}
-        >View All</Link>
-      </MenuItem>
+      <div className={s.dropdownContainer}>
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="1">
+          <Link 
+            to="/organize/view-all"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >View All</Link>
+        </MenuItem>
 
-      <Divider />
+        <Divider />
 
-      <MenuItem 
-        innerDivStyle={dropdownMenuItemStyle}
-        value="2">
-        <Link 
-          to="/organize/create-campaign"
-          useAhref={false}
-          className={s.dropdownItemText}
-        >Create Campaign</Link>
-      </MenuItem>
+        <MenuItem 
+          innerDivStyle={dropdownMenuItemStyle}
+          value="2">
+          <Link 
+            to="/organize/create-campaign"
+            useAhref={false}
+            className={s.dropdownItemText}
+          >Create Campaign</Link>
+        </MenuItem>
+      </div>
     </IconMenu>
   )
 }
