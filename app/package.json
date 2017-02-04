@@ -28,6 +28,7 @@
     "morgan": "~1.7.0",
     "node-sass": "~4.1.1",
     "nodemon": "^1.11.0",
+    "normalize.css": "^5.0.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pg": "^6.1.2",

@@ -269,6 +269,7 @@ function OrganizeDropdown(props) {
     </IconMenu>
   )
 }
+
 function AuthenticatedIcons(props) {
   if (props.loggedIn) {
     return (

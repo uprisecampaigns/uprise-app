@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Layout from 'components/Layout';
 import Signup from './Signup';
 
 export default {
@@ -9,7 +10,7 @@ export default {
   async action() {
     return {
       title: 'Signup',
-      component: <Signup/>,
+      component: <Layout><Signup/></Layout>,
     };
   },
 

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Layout from 'components/Layout';
 import Login from './Login';
 
 export default {
@@ -9,7 +10,7 @@ export default {
   async action(context) {
     return {
       title: 'Login',
-      component: <Login/>,
+      component: <Layout><Login/></Layout>,
     };
   },
 };
