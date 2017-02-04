@@ -73,7 +73,7 @@ function LoginButton(props) {
             to="/account/settings"
             useAhref={false}
             className={s.dropdownItemText}
-          >Preferences</Link>
+          >Settings</Link>
         </MenuItem>
  
         <Divider />
@@ -87,24 +87,11 @@ function LoginButton(props) {
             className={s.dropdownItemText}
           >Help</Link>
         </MenuItem>
-  
-        <Divider />
+         <Divider />
 
         <MenuItem 
           innerDivStyle={dropdownMenuItemStyle}
           value="5">
-          <Link 
-            to="/account/help"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >Help</Link>
-        </MenuItem>
-
-        <Divider />
-
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="6">
 
           <div 
             onTouchTap={props.logout}
