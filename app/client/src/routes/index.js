@@ -13,8 +13,9 @@ export default {
     require('./changePassword').default,
     require('./welcome').default,
     require('./settings').default,
-    // require('./privacy').default,
-    // require('./admin').default,
+    require('./notifications').default,
+    require('./requests').default,
+    require('./messages').default,
 
     // Wildcard routes, e.g. { path: '*', ... } (must go last)
     require('./notFound').default,
