@@ -1,7 +1,18 @@
 // Colors
+
 $brick-red: #d62938;
 $black: #000000;
 
 // Fonts
 $font-family: "Roboto", Helvetica, Arial, sans-serif;
 
+
+// Layout
+$max-content-width: 1000px;
+
+
+// Media Query Screen Sizes
+$screen-xs-min: 480px;  /* Extra small screen / phone */
+$screen-sm-min: 768px;  /* Small screen / tablet */
+$screen-md-min: 992px;  /* Medium screen / desktop */
+$screen-lg-min: 1200px; /* Large screen / wide desktop */
