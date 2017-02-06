@@ -34,8 +34,6 @@
 }
 
 .dropdownItemText {
-  display: block;
-  padding: 0px 1rem;
-  color: $brick-red;
+  color: $brick-red !important;
 }
 

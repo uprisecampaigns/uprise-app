@@ -24,6 +24,86 @@ const dropdownMenuItemStyle = {
   padding: '0px'
 }
 
+
+class ContentDropdownMenu extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  state = {}
+
+  static propTypes = {
+    titleIconName: PropTypes.string.isRequired,
+    dropdowns: PropTypes.array.isRequired,
+  }
+
+  renderDropdown = (dropdown, index) => {
+
+    const itemClicked = (event) => {
+      if (typeof dropdown.action === 'function') {
+        dropdown.action(event);
+      }
+
+      this.setState({
+        openMenu: false
+      });
+    }
+
+    return (
+      <div key={index}>
+        <Link 
+          to={dropdown.url}
+          useAhref={false}
+          onClick={itemClicked}
+        >
+          <MenuItem 
+            className={s.dropdownItemText}
+            value={index + 1}
+            primaryText={dropdown.title}
+          />
+        </Link>
+        {(index < this.props.dropdowns.length - 1) && <Divider/>}
+      </div>
+    );
+  }
+
+  handleOpenMenu = () => {
+    this.setState({
+      openMenu: true
+    });
+  }
+
+  handleOnRequestChange = (value) => {
+    this.setState({
+      openMenu: false
+    });
+  }
+
+  render() {
+
+    let dropdownItems = this.props.dropdowns.map(this.renderDropdown);
+
+    return (
+      <IconMenu
+        iconButtonElement={
+          <IconButton 
+            iconStyle={iconButtonStyle}
+            iconClassName='material-icons'
+            className={s.iconButton}
+            onTouchTap={this.handleOpenMenu}
+          >{this.props.titleIconName}</IconButton>
+        }
+        onRequestChange={this.handleOnRequestChange}
+        open={this.state.openMenu}
+      >
+        <div className={s.dropdownContainer}>
+          {dropdownItems}
+        </div>
+      </IconMenu>
+    );
+  }
+}
+ 
 function LoginButton(props) {
   if (!props.loggedIn) {
     return (
@@ -33,203 +113,20 @@ function LoginButton(props) {
     )
   } else {
     return (
-      <IconMenu
-        iconButtonElement={
-          <IconButton 
-            iconStyle={iconButtonStyle}
-            iconClassName='material-icons'
-            className={s.iconButton}
-          >account_box</IconButton>}
-        className={s.accountMenuContainer}
-      >
-        <div className={s.dropdownContainer}>
-          <MenuItem 
-            innerDivStyle={dropdownMenuItemStyle}
-            value="1">
-            <Link 
-              to="/account/profile"
-              useAhref={false}
-              className={s.dropdownItemText}
-            >Profile</Link>
-          </MenuItem>
 
-          <Divider />
-
-          <MenuItem 
-            innerDivStyle={dropdownMenuItemStyle}
-            value="2">
-            <Link 
-              to="/account/preferences"
-              useAhref={false}
-              className={s.dropdownItemText}
-            >Preferences</Link>
-          </MenuItem>
-
-          <Divider />
-
-          <MenuItem 
-            innerDivStyle={dropdownMenuItemStyle}
-            value="3">
-            <Link 
-              to="/account/settings"
-              useAhref={false}
-              className={s.dropdownItemText}
-            >Settings</Link>
-          </MenuItem>
-   
-          <Divider />
-
-          <MenuItem 
-            innerDivStyle={dropdownMenuItemStyle}
-            value="4">
-            <Link 
-              to="/account/help"
-              useAhref={false}
-              className={s.dropdownItemText}
-            >Help</Link>
-          </MenuItem>
-           <Divider />
-
-          <MenuItem 
-            innerDivStyle={dropdownMenuItemStyle}
-            value="5">
-
-            <div 
-              onTouchTap={props.logout}
-              className={s.dropdownItemText}
-            >
-              Log out 
-            </div>
-          </MenuItem>
-        </div>
-      </IconMenu>
+      <ContentDropdownMenu
+        titleIconName="account_box"
+        dropdowns={[
+          { title: 'Profile', url: '/account/profile' },
+          { title: 'Preferences', url: '/account/preferences' },
+          { title: 'Settings', url: '/account/settings' },
+          { title: 'Help', url: '/account/help' },
+          { title: 'Logout', url: '#', action: props.logout },
+        ]}
+      />
     )
   }
 }
-
-function CommunicationDropdown(props) {
-  return (
-    <IconMenu
-      iconButtonElement={
-        <IconButton 
-          iconStyle={iconButtonStyle}
-          iconClassName='material-icons'
-          className={s.iconButton}
-        >notifications</IconButton>}
-    >
-      <div className={s.dropdownContainer}>
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="1">
-          <Link 
-            to="/communications/notifications"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >Notifications</Link>
-        </MenuItem>
-
-        <Divider />
-
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="2">
-          <Link 
-            to="/communications/requests"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >Requests</Link>
-        </MenuItem>
-
-        <Divider />
-
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="3">
-          <Link 
-            to="/communications/messages"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >Messages</Link>
-        </MenuItem>
-      </div>
-    </IconMenu>
-  )
-}
-
-function CalendarDropdown(props) {
-  return (
-    <IconMenu
-      iconButtonElement={
-        <IconButton 
-          iconStyle={iconButtonStyle}
-          iconClassName='material-icons'
-          className={s.iconButton}
-        >event</IconButton>}
-    >
-      <div className={s.dropdownContainer}>
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="1">
-          <Link 
-            to="/calendar/view-calendar"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >View Calendar</Link>
-        </MenuItem>
-
-        <Divider />
-
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="2">
-          <Link 
-            to="/calendar/view-list"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >View List</Link>
-        </MenuItem>
-      </div>
-    </IconMenu>
-  )
-}
-
-function OrganizeDropdown(props) {
-  return (
-    <IconMenu
-      iconButtonElement={
-        <IconButton 
-          iconStyle={iconButtonStyle}
-          iconClassName='material-icons'
-          className={s.iconButton}
-        >work</IconButton>}
-    >
-      <div className={s.dropdownContainer}>
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="1">
-          <Link 
-            to="/organize/view-all"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >View All</Link>
-        </MenuItem>
-
-        <Divider />
-
-        <MenuItem 
-          innerDivStyle={dropdownMenuItemStyle}
-          value="2">
-          <Link 
-            to="/organize/create-campaign"
-            useAhref={false}
-            className={s.dropdownItemText}
-          >Create Campaign</Link>
-        </MenuItem>
-      </div>
-    </IconMenu>
-  )
-}
-
 function AuthenticatedIcons(props) {
   if (props.loggedIn) {
     return (
@@ -248,11 +145,30 @@ function AuthenticatedIcons(props) {
           >search</IconButton>
         </div>
 
-        <CommunicationDropdown />
+        <ContentDropdownMenu
+          titleIconName="notifications"
+          dropdowns={[
+            { title: 'Notifications', url: '/communications/notifications' },
+            { title: 'Requests', url: '/communications/requests' },
+            { title: 'Messages', url: '/communications/messages' },
+          ]}
+        />
 
-        <CalendarDropdown />
+        <ContentDropdownMenu
+          titleIconName="event"
+          dropdowns={[
+            { title: 'View Calendar', url: '/calendar/view-calendar' },
+            { title: 'View List', url: '/calendar/view-list' },
+          ]}
+        />
 
-        <OrganizeDropdown />
+        <ContentDropdownMenu
+          titleIconName="work"
+          dropdowns={[
+            { title: 'View All', url: '/organize/view-all' },
+            { title: 'Create Campaign', url: '/organize/create-campaign' },
+          ]}
+        />
 
       </div>
     )
