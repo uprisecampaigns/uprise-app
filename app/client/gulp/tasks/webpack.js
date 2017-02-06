@@ -17,7 +17,6 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const config = require('config/gulp.js');
 
 const extractTextPlugin = new ExtractTextPlugin('[name].css');
-
 const occurenceOrderPlugin = new webpack.optimize.OccurrenceOrderPlugin()
 
 const commonsChunkPlugin = new CommonsChunkPlugin({
@@ -48,7 +47,7 @@ config.webpack = {
     'index': path.resolve(config.src, 'index'),
   },
   output: {
-    filename: '[name].js',
+    filename: '[name]-[hash].js',
     publicPath: '/',
     path: path.resolve(config.dest)
   },
