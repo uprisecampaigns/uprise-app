@@ -2,7 +2,11 @@
 import React, { Component, PropTypes } from 'react';
 import ContentNavigation from 'components/ContentNavigation';
 
-const selections = ['view-all', 'create-campaign'];
+const selections = [
+  { title: 'view all', path: 'view-all' },
+  { title: 'create campaign', path: 'create-campaign' }
+];
+
 const baseUrl = '/organize';
 
 class Organize extends Component {
@@ -12,7 +16,9 @@ class Organize extends Component {
   };
 
   render() {
-    const selected = selections.indexOf(this.props.selected);
+    const selected = selections.findIndex( (i) => {
+      return i.path === this.props.selected;
+    });
 
     return (
       <div>

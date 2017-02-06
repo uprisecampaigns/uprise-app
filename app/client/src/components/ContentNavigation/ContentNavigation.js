@@ -17,20 +17,20 @@ class ContentNavigation extends Component {
       if (index === this.props.selected) {
         return (
           <Link 
-            to={path.resolve(this.props.baseUrl, selection)}
+            to={path.resolve(this.props.baseUrl, selection.path)}
             useAhref={false}
             className={[s.selected, s.navItem].join(' ')}
             key={index}
-          >{selection}</Link>
+          >{selection.title}</Link>
         );
       } else {
         return (
           <Link 
-            to={path.resolve(this.props.baseUrl, selection)}
+            to={path.resolve(this.props.baseUrl, selection.path)}
             useAhref={false}
             className={[s.notSelected, s.navItem].join(' ')}
             key={index}
-          >{selection}</Link>
+          >{selection.title}</Link>
         );
       }
     });

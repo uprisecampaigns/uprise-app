@@ -2,7 +2,11 @@
 import React, { Component, PropTypes } from 'react';
 import ContentNavigation from 'components/ContentNavigation';
 
-const selections = ['view-calendar', 'view-list'];
+const selections = [
+  { title: 'view calendar', path: 'view-calendar'},
+  { title: 'view list', path: 'view-list'}
+];
+
 const baseUrl = '/calendar';
 
 class Calendar extends Component {
@@ -12,7 +16,9 @@ class Calendar extends Component {
   };
 
   render() {
-    const selected = selections.indexOf(this.props.selected);
+    const selected = selections.findIndex( (i) => {
+      return i.path === this.props.selected;
+    });
 
     return (
       <div>
