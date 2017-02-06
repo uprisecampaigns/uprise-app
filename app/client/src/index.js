@@ -82,6 +82,11 @@ async function onLocationChange(location) {
       return;
     }
 
+    const newTitle = route.title;
+    if (document.title != newTitle) {
+      document.title = newTitle;
+    }
+
     appInstance = ReactDOM.render(
       <MuiThemeProvider>
         <ApolloProvider client={apolloClient} store={store}>
