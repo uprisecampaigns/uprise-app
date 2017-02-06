@@ -42,40 +42,36 @@ class User {
     return db.table('user_profiles').select().where('id', id);
   }
 
-  static verifyEmail({token: token, userId: userId}) {
-    return db.table('user_email_verifications').select().where('token', token)
-      .then( (rows) => {
-        if (rows.length === 0) {
-          throw new Error('User email verification does not exist');
-        } else if (rows.length > 1) {
-          throw new Error('Somehow more than one email verification exists for that token');
-        } else if (rows[0].used) {
-          throw new Error('Email token already used');
-        } else {
+  static async verifyEmail({token: token}) {
+    const tokenResult = await db.table('user_email_verifications').select().where('token', token).first();
 
-          return db.table('users').
-            where('id', userId)
-            .update({
-              email_confirmed: true
-            });
-        }
-      })
-      .then( (updated) => {
-        assert(updated === 1);
+    if (!tokenResult) {
+      throw new Error('User email verification does not exist');
+    } else if (tokenResult.used) {
+      throw new Error('Email token already used');
+    }
 
-        return db.table('user_email_verifications')
-          .where('token', token)
-          .update({
-            used: true
-          });
-      })
-      .then( (updated) => {
-        assert(updated === 1);
-        return {
-          userId: userId,
-          token: token,
-        };
-      })
+    let updated = await db.table('users')
+      .where('id', tokenResult.user_id)
+      .update({
+        email_confirmed: true
+      });
+
+    assert(updated === 1);
+
+    updated = await db.table('user_email_verifications')
+      .where('token', token)
+      .update({
+        used: true
+      });
+
+    console.log(updated);
+
+    assert(updated === 1);
+
+    return {
+      token: token,
+    };
   }
 
   static async changePassword(userId, newPassword, oldPassword) {

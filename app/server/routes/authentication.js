@@ -59,11 +59,11 @@ module.exports = (app, passport) => {
     return res.json('logged out');
   });
 
-  app.get('/api/email-verification/:token', authenticationMiddleware.isLoggedIn, async (req, res, next) => {
+  app.get('/api/email-verification/:token', async (req, res, next) => {
     const token = req.params.token;
 
     try {
-      const result = await User.verifyEmail({token: token, userId: req.user.id});
+      const result = await User.verifyEmail({token: token});
       res.redirect('/');
     } catch(err) {
       next(err);
