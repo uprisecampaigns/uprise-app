@@ -13,9 +13,20 @@ export default {
     require('./changePassword').default,
     require('./welcome').default,
     require('./settings').default,
+
+    // TODO: probably want to sub-organize children url
+    // /communications/
     require('./notifications').default,
     require('./requests').default,
     require('./messages').default,
+
+    // /calendar/
+    require('./viewCalendar').default,
+    require('./viewList').default,
+
+    // /organize/
+    require('./viewAllOrganize').default,
+    require('./createCampaign').default,
 
     // Wildcard routes, e.g. { path: '*', ... } (must go last)
     require('./notFound').default,
