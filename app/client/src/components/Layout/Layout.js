@@ -1,8 +1,7 @@
 
 import React, { PropTypes } from 'react';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
 import HeaderContainer from 'containers/HeaderContainer';
+import NavDrawer from 'components/NavDrawer';
 
 import s from './Layout.scss';
 
@@ -23,19 +22,23 @@ class Layout extends React.Component {
     });
   }
 
+  logoutHandler = (event) => {
+    console.log('Logging out from navdrawer');
+  }
+
   render() {
     return (
       <div>
+
         <HeaderContainer handleDrawerToggle={this.handleDrawerToggle}/>
-        <Drawer
+
+        <NavDrawer 
           open={this.state.drawerOpen}
+          handleToggle={this.handleDrawerToggle}
           onRequestChange={this.handleDrawerRequestChange}
-          className={s.drawer}
-          docked={false}
-        >
-          <MenuItem>Menu item 1</MenuItem>
-          <MenuItem>Menu item 2</MenuItem>
-        </Drawer>
+          logout={this.logoutHandler}
+        />
+
         {this.props.children}
       </div>
     );

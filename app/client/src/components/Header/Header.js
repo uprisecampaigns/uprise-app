@@ -48,7 +48,7 @@ class ContentDropdownMenu extends Component {
     return (
       <div key={index}>
         <Link 
-          to={dropdown.url}
+          to={dropdown.path}
           useAhref={false}
           onClick={itemClicked}
         >
@@ -77,7 +77,7 @@ class ContentDropdownMenu extends Component {
 
   render() {
 
-    let dropdownItems = this.props.dropdowns.map(this.renderDropdown);
+    const dropdownItems = this.props.dropdowns.map(this.renderDropdown);
 
     return (
       <IconMenu
@@ -113,11 +113,11 @@ function LoginButton(props) {
       <ContentDropdownMenu
         titleIconName="account_box"
         dropdowns={[
-          { title: 'Profile', url: '/account/profile' },
-          { title: 'Preferences', url: '/account/preferences' },
-          { title: 'Settings', url: '/account/settings' },
-          { title: 'Help', url: '/account/help' },
-          { title: 'Logout', url: '#', action: props.logout },
+          { title: 'Profile', path: '/account/profile' },
+          { title: 'Preferences', path: '/account/preferences' },
+          { title: 'Settings', path: '/account/settings' },
+          { title: 'Help', path: '/account/help' },
+          { title: 'Logout', path: '#', action: props.logout },
         ]}
       />
     )
@@ -145,9 +145,9 @@ function AuthenticatedIcons(props) {
           titleIconName="notifications"
           className={s.rightIcon}
           dropdowns={[
-            { title: 'Notifications', url: '/communications/notifications' },
-            { title: 'Requests', url: '/communications/requests' },
-            { title: 'Messages', url: '/communications/messages' },
+            { title: 'Notifications', path: '/communications/notifications' },
+            { title: 'Requests', path: '/communications/requests' },
+            { title: 'Messages', path: '/communications/messages' },
           ]}
         />
 
@@ -155,8 +155,8 @@ function AuthenticatedIcons(props) {
           titleIconName="event"
           className={s.rightIcon}
           dropdowns={[
-            { title: 'View Calendar', url: '/calendar/view-calendar' },
-            { title: 'View List', url: '/calendar/view-list' },
+            { title: 'View Calendar', path: '/calendar/view-calendar' },
+            { title: 'View List', path: '/calendar/view-list' },
           ]}
         />
 
@@ -164,8 +164,8 @@ function AuthenticatedIcons(props) {
           titleIconName="work"
           className={s.rightIcon}
           dropdowns={[
-            { title: 'View All', url: '/organize/view-all' },
-            { title: 'Create Campaign', url: '/organize/create-campaign' },
+            { title: 'View All', path: '/organize/view-all' },
+            { title: 'Create Campaign', path: '/organize/create-campaign' },
           ]}
         />
 
