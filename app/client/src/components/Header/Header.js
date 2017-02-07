@@ -13,7 +13,7 @@ import s from './Header.scss';
 
 
 const iconButtonStyle = {
-  fontSize: '3rem'
+  fontSize: '3rem',
 }
 
 const dropdownMenuItemStyle = {
@@ -89,6 +89,8 @@ class ContentDropdownMenu extends Component {
             onTouchTap={this.handleOpenMenu}
           >{this.props.titleIconName}</IconButton>
         }
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'middle'}}
+        targetOrigin={{ vertical: 'top', horizontal: 'middle'}}
         onRequestChange={this.handleOnRequestChange}
         open={this.state.openMenu}
       >
