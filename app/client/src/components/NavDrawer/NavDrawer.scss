@@ -4,6 +4,11 @@
   color: $brick-red !important;
 }
 
+.subheader {
+  font-size: 1.2rem !important;
+  margin-top: 2rem !important;
+}
+
 .userMenuItem {
   background-color: $dark-teal !important;
   color: darken($white, 5%) !important;
@@ -21,8 +26,9 @@
     }
 
     .accountInfoContainer {
-      flex: 1;
+      flex: 2;
       line-height: 1.5;
+      overflow: hidden;
     }
   }
 }

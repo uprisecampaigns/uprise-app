@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
+import Subheader from 'material-ui/Subheader';
 import IconButton from 'material-ui/IconButton';
 
 import Link from 'components/Link';
@@ -65,7 +66,9 @@ class NavDrawer extends Component {
     { path: '/communications', title: 'Communications' },
     { path: '/calendar', title: 'Calendar' },
     { path: '/organize', title: 'Organize' },
-    { path: '/account', title: 'Account' },
+  ]
+
+  accountMenuItems = [
     { path: '/account/profile', title: 'Profile' },
     { path: '/account/preferences', title: 'Preferences' },
     { path: '/account/settings', title: 'Settings' },
@@ -95,13 +98,14 @@ class NavDrawer extends Component {
             primaryText={item.title}
           />
         </Link>
-        {(index < this.menuItems.length - 1) && <Divider/>}
+        <Divider />
       </div>
     );
   }
 
   render() {
     const navItems = this.menuItems.map(this.renderNavItems);
+    const accountNavItems = this.accountMenuItems.map(this.renderNavItems);
 
     if (this.props.loggedIn) {
       return (
@@ -122,6 +126,10 @@ class NavDrawer extends Component {
           />
 
           {navItems}
+
+          <Subheader className={s.subheader}>Account</Subheader>
+
+          {accountNavItems}
 
         </Drawer>
       );
