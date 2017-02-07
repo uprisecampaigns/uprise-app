@@ -1,7 +1,7 @@
 
 import React, { PropTypes } from 'react';
 import HeaderContainer from 'containers/HeaderContainer';
-import NavDrawer from 'components/NavDrawer';
+import NavDrawerContainer from 'containers/NavDrawerContainer';
 
 import s from './Layout.scss';
 
@@ -22,21 +22,16 @@ class Layout extends React.Component {
     });
   }
 
-  logoutHandler = (event) => {
-    console.log('Logging out from navdrawer');
-  }
-
   render() {
     return (
       <div>
 
         <HeaderContainer handleDrawerToggle={this.handleDrawerToggle}/>
 
-        <NavDrawer 
+        <NavDrawerContainer 
           open={this.state.drawerOpen}
           handleToggle={this.handleDrawerToggle}
           onRequestChange={this.handleDrawerRequestChange}
-          logout={this.logoutHandler}
         />
 
         {this.props.children}

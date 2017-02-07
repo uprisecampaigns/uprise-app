@@ -1,13 +1,46 @@
 
-const path = require('path');
 import React, { Component, PropTypes } from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
+import IconButton from 'material-ui/IconButton';
 
 import Link from 'components/Link';
 import s from './NavDrawer.scss';
 
+
+function UserMenuItem (props) {
+
+  const iconButtonStyle = {
+    fontSize: '3rem'
+  }
+
+  const { itemClicked, user } = props;
+
+  return (
+    <div className={s.userContainer}>
+
+      <div className={s.userIconContainer}>
+        <IconButton 
+          iconStyle={iconButtonStyle}
+          iconClassName={[s.materialIcons, 'material-icons'].join(' ')}
+          className={s.userIcon}
+          onTouchTap={itemClicked}
+        >account_box</IconButton>
+      </div>
+
+      <div className={s.accountInfoContainer}>
+        <div className={s.nameContainer}>
+          {user.first_name} {user.last_name}
+        </div>
+        <div className={s.emailContainer}>
+          {user.email}
+        </div>
+      </div>
+
+    </div>
+  );
+}
 
 class NavDrawer extends Component {
   constructor(props) {
@@ -18,6 +51,8 @@ class NavDrawer extends Component {
     open: PropTypes.bool.isRequired,
     handleToggle: PropTypes.func.isRequired,
     onRequestChange: PropTypes.func.isRequired,
+    userObject: PropTypes.object,
+    loggedIn: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired
   }
 
@@ -56,7 +91,7 @@ class NavDrawer extends Component {
           onClick={itemClicked}
         >
           <MenuItem 
-            className={s.menuItem}
+            className={s.navMenuItem}
             primaryText={item.title}
           />
         </Link>
@@ -68,16 +103,50 @@ class NavDrawer extends Component {
   render() {
     const navItems = this.menuItems.map(this.renderNavItems);
 
-    return (
-      <Drawer
-        open={this.props.open}
-        onRequestChange={this.props.onRequestChange}
-        className={s.drawer}
-        docked={false}
-      >
-        {navItems}
-      </Drawer>
-    );
+    if (this.props.loggedIn) {
+      return (
+        <Drawer
+          open={this.props.open}
+          onRequestChange={this.props.onRequestChange}
+          className={s.drawer}
+          docked={false}
+        >
+          <MenuItem
+            primaryText={
+              <UserMenuItem 
+                itemClicked={this.itemClicked}
+                user={this.props.userObject} 
+              />
+            }
+            className={s.userMenuItem}
+          />
+
+          {navItems}
+
+        </Drawer>
+      );
+    } else {
+      return (
+        <Drawer
+          open={this.props.open}
+          onRequestChange={this.props.onRequestChange}
+          className={s.drawer}
+          docked={false}
+        >
+          <Link 
+            to="/login"
+            useAhref={false}
+            onClick={this.itemClicked}
+          >
+            <MenuItem 
+              className={s.navMenuItem}
+              primaryText="Login"
+            />
+          </Link>
+
+        </Drawer>
+      );
+    }
   }
 }
 

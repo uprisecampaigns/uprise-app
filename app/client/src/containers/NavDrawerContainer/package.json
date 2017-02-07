@@ -1,0 +1,6 @@
+{
+  "name": "NavDrawerContainer",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./NavDrawerContainer.js"
+}

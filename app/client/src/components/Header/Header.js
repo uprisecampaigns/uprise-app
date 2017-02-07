@@ -123,6 +123,7 @@ function LoginButton(props) {
     )
   }
 }
+
 function AuthenticatedIcons(props) {
   if (props.loggedIn) {
     return (

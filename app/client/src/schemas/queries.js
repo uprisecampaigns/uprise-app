@@ -12,6 +12,8 @@ export const OpportunityQuery = gql`
 export const MeQuery = gql`
   query MeQuery {
     me {
+      first_name
+      last_name
       email
       zip
     }

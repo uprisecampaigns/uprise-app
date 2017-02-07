@@ -8,6 +8,8 @@ module.exports = buildSchema(`
   }
 
   type UserResult {
+    first_name: String
+    last_name: String
     email: String
     zip: String
   }

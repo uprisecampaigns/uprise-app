@@ -1,5 +1,30 @@
 @import '~styles/variables';
 
-.menuItem {
+.navMenuItem {
   color: $brick-red !important;
 }
+
+.userMenuItem {
+  background-color: $dark-teal !important;
+  color: darken($white, 5%) !important;
+
+  .materialIcons {
+    color: darken($white, 5%) !important;
+  }
+
+  .userContainer {
+    display: flex;
+    align-items: center;
+
+    .userIconContainer {
+      flex: 1;
+    }
+
+    .accountInfoContainer {
+      flex: 1;
+      line-height: 1.5;
+    }
+  }
+}
+
+
