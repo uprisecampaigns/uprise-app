@@ -12,6 +12,10 @@ class HeaderContainer extends Component {
     super(props);
   }
 
+  static propTypes = {
+    handleDrawerToggle: PropTypes.func.isRequired,
+  };
+
   clickedLogout = (event) => {
     this.props.dispatch(attemptLogout());
   }
@@ -22,6 +26,7 @@ class HeaderContainer extends Component {
         userObject={this.props.userObject}
         loggedIn={this.props.loggedIn}
         clickedLogout={this.clickedLogout}
+        handleDrawerToggle={this.props.handleDrawerToggle}
       />
     );
   }

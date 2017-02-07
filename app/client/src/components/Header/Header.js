@@ -5,10 +5,6 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
-import Toggle from 'material-ui/Toggle';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import TextField from 'material-ui/TextField';
 import Link from '../Link';
 
@@ -147,6 +143,7 @@ function AuthenticatedIcons(props) {
 
         <ContentDropdownMenu
           titleIconName="notifications"
+          className={s.rightIcon}
           dropdowns={[
             { title: 'Notifications', url: '/communications/notifications' },
             { title: 'Requests', url: '/communications/requests' },
@@ -156,6 +153,7 @@ function AuthenticatedIcons(props) {
 
         <ContentDropdownMenu
           titleIconName="event"
+          className={s.rightIcon}
           dropdowns={[
             { title: 'View Calendar', url: '/calendar/view-calendar' },
             { title: 'View List', url: '/calendar/view-list' },
@@ -164,6 +162,7 @@ function AuthenticatedIcons(props) {
 
         <ContentDropdownMenu
           titleIconName="work"
+          className={s.rightIcon}
           dropdowns={[
             { title: 'View All', url: '/organize/view-all' },
             { title: 'Create Campaign', url: '/organize/create-campaign' },
@@ -186,31 +185,49 @@ class Header extends Component {
     userObject: PropTypes.object,
     loggedIn: PropTypes.bool.isRequired,
     clickedLogout: PropTypes.func.isRequired,
+    handleDrawerToggle: PropTypes.func.isRequired,
   }
 
   render() {
     return (
       <AppBar
         iconElementLeft={
+          <div 
+            className={s.menuIconContainer}
+          >
+            <IconButton 
+              iconStyle={iconButtonStyle}
+              iconClassName='material-icons'
+              className={s.iconButton}
+              onTouchTap={this.props.handleDrawerToggle}
+            >menu</IconButton>
+          </div>
+        }
+        title={
           <Link useAhref={true} to='/'>
-            <img 
-              src={upriseLogo}
-              className={s.upriseLogo}
-            />
+            <div className={s.logoContainer}>
+              <img 
+                src={upriseLogo}
+                className={s.logoImage}
+              />
+            </div>
           </Link>
         }
-        iconStyleRight={{
-          marginTop: '0px'
+        titleStyle={{
+          height: 'auto'
         }}
         iconElementRight={
-          <div className={s.flexContainer}>
+          <div className={s.rightIconsContainer}>
             <AuthenticatedIcons 
               loggedIn={this.props.loggedIn}
             />
+
             <LoginButton 
+              className={s.rightIcon}
               loggedIn={this.props.loggedIn}
               logout={this.props.clickedLogout}
-              userObject={this.props.userObject}/>
+              userObject={this.props.userObject}
+            />
           </div>
         }
         iconStyleRight={{

@@ -1,7 +1,7 @@
 @import '~styles/variables';
 
 .authenticatedIconsContainer {
-  display: inline-flex;
+  display: flex;
 }
 
 .accountMenuContainer {
@@ -9,16 +9,20 @@
 }
 
 .flexContainer {
-  display: flex;
 }
 
 .iconButton {
   padding: 0px;
 }
 
-.upriseLogo {
-  width: 100%;
-  height: auto;
+.rightIconsContainer {
+  display: inline-flex;
+  margin-right: 1rem;
+
+  .rightIcon {
+    display: inline-flex !important;
+    flex: 1;
+  }
 }
 
 .dropdownContainer {
@@ -29,11 +33,30 @@
   }
 }
 
+.menuIconContainer {
+  display: none;
+  cursor: pointer;
+}
+
 .searchContainer {
-  margin-right: 40px;
+  display: flex;
+  flex: 1;
+  align-items: center;
 }
 
 .dropdownItemText {
   color: $brick-red !important;
+}
+
+
+@media (max-width: $screen-sm-min) {
+  .menuIconContainer {
+    margin-right: 20px;
+    display: inline-flex;
+  }
+
+  .rightIconsContainer {
+    display: none;
+  }
 }
 
