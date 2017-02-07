@@ -177,14 +177,6 @@ function AuthenticatedIcons(props) {
   }
 }
 
-function showOpportunity(opportunity) {
-  if (typeof opportunity === 'object' &&
-      typeof opportunity.title === 'string') {
-
-    return opportunity.title;
-  }
-}
-
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -212,7 +204,6 @@ class Header extends Component {
         }}
         iconElementRight={
           <div className={s.flexContainer}>
-            <div>{showOpportunity(this.props.opportunity)}</div>
             <AuthenticatedIcons 
               loggedIn={this.props.loggedIn}
             />
