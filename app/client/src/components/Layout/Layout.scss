@@ -10,9 +10,14 @@
 html {
   color: lighten($black, 10%);
   font-weight: 400;
-  font-size: 1em; /* ~16px; */
   font-family: $font-family;
   line-height: 1.375; /* ~22px */
+
+  font-size: 1em; /* ~16px; */
+
+  @media (max-width: $screen-sm-min) {
+    font-size: 0.875em; /* ~14px; */
+  }
 }
 
 body {
