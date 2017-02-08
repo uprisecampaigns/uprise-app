@@ -2,16 +2,22 @@
 
 .navMenuItem {
   color: $brick-red !important;
+  margin-left: 1rem !important;
 }
 
 .subheader {
-  font-size: 1.2rem !important;
+  // font-size: 1.2rem !important;
+  // margin-top: 2rem !important;
+}
+
+.divider {
   margin-top: 2rem !important;
 }
 
 .userMenuItem {
   background-color: $dark-teal !important;
   color: darken($white, 5%) !important;
+  margin-bottom: 2rem !important;
 
   .materialIcons {
     color: darken($white, 5%) !important;
@@ -33,4 +39,7 @@
   }
 }
 
-
+.bottomNavContainer {
+  position: fixed;
+  bottom: 1rem;
+}

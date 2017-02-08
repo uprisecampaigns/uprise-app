@@ -72,6 +72,9 @@ class NavDrawer extends Component {
     { path: '/account/profile', title: 'Profile' },
     { path: '/account/preferences', title: 'Preferences' },
     { path: '/account/settings', title: 'Settings' },
+  ]
+
+  bottomMenuItems = [
     { path: '/account/help', title: 'Help' },
     { path: '#', title: 'Logout', action: this.props.logout }
   ]
@@ -98,7 +101,6 @@ class NavDrawer extends Component {
             primaryText={item.title}
           />
         </Link>
-        <Divider />
       </div>
     );
   }
@@ -106,6 +108,7 @@ class NavDrawer extends Component {
   render() {
     const navItems = this.menuItems.map(this.renderNavItems);
     const accountNavItems = this.accountMenuItems.map(this.renderNavItems);
+    const bottomNavItems = this.bottomMenuItems.map(this.renderNavItems);
 
     if (this.props.loggedIn) {
       return (
@@ -127,9 +130,15 @@ class NavDrawer extends Component {
 
           {navItems}
 
+          <Divider className={s.divider}/>
+
           <Subheader className={s.subheader}>Account</Subheader>
 
           {accountNavItems}
+
+          <div className={s.bottomNavContainer}>
+            {bottomNavItems}
+          </div>
 
         </Drawer>
       );
