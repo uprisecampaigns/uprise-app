@@ -201,7 +201,6 @@ class Header extends Component {
             <IconButton 
               iconStyle={iconButtonStyle}
               iconClassName='material-icons'
-              className={s.iconButton}
               onTouchTap={this.props.handleDrawerToggle}
             >menu</IconButton>
           </div>
