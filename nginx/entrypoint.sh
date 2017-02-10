@@ -2,7 +2,7 @@
 set -e
 
 rm /etc/nginx/conf.d/*
-envsubst '$$NGINX_HOST $$NGINX_PORT' < /opt/docker/conf.d/uprise.conf > /etc/nginx/conf.d/uprise.conf
+envsubst '$$NGINX_HOST $$NGINX_HTTP_PORT $$NGINX_HTTPS_PORT $$NODE_APP_HOST $$NODE_APP_PORT $$LETSENCRYPT_HOST $$LETSENCRYPT_PORT' < /opt/docker/conf.d/uprise.conf > /etc/nginx/conf.d/uprise.conf
 
 if [ "$PRODUCTION" = "true" ]
 then
@@ -32,7 +32,7 @@ then
 
 
   echo Letsencrypt ssl keys have been successfully obtained
-  envsubst '$$NGINX_HOST $$NGINX_PORT' < /opt/docker/conf.d/uprise-secure.conf > /etc/nginx/conf.d/uprise.conf 
+  envsubst '$$NGINX_HOST $$NGINX_HTTP_PORT $$NGINX_HTTPS_PORT $$NODE_APP_HOST $$NODE_APP_PORT $$LETSENCRYPT_HOST $$LETSENCRYPT_PORT' < /opt/docker/conf.d/uprise-secure.conf > /etc/nginx/conf.d/uprise.conf 
 
   echo Stopping background nginx
   # pkill nginx
