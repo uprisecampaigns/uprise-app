@@ -31,6 +31,10 @@ export default {
     require('./viewAllOrganize').default,
     require('./createCampaign').default,
 
+    // /search/
+    require('./search').default,
+    require('./searchOpportunities').default,
+
     // Wildcard routes, e.g. { path: '*', ... } (must go last)
     require('./notFound').default,
   ],

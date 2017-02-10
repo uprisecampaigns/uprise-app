@@ -1,0 +1,6 @@
+{
+  "name": "SearchOpportunitiesContainer",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./SearchOpportunitiesContainer.js"
+}
