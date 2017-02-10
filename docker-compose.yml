@@ -19,20 +19,29 @@ services:
     command: npm start
 
   nginx:
-    image: nginx
+    build: nginx
     restart: always
     ports:
       - "8080:80"
+      - "4443:443"
     volumes:
       - /www/public
       - ./nginx:/opt/docker
     volumes_from:
       - web
+      - letsencrypt
     links:
       - web:web
+      - letsencrypt:letsencrypt
     environment:
      - NGINX_HOST=localhost
-     - NGINX_PORT=80
+     - NGINX_HTTP_PORT=80
+     - NGINX_HTTPS_PORT=80
+     - NODE_APP_HOST=web
+     - NODE_APP_PORT=3000
+     - LETSENCRYPT_HOST=letsencrypt
+     - LETSENCRYPT_PORT=3000
+     - PRODUCTION=false
     entrypoint: /opt/docker/entrypoint.sh
 
   db:
@@ -45,3 +54,16 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - /data
+
+  letsencrypt:
+    image: quay.io/letsencrypt/letsencrypt:latest
+    command:  bash -c "sleep 6 && certbot certonly --standalone -d staging.uprise.me --text --agree-tos --email tech@uprise.org --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --renew-by-default --standalone-supported-challenges http-01"
+    entrypoint: ""
+    volumes:
+      - /etc/letsencrypt
+      - /var/lib/letsencrypt
+    ports:
+      - "80"
+      - "443"
+    environment:
+      - TERM=xterm
