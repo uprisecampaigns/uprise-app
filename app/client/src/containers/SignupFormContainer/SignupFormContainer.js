@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
+import { withApollo, graphql, compose } from 'react-apollo';
+
 import { attemptSignup } from 'actions/AuthActions';
 import isEmail from 'validator/lib/isEmail';
 import history from 'lib/history';
+import { EmailAvailable } from 'schemas/queries';
 
 import SignupForm from 'components/SignupForm';
 import PrivacyTerms from 'components/PrivacyTerms';
@@ -107,9 +110,7 @@ class SignupFormContainer extends Component {
   }
 
   formSubmit = async (event) => {
-    console.log(event);
     event.preventDefault();
-    console.log(this.state.firstName);
 
     this.hasErrors = false;
 
@@ -120,38 +121,25 @@ class SignupFormContainer extends Component {
 
     this.validatePasswords();
 
-    console.log('has errors: ' + this.hasErrors);
-
     if (!this.hasErrors) {
       try {
 
-        const response = await fetch('/api/checkEmailAvailability', {
-          method: 'POST',
-          credentials: 'include',
-          body: JSON.stringify({
-            "email": this.state.email
-          }),
-          headers: {
-            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-            'Content-Type': 'application/json',
-          },
+        const response = await this.props.client.query({
+          query: EmailAvailable,
+          variables: {
+            email: this.state.email
+          }
         });
 
-        const json = await response.json();
 
-        if (!json.error) {
-          if (json.available) {
-            this.setState({
-              page: 1
-            });
-          } else {
-            this.setState({
-              emailErrorText: 'Email already taken'
-            });
-          }
+        if (response.data.emailAvailable) {
+          this.setState({
+            page: 1
+          });
         } else {
-          //TODO: error handling?!?!
-          console.error(json.error);
+          this.setState({
+            emailErrorText: 'Email already taken'
+          });
         }
 
       } catch(err) {
@@ -197,6 +185,8 @@ class SignupFormContainer extends Component {
   }
 }
 
+const SignupFormContainerWithApollo = withApollo(SignupFormContainer);
+
 const mapStateToProps = (state) => {
   return {
     signupError: state.userAuthSession.error
@@ -204,4 +194,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps)(SignupFormContainer);
+export default connect(mapStateToProps)(SignupFormContainerWithApollo);

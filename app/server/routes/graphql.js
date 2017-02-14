@@ -1,4 +1,5 @@
 const graphqlHTTP = require('express-graphql');
+const assert = require('assert');
 const bodyParser = require('body-parser');
 const graphqlServer = require('graphql-server-express');
 const graphqlExpress = graphqlServer.graphqlExpress;
@@ -14,6 +15,9 @@ module.exports = (app) => {
 
   const root = {
     me: async (data, context) => {
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
 
       const user = await User.findOne({
         id: context.user.id
@@ -27,7 +31,22 @@ module.exports = (app) => {
       }
     },
 
+    emailAvailable: async (data, context) => {
+      const result = await User.findOne('email', data.email);
+      let available = true;
+
+      if (result) {
+        available = false;
+      }
+
+      return available;
+    },
+
     opportunity: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
 
       const opportunity = await Opportunity.findOne({
         id: data.id
@@ -44,6 +63,11 @@ module.exports = (app) => {
     },
 
     createOpportunity: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
       const opportunity = await Opportunity.create({
         ownerId: data.userId,
         title: data.title
@@ -60,7 +84,7 @@ module.exports = (app) => {
     }
   };
 
-  app.use('/api/graphql', authenticationMiddleware.isLoggedIn, graphqlExpress(req => ({
+  app.use('/api/graphql', graphqlExpress(req => ({
     schema: schema,
     rootValue: root,
     context: { user: req.user },

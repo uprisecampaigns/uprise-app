@@ -5,6 +5,7 @@ module.exports = buildSchema(`
   type Query {
     opportunity(id: String): OpportunityResult
     me: UserResult
+    emailAvailable(email: String): Boolean
   }
 
   type UserResult {

@@ -9,6 +9,7 @@ export const OpportunityQuery = gql`
   }
   
 `;
+
 export const MeQuery = gql`
   query MeQuery {
     me {
@@ -17,5 +18,11 @@ export const MeQuery = gql`
       email
       zip
     }
+  }
+`;
+
+export const EmailAvailable = gql`
+  query EmailAvailable($email: String!) {
+    emailAvailable(email:$email) 
   }
 `;
