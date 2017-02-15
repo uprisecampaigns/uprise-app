@@ -12,6 +12,62 @@ class Opportunity {
     return db.table('opportunities').where(...args).first();
   }
 
+  static async search(search) {
+    
+    const searchQuery = db('opportunities')
+      .select('*')
+      .where('deleted', false)
+      .modify( (qb) => {
+
+        if (search.tags) {
+
+          const tags = db('opportunities')
+            .select(db.raw('id, unnest(tags) tag'))
+            .as('tags');
+
+          qb.andWhere(function() {
+
+            search.tags.forEach( (searchTag) => {
+
+              const tagQuery = db.select('id')
+                .distinct()
+                .from(tags)
+                .whereRaw('tag % \'' + searchTag + '\'');
+
+              this.orWhere('id', 'in', tagQuery);
+            });
+          });
+        }
+
+        if (search.activities) {
+          qb.andWhere(function() {
+
+            const activities = db('activities')
+              .select('id', 'title', 'description')
+              .as('activities');
+
+            search.activities.forEach( (activity) => {
+
+              const activityQuery = db.select('opportunity_id')
+                .distinct()
+                .from('activities')
+                .innerJoin('opportunities_activities', 'activities.id', 'opportunities_activities.activity_id')
+                .where('title', activity);
+
+              this.orWhere('id', 'in', activityQuery);
+
+            });
+          });
+        }
+
+      });
+
+    console.log(searchQuery.toString());
+
+    const results = await searchQuery;
+    return results;
+  }
+
   static async create(options) {
 
     const user = await db.table('users').where('id', options.ownerId).first('id');

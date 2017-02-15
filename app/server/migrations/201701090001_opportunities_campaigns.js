@@ -1,6 +1,8 @@
 module.exports.up = async (knex, Promise) => {
   console.log('running migration 201701090001_opportunities_campaigns.js');
 
+  await knex.raw('CREATE EXTENSION IF NOT EXISTS "pg_trgm"')
+
   await knex.schema.createTable('campaigns', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
     table.timestamps(true, true);

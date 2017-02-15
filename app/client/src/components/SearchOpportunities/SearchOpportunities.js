@@ -15,7 +15,7 @@ class SearchOpportunities extends Component {
 
   render() {
     return (
-      <div>I am your search opportunities now</div>
+      <div>title: {this.props.title}</div>
     );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import { withApollo, graphql, compose } from 'react-apollo';
+import { withApollo } from 'react-apollo';
 
 import { attemptSignup } from 'actions/AuthActions';
 import isEmail from 'validator/lib/isEmail';
