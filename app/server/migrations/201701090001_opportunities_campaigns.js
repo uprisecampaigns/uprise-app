@@ -99,6 +99,9 @@ module.exports.up = async (knex, Promise) => {
 
     table.string('title');
 
+    table.timestamp('start_time');
+    table.timestamp('end_time');
+
     table.specificType('tags', 'text[]')
       .notNullable()
       .defaultTo(knex.raw("'{}'"))

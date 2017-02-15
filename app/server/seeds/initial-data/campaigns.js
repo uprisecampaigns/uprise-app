@@ -1,5 +1,5 @@
 
-module.exports = async (knex, userId) => {
+module.exports = async (knex, users) => {
   // Deletes ALL existing entries
   await knex('campaigns').del();
   await knex('types').del();
@@ -9,24 +9,20 @@ module.exports = async (knex, userId) => {
   await knex('campaigns_issue_areas').del();
   await knex('campaigns_levels').del();
 
-  const campaignRows = await knex('campaigns').insert({
+  const campaigns = await knex('campaigns').insert({
     title: 'People for Progress',
-    owner_id: userId,
+    owner_id: users[0].id,
     tags: ['#Progress', '#People']
   }, ['id']);
 
-  console.log(campaignRows);
-
-  const campaignId1 = campaignRows[0].id;
-
-  const levelIds = await knex('levels').insert([
+  const levels = await knex('levels').insert([
     { title: 'Federal' },
     { title: 'State' },
     { title: 'County, Regional' },
     { title: 'Local, Municipal' },
   ], ['id']);
 
-  const issueAreaIds = await knex('issue_areas').insert([
+  const issueAreas = await knex('issue_areas').insert([
     { title: 'Progressive - All' },
     { title: 'Government, Elections' },
     { title: 'Energy, Environment' },
@@ -39,28 +35,30 @@ module.exports = async (knex, userId) => {
     { title: 'Immigration' },
   ], ['id']);
 
-  const typeIds = await knex('types').insert([
+  const types = await knex('types').insert([
     { title: 'Candidate', description: 'Election' },
     { title: 'Ballot Initiative', description: 'Proposition/Referendum/Amendment' },
     { title: 'Lobbying', description: 'For or against a specific bill' },
     { title: 'Issue Advocacy', description: 'For or against an issue in general' },
   ], ['id']);
 
-  const campaignsLevelsIds = await knex('campaigns_levels').insert([
-    { campaign_id: campaignId1, level_id: levelIds[0].id },
-    { campaign_id: campaignId1, level_id: levelIds[3].id },
+  const campaignsLevels = await knex('campaigns_levels').insert([
+    { campaign_id: campaigns[0].id, level_id: levels[0].id },
+    { campaign_id: campaigns[0].id, level_id: levels[3].id },
   ], ['id']);
 
-  const campaignsIssueAreasIds = await knex('campaigns_issue_areas').insert([
-    { campaign_id: campaignId1, issue_area_id: issueAreaIds[0].id },
-    { campaign_id: campaignId1, issue_area_id: issueAreaIds[3].id },
-    { campaign_id: campaignId1, issue_area_id: issueAreaIds[4].id },
-    { campaign_id: campaignId1, issue_area_id: issueAreaIds[6].id },
+  const campaignsIssueAreas = await knex('campaigns_issue_areas').insert([
+    { campaign_id: campaigns[0].id, issue_area_id: issueAreas[0].id },
+    { campaign_id: campaigns[0].id, issue_area_id: issueAreas[3].id },
+    { campaign_id: campaigns[0].id, issue_area_id: issueAreas[4].id },
+    { campaign_id: campaigns[0].id, issue_area_id: issueAreas[6].id },
   ], ['id']);
 
-  const campaignsTypesIds = await knex('campaigns_types').insert([
-    { campaign_id: campaignId1, type_id: typeIds[0].id },
-    { campaign_id: campaignId1, type_id: typeIds[3].id },
+  const campaignsTypes = await knex('campaigns_types').insert([
+    { campaign_id: campaigns[0].id, type_id: types[0].id },
+    { campaign_id: campaigns[0].id, type_id: types[3].id },
   ], ['id']);
+
+  return { campaigns, levels, issueAreas, types };
 
 };

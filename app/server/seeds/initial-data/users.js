@@ -4,12 +4,12 @@ module.exports = async (knex) => {
   await knex('users').del();
   await knex('user_profiles').del();
 
-  const rows = await knex('users').insert({
+  const users = await knex('users').insert({
     email: 'test@uprise.org',
     zip: '12345',
   }, ['id']);
 
-  console.log(rows);
+  console.log(users);
 
-  return rows[0].id;
+  return users;
 };
