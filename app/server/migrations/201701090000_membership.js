@@ -6,6 +6,7 @@ module.exports.up = async (knex, Promise) => {
 
   await knex.schema.createTable('users', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
+    table.timestamps(true, true);
     table.string('email').unique();
     table.string('first_name');
     table.string('last_name');
@@ -22,36 +23,32 @@ module.exports.up = async (knex, Promise) => {
 
   await knex.schema.createTable('user_email_verifications', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
+    table.timestamps(true, true);
     table.string('token').unique().notNullable();
     table.boolean('used').notNullable().defaultTo(false);
-    table.timestamp('created_at').defaultTo(knex.fn.now());
     table.uuid('user_id').notNullable()
       .references('id').inTable('users')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE');
+      .onDelete('CASCADE');
   });
 
   await knex.schema.createTable('user_password_resets', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
+    table.timestamps(true, true);
     table.string('code').unique().notNullable();
     table.specificType('ip', 'inet').notNullable();
     table.boolean('used').notNullable().defaultTo(false);
-    table.timestamp('created_at').defaultTo(knex.fn.now());
     table.uuid('user_id').notNullable()
       .references('id').inTable('users')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE');
+      .onDelete('CASCADE');
   });
 
   await knex.schema.createTable('user_profiles', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
+    table.timestamps(true, true);
     table.string('display_name', 100);
     table.uuid('user_id').notNullable()
       .references('id').inTable('users')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+      .onDelete('CASCADE');
   });
 };
 
