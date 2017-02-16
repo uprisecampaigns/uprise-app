@@ -3,18 +3,40 @@ import React, { Component, PropTypes } from 'react';
 import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Toggle from 'material-ui/Toggle';
 
 import Link from 'components/Link';
 
-const SearchOpportunityInputs = ({ data, addTag, removeTag, handleInputChange }) => {
+import s from './SearchOpportunityInputs.scss';
 
-  const tags = data.tags.map( (tag, index) => {
+const SearchOpportunityInputs = ({ 
+  data, 
+  keywords, 
+  activities, 
+  addKeyword, 
+  removeKeyword, 
+  toggleActivity,
+  handleInputChange 
+}) => {
+
+  const activityToggles = activities.map( (activity, index) => {
+    return (
+      <Toggle 
+        className={s.toggle}
+        key={index}
+        label={activity.title}
+        onToggle={ (event, on) => { toggleActivity(on, activity.title) }}
+      />
+    );
+  });
+
+  const selectedKeywords = keywords.map( (keyword, index) => {
     return (
       <li 
         key={index}
-        onClick={ (event) => { removeTag(tag) }}
+        onClick={ (event) => { removeKeyword(keyword) }}
       >
-        {tag}
+        {keyword}
       </li>
     );
   });
@@ -22,18 +44,23 @@ const SearchOpportunityInputs = ({ data, addTag, removeTag, handleInputChange })
   return (
     <div>
       <TextField
-        floatingLabelText="New Tag"
-        value={data.tag}
-        onChange={ (event) => { handleInputChange(event, 'tag', event.target.value) } }
+        floatingLabelText="New Keyword"
+        value={data.keyword}
+        onChange={ (event) => { handleInputChange(event, 'keyword', event.target.value) } }
       />
       <RaisedButton 
-        onTouchTap={addTag} 
+        onTouchTap={addKeyword} 
         primary={false} 
-        label="Add Tag" 
+        label="Add Keyword" 
       />
       <div>
-        Tags:
-        <ul>{ tags }</ul>
+        Keywords:
+        <ul>{ selectedKeywords }</ul>
+      </div>
+
+      <h1>Activities</h1>
+      <div className={s.toggleContainer}>
+        { activityToggles }
       </div>
     </div>
   );
@@ -42,9 +69,12 @@ const SearchOpportunityInputs = ({ data, addTag, removeTag, handleInputChange })
 
 SearchOpportunityInputs.propTypes = {
   data: PropTypes.object.isRequired,
+  activities: PropTypes.array.isRequired,
+  keywords: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
-  addTag: PropTypes.func.isRequired,
-  removeTag: PropTypes.func.isRequired
+  addKeyword: PropTypes.func.isRequired,
+  removeKeyword: PropTypes.func.isRequired,
+  toggleActivity: PropTypes.func.isRequired,
 };
 
 export default SearchOpportunityInputs;

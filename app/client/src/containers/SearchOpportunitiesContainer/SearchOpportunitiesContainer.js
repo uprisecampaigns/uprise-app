@@ -2,7 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
 
-import { OpportunitiesQuery  } from 'schemas/queries';
+import { OpportunitiesQuery, ActivitiesQuery } from 'schemas/queries';
+
+import { addKeyword, removeKeyword,
+         addActivity, removeActivity } from 'actions/SearchOpportunitiesActions';
 
 import SearchOpportunityResults from 'components/SearchOpportunityResults';
 import SearchOpportunityInputs from 'components/SearchOpportunityInputs';
@@ -14,7 +17,26 @@ const withOpportunitiesQuery = graphql(OpportunitiesQuery, {
   }),
 });
 
+const withActivitiesQuery = graphql(ActivitiesQuery, {
+  props: ({ data }) => ({
+    activities: !data.loading && data.activities ? data.activities : []
+  }),
+});
+
 const OpportunityResultsWithData = withOpportunitiesQuery(SearchOpportunityResults);
+
+const mapSearchStateToProps = (state) => {
+  return {
+    keywords: state.opportunitiesSearch.keywords
+  };
+}
+
+const ConnectedOpportunitiesSearch = compose(
+  withActivitiesQuery,
+  connect(mapSearchStateToProps)
+)(SearchOpportunityInputs);
+
+// const OpportunitiesSearchWithActivities = withActivitiesQuery(SearchOpportunityInputs);
 
 class SearchOpportunitiesContainer extends Component {
   constructor(props) {
@@ -25,29 +47,28 @@ class SearchOpportunitiesContainer extends Component {
   };
 
   state = {
-    tag: '',
-    tags: [],
-    activities: [],
+    keyword: '',
   }
 
-  handleRemoveTag = (tagToDelete) => {
-    this.setState({ 
-      tags: this.state.tags.filter( (tag) => {
-        return tagToDelete !== tag;
-      }),
-    });
+  handleRemoveKeyword = (keywordToDelete) => {
+    this.props.dispatch(addKeyword(keywordToDelete));
   }
 
-  handleAddTag = () => {
-    if (this.state.tag.trim() !== '' &&
-        !this.state.tags.find(tag => tag.toLowerCase() === newTag.toLowerCase())) {
-      
-      const newTag = this.state.tag;
-      this.setState({ 
-        tags: this.state.tags.concat([newTag]),
-        tag: ''
-      });
+  handleToggleActivity = (on, activity) => {
+    if (on) {
+      this.props.dispatch(addActivity(activity));
+    } else {
+      this.props.dispatch(removeActivity(activity));
     }
+  }
+
+  handleAddKeyword = () => {
+    this.props.dispatch(addKeyword(this.state.keyword));
+
+    this.setState(Object.assign({},
+      this.state,
+      { keyword: '' }
+    ));
   }
 
   handleInputChange = (event, type, value) => {
@@ -62,14 +83,16 @@ class SearchOpportunitiesContainer extends Component {
       <div>
         <OpportunityResultsWithData
           search={{
-            tags: this.state.tags,
-            activities: this.state.activities
+            keywords: this.props.keywords,
+            activities: this.props.activities
           }}
         />
-        <SearchOpportunityInputs
+        <ConnectedOpportunitiesSearch 
+          search={{}}
           data={this.state}
-          addTag={this.handleAddTag}
-          removeTag={this.handleRemoveTag}
+          addKeyword={this.handleAddKeyword}
+          removeKeyword={this.handleRemoveKeyword}
+          toggleActivity={this.handleToggleActivity}
           handleInputChange={this.handleInputChange}
         />
       </div>
@@ -79,6 +102,8 @@ class SearchOpportunitiesContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    keywords: state.opportunitiesSearch.keywords,
+    activities: state.opportunitiesSearch.activities
   };
 }
 

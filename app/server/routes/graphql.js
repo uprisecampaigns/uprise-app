@@ -55,6 +55,19 @@ module.exports = (app) => {
       return opportunities;
     },
 
+    activities: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const activities = await Opportunity.listActivities(data.search);
+
+      console.log(activities);
+
+      return activities;
+    },
+
     createOpportunity: async (data, context) => {
 
       if (!context.user) {

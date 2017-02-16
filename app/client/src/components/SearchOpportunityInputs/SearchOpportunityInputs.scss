@@ -1,0 +1,10 @@
+@import '~styles/variables';
+
+.toggleContainer {
+  max-width: 250px;
+
+  .toggle {
+    text-transform: capitalize;
+  }
+}
+

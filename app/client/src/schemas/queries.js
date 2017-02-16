@@ -1,13 +1,12 @@
 import gql from 'graphql-tag';
 
 export const OpportunitiesQuery = gql`
-  
   query OpportunitiesQuery($search:OpportunitySearchInput) {
     opportunities(search:$search){
       title
       start_time
       end_time
-      tags
+      keywords
       location_name
       street_address
       street_address2
@@ -18,6 +17,16 @@ export const OpportunitiesQuery = gql`
     }
   }
 `;
+
+export const ActivitiesQuery = gql`
+  query ActivitiesQuery($search:ActivitySearchInput) {
+    activities(search:$search){
+      title
+      description
+    }
+  }
+`;
+
 
 export const MeQuery = gql`
   query MeQuery {
