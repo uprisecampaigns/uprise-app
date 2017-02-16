@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
-export const OpportunityQuery = gql`
+export const OpportunitiesQuery = gql`
   
-  query OpportunityQuery($search:OpportunitySearchInput) {
-    opportunity(search:$search){
+  query OpportunitiesQuery($search:OpportunitySearchInput) {
+    opportunities(search:$search){
       title
       start_time
       end_time

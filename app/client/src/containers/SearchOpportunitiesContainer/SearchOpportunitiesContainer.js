@@ -2,20 +2,19 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
 
-import { OpportunityQuery  } from 'schemas/queries';
+import { OpportunitiesQuery  } from 'schemas/queries';
 
-import SearchOpportunities from 'components/SearchOpportunities';
+import SearchOpportunityResults from 'components/SearchOpportunityResults';
+import SearchOpportunityInputs from 'components/SearchOpportunityInputs';
 
 
-const withOpportunitiesQuery = graphql(OpportunityQuery, {
+const withOpportunitiesQuery = graphql(OpportunitiesQuery, {
   props: ({ data }) => ({
-    opportunity: !data.loading && data.opportunity ? data.opportunity : {
-      title: 'loading'
-    }
+    opportunities: !data.loading && data.opportunities ? data.opportunities : []
   }),
 });
 
-const OpportunitiesWithData = withOpportunitiesQuery(SearchOpportunities);
+const OpportunityResultsWithData = withOpportunitiesQuery(SearchOpportunityResults);
 
 class SearchOpportunitiesContainer extends Component {
   constructor(props) {
@@ -25,11 +24,55 @@ class SearchOpportunitiesContainer extends Component {
   static propTypes = {
   };
 
+  state = {
+    tag: '',
+    tags: [],
+    activities: [],
+  }
+
+  handleRemoveTag = (tagToDelete) => {
+    this.setState({ 
+      tags: this.state.tags.filter( (tag) => {
+        return tagToDelete !== tag;
+      }),
+    });
+  }
+
+  handleAddTag = () => {
+    if (this.state.tag.trim() !== '' &&
+        !this.state.tags.find(tag => tag.toLowerCase() === newTag.toLowerCase())) {
+      
+      const newTag = this.state.tag;
+      this.setState({ 
+        tags: this.state.tags.concat([newTag]),
+        tag: ''
+      });
+    }
+  }
+
+  handleInputChange = (event, type, value) => {
+    this.setState(Object.assign({},
+      this.state,
+      { [type]: value }
+    ));
+  }
+
   render() {
     return (
-      <OpportunitiesWithData
-        title="Phone Bank Party"
-      />
+      <div>
+        <OpportunityResultsWithData
+          search={{
+            tags: this.state.tags,
+            activities: this.state.activities
+          }}
+        />
+        <SearchOpportunityInputs
+          data={this.state}
+          addTag={this.handleAddTag}
+          removeTag={this.handleRemoveTag}
+          handleInputChange={this.handleInputChange}
+        />
+      </div>
     );
   }
 }
