@@ -14,17 +14,17 @@ module.exports = buildSchema(`
     keywords: [String]
     activities: [String]
     campaign_name: [String]
-    type: [String]
-    level: [String]
+    types: [String]
+    levels: [String]
     issues: [String]
   }
 
-  input ActivitySearchInput {
-    title: String
-    keywords: [String]
+  type ActivityResult {
+    title: String!
+    description: String
   }
 
-  type ActivityResult {
+  type TypeResult {
     title: String!
     description: String
   }
@@ -45,7 +45,8 @@ module.exports = buildSchema(`
 
   type Query {
     opportunities(search: OpportunitySearchInput): [OpportunityResult]
-    activities(search: ActivitySearchInput): [ActivityResult]
+    activities: [ActivityResult]
+    types: [TypeResult]
     me: UserResult
     emailAvailable(email: String): Boolean
   }

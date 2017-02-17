@@ -2,28 +2,28 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
 
-import { OpportunitiesQuery, ActivitiesQuery } from 'schemas/queries';
+import { 
+  OpportunitiesQuery, 
+  ActivitiesQuery,
+  TypesQuery 
+} from 'schemas/queries';
 
-import { addKeyword, removeKeyword,
-         addActivity, removeActivity } from 'actions/SearchOpportunitiesActions';
+import { 
+  addSearchItem, removeSearchItem,
+} from 'actions/SearchOpportunitiesActions';
 
 import SearchOpportunityResults from 'components/SearchOpportunityResults';
 import SearchOpportunityInputs from 'components/SearchOpportunityInputs';
 
+const graphqlOptions = (collection) => {
+  return {
+    props: ({ data }) => ({
+      [collection]: !data.loading && data[collection] ? data[collection] : []
+    })
+  };
+};
 
-const withOpportunitiesQuery = graphql(OpportunitiesQuery, {
-  props: ({ data }) => ({
-    opportunities: !data.loading && data.opportunities ? data.opportunities : []
-  }),
-});
-
-const withActivitiesQuery = graphql(ActivitiesQuery, {
-  props: ({ data }) => ({
-    activities: !data.loading && data.activities ? data.activities : []
-  }),
-});
-
-const OpportunityResultsWithData = withOpportunitiesQuery(SearchOpportunityResults);
+const OpportunityResultsWithData = graphql(OpportunitiesQuery, graphqlOptions('opportunities'))(SearchOpportunityResults);
 
 const mapSearchStateToProps = (state) => {
   return {
@@ -32,11 +32,10 @@ const mapSearchStateToProps = (state) => {
 }
 
 const ConnectedOpportunitiesSearch = compose(
-  withActivitiesQuery,
+  graphql(ActivitiesQuery, graphqlOptions('activities')),
+  graphql(TypesQuery, graphqlOptions('types')),
   connect(mapSearchStateToProps)
 )(SearchOpportunityInputs);
-
-// const OpportunitiesSearchWithActivities = withActivitiesQuery(SearchOpportunityInputs);
 
 class SearchOpportunitiesContainer extends Component {
   constructor(props) {
@@ -51,19 +50,19 @@ class SearchOpportunitiesContainer extends Component {
   }
 
   handleRemoveKeyword = (keywordToDelete) => {
-    this.props.dispatch(addKeyword(keywordToDelete));
+    this.props.dispatch(removeSearchItem('keywords', keywordToDelete));
   }
 
-  handleToggleActivity = (on, activity) => {
+  handleToggle = (collectionName, on, value) => {
     if (on) {
-      this.props.dispatch(addActivity(activity));
+      this.props.dispatch(addSearchItem(collectionName, value));
     } else {
-      this.props.dispatch(removeActivity(activity));
+      this.props.dispatch(removeSearchItem(collectionName, value));
     }
   }
 
   handleAddKeyword = () => {
-    this.props.dispatch(addKeyword(this.state.keyword));
+    this.props.dispatch(addSearchItem('keywords', this.state.keyword));
 
     this.setState(Object.assign({},
       this.state,
@@ -81,19 +80,20 @@ class SearchOpportunitiesContainer extends Component {
   render() {
     return (
       <div>
-        <OpportunityResultsWithData
-          search={{
-            keywords: this.props.keywords,
-            activities: this.props.activities
-          }}
-        />
         <ConnectedOpportunitiesSearch 
-          search={{}}
           data={this.state}
           addKeyword={this.handleAddKeyword}
           removeKeyword={this.handleRemoveKeyword}
-          toggleActivity={this.handleToggleActivity}
+          handleToggle={this.handleToggle}
           handleInputChange={this.handleInputChange}
+        />
+
+        <OpportunityResultsWithData
+          search={{
+            keywords: this.props.keywords,
+            types: this.props.types,
+            activities: this.props.activities
+          }}
         />
       </div>
     );
@@ -103,7 +103,8 @@ class SearchOpportunitiesContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     keywords: state.opportunitiesSearch.keywords,
-    activities: state.opportunitiesSearch.activities
+    types: state.opportunitiesSearch.types,
+    activities: state.opportunitiesSearch.activities,
   };
 }
 

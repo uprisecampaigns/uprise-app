@@ -12,23 +12,26 @@ import s from './SearchOpportunityInputs.scss';
 const SearchOpportunityInputs = ({ 
   data, 
   keywords, 
+  types, 
   activities, 
   addKeyword, 
   removeKeyword, 
-  toggleActivity,
+  handleToggle,
   handleInputChange 
 }) => {
 
-  const activityToggles = activities.map( (activity, index) => {
-    return (
-      <Toggle 
-        className={s.toggle}
-        key={index}
-        label={activity.title}
-        onToggle={ (event, on) => { toggleActivity(on, activity.title) }}
-      />
-    );
-  });
+  const toggles = (collectionName, collection) => {
+    return collection.map( (item, index) => {
+      return (
+        <Toggle 
+          className={s.toggle}
+          key={index}
+          label={item.title}
+          onToggle={ (event, on) => { handleToggle(collectionName, on, item.title) }}
+        />
+      );
+    });
+  };
 
   const selectedKeywords = keywords.map( (keyword, index) => {
     return (
@@ -58,9 +61,14 @@ const SearchOpportunityInputs = ({
         <ul>{ selectedKeywords }</ul>
       </div>
 
+      <h1>Types</h1>
+      <div className={s.toggleContainer}>
+        { toggles('types', types) }
+      </div>
+
       <h1>Activities</h1>
       <div className={s.toggleContainer}>
-        { activityToggles }
+        { toggles('activities', activities) }
       </div>
     </div>
   );
@@ -70,11 +78,12 @@ const SearchOpportunityInputs = ({
 SearchOpportunityInputs.propTypes = {
   data: PropTypes.object.isRequired,
   activities: PropTypes.array.isRequired,
+  types: PropTypes.array.isRequired,
   keywords: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   addKeyword: PropTypes.func.isRequired,
   removeKeyword: PropTypes.func.isRequired,
-  toggleActivity: PropTypes.func.isRequired,
+  handleToggle: PropTypes.func.isRequired,
 };
 
 export default SearchOpportunityInputs;

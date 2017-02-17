@@ -1,15 +1,18 @@
-import { ADD_KEYWORD, REMOVE_KEYWORD,
-         ADD_ACTIVITY, REMOVE_ACTIVITY } from 'actions/SearchOpportunitiesActions.js';
+import { 
+  ADD_SEARCH_ITEM, 
+  REMOVE_SEARCH_ITEM,
+} from 'actions/SearchOpportunitiesActions.js';
 
-const defaultStartState = { keywords: [], 
-                            activities: [], 
-                          }
+const defaultStartState = { 
+  keywords: [], 
+  activities: [], 
+  types: [], 
+};
 
 export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStartState, action) {
   switch (action.type){
    
-    case ADD_KEYWORD:
-    case ADD_ACTIVITY:
+    case ADD_SEARCH_ITEM:
       const collection = Array.from(searchOpportunitiesState[action.collection]);
 
       if (action.value.trim() !== '' &&
@@ -21,8 +24,7 @@ export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStar
         });
       }
 
-    case REMOVE_KEYWORD:
-    case REMOVE_ACTIVITY:
+    case ADD_SEARCH_ITEM:
       return Object.assign({}, searchOpportunitiesState, { 
         [action.collection]: searchOpportunitiesState[action.collection].filter( (item) => {
           return item !== action.value;
@@ -32,4 +34,4 @@ export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStar
     default: 
       return searchOpportunitiesState;
   }
-}
+};

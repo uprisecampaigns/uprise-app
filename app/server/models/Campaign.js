@@ -6,15 +6,15 @@ const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
 
-class Opportunity {
+class Campaign {
 
   static findOne(...args) {
-    return db.table('opportunities').where(...args).first();
+    return db.table('campaigns').where(...args).first();
   }
 
   static async search(search) {
     
-    const searchQuery = db('opportunities')
+    const searchQuery = db('campaigns')
       .select('*')
       .where('deleted', false)
       .modify( (qb) => {
@@ -22,7 +22,7 @@ class Opportunity {
         if (search) {
           if (search.keywords) {
 
-            const tags = db('opportunities')
+            const tags = db('campaigns')
               .select(db.raw('id, unnest(tags) tag'))
               .as('tags');
 
@@ -49,27 +49,6 @@ class Opportunity {
             });
           }
 
-          if (search.activities) {
-            qb.andWhere(function() {
-
-              const activities = db('activities')
-                .select('id', 'title', 'description')
-                .as('activities');
-
-              search.activities.forEach( (activity) => {
-
-                const activityQuery = db.select('opportunity_id')
-                  .distinct()
-                  .from('activities')
-                  .innerJoin('opportunities_activities', 'activities.id', 'opportunities_activities.activity_id')
-                  .where('title', activity);
-
-                this.orWhere('id', 'in', activityQuery);
-
-              });
-            });
-          }
-
           if (search.types) {
             qb.andWhere(function() {
 
@@ -82,16 +61,13 @@ class Opportunity {
                 const typeQuery = db.select('opportunity_id')
                   .distinct()
                   .from('types')
-                  .innerJoin('opportunities_types', 'types.id', 'opportunities_types.type_id')
+                  .innerJoin('campaigns_types', 'types.id', 'campaigns_types.type_id')
                   .where('title', type);
 
                 this.orWhere('id', 'in', typeQuery);
-
               });
             });
           }
-
-
         }
       });
 
@@ -102,9 +78,9 @@ class Opportunity {
     return results;
   }
 
-  static async listActivities(search) {
+  static async listTypes(search) {
        
-    const searchQuery = db('activities')
+    const searchQuery = db('types')
       .select('*')
       .where('deleted', false)
       .modify( (qb) => {
@@ -129,22 +105,6 @@ class Opportunity {
 
     return results;
   }
-
-  static async create(options) {
-
-    const user = await db.table('users').where('id', options.ownerId).first('id');
-
-    if (user) {
-      const opportunity = {
-        title: options.title,
-        owner_id: options.ownerId
-      }
-
-      const opportunityResult = await db.table('opportunities').insert(opportunity, ['id', 'title']).first();
-
-      return opportunityResult;
-    }
-  }
 }
 
-module.exports = Opportunity;
+module.exports = Campaign;

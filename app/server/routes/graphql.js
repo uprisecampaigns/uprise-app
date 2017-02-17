@@ -9,6 +9,7 @@ const schema = require('../schema');
 const authenticationMiddleware = require('middlewares/authentication.js');
 
 const Opportunity = require('models/Opportunity');
+const Campaign = require('models/Campaign');
 const User = require('models/User');
 
 module.exports = (app) => {
@@ -49,9 +50,7 @@ module.exports = (app) => {
       }
 
       const opportunities = await Opportunity.search(data.search);
-
       console.log(opportunities);
-
       return opportunities;
     },
 
@@ -62,10 +61,19 @@ module.exports = (app) => {
       }
 
       const activities = await Opportunity.listActivities(data.search);
-
       console.log(activities);
-
       return activities;
+    },
+
+    types: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const types = await Campaign.listTypes(data.search);
+      console.log(types);
+      return types;
     },
 
     createOpportunity: async (data, context) => {

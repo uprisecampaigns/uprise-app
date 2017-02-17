@@ -19,14 +19,22 @@ export const OpportunitiesQuery = gql`
 `;
 
 export const ActivitiesQuery = gql`
-  query ActivitiesQuery($search:ActivitySearchInput) {
-    activities(search:$search){
+  query ActivitiesQuery {
+    activities {
       title
       description
     }
   }
 `;
 
+export const TypesQuery = gql`
+  query TypesQuery {
+    types {
+      title
+      description
+    }
+  }
+`;
 
 export const MeQuery = gql`
   query MeQuery {
