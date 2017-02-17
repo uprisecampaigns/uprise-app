@@ -105,6 +105,33 @@ class Campaign {
 
     return results;
   }
+
+  static async listLevels(search) {
+       
+    const searchQuery = db('levels')
+      .select('*')
+      .where('deleted', false)
+      .modify( (qb) => {
+
+        if (search) {
+          if (search.keywords) {
+            qb.andWhere(function() {
+              search.keywords.forEach( (keyword) => {
+                this.orWhere(db.raw('title % \'' + keyword + '\''));
+              });
+            });
+          }
+
+          if (search.title) {
+            qb.orWhere(db.raw('title % \'' + search.title + '\''));
+          }
+        }
+      });
+
+    const results = await searchQuery;
+
+    return results;
+  }
 }
 
 module.exports = Campaign;

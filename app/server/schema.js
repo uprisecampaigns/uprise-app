@@ -29,6 +29,10 @@ module.exports = buildSchema(`
     description: String
   }
 
+  type LevelResult {
+    title: String!
+  }
+
   type OpportunityResult {
     title: String
     start_time: String
@@ -47,6 +51,7 @@ module.exports = buildSchema(`
     opportunities(search: OpportunitySearchInput): [OpportunityResult]
     activities: [ActivityResult]
     types: [TypeResult]
+    levels: [LevelResult]
     me: UserResult
     emailAvailable(email: String): Boolean
   }

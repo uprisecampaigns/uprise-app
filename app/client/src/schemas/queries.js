@@ -27,6 +27,14 @@ export const ActivitiesQuery = gql`
   }
 `;
 
+export const LevelsQuery = gql`
+  query LevelsQuery {
+    levels {
+      title
+    }
+  }
+`;
+
 export const TypesQuery = gql`
   query TypesQuery {
     types {

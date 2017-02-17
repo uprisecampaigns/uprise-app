@@ -5,7 +5,8 @@ import { graphql, compose } from 'react-apollo';
 import { 
   OpportunitiesQuery, 
   ActivitiesQuery,
-  TypesQuery 
+  TypesQuery,
+  LevelsQuery,
 } from 'schemas/queries';
 
 import { 
@@ -27,13 +28,17 @@ const OpportunityResultsWithData = graphql(OpportunitiesQuery, graphqlOptions('o
 
 const mapSearchStateToProps = (state) => {
   return {
-    keywords: state.opportunitiesSearch.keywords
+    selectedKeywords: state.opportunitiesSearch.keywords,
+    selectedTypes: state.opportunitiesSearch.types,
+    selectedLevels: state.opportunitiesSearch.levels,
+    selectedActivities: state.opportunitiesSearch.activities
   };
 }
 
-const ConnectedOpportunitiesSearch = compose(
+const ConnectedOpportunitiesSearchInputs = compose(
   graphql(ActivitiesQuery, graphqlOptions('activities')),
   graphql(TypesQuery, graphqlOptions('types')),
+  graphql(LevelsQuery, graphqlOptions('levels')),
   connect(mapSearchStateToProps)
 )(SearchOpportunityInputs);
 
@@ -44,10 +49,6 @@ class SearchOpportunitiesContainer extends Component {
 
   static propTypes = {
   };
-
-  state = {
-    keyword: '',
-  }
 
   handleRemoveKeyword = (keywordToDelete) => {
     this.props.dispatch(removeSearchItem('keywords', keywordToDelete));
@@ -61,29 +62,22 @@ class SearchOpportunitiesContainer extends Component {
     }
   }
 
-  handleAddKeyword = () => {
-    this.props.dispatch(addSearchItem('keywords', this.state.keyword));
-
-    this.setState(Object.assign({},
-      this.state,
-      { keyword: '' }
-    ));
+  handleAddSelectedItem = (collectionName, value) => {
+    this.props.dispatch(addSearchItem(collectionName, value));
   }
 
-  handleInputChange = (event, type, value) => {
-    this.setState(Object.assign({},
-      this.state,
-      { [type]: value }
-    ));
+
+  handleRemoveSelectedItem = (collectionName, value) => {
+    this.props.dispatch(removeSearchItem(collectionName, value));
   }
 
   render() {
     return (
       <div>
-        <ConnectedOpportunitiesSearch 
+        <ConnectedOpportunitiesSearchInputs 
           data={this.state}
-          addKeyword={this.handleAddKeyword}
-          removeKeyword={this.handleRemoveKeyword}
+          addSelectedItem={this.handleAddSelectedItem}
+          removeSelectedItem={this.handleRemoveSelectedItem}
           handleToggle={this.handleToggle}
           handleInputChange={this.handleInputChange}
         />
