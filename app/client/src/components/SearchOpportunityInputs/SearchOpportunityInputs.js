@@ -1,9 +1,23 @@
 
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux'
+import { graphql, compose } from 'react-apollo';
 import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
+
+import { 
+  OpportunitiesQuery, 
+  ActivitiesQuery,
+  TypesQuery,
+  LevelsQuery,
+} from 'schemas/queries';
+
+import { 
+  addSearchItem, removeSearchItem,
+} from 'actions/SearchOpportunitiesActions';
+
 
 import Link from 'components/Link';
 import TogglesList from 'components/TogglesList';
@@ -87,24 +101,47 @@ SelectedItemsContainer.PropTypes = {
   removeItem: PropTypes.func.isRequired
 }
 
-class SearchOpportunityInputs extends Component {
+const graphqlOptions = (collection) => {
+  return {
+    props: ({ data }) => ({
+      collection: !data.loading && data[collection] ? data[collection] : []
+    })
+  };
+};
+
+const TypesTogglesList = compose(
+  graphql(TypesQuery, graphqlOptions('types')),
+  connect((state) => ({ selectedCollection: state.opportunitiesSearch.types }))
+)(TogglesList);
+
+const LevelsTogglesList = compose(
+  graphql(LevelsQuery, graphqlOptions('levels')),
+  connect((state) => ({ selectedCollection: state.opportunitiesSearch.levels }))
+)(TogglesList);
+
+const ActivitiesTogglesList = compose(
+  graphql(ActivitiesQuery, graphqlOptions('activities')),
+  connect((state) => ({ selectedCollection: state.opportunitiesSearch.activities }))
+)(TogglesList);
+
+const SelectedKeywordsContainer = connect((state) => { 
+  return { items: state.opportunitiesSearch.keywords };
+})(SelectedItemsContainer);
+
+const SelectedActivitiesContainer = connect((state) => { 
+  return { items: state.opportunitiesSearch.activities };
+})(SelectedItemsContainer);
+
+class SearchOpportunityInputs extends React.PureComponent {
   constructor(props) {
     super(props);
   }
 
   static propTypes = {
-    activities: PropTypes.array.isRequired,
-    types: PropTypes.array.isRequired,
-    levels: PropTypes.array.isRequired,
-    selectedKeywords: PropTypes.array.isRequired,
-    selectedActivities: PropTypes.array.isRequired,
-    selectedTypes: PropTypes.array.isRequired,
-    selectedLevels: PropTypes.array.isRequired,
     addSelectedItem: PropTypes.func.isRequired,
     removeSelectedItem: PropTypes.func.isRequired,
     handleToggle: PropTypes.func.isRequired,
   };
-
 
   removeSelectedItem = (collectionName, item) => {
     this.props.handleToggle(collectionName, false, item);
@@ -113,13 +150,6 @@ class SearchOpportunityInputs extends Component {
   render() {
 
     const { 
-      activities, 
-      levels, 
-      types, 
-      selectedKeywords,
-      selectedActivities,
-      selectedTypes,
-      selectedLevels,
       handleToggle,
       addSelectedItem,
       removeSelectedItem,
@@ -129,17 +159,15 @@ class SearchOpportunityInputs extends Component {
       <div>
         <div>
           Keywords:
-          <SelectedItemsContainer
+          <SelectedKeywordsContainer
             collectionName="keywords"
-            items={selectedKeywords}
             removeItem={removeSelectedItem}
           />
         </div>
         <div>
           Activities:
-          <SelectedItemsContainer
+          <SelectedActivitiesContainer
             collectionName="activities"
-            items={selectedActivities}
             removeItem={removeSelectedItem}
           />
         </div>
@@ -153,31 +181,24 @@ class SearchOpportunityInputs extends Component {
 
         <h1>Campaign Type</h1>
         <div className={s.toggleContainer}>
-          <TogglesList 
+          <TypesTogglesList 
             collectionName="types" 
-            collection={types}
-            selectedCollection={selectedTypes}
             handleToggle={handleToggle}
           />
         </div>
 
         <h1>Level</h1>
         <div className={s.toggleContainer}>
-          <TogglesList 
+          <LevelsTogglesList 
             collectionName="levels" 
-            collection={levels}
-            selectedCollection={selectedLevels}
             handleToggle={handleToggle}
           />
         </div>
 
-
         <h1>Activities</h1>
         <div className={s.toggleContainer}>
-          <TogglesList 
+          <ActivitiesTogglesList 
             collectionName="activities" 
-            collection={activities}
-            selectedCollection={selectedActivities}
             handleToggle={handleToggle}
           />
         </div>
@@ -185,6 +206,5 @@ class SearchOpportunityInputs extends Component {
     );
   }
 };
-
 
 export default SearchOpportunityInputs;

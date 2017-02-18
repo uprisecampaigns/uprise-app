@@ -66,7 +66,6 @@ class SearchOpportunitiesContainer extends Component {
     this.props.dispatch(addSearchItem(collectionName, value));
   }
 
-
   handleRemoveSelectedItem = (collectionName, value) => {
     this.props.dispatch(removeSearchItem(collectionName, value));
   }
@@ -74,8 +73,7 @@ class SearchOpportunitiesContainer extends Component {
   render() {
     return (
       <div>
-        <ConnectedOpportunitiesSearchInputs 
-          data={this.state}
+        <SearchOpportunityInputs 
           addSelectedItem={this.handleAddSelectedItem}
           removeSelectedItem={this.handleRemoveSelectedItem}
           handleToggle={this.handleToggle}
