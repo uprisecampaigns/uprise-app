@@ -183,6 +183,8 @@ class SearchOpportunityInputs extends React.PureComponent {
         <div className={s.toggleContainer}>
           <TypesTogglesList 
             collectionName="types" 
+            displayPropName="title"
+            keyPropName="title"
             handleToggle={handleToggle}
           />
         </div>
@@ -191,6 +193,8 @@ class SearchOpportunityInputs extends React.PureComponent {
         <div className={s.toggleContainer}>
           <LevelsTogglesList 
             collectionName="levels" 
+            displayPropName="title"
+            keyPropName="title"
             handleToggle={handleToggle}
           />
         </div>
@@ -199,6 +203,8 @@ class SearchOpportunityInputs extends React.PureComponent {
         <div className={s.toggleContainer}>
           <ActivitiesTogglesList 
             collectionName="activities" 
+            displayPropName="description"
+            keyPropName="title"
             handleToggle={handleToggle}
           />
         </div>

@@ -12,6 +12,8 @@ class TogglesList extends React.PureComponent {
 
   static propTypes = {
     collectionName: PropTypes.string.isRequired,
+    keyPropName: PropTypes.string.isRequired,
+    displayPropName: PropTypes.string.isRequired,
     collection: PropTypes.array.isRequired,
     selectedCollection: PropTypes.array.isRequired,
     handleToggle: PropTypes.func.isRequired,
@@ -19,18 +21,21 @@ class TogglesList extends React.PureComponent {
 
   render() {
 
-    const { collectionName, collection, selectedCollection, handleToggle } = this.props;
+    const { 
+      collectionName, displayPropName, keyPropName, 
+      collection, selectedCollection, handleToggle 
+    } = this.props;
 
     const toggles = (collectionName, collection) => {
       return collection.map( (item, index) => {
-        const selected = (selectedCollection.includes(item.title));
+        const selected = (selectedCollection.includes(item[keyPropName]));
         return (
           <Toggle 
             className={s.toggle}
             key={index}
             toggled={selected}
-            label={item.title}
-            onToggle={ (event, on) => { handleToggle(collectionName, on, item.title) }}
+            label={item[displayPropName]}
+            onToggle={ (event, on) => { handleToggle(collectionName, on, item[keyPropName]) }}
           />
         );
       });
