@@ -6,9 +6,11 @@ import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Chip from 'material-ui/Chip';
+import AutoComplete from 'material-ui/AutoComplete';
 
 import { 
   OpportunitiesQuery, 
+  CampaignsQuery, 
   ActivitiesQuery,
   TypesQuery,
   LevelsQuery,
@@ -38,6 +40,7 @@ class InputWithButton extends React.PureComponent {
 
   static propTypes = {
     collectionName: PropTypes.string.isRequired,
+    collectionToSearch: PropTypes.array,
     addItem: PropTypes.func.isRequired,
     inputLabel: PropTypes.string.isRequired,
     buttonLabel: PropTypes.string.isRequired,
@@ -50,8 +53,13 @@ class InputWithButton extends React.PureComponent {
     ));
   }
 
-  addItem = () => {
-    this.props.addItem(this.props.collectionName, this.state.value);
+  addItem = (event, item) => {
+
+    if (item) {
+      this.props.addItem(this.props.collectionName, this.state.value);
+    } else {
+      this.props.addItem(this.props.collectionName, this.state.value);
+    }
 
     this.setState(Object.assign({},
       this.state,
@@ -60,18 +68,38 @@ class InputWithButton extends React.PureComponent {
   }
 
   render() {
+
+    const { collectionToSearch, inputLabel, ...props } = this.props;
+
+    const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
+      <AutoComplete
+        floatingLabelText={inputLabel}
+        searchText={this.state.value}
+        onUpdateInput={this.handleInputChange}
+        onNewRequest={(item) => this.addItem(undefined, item)} // TODO: clean this up
+        dataSource={collectionToSearch}
+        openOnFocus={true}
+        filter={(searchText, item) => searchText !== '' && item.toLowerCase().includes(searchText)}
+      />
+    ) : (
+      <TextField
+        floatingLabelText={inputLabel}
+        value={this.state.value}
+        onChange={ (event) => { this.handleInputChange(event.target.value) } }
+      />
+    );
+
     return (
       <div>
-        <TextField
-          floatingLabelText={this.props.inputLabel}
-          value={this.state.value}
-          onChange={ (event) => { this.handleInputChange(event.target.value) } }
-        />
-        <RaisedButton 
-          onTouchTap={this.addItem} 
-          primary={false} 
-          label={this.props.buttonLabel} 
-        />
+        <form onSubmit={this.addItem}>
+          {input}
+          <RaisedButton 
+            onTouchTap={this.addItem} 
+            type="submit"
+            primary={false} 
+            label={props.buttonLabel} 
+          />
+        </form>
       </div>
     )
   }
@@ -125,7 +153,6 @@ const ActivitiesTogglesList = compose(
   connect((state) => ({ selectedCollection: state.opportunitiesSearch.activities }))
 )(TogglesList);
 
-
 const TypesTogglesList = compose(
   graphql(TypesQuery, graphqlOptions('types')),
   connect((state) => ({ selectedCollection: state.opportunitiesSearch.types }))
@@ -149,6 +176,10 @@ const SelectedActivitiesContainer = connect((state) => {
   return { items: state.opportunitiesSearch.activities };
 })(SelectedItemsContainer);
 
+const SelectedCampaignNamesContainer = connect((state) => { 
+  return { items: state.opportunitiesSearch.campaignNames };
+})(SelectedItemsContainer);
+
 const SelectedTypesContainer = connect((state) => { 
   return { items: state.opportunitiesSearch.types };
 })(SelectedItemsContainer);
@@ -160,6 +191,14 @@ const SelectedLevelsContainer = connect((state) => {
 const SelectedIssueAreasContainer = connect((state) => { 
   return { items: state.opportunitiesSearch.issueAreas };
 })(SelectedItemsContainer);
+
+
+const CampaignNameSearch = graphql(CampaignsQuery, {
+  props: ({ data }) => ({
+    collectionToSearch: !data.loading && data.campaigns ? 
+      data.campaigns.map( (campaign) => campaign.title) : []
+  })
+})(InputWithButton);
 
 class SearchOpportunityInputs extends React.PureComponent {
   constructor(props) {
@@ -211,6 +250,17 @@ class SearchOpportunityInputs extends React.PureComponent {
           </div>
 
           <div className={s.searchContainer}>
+            <Accordion title="Campaign Name">
+              <CampaignNameSearch
+                collectionName="campaignNames"
+                inputLabel="campaign name"
+                buttonLabel="Add to Search >> "
+                addItem={addSelectedItem}
+              />
+            </Accordion>
+          </div>
+
+          <div className={s.searchContainer}>
             <Accordion title="Campaign Type">
               <TypesTogglesList 
                 collectionName="types" 
@@ -255,6 +305,12 @@ class SearchOpportunityInputs extends React.PureComponent {
           <div>
             <SelectedActivitiesContainer
               collectionName="activities"
+              removeItem={removeSelectedItem}
+            />
+          </div>
+          <div>
+            <SelectedCampaignNamesContainer
+              collectionName="campaignNames"
               removeItem={removeSelectedItem}
             />
           </div>

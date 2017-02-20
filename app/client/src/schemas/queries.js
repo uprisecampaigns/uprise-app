@@ -1,5 +1,13 @@
 import gql from 'graphql-tag';
 
+export const CampaignsQuery = gql`
+  query CampaignsQuery($search:CampaignSearchInput) {
+    campaigns(search:$search){
+      title
+    }
+  }
+`;
+
 export const OpportunitiesQuery = gql`
   query OpportunitiesQuery($search:OpportunitySearchInput) {
     opportunities(search:$search){

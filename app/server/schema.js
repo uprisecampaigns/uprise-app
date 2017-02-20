@@ -10,15 +10,6 @@ module.exports = buildSchema(`
     zip: String
   }
 
-  input OpportunitySearchInput {
-    keywords: [String]
-    activities: [String]
-    campaignName: [String]
-    types: [String]
-    levels: [String]
-    issueAreas: [String]
-  }
-
   type ActivityResult {
     title: String!
     description: String
@@ -37,6 +28,12 @@ module.exports = buildSchema(`
     title: String!
   }
 
+  type CampaignResult {
+    title: String
+    owner_email: String
+    keywords: [String]
+  }
+
   type OpportunityResult {
     title: String
     start_time: String
@@ -51,8 +48,27 @@ module.exports = buildSchema(`
     location_notes: String
   }
 
+  input CampaignSearchInput {
+    title: [String]
+    keywords: [String]
+    types: [String]
+    levels: [String]
+    issueAreas: [String]
+  }
+
+  input OpportunitySearchInput {
+    keywords: [String]
+    activities: [String]
+    campaignNames: [String]
+    types: [String]
+    levels: [String]
+    issueAreas: [String]
+  }
+
+
   type Query {
     opportunities(search: OpportunitySearchInput): [OpportunityResult]
+    campaigns(search: CampaignSearchInput): [CampaignResult]
     activities: [ActivityResult]
     types: [TypeResult]
     levels: [LevelResult]

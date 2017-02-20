@@ -69,6 +69,7 @@ class SearchOpportunitiesContainer extends Component {
             types: this.props.types,
             levels: this.props.levels,
             issueAreas: this.props.issueAreas,
+            campaignNames: this.props.campaignNames,
           }}
         />
       </div>
@@ -81,6 +82,7 @@ const mapStateToProps = (state) => {
     keywords: state.opportunitiesSearch.keywords,
     types: state.opportunitiesSearch.types,
     activities: state.opportunitiesSearch.activities,
+    campaignNames: state.opportunitiesSearch.campaignNames,
     issueAreas: state.opportunitiesSearch.issueAreas,
     levels: state.opportunitiesSearch.levels,
   };

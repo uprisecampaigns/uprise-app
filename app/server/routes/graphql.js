@@ -54,6 +54,18 @@ module.exports = (app) => {
       return opportunities;
     },
 
+    campaigns: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const campaigns = await Campaign.search(data.search);
+      console.log(campaigns);
+      return campaigns;
+    },
+
+
     activities: async (data, context) => {
 
       if (!context.user) {

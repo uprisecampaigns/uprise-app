@@ -49,6 +49,27 @@ class Opportunity {
             });
           }
 
+          if (search.campaignNames) {
+            qb.andWhere(function() {
+
+              const campaigns = db('campaigns')
+                .select('id', 'title', 'description')
+                .as('campaigns');
+
+              search.campaignNames.forEach( (campaignName) => {
+
+                const campaignQuery = db.select('id')
+                  .distinct()
+                  .from('campaigns')
+                  .where(db.raw('title % \'' + campaignName + '\''));
+
+                this.orWhere('campaign_id', 'in', campaignQuery);
+
+              });
+            });
+          }
+
+ 
           if (search.activities) {
             qb.andWhere(function() {
 

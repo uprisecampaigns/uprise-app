@@ -20,6 +20,17 @@ class Campaign {
       .modify( (qb) => {
 
         if (search) {
+
+          if (search.titles) {
+            qb.andWhere(function() {
+
+              search.titles.forEach( (title) => {
+                this.orWhere(db.raw('title % \'' + title + '\''));
+
+              });
+            });
+          }
+
           if (search.keywords) {
 
             const tags = db('campaigns')
