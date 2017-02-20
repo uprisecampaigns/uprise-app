@@ -4,13 +4,6 @@ import FontIcon from 'material-ui/FontIcon';
 
 import s from './Accordion.scss';
 
-function isLeftClickEvent(event) {
-  return event.button === 0;
-}
-
-function isModifiedEvent(event) {
-  return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
-}
 
 class Accordion extends React.Component {
 
