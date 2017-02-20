@@ -53,13 +53,13 @@ class InputWithButton extends React.PureComponent {
     ));
   }
 
-  addItem = (event, item) => {
+  addItem = (event) => {
 
-    if (item) {
-      this.props.addItem(this.props.collectionName, this.state.value);
-    } else {
-      this.props.addItem(this.props.collectionName, this.state.value);
+    if (typeof event === 'object' && typeof event.preventDefault === 'function') {
+      event.preventDefault();
     }
+
+    this.props.addItem(this.props.collectionName, this.state.value);
 
     this.setState(Object.assign({},
       this.state,
@@ -76,10 +76,10 @@ class InputWithButton extends React.PureComponent {
         floatingLabelText={inputLabel}
         searchText={this.state.value}
         onUpdateInput={this.handleInputChange}
-        onNewRequest={(item) => this.addItem(undefined, item)} // TODO: clean this up
+        onNewRequest={(item) => this.addItem()} 
         dataSource={collectionToSearch}
         openOnFocus={true}
-        filter={(searchText, item) => searchText !== '' && item.toLowerCase().includes(searchText)}
+        filter={(searchText, item) => searchText !== '' && item.toLowerCase().includes(searchText.toLowerCase())}
       />
     ) : (
       <TextField
