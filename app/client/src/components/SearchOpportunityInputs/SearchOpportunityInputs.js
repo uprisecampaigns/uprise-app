@@ -5,7 +5,7 @@ import { graphql, compose } from 'react-apollo';
 import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
+import Chip from 'material-ui/Chip';
 
 import { 
   OpportunitiesQuery, 
@@ -20,6 +20,7 @@ import {
 
 
 import Link from 'components/Link';
+import Accordion from 'components/Accordion';
 import TogglesList from 'components/TogglesList';
 
 import s from './SearchOpportunityInputs.scss';
@@ -81,18 +82,27 @@ const SelectedItemsContainer = (props) => {
 
   const selectedItemsContainer = items.map( (item, index) => {
     return (
-      <li 
+      <div 
+        className={s.searchChip}
         key={index}
-        onClick={ (event) => { removeItem(collectionName, item) }}
       >
-        {item}
-      </li>
+        <Chip 
+          onRequestDelete={ (event) => { removeItem(collectionName, item) }}
+        >
+          {item}
+        </Chip>
+      </div>
     );
   });
 
-  return (
-    <ul>{selectedItemsContainer}</ul>
-  );
+  return items.length ? (
+    <div className={s.searchByContainer}>
+      <span className={s.searchByTitle}>{collectionName}:</span>
+      <div className={s.searchChips}>
+        {selectedItemsContainer}
+      </div>
+    </div>
+  ) : null;
 }
 
 SelectedItemsContainer.PropTypes = {
@@ -128,6 +138,14 @@ const SelectedKeywordsContainer = connect((state) => {
   return { items: state.opportunitiesSearch.keywords };
 })(SelectedItemsContainer);
 
+const SelectedTypesContainer = connect((state) => { 
+  return { items: state.opportunitiesSearch.types };
+})(SelectedItemsContainer);
+
+const SelectedLevelsContainer = connect((state) => { 
+  return { items: state.opportunitiesSearch.levels };
+})(SelectedItemsContainer);
+
 const SelectedActivitiesContainer = connect((state) => { 
   return { items: state.opportunitiesSearch.activities };
 })(SelectedItemsContainer);
@@ -156,57 +174,82 @@ class SearchOpportunityInputs extends React.PureComponent {
     } = this.props;
 
     return (
-      <div>
-        <div>
-          Keywords:
-          <SelectedKeywordsContainer
-            collectionName="keywords"
-            removeItem={removeSelectedItem}
-          />
-        </div>
-        <div>
-          Activities:
-          <SelectedActivitiesContainer
-            collectionName="activities"
-            removeItem={removeSelectedItem}
-          />
+      <div className={s.outerContainer}>
+        <div className={s.inputs}>
+
+          <div className={s.searchContainer}>
+            <Accordion title="Keywords">
+              <InputWithButton
+                collectionName="keywords"
+                inputLabel="keywords"
+                buttonLabel="Add to Search >> "
+                addItem={addSelectedItem}
+              />
+            </Accordion>
+          </div>
+
+          <div className={s.searchContainer}>
+            <Accordion title="Campaign Type">
+              <TypesTogglesList 
+                collectionName="types" 
+                displayPropName="title"
+                keyPropName="title"
+                handleToggle={handleToggle}
+              />
+            </Accordion>
+          </div>
+
+          <div className={s.searchContainer}>
+            <Accordion title="Campaign Level">
+              <LevelsTogglesList 
+                collectionName="levels" 
+                displayPropName="title"
+                keyPropName="title"
+                handleToggle={handleToggle}
+              />
+            </Accordion>
+          </div>
+
+          <div className={s.searchContainer}>
+            <Accordion title="Activities">
+              <ActivitiesTogglesList 
+                title="Activities"
+                collectionName="activities" 
+                displayPropName="description"
+                keyPropName="title"
+                handleToggle={handleToggle}
+              />
+            </Accordion>
+          </div>
+
         </div>
 
-        <InputWithButton
-          collectionName="keywords"
-          inputLabel="keywords"
-          buttonLabel="Add to Search >> "
-          addItem={addSelectedItem}
-        />
-
-        <h1>Campaign Type</h1>
-        <div className={s.toggleContainer}>
-          <TypesTogglesList 
-            collectionName="types" 
-            displayPropName="title"
-            keyPropName="title"
-            handleToggle={handleToggle}
-          />
-        </div>
-
-        <h1>Level</h1>
-        <div className={s.toggleContainer}>
-          <LevelsTogglesList 
-            collectionName="levels" 
-            displayPropName="title"
-            keyPropName="title"
-            handleToggle={handleToggle}
-          />
-        </div>
-
-        <h1>Activities</h1>
-        <div className={s.toggleContainer}>
-          <ActivitiesTogglesList 
-            collectionName="activities" 
-            displayPropName="description"
-            keyPropName="title"
-            handleToggle={handleToggle}
-          />
+        <div className={s.selectedInputs}>
+          <div className={s.yourSearch}>Your Search:</div>
+          <div>
+            <SelectedKeywordsContainer
+              collectionName="keywords"
+              removeItem={removeSelectedItem}
+            />
+          </div>
+          <div>
+            <SelectedTypesContainer
+              collectionName="types"
+              removeItem={removeSelectedItem}
+            />
+          </div>
+          <div>
+            <SelectedLevelsContainer
+              collectionName="levels"
+              removeItem={removeSelectedItem}
+            />
+          </div>
+          <div>
+            <SelectedActivitiesContainer
+              collectionName="activities"
+              removeItem={removeSelectedItem}
+            />
+          </div>
         </div>
       </div>
     );

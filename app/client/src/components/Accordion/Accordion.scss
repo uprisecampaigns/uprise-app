@@ -1,0 +1,54 @@
+
+.outerContainer {
+  margin: 20px 0;
+  overflow: hidden;
+
+  .header {
+
+    position: relative;
+
+    .title {
+      display: inline-block;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .toggleButton {
+      position: absolute;
+      right: 0px;
+      display: inline-block;
+      cursor: pointer;
+
+      :global .material-icons {
+        font-size: 3rem !important;
+      }
+    }
+
+    .toggleButtonOpen {
+      transform: rotate(-180deg);
+    }
+
+    .toggleButtonClosed {
+
+    }
+  }
+
+  .innerContainer {
+    transition: all 400ms ease;
+    
+    .contentContainer {
+      width: 97%;
+      overflow: hidden;
+    }
+  }
+
+  .closed {
+    max-height: 0px;
+  }
+
+  .open {
+    overflow-y: auto;
+    max-height: 400px;
+  }
+
+}
