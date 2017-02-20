@@ -8,6 +8,6 @@ export const addSearchItem = (collectionName, value) => {
 };
 
 export const removeSearchItem = (collectionName, value) => {
-  return { type: ADD_SEARCH_ITEM, collection: collectionName, value };
+  return { type: REMOVE_SEARCH_ITEM, collection: collectionName, value };
 };
 

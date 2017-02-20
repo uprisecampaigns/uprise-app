@@ -21,13 +21,13 @@ export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStar
       if (action.value.trim() !== '' &&
           !collection.find(item => item.toLowerCase() === action.value.toLowerCase())) {
         collection.push(action.value);
-      
-        return Object.assign({}, searchOpportunitiesState, { 
-          [action.collection]: collection
-        });
       }
+      
+      return Object.assign({}, searchOpportunitiesState, { 
+        [action.collection]: collection
+      });
 
-    case ADD_SEARCH_ITEM:
+    case REMOVE_SEARCH_ITEM:
       return Object.assign({}, searchOpportunitiesState, { 
         [action.collection]: searchOpportunitiesState[action.collection].filter( (item) => {
           return item !== action.value;
