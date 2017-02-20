@@ -1,15 +1,14 @@
 
 module.exports = async (knex) => {
-  // Deletes ALL existing entries
-  await knex('users').del();
-  await knex('user_profiles').del();
 
-  const users = await knex('users').insert({
-    email: 'test@uprise.org',
-    zip: '12345',
-  }, ['id']);
+  let testUser = await knex('users').where('email', 'test@uprise.org').select('id');
 
-  console.log(users);
+  if (!testUser.length) {
+    testUser = await knex('users').insert({
+      email: 'test@uprise.org',
+      zip: '12345',
+    }, ['id']);
+  }
 
-  return users;
+  return testUser;
 };
