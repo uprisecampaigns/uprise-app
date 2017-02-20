@@ -4,9 +4,6 @@ import { graphql, compose } from 'react-apollo';
 
 import { 
   OpportunitiesQuery, 
-  ActivitiesQuery,
-  TypesQuery,
-  LevelsQuery,
 } from 'schemas/queries';
 
 import { 
@@ -15,6 +12,7 @@ import {
 
 import SearchOpportunityResults from 'components/SearchOpportunityResults';
 import SearchOpportunityInputs from 'components/SearchOpportunityInputs';
+
 
 const graphqlOptions = (collection) => {
   return {
@@ -25,22 +23,6 @@ const graphqlOptions = (collection) => {
 };
 
 const OpportunityResultsWithData = graphql(OpportunitiesQuery, graphqlOptions('opportunities'))(SearchOpportunityResults);
-
-const mapSearchStateToProps = (state) => {
-  return {
-    selectedKeywords: state.opportunitiesSearch.keywords,
-    selectedTypes: state.opportunitiesSearch.types,
-    selectedLevels: state.opportunitiesSearch.levels,
-    selectedActivities: state.opportunitiesSearch.activities
-  };
-}
-
-const ConnectedOpportunitiesSearchInputs = compose(
-  graphql(ActivitiesQuery, graphqlOptions('activities')),
-  graphql(TypesQuery, graphqlOptions('types')),
-  graphql(LevelsQuery, graphqlOptions('levels')),
-  connect(mapSearchStateToProps)
-)(SearchOpportunityInputs);
 
 class SearchOpportunitiesContainer extends Component {
   constructor(props) {
@@ -83,8 +65,10 @@ class SearchOpportunitiesContainer extends Component {
         <OpportunityResultsWithData
           search={{
             keywords: this.props.keywords,
+            activities: this.props.activities,
             types: this.props.types,
-            activities: this.props.activities
+            levels: this.props.levels,
+            issueAreas: this.props.issueAreas,
           }}
         />
       </div>
@@ -97,6 +81,8 @@ const mapStateToProps = (state) => {
     keywords: state.opportunitiesSearch.keywords,
     types: state.opportunitiesSearch.types,
     activities: state.opportunitiesSearch.activities,
+    issueAreas: state.opportunitiesSearch.issueAreas,
+    levels: state.opportunitiesSearch.levels,
   };
 }
 

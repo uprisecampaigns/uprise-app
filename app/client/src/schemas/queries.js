@@ -44,6 +44,14 @@ export const TypesQuery = gql`
   }
 `;
 
+export const IssueAreasQuery = gql`
+  query IssueAreasQuery {
+    issueAreas {
+      title
+    }
+  }
+`;
+
 export const MeQuery = gql`
   query MeQuery {
     me {

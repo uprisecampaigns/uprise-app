@@ -78,7 +78,7 @@ class Campaign {
     return results;
   }
 
-  static async listTypes(search) {
+  static async searchTypes(search) {
        
     const searchQuery = db('types')
       .select('*')
@@ -106,31 +106,25 @@ class Campaign {
     return results;
   }
 
-  static async listLevels(search) {
+  static async listTypes() {
        
-    const searchQuery = db('levels')
+    return await db('types')
       .select('*')
-      .where('deleted', false)
-      .modify( (qb) => {
+      .where('deleted', false);
+  }
 
-        if (search) {
-          if (search.keywords) {
-            qb.andWhere(function() {
-              search.keywords.forEach( (keyword) => {
-                this.orWhere(db.raw('title % \'' + keyword + '\''));
-              });
-            });
-          }
+  static async listLevels() {
+       
+    return await db('levels')
+      .select('*')
+      .where('deleted', false);
+  }
 
-          if (search.title) {
-            qb.orWhere(db.raw('title % \'' + search.title + '\''));
-          }
-        }
-      });
-
-    const results = await searchQuery;
-
-    return results;
+  static async listIssueAreas() {
+       
+    return await db('issue_areas')
+      .select('*')
+      .where('deleted', false);
   }
 }
 

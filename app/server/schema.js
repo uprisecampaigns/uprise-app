@@ -13,10 +13,10 @@ module.exports = buildSchema(`
   input OpportunitySearchInput {
     keywords: [String]
     activities: [String]
-    campaign_name: [String]
+    campaignName: [String]
     types: [String]
     levels: [String]
-    issues: [String]
+    issueAreas: [String]
   }
 
   type ActivityResult {
@@ -30,6 +30,10 @@ module.exports = buildSchema(`
   }
 
   type LevelResult {
+    title: String!
+  }
+
+  type IssueAreaResult {
     title: String!
   }
 
@@ -52,6 +56,7 @@ module.exports = buildSchema(`
     activities: [ActivityResult]
     types: [TypeResult]
     levels: [LevelResult]
+    issueAreas: [IssueAreaResult]
     me: UserResult
     emailAvailable(email: String): Boolean
   }

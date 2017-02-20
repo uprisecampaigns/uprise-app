@@ -40,16 +40,17 @@ class Accordion extends React.Component {
 
     return (
       <div className={s.outerContainer}>
-        <div className={s.header}>
+        <div 
+          className={s.header}
+          onTouchTap={this.toggleOpen}
+        >
           <div 
             className={s.title}
-            onTouchTap={this.toggleOpen}
           >{title}</div>
 
           <div className={s.toggleButton}>
             <FontIcon 
               className={["material-icons", (this.state.open ? s.toggleButtonOpen : s.toggleButtonClosed)].join(' ')}
-              onTouchTap={this.toggleOpen}
             >keyboard_arrow_down</FontIcon>
           </div>
         </div>

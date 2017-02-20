@@ -6,11 +6,11 @@
   .header {
 
     position: relative;
+    cursor: pointer;
 
     .title {
       display: inline-block;
       font-size: 2rem;
-      cursor: pointer;
     }
 
     .toggleButton {

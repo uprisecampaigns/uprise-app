@@ -8,6 +8,7 @@ const defaultStartState = {
   activities: [], 
   types: [], 
   levels: [], 
+  issueAreas: [], 
 };
 
 export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStartState, action) {

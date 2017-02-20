@@ -87,6 +87,18 @@ module.exports = (app) => {
       return levels;
     },
 
+    issueAreas: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const issueAreas = await Campaign.listIssueAreas(data.search);
+      console.log(issueAreas);
+      return issueAreas;
+    },
+
+
     createOpportunity: async (data, context) => {
 
       if (!context.user) {

@@ -91,7 +91,47 @@ class Opportunity {
             });
           }
 
+          if (search.levels) {
+            qb.andWhere(function() {
 
+              const levels = db('levels')
+                .select('id', 'title')
+                .as('levels');
+
+              search.levels.forEach( (level) => {
+
+                const levelQuery = db.select('opportunity_id')
+                  .distinct()
+                  .from('levels')
+                  .innerJoin('opportunities_levels', 'levels.id', 'opportunities_levels.level_id')
+                  .where('title', level);
+
+                this.orWhere('id', 'in', levelQuery);
+
+              });
+            });
+          }
+
+          if (search.issueAreas) {
+            qb.andWhere(function() {
+
+              const issueAreas = db('issue_areas')
+                .select('id', 'title')
+                .as('issue_areas');
+
+              search.issueAreas.forEach( (issueArea) => {
+
+                const issueAreaQuery = db.select('opportunity_id')
+                  .distinct()
+                  .from('issue_areas')
+                  .innerJoin('opportunities_issue_areas', 'issue_areas.id', 'opportunities_issue_areas.issue_area_id')
+                  .where('title', issueArea);
+
+                this.orWhere('id', 'in', issueAreaQuery);
+
+              });
+            });
+          }
         }
       });
 

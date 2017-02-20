@@ -12,6 +12,7 @@ import {
   ActivitiesQuery,
   TypesQuery,
   LevelsQuery,
+  IssueAreasQuery,
 } from 'schemas/queries';
 
 import { 
@@ -119,6 +120,12 @@ const graphqlOptions = (collection) => {
   };
 };
 
+const ActivitiesTogglesList = compose(
+  graphql(ActivitiesQuery, graphqlOptions('activities')),
+  connect((state) => ({ selectedCollection: state.opportunitiesSearch.activities }))
+)(TogglesList);
+
+
 const TypesTogglesList = compose(
   graphql(TypesQuery, graphqlOptions('types')),
   connect((state) => ({ selectedCollection: state.opportunitiesSearch.types }))
@@ -129,13 +136,17 @@ const LevelsTogglesList = compose(
   connect((state) => ({ selectedCollection: state.opportunitiesSearch.levels }))
 )(TogglesList);
 
-const ActivitiesTogglesList = compose(
-  graphql(ActivitiesQuery, graphqlOptions('activities')),
-  connect((state) => ({ selectedCollection: state.opportunitiesSearch.activities }))
+const IssueAreasTogglesList = compose(
+  graphql(IssueAreasQuery, graphqlOptions('issueAreas')),
+  connect((state) => ({ selectedCollection: state.opportunitiesSearch.issueAreas }))
 )(TogglesList);
 
 const SelectedKeywordsContainer = connect((state) => { 
   return { items: state.opportunitiesSearch.keywords };
+})(SelectedItemsContainer);
+
+const SelectedActivitiesContainer = connect((state) => { 
+  return { items: state.opportunitiesSearch.activities };
 })(SelectedItemsContainer);
 
 const SelectedTypesContainer = connect((state) => { 
@@ -146,8 +157,8 @@ const SelectedLevelsContainer = connect((state) => {
   return { items: state.opportunitiesSearch.levels };
 })(SelectedItemsContainer);
 
-const SelectedActivitiesContainer = connect((state) => { 
-  return { items: state.opportunitiesSearch.activities };
+const SelectedIssueAreasContainer = connect((state) => { 
+  return { items: state.opportunitiesSearch.issueAreas };
 })(SelectedItemsContainer);
 
 class SearchOpportunityInputs extends React.PureComponent {
@@ -189,6 +200,17 @@ class SearchOpportunityInputs extends React.PureComponent {
           </div>
 
           <div className={s.searchContainer}>
+            <Accordion title="Activities">
+              <ActivitiesTogglesList 
+                collectionName="activities" 
+                displayPropName="description"
+                keyPropName="title"
+                handleToggle={handleToggle}
+              />
+            </Accordion>
+          </div>
+
+          <div className={s.searchContainer}>
             <Accordion title="Campaign Type">
               <TypesTogglesList 
                 collectionName="types" 
@@ -211,17 +233,15 @@ class SearchOpportunityInputs extends React.PureComponent {
           </div>
 
           <div className={s.searchContainer}>
-            <Accordion title="Activities">
-              <ActivitiesTogglesList 
-                title="Activities"
-                collectionName="activities" 
-                displayPropName="description"
+            <Accordion title="Issue Areas">
+              <IssueAreasTogglesList 
+                collectionName="issueAreas" 
+                displayPropName="title"
                 keyPropName="title"
                 handleToggle={handleToggle}
               />
             </Accordion>
           </div>
-
         </div>
 
         <div className={s.selectedInputs}>
@@ -229,6 +249,12 @@ class SearchOpportunityInputs extends React.PureComponent {
           <div>
             <SelectedKeywordsContainer
               collectionName="keywords"
+              removeItem={removeSelectedItem}
+            />
+          </div>
+          <div>
+            <SelectedActivitiesContainer
+              collectionName="activities"
               removeItem={removeSelectedItem}
             />
           </div>
@@ -245,8 +271,8 @@ class SearchOpportunityInputs extends React.PureComponent {
             />
           </div>
           <div>
-            <SelectedActivitiesContainer
-              collectionName="activities"
+            <SelectedIssueAreasContainer
+              collectionName="issueAreas"
               removeItem={removeSelectedItem}
             />
           </div>
