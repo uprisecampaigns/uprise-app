@@ -48,6 +48,7 @@ module.exports = buildSchema(`
     location_notes: String
     activities: [ActivityResult]
     issueAreas: [IssueAreaResult]
+    owner: UserResult
     campaign: CampaignResult
   }
 

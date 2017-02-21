@@ -23,7 +23,7 @@ const SearchOpportunityResults = (props) => {
       <li key={index}>
         <div><h3>Title: {opportunity.title}</h3></div>
         <div>Campaign: {opportunity.campaign.title}</div>
-        <div>Owner: {opportunity.campaign.owner.email}</div>
+        <div>Owner: {opportunity.owner.email}</div>
         <div>Start Time: {opportunity.start_time}</div>
         <div>End Time: {opportunity.start_time}</div>
         <div>Tags: {tags}</div>

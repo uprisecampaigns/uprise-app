@@ -29,11 +29,11 @@ export const OpportunitiesQuery = gql`
       issueAreas {
         title
       }
+      owner {
+        email
+      }
       campaign {
         title
-        owner {
-          email
-        }
       }
     }
   }
