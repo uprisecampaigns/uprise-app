@@ -26,6 +26,30 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
       end_time: moment().add(5, 'days').add(2, 'hours'), 
       tags: ['Office', 'Paperwork', '#Computers']
     },
+    {
+      title: 'Fundraising Party',
+      owner_id: users[0].id,
+      campaign_id: campaigns[1].id,
+      start_time: moment().add(10, 'days'), 
+      end_time: moment().add(10, 'days').add(2, 'hours'), 
+      tags: ['Fundraising', 'Party']
+    },
+    {
+      title: 'Blog Post Writing',
+      owner_id: users[0].id,
+      campaign_id: campaigns[1].id,
+      start_time: moment().add(12, 'days'), 
+      end_time: moment().add(12, 'days').add(2, 'hours'), 
+      tags: ['Blogging']
+    },
+    {
+      title: 'Canvassing Neighbors',
+      owner_id: users[0].id,
+      campaign_id: campaigns[2].id,
+      start_time: moment().add(17, 'days'), 
+      end_time: moment().add(17, 'days').add(2, 'hours'), 
+      tags: ['Neighbors']
+    },
   ], ['id']);
 
   const activities = await knex('activities').insert([
@@ -59,6 +83,9 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
   const opportunitiesActivities = await knex('opportunities_activities').insert([
     { opportunity_id: opportunities[0].id, activity_id: activities[1].id },
     { opportunity_id: opportunities[1].id, activity_id: activities[19].id },
+    { opportunity_id: opportunities[2].id, activity_id: activities[8].id },
+    { opportunity_id: opportunities[3].id, activity_id: activities[13].id },
+    { opportunity_id: opportunities[4].id, activity_id: activities[2].id },
   ], ['id']);
 
   const opportunitiesLevels = await knex('opportunities_levels').insert([
@@ -66,6 +93,9 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     { opportunity_id: opportunities[0].id, level_id: levels[3].id },
     { opportunity_id: opportunities[1].id, level_id: levels[0].id },
     { opportunity_id: opportunities[1].id, level_id: levels[3].id },
+    { opportunity_id: opportunities[2].id, level_id: levels[3].id },
+    { opportunity_id: opportunities[3].id, level_id: levels[3].id },
+    { opportunity_id: opportunities[4].id, level_id: levels[3].id },
   ], ['id']);
 
   const opportunitiesIssueAreas = await knex('opportunities_issue_areas').insert([
@@ -73,11 +103,17 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     { opportunity_id: opportunities[0].id, issue_area_id: issueAreas[3].id },
     { opportunity_id: opportunities[1].id, issue_area_id: issueAreas[1].id },
     { opportunity_id: opportunities[1].id, issue_area_id: issueAreas[2].id },
+    { opportunity_id: opportunities[2].id, issue_area_id: issueAreas[0].id },
+    { opportunity_id: opportunities[3].id, issue_area_id: issueAreas[0].id },
+    { opportunity_id: opportunities[4].id, issue_area_id: issueAreas[0].id },
   ], ['id']);
 
   const opportunitiesTypes = await knex('opportunities_types').insert([
     { opportunity_id: opportunities[0].id, type_id: types[1].id },
     { opportunity_id: opportunities[0].id, type_id: types[3].id },
+    { opportunity_id: opportunities[2].id, type_id: types[0].id },
+    { opportunity_id: opportunities[3].id, type_id: types[0].id },
+    { opportunity_id: opportunities[4].id, type_id: types[0].id },
   ], ['id']);
 
   return opportunities;
