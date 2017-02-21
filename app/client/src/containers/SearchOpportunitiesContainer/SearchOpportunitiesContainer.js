@@ -6,10 +6,6 @@ import {
   OpportunitiesQuery, 
 } from 'schemas/queries';
 
-import { 
-  addSearchItem, removeSearchItem,
-} from 'actions/SearchOpportunitiesActions';
-
 import SearchOpportunityResults from 'components/SearchOpportunityResults';
 import SearchOpportunityInputs from 'components/SearchOpportunityInputs';
 
@@ -32,34 +28,10 @@ class SearchOpportunitiesContainer extends Component {
   static propTypes = {
   };
 
-  handleRemoveKeyword = (keywordToDelete) => {
-    this.props.dispatch(removeSearchItem('keywords', keywordToDelete));
-  }
-
-  handleToggle = (collectionName, on, value) => {
-    if (on) {
-      this.props.dispatch(addSearchItem(collectionName, value));
-    } else {
-      this.props.dispatch(removeSearchItem(collectionName, value));
-    }
-  }
-
-  handleAddSelectedItem = (collectionName, value) => {
-    this.props.dispatch(addSearchItem(collectionName, value));
-  }
-
-  handleRemoveSelectedItem = (collectionName, value) => {
-    this.props.dispatch(removeSearchItem(collectionName, value));
-  }
-
   render() {
     return (
       <div>
         <SearchOpportunityInputs 
-          addSelectedItem={this.handleAddSelectedItem}
-          removeSelectedItem={this.handleRemoveSelectedItem}
-          handleToggle={this.handleToggle}
-          handleInputChange={this.handleInputChange}
         />
 
         <OpportunityResultsWithData

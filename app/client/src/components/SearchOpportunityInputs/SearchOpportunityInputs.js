@@ -206,14 +206,24 @@ class SearchOpportunityInputs extends React.PureComponent {
   }
 
   static propTypes = {
-    addSelectedItem: PropTypes.func.isRequired,
-    removeSelectedItem: PropTypes.func.isRequired,
-    handleToggle: PropTypes.func.isRequired,
   };
 
-  removeSelectedItem = (collectionName, item) => {
-    this.props.handleToggle(collectionName, false, item);
+  handleToggle = (collectionName, on, value) => {
+    if (on) {
+      this.props.dispatch(addSearchItem(collectionName, value));
+    } else {
+      this.props.dispatch(removeSearchItem(collectionName, value));
+    }
   }
+
+  addSelectedItem = (collectionName, value) => {
+    this.props.dispatch(addSearchItem(collectionName, value));
+  }
+
+  removeSelectedItem = (collectionName, value) => {
+    this.props.dispatch(removeSearchItem(collectionName, value));
+  }
+
 
   render() {
 
@@ -221,7 +231,7 @@ class SearchOpportunityInputs extends React.PureComponent {
       handleToggle,
       addSelectedItem,
       removeSelectedItem,
-    } = this.props;
+    } = this;
 
     return (
       <div className={s.outerContainer}>
@@ -338,4 +348,4 @@ class SearchOpportunityInputs extends React.PureComponent {
   }
 };
 
-export default SearchOpportunityInputs;
+export default connect()(SearchOpportunityInputs);
