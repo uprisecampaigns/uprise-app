@@ -2,11 +2,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
-import IconButton from 'material-ui/IconButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import Chip from 'material-ui/Chip';
-import AutoComplete from 'material-ui/AutoComplete';
 
 import { 
   OpportunitiesQuery, 
@@ -22,123 +17,14 @@ import {
 } from 'actions/SearchOpportunitiesActions';
 
 
-import Link from 'components/Link';
+import SearchInputWithButton from 'components/SearchInputWithButton';
 import Accordion from 'components/Accordion';
 import TogglesList from 'components/TogglesList';
+import DateTimeSearch from 'components/DateTimeSearch';
+import SelectedItemsContainer from 'components/SelectedItemsContainer';
 
 import s from './SearchOpportunityInputs.scss';
 
-
-class InputWithButton extends React.PureComponent {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: ''
-    }
-  }
-
-  static propTypes = {
-    collectionName: PropTypes.string.isRequired,
-    collectionToSearch: PropTypes.array,
-    addItem: PropTypes.func.isRequired,
-    inputLabel: PropTypes.string.isRequired,
-    buttonLabel: PropTypes.string.isRequired,
-  }
-
-  handleInputChange = (value) => {
-    this.setState(Object.assign({},
-      this.state,
-      { value }
-    ));
-  }
-
-  addItem = (event) => {
-
-    if (typeof event === 'object' && typeof event.preventDefault === 'function') {
-      event.preventDefault();
-    }
-
-    this.props.addItem(this.props.collectionName, this.state.value);
-
-    this.setState(Object.assign({},
-      this.state,
-      { value: '' }
-    ));
-  }
-
-  render() {
-
-    const { collectionToSearch, inputLabel, ...props } = this.props;
-
-    const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
-      <AutoComplete
-        floatingLabelText={inputLabel}
-        searchText={this.state.value}
-        onUpdateInput={this.handleInputChange}
-        onNewRequest={(item) => this.addItem()} 
-        dataSource={collectionToSearch}
-        openOnFocus={true}
-        filter={(searchText, item) => searchText !== '' && item.toLowerCase().includes(searchText.toLowerCase())}
-      />
-    ) : (
-      <TextField
-        floatingLabelText={inputLabel}
-        value={this.state.value}
-        onChange={ (event) => { this.handleInputChange(event.target.value) } }
-      />
-    );
-
-    return (
-      <div>
-        <form onSubmit={this.addItem}>
-          {input}
-          <RaisedButton 
-            onTouchTap={this.addItem} 
-            type="submit"
-            primary={false} 
-            label={props.buttonLabel} 
-          />
-        </form>
-      </div>
-    )
-  }
-}
-
-const SelectedItemsContainer = (props) => {
-
-  const { collectionName, items, removeItem } = props;
-
-  const selectedItemsContainer = items.map( (item, index) => {
-    return (
-      <div 
-        className={s.searchChip}
-        key={index}
-      >
-        <Chip 
-          onRequestDelete={ (event) => { removeItem(collectionName, item) }}
-        >
-          {item}
-        </Chip>
-      </div>
-    );
-  });
-
-  return items.length ? (
-    <div className={s.searchByContainer}>
-      <span className={s.searchByTitle}>{collectionName}:</span>
-      <div className={s.searchChips}>
-        {selectedItemsContainer}
-      </div>
-    </div>
-  ) : null;
-}
-
-SelectedItemsContainer.PropTypes = {
-  collectionName: PropTypes.string.isRequired,
-  items: PropTypes.array.isRequired,
-  removeItem: PropTypes.func.isRequired
-}
 
 const graphqlOptions = (collection) => {
   return {
@@ -198,7 +84,7 @@ const CampaignNameSearch = graphql(CampaignsQuery, {
     collectionToSearch: !data.loading && data.campaigns ? 
       data.campaigns.map( (campaign) => campaign.title) : []
   })
-})(InputWithButton);
+})(SearchInputWithButton);
 
 class SearchOpportunityInputs extends React.PureComponent {
   constructor(props) {
@@ -239,7 +125,7 @@ class SearchOpportunityInputs extends React.PureComponent {
 
           <div className={s.searchContainer}>
             <Accordion title="Keywords">
-              <InputWithButton
+              <SearchInputWithButton
                 collectionName="keywords"
                 inputLabel="keywords"
                 buttonLabel="Add to Search >> "
