@@ -38,7 +38,7 @@ module.exports = buildSchema(`
     title: String
     start_time: String
     end_time: String
-    keywords: [String]
+    tags: [String]
     location_name: String
     street_address: String
     street_address2: String
@@ -46,6 +46,8 @@ module.exports = buildSchema(`
     state: String
     zip: String
     location_notes: String
+    activities: [ActivityResult]
+    issueAreas: [IssueAreaResult]
   }
 
   input CampaignSearchInput {

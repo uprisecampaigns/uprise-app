@@ -159,8 +159,31 @@ class Opportunity {
 
     console.log(searchQuery.toString());
 
-    const results = await searchQuery;
-    return results;
+    const opportunityResults = await searchQuery;
+
+    for (let opportunity of opportunityResults) {
+
+      const activitiesQuery = db('activities')
+        .innerJoin('opportunities_activities', 'opportunities_activities.activity_id', 'activities.id')
+        .where('opportunities_activities.opportunity_id', opportunity.id)
+        .select('title', 'description');
+
+      console.log(activitiesQuery.toString());
+
+      opportunity.activities = await activitiesQuery;
+
+      const issuesQuery = db('issue_areas')
+        .innerJoin('opportunities_issue_areas', 'opportunities_issue_areas.issue_area_id', 'issue_areas.id')
+        .where('opportunities_issue_areas.opportunity_id', opportunity.id)
+        .select('title');
+
+      console.log(issuesQuery.toString());
+
+      opportunity.issueAreas = await issuesQuery;
+    };
+
+    console.log(opportunityResults);
+    return opportunityResults;
   }
 
   static async listActivities(search) {

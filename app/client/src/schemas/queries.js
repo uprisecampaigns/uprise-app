@@ -14,7 +14,7 @@ export const OpportunitiesQuery = gql`
       title
       start_time
       end_time
-      keywords
+      tags
       location_name
       street_address
       street_address2
@@ -22,6 +22,13 @@ export const OpportunitiesQuery = gql`
       state
       zip
       location_notes
+      activities {
+        title
+        description
+      }
+      issueAreas {
+        title
+      }
     }
   }
 `;
