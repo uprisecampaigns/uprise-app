@@ -158,6 +158,12 @@ class Opportunity {
               });
             });
           }
+
+          if (search.dateSearch) {
+            if (search.dateSearch.startTime && search.dateSearch.endTime) {
+              qb.andWhere(db.raw('(DATE \'' + search.dateSearch.startTime + '\', DATE \'' + search.dateSearch.endTime + '\') OVERLAPS (opportunities.start_time, opportunities.end_time)')); 
+            }
+          }
         }
       });
 

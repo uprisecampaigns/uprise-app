@@ -52,6 +52,11 @@ module.exports = buildSchema(`
     campaign: CampaignResult
   }
 
+  input DateSearchInput {
+    startTime: String
+    endTime: String
+  }
+
   input CampaignSearchInput {
     title: [String]
     keywords: [String]
@@ -67,8 +72,8 @@ module.exports = buildSchema(`
     types: [String]
     levels: [String]
     issueAreas: [String]
+    dateSearch: DateSearchInput
   }
-
 
   type Query {
     opportunities(search: OpportunitySearchInput): [OpportunityResult]
