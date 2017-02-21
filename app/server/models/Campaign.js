@@ -31,7 +31,7 @@ class Campaign {
             qb.andWhere(function() {
 
               search.titles.forEach( (title) => {
-                this.orWhere(db.raw('title % \'' + title + '\''));
+                this.orWhere(db.raw('title % ?', title));
 
               });
             });
@@ -47,18 +47,18 @@ class Campaign {
 
               search.keywords.forEach( (keyword) => {
                 
-                this.orWhere(db.raw('title % \'' + keyword + '\''));
-                this.orWhere(db.raw('location_name % \'' + keyword + '\''));
-                this.orWhere(db.raw('street_address % \'' + keyword + '\''));
-                this.orWhere(db.raw('street_address2 % \'' + keyword + '\''));
-                this.orWhere(db.raw('city % \'' + keyword + '\''));
-                this.orWhere(db.raw('state % \'' + keyword + '\''));
-                this.orWhere(db.raw('location_notes % \'' + keyword + '\''));
+                this.orWhere(db.raw('title % ?', keyword));
+                this.orWhere(db.raw('location_name % ?', keyword));
+                this.orWhere(db.raw('street_address % ?', keyword));
+                this.orWhere(db.raw('street_address2 % ?', keyword));
+                this.orWhere(db.raw('city % ?', keyword));
+                this.orWhere(db.raw('state % ?', keyword));
+                this.orWhere(db.raw('location_notes % ?', keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
                   .from(tags)
-                  .whereRaw('tag % \'' + keyword + '\'');
+                  .whereRaw('tag % ?', keyword);
 
                 this.orWhere('id', 'in', tagKeywordQuery);
 
@@ -106,14 +106,14 @@ class Campaign {
           if (search.keywords) {
             qb.andWhere(function() {
               search.keywords.forEach( (keyword) => {
-                this.orWhere(db.raw('title % \'' + keyword + '\''));
-                this.orWhere(db.raw('description % \'' + keyword + '\''));
+                this.orWhere(db.raw('title % ?', keyword));
+                this.orWhere(db.raw('description % ?', keyword));
               });
             });
           }
 
           if (search.title) {
-            qb.orWhere(db.raw('title % \'' + search.title + '\''));
+            qb.orWhere(db.raw('title % ?', search.title));
           }
         }
       });

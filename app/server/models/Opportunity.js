@@ -35,18 +35,18 @@ class Opportunity {
 
               search.keywords.forEach( (keyword) => {
                 
-                this.orWhere(db.raw('title % \'' + keyword + '\''));
-                this.orWhere(db.raw('location_name % \'' + keyword + '\''));
-                this.orWhere(db.raw('street_address % \'' + keyword + '\''));
-                this.orWhere(db.raw('street_address2 % \'' + keyword + '\''));
-                this.orWhere(db.raw('city % \'' + keyword + '\''));
-                this.orWhere(db.raw('state % \'' + keyword + '\''));
-                this.orWhere(db.raw('location_notes % \'' + keyword + '\''));
+                this.orWhere(db.raw('title % ?', keyword));
+                this.orWhere(db.raw('location_name % ?', keyword));
+                this.orWhere(db.raw('street_address % ?', keyword));
+                this.orWhere(db.raw('street_address2 % ?', keyword));
+                this.orWhere(db.raw('city % ?', keyword));
+                this.orWhere(db.raw('state % ?', keyword));
+                this.orWhere(db.raw('location_notes % ?', keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
                   .from(tags)
-                  .whereRaw('tag % \'' + keyword + '\'');
+                  .whereRaw('tag % ?', keyword);
 
                 this.orWhere('id', 'in', tagKeywordQuery);
 
@@ -66,7 +66,7 @@ class Opportunity {
                 const campaignQuery = db.select('id')
                   .distinct()
                   .from('campaigns')
-                  .where(db.raw('title % \'' + campaignName + '\''));
+                  .where(db.raw('title % ?', campaignName));
 
                 this.orWhere('campaign_id', 'in', campaignQuery);
 
@@ -161,7 +161,10 @@ class Opportunity {
 
           if (search.dateSearch) {
             if (search.dateSearch.startTime && search.dateSearch.endTime) {
-              qb.andWhere(db.raw('(DATE \'' + search.dateSearch.startTime + '\', DATE \'' + search.dateSearch.endTime + '\') OVERLAPS (opportunities.start_time, opportunities.end_time)')); 
+              qb.andWhere(db.raw("(date(?), date(?)) OVERLAPS (opportunities.start_time, opportunities.end_time)", [
+                search.dateSearch.startTime,
+                search.dateSearch.endTime
+              ])); 
             }
           }
         }
@@ -212,14 +215,14 @@ class Opportunity {
           if (search.keywords) {
             qb.andWhere(function() {
               search.keywords.forEach( (keyword) => {
-                this.orWhere(db.raw('title % \'' + keyword + '\''));
-                this.orWhere(db.raw('description % \'' + keyword + '\''));
+                this.orWhere(db.raw('title % ?', keyword));
+                this.orWhere(db.raw('description % ?', keyword));
               });
             });
           }
 
           if (search.title) {
-            qb.orWhere(db.raw('title % \'' + search.title + '\''));
+            qb.orWhere(db.raw('title % ?', search.title));
           }
         }
       });
