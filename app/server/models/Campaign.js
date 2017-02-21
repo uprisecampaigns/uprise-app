@@ -6,10 +6,16 @@ const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
 
+const User = require('models/User.js');
+
+
 class Campaign {
 
-  static findOne(...args) {
-    return db.table('campaigns').where(...args).first();
+  static async findOne(...args) {
+    const campaign = await db.table('campaigns').where(...args).first();
+    campaign.owner = User.findOne('id', campaign.owner_id);
+
+    return campaign;
   }
 
   static async search(search) {

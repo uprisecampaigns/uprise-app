@@ -30,7 +30,7 @@ module.exports = buildSchema(`
 
   type CampaignResult {
     title: String
-    owner_email: String
+    owner: UserResult
     keywords: [String]
   }
 
@@ -48,6 +48,7 @@ module.exports = buildSchema(`
     location_notes: String
     activities: [ActivityResult]
     issueAreas: [IssueAreaResult]
+    campaign: CampaignResult
   }
 
   input CampaignSearchInput {

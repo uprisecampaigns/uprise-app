@@ -6,6 +6,9 @@ const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
 
+const Campaign = require('models/Campaign.js');
+
+
 class Opportunity {
 
   static findOne(...args) {
@@ -162,6 +165,8 @@ class Opportunity {
     const opportunityResults = await searchQuery;
 
     for (let opportunity of opportunityResults) {
+
+      opportunity.campaign = Campaign.findOne('id', opportunity.campaign_id); 
 
       const activitiesQuery = db('activities')
         .innerJoin('opportunities_activities', 'opportunities_activities.activity_id', 'activities.id')

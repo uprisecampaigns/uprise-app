@@ -29,6 +29,12 @@ export const OpportunitiesQuery = gql`
       issueAreas {
         title
       }
+      campaign {
+        title
+        owner {
+          email
+        }
+      }
     }
   }
 `;
