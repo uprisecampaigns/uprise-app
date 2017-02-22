@@ -2,7 +2,6 @@ module.exports.up = async (knex, Promise) => {
   console.log('running migration 201701090000_membership.js');
   // PostgreSQL extensions (may require superuser or database owner priveleges)
   await knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
-  await knex.raw('CREATE EXTENSION IF NOT EXISTS "hstore"');
 
   await knex.schema.createTable('users', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
