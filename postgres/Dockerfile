@@ -1,4 +1,4 @@
-FROM postgres
+FROM mdillon/postgis
 
 WORKDIR /docker-entrypoint-initdb.d
 
