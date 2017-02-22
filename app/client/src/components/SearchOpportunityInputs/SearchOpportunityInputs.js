@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
+import moment from 'moment';
 
 import { 
   OpportunitiesQuery, 
@@ -13,9 +14,8 @@ import {
 } from 'schemas/queries';
 
 import { 
-  addSearchItem, removeSearchItem,
+  addSearchItem, removeSearchItem, setSearchDates, unsetSearchDates
 } from 'actions/SearchOpportunitiesActions';
-
 
 import SearchInputWithButton from 'components/SearchInputWithButton';
 import Accordion from 'components/Accordion';
@@ -78,6 +78,21 @@ const SelectedIssueAreasContainer = connect((state) => {
   return { items: state.opportunitiesSearch.issueAreas };
 })(SelectedItemsContainer);
 
+const SelectedDatesContainer = connect((state) => { 
+  const dates = state.opportunitiesSearch.dates;
+
+  let items = [];
+
+  if (dates.onDate) {
+    items = [moment(dates.onDate).format('M/D/YYYY')];
+  } else if (dates.startDate && dates.endDate) {
+    items = [moment(dates.startDate).format('M/D/YYYY') + ' - ' + moment(dates.endDate).format('M/D/YYYY')];
+  }
+
+  return { items };
+})(SelectedItemsContainer);
+
+
 
 const CampaignNameSearch = graphql(CampaignsQuery, {
   props: ({ data }) => ({
@@ -110,6 +125,13 @@ class SearchOpportunityInputs extends React.PureComponent {
     this.props.dispatch(removeSearchItem(collectionName, value));
   }
 
+  setDates = (dates) => {
+    this.props.dispatch(setSearchDates(dates));
+  }
+
+  unsetDates = () => {
+    this.props.dispatch(unsetSearchDates());
+  }
 
   render() {
 
@@ -117,6 +139,8 @@ class SearchOpportunityInputs extends React.PureComponent {
       handleToggle,
       addSelectedItem,
       removeSelectedItem,
+      setDates,
+      unsetDates,
     } = this;
 
     return (
@@ -188,6 +212,14 @@ class SearchOpportunityInputs extends React.PureComponent {
               />
             </Accordion>
           </div>
+
+          <div className={s.searchContainer}>
+            <Accordion title="Date, Time">
+              <DateTimeSearch 
+                setDates={setDates}
+              />
+            </Accordion>
+          </div>
         </div>
 
         <div className={s.selectedInputs}>
@@ -226,6 +258,12 @@ class SearchOpportunityInputs extends React.PureComponent {
             <SelectedIssueAreasContainer
               collectionName="issueAreas"
               removeItem={removeSelectedItem}
+            />
+          </div>
+          <div>
+            <SelectedDatesContainer
+              collectionName="dates"
+              removeItem={unsetDates}
             />
           </div>
         </div>

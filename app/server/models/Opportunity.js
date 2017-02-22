@@ -159,11 +159,20 @@ class Opportunity {
             });
           }
 
-          if (search.dateSearch) {
-            if (search.dateSearch.startTime && search.dateSearch.endTime) {
-              qb.andWhere(db.raw("(date(?), date(?)) OVERLAPS (opportunities.start_time, opportunities.end_time)", [
-                search.dateSearch.startTime,
-                search.dateSearch.endTime
+          if (search.dates) {
+
+            if (search.dates.onDate) {
+
+              qb.andWhere(function() {
+                this.andWhere(db.raw("date(?) >= opportunities.start_time::date", search.dates.onDate));
+                this.andWhere(db.raw("date(?) <= opportunities.end_time::date", search.dates.onDate));
+              }); 
+
+            } else if (search.dates.startDate && search.dates.endDate) {
+              // OVERLAPS is exclusive at the endDate, so add a day to simulate inclusion
+              qb.andWhere(db.raw("(date(?), date(?) + interval '1 day') OVERLAPS (opportunities.start_time::date, opportunities.end_time::date)", [
+                search.dates.startDate,
+                search.dates.endDate
               ])); 
             }
           }

@@ -1,6 +1,8 @@
 import { 
   ADD_SEARCH_ITEM, 
   REMOVE_SEARCH_ITEM,
+  SET_DATES,
+  UNSET_DATES,
 } from 'actions/SearchOpportunitiesActions.js';
 
 const defaultStartState = { 
@@ -10,6 +12,8 @@ const defaultStartState = {
   levels: [], 
   issueAreas: [], 
   campaignNames: [], 
+  dates: {}, 
+  times: [], 
 };
 
 export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStartState, action) {
@@ -32,6 +36,16 @@ export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStar
         [action.collection]: searchOpportunitiesState[action.collection].filter( (item) => {
           return item !== action.value;
         })
+      });
+
+    case SET_DATES:
+      return Object.assign({}, searchOpportunitiesState, { 
+        dates: action.dates
+      });
+
+    case UNSET_DATES:
+      return Object.assign({}, searchOpportunitiesState, { 
+        dates: {}
       });
 
     default: 

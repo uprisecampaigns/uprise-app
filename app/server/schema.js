@@ -1,4 +1,7 @@
 
+
+
+
 const { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
@@ -53,8 +56,9 @@ module.exports = buildSchema(`
   }
 
   input DateSearchInput {
-    startTime: String
-    endTime: String
+    onDate: String
+    startDate: String
+    endDate: String
   }
 
   input CampaignSearchInput {
@@ -72,7 +76,7 @@ module.exports = buildSchema(`
     types: [String]
     levels: [String]
     issueAreas: [String]
-    dateSearch: DateSearchInput
+    dates: DateSearchInput
   }
 
   type Query {
