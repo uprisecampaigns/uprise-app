@@ -176,6 +176,23 @@ class Opportunity {
               ])); 
             }
           }
+
+          // TODO: Clean this up
+          if (search.times) {
+
+            qb.andWhere(function() {
+              search.times.forEach( (time) => {
+                if (time.toLowerCase() === 'saturdays') {
+                  this.orWhere(db.raw("EXTRACT (DOW FROM opportunities.start_time::date) = 6")); 
+                  this.orWhere(db.raw("EXTRACT (DOW FROM opportunities.end_time::date) = 6")); 
+                }
+                if (time.toLowerCase() === 'sundays') {
+                  this.orWhere(db.raw("EXTRACT (DOW FROM opportunities.start_time::date) = 0")); 
+                  this.orWhere(db.raw("EXTRACT (DOW FROM opportunities.end_time::date) = 0")); 
+                }
+              });
+            });
+          }
         }
       });
 

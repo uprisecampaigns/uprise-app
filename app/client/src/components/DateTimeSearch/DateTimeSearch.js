@@ -3,6 +3,9 @@ import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
+
+import TogglesList from 'components/TogglesList';
 
 import s from './DateTimeSearch.scss';
 
@@ -22,7 +25,9 @@ class DateTimeSearch extends React.Component {
   }
 
   static propTypes = {
-    setDates: PropTypes.func.isRequired
+    setDates: PropTypes.func.isRequired,
+    selectedTimes: PropTypes.array.isRequired,
+    handleToggle: PropTypes.func.isRequired,
   };
 
   changeDate = (prop, date) => {
@@ -88,6 +93,14 @@ class DateTimeSearch extends React.Component {
   render() {
     const { onDate, startDate, endDate } = this.state;
     const { setDates, changeDate, formatDate } = this;
+    const { selectedTimes, handleToggle } = this.props;
+
+    const times = [
+      { title: 'Weekday days' },
+      { title: 'Weekday evenings' },
+      { title: 'Saturdays' },
+      { title: 'Sundays' },
+    ];
 
     return (
       <div>
@@ -129,6 +142,17 @@ class DateTimeSearch extends React.Component {
           primary={false} 
           label="Add to Search >>" 
         />
+        <Divider />
+        <div>
+          <TogglesList
+            selectedCollection={selectedTimes}
+            collectionName="times"
+            keyPropName="title"
+            displayPropName="title"
+            collection={times}
+            handleToggle={handleToggle}
+          />
+        </div>
       </div>
     );
   }

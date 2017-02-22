@@ -68,6 +68,7 @@ const mapStateToProps = (state) => ({
     issueAreas: state.opportunitiesSearch.issueAreas,
     levels: state.opportunitiesSearch.levels,
     dates: state.opportunitiesSearch.dates,
+    times: state.opportunitiesSearch.times,
   }
   
 });

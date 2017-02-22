@@ -54,6 +54,8 @@ const IssueAreasTogglesList = compose(
   connect((state) => ({ selectedCollection: state.opportunitiesSearch.issueAreas }))
 )(TogglesList);
 
+const ConnectedDateTimeSearch = connect((state) => ({ selectedTimes: state.opportunitiesSearch.times }))(DateTimeSearch);
+
 const SelectedKeywordsContainer = connect((state) => { 
   return { items: state.opportunitiesSearch.keywords };
 })(SelectedItemsContainer);
@@ -76,6 +78,10 @@ const SelectedLevelsContainer = connect((state) => {
 
 const SelectedIssueAreasContainer = connect((state) => { 
   return { items: state.opportunitiesSearch.issueAreas };
+})(SelectedItemsContainer);
+
+const SelectedTimesContainer = connect((state) => { 
+  return { items: state.opportunitiesSearch.times };
 })(SelectedItemsContainer);
 
 const SelectedDatesContainer = connect((state) => { 
@@ -215,8 +221,9 @@ class SearchOpportunityInputs extends React.PureComponent {
 
           <div className={s.searchContainer}>
             <Accordion title="Date, Time">
-              <DateTimeSearch 
+              <ConnectedDateTimeSearch 
                 setDates={setDates}
+                handleToggle={handleToggle}
               />
             </Accordion>
           </div>
@@ -264,6 +271,12 @@ class SearchOpportunityInputs extends React.PureComponent {
             <SelectedDatesContainer
               collectionName="dates"
               removeItem={unsetDates}
+            />
+          </div>
+          <div>
+            <SelectedTimesContainer
+              collectionName="times"
+              removeItem={removeSelectedItem}
             />
           </div>
         </div>

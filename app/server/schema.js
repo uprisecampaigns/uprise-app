@@ -77,6 +77,7 @@ module.exports = buildSchema(`
     levels: [String]
     issueAreas: [String]
     dates: DateSearchInput
+    times: [String]
   }
 
   type Query {
