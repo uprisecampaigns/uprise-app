@@ -193,6 +193,31 @@ class Opportunity {
               });
             });
           }
+
+          if (search.geographies) {
+
+            qb.andWhere(function() {
+              search.geographies.forEach( (geography) => {
+                const distance = geography.distance || 10; // default to 10 miles
+                const zipcode = geography.zipcode;
+                const milesInMeter = 0.000621371192237;
+
+                // TODO: It would be nice to refactor some of this out into knex language
+                const distanceQuery = db.select('id')
+                  .from(db.raw(`
+                    (
+                      SELECT opportunities.id, opportunities.title, opportunities.place_name, ST_DISTANCE(opportunities.location, target_zip.location) * 0.000621371192237 AS distance
+                      FROM
+                      (SELECT postal_code, location from zipcodes where postal_code=?) target_zip
+                      CROSS JOIN
+                      (select * from opportunities join zipcodes on zipcodes.postal_code = opportunities.zip) opportunities
+                    ) as q`, zipcode))
+                  .where('distance', '<=', distance);
+
+                this.orWhere('id', 'in', distanceQuery);
+              });
+            });
+          }
         }
       });
 

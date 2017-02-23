@@ -61,6 +61,11 @@ module.exports = buildSchema(`
     endDate: String
   }
 
+  input GeographySearchInput {
+    zipcode: String
+    distance: Int
+  }
+
   input CampaignSearchInput {
     title: [String]
     keywords: [String]
@@ -78,6 +83,7 @@ module.exports = buildSchema(`
     issueAreas: [String]
     dates: DateSearchInput
     times: [String]
+    geographies: [GeographySearchInput]
   }
 
   type Query {

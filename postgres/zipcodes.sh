@@ -22,8 +22,11 @@ psql --username "$POSTGRES_USER" <<-EOSQL
 
     COPY zipcodes FROM '/docker-entrypoint-initdb.d/US.txt';
 
-    SELECT AddGeometryColumn( 'public', 'zipcodes', 'thepoint_lonlat', 4269, 'POINT', 2 ); 
+    ALTER TABLE zipcodes 
+      ADD COLUMN location geography(Point, 4326);
 
-    UPDATE zipcodes SET thepoint_lonlat = ST_SetSRID(ST_Point(longitude, latitude),4269);
+    UPDATE zipcodes SET location = ST_GeographyFromText('SRID=4326;POINT(' || longitude || ' ' || latitude || ')');
+
+    CREATE INDEX idx_zipcodes_location ON public.zipcodes USING gist(location);
 
 EOSQL

@@ -13,6 +13,7 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     {
       title: 'Phone Bank Party',
       owner_id: users[0].id,
+      zip: '94703',
       campaign_id: campaigns[0].id,
       start_time: moment().add(1, 'days').toISOString(), 
       end_time: moment().add(1, 'days').add(3, 'hours').toISOString(), 
@@ -20,6 +21,7 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     },
     {
       title: 'Office Work',
+      zip: '90007',
       owner_id: users[0].id,
       campaign_id: campaigns[0].id,
       start_time: moment().add(5, 'days'), 
@@ -28,6 +30,7 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     },
     {
       title: 'Fundraising Party',
+      zip: '94111',
       owner_id: users[0].id,
       campaign_id: campaigns[1].id,
       start_time: moment().add(10, 'days'), 
@@ -36,6 +39,7 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     },
     {
       title: 'Blog Post Writing',
+      zip: '94804',
       owner_id: users[0].id,
       campaign_id: campaigns[1].id,
       start_time: moment().add(12, 'days'), 
@@ -44,6 +48,7 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     },
     {
       title: 'Canvassing Neighbors',
+      zip: '80304',
       owner_id: users[0].id,
       campaign_id: campaigns[2].id,
       start_time: moment().add(17, 'days'), 
