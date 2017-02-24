@@ -31,6 +31,7 @@ const SearchOpportunityResults = (props) => {
         <div><h3>Title: {opportunity.title}</h3></div>
         <div>Campaign: {opportunity.campaign.title}</div>
         <div>Owner: {opportunity.owner.email}</div>
+        <div>Zip: {opportunity.zip}</div>
         <div>Start Time: {opportunity.start_time}</div>
         <div>End Time: {opportunity.start_time}</div>
         <div>Tags: {tags}</div>
@@ -69,6 +70,7 @@ const mapStateToProps = (state) => ({
     levels: state.opportunitiesSearch.levels,
     dates: state.opportunitiesSearch.dates,
     times: state.opportunitiesSearch.times,
+    geographies: state.opportunitiesSearch.geographies,
   }
   
 });

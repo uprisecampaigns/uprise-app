@@ -18,6 +18,7 @@ import {
 } from 'actions/SearchOpportunitiesActions';
 
 import SearchInputWithButton from 'components/SearchInputWithButton';
+import GeographySearch from 'components/GeographySearch';
 import Accordion from 'components/Accordion';
 import TogglesList from 'components/TogglesList';
 import DateTimeSearch from 'components/DateTimeSearch';
@@ -87,18 +88,31 @@ const SelectedTimesContainer = connect((state) => {
 const SelectedDatesContainer = connect((state) => { 
   const dates = state.opportunitiesSearch.dates;
 
-  let items = [];
+  const items = [];
 
-  if (dates.onDate) {
-    items = [moment(dates.onDate).format('M/D/YYYY')];
-  } else if (dates.startDate && dates.endDate) {
-    items = [moment(dates.startDate).format('M/D/YYYY') + ' - ' + moment(dates.endDate).format('M/D/YYYY')];
-  }
+  if (dates.onDate || (dates.startDate && dates.endDate)) {
+    items.push(dates);
+  } 
 
   return { items };
+
 })(SelectedItemsContainer);
 
+const renderSelectedDateLabel = (dates) => {
+  if (dates.onDate) {
+    return moment(dates.onDate).format('M/D/YYYY');
+  } else if (dates.startDate && dates.endDate) {
+    return moment(dates.startDate).format('M/D/YYYY') + ' - ' + moment(dates.endDate).format('M/D/YYYY');
+  }
+}
 
+const SelectedGeographiesContainer = connect((state) => { 
+  return { items: state.opportunitiesSearch.geographies };
+})(SelectedItemsContainer);
+
+const renderSelectedGeographyLabel = (geography) => {
+  return 'Within ' + geography.distance + ' of ' + geography.zipcode;
+};
 
 const CampaignNameSearch = graphql(CampaignsQuery, {
   props: ({ data }) => ({
@@ -227,6 +241,14 @@ class SearchOpportunityInputs extends React.PureComponent {
               />
             </Accordion>
           </div>
+
+          <div className={s.searchContainer}>
+            <Accordion title="Location">
+              <GeographySearch 
+                addItem={addSelectedItem}
+              />
+            </Accordion>
+          </div>
         </div>
 
         <div className={s.selectedInputs}>
@@ -271,12 +293,20 @@ class SearchOpportunityInputs extends React.PureComponent {
             <SelectedDatesContainer
               collectionName="dates"
               removeItem={unsetDates}
+              renderLabel={renderSelectedDateLabel}
             />
           </div>
           <div>
             <SelectedTimesContainer
               collectionName="times"
               removeItem={removeSelectedItem}
+            />
+          </div>
+          <div>
+            <SelectedGeographiesContainer
+              collectionName="geographies"
+              removeItem={removeSelectedItem}
+              renderLabel={renderSelectedGeographyLabel}
             />
           </div>
         </div>

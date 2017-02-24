@@ -7,8 +7,11 @@ import s from 'components/SearchOpportunityInputs/SearchOpportunityInputs.scss';
 const SelectedItemsContainer = (props) => {
 
   const { collectionName, items, removeItem } = props;
-
+  
   const selectedItemsContainer = items.map( (item, index) => {
+
+    const renderedLabel = (typeof props.renderLabel === 'function') ? props.renderLabel(item) : item;
+
     return (
       <div 
         className={s.searchChip}
@@ -17,7 +20,7 @@ const SelectedItemsContainer = (props) => {
         <Chip 
           onRequestDelete={ (event) => { removeItem(collectionName, item) }}
         >
-          {item}
+          {renderedLabel}
         </Chip>
       </div>
     );
@@ -36,7 +39,8 @@ const SelectedItemsContainer = (props) => {
 SelectedItemsContainer.PropTypes = {
   collectionName: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
-  removeItem: PropTypes.func.isRequired
+  removeItem: PropTypes.func.isRequired,
+  renderLabel: PropTypes.func,
 }
 
 export default SelectedItemsContainer;
