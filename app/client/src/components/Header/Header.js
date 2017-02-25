@@ -131,18 +131,16 @@ function AuthenticatedIcons(props) {
     return (
       <div className={s.authenticatedIconsContainer}>
 
-        <div className={s.searchContainer}>
-          <TextField
-            hintText="Search by name or keyword"
-            value={undefined}
-            errorText={''}
-            onChange={ (event) => { console.log(event.target.value) } }
-          />
+        <Link 
+          to="/search"
+          useAhref={false}
+        >
           <IconButton 
+            iconStyle={iconButtonStyle}
             iconClassName='material-icons'
             className={s.iconButton}
           >search</IconButton>
-        </div>
+        </Link>
 
         <ContentDropdownMenu
           titleIconName="notifications"
