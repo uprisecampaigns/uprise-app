@@ -1,7 +1,7 @@
 
 import React, { PropTypes } from 'react';
 import Search from 'components/Search';
-import SearchOpportunitiesContainer from 'containers/SearchOpportunitiesContainer';
+import SearchOpportunitiesContainer from 'components/SearchOpportunitiesContainer';
 
 
 class SearchOpportunities extends React.Component {
