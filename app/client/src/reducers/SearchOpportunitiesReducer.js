@@ -1,3 +1,5 @@
+const isEqual = require('lodash.isequal');
+
 import { 
   ADD_SEARCH_ITEM, 
   REMOVE_SEARCH_ITEM,
@@ -27,7 +29,7 @@ export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStar
             action.value.trim() !== '' &&
             !collection.find(item => item.toLowerCase() === action.value.toLowerCase())) ||
           ( typeof action.value === 'object' && 
-            !collection.find(item => JSON.stringify(item) === JSON.stringify(action.value)))) {
+            !collection.find(item => isEqual(item, action.value)))) {
 
         collection.push(action.value);
       }
@@ -39,7 +41,7 @@ export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStar
     case REMOVE_SEARCH_ITEM:
       return Object.assign({}, searchOpportunitiesState, { 
         [action.collection]: searchOpportunitiesState[action.collection].filter( (item) => {
-          return item !== action.value && JSON.stringify(item) !== JSON.stringify(action.value);
+          return item !== action.value && isEqual(item, action.value);
         })
       });
 
