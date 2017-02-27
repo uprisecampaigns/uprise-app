@@ -1,6 +1,6 @@
 
 import React, { PropTypes } from 'react';
-import Toggle from 'material-ui/Toggle';
+import Checkbox from 'material-ui/Checkbox';
 
 import s from './TogglesList.scss';
 
@@ -30,12 +30,12 @@ class TogglesList extends React.PureComponent {
       return collection.map( (item, index) => {
         const selected = (selectedCollection.includes(item[keyPropName]));
         return (
-          <Toggle 
+          <Checkbox 
             className={s.toggle}
             key={index}
-            toggled={selected}
+            checked={selected}
             label={item[displayPropName]}
-            onToggle={ (event, on) => { handleToggle(collectionName, on, item[keyPropName]) }}
+            onCheck={ (event, on) => { handleToggle(collectionName, on, item[keyPropName]) }}
           />
         );
       });
