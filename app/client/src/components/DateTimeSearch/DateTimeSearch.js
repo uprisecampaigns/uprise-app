@@ -132,7 +132,7 @@ class DateTimeSearch extends React.Component {
             onChange={ (event, date) => { changeDate('endDate', date) }}
             errorText={this.state.endDateError}
             container="inline" 
-            hintText="Start Date" 
+            hintText="End Date" 
             formatDate={formatDate}
             autoOk={true}
           />
