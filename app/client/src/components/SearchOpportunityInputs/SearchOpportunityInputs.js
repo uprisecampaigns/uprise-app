@@ -111,7 +111,7 @@ const SelectedGeographiesContainer = connect((state) => {
 })(SelectedItemsContainer);
 
 const renderSelectedGeographyLabel = (geography) => {
-  return 'Within ' + geography.distance + ' of ' + geography.zipcode;
+  return 'Within ' + geography.distance + ' miles of ' + geography.zipcode;
 };
 
 const CampaignNameSearch = graphql(CampaignsQuery, {
