@@ -1,0 +1,6 @@
+{
+  "name": "SearchOpportunitySelections",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./SearchOpportunitySelections.js"
+}

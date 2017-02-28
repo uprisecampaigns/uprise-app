@@ -1,7 +1,7 @@
 
 import React, { PropTypes } from 'react';
 import Search from 'components/Search';
-import SearchOpportunitiesContainer from 'components/SearchOpportunitiesContainer';
+import SearchOpportunityContainer from 'components/SearchOpportunityContainer';
 
 
 class SearchOpportunities extends React.Component {
@@ -12,7 +12,7 @@ class SearchOpportunities extends React.Component {
     return (
       <div>
         <Search selected="search-opportunities">
-          <SearchOpportunitiesContainer />
+          <SearchOpportunityContainer />
         </Search>
       </div>
     );
