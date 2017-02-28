@@ -1,0 +1,14 @@
+@import '~styles/variables';
+
+.searchByContainer {
+  .searchChips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    .searchChip {
+      padding: 0.2rem;
+      text-transform: capitalize;
+    }
+  }
+}

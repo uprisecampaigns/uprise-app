@@ -1,0 +1,6 @@
+{
+  "name": "SelectedItemsContainer",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./SelectedItemsContainer.js"
+}

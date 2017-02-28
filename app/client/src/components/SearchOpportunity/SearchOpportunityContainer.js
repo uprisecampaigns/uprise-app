@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
-import SearchOpportunityResults from 'components/SearchOpportunityResults';
-import SearchOpportunityInputs from 'components/SearchOpportunityInputs';
-import SearchOpportunitySelections from 'components/SearchOpportunitySelections';
+import SearchOpportunityResults from 'components/SearchOpportunity/SearchOpportunityResults';
+import SearchOpportunityInputs from 'components/SearchOpportunity/SearchOpportunityInputs';
+import SearchOpportunitySelections from 'components/SearchOpportunity/SearchOpportunitySelections';
 
 class SearchOpportunityContainer extends Component {
   constructor(props) {

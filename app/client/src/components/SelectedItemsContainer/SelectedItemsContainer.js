@@ -2,7 +2,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Chip from 'material-ui/Chip';
 
-import s from 'components/SearchOpportunityInputs/SearchOpportunityInputs.scss';
+import s from './SelectedItemsContainer.scss';
 
 const SelectedItemsContainer = (props) => {
 
@@ -28,7 +28,6 @@ const SelectedItemsContainer = (props) => {
 
   return items.length ? (
     <div className={s.searchByContainer}>
-      <span className={s.searchByTitle}>{collectionName}:</span>
       <div className={s.searchChips}>
         {selectedItemsContainer}
       </div>

@@ -22,7 +22,7 @@ import Accordion from 'components/Accordion';
 import TogglesList from 'components/TogglesList';
 import DateTimeSearch from 'components/DateTimeSearch';
 
-import s from './SearchOpportunityInputs.scss';
+import s from './SearchOpportunity.scss';
 
 
 const graphqlOptions = (collection) => {
