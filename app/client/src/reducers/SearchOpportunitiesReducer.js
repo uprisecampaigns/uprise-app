@@ -41,7 +41,7 @@ export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStar
     case REMOVE_SEARCH_ITEM:
       return Object.assign({}, searchOpportunitiesState, { 
         [action.collection]: searchOpportunitiesState[action.collection].filter( (item) => {
-          return item !== action.value && isEqual(item, action.value);
+          return item !== action.value && !isEqual(item, action.value);
         })
       });
 
