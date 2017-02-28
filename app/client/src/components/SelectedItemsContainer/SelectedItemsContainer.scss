@@ -1,6 +1,8 @@
 @import '~styles/variables';
 
 .searchByContainer {
+  display: inline-flex;
+
   .searchChips {
     display: flex;
     flex-wrap: wrap;

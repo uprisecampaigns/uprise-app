@@ -4,6 +4,9 @@ import SearchOpportunityResults from 'components/SearchOpportunity/SearchOpportu
 import SearchOpportunityInputs from 'components/SearchOpportunity/SearchOpportunityInputs';
 import SearchOpportunitySelections from 'components/SearchOpportunity/SearchOpportunitySelections';
 
+import s from './SearchOpportunity.scss';
+
+
 class SearchOpportunityContainer extends Component {
   constructor(props) {
     super(props);
@@ -14,15 +17,23 @@ class SearchOpportunityContainer extends Component {
 
   render() {
     return (
-      <div>
-        <SearchOpportunityInputs 
-        />
+      <div className={s.container}>
+        <div
+          className={s.leftContainer}
+        >
+          <SearchOpportunityInputs 
+          />
+        </div>
 
-        <SearchOpportunitySelections 
-        />
+        <div
+          className={s.rightContainer}
+        >
+          <SearchOpportunitySelections 
+          />
+          <SearchOpportunityResults
+          />
+        </div>
 
-        <SearchOpportunityResults
-        />
       </div>
     );
   }

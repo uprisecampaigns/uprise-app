@@ -1,23 +1,17 @@
 @import '~styles/variables';
 
-.outerContainer {
-
+.container {
+  width: 100%;
   display: flex;
 
-  .inputs {
-    flex: 1 0 50%;
-    padding: 30px;
+  .leftContainer {
+    display: inline-block;
+    width:20%;
   }
 
-}
-
-.selectedInputs {
-  flex: 0 1 50%;
-  padding: 30px;
-
-
-  .yourSearch {
-    font-size: 1.5rem;
+  .rightContainer {
+    display: inline-block;
+    width: 80%;
   }
-
 }
+
