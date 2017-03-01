@@ -1,8 +1,15 @@
 
 import React, { PureComponent, PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import isNumeric from 'validator/lib/isNumeric';
+import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 
+
+const textFieldStyle = {
+  display: 'inline-block',
+  width: '4rem',
+  padding: '0 1rem',
+};
 
 class GeographySearch extends React.PureComponent {
 
@@ -19,10 +26,16 @@ class GeographySearch extends React.PureComponent {
   }
 
   handleInputChange = (event, type, value) => {
-    this.setState(Object.assign({},
-      this.state,
-      { [type]: value }
-    ));
+
+    if (typeof type === 'string' && (type === 'zipcode' || type === 'distance')) {
+      if (isNumeric(value)) {
+
+        this.setState(Object.assign({},
+          this.state,
+          { [type]: value }
+        ));
+      }
+    } 
   }
 
   addItem = (event) => {
@@ -58,6 +71,8 @@ class GeographySearch extends React.PureComponent {
             floatingLabelText="miles"
             type="number"
             value={distance}
+            style={textFieldStyle}
+            underlineShow={false}
             onChange={ (event) => { handleInputChange(event, 'distance', event.target.value) } }
           />
           of 
@@ -65,14 +80,14 @@ class GeographySearch extends React.PureComponent {
             floatingLabelText="Zipcode"
             type="number"
             value={zipcode}
+            style={textFieldStyle}
+            underlineShow={false}
             onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
           />
-
-          <RaisedButton 
+          <IconButton 
+            iconClassName='material-icons'
             type="submit"
-            primary={false} 
-            label="Add to Search" 
-          />
+          >search</IconButton>
         </form>
       </div>
     )

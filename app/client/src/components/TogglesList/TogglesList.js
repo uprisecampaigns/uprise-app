@@ -1,6 +1,7 @@
 
 import React, { PropTypes } from 'react';
 import Checkbox from 'material-ui/Checkbox';
+import { ListItem } from 'material-ui/List';
 
 import s from './TogglesList.scss';
 
@@ -11,6 +12,7 @@ class TogglesList extends React.PureComponent {
   }
 
   static propTypes = {
+    listTitle: PropTypes.string.isRequired,
     collectionName: PropTypes.string.isRequired,
     keyPropName: PropTypes.string.isRequired,
     displayPropName: PropTypes.string.isRequired,
@@ -30,21 +32,27 @@ class TogglesList extends React.PureComponent {
       return collection.map( (item, index) => {
         const selected = (selectedCollection.includes(item[keyPropName]));
         return (
-          <Checkbox 
-            className={s.toggle}
+          <ListItem 
+            leftCheckbox={
+              <Checkbox 
+                onCheck={ (event, on) => { handleToggle(collectionName, on, item[keyPropName]) }}
+              />
+            }
             key={index}
             checked={selected}
-            label={item[displayPropName]}
-            onCheck={ (event, on) => { handleToggle(collectionName, on, item[keyPropName]) }}
+            primaryText={item[displayPropName]}
           />
         );
       });
     };
 
     return (
-      <div className={s.container}>
-        {toggles(collectionName, collection)}
-      </div>
+      <ListItem 
+        primaryText={this.props.listTitle}
+        initiallyOpen={false}
+        primaryTogglesNestedList={true}
+        nestedItems={toggles(collectionName, collection)}
+      />
     );
   }
 }

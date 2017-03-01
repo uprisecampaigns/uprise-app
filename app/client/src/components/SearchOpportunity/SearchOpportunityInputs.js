@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
+import {List, ListItem} from 'material-ui/List';
 
 import { 
   OpportunitiesQuery, 
@@ -16,9 +17,8 @@ import {
   addSearchItem, setSearchDates, removeSearchItem
 } from 'actions/SearchOpportunitiesActions';
 
-import SearchInputWithButton from 'components/SearchInputWithButton';
+import SearchBar from 'components/SearchBar';
 import GeographySearch from 'components/GeographySearch';
-import Accordion from 'components/Accordion';
 import TogglesList from 'components/TogglesList';
 import DateTimeSearch from 'components/DateTimeSearch';
 
@@ -60,7 +60,7 @@ const CampaignNameSearch = graphql(CampaignsQuery, {
     collectionToSearch: !data.loading && data.campaigns ? 
       data.campaigns.map( (campaign) => campaign.title) : []
   })
-})(SearchInputWithButton);
+})(SearchBar);
 
 class SearchOpportunityInputs extends React.PureComponent {
   constructor(props) {
@@ -95,93 +95,83 @@ class SearchOpportunityInputs extends React.PureComponent {
     } = this;
 
     return (
-      <div className={s.outerContainer}>
-        <div className={s.inputs}>
-
-          <div className={s.searchContainer}>
-            <Accordion title="Keywords">
-              <SearchInputWithButton
-                collectionName="keywords"
-                inputLabel="keywords"
-                buttonLabel="Add to Search >> "
+      <List>
+        <ListItem 
+          primaryText="Location"
+          initiallyOpen={true}
+          primaryTogglesNestedList={true}
+          nestedItems={[
+            <ListItem
+              key={1}
+            >
+              <GeographySearch 
                 addItem={addSelectedItem}
               />
-            </Accordion>
-          </div>
-
-          <div className={s.searchContainer}>
-            <Accordion title="Activities">
-              <ActivitiesTogglesList 
-                collectionName="activities" 
-                displayPropName="description"
-                keyPropName="title"
+            </ListItem>
+          ]}
+        />
+        <ActivitiesTogglesList 
+          listTitle="Activities"
+          collectionName="activities" 
+          displayPropName="description"
+          keyPropName="title"
+          handleToggle={handleToggle}
+        />
+        
+        <IssueAreasTogglesList 
+          listTitle="Issue Areas"
+          collectionName="issueAreas" 
+          displayPropName="title"
+          keyPropName="title"
+          handleToggle={handleToggle}
+        />
+        <ListItem 
+          primaryText="Date"
+          initiallyOpen={false}
+          primaryTogglesNestedList={true}
+          nestedItems={[
+            <ListItem
+              key={1}
+            >
+              <ConnectedDateTimeSearch 
+                setDates={setDates}
                 handleToggle={handleToggle}
               />
-            </Accordion>
-          </div>
-
-          <div className={s.searchContainer}>
-            <Accordion title="Campaign Name">
+            </ListItem>
+          ]}
+        />
+        <ListItem 
+          primaryText="Campaign Name"
+          initiallyOpen={false}
+          primaryTogglesNestedList={true}
+          nestedItems={[
+            <ListItem
+              key={1}
+            >
               <CampaignNameSearch
                 collectionName="campaignNames"
                 inputLabel="campaign name"
                 buttonLabel="Add to Search >> "
                 addItem={addSelectedItem}
               />
-            </Accordion>
-          </div>
-
-          <div className={s.searchContainer}>
-            <Accordion title="Campaign Type">
-              <TypesTogglesList 
-                collectionName="types" 
-                displayPropName="title"
-                keyPropName="title"
-                handleToggle={handleToggle}
-              />
-            </Accordion>
-          </div>
-
-          <div className={s.searchContainer}>
-            <Accordion title="Campaign Level">
-              <LevelsTogglesList 
-                collectionName="levels" 
-                displayPropName="title"
-                keyPropName="title"
-                handleToggle={handleToggle}
-              />
-            </Accordion>
-          </div>
-
-          <div className={s.searchContainer}>
-            <Accordion title="Issue Areas">
-              <IssueAreasTogglesList 
-                collectionName="issueAreas" 
-                displayPropName="title"
-                keyPropName="title"
-                handleToggle={handleToggle}
-              />
-            </Accordion>
-          </div>
-
-          <div className={s.searchContainer}>
-            <Accordion title="Date, Time">
-              <ConnectedDateTimeSearch 
-                setDates={setDates}
-                handleToggle={handleToggle}
-              />
-            </Accordion>
-          </div>
-
-          <div className={s.searchContainer}>
-            <Accordion title="Location">
-              <GeographySearch 
-                addItem={addSelectedItem}
-              />
-            </Accordion>
-          </div>
-        </div>
-      </div>
+            </ListItem>
+          ]}
+        />
+        <TypesTogglesList 
+          listTitle="Campaign Types"
+          collectionName="types" 
+          displayPropName="title"
+          keyPropName="title"
+          handleToggle={handleToggle}
+        />
+        <LevelsTogglesList 
+          listTitle="Campaign Level"
+          collectionName="levels" 
+          displayPropName="title"
+          keyPropName="title"
+          handleToggle={handleToggle}
+        />
+      </List>
     );
   }
 };

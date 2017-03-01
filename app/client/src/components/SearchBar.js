@@ -1,11 +1,11 @@
 
 import React, { PureComponent, PropTypes } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
-import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
 
 
-class SearchInputWithButton extends React.PureComponent {
+class SearchBar extends React.PureComponent {
 
   constructor(props) {
     super(props);
@@ -19,7 +19,6 @@ class SearchInputWithButton extends React.PureComponent {
     collectionToSearch: PropTypes.array,
     addItem: PropTypes.func.isRequired,
     inputLabel: PropTypes.string.isRequired,
-    buttonLabel: PropTypes.string.isRequired,
   }
 
   handleInputChange = (value) => {
@@ -49,7 +48,7 @@ class SearchInputWithButton extends React.PureComponent {
 
     const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
       <AutoComplete
-        floatingLabelText={inputLabel}
+        hintText={inputLabel}
         searchText={this.state.value}
         onUpdateInput={this.handleInputChange}
         onNewRequest={(item) => this.addItem()} 
@@ -59,7 +58,7 @@ class SearchInputWithButton extends React.PureComponent {
       />
     ) : (
       <TextField
-        floatingLabelText={inputLabel}
+        hintText={inputLabel}
         value={this.state.value}
         onChange={ (event) => { this.handleInputChange(event.target.value) } }
       />
@@ -69,16 +68,15 @@ class SearchInputWithButton extends React.PureComponent {
       <div>
         <form onSubmit={this.addItem}>
           {input}
-          <RaisedButton 
-            onTouchTap={this.addItem} 
+          <IconButton 
+            iconClassName='material-icons'
             type="submit"
-            primary={false} 
-            label={props.buttonLabel} 
-          />
+            onTouchTap={this.addItem} 
+          >search</IconButton>
         </form>
       </div>
     )
   }
 }
 
-export default SearchInputWithButton;
+export default SearchBar;
