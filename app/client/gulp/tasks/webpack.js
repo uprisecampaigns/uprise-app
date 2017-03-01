@@ -51,7 +51,7 @@ config.webpack = {
     publicPath: '/',
     path: path.resolve(config.dest)
   },
-  devtool: env.development() ? "source-map" : "",
+  devtool: env.development() ? "eval-cheap-module-source-map" : "",
   module: {
     loaders: [
     {
