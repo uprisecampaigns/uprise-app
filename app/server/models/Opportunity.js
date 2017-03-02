@@ -20,7 +20,12 @@ class Opportunity {
   static async search(search) {
     
     const searchQuery = db('opportunities')
-      .select('*')
+      .select(['opportunities.id as id', 'opportunities.title as title', 'opportunities.start_time as start_time', 'opportunities.end_time as end_time', 
+               'opportunities.tags as tags', 'opportunities.owner_id as owner_id',
+               'opportunities.location_name as location_name', 'opportunities.street_address as street_address', 'opportunities.street_address2 as street_address2',
+               'opportunities.city as city', 'opportunities.state as state', 'opportunities.zip as zip', 'opportunities.location_notes as location_notes',
+               'campaigns.title as campaign_title', 'campaigns.id as campaign_id'])
+ 
       .where('opportunities.deleted', false)
       .modify( (qb) => {
 
@@ -42,6 +47,7 @@ class Opportunity {
                 this.orWhere(db.raw('city % ?', keyword));
                 this.orWhere(db.raw('state % ?', keyword));
                 this.orWhere(db.raw('location_notes % ?', keyword));
+                this.orWhere(db.raw('campaign_title % ?', keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
@@ -57,19 +63,8 @@ class Opportunity {
           if (search.campaignNames) {
             qb.andWhere(function() {
 
-              const campaigns = db('campaigns')
-                .select('id', 'title', 'description')
-                .as('campaigns');
-
               search.campaignNames.forEach( (campaignName) => {
-
-                const campaignQuery = db.select('id')
-                  .distinct()
-                  .from('campaigns')
-                  .where(db.raw('title % ?', campaignName));
-
-                this.orWhere('campaign_id', 'in', campaignQuery);
-
+                this.orWhere(db.raw('campaign_title % ?', campaignName));
               });
             });
           }
@@ -238,6 +233,8 @@ class Opportunity {
     console.log(searchQuery.toString());
 
     const opportunityResults = await searchQuery;
+
+    console.log(opportunityResults);
 
     for (let opportunity of opportunityResults) {
 
