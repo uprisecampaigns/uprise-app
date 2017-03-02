@@ -41,6 +41,7 @@ services:
     build: ./postgres
     environment:
       - POSTGRES_USER=postgres
+      - TZ=America/Los_Angeles
 
   redis:
     image: redis:latest
@@ -61,3 +62,4 @@ services:
       - "80"
     environment:
       - TERM=xterm
+      - TZ=America/Los_Angeles

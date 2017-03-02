@@ -59,29 +59,32 @@ class DateTimeSearch extends React.Component {
 
   setDates = () => {
 
-    if (this.state.onDate) {
-      this.props.setDates({
-        onDate: this.state.onDate
+    const { onDate, startDate, endDate, ...state } = this.state;
+    const { setDates } = this.props;
+
+    if (onDate) {
+      setDates({
+        onDate: moment(onDate).format()
       });
     } else {
 
-      if (!this.state.startDate) {
+      if (!startDate) {
         this.setState(Object.assign({}, this.state, {
           startDateError: 'Specify start date'
         }));
         return;
       }
 
-      if (!this.state.endDate) {
+      if (!endDate) {
         this.setState(Object.assign({}, this.state, {
           endDateError: 'Specify end date'
         }));
         return;
       }
 
-      this.props.setDates({
-        startDate: this.state.startDate,
-        endDate: this.state.endDate,
+      setDates({
+        startDate: moment(startDate).format(),
+        endDate: moment(endDate).format(),
       });
     }
   }

@@ -25,8 +25,8 @@ spontaneous movement of the majority.
       owner_id: users[0].id,
       zip: '94703',
       campaign_id: campaigns[0].id,
-      start_time: moment().add(1, 'days').toISOString(), 
-      end_time: moment().add(1, 'days').add(3, 'hours').toISOString(), 
+      start_time: moment().add(1, 'days').local().format(), 
+      end_time: moment().add(1, 'days').add(3, 'hours').local().format(), 
       city: 'Berkeley',
       state: 'CA',
       tags: ['#Progress', '#People', 'Phone Bank', '#PhoneBanking']
@@ -40,8 +40,8 @@ The Work of Art in the Age of Mechanical Reproduction production of innocence th
       zip: '90007',
       owner_id: users[0].id,
       campaign_id: campaigns[0].id,
-      start_time: moment().add(5, 'days'), 
-      end_time: moment().add(5, 'days').add(2, 'hours'), 
+      start_time: moment().add(5, 'days').local().format(), 
+      end_time: moment().add(5, 'days').add(2, 'hours').local().format(), 
       city: 'Los Angeles',
       state: 'CA',
       tags: ['Office', 'Paperwork', '#Computers']
@@ -59,8 +59,8 @@ Tonight, we gather to affirm the greatness of our nation - not because of the he
       zip: '94601',
       owner_id: users[0].id,
       campaign_id: campaigns[1].id,
-      start_time: moment().add(10, 'days'), 
-      end_time: moment().add(10, 'days').add(2, 'hours'), 
+      start_time: moment().add(10, 'days').local().format(), 
+      end_time: moment().add(10, 'days').add(2, 'hours').local().format(), 
       city: 'Oakland',
       state: 'CA',
       tags: ['Fundraising', 'Party']
@@ -80,8 +80,8 @@ We will all have to make concessions to achieve this. But what we know - what we
       state: 'CA',
       owner_id: users[0].id,
       campaign_id: campaigns[1].id,
-      start_time: moment().add(12, 'days'), 
-      end_time: moment().add(12, 'days').add(2, 'hours'), 
+      start_time: moment().add(12, 'days').local().format(), 
+      end_time: moment().add(12, 'days').add(2, 'hours').local().format(), 
       tags: ['Blogging']
     },
     {
@@ -95,13 +95,15 @@ I stand here knowing that my story is part of the larger American story, that I 
       zip: '80304',
       owner_id: users[0].id,
       campaign_id: campaigns[2].id,
-      start_time: moment().add(17, 'days'), 
-      end_time: moment().add(17, 'days').add(2, 'hours'), 
+      start_time: moment().add(17, 'days').local().format(), 
+      end_time: moment().add(17, 'days').add(2, 'hours').local().format(), 
       city: 'Boulder',
       state: 'CO',
       tags: ['Neighbors']
     },
   ], ['id']);
+
+  console.log(moment().add(1, 'days').local().format());
 
   const activities = await knex('activities').insert([
     { title: 'meet', description: 'General meeting' },
