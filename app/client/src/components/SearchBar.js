@@ -50,6 +50,8 @@ class SearchBar extends React.PureComponent {
       <AutoComplete
         hintText={inputLabel}
         searchText={this.state.value}
+        className="searchBarInput"
+        underlineShow={false}
         onUpdateInput={this.handleInputChange}
         onNewRequest={(item) => this.addItem()} 
         dataSource={collectionToSearch}
@@ -59,22 +61,22 @@ class SearchBar extends React.PureComponent {
     ) : (
       <TextField
         hintText={inputLabel}
+        underlineShow={false}
+        className="searchBarInput"
         value={this.state.value}
         onChange={ (event) => { this.handleInputChange(event.target.value) } }
       />
     );
 
     return (
-      <div>
-        <form onSubmit={this.addItem}>
-          {input}
-          <IconButton 
-            iconClassName='material-icons'
-            type="submit"
-            onTouchTap={this.addItem} 
-          >search</IconButton>
-        </form>
-      </div>
+      <form onSubmit={this.addItem}>
+        {input}
+        <IconButton 
+          iconClassName='material-icons'
+          type="submit"
+          onTouchTap={this.addItem} 
+        >search</IconButton>
+      </form>
     )
   }
 }

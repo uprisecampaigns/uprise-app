@@ -75,27 +75,37 @@ class SearchOpportunityContainer extends Component {
           />
         </div>
 
-        <div className={s.countFilterSortContainer}>
+        <div className={s.countSortFilterContainer}>
 
-          <div className={s.resultsCount}>
-            {resultsCount} results
+          <div className={s.countContainer}>
+            <span>
+              {resultsCount} results
+            </span>
           </div>
 
           <div className={s.sortContainer}>
-
-          </div>
-
-          <div className={s.filterContainer}>
+            <span>Sort by</span>
             <IconButton 
               iconClassName='material-icons'
-              onTouchTap={this.handleOpenFilters}
+            >sort</IconButton>
+          </div>
+
+          <div 
+            className={s.filterContainer}
+            onTouchTap={this.handleOpenFilters}
+          >
+            <span>Filter</span>
+            <IconButton 
+              iconClassName='material-icons'
             >filter_list</IconButton>
+
             <Popover
               open={this.state.filtersOpen}
               onRequestClose={this.handleCloseFilters}
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-              targetOrigin={{horizontal: 'left', vertical: 'top'}}
+              anchorEl={this.state.filtersPopoverAnchorEl}
+              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+              targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+              className={s.filterPopover}
             >
               <SearchOpportunityInputs 
               />

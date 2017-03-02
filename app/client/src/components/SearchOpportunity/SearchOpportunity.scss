@@ -5,23 +5,85 @@
 
   .titleContainer {
     display: block;
+    text-align: center;
     width: 100%;
+    font-size: 2rem;
+    padding: 1rem 0;
   }
 
   .searchBarContainer {
     display: block;
-    width: 100%;
+    text-align: center;
+    padding: 0 10%;
+
+    >div {
+      border: 1px solid $black;
+    }
+
+    :global .searchBarInput {
+      width: 80% !important;
+    }
   }
 
-  .leftContainer {
-    display: inline-block;
-    width:20%;
-    padding: 1rem;
-  }
+  .countSortFilterContainer {
+    display: flex;
+    align-items: baseline;
+    font-size: 1.2rem;
 
-  .rightContainer {
-    display: inline-block;
-    width: 80%;
+    .countContainer {
+      color: $brick-red;
+      width: 30%;
+      font-size: 1.2rem;
+
+      >span {
+        padding: 0 0 0 1rem;
+      }
+    }
+
+    .sortContainer {
+      width: 35%;
+      font-weight: 400;
+
+      >button {
+        top: 0.5rem;
+      }
+    }
+
+    .filterContainer {
+      width: 35%;
+      font-weight: 400;
+
+      >button {
+        top: 0.5rem;
+      }
+    }
   }
 }
 
+.filterPopover {
+  width: 22rem;
+  z-index: 1900;
+
+  :global .togglesListContainerItem {
+    max-height: 20rem;
+  }
+}
+
+.listItem {
+  padding: 1rem;
+}
+
+.listItem.searchBar {
+  >form >div {
+    width: auto !important;
+
+    :global .searchBarInput {
+      width: 80% !important;
+    }
+  }
+}
+
+.geographySearchContainer >form {
+  position: relative;
+  margin-top: -2rem;
+}

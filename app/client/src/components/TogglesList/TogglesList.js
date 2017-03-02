@@ -28,6 +28,11 @@ class TogglesList extends React.PureComponent {
       collection, selectedCollection, handleToggle 
     } = this.props;
 
+    const nestedListStyle = {
+      maxHeight: '20rem',
+      overflowY: 'scroll',
+    };
+
     const toggles = (collectionName, collection) => {
       return collection.map( (item, index) => {
         const selected = (selectedCollection.includes(item[keyPropName]));
@@ -51,6 +56,7 @@ class TogglesList extends React.PureComponent {
         primaryText={this.props.listTitle}
         initiallyOpen={false}
         primaryTogglesNestedList={true}
+        nestedListStyle={nestedListStyle}
         nestedItems={toggles(collectionName, collection)}
       />
     );

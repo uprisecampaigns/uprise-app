@@ -94,7 +94,6 @@ class SearchOpportunitySelections extends React.PureComponent {
 
     return (
       <div className={s.selectedInputs}>
-        <div className={s.yourSearch}>Your Search:</div>
         <SelectedKeywordsContainer
           collectionName="keywords"
           removeItem={removeSelectedItem}

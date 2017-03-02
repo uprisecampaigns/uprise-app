@@ -100,15 +100,13 @@ class SearchOpportunityInputs extends React.PureComponent {
           primaryText="Location"
           initiallyOpen={true}
           primaryTogglesNestedList={true}
-          nestedItems={[
-            <ListItem
-              key={1}
-            >
+          nestedItems={[(
+            <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
               <GeographySearch 
                 addItem={addSelectedItem}
               />
-            </ListItem>
-          ]}
+            </div>
+          )]}
         />
         <ActivitiesTogglesList 
           listTitle="Activities"
@@ -129,33 +127,28 @@ class SearchOpportunityInputs extends React.PureComponent {
           primaryText="Date"
           initiallyOpen={false}
           primaryTogglesNestedList={true}
-          nestedItems={[
-            <ListItem
-              key={1}
-            >
+          nestedItems={[(
+            <div key={0} className={s.listItem}>
               <ConnectedDateTimeSearch 
                 setDates={setDates}
                 handleToggle={handleToggle}
               />
-            </ListItem>
-          ]}
+            </div>
+          )]}
         />
         <ListItem 
           primaryText="Campaign Name"
           initiallyOpen={false}
           primaryTogglesNestedList={true}
-          nestedItems={[
-            <ListItem
-              key={1}
-            >
+          nestedItems={[(
+            <div key={0} className={[s.listItem, s.searchBar].join(' ')}>
               <CampaignNameSearch
                 collectionName="campaignNames"
                 inputLabel="campaign name"
-                buttonLabel="Add to Search >> "
                 addItem={addSelectedItem}
               />
-            </ListItem>
-          ]}
+            </div>
+          )]}
         />
         <TypesTogglesList 
           listTitle="Campaign Types"

@@ -64,32 +64,32 @@ class GeographySearch extends React.PureComponent {
     const { addItem, handleInputChange } = this;
 
     return (
-      <div>
-        <form onSubmit={addItem}>
-          Within 
-          <TextField
-            floatingLabelText="miles"
-            type="number"
-            value={distance}
-            style={textFieldStyle}
-            underlineShow={false}
-            onChange={ (event) => { handleInputChange(event, 'distance', event.target.value) } }
-          />
-          of 
-          <TextField
-            floatingLabelText="Zipcode"
-            type="number"
-            value={zipcode}
-            style={textFieldStyle}
-            underlineShow={false}
-            onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
-          />
-          <IconButton 
-            iconClassName='material-icons'
-            type="submit"
-          >search</IconButton>
-        </form>
-      </div>
+      <form 
+        onSubmit={addItem}
+      >
+        Within 
+        <TextField
+          floatingLabelText="miles"
+          type="number"
+          value={distance}
+          style={textFieldStyle}
+          underlineShow={false}
+          onChange={ (event) => { handleInputChange(event, 'distance', event.target.value) } }
+        />
+        of 
+        <TextField
+          floatingLabelText="Zipcode"
+          type="number"
+          value={zipcode}
+          style={textFieldStyle}
+          underlineShow={false}
+          onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+        />
+        <IconButton 
+          iconClassName='material-icons'
+          type="submit"
+        >search</IconButton>
+      </form>
     )
   }
 }

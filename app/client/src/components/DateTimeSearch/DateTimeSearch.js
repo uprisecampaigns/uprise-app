@@ -102,6 +102,10 @@ class DateTimeSearch extends React.Component {
       { title: 'Sundays' },
     ];
 
+    const dialogStyle = {
+      zIndex: '3200'
+    }
+
     return (
       <div>
         <div>
@@ -109,7 +113,8 @@ class DateTimeSearch extends React.Component {
           <DatePicker 
             value={onDate} 
             onChange={ (event, date) => { changeDate('onDate', date) }}
-            container="inline" 
+            container="dialog" 
+            dialogContainerStyle={dialogStyle}
             hintText="On Date" 
             formatDate={formatDate}
             autoOk={true}
@@ -121,7 +126,8 @@ class DateTimeSearch extends React.Component {
             value={startDate} 
             onChange={ (event, date) => { changeDate('startDate', date) }}
             errorText={this.state.startDateError}
-            container="inline" 
+            container="dialog" 
+            dialogContainerStyle={dialogStyle}
             hintText="Start Date" 
             formatDate={formatDate}
             autoOk={true}
@@ -131,7 +137,8 @@ class DateTimeSearch extends React.Component {
             value={endDate} 
             onChange={ (event, date) => { changeDate('endDate', date) }}
             errorText={this.state.endDateError}
-            container="inline" 
+            container="dialog" 
+            dialogContainerStyle={dialogStyle}
             hintText="End Date" 
             formatDate={formatDate}
             autoOk={true}
@@ -139,20 +146,9 @@ class DateTimeSearch extends React.Component {
         </div>
         <RaisedButton 
           onTouchTap={setDates} 
-          primary={false} 
-          label="Add to Search >>" 
+          primary={true} 
+          label="Add to Search" 
         />
-        <Divider />
-        <div>
-          <TogglesList
-            selectedCollection={selectedTimes}
-            collectionName="times"
-            keyPropName="title"
-            displayPropName="title"
-            collection={times}
-            handleToggle={handleToggle}
-          />
-        </div>
       </div>
     );
   }
