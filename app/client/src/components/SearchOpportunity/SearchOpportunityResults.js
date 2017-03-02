@@ -1,13 +1,11 @@
 
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
-import IconButton from 'material-ui/IconButton';
-
-import { 
-  OpportunitiesQuery, 
-} from 'schemas/queries';
+import moment from 'moment';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 import Link from 'components/Link';
+
+import s from './SearchOpportunity.scss';
 
 
 const SearchOpportunityResults = (props) => {
@@ -25,25 +23,37 @@ const SearchOpportunityResults = (props) => {
       return <span key={index}>{issue.title}{(index === opportunity.issueAreas.length - 1) ? '' : ', '}</span>;
     });
 
+    const startTime = moment(opportunity.start_time);
+    const endTime = moment(opportunity.end_time);
+
     return (
-      <li key={index}>
-        <div><h3>Title: {opportunity.title}</h3></div>
-        <div>Campaign: {opportunity.campaign.title}</div>
-        <div>Owner: {opportunity.owner.email}</div>
-        <div>Zip: {opportunity.zip}</div>
-        <div>Start Time: {opportunity.start_time}</div>
-        <div>End Time: {opportunity.start_time}</div>
-        <div>Tags: {tags}</div>
-        <div>Activities: {activities}</div>
-        <div>Issues: {issues}</div>
-      </li>
+      <Card key={index}>
+        <CardHeader
+          title={
+            <Link to={'/opportunities/' + opportunity.slug}>{opportunity.title}</Link>
+          }
+          subtitle={
+            <Link to={'/campaigns/' + opportunity.campaign.slug}>{opportunity.campaign.title}</Link>
+          }
+          showExpandableButton={true}
+        >
+          <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div>
+          <div>Time: {startTime.format('h:mm a') + ' - ' + endTime.format('h:mm a')}</div>  
+          <div>Place: {opportunity.city}, {opportunity.state}</div>
+        </CardHeader>
+        <CardText expandable={true}>
+          <div className={s.descriptionContainer}>
+            {opportunity.description}
+          </div>
+        </CardText>
+      </Card>
     );
   });
 
   return (
-    <ul>
+    <div>
       { opportunities }
-    </ul>
+    </div>
   );
 }
 
@@ -51,4 +61,4 @@ SearchOpportunityResults.propTypes = {
   opportunities: PropTypes.array.isRequired
 };
 
-export default connect()(SearchOpportunityResults);
+export default SearchOpportunityResults;

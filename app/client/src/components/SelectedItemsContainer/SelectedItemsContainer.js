@@ -12,13 +12,20 @@ const SelectedItemsContainer = (props) => {
 
     const renderedLabel = (typeof props.renderLabel === 'function') ? props.renderLabel(item) : item;
 
+    const handleClicked = (event) => {
+      event.stopPropagation(); 
+      event.preventDefault(); 
+      removeItem(collectionName, item);
+    };
+
     return (
       <div 
         className={s.searchChip}
         key={index}
+        onTouchTap={handleClicked}
       >
         <Chip 
-          onRequestDelete={ (event) => { removeItem(collectionName, item) }}
+          onRequestDelete={handleClicked}
         >
           {renderedLabel}
         </Chip>

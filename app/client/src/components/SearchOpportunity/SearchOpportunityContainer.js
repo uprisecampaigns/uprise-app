@@ -157,17 +157,12 @@ class SearchOpportunityContainer extends Component {
           </div>
         </div>
 
-        <div
-          className={s.leftContainer}
-        >
-        </div>
-
-        <div
-          className={s.rightContainer}
-        >
+        <div className={s.selectionsContainer}>
           <SearchOpportunitySelections 
           />
+        </div>
 
+        <div className={s.resultsContainer}>
           <SearchOpportunityResults
             opportunities={this.props.opportunities}
           />

@@ -12,6 +12,8 @@ export const OpportunitiesQuery = gql`
   query OpportunitiesQuery($search:OpportunitySearchInput) {
     opportunities(search:$search){
       title
+      slug
+      description
       start_time
       end_time
       tags
@@ -34,6 +36,7 @@ export const OpportunitiesQuery = gql`
       }
       campaign {
         title
+        slug
       }
     }
   }

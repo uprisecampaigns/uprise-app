@@ -20,11 +20,13 @@ class Opportunity {
   static async search(search) {
     
     const searchQuery = db('opportunities')
-      .select(['opportunities.id as id', 'opportunities.title as title', 'opportunities.start_time as start_time', 'opportunities.end_time as end_time', 
-               'opportunities.tags as tags', 'opportunities.owner_id as owner_id',
+      .select(['opportunities.id as id', 'opportunities.title as title', 
+               db.raw('to_char(opportunities.start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
+               db.raw('to_char(opportunities.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
+               'opportunities.tags as tags', 'opportunities.owner_id as owner_id', 'opportunities.slug as slug', 'opportunities.description as description',
                'opportunities.location_name as location_name', 'opportunities.street_address as street_address', 'opportunities.street_address2 as street_address2',
                'opportunities.city as city', 'opportunities.state as state', 'opportunities.zip as zip', 'opportunities.location_notes as location_notes',
-               'campaigns.title as campaign_title', 'campaigns.id as campaign_id'])
+               'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug'])
  
       .where('opportunities.deleted', false)
       .modify( (qb) => {
@@ -40,21 +42,21 @@ class Opportunity {
 
               search.keywords.forEach( (keyword) => {
                 
-                this.orWhere(db.raw('title % ?', keyword));
-                this.orWhere(db.raw('location_name % ?', keyword));
-                this.orWhere(db.raw('street_address % ?', keyword));
-                this.orWhere(db.raw('street_address2 % ?', keyword));
-                this.orWhere(db.raw('city % ?', keyword));
-                this.orWhere(db.raw('state % ?', keyword));
-                this.orWhere(db.raw('location_notes % ?', keyword));
-                this.orWhere(db.raw('campaign_title % ?', keyword));
+                this.orWhere(db.raw('opportunities.title % ?', keyword));
+                this.orWhere(db.raw('opportunities.location_name % ?', keyword));
+                this.orWhere(db.raw('opportunities.street_address % ?', keyword));
+                this.orWhere(db.raw('opportunities.street_address2 % ?', keyword));
+                this.orWhere(db.raw('opportunities.city % ?', keyword));
+                this.orWhere(db.raw('opportunities.state % ?', keyword));
+                this.orWhere(db.raw('opportunities.location_notes % ?', keyword));
+                this.orWhere(db.raw('campaigns.title % ?', keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
                   .from(tags)
                   .whereRaw('tag % ?', keyword);
 
-                this.orWhere('id', 'in', tagKeywordQuery);
+                this.orWhere('opportunities.id', 'in', tagKeywordQuery);
 
               });
             });
@@ -64,7 +66,7 @@ class Opportunity {
             qb.andWhere(function() {
 
               search.campaignNames.forEach( (campaignName) => {
-                this.orWhere(db.raw('campaign_title % ?', campaignName));
+                this.orWhere(db.raw('campaigns.title % ?', campaignName));
               });
             });
           }
@@ -85,7 +87,7 @@ class Opportunity {
                   .innerJoin('opportunities_activities', 'activities.id', 'opportunities_activities.activity_id')
                   .where('title', activity);
 
-                this.orWhere('id', 'in', activityQuery);
+                this.orWhere('opportunities.id', 'in', activityQuery);
 
               });
             });
@@ -106,7 +108,7 @@ class Opportunity {
                   .innerJoin('opportunities_types', 'types.id', 'opportunities_types.type_id')
                   .where('title', type);
 
-                this.orWhere('id', 'in', typeQuery);
+                this.orWhere('opportunities.id', 'in', typeQuery);
 
               });
             });
@@ -127,7 +129,7 @@ class Opportunity {
                   .innerJoin('opportunities_levels', 'levels.id', 'opportunities_levels.level_id')
                   .where('title', level);
 
-                this.orWhere('id', 'in', levelQuery);
+                this.orWhere('opportunities.id', 'in', levelQuery);
 
               });
             });
@@ -148,7 +150,7 @@ class Opportunity {
                   .innerJoin('opportunities_issue_areas', 'issue_areas.id', 'opportunities_issue_areas.issue_area_id')
                   .where('title', issueArea);
 
-                this.orWhere('id', 'in', issueAreaQuery);
+                this.orWhere('opportunities.id', 'in', issueAreaQuery);
 
               });
             });
@@ -210,14 +212,14 @@ class Opportunity {
                   })
                   .where('distance', '<=', distance);
 
-                this.orWhere('id', 'in', distanceQuery);
+                this.orWhere('opportunities.id', 'in', distanceQuery);
               });
             });
           }
 
           if (search.sortBy) {
             if (search.sortBy.name === 'date') {
-              qb.orderBy('start_time', (search.sortBy.descending) ? 'desc' : 'asc');
+              qb.orderBy('opportunities.start_time', (search.sortBy.descending) ? 'desc' : 'asc');
 
             } else if (search.sortBy.name === 'campaignName') {
               qb.orderBy('campaigns.title', (search.sortBy.descending) ? 'desc' : 'asc');

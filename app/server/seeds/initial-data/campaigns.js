@@ -12,16 +12,19 @@ module.exports = async (knex, users) => {
   const campaigns = await knex('campaigns').insert([
     {
       title: 'People for Progress',
+      slug: 'people-for-progress',
       owner_id: users[0].id,
       tags: ['#Progress', '#People']
     },
     {
       title: 'Jane for Mayor',
+      slug: 'jane-for-mayor',
       owner_id: users[0].id,
       tags: ['#VoteJane', '#ProgressiveMayors', 'Mayors']
     },
     {
       title: 'Bob for Schoolboard',
+      slug: 'bob-for-schoolboard',
       owner_id: users[0].id,
       tags: ['#VoteBob', '#SchoolBoardsRock']
     },

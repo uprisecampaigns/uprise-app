@@ -7,6 +7,7 @@ module.exports = async (knex) => {
     testUser = await knex('users').insert({
       email: 'test@uprise.org',
       zip: '12345',
+      password_hash: '$2a$10$/dGp5EQFDO/5pqRSFryjSO3FUq.Rs6svkof/fiSics32mRPU8QCcS' // the password is password!
     }, ['id']);
   }
 

@@ -33,12 +33,16 @@ module.exports = buildSchema(`
 
   type CampaignResult {
     title: String
+    slug: String
+    description: String
     owner: UserResult
     keywords: [String]
   }
 
   type OpportunityResult {
     title: String
+    slug: String
+    description: String
     start_time: String
     end_time: String
     tags: [String]

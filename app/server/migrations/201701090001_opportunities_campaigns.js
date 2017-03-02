@@ -7,6 +7,8 @@ module.exports.up = async (knex, Promise) => {
     table.boolean('deleted').notNullable().defaultTo(false);
 
     table.string('title');
+    table.string('slug').notNullable().unique();
+    table.text('description');
 
     table.specificType('tags', 'text[]')
       .notNullable()
@@ -98,9 +100,11 @@ module.exports.up = async (knex, Promise) => {
     table.boolean('deleted').notNullable().defaultTo(false);
 
     table.string('title');
+    table.string('slug').notNullable().unique();
 
     table.timestamp('start_time');
     table.timestamp('end_time');
+    table.text('description');
 
     table.specificType('tags', 'text[]')
       .notNullable()
