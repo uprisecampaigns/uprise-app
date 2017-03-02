@@ -20,6 +20,51 @@ import {
 
 import s from './SearchOpportunity.scss';
 
+const graphqlOptions = (collection) => {
+  return {
+    props: ({ data }) => ({
+      [collection]: !data.loading && data[collection] ? data[collection] : []
+    })
+  };
+};
+
+const mapStateToProps = (state) => ({
+  search: {
+    keywords: state.opportunitiesSearch.keywords,
+    types: state.opportunitiesSearch.types,
+    activities: state.opportunitiesSearch.activities,
+    campaignNames: state.opportunitiesSearch.campaignNames,
+    issueAreas: state.opportunitiesSearch.issueAreas,
+    levels: state.opportunitiesSearch.levels,
+    dates: state.opportunitiesSearch.dates,
+    times: state.opportunitiesSearch.times,
+    geographies: state.opportunitiesSearch.geographies,
+    sortBy: state.opportunitiesSearch.sortBy
+  }
+});
+
+const ResultsCount = (props) => {
+  const resultsCount = props.opportunities.length;
+  return (
+    <span>
+      {resultsCount} results
+    </span>
+  );
+};
+
+ResultsCount.propTypes = {
+  opportunities: PropTypes.array.isRequired
+};
+
+const ResultsCountWithData = compose(
+  connect(mapStateToProps),
+  graphql(OpportunitiesQuery, graphqlOptions('opportunities')),
+)(ResultsCount);
+
+const SearchOpportunityResultsWithData = compose(
+  connect(mapStateToProps),
+  graphql(OpportunitiesQuery, graphqlOptions('opportunities')),
+)(SearchOpportunityResults);
 
 class SearchOpportunityContainer extends Component {
   constructor(props) {
@@ -34,7 +79,6 @@ class SearchOpportunityContainer extends Component {
   }
 
   static propTypes = {
-    opportunities: PropTypes.array.isRequired
   };
 
   addSelectedItem = (collectionName, value) => {
@@ -86,7 +130,6 @@ class SearchOpportunityContainer extends Component {
   }
 
   render() {
-    const resultsCount = this.props.opportunities.length;
 
     return (
       <div className={s.outerContainer}>
@@ -106,9 +149,7 @@ class SearchOpportunityContainer extends Component {
         <div className={s.countSortFilterContainer}>
 
           <div className={s.countContainer}>
-            <span>
-              {resultsCount} results
-            </span>
+            <ResultsCountWithData/>
           </div>
 
           <div 
@@ -163,8 +204,7 @@ class SearchOpportunityContainer extends Component {
         </div>
 
         <div className={s.resultsContainer}>
-          <SearchOpportunityResults
-            opportunities={this.props.opportunities}
+          <SearchOpportunityResultsWithData
           />
         </div>
 
@@ -173,30 +213,4 @@ class SearchOpportunityContainer extends Component {
   }
 }
 
-const graphqlOptions = (collection) => {
-  return {
-    props: ({ data }) => ({
-      [collection]: !data.loading && data[collection] ? data[collection] : []
-    })
-  };
-};
-
-const mapStateToProps = (state) => ({
-  search: {
-    keywords: state.opportunitiesSearch.keywords,
-    types: state.opportunitiesSearch.types,
-    activities: state.opportunitiesSearch.activities,
-    campaignNames: state.opportunitiesSearch.campaignNames,
-    issueAreas: state.opportunitiesSearch.issueAreas,
-    levels: state.opportunitiesSearch.levels,
-    dates: state.opportunitiesSearch.dates,
-    times: state.opportunitiesSearch.times,
-    geographies: state.opportunitiesSearch.geographies,
-    sortBy: state.opportunitiesSearch.sortBy
-  }
-});
-
-export default compose(
-  connect(mapStateToProps),
-  graphql(OpportunitiesQuery, graphqlOptions('opportunities')),
-)(SearchOpportunityContainer);
+export default connect()(SearchOpportunityContainer);
