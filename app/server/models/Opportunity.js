@@ -21,7 +21,7 @@ class Opportunity {
     
     const searchQuery = db('opportunities')
       .select('*')
-      .where('deleted', false)
+      .where('opportunities.deleted', false)
       .modify( (qb) => {
 
         if (search) {
@@ -219,7 +219,19 @@ class Opportunity {
               });
             });
           }
+
+          if (search.sortBy) {
+            if (search.sortBy.name === 'date') {
+              qb.orderBy('start_time', (search.sortBy.descending) ? 'desc' : 'asc');
+
+            } else if (search.sortBy.name === 'campaignName') {
+              qb.orderBy('campaigns.title', (search.sortBy.descending) ? 'desc' : 'asc');
+            }
+          }
         }
+
+        qb.innerJoin('campaigns', 'opportunities.campaign_id', 'campaigns.id');
+
       });
 
 

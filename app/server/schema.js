@@ -74,6 +74,11 @@ module.exports = buildSchema(`
     issueAreas: [String]
   }
 
+  input SortByInput {
+    name: String
+    descending: Boolean
+  }
+
   input OpportunitySearchInput {
     keywords: [String]
     activities: [String]
@@ -84,6 +89,7 @@ module.exports = buildSchema(`
     dates: DateSearchInput
     times: [String]
     geographies: [GeographySearchInput]
+    sortBy: SortByInput
   }
 
   type Query {

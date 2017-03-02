@@ -5,6 +5,7 @@ import {
   REMOVE_SEARCH_ITEM,
   SET_DATES,
   UNSET_DATES,
+  SORT_BY,
 } from 'actions/SearchOpportunitiesActions.js';
 
 const defaultStartState = { 
@@ -17,6 +18,10 @@ const defaultStartState = {
   dates: {}, 
   times: [], 
   geographies: [], 
+  sortBy: {
+    name: 'date',
+    descending: false
+  }
 };
 
 export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStartState, action) {
@@ -54,6 +59,17 @@ export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStar
       return Object.assign({}, searchOpportunitiesState, { 
         dates: {}
       });
+
+    case SORT_BY:
+
+      const state = searchOpportunitiesState;
+      const sortBy = {
+        name: action.selection,
+      };
+
+      sortBy.descending = (state.sortBy.name === action.selection) ? !state.sortBy.descending : false;
+
+      return Object.assign({}, searchOpportunitiesState, { sortBy });
 
     default: 
       return searchOpportunitiesState;

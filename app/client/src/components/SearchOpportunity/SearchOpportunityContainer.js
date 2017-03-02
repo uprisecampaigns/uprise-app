@@ -6,11 +6,12 @@ import IconButton from 'material-ui/IconButton';
 
 import SearchOpportunityResults from 'components/SearchOpportunity/SearchOpportunityResults';
 import SearchOpportunityInputs from 'components/SearchOpportunity/SearchOpportunityInputs';
+import SearchOpportunitySort from 'components/SearchOpportunity/SearchOpportunitySort';
 import SearchOpportunitySelections from 'components/SearchOpportunity/SearchOpportunitySelections';
 import SearchBar from 'components/SearchBar';
 
 import { 
-  addSearchItem, setSearchDates, removeSearchItem
+  addSearchItem, setSearchDates, removeSearchItem, sortBy
 } from 'actions/SearchOpportunitiesActions';
 
 import { 
@@ -25,8 +26,10 @@ class SearchOpportunityContainer extends Component {
     super(props);
 
     this.state = {
-      filtersOpen: false,
-      filtersPopoverAnchorEl: null
+      filterOpen: false,
+      filterPopoverAnchorEl: null,
+      sortOpen: false,
+      sortPopoverAnchorEl: null,
     }
   }
 
@@ -38,22 +41,47 @@ class SearchOpportunityContainer extends Component {
     this.props.dispatch(addSearchItem(collectionName, value));
   }
 
-  handleOpenFilters = (event) => {
+  sortSelect = (value) => {
+    this.handleCloseSort();
+
+    this.props.dispatch(sortBy(value));
+  }
+
+  handleOpenSort = (event) => {
     event.preventDefault();
 
     this.setState(Object.assign({},
       this.state,
       { 
-        filtersOpen: true,
-        filtersPopoverAnchorEl: event.currentTarget
+        sortOpen: true,
+        sortPopoverAnchorEl: event.currentTarget
       }
     ));
   }
 
-  handleCloseFilters = (event) => {
+  handleCloseSort = (event) => {
     this.setState(Object.assign({},
       this.state,
-      { filtersOpen: false }
+      { sortOpen: false }
+    ));
+  }
+
+  handleOpenFilter = (event) => {
+    event.preventDefault();
+
+    this.setState(Object.assign({},
+      this.state,
+      { 
+        filterOpen: true,
+        filterPopoverAnchorEl: event.currentTarget
+      }
+    ));
+  }
+
+  handleCloseFilter = (event) => {
+    this.setState(Object.assign({},
+      this.state,
+      { filterOpen: false }
     ));
   }
 
@@ -83,16 +111,32 @@ class SearchOpportunityContainer extends Component {
             </span>
           </div>
 
-          <div className={s.sortContainer}>
+          <div 
+            onTouchTap={this.handleOpenSort}
+            className={s.sortContainer}
+          >
             <span>Sort by</span>
             <IconButton 
               iconClassName='material-icons'
             >sort</IconButton>
+
+            <Popover
+              open={this.state.sortOpen}
+              onRequestClose={this.handleCloseSort}
+              anchorEl={this.state.sortPopoverAnchorEl}
+              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+              targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+              className={s.popover}
+            >
+              <SearchOpportunitySort 
+                onSelect={this.sortSelect}
+              />
+            </Popover>
           </div>
 
           <div 
             className={s.filterContainer}
-            onTouchTap={this.handleOpenFilters}
+            onTouchTap={this.handleOpenFilter}
           >
             <span>Filter</span>
             <IconButton 
@@ -100,12 +144,12 @@ class SearchOpportunityContainer extends Component {
             >filter_list</IconButton>
 
             <Popover
-              open={this.state.filtersOpen}
-              onRequestClose={this.handleCloseFilters}
-              anchorEl={this.state.filtersPopoverAnchorEl}
+              open={this.state.filterOpen}
+              onRequestClose={this.handleCloseFilter}
+              anchorEl={this.state.filterPopoverAnchorEl}
               anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
               targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              className={s.filterPopover}
+              className={s.popover}
             >
               <SearchOpportunityInputs 
               />
@@ -153,6 +197,7 @@ const mapStateToProps = (state) => ({
     dates: state.opportunitiesSearch.dates,
     times: state.opportunitiesSearch.times,
     geographies: state.opportunitiesSearch.geographies,
+    sortBy: state.opportunitiesSearch.sortBy
   }
 });
 
