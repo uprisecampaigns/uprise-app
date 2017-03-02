@@ -1,6 +1,5 @@
 
 import React, { Component, PropTypes } from 'react';
-import { graphql, compose } from 'react-apollo';
 import { connect } from 'react-redux'
 import IconButton from 'material-ui/IconButton';
 
@@ -52,30 +51,4 @@ SearchOpportunityResults.propTypes = {
   opportunities: PropTypes.array.isRequired
 };
 
-const graphqlOptions = (collection) => {
-  return {
-    props: ({ data }) => ({
-      [collection]: !data.loading && data[collection] ? data[collection] : []
-    })
-  };
-};
-
-const mapStateToProps = (state) => ({
-  search: {
-    keywords: state.opportunitiesSearch.keywords,
-    types: state.opportunitiesSearch.types,
-    activities: state.opportunitiesSearch.activities,
-    campaignNames: state.opportunitiesSearch.campaignNames,
-    issueAreas: state.opportunitiesSearch.issueAreas,
-    levels: state.opportunitiesSearch.levels,
-    dates: state.opportunitiesSearch.dates,
-    times: state.opportunitiesSearch.times,
-    geographies: state.opportunitiesSearch.geographies,
-  }
-  
-});
-
-export default compose(
-  connect(mapStateToProps),
-  graphql(OpportunitiesQuery, graphqlOptions('opportunities')),
-)(SearchOpportunityResults);
+export default connect()(SearchOpportunityResults);

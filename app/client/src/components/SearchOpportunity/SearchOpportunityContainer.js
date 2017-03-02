@@ -125,6 +125,7 @@ class SearchOpportunityContainer extends Component {
           />
 
           <SearchOpportunityResults
+            opportunities={this.props.opportunities}
           />
         </div>
 
@@ -141,7 +142,21 @@ const graphqlOptions = (collection) => {
   };
 };
 
+const mapStateToProps = (state) => ({
+  search: {
+    keywords: state.opportunitiesSearch.keywords,
+    types: state.opportunitiesSearch.types,
+    activities: state.opportunitiesSearch.activities,
+    campaignNames: state.opportunitiesSearch.campaignNames,
+    issueAreas: state.opportunitiesSearch.issueAreas,
+    levels: state.opportunitiesSearch.levels,
+    dates: state.opportunitiesSearch.dates,
+    times: state.opportunitiesSearch.times,
+    geographies: state.opportunitiesSearch.geographies,
+  }
+});
+
 export default compose(
-  connect(),
+  connect(mapStateToProps),
   graphql(OpportunitiesQuery, graphqlOptions('opportunities')),
 )(SearchOpportunityContainer);
