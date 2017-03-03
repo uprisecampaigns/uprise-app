@@ -11,17 +11,17 @@ import s from './SearchOpportunity.scss';
 const SearchOpportunityResults = (props) => {
   const opportunities = props.opportunities.map( (opportunity, index) => {
 
-    const tags = opportunity.tags.map( (tag, index) => {
+    const tags = opportunity.tags ? opportunity.tags.map( (tag, index) => {
       return <span key={index}>{tag}{(index === opportunity.tags.length - 1) ? '' : ', '}</span>;
-    });
+    }) : [];
 
-    const activities = opportunity.activities.map( (activity, index) => {
+    const activities = opportunity.activities ? opportunity.activities.map( (activity, index) => {
       return <span key={index}>{activity.title}{(index === opportunity.activities.length - 1) ? '' : ', '}</span>;
-    });
+    }) : [];
 
-    const issues = opportunity.issueAreas.map( (issue, index) => {
-      return <span key={index}>{issue.title}{(index === opportunity.issueAreas.length - 1) ? '' : ', '}</span>;
-    });
+    const issues = opportunity.issue_areas ? opportunity.issue_areas.map( (issue, index) => {
+      return <span key={index}>{issue.title}{(index === opportunity.issue_areas.length - 1) ? '' : ', '}</span>;
+    }) : [];
 
     const startTime = moment(opportunity.start_time);
     const endTime = moment(opportunity.end_time);

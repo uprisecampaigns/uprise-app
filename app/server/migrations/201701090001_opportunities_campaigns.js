@@ -111,7 +111,7 @@ module.exports.up = async (knex, Promise) => {
       .defaultTo(knex.raw("'{}'"))
       .index('opportunity_tags_tags', 'gin');
 
-    table.string('location_name');
+    table.text('location_name');
     table.string('street_address');
     table.string('street_address2');
     table.string('city');

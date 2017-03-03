@@ -12,6 +12,34 @@ export const OpportunityQuery = gql`
   query OpportunityQuery($search:OpportunityInput) {
     opportunity(search:$search){
       title
+      slug
+      description
+      start_time
+      end_time
+      tags
+      location_name
+      street_address
+      street_address2
+      city
+      state
+      zip
+      location_notes
+      activities {
+        title
+        description
+      }
+      issue_areas {
+        title
+      }
+      owner {
+        first_name
+        last_name
+        email
+      }
+      campaign {
+        title
+        slug
+      }
     }
   }
 `;
@@ -36,7 +64,7 @@ export const OpportunitiesQuery = gql`
         title
         description
       }
-      issueAreas {
+      issue_areas {
         title
       }
       owner {

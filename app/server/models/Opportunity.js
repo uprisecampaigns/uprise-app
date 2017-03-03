@@ -14,8 +14,9 @@ class Opportunity {
 
   static async findOne(...args) {
     const opportunity = await db.table('opportunities').where(...args).first();
-    opportunity.owner = await User.findOne('id', opportunity.owner_id);
-    opportunity.campaign = await Campaign.findOne('id', opportunity.campaign_id);
+
+    Object.assign(opportunity, await this.details(opportunity));
+
     return opportunity;
   }
 
@@ -241,32 +242,39 @@ class Opportunity {
     console.log(opportunityResults);
 
     for (let opportunity of opportunityResults) {
-
-      opportunity.campaign = Campaign.findOne('id', opportunity.campaign_id); 
-
-      opportunity.owner = User.findOne('id', opportunity.owner_id); 
-
-      const activitiesQuery = db('activities')
-        .innerJoin('opportunities_activities', 'opportunities_activities.activity_id', 'activities.id')
-        .where('opportunities_activities.opportunity_id', opportunity.id)
-        .select('title', 'description');
-
-      console.log(activitiesQuery.toString());
-
-      opportunity.activities = await activitiesQuery;
-
-      const issuesQuery = db('issue_areas')
-        .innerJoin('opportunities_issue_areas', 'opportunities_issue_areas.issue_area_id', 'issue_areas.id')
-        .where('opportunities_issue_areas.opportunity_id', opportunity.id)
-        .select('title');
-
-      console.log(issuesQuery.toString());
-
-      opportunity.issueAreas = await issuesQuery;
+      Object.assign(opportunity, await this.details(opportunity));
     };
 
     console.log(opportunityResults);
     return opportunityResults;
+  }
+
+  static async details(opportunity) {
+    const details = {};
+
+    details.campaign = Campaign.findOne('id', opportunity.campaign_id); 
+
+    details.owner = User.findOne('id', opportunity.owner_id); 
+
+    const activitiesQuery = db('activities')
+      .innerJoin('opportunities_activities', 'opportunities_activities.activity_id', 'activities.id')
+      .where('opportunities_activities.opportunity_id', opportunity.id)
+      .select('title', 'description');
+
+    console.log(activitiesQuery.toString());
+
+    details.activities = await activitiesQuery;
+
+    const issuesQuery = db('issue_areas')
+      .innerJoin('opportunities_issue_areas', 'opportunities_issue_areas.issue_area_id', 'issue_areas.id')
+      .where('opportunities_issue_areas.opportunity_id', opportunity.id)
+      .select('title');
+
+    console.log(issuesQuery.toString());
+
+    details.issue_areas = await issuesQuery;
+
+    return details;
   }
 
   static async listActivities(search) {

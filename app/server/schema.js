@@ -54,7 +54,7 @@ module.exports = buildSchema(`
     zip: String
     location_notes: String
     activities: [ActivityResult]
-    issueAreas: [IssueAreaResult]
+    issue_areas: [IssueAreaResult]
     owner: UserResult
     campaign: CampaignResult
   }
