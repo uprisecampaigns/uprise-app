@@ -69,6 +69,7 @@ async function onLocationChange(location) {
     const route = await UniversalRouter.resolve(routes, {
       path: location.pathname,
       query: queryString.parse(location.search),
+      apolloClient: apolloClient,
       store: store // be wary of using the store in routing considering async updates
     });
 

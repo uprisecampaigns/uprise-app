@@ -30,10 +30,10 @@ const SearchOpportunityResults = (props) => {
       <Card key={index}>
         <CardHeader
           title={
-            <Link to={'/opportunities/' + opportunity.slug}>{opportunity.title}</Link>
+            <Link to={'/opportunity/' + opportunity.slug}>{opportunity.title}</Link>
           }
           subtitle={
-            <Link to={'/campaigns/' + opportunity.campaign.slug}>{opportunity.campaign.title}</Link>
+            <Link to={'/campaign/' + opportunity.campaign.slug}>{opportunity.campaign.title}</Link>
           }
           showExpandableButton={true}
         >

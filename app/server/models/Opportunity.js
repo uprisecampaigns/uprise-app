@@ -13,8 +13,10 @@ const Campaign = require('models/Campaign.js');
 class Opportunity {
 
   static async findOne(...args) {
-    const opportunity = db.table('opportunities').where(...args).first();
-    opportunity.owner = User.findOne('id', opportunity.owner_id);
+    const opportunity = await db.table('opportunities').where(...args).first();
+    opportunity.owner = await User.findOne('id', opportunity.owner_id);
+    opportunity.campaign = await Campaign.findOne('id', opportunity.campaign_id);
+    return opportunity;
   }
 
   static async search(search) {

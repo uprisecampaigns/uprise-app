@@ -8,6 +8,14 @@ export const CampaignsQuery = gql`
   }
 `;
 
+export const OpportunityQuery = gql`
+  query OpportunityQuery($search:OpportunityInput) {
+    opportunity(search:$search){
+      title
+    }
+  }
+`;
+ 
 export const OpportunitiesQuery = gql`
   query OpportunitiesQuery($search:OpportunitySearchInput) {
     opportunities(search:$search){

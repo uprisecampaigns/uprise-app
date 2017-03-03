@@ -43,6 +43,19 @@ module.exports = (app) => {
       return available;
     },
 
+    opportunity: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      console.log(data);
+
+      const opportunity = await Opportunity.findOne(data.search);
+      console.log(opportunity);
+      return opportunity;
+    },
+
     opportunities: async (data, context) => {
 
       if (!context.user) {

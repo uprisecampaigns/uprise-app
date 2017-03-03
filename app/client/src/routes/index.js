@@ -35,6 +35,9 @@ export default {
     require('./search').default,
     require('./searchOpportunities').default,
 
+    // /opportunity/
+    require('./opportunity').default,
+
     // Wildcard routes, e.g. { path: '*', ... } (must go last)
     require('./notFound').default,
   ],

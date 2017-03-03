@@ -96,7 +96,12 @@ module.exports = buildSchema(`
     sortBy: SortByInput
   }
 
+  input OpportunityInput {
+    slug: String
+  }
+
   type Query {
+    opportunity(search: OpportunityInput): OpportunityResult
     opportunities(search: OpportunitySearchInput): [OpportunityResult]
     campaigns(search: CampaignSearchInput): [CampaignResult]
     activities: [ActivityResult]
