@@ -39,8 +39,8 @@ const mapStateToProps = (state) => ({
     dates: state.opportunitiesSearch.dates,
     times: state.opportunitiesSearch.times,
     geographies: state.opportunitiesSearch.geographies,
-    sortBy: state.opportunitiesSearch.sortBy
-  }
+  },
+  sortBy: state.opportunitiesSearch.sortBy
 });
 
 const ResultsCount = (props) => {
