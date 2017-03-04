@@ -19,7 +19,7 @@ const graphqlOptions = (collection) => {
   };
 };
 
-class SearchOpportunityContainer extends Component {
+class OpportunityContainer extends Component {
   constructor(props) {
     super(props);
   }
@@ -113,4 +113,4 @@ class SearchOpportunityContainer extends Component {
   }
 }
 
-export default connect()(SearchOpportunityContainer);
+export default connect()(OpportunityContainer);
