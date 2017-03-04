@@ -36,7 +36,7 @@ module.exports = buildSchema(`
     slug: String
     description: String
     owner: UserResult
-    keywords: [String]
+    tags: [String]
   }
 
   type OpportunityResult {

@@ -1,6 +1,6 @@
 
 import React, { PropTypes } from 'react';
-// import CampaignContainer from 'components/Campaign/CampaignContainer';
+import CampaignContainer from 'components/Campaign/CampaignContainer';
 
 
 class SearchOpportunities extends React.Component {
@@ -11,8 +11,7 @@ class SearchOpportunities extends React.Component {
   render() {
     return (
       <div>
-        Campaign: {this.props.campaign.title}
-        {/*<CampaignContainer campaign={this.props.campaign}/>*/}
+        <CampaignContainer campaign={this.props.campaign}/>
       </div>
     );
   }

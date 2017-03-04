@@ -13,6 +13,13 @@ export const CampaignQuery = gql`
     campaign(search:$search){
       title
       slug
+      description
+      tags
+      owner {
+        first_name
+        last_name
+        email
+      }
     }
   }
 `;

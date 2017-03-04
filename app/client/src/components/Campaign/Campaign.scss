@@ -1,0 +1,53 @@
+@import '~styles/variables';
+
+.outerContainer {
+  width: 100%;
+
+  .campaignHeader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 8rem;
+    background-color: $azure;
+    color: darken($white, 5%);
+    font-size: 2rem;
+    font-weight: 300;
+  }
+
+  .innerContainer {
+    width: 90%;
+    margin: 1rem 5% 0 5%;
+
+    .titleContainer {
+      color: $azure;
+      font-size: 1.6rem;
+      margin-top: 1rem;
+    }
+
+    .contactContainer {
+      font-size: 1.2rem;
+      color: $fire-red;
+
+      a { 
+        color: $fire-red;
+        margin-left: 1rem;
+      }
+    }
+
+    .header {
+      color: lighten($azure, 10%);
+      font-size: 1.2rem;
+      margin: 1rem 0 0rem 0;
+    }
+
+    .detailLine {
+      color: lighten($black, 10%);
+      margin-left: 1rem;
+    }
+
+    .descriptionContainer {
+      white-space: pre-wrap;
+    }
+  }
+}
