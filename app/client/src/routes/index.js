@@ -38,6 +38,9 @@ export default {
     // /opportunity/
     require('./opportunity').default,
 
+    // /campaign/
+    require('./campaign').default,
+
     // Wildcard routes, e.g. { path: '*', ... } (must go last)
     require('./notFound').default,
   ],

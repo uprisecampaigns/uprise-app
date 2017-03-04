@@ -8,6 +8,15 @@ export const CampaignsQuery = gql`
   }
 `;
 
+export const CampaignQuery = gql`
+  query CampaignQuery($search:CampaignInput) {
+    campaign(search:$search){
+      title
+      slug
+    }
+  }
+`;
+ 
 export const OpportunityQuery = gql`
   query OpportunityQuery($search:OpportunityInput) {
     opportunity(search:$search){

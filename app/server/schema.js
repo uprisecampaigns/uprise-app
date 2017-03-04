@@ -100,10 +100,15 @@ module.exports = buildSchema(`
     slug: String
   }
 
+  input CampaignInput {
+    slug: String
+  }
+
   type Query {
     opportunity(search: OpportunityInput): OpportunityResult
     opportunities(search: OpportunitySearchInput): [OpportunityResult]
     campaigns(search: CampaignSearchInput): [CampaignResult]
+    campaign(search: CampaignInput): CampaignResult
     activities: [ActivityResult]
     types: [TypeResult]
     levels: [LevelResult]

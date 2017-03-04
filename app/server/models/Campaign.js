@@ -13,7 +13,7 @@ class Campaign {
 
   static async findOne(...args) {
     const campaign = await db.table('campaigns').where(...args).first();
-    campaign.owner = User.findOne('id', campaign.owner_id);
+    campaign.owner = await User.findOne('id', campaign.owner_id);
 
     return campaign;
   }
