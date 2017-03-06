@@ -5,7 +5,7 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 import Link from 'components/Link';
 
-import s from './SearchOpportunity.scss';
+import s from 'styles/Search.scss';
 
 
 const SearchOpportunityResults = (props) => {

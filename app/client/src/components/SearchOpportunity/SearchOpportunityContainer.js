@@ -6,9 +6,9 @@ import IconButton from 'material-ui/IconButton';
 
 import SearchOpportunityResults from 'components/SearchOpportunity/SearchOpportunityResults';
 import SearchOpportunityInputs from 'components/SearchOpportunity/SearchOpportunityInputs';
-import SearchOpportunitySort from 'components/SearchOpportunity/SearchOpportunitySort';
 import SearchOpportunitySelections from 'components/SearchOpportunity/SearchOpportunitySelections';
 import SearchBar from 'components/SearchBar';
+import SearchSort from 'components/SearchSort';
 
 import { 
   addSearchItem, setSearchDates, removeSearchItem, sortBy
@@ -18,7 +18,7 @@ import {
   OpportunitiesQuery, 
 } from 'schemas/queries';
 
-import s from './SearchOpportunity.scss';
+import s from 'styles/Search.scss';
 
 const graphqlOptions = (collection) => {
   return {
@@ -65,6 +65,12 @@ const SearchOpportunityResultsWithData = compose(
   connect(mapStateToProps),
   graphql(OpportunitiesQuery, graphqlOptions('opportunities')),
 )(SearchOpportunityResults);
+
+const ConnectedSearchSort = connect( (state) => ({
+  selected: state.opportunitiesSearch.sortBy.name,
+  descending: state.opportunitiesSearch.sortBy.descending,
+}))(SearchSort);
+  
 
 class SearchOpportunityContainer extends Component {
   constructor(props) {
@@ -169,8 +175,12 @@ class SearchOpportunityContainer extends Component {
               targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
               className={s.popover}
             >
-              <SearchOpportunitySort 
+              <ConnectedSearchSort 
                 onSelect={this.sortSelect}
+                items={[
+                  { label: 'Date', prop: 'date' },
+                  { label: 'Campaign Name', prop: 'campaignName' },
+                ]}
               />
             </Popover>
           </div>

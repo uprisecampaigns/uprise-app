@@ -9,7 +9,7 @@ import {
   removeSearchItem, unsetSearchDates
 } from 'actions/SearchOpportunitiesActions';
 
-import s from './SearchOpportunity.scss';
+import s from 'styles/Search.scss';
 
 
 const SelectedKeywordsContainer = connect((state) => { 

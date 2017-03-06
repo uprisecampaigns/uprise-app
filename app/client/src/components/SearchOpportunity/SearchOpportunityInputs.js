@@ -22,7 +22,7 @@ import GeographySearch from 'components/GeographySearch';
 import TogglesList from 'components/TogglesList';
 import DateTimeSearch from 'components/DateTimeSearch';
 
-import s from './SearchOpportunity.scss';
+import s from 'styles/Search.scss';
 
 
 const graphqlOptions = (collection) => {
