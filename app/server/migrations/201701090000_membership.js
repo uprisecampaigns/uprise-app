@@ -4,13 +4,13 @@ module.exports.up = async (knex, Promise) => {
   await knex.schema.createTable('users', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
     table.timestamps(true, true);
-    table.string('email').unique();
-    table.string('first_name');
-    table.string('last_name');
+    table.specificType('email', 'citext').unique();
+    table.text('first_name');
+    table.text('last_name');
     table.boolean('email_confirmed').notNullable().defaultTo(false);
-    table.string('password_hash', 100);
-    table.string('phone_number', 50);
-    table.string('zip', 12).notNullable();
+    table.text('password_hash');
+    table.text('phone_number');
+    table.text('zip').notNullable();
     table.timestamp('lockout_end', 'without time zone');
     table.boolean('lockout_enabled').notNullable().defaultTo(false);
     table.smallint('access_failed_count').notNullable().defaultTo(0);
@@ -21,7 +21,7 @@ module.exports.up = async (knex, Promise) => {
   await knex.schema.createTable('user_email_verifications', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
     table.timestamps(true, true);
-    table.string('token').unique().notNullable();
+    table.text('token').unique().notNullable();
     table.boolean('used').notNullable().defaultTo(false);
     table.uuid('user_id').notNullable()
       .references('id').inTable('users')
@@ -31,7 +31,7 @@ module.exports.up = async (knex, Promise) => {
   await knex.schema.createTable('user_password_resets', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
     table.timestamps(true, true);
-    table.string('code').unique().notNullable();
+    table.text('code').unique().notNullable();
     table.specificType('ip', 'inet').notNullable();
     table.boolean('used').notNullable().defaultTo(false);
     table.uuid('user_id').notNullable()
@@ -42,7 +42,7 @@ module.exports.up = async (knex, Promise) => {
   await knex.schema.createTable('user_profiles', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
     table.timestamps(true, true);
-    table.string('display_name', 100);
+    table.text('display_name');
     table.uuid('user_id').notNullable()
       .references('id').inTable('users')
       .onDelete('CASCADE');

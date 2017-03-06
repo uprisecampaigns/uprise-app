@@ -17,6 +17,7 @@ psql --username "$POSTGRES_USER" <<-EOSQL
 
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA app;
     CREATE EXTENSION IF NOT EXISTS "pg_trgm" SCHEMA app;
+    CREATE EXTENSION IF NOT EXISTS "citext" SCHEMA app;
 
     ALTER USER uprise SET search_path = uprise, app, public;
 

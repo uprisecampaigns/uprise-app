@@ -6,8 +6,8 @@ module.exports.up = async (knex, Promise) => {
     table.timestamps(true, true);
     table.boolean('deleted').notNullable().defaultTo(false);
 
-    table.string('title');
-    table.string('slug').notNullable().unique().index();
+    table.text('title');
+    table.text('slug').notNullable().unique().index();
     table.text('description');
     table.text('website_url');
 
@@ -26,8 +26,8 @@ module.exports.up = async (knex, Promise) => {
     table.timestamps(true, true);
     table.boolean('deleted').notNullable().defaultTo(false);
 
-    table.string('title');
-    table.string('description');
+    table.text('title');
+    table.text('description');
   });
 
   await knex.schema.createTable('issue_areas', (table) => {
@@ -35,7 +35,7 @@ module.exports.up = async (knex, Promise) => {
     table.timestamps(true, true);
     table.boolean('deleted').notNullable().defaultTo(false);
 
-    table.string('title');
+    table.text('title');
   });
 
   await knex.schema.createTable('levels', (table) => {
@@ -43,7 +43,7 @@ module.exports.up = async (knex, Promise) => {
     table.timestamps(true, true);
     table.boolean('deleted').notNullable().defaultTo(false);
 
-    table.string('title');
+    table.text('title');
   });
 
   await knex.schema.createTable('campaigns_issue_areas', (table) => {
@@ -100,8 +100,8 @@ module.exports.up = async (knex, Promise) => {
     table.timestamps(true, true);
     table.boolean('deleted').notNullable().defaultTo(false);
 
-    table.string('title');
-    table.string('slug').notNullable().unique().index();
+    table.text('title');
+    table.text('slug').notNullable().unique().index();
 
     table.timestamp('start_time');
     table.timestamp('end_time');
@@ -113,12 +113,12 @@ module.exports.up = async (knex, Promise) => {
       .index('opportunity_tags_tags', 'gin');
 
     table.text('location_name');
-    table.string('street_address');
-    table.string('street_address2');
-    table.string('city');
-    table.string('state', 2);
-    table.string('zip', 12);
-    table.string('location_notes');
+    table.text('street_address');
+    table.text('street_address2');
+    table.text('city');
+    table.text('state');
+    table.text('zip');
+    table.text('location_notes');
 
     table.uuid('owner_id').notNullable()
       .references('id').inTable('users')
@@ -182,8 +182,8 @@ module.exports.up = async (knex, Promise) => {
     table.timestamps(true, true);
     table.boolean('deleted').notNullable().defaultTo(false);
 
-    table.string('title');
-    table.string('description');
+    table.text('title');
+    table.text('description');
 
   });
 
