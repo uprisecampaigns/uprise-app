@@ -9,6 +9,7 @@ module.exports.up = async (knex, Promise) => {
     table.string('title');
     table.string('slug').notNullable().unique().index();
     table.text('description');
+    table.text('website_url');
 
     table.specificType('tags', 'text[]')
       .notNullable()
