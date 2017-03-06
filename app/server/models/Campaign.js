@@ -48,12 +48,6 @@ class Campaign {
               search.keywords.forEach( (keyword) => {
                 
                 this.orWhere(db.raw('title % ?', keyword));
-                this.orWhere(db.raw('location_name % ?', keyword));
-                this.orWhere(db.raw('street_address % ?', keyword));
-                this.orWhere(db.raw('street_address2 % ?', keyword));
-                this.orWhere(db.raw('city % ?', keyword));
-                this.orWhere(db.raw('state % ?', keyword));
-                this.orWhere(db.raw('location_notes % ?', keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
@@ -75,13 +69,55 @@ class Campaign {
 
               search.types.forEach( (type) => {
 
-                const typeQuery = db.select('opportunity_id')
+                const typeQuery = db.select('campaign_id')
                   .distinct()
                   .from('types')
                   .innerJoin('campaigns_types', 'types.id', 'campaigns_types.type_id')
                   .where('title', type);
 
                 this.orWhere('id', 'in', typeQuery);
+              });
+            });
+          }
+
+          if (search.levels) {
+            qb.andWhere(function() {
+
+              const levels = db('levels')
+                .select('id', 'title')
+                .as('levels');
+
+              search.levels.forEach( (level) => {
+
+                const levelQuery = db.select('campaign_id')
+                  .distinct()
+                  .from('levels')
+                  .innerJoin('campaigns_levels', 'levels.id', 'campaigns_levels.level_id')
+                  .where('title', level);
+
+                this.orWhere('campaigns.id', 'in', levelQuery);
+
+              });
+            });
+          }
+
+          if (search.issueAreas) {
+            qb.andWhere(function() {
+
+              const issueAreas = db('issue_areas')
+                .select('id', 'title')
+                .as('issue_areas');
+
+              search.issueAreas.forEach( (issueArea) => {
+
+                const issueAreaQuery = db.select('campaign_id')
+                  .distinct()
+                  .from('issue_areas')
+                  .innerJoin('campaigns_issue_areas', 'issue_areas.id', 'campaigns_issue_areas.issue_area_id')
+                  .where('title', issueArea);
+
+                this.orWhere('campaigns.id', 'in', issueAreaQuery);
+
               });
             });
           }
