@@ -32,6 +32,7 @@ class Opportunity {
                'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug'])
  
       .where('opportunities.deleted', false)
+      .innerJoin('campaigns', 'opportunities.campaign_id', 'campaigns.id')
       .modify( (qb) => {
 
         if (search) {
@@ -229,9 +230,6 @@ class Opportunity {
             }
           }
         }
-
-        qb.innerJoin('campaigns', 'opportunities.campaign_id', 'campaigns.id');
-
       });
 
 
