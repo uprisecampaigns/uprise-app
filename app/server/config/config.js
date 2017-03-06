@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   sessionOptions: {
-    secret: 'somesecretkeythatweshouldgenerateandstoresomewhere', //TODO make real secret
+    secret: process.env.SESSION_SECRET_KEY, 
     saveUninitialized: true, // save new sessions
     resave: false, // do not automatically write to the session store
     cookie: { 
