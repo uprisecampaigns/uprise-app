@@ -13,8 +13,8 @@ class Campaign {
 
   static async findOne(...args) {
     const campaign = await db.table('campaigns').where(...args).first();
-    campaign.owner = await User.findOne('id', campaign.owner_id);
 
+    Object.assign(campaign, await this.details(campaign));
     return campaign;
   }
 
@@ -128,7 +128,29 @@ class Campaign {
     console.log(searchQuery.toString());
 
     const results = await searchQuery;
+
+    for (let campaign of results) {
+      Object.assign(campaign, await this.details(campaign));
+    };
+
     return results;
+  }
+
+  static async details(campaign) {
+    const details = {};
+
+    details.owner = User.findOne('id', campaign.owner_id); 
+
+    const issuesQuery = db('issue_areas')
+      .innerJoin('campaigns_issue_areas', 'campaigns_issue_areas.issue_area_id', 'issue_areas.id')
+      .where('campaigns_issue_areas.campaign_id', campaign.id)
+      .select('title');
+
+    console.log(issuesQuery.toString());
+
+    details.issue_areas = await issuesQuery;
+
+    return details;
   }
 
   static async searchTypes(search) {

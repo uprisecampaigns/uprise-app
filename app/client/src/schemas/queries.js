@@ -4,9 +4,29 @@ export const CampaignsQuery = gql`
   query CampaignsQuery($search:CampaignSearchInput) {
     campaigns(search:$search){
       title
+      description
+      slug
+      tags
+      issue_areas {
+        title
+      }
+      owner {
+        first_name
+        last_name
+        email
+      }
     }
   }
 `;
+
+export const CampaignTitlesQuery = gql`
+  query CampaignTitlesQuery($search:CampaignSearchInput) {
+    campaigns(search:$search){
+      title
+    }
+  }
+`;
+
 
 export const CampaignQuery = gql`
   query CampaignQuery($search:CampaignInput) {

@@ -37,6 +37,7 @@ module.exports = buildSchema(`
     description: String
     owner: UserResult
     tags: [String]
+    issue_areas: [IssueAreaResult]
   }
 
   type OpportunityResult {

@@ -6,7 +6,7 @@ import {List, ListItem} from 'material-ui/List';
 
 import { 
   OpportunitiesQuery, 
-  CampaignsQuery, 
+  CampaignTitlesQuery, 
   ActivitiesQuery,
   TypesQuery,
   LevelsQuery,
@@ -55,7 +55,7 @@ const IssueAreasTogglesList = compose(
 
 const ConnectedDateTimeSearch = connect((state) => ({ selectedTimes: state.opportunitiesSearch.times }))(DateTimeSearch);
 
-const CampaignNameSearch = graphql(CampaignsQuery, {
+const CampaignNameSearch = graphql(CampaignTitlesQuery, {
   props: ({ data }) => ({
     collectionToSearch: !data.loading && data.campaigns ? 
       data.campaigns.map( (campaign) => campaign.title) : []

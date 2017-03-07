@@ -34,6 +34,7 @@ export default {
     // /search/
     require('./search').default,
     require('./searchOpportunities').default,
+    require('./searchCampaigns').default,
 
     // /opportunity/
     require('./opportunity').default,
