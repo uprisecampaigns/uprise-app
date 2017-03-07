@@ -13,13 +13,12 @@ const SearchCampaignResults = (props) => {
   const sortBy = props.sortBy;
 
   const campaignsSort = (a, b) => {
-    if (sortBy.name === 'title') {
-      if (sortBy.descending) {
-        return (a.title < b.title) ? 1 : -1;
-      } else {
-        return (a.title > b.title) ? 1 : -1;
-      } 
-    }
+    const prop = sortBy.name;
+    if (sortBy.descending) {
+      return (a[prop] < b[prop]) ? 1 : -1;
+    } else {
+      return (a[prop] > b[prop]) ? 1 : -1;
+    } 
   }
 
   const campaigns = Array.from(props.campaigns).sort(campaignsSort).map( (campaign, index) => {
