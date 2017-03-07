@@ -7,7 +7,7 @@ import SelectedItemsContainer from 'components/SelectedItemsContainer';
 
 import { 
   removeSearchItem, unsetSearchDates
-} from 'actions/SearchOpportunitiesActions';
+} from 'actions/SearchActions';
 
 import s from 'styles/Search.scss';
 
@@ -78,11 +78,11 @@ class SearchOpportunitySelections extends React.PureComponent {
   };
 
   removeSelectedItem = (collectionName, value) => {
-    this.props.dispatch(removeSearchItem(collectionName, value));
+    this.props.dispatch(removeSearchItem('opportunity', collectionName, value));
   }
 
   unsetDates = () => {
-    this.props.dispatch(unsetSearchDates());
+    this.props.dispatch(unsetSearchDates('opportunity'));
   }
 
   render() {

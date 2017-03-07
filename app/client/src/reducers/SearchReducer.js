@@ -6,7 +6,7 @@ import {
   SET_DATES,
   UNSET_DATES,
   SORT_BY,
-} from 'actions/SearchOpportunitiesActions.js';
+} from 'actions/SearchActions.js';
 
 const defaultStartState = { 
   keywords: [], 
@@ -24,7 +24,7 @@ const defaultStartState = {
   }
 };
 
-export function updateOpportunitiesSearch(searchOpportunitiesState = defaultStartState, action) {
+export function updateSearch(searchOpportunitiesState = defaultStartState, action) {
   switch (action.type){
    
     case ADD_SEARCH_ITEM:

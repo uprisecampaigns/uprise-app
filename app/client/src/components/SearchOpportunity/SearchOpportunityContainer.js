@@ -11,8 +11,8 @@ import SearchBar from 'components/SearchBar';
 import SearchSort from 'components/SearchSort';
 
 import { 
-  addSearchItem, setSearchDates, removeSearchItem, sortBy
-} from 'actions/SearchOpportunitiesActions';
+  addSearchItem, sortBy
+} from 'actions/SearchActions';
 
 import { 
   OpportunitiesQuery, 
@@ -88,13 +88,13 @@ class SearchOpportunityContainer extends Component {
   };
 
   addSelectedItem = (collectionName, value) => {
-    this.props.dispatch(addSearchItem(collectionName, value));
+    this.props.dispatch(addSearchItem('opportunity', collectionName, value));
   }
 
   sortSelect = (value) => {
     this.handleCloseSort();
 
-    this.props.dispatch(sortBy(value));
+    this.props.dispatch(sortBy('opportunity', value));
   }
 
   handleOpenSort = (event) => {

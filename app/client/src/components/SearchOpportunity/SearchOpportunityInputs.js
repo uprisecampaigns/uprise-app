@@ -15,7 +15,7 @@ import {
 
 import { 
   addSearchItem, setSearchDates, removeSearchItem
-} from 'actions/SearchOpportunitiesActions';
+} from 'actions/SearchActions';
 
 import SearchBar from 'components/SearchBar';
 import GeographySearch from 'components/GeographySearch';
@@ -72,18 +72,18 @@ class SearchOpportunityInputs extends React.PureComponent {
 
   handleToggle = (collectionName, on, value) => {
     if (on) {
-      this.props.dispatch(addSearchItem(collectionName, value));
+      this.props.dispatch(addSearchItem('opportunity', collectionName, value));
     } else {
-      this.props.dispatch(removeSearchItem(collectionName, value));
+      this.props.dispatch(removeSearchItem('opportunity', collectionName, value));
     }
   }
 
   addSelectedItem = (collectionName, value) => {
-    this.props.dispatch(addSearchItem(collectionName, value));
+    this.props.dispatch(addSearchItem('opportunity', collectionName, value));
   }
 
   setDates = (dates) => {
-    this.props.dispatch(setSearchDates(dates));
+    this.props.dispatch(setSearchDates('opportunity', dates));
   }
 
   render() {
