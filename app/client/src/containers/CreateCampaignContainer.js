@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { graphql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import isURL from 'validator/lib/isURL';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 
@@ -7,11 +7,17 @@ import history from 'lib/history';
 import states from 'lib/states-list';
 
 import { MeQuery } from 'schemas/queries';
+import { CreateCampaignMutation } from 'schemas/mutations';
 
 import CreateCampaignForm from 'components/CreateCampaignForm';
 
 
 class CreateCampaignContainer extends Component {
+
+  static PropTypes = {
+    createCampaignMutation: PropTypes.func.isRequired
+  }
+
   constructor(props) {
     super(props);
 
@@ -129,7 +135,19 @@ class CreateCampaignContainer extends Component {
     this.validatePhone();
 
     if (!this.hasErrors) {
-      console.log('add campaign?');
+
+      try {
+        const results = await this.props.createCampaignMutation({ 
+          variables: {
+            data: {
+              title: this.state.title
+            }
+          }
+        });
+        console.log(results);
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
@@ -161,4 +179,7 @@ const withMeQuery = graphql(MeQuery, {
   })
 });
 
-export default withMeQuery(CreateCampaignContainer);
+export default compose(
+  withMeQuery, 
+  graphql(CreateCampaignMutation, { name: 'createCampaignMutation' })
+)(CreateCampaignContainer);

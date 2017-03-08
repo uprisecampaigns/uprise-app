@@ -118,7 +118,11 @@ module.exports = buildSchema(`
     emailAvailable(email: String): Boolean
   }
 
+  input CreateCampaignInput {
+    title: String
+  }
+
   type Mutation {
-    createOpportunity(title: String, userId: String) : OpportunityResult
+    createCampaign(data: CreateCampaignInput) : CampaignResult
   }
 `);

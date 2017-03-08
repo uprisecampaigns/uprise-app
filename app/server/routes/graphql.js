@@ -137,24 +137,19 @@ module.exports = (app) => {
     },
 
 
-    createOpportunity: async (data, context) => {
+    createCampaign: async (options, context) => {
 
       if (!context.user) {
         throw new Error('User must be logged in');
       }
 
-      const opportunity = await Opportunity.create({
-        ownerId: data.userId,
-        title: data.title
-      });
-
-      const user = await User.findOne({
-        id: data.userId
+      const campaign = await Campaign.create({
+        ownerId: context.user.id,
+        title: options.data.title
       });
 
       return {
-        title: opportunity.title,
-        userEmail: user.email
+        title: campaign.title,
       }
     }
   };

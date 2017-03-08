@@ -3,6 +3,7 @@ import validator from 'validator';
 const assert = require('assert');
 const uuid = require('uuid/v4');
 const knex = require('knex');
+const getSlug = require('speakingurl');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
 
@@ -16,6 +17,49 @@ class Campaign {
 
     Object.assign(campaign, await this.details(campaign));
     return campaign;
+  }
+
+  static async create(options) {
+
+    const user = await db.table('users').where('id', options.ownerId).first('id');
+
+    if (user) {
+      let found;
+      let append = 0;
+      let slug;
+
+      do {
+        found = false;
+
+        if (append > 0) {
+          slug = getSlug(options.title + append, '');
+        } else {
+          slug = getSlug(options.title, '');
+        }
+
+        const slugQuery = await db('campaigns').where('slug', slug);
+        if (slugQuery.length > 0) {
+          found = true;
+        }
+
+        append++;
+
+      } while (found)
+
+      const campaign = {
+        title: options.title,
+        slug: slug,
+        owner_id: options.ownerId
+      }
+
+      const campaignResult = await db.table('campaigns').insert(campaign, [
+        'id', 'title', 'slug', 'description', 'tags'
+      ]);
+
+      console.log(campaignResult);
+
+      return campaignResult;
+    }
   }
 
   static async search(search) {
