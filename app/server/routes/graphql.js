@@ -144,13 +144,18 @@ module.exports = (app) => {
       }
 
       const campaign = await Campaign.create({
-        ownerId: context.user.id,
-        title: options.data.title
+        owner_id: context.user.id,
+        title: options.data.title,
+        street_address: options.data.streetAddress,
+        street_address2: options.data.streetAddress2,
+        website_url: options.data.websiteUrl,
+        city: options.data.city,
+        state: options.data.state,
+        zipcode: options.data.zipcode,
+        email: options.data.email,
       });
 
-      return {
-        title: campaign.title,
-      }
+      return campaign;
     }
   };
 

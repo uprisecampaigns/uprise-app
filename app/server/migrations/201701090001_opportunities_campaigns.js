@@ -10,11 +10,22 @@ module.exports.up = async (knex, Promise) => {
     table.text('slug').notNullable().unique().index();
     table.text('description');
     table.text('website_url');
+    table.text('email');
+    table.text('phone_number');
+    table.text('street_address');
+    table.text('street_address2');
+    table.text('city');
+    table.text('state');
+    table.text('zipcode');
+
+    table.specificType('zipcodes', 'text[]')
+      .notNullable()
+      .defaultTo(knex.raw("'{}'"));
 
     table.specificType('tags', 'text[]')
       .notNullable()
       .defaultTo(knex.raw("'{}'"))
-      .index('campaign_tags_tags', 'gin');
+      .index('campaign_tags', 'gin');
 
     table.uuid('owner_id').notNullable()
       .references('id').inTable('users')

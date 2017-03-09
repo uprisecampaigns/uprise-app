@@ -21,7 +21,7 @@ class Campaign {
 
   static async create(options) {
 
-    const user = await db.table('users').where('id', options.ownerId).first('id');
+    const user = await db.table('users').where('id', options.owner_id).first('id');
 
     if (user) {
       let found;
@@ -46,11 +46,9 @@ class Campaign {
 
       } while (found)
 
-      const campaign = {
-        title: options.title,
+      const campaign = Object.assign({}, options, {
         slug: slug,
-        owner_id: options.ownerId
-      }
+      });
 
       const campaignResult = await db.table('campaigns').insert(campaign, [
         'id', 'title', 'slug', 'description', 'tags'
@@ -58,7 +56,7 @@ class Campaign {
 
       console.log(campaignResult);
 
-      return campaignResult;
+      return campaignResult[0];
     }
   }
 

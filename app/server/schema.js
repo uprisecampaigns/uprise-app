@@ -119,7 +119,15 @@ module.exports = buildSchema(`
   }
 
   input CreateCampaignInput {
-    title: String
+    title: String!
+    streetAddress: String
+    streetAddress2: String
+    websiteUrl: String
+    email: String!
+    phone: String
+    city: String
+    state: String
+    zipcode: String
   }
 
   type Mutation {

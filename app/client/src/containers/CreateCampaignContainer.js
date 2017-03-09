@@ -24,14 +24,17 @@ class CreateCampaignContainer extends Component {
     this.state = {
       // TODO: should refs be in state?
       refs: {},
-      title: '',
-      streetAddress: '',
-      streetAddress2: '',
-      website: '',
-      phone: '',
-      city: '',
-      state: '',
-      zipcode: '',
+      formData: {
+        email: props.user.email,
+        title: '',
+        streetAddress: '',
+        streetAddress2: '',
+        websiteUrl: '',
+        phone: '',
+        city: '',
+        state: '',
+        zipcode: '',
+      }
     };
 
     Object.assign(this.state, this.defaultErrorText);
@@ -47,7 +50,7 @@ class CreateCampaignContainer extends Component {
   defaultErrorText = { 
     titleErrorText: null,
     streetAddressErrorText: null,
-    websiteErrorText: null,
+    websiteUrlErrorText: null,
     phoneErrorText: null,
     cityErrorText: null,
     stateErrorText: null,
@@ -55,8 +58,8 @@ class CreateCampaignContainer extends Component {
   }
 
   validateString = (prop, errorProp, errorMsg) => {
-    if (typeof this.state[prop] !== 'string' || 
-        this.state[prop].trim() === '') {
+    if (typeof this.state.formData[prop] !== 'string' || 
+        this.state.formData[prop].trim() === '') {
 
       this.setState({ 
         [errorProp]: errorMsg 
@@ -71,24 +74,24 @@ class CreateCampaignContainer extends Component {
     }
   }
 
-  validateWebsite = () => {
-    if (this.state.website.trim() !== '' && !isURL(this.state.website)) {
+  validateWebsiteUrl = () => {
+    if (this.state.formData.websiteUrl.trim() !== '' && !isURL(this.state.formData.websiteUrl)) {
       this.hasErrors = true;
       this.setState({
-        websiteErrorText: 'Please enter valid website url'
+        websiteUrlErrorText: 'Please enter valid website url'
       });
     }
   }
 
   validatePhone = () => {
 
-    if (this.state.phone.trim() === '') {
+    if (this.state.formData.phone.trim() === '') {
       this.hasErrors = true;
       this.setState({
         phoneErrorText: 'Phone number is required'
       });
-    } else if (this.state.phone.match(/[^\(\d\s\)\-]/) || 
-               !isMobilePhone(this.state.phone.replace(/\D/g,''), 'en-US')) {
+    } else if (this.state.formData.phone.match(/[^\(\d\s\)\-]/) || 
+               !isMobilePhone(this.state.formData.phone.replace(/\D/g,''), 'en-US')) {
 
       this.hasErrors = true;
       this.setState({
@@ -112,15 +115,17 @@ class CreateCampaignContainer extends Component {
       
       // Hack for AutoComplete
       if (!valid) {
-        this.state.refs.stateInput.setState({ searchText: this.state.state });
+        this.state.refs.stateInput.setState({ searchText: this.state.formData.state });
       }
     } 
 
     if (valid) {
-      this.setState(Object.assign({},
-        this.state,
-        { [type]: value }
-      ));
+      this.setState({
+        formData: Object.assign({},
+          this.state.formData,
+          { [type]: value }
+        )
+      });
     } 
   }
 
@@ -131,7 +136,7 @@ class CreateCampaignContainer extends Component {
     this.hasErrors = false;
 
     this.validateString('title', 'titleErrorText', 'Campaign Name is Required');
-    this.validateWebsite();
+    this.validateWebsiteUrl();
     this.validatePhone();
 
     if (!this.hasErrors) {
@@ -139,9 +144,7 @@ class CreateCampaignContainer extends Component {
       try {
         const results = await this.props.createCampaignMutation({ 
           variables: {
-            data: {
-              title: this.state.title
-            }
+            data: this.state.formData
           }
         });
         console.log(results);
@@ -162,8 +165,8 @@ class CreateCampaignContainer extends Component {
         handleInputChange={this.handleInputChange}
         cancel={this.cancel}
         formSubmit={this.formSubmit}
-        data={this.state}
-        user={this.props.userObject}
+        data={this.state.formData}
+        user={this.props.user}
         refs={this.state.refs}
       />
     );
@@ -172,7 +175,7 @@ class CreateCampaignContainer extends Component {
 
 const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
-    userObject: !data.loading && data.me ? data.me : {
+    user: !data.loading && data.me ? data.me : {
       email: '',
     }
   })

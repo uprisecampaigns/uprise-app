@@ -69,9 +69,9 @@ class CreateCampaignForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Website"
-                    value={data.website}
-                    onChange={ (event) => { handleInputChange(event, 'website', event.target.value) } }
-                    errorText={data.websiteErrorText}
+                    value={data.websiteUrl}
+                    onChange={ (event) => { handleInputChange(event, 'websiteUrl', event.target.value) } }
+                    errorText={data.websiteUrlErrorText}
                     fullWidth={true}
                   />
                 </div>
@@ -108,7 +108,7 @@ class CreateCampaignForm extends Component {
                   <TextField
                     floatingLabelText="Email"
                     disabled={true}
-                    value={user.email}
+                    value={data.email}
                     fullWidth={true}
                   />
                 </div>
