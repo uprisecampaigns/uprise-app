@@ -24,13 +24,14 @@ import s from 'styles/Search.scss';
 const graphqlOptions = (collection) => {
   return {
     props: ({ data }) => ({
-      [collection]: !data.loading && data[collection] ? data[collection] : [],
-      items: !data.loading && data[collection] ? data[collection] : [],
+      [collection]: data[collection],
+      items: data[collection],
       graphqlLoading: data.loading
     }),
-    options: {
-      pollInterval: 20000
-    }
+    options: (ownProps) => ({
+      pollInterval: 20000,
+      ...ownProps
+    })
   };
 };
 

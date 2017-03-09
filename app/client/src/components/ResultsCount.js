@@ -15,12 +15,11 @@ class ResultsCount extends React.PureComponent {
   }
  
   shouldComponentUpdate(nextProps) {
-    return !(nextProps.graphqlLoading ||
-             isEqual(this.props.items, nextProps.items))
+    return !nextProps.graphqlLoading && this.props.items;
   }
 
   render() {
-    const resultsCount = this.props.items.length;
+    const resultsCount = this.props.items ? this.props.items.length : 0;
     return (
       <span>
         {resultsCount} results

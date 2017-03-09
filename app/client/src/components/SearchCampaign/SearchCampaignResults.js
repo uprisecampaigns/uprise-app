@@ -16,17 +16,16 @@ class SearchCampaignResults extends Component {
   }
 
   static propTypes = {
-    campaigns: PropTypes.array.isRequired,
-    search: PropTypes.object.isRequired,
+    campaigns: PropTypes.array,
     sortBy: PropTypes.object.isRequired,
     graphqlLoading: PropTypes.bool.isRequired
   }
 
   shouldComponentUpdate(nextProps) {
-    return !(nextProps.graphqlLoading ||
-            (isEqual(this.props.campaigns, nextProps.campaigns) &&
-             isEqual(this.props.search, nextProps.search) &&
-             isEqual(this.props.sortBy, nextProps.sortBy)))
+    // TODO: How to also prevent updates if nothing 
+    // has changed during polling
+    return !isEqual(this.props.sortBy, nextProps.sortBy) ||
+           (!nextProps.graphqlLoading && nextProps.campaigns);
   }
 
   render() {
@@ -41,7 +40,7 @@ class SearchCampaignResults extends Component {
       } 
     }
 
-    const campaigns = Array.from(props.campaigns).sort(campaignsSort).map( (campaign, index) => {
+    const campaigns = props.campaigns ? Array.from(props.campaigns).sort(campaignsSort).map( (campaign, index) => {
 
       const tags = campaign.tags ? campaign.tags.map( (tag, index) => {
         return <span key={index}>{tag}{(index === campaign.tags.length - 1) ? '' : ', '}</span>;
@@ -73,7 +72,7 @@ class SearchCampaignResults extends Component {
           </CardText>
         </Card>
       );
-    });
+    }) : [];
 
     return (
       <div>

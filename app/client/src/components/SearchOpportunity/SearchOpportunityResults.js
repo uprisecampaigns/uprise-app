@@ -16,17 +16,17 @@ class SearchOpportunityResults extends React.PureComponent {
   }
 
   static propTypes = {
-    opportunities: PropTypes.array.isRequired,
+    opportunities: PropTypes.array,
     search: PropTypes.object.isRequired,
     sortBy: PropTypes.object.isRequired,
     graphqlLoading: PropTypes.bool.isRequired
   }
 
   shouldComponentUpdate(nextProps) {
-    return !(nextProps.graphqlLoading ||
-            (isEqual(this.props.campaigns, nextProps.campaigns) &&
-             isEqual(this.props.search, nextProps.search) &&
-             isEqual(this.props.sortBy, nextProps.sortBy)))
+    // TODO: How to also prevent updates if nothing 
+    // has changed during polling
+    return !isEqual(this.props.sortBy, nextProps.sortBy) ||
+           (!nextProps.graphqlLoading && nextProps.opportunities);
   }
 
   render() {
@@ -48,7 +48,7 @@ class SearchOpportunityResults extends React.PureComponent {
       }
     }
 
-    const opportunities = Array.from(props.opportunities).sort(opportunitiesSort).map( (opportunity, index) => {
+    const opportunities = props.opportunities ? Array.from(props.opportunities).sort(opportunitiesSort).map( (opportunity, index) => {
 
       const tags = opportunity.tags ? opportunity.tags.map( (tag, index) => {
         return <span key={index}>{tag}{(index === opportunity.tags.length - 1) ? '' : ', '}</span>;
@@ -87,7 +87,7 @@ class SearchOpportunityResults extends React.PureComponent {
           </CardText>
         </Card>
       );
-    });
+    }) : [];
 
     return (
       <div>
