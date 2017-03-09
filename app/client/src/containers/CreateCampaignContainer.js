@@ -10,7 +10,10 @@ import { MeQuery } from 'schemas/queries';
 import { CreateCampaignMutation } from 'schemas/mutations';
 
 import CreateCampaignForm from 'components/CreateCampaignForm';
+import Link from 'components/CreateCampaignForm';
 
+
+const statesList = Object.keys(states);
 
 class CreateCampaignContainer extends Component {
 
@@ -21,7 +24,7 @@ class CreateCampaignContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    const initialState = {
       // TODO: should refs be in state?
       refs: {},
       formData: {
@@ -34,17 +37,33 @@ class CreateCampaignContainer extends Component {
         city: '',
         state: '',
         zipcode: '',
+      },
+      errors: {},
+      modalOpen: false,
+      newCampaign: {
+        title: '',
+        slug: ''
       }
     };
 
-    Object.assign(this.state, this.defaultErrorText);
+    this.state = Object.assign({}, initialState, this.defaultErrorText);
 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user) {
+      this.setState({
+        formData: Object.assign({}, this.state.formData, {
+          email: nextProps.user.email
+        })
+      });
+    }
   }
 
   hasErrors = false
 
   resetErrorText = () => {
-    this.setState(this.defaultErrorText);
+    this.setState({ errors: this.defaultErrorText });
   }
 
   defaultErrorText = { 
@@ -61,25 +80,42 @@ class CreateCampaignContainer extends Component {
     if (typeof this.state.formData[prop] !== 'string' || 
         this.state.formData[prop].trim() === '') {
 
-      this.setState({ 
-        [errorProp]: errorMsg 
-      });
+      this.setState( (prevState) => ({ 
+        errors: Object.assign({}, prevState.errors, {
+          [errorProp]: errorMsg 
+        })
+      }));
 
       this.hasErrors = true;
 
     } else {
-      this.setState({ 
-        [errorProp]: null 
-      });
+      this.setState( (prevState) => ({ 
+        errors: Object.assign({}, prevState.errors, {
+          [errorProp]: null 
+        })
+      }));
     }
   }
 
   validateWebsiteUrl = () => {
     if (this.state.formData.websiteUrl.trim() !== '' && !isURL(this.state.formData.websiteUrl)) {
       this.hasErrors = true;
-      this.setState({
-        websiteUrlErrorText: 'Please enter valid website url'
-      });
+      this.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          websiteUrlErrorText: 'Please enter valid website url'
+        })
+      }));
+    }
+  }
+
+  validateState = () => {
+    if (this.state.formData.state.trim() !== '' && !statesList.includes(this.state.formData.state)) {
+      this.hasErrors = true;
+      this.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          stateErrorText: 'Please enter valid state'
+        })
+      }));
     }
   }
 
@@ -87,16 +123,20 @@ class CreateCampaignContainer extends Component {
 
     if (this.state.formData.phone.trim() === '') {
       this.hasErrors = true;
-      this.setState({
-        phoneErrorText: 'Phone number is required'
-      });
+      this.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          phoneErrorText: 'Phone number is required'
+        })
+      }));
     } else if (this.state.formData.phone.match(/[^\(\d\s\)\-]/) || 
                !isMobilePhone(this.state.formData.phone.replace(/\D/g,''), 'en-US')) {
 
       this.hasErrors = true;
-      this.setState({
-        phoneErrorText: 'Please enter valid phone number'
-      });
+      this.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          phoneErrorText: 'Please enter valid phone number'
+        })
+      }));
     }
   }
 
@@ -106,7 +146,7 @@ class CreateCampaignContainer extends Component {
     if (type === 'state') {
       valid = false;
 
-      Object.keys(states).forEach( (state) => {
+      statesList.forEach( (state) => {
         if (state.toLowerCase().includes(value.toLowerCase())) {
           valid = true;
         }
@@ -115,17 +155,19 @@ class CreateCampaignContainer extends Component {
       
       // Hack for AutoComplete
       if (!valid) {
-        this.state.refs.stateInput.setState({ searchText: this.state.formData.state });
+        this.state.refs.stateInput.setState( (prevState) => ({ 
+          searchText: prevState.formData.state 
+        }));
       }
     } 
 
     if (valid) {
-      this.setState({
+      this.setState( (prevState) => ({
         formData: Object.assign({},
-          this.state.formData,
+          prevState.formData,
           { [type]: value }
         )
-      });
+      }));
     } 
   }
 
@@ -138,6 +180,7 @@ class CreateCampaignContainer extends Component {
     this.validateString('title', 'titleErrorText', 'Campaign Name is Required');
     this.validateWebsiteUrl();
     this.validatePhone();
+    this.validateState();
 
     if (!this.hasErrors) {
 
@@ -147,7 +190,11 @@ class CreateCampaignContainer extends Component {
             data: this.state.formData
           }
         });
-        console.log(results);
+        this.props.data.refetch();
+        this.setState({
+          modalOpen: true,
+          newCampaign: results.data.createCampaign
+        });
       } catch (e) {
         console.log(e);
       }
@@ -160,14 +207,22 @@ class CreateCampaignContainer extends Component {
   }
 
   render() {
+
+    const { state, cancel, formSubmit, handleInputChange } = this;
+    const { user } = this.props;
+    const { newCampaign, modalOpen, formData, errors, refs } = state;
+
     return (
       <CreateCampaignForm 
-        handleInputChange={this.handleInputChange}
-        cancel={this.cancel}
-        formSubmit={this.formSubmit}
-        data={this.state.formData}
-        user={this.props.user}
-        refs={this.state.refs}
+        handleInputChange={handleInputChange}
+        cancel={cancel}
+        formSubmit={formSubmit}
+        data={formData}
+        errors={errors}
+        user={user}
+        refs={refs}
+        newCampaign={newCampaign}
+        modalOpen={modalOpen}
       />
     );
   }
@@ -177,7 +232,8 @@ const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     user: !data.loading && data.me ? data.me : {
       email: '',
-    }
+    }, 
+    data
   })
 });
 

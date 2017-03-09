@@ -4,8 +4,10 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
 import Link from '../Link';
 
+import history from 'lib/history';
 import states from 'lib/states-list';
 
 import s from 'styles/Form.scss';
@@ -23,12 +25,25 @@ class CreateCampaignForm extends Component {
     formSubmit: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
+    modalOpen: PropTypes.bool.isRequired,
+    newCampaign: PropTypes.object.isRequired,
   }
 
   render() {
-    const { data, user, refs, formSubmit, handleInputChange, cancel } = this.props;
+    const { 
+      data, user, refs, formSubmit, errors,
+      handleInputChange, cancel, newCampaign, modalOpen 
+    } = this.props;
 
     const statesList = Object.keys(states);
+
+    const modalActions = [
+      <RaisedButton
+        label="Set Preferences"
+        primary={true}
+        onTouchTap={ () => { history.push('/campaign/' + newCampaign.slug) }}
+      />
+    ];
 
     return (
       <div className={s.outerContainer}>
@@ -45,7 +60,7 @@ class CreateCampaignForm extends Component {
                     floatingLabelText="Campaign Name"
                     value={data.title}
                     onChange={ (event) => { handleInputChange(event, 'title', event.target.value) } }
-                    errorText={data.titleErrorText}
+                    errorText={errors.titleErrorText}
                     fullWidth={true}
                   />
                 </div>
@@ -54,7 +69,7 @@ class CreateCampaignForm extends Component {
                     floatingLabelText="Street Address"
                     value={data.streetAddress}
                     onChange={ (event) => { handleInputChange(event, 'streetAddress', event.target.value) } }
-                    errorText={data.streetAddressErrorText}
+                    errorText={errors.streetAddressErrorText}
                     fullWidth={true}
                   />
                 </div>
@@ -71,7 +86,7 @@ class CreateCampaignForm extends Component {
                     floatingLabelText="Website"
                     value={data.websiteUrl}
                     onChange={ (event) => { handleInputChange(event, 'websiteUrl', event.target.value) } }
-                    errorText={data.websiteUrlErrorText}
+                    errorText={errors.websiteUrlErrorText}
                     fullWidth={true}
                   />
                 </div>
@@ -80,7 +95,7 @@ class CreateCampaignForm extends Component {
                     floatingLabelText="Phone"
                     value={data.phone}
                     onChange={ (event) => { handleInputChange(event, 'phone', event.target.value) } }
-                    errorText={data.phoneErrorText}
+                    errorText={errors.phoneErrorText}
                     fullWidth={true}
                   />
                 </div>
@@ -89,7 +104,7 @@ class CreateCampaignForm extends Component {
                     floatingLabelText="City"
                     value={data.city}
                     onChange={ (event) => { handleInputChange(event, 'city', event.target.value) } }
-                    errorText={data.cityErrorText}
+                    errorText={errors.cityErrorText}
                     fullWidth={true}
                   />
                 </div>
@@ -100,7 +115,7 @@ class CreateCampaignForm extends Component {
                     dataSource={statesList}
                     onUpdateInput={ (text) => { handleInputChange(undefined, 'state', text) } }
                     ref={ (input) => { refs.stateInput = input } }
-                    errorText={data.stateErrorText}
+                    errorText={errors.stateErrorText}
                     fullWidth={true}
                   />
                 </div>
@@ -131,6 +146,26 @@ class CreateCampaignForm extends Component {
             </div>
           </Paper>
         </div>
+
+        {modalOpen && (
+          <Dialog
+            title="Campaign Created"
+            modal={true}
+            actions={modalActions}
+            open={modalOpen}
+          >
+            <p>
+              Congratulations, you have created the campaign '{newCampaign.title}'.
+            </p>
+            <p>
+              You can find and edit your campaign's public profile at 
+              <Link to={'/campaign/' + newCampaign.slug} useAhref={true}>uprise.org/campaign/{newCampaign.slug}</Link>
+            </p>
+            <p>
+              Please feel free to contact us at <Link to="mailto:help@uprise.org" useAhref={true}>help@uprise.org</Link> for assistance.
+            </p>
+          </Dialog>
+        )}
       </div>
     );
   }
