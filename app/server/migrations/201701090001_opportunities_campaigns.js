@@ -117,7 +117,7 @@ module.exports.up = async (knex, Promise) => {
     table.text('street_address2');
     table.text('city');
     table.text('state');
-    table.text('zip');
+    table.text('zipcode');
     table.text('location_notes');
 
     table.uuid('owner_id').notNullable()

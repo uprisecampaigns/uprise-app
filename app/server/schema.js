@@ -10,7 +10,7 @@ module.exports = buildSchema(`
     first_name: String
     last_name: String
     email: String
-    zip: String
+    zipcode: String
   }
 
   type ActivityResult {
@@ -52,7 +52,7 @@ module.exports = buildSchema(`
     street_address2: String
     city: String
     state: String
-    zip: String
+    zipcode: String
     location_notes: String
     activities: [ActivityResult]
     issue_areas: [IssueAreaResult]

@@ -10,7 +10,7 @@ module.exports.up = async (knex, Promise) => {
     table.boolean('email_confirmed').notNullable().defaultTo(false);
     table.text('password_hash');
     table.text('phone_number');
-    table.text('zip').notNullable();
+    table.text('zipcode').notNullable();
     table.timestamp('lockout_end', 'without time zone');
     table.boolean('lockout_enabled').notNullable().defaultTo(false);
     table.smallint('access_failed_count').notNullable().defaultTo(0);

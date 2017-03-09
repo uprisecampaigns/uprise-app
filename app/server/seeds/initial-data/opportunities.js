@@ -23,7 +23,7 @@ The masses advance and retreat several times before they make up their minds to 
 spontaneous movement of the majority.
 `,
       owner_id: users[0].id,
-      zip: '94703',
+      zipcode: '94703',
       campaign_id: campaigns[0].id,
       start_time: moment().add(1, 'days').local().format(), 
       end_time: moment().add(1, 'days').add(3, 'hours').local().format(), 
@@ -37,7 +37,7 @@ spontaneous movement of the majority.
       description: `
 The Work of Art in the Age of Mechanical Reproduction production of innocence the notion of the public abundance David Cohn fair use Article Skimmer rubber cement metered model curation audience atomization overcome writing masthead, Pulse rubber cement Pulse natural-born blogger curation WordPress RSS cancel my subscription reporting media diet advertising Google+ iPhone app, Quora CTR fair use RT Like button vast wasteland CNN leaves it there production of innocence Arianna shoot a video Google+.
 `,
-      zip: '90007',
+      zipcode: '90007',
       owner_id: users[0].id,
       campaign_id: campaigns[0].id,
       start_time: moment().add(5, 'days').local().format(), 
@@ -56,7 +56,7 @@ They know they have to work hard to get ahead - and they want to. It's that folk
 
 Tonight, we gather to affirm the greatness of our nation - not because of the height of our skyscrapers, or the power of our military, or the size of our economy. In Washington, they call this the Ownership Society, but what it really means is - you're on your own. No health care? The market will fix it. This truth transcends nations and peoples - a belief that isn't new; that isn't black or white or brown; that isn't Christian, or Muslim or Jew. 
 `,
-      zip: '94601',
+      zipcode: '94601',
       owner_id: users[0].id,
       campaign_id: campaigns[1].id,
       start_time: moment().add(10, 'days').local().format(), 
@@ -75,7 +75,7 @@ We have real enemies in the world. Like other black churches, Trinity's services
 
 We will all have to make concessions to achieve this. But what we know - what we have seen - is that America can change. For we have a choice in this country. For decades, there has been a stalemate: two peoples with legitimate aspirations, each with a painful history that makes compromise elusive. And I will host a Summit on Entrepreneurship this year to identify how we can deepen ties between business leaders, foundations and social entrepreneurs in the United States and Muslim communities around the world. 
 `,
-      zip: '94577',
+      zipcode: '94577',
       city: 'San Leandro',
       state: 'CA',
       owner_id: users[0].id,
@@ -92,7 +92,7 @@ And I heard Reverend Jeremiah A. And there's another issue we must confront as w
 
 I stand here knowing that my story is part of the larger American story, that I owe a debt to all of those who came before me, and that, in no other country on earth, is my story even possible. John Kerry believes in an America where hard work is rewarded; so instead of offering tax breaks to companies shipping jobs overseas, he offers them to companies creating jobs here at home. That won't keep America safe. But we should choose the right path, not just the easy path. 
 `,
-      zip: '80304',
+      zipcode: '80304',
       owner_id: users[0].id,
       campaign_id: campaigns[2].id,
       start_time: moment().add(17, 'days').local().format(), 

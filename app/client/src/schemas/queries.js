@@ -58,7 +58,7 @@ export const OpportunityQuery = gql`
       street_address2
       city
       state
-      zip
+      zipcode
       location_notes
       activities {
         title
@@ -94,7 +94,7 @@ export const OpportunitiesQuery = gql`
       street_address2
       city
       state
-      zip
+      zipcode
       location_notes
       activities {
         title
@@ -154,7 +154,7 @@ export const MeQuery = gql`
       first_name
       last_name
       email
-      zip
+      zipcode
     }
   }
 `;

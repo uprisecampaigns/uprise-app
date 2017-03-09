@@ -36,7 +36,6 @@ const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     userObject: !data.loading && data.me ? data.me : {
       email: '',
-      zip: ''
     }
   }),
   skip: (ownProps) => !ownProps.loggedIn,

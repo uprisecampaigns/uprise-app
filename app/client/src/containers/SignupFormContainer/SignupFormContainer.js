@@ -25,13 +25,13 @@ class SignupFormContainer extends Component {
     email: '',
     password1: '',
     password2: '',
-    zip: '',
+    zipcode: '',
     firstNameErrorText: null,
     lastNameErrorText: null,
     emailErrorText: null,
     password1ErrorText: null,
     password2ErrorText: null,
-    zipErrorText: null,
+    zipcodeErrorText: null,
   }
 
   validateString = (prop, errorProp, errorMsg) => {
@@ -51,17 +51,17 @@ class SignupFormContainer extends Component {
     }
   }
 
-  validateZip = () => {
+  validateZipcode = () => {
     this.setState({
-      zipErrorText: null,
+      zipcodeErrorText: null,
     });
 
-    this.validateString('zip', 'zipErrorText', 'Zip is Required');
+    this.validateString('zipcode', 'zipcodeErrorText', 'Zipcode is Required');
 
-    if (typeof this.state.zip === 'string' &&
-        this.state.zip.length > 12) {
+    if (typeof this.state.zipcode === 'string' &&
+        this.state.zipcode.length > 12) {
       this.setState({
-        zipErrorText: 'Zip must be less than 12 characters long'
+        zipcodeErrorText: 'Zipcode must be less than 12 characters long'
       });
 
       this.hasErrors = true;
@@ -116,7 +116,7 @@ class SignupFormContainer extends Component {
 
     this.validateString('firstName', 'firstNameErrorText', 'First Name is Required');
     this.validateString('lastName', 'lastNameErrorText', 'Last Name is Required');
-    this.validateZip();
+    this.validateZipcode();
     this.validateEmail();
 
     this.validatePasswords();
@@ -154,7 +154,7 @@ class SignupFormContainer extends Component {
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      zip: this.state.zip,
+      zipcode: this.state.zipcode,
       password: this.state.password1,
     }));
   }

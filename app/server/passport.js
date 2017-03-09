@@ -55,13 +55,13 @@ module.exports = (passport) => {
           const salt = bcrypt.genSaltSync(10);
           const passwordHash = bcrypt.hashSync(password, salt);
 
-          const zip = req.body.zip;
+          const zipcode = req.body.zipcode;
           const firstName = req.body.firstName;
           const lastName = req.body.lastName;
 
           const userInfo = {
             email: email,
-            zip: zip,
+            zipcode: zipcode,
             password_hash: passwordHash,
             first_name: firstName,
             last_name: lastName

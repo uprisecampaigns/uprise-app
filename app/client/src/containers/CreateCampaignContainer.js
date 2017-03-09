@@ -31,7 +31,7 @@ class CreateCampaignContainer extends Component {
       phone: '',
       city: '',
       state: '',
-      zip: '',
+      zipcode: '',
     };
 
     Object.assign(this.state, this.defaultErrorText);
@@ -51,7 +51,7 @@ class CreateCampaignContainer extends Component {
     phoneErrorText: null,
     cityErrorText: null,
     stateErrorText: null,
-    zipErrorText: null,
+    zipcodeErrorText: null,
   }
 
   validateString = (prop, errorProp, errorMsg) => {
@@ -174,7 +174,6 @@ const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     userObject: !data.loading && data.me ? data.me : {
       email: '',
-      zip: ''
     }
   })
 });

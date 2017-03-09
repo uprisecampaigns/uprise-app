@@ -42,7 +42,6 @@ const withMeQuery = graphql(MeQuery, {
       first_name: '',
       last_name: '',
       email: '',
-      zip: ''
     }
   }),
   skip: (ownProps) => !ownProps.loggedIn,

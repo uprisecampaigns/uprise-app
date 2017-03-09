@@ -28,7 +28,7 @@ class Opportunity {
                db.raw('to_char(opportunities.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
                'opportunities.tags as tags', 'opportunities.owner_id as owner_id', 'opportunities.slug as slug', 'opportunities.description as description',
                'opportunities.location_name as location_name', 'opportunities.street_address as street_address', 'opportunities.street_address2 as street_address2',
-               'opportunities.city as city', 'opportunities.state as state', 'opportunities.zip as zip', 'opportunities.location_notes as location_notes',
+               'opportunities.city as city', 'opportunities.state as state', 'opportunities.zipcode as zipcode', 'opportunities.location_notes as location_notes',
                'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug'])
  
       .where('opportunities.deleted', false)
@@ -211,7 +211,7 @@ class Opportunity {
                       .from(db.raw(`
                         (SELECT postal_code, location from zipcodes where postal_code=?) target_zip
                         CROSS JOIN
-                        (select * from opportunities join zipcodes on zipcodes.postal_code = opportunities.zip) opportunities
+                        (select * from opportunities join zipcodes on zipcodes.postal_code = opportunities.zipcode) opportunities
                       `, zipcode))
                   })
                   .where('distance', '<=', distance);

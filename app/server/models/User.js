@@ -12,7 +12,7 @@ const sendEmail = require('lib/sendEmail.js');
 class User {
 
   static findOne(...args) {
-    return db.table('users').where(...args).first('id', 'first_name', 'last_name', 'email', 'zip');
+    return db.table('users').where(...args).first('id', 'first_name', 'last_name', 'email', 'zipcode');
   }
 
   static async create(user) {
