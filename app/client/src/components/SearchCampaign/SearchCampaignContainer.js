@@ -9,6 +9,7 @@ import SearchCampaignInputs from 'components/SearchCampaign/SearchCampaignInputs
 import SearchCampaignSelections from 'components/SearchCampaign/SearchCampaignSelections';
 import SearchBar from 'components/SearchBar';
 import SearchSort from 'components/SearchSort';
+import ResultsCount from 'components/ResultsCount';
 
 import { 
   addSearchItem, sortBy
@@ -23,8 +24,13 @@ import s from 'styles/Search.scss';
 const graphqlOptions = (collection) => {
   return {
     props: ({ data }) => ({
-      [collection]: !data.loading && data[collection] ? data[collection] : []
-    })
+      [collection]: !data.loading && data[collection] ? data[collection] : [],
+      items: !data.loading && data[collection] ? data[collection] : [],
+      graphqlLoading: data.loading
+    }),
+    options: {
+      pollInterval: 20000
+    }
   };
 };
 
@@ -37,19 +43,6 @@ const mapStateToProps = (state) => ({
   },
   sortBy: state.campaignsSearch.sortBy
 });
-
-const ResultsCount = (props) => {
-  const resultsCount = props.campaigns.length;
-  return (
-    <span>
-      {resultsCount} results
-    </span>
-  );
-};
-
-ResultsCount.propTypes = {
-  campaigns: PropTypes.array.isRequired
-};
 
 const ResultsCountWithData = compose(
   connect(mapStateToProps),
