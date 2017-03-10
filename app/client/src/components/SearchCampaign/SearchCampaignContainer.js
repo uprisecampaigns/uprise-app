@@ -29,7 +29,7 @@ const graphqlOptions = (collection) => {
       graphqlLoading: data.loading
     }),
     options: (ownProps) => ({
-      pollInterval: 20000,
+      pollInterval: 30000,
       ...ownProps
     })
   };

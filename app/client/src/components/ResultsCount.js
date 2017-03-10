@@ -10,12 +10,8 @@ class ResultsCount extends React.PureComponent {
   }
 
   static propTypes = {
-    items: PropTypes.array.isRequired,
+    items: PropTypes.array,
     graphqlLoading: PropTypes.bool.isRequired
-  }
- 
-  shouldComponentUpdate(nextProps) {
-    return !nextProps.graphqlLoading && this.props.items;
   }
 
   render() {

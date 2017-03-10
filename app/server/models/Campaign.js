@@ -46,17 +46,17 @@ class Campaign {
 
       } while (found)
 
-      const campaign = Object.assign({}, options, {
+      const newCampaignData = Object.assign({}, options, {
         slug: slug,
       });
 
-      const campaignResult = await db.table('campaigns').insert(campaign, [
-        'id', 'title', 'slug', 'description', 'tags'
+      const campaignResult = await db.table('campaigns').insert(newCampaignData, [
+        'id', 'title', 'slug', 'description', 'tags', 'owner_id'
       ]);
 
-      console.log(campaignResult);
+      const newCampaign = campaignResult[0];
 
-      return campaignResult[0];
+      return Object.assign({}, newCampaign, await this.details(newCampaign));
     }
   }
 

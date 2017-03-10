@@ -7,6 +7,7 @@ const { buildSchema } = require('graphql');
 module.exports = buildSchema(`
 
   type UserResult {
+    id: String
     first_name: String
     last_name: String
     email: String
@@ -14,24 +15,29 @@ module.exports = buildSchema(`
   }
 
   type ActivityResult {
+    id: String
     title: String!
     description: String
   }
 
   type TypeResult {
+    id: String
     title: String!
     description: String
   }
 
   type LevelResult {
+    id: String
     title: String!
   }
 
   type IssueAreaResult {
+    id: String
     title: String!
   }
 
   type CampaignResult {
+    id: String
     title: String
     slug: String
     description: String
@@ -41,6 +47,7 @@ module.exports = buildSchema(`
   }
 
   type OpportunityResult {
+    id: String
     title: String
     slug: String
     description: String

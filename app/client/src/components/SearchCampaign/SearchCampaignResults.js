@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import CircularProgress from 'material-ui/CircularProgress';
 const isEqual = require('lodash.isequal');
 
 import Link from 'components/Link';
@@ -22,10 +23,7 @@ class SearchCampaignResults extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    // TODO: How to also prevent updates if nothing 
-    // has changed during polling
-    return !isEqual(this.props.sortBy, nextProps.sortBy) ||
-           (!nextProps.graphqlLoading && nextProps.campaigns);
+    return (!nextProps.graphqlLoading && typeof nextProps.campaigns === 'object');
   }
 
   render() {
@@ -76,7 +74,16 @@ class SearchCampaignResults extends Component {
 
     return (
       <div>
-        { campaigns }
+        { 
+          props.graphqlLoading ? (
+            <div className={s.loadingContainer}>
+              <CircularProgress
+                size={100}
+                thickness={5}
+              />
+            </div>
+          ) : campaigns 
+        }
       </div>
     );
   }

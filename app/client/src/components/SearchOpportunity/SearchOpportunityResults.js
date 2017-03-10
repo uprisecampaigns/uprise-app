@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import CircularProgress from 'material-ui/CircularProgress';
 const isEqual = require('lodash.isequal');
 
 import Link from 'components/Link';
@@ -17,16 +18,12 @@ class SearchOpportunityResults extends React.PureComponent {
 
   static propTypes = {
     opportunities: PropTypes.array,
-    search: PropTypes.object.isRequired,
     sortBy: PropTypes.object.isRequired,
     graphqlLoading: PropTypes.bool.isRequired
   }
 
   shouldComponentUpdate(nextProps) {
-    // TODO: How to also prevent updates if nothing 
-    // has changed during polling
-    return !isEqual(this.props.sortBy, nextProps.sortBy) ||
-           (!nextProps.graphqlLoading && nextProps.opportunities);
+    return (!nextProps.graphqlLoading && typeof nextProps.opportunities === 'object');
   }
 
   render() {
@@ -91,7 +88,16 @@ class SearchOpportunityResults extends React.PureComponent {
 
     return (
       <div>
-        { opportunities }
+        { 
+          props.graphqlLoading ? (
+            <div className={s.loadingContainer}>
+              <CircularProgress
+                size={100}
+                thickness={5}
+              />
+            </div>
+          ) : opportunities 
+        }
       </div>
     );
   }

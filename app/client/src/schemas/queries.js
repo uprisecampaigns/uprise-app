@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const CampaignsQuery = gql`
   query CampaignsQuery($search:CampaignSearchInput) {
     campaigns(search:$search){
+      id
       title
       description
       slug
@@ -22,6 +23,7 @@ export const CampaignsQuery = gql`
 export const CampaignTitlesQuery = gql`
   query CampaignTitlesQuery($search:CampaignSearchInput) {
     campaigns(search:$search){
+      id
       title
     }
   }
@@ -31,6 +33,7 @@ export const CampaignTitlesQuery = gql`
 export const CampaignQuery = gql`
   query CampaignQuery($search:CampaignInput) {
     campaign(search:$search){
+      id
       title
       slug
       description
@@ -47,6 +50,7 @@ export const CampaignQuery = gql`
 export const OpportunityQuery = gql`
   query OpportunityQuery($search:OpportunityInput) {
     opportunity(search:$search){
+      id
       title
       slug
       description
@@ -83,6 +87,7 @@ export const OpportunityQuery = gql`
 export const OpportunitiesQuery = gql`
   query OpportunitiesQuery($search:OpportunitySearchInput) {
     opportunities(search:$search){
+      id
       title
       slug
       description
@@ -117,6 +122,7 @@ export const OpportunitiesQuery = gql`
 export const ActivitiesQuery = gql`
   query ActivitiesQuery {
     activities {
+      id
       title
       description
     }
@@ -126,6 +132,7 @@ export const ActivitiesQuery = gql`
 export const LevelsQuery = gql`
   query LevelsQuery {
     levels {
+      id
       title
     }
   }
@@ -134,6 +141,7 @@ export const LevelsQuery = gql`
 export const TypesQuery = gql`
   query TypesQuery {
     types {
+      id
       title
       description
     }
@@ -143,6 +151,7 @@ export const TypesQuery = gql`
 export const IssueAreasQuery = gql`
   query IssueAreasQuery {
     issueAreas {
+      id
       title
     }
   }
@@ -151,6 +160,7 @@ export const IssueAreasQuery = gql`
 export const MeQuery = gql`
   query MeQuery {
     me {
+      id
       first_name
       last_name
       email

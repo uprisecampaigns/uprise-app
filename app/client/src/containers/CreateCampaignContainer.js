@@ -6,7 +6,7 @@ import isMobilePhone from 'validator/lib/isMobilePhone';
 import history from 'lib/history';
 import states from 'lib/states-list';
 
-import { MeQuery } from 'schemas/queries';
+import { MeQuery, CampaignsQuery } from 'schemas/queries';
 import { CreateCampaignMutation } from 'schemas/mutations';
 
 import CreateCampaignForm from 'components/CreateCampaignForm';
@@ -188,9 +188,18 @@ class CreateCampaignContainer extends Component {
         const results = await this.props.createCampaignMutation({ 
           variables: {
             data: this.state.formData
+          },
+          // TODO: decide between refetch and update
+          // refetchQueries: ['CampaignsQuery'],
+          updateQueries: {
+            CampaignsQuery: (prev, { mutationResult }) => {
+              const newCampaign = mutationResult.data.createCampaign;
+              return Object.assign({}, prev, {
+                campaigns: prev.campaigns.concat(newCampaign)
+              })
+            }
           }
         });
-        this.props.data.refetch();
         this.setState({
           modalOpen: true,
           newCampaign: results.data.createCampaign
