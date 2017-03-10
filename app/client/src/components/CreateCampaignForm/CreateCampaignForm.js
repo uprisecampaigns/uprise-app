@@ -88,6 +88,7 @@ class CreateCampaignForm extends Component {
                     onChange={ (event) => { handleInputChange(event, 'websiteUrl', event.target.value) } }
                     errorText={errors.websiteUrlErrorText}
                     fullWidth={true}
+                    type="url"
                   />
                 </div>
                 <div className={s.textFieldContainer}>
@@ -97,6 +98,8 @@ class CreateCampaignForm extends Component {
                     onChange={ (event) => { handleInputChange(event, 'phone', event.target.value) } }
                     errorText={errors.phoneErrorText}
                     fullWidth={true}
+                    type="tel"
+                    pattern="[0-9]{10}"
                   />
                 </div>
                 <div className={s.textFieldContainer}>
