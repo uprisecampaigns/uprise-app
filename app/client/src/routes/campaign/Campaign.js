@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import CampaignContainer from 'components/Campaign/CampaignContainer';
 
 
-class SearchOpportunities extends React.Component {
+class Campaign extends React.Component {
   static propTypes = {
     campaign: PropTypes.object.isRequired
   };
@@ -17,4 +17,4 @@ class SearchOpportunities extends React.Component {
   }
 }
 
-export default SearchOpportunities;
+export default Campaign;

@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import OpportunityContainer from 'components/Opportunity/OpportunityContainer';
 
 
-class SearchOpportunities extends React.Component {
+class Opportunity extends React.Component {
   static propTypes = {
     opportunity: PropTypes.object.isRequired
   };
@@ -17,4 +17,4 @@ class SearchOpportunities extends React.Component {
   }
 }
 
-export default SearchOpportunities;
+export default Opportunity;
