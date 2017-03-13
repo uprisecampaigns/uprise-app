@@ -1,9 +1,20 @@
+import React from 'react';
+import Organize from './Organize';
+import Layout from 'components/Layout';
+
+import withAuthentication from 'routes/withAuthentication';
+
+const OrganizeWithAuthentication = withAuthentication(Organize);
 
 export default {
+
   path: '/organize',
+
   action() {
     return {
-      redirect: '/organize/view-all'
+      title: 'Organize',
+      component: <Layout><OrganizeWithAuthentication/></Layout>,
     };
-  }
+  },
+
 };

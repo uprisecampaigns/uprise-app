@@ -2,8 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
+import {List, ListItem} from 'material-ui/List';
+import FontIcon from 'material-ui/FontIcon';
 
 import history from 'lib/history';
+
+import Link from 'components/Link';
 
 import { CampaignQuery } from 'schemas/queries';
 
@@ -34,8 +38,26 @@ class ManageCampaignSettingsContainer extends Component {
     });
   }
 
-  confirmDelete = () => {
-    console.log('gonna delete this campaign');
+  confirmDelete = async () => {
+    try {
+      const results = await this.props.deleteCampaignMutation({ 
+        variables: {
+          data: {
+            id: this.props.campaign.id
+          }
+        },
+        refetchQueries: ['CampaignsQuery', 'MyCampaignsQuery'],
+      });
+
+      if (results.data.deleteCampaign) {
+        history.push('/organize');
+      } else {
+        // TODO: Handle error!
+        console.error(results);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   render() {
@@ -56,13 +78,52 @@ class ManageCampaignSettingsContainer extends Component {
 
     return (
       <div className={s.outerContainer}>
-        <div className={s.campaignHeader}>{campaign.title}</div>
 
-        <RaisedButton
-          label="Delete Campaign"
-          onTouchTap={this.handleDelete}
-          primary={true}
-        />
+        <Link to={'/organize/' + campaign.slug}>
+          <div className={s.campaignHeader}>
+
+            <FontIcon 
+              className={["material-icons", s.backArrow].join(' ')}
+            >arrow_back</FontIcon>
+
+            {campaign.title}
+          </div>
+        </Link>
+
+        <div className={s.campaignSubHeader}>Settings</div>
+
+        <List>
+
+          <Link to={'/organize/' + campaign.slug + '/info'}>
+            <ListItem 
+              primaryText="Info"
+            />
+          </Link>
+
+          <Link to={'/organize/' + campaign.slug + '/preferences'}>
+            <ListItem 
+              primaryText="Preferences"
+            />
+          </Link>
+
+          <Link to={'/organize/' + campaign.slug + '/location'}>
+            <ListItem 
+              primaryText="Location"
+            />
+          </Link>
+
+          <Link to={'/organize/' + campaign.slug + '/profile'}>
+            <ListItem 
+              primaryText="Profile"
+            />
+          </Link>
+
+          <ListItem 
+            primaryText="Delete"
+            onTouchTap={this.handleDelete}
+          />
+
+        </List>
 
         {this.state.deleteModalOpen && (
           <Dialog

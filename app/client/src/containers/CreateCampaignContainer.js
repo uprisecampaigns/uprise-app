@@ -184,20 +184,22 @@ class CreateCampaignContainer extends Component {
     if (!this.hasErrors) {
 
       try {
+        const addCampaign = (prev, { mutationResult }) => {
+          const newCampaign = mutationResult.data.createCampaign;
+          return Object.assign({}, prev, {
+            campaigns: prev.campaigns.concat(newCampaign)
+          })
+        };
         const results = await this.props.createCampaignMutation({ 
           variables: {
             data: this.state.formData
           },
           // TODO: decide between refetch and update
-          // refetchQueries: ['CampaignsQuery'],
-          updateQueries: {
-            CampaignsQuery: (prev, { mutationResult }) => {
-              const newCampaign = mutationResult.data.createCampaign;
-              return Object.assign({}, prev, {
-                campaigns: prev.campaigns.concat(newCampaign)
-              })
-            }
-          }
+          refetchQueries: ['CampaignsQuery', 'MyCampaignsQuery'],
+          // updateQueries: {
+          //   CampaignsQuery: addCampaign,
+          //   MyCampaignsQuery: addCampaign
+          // }
         });
         this.setState({
           modalOpen: true,

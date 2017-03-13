@@ -22,9 +22,6 @@ export const CreateCampaignMutation = gql`
 
 export const DeleteCampaignMutation = gql`
   mutation DeleteCampaignMutation ($data:DeleteCampaignInput) {
-    deleteCampaign(data:$data){
-      id
-      title
-    }
+    deleteCampaign(data:$data)
   }
 `;

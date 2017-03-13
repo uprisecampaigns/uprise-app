@@ -28,7 +28,6 @@ export default {
 
     // /organize/
     require('./organize').default,
-    require('./viewAllOrganize').default,
     require('./createCampaign').default,
     require('./manageCampaign').default,
     require('./manageCampaignProfile').default,

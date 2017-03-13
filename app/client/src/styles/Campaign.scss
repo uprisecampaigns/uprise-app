@@ -10,9 +10,29 @@
     align-items: center;
     min-height: 8rem;
     background-color: $azure;
-    color: darken($white, 5%);
+    color: darken($white, 5%) !important;
     font-size: 2rem;
     font-weight: 300;
+
+    .material-icons {
+      color: darken($white, 5%) !important;
+    }
+  }
+
+  .campaignSubHeader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $azure !important;
+    min-height: 5rem;
+    font-size: 2rem;
+    font-weight: 300;
+  }
+
+  .backArrow {
+    position: absolute !important;
+    left: 2rem !important;
   }
 
   .innerContainer {
