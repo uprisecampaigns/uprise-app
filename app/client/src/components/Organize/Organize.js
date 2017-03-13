@@ -1,11 +1,11 @@
 
 import React, { Component, PropTypes } from 'react';
 import ContentNavigation from 'components/ContentNavigation';
+import { graphql } from 'react-apollo';
 
-const selections = [
-  { title: 'view all', path: 'view-all' },
-  { title: 'create campaign', path: 'create-campaign' }
-];
+import { 
+  MyCampaignsQuery, 
+} from 'schemas/queries';
 
 const baseUrl = '/organize';
 
@@ -16,6 +16,20 @@ class Organize extends Component {
   };
 
   render() {
+
+    const selections = [
+      { title: 'create campaign', path: 'create-campaign' }
+    ];
+
+    if (typeof this.props.myCampaigns === 'object') {
+      this.props.myCampaigns.forEach( (campaign) => {
+        selections.push({
+          title: campaign.title,
+          path: campaign.slug
+        });
+      });
+    }
+
     const selected = selections.findIndex( (i) => {
       return i.path === this.props.selected;
     });
@@ -33,4 +47,14 @@ class Organize extends Component {
   }
 }
 
-export default Organize;
+const OrganizeWithData = graphql(MyCampaignsQuery, {
+  props: ({ data }) => ({
+    myCampaigns: data.myCampaigns,
+    graphqlLoading: data.loading
+  }),
+  options: (ownProps) => ({
+    ...ownProps
+  })
+})(Organize);
+
+export default OrganizeWithData;

@@ -20,6 +20,17 @@ export const CampaignsQuery = gql`
   }
 `;
 
+export const MyCampaignsQuery = gql`
+  query MyCampaignsQuery{
+    myCampaigns{
+      id
+      title
+      slug
+    }
+  }
+`;
+
+
 export const CampaignTitlesQuery = gql`
   query CampaignTitlesQuery($search:CampaignSearchInput) {
     campaigns(search:$search){

@@ -60,6 +60,21 @@ class Campaign {
     }
   }
 
+  static async delete(deleteOptions, ownerId) {
+
+    const options = Object.assign({}, deleteOptions, {
+      owner_id: ownerId
+    });
+
+    const result = await db('campaigns')
+      .where(options)
+      .update({ deleted: true });
+
+    console.log(result);
+
+    return result === 1;
+  }
+
   static async search(search) {
     
     const searchQuery = db('campaigns')
@@ -77,6 +92,10 @@ class Campaign {
 
               });
             });
+          }
+
+          if (search.ownerId) {
+            qb.andWhere('owner_id', search.ownerId);
           }
 
           if (search.keywords) {

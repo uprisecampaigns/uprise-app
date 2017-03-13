@@ -91,6 +91,20 @@ module.exports = (app) => {
       return campaigns;
     },
 
+    myCampaigns: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const myCampaigns = await Campaign.search({
+        ownerId: context.user.id
+      });
+      console.log(myCampaigns);
+      return myCampaigns;
+    },
+
+
 
     activities: async (data, context) => {
 
@@ -156,7 +170,28 @@ module.exports = (app) => {
       });
 
       return campaign;
+    },
+
+    deleteCampaign: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      console.log(options);
+      console.log(options.data);
+
+      const campaign = await Campaign.findOne(options.data);
+
+      if (campaign.owner_id !== context.user.id) {
+        throw new Error('User must own campaign');
+      }
+
+      const result = await Campaign.delete(options.data, context.user.id);
+
+      return result;
     }
+
   };
 
   app.use('/api/graphql', graphqlExpress(req => ({

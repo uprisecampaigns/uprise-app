@@ -1,6 +1,6 @@
 
 import React, { PropTypes } from 'react';
-import CampaignContainer from 'components/Campaign/CampaignContainer';
+import CampaignContainer from 'components/CampaignContainer';
 
 
 class Campaign extends React.Component {

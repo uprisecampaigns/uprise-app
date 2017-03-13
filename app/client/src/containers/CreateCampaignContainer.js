@@ -6,11 +6,10 @@ import isMobilePhone from 'validator/lib/isMobilePhone';
 import history from 'lib/history';
 import states from 'lib/states-list';
 
-import { MeQuery, CampaignsQuery } from 'schemas/queries';
+import { MeQuery } from 'schemas/queries';
 import { CreateCampaignMutation } from 'schemas/mutations';
 
 import CreateCampaignForm from 'components/CreateCampaignForm';
-import Link from 'components/CreateCampaignForm';
 
 
 const statesList = Object.keys(states);
@@ -205,7 +204,7 @@ class CreateCampaignContainer extends Component {
           newCampaign: results.data.createCampaign
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
   }

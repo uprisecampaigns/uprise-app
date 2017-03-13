@@ -116,6 +116,7 @@ module.exports = buildSchema(`
     opportunity(search: OpportunityInput): OpportunityResult
     opportunities(search: OpportunitySearchInput): [OpportunityResult]
     campaigns(search: CampaignSearchInput): [CampaignResult]
+    myCampaigns: [CampaignResult]
     campaign(search: CampaignInput): CampaignResult
     activities: [ActivityResult]
     types: [TypeResult]
@@ -137,7 +138,13 @@ module.exports = buildSchema(`
     zipcode: String
   }
 
+  input DeleteCampaignInput {
+    id: String
+    slug: String
+  }
+
   type Mutation {
-    createCampaign(data: CreateCampaignInput) : CampaignResult
+    createCampaign(data: CreateCampaignInput): CampaignResult
+    deleteCampaign(data: DeleteCampaignInput): Boolean
   }
 `);

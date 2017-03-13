@@ -9,7 +9,7 @@ import {
   OpportunityQuery, 
 } from 'schemas/queries';
 
-import s from './Opportunity.scss';
+import s from 'styles/Opportunity.scss';
 
 const graphqlOptions = (collection) => {
   return {

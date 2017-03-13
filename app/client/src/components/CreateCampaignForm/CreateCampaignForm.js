@@ -5,7 +5,8 @@ import Paper from 'material-ui/Paper';
 import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
-import Link from '../Link';
+
+import Link from 'components/Link';
 
 import history from 'lib/history';
 import states from 'lib/states-list';

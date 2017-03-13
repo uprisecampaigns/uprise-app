@@ -9,7 +9,7 @@ import {
   CampaignQuery, 
 } from 'schemas/queries';
 
-import s from './Campaign.scss';
+import s from 'styles/Campaign.scss';
 
 const graphqlOptions = (collection) => {
   return {

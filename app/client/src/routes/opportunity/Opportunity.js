@@ -1,6 +1,6 @@
 
 import React, { PropTypes } from 'react';
-import OpportunityContainer from 'components/Opportunity/OpportunityContainer';
+import OpportunityContainer from 'components/OpportunityContainer';
 
 
 class Opportunity extends React.Component {
