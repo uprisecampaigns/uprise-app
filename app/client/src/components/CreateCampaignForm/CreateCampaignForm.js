@@ -42,7 +42,7 @@ class CreateCampaignForm extends Component {
       <RaisedButton
         label="Set Preferences"
         primary={true}
-        onTouchTap={ () => { history.push('/campaign/' + newCampaign.slug) }}
+        onTouchTap={ () => { history.push('/organize/' + newCampaign.slug) }}
       />
     ];
 
