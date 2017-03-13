@@ -10,7 +10,7 @@ import {
   DeleteCampaignMutation
 } from 'schemas/mutations';
 
-import s from 'styles/Campaign.scss';
+import s from 'styles/Organize.scss';
 
 
 class ManageCampaignProfileContainer extends Component {

@@ -8,7 +8,7 @@ import Link from 'components/Link';
 
 import { CampaignQuery } from 'schemas/queries';
 
-import s from 'styles/Campaign.scss';
+import s from 'styles/Organize.scss';
 
 
 class ManageCampaignContainer extends Component {
