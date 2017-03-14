@@ -41,6 +41,13 @@ module.exports = buildSchema(`
     title: String
     slug: String
     description: String
+    street_address: String
+    street_address2: String
+    state: String
+    city: String
+    phone: String
+    website: String
+    zipcode: String
     owner: UserResult
     tags: [String]
     issue_areas: [IssueAreaResult]

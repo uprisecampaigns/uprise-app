@@ -49,6 +49,13 @@ export const CampaignQuery = gql`
       slug
       description
       tags
+      street_address
+      street_address2
+      zipcode
+      city
+      state
+      phone
+      website
       owner {
         first_name
         last_name
