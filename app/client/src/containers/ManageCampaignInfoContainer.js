@@ -182,6 +182,8 @@ class ManageCampaignInfoContainer extends Component {
           </div>
         </Link>
 
+        <div className={s.pageSubHeader}>Info</div>
+
         <ManageCampaignInfoForm
           handleInputChange={handleInputChange}
           formSubmit={formSubmit}

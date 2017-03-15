@@ -48,19 +48,29 @@
     }
   }
 
-  .navSubHeader {
+  .pageSubHeader {
     width: 100%;
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     color: $azure !important;
     min-height: 5rem;
     font-size: 2rem;
     font-weight: 300;
-
-    :global .material-icons {
-      color: $azure !important;
-    }
   }
 
+  .navSubHeader {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: lighten($azure, 10%) !important;
+    min-height: 5rem;
+    font-size: 2rem;
+    font-weight: 300;
+
+    :global .material-icons {
+      color: lighten($azure, 10%) !important;
+    }
+  }
 }
