@@ -159,6 +159,7 @@ module.exports = buildSchema(`
     issueAreas: [String]
     levels: [String]
     types: [String]
+    tags: [String]
   }
 
   input DeleteCampaignInput {

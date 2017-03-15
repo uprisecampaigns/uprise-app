@@ -2,11 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
 const camelCase = require('camelcase');
 
 import TogglesList from 'components/TogglesList';
+import SearchBar from 'components/SearchBar';
+import SelectedItemsContainer from 'components/SelectedItemsContainer';
 import Link from 'components/Link';
 
 import history from 'lib/history';
@@ -61,7 +63,8 @@ class ManageCampaignPreferencesContainer extends Component {
         slug: '',
         issueAreas: [],
         levels: [],
-        types: []
+        types: [],
+        tags: []
       }
     };
   }
@@ -87,7 +90,7 @@ class ManageCampaignPreferencesContainer extends Component {
   }
 
 
-  formSubmit = async (event) => {
+  saveChanges = async (event) => {
     (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
 
     try {
@@ -95,6 +98,7 @@ class ManageCampaignPreferencesContainer extends Component {
       const selectedIssueAreas = this.state.campaign.issueAreas.map( (issueArea) => ( issueArea.id ));
       const selectedLevels = this.state.campaign.levels.map( (level) => ( level.id ));
       const selectedTypes = this.state.campaign.types.map( (level) => ( level.id ));
+      const selectedTags = this.state.campaign.tags;
 
       const results = await this.props.editCampaignMutation({ 
         variables: {
@@ -102,7 +106,8 @@ class ManageCampaignPreferencesContainer extends Component {
             id: this.props.campaign.id,
             issueAreas: selectedIssueAreas,
             levels: selectedLevels,
-            types: selectedTypes
+            types: selectedTypes,
+            tags: selectedTags
           }
         },
         // TODO: decide between refetch and update
@@ -133,14 +138,40 @@ class ManageCampaignPreferencesContainer extends Component {
     }));
   }
 
+  addKeyword = (collectionName, tag) => {
+    const tags = Array.from(this.state.campaign.tags);
+
+    if (( typeof tag === 'string' &&
+          tag.trim() !== '' &&
+          !tags.find(item => item.toLowerCase() === tag.toLowerCase()))) {
+
+      tags.push(tag);
+    }
+
+    this.setState( (prevState) => ({
+      campaign: Object.assign({}, prevState.campaign, { tags })
+    }));
+  }
+
+  removeKeyword = (collectionName, tagToRemove) => {
+    this.setState( (prevState) => ({
+      campaign: Object.assign({}, prevState.campaign, { 
+        tags: prevState.campaign.tags.filter( (tag) => {
+          return tag.toLowerCase() !== tagToRemove.toLowerCase();
+        })
+      })
+    }));
+  }
+
   render() {
-    const { formSubmit, handleToggle } = this;
+    const { saveChanges, handleToggle, addKeyword, removeKeyword } = this;
     const { user, ...props } = this.props;
     const { campaign } = this.state;
 
     const selectedIssueAreas = campaign.issueAreas.map( (issueArea) => issueArea.id );
     const selectedLevels = campaign.levels.map( (level) => level.id );
     const selectedTypes = campaign.types.map( (type) => type.id );
+    const selectedTags = campaign.tags;
 
     return (
       <div className={s.outerContainer}>
@@ -157,48 +188,66 @@ class ManageCampaignPreferencesContainer extends Component {
 
         <div className={s.pageSubHeader}>Preferences</div>
 
-        <form 
-          onSubmit={formSubmit}
-        >
-          <List>
-            
-            <IssueAreasTogglesList 
-              listTitle="Issue Areas"
-              collectionName="issueAreas" 
-              displayPropName="title"
-              keyPropName="id"
-              handleToggle={handleToggle}
-              selectedCollection={selectedIssueAreas}
-            />
- 
-            <LevelsTogglesList 
-              listTitle="Campaign Levels"
-              collectionName="levels" 
-              displayPropName="title"
-              keyPropName="id"
-              handleToggle={handleToggle}
-              selectedCollection={selectedLevels}
-            />
- 
-            <TypesTogglesList 
-              listTitle="Campaign Types"
-              collectionName="types" 
-              displayPropName="title"
-              keyPropName="id"
-              handleToggle={handleToggle}
-              selectedCollection={selectedTypes}
-            />
-          </List>
+        <List>
+          
+          <IssueAreasTogglesList 
+            listTitle="Issue Areas"
+            collectionName="issueAreas" 
+            displayPropName="title"
+            keyPropName="id"
+            handleToggle={handleToggle}
+            selectedCollection={selectedIssueAreas}
+          />
 
-          <div className={s.button}>
-            <RaisedButton 
-              onTouchTap={formSubmit} 
-              primary={true} 
-              type="submit"
-              label="Save" 
-            />
-          </div>
-        </form>
+          <LevelsTogglesList 
+            listTitle="Campaign Levels"
+            collectionName="levels" 
+            displayPropName="title"
+            keyPropName="id"
+            handleToggle={handleToggle}
+            selectedCollection={selectedLevels}
+          />
+
+          <TypesTogglesList 
+            listTitle="Campaign Types"
+            collectionName="types" 
+            displayPropName="title"
+            keyPropName="id"
+            handleToggle={handleToggle}
+            selectedCollection={selectedTypes}
+          />
+
+          <ListItem 
+            primaryText="Keywords"
+            initiallyOpen={false}
+            primaryTogglesNestedList={true}
+            nestedItems={[(
+              <ListItem key={0} disabled={true} className={[s.listItem, s.searchBar].join(' ')}>
+                <SearchBar
+                  collectionName="tags"
+                  inputLabel="Keyword"
+                  addItem={addKeyword}
+                  iconName="add"
+                />
+                <SelectedItemsContainer
+                  collectionName="tags"
+                  removeItem={removeKeyword}
+                  items={selectedTags}
+                />
+              </ListItem>
+            )]}
+          />
+
+        </List>
+
+        <div className={s.button}>
+          <FlatButton 
+            onTouchTap={saveChanges} 
+            primary={true} 
+            type="submit"
+            label="Save Changes" 
+          />
+        </div>
 
       </div>
     );

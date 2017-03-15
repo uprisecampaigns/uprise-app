@@ -73,4 +73,12 @@
       color: lighten($azure, 10%) !important;
     }
   }
+
+  .button {
+    text-align: center;
+
+    button span {
+      color: $brick-red !important;
+    }
+  }
 }

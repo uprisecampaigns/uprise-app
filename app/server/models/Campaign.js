@@ -9,6 +9,23 @@ const db = knex(knexConfig.development);
 
 const User = require('models/User.js');
 
+const updateProperties = async (collection, name, campaignId) => {
+  const deleteResult = await db('campaigns_' + name + 's')
+    .where('campaign_id', campaignId)
+    .delete();
+
+  const newItems = collection.map( (id) => ({
+    campaign_id: campaignId,
+    [name + '_id']: id
+  }));
+
+  const newItemsResult = await db('campaigns_' + name + 's')
+    .insert(newItems);
+
+  console.log(newItemsResult);
+
+  assert(newItemsResult.rowCount === collection.length);
+}
 
 class Campaign {
 
@@ -83,34 +100,16 @@ class Campaign {
           'id', 'title', 'slug', 'description', 'tags', 'owner_id'
         ]);
 
-      const updateProperties = async (collection, name) => {
-        const deleteResult = await db('campaigns_' + name + 's')
-          .where('campaign_id', campaignId)
-          .delete();
-
-        const newItems = collection.map( (id) => ({
-          campaign_id: campaignId,
-          [name + '_id']: id
-        }));
-
-        const newItemsResult = await db('campaigns_' + name + 's')
-          .insert(newItems);
-
-        console.log(newItemsResult);
-
-        assert(newItemsResult.rowCount === collection.length);
-      }
-
       if (levels && levels.length) {
-        await updateProperties(levels, 'level');
+        await updateProperties(levels, 'level', campaignId);
       }
 
       if (issueAreas && issueAreas.length) {
-        await updateProperties(issueAreas, 'issue_area');
+        await updateProperties(issueAreas, 'issue_area', campaignId);
       }
 
       if (types && types.length) {
-        await updateProperties(types, 'type');
+        await updateProperties(types, 'type', campaignId);
       }
 
       const campaign = campaignResult[0];

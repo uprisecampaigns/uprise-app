@@ -19,6 +19,7 @@ class SearchBar extends React.PureComponent {
     collectionToSearch: PropTypes.array,
     addItem: PropTypes.func.isRequired,
     inputLabel: PropTypes.string.isRequired,
+    iconName: PropTypes.string
   }
 
   handleInputChange = (value) => {
@@ -44,7 +45,7 @@ class SearchBar extends React.PureComponent {
 
   render() {
 
-    const { collectionToSearch, inputLabel, ...props } = this.props;
+    const { collectionToSearch, inputLabel, iconName, ...props } = this.props;
 
     const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
       <AutoComplete
@@ -75,7 +76,7 @@ class SearchBar extends React.PureComponent {
           iconClassName='material-icons'
           type="submit"
           onTouchTap={this.addItem} 
-        >search</IconButton>
+        >{iconName || "search"}</IconButton>
       </form>
     )
   }
