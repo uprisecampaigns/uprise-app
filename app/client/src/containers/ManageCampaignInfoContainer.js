@@ -135,7 +135,6 @@ class ManageCampaignInfoContainer extends Component {
     validateState(this);
 
     if (!this.hasErrors) {
-      console.log('lets edit this campaign');
 
       const { formData } = this.state;
 
@@ -150,8 +149,6 @@ class ManageCampaignInfoContainer extends Component {
           // TODO: decide between refetch and update
           refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
         });
-
-        console.log('edited campaign');
 
       } catch (e) {
         console.error(e);
