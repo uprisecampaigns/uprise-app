@@ -33,23 +33,22 @@ class TogglesList extends React.PureComponent {
       overflowY: 'scroll',
     };
 
-    const toggles = (collectionName, collection) => {
-      return collection.map( (item, index) => {
-        const selected = (selectedCollection.includes(item[keyPropName]));
-        return (
-          <ListItem 
-            leftCheckbox={
-              <Checkbox 
-                onCheck={ (event, on) => { handleToggle(collectionName, on, item[keyPropName]) }}
-              />
-            }
-            key={index}
-            checked={selected}
-            primaryText={item[displayPropName]}
-          />
-        );
-      });
-    };
+    const toggles = collection.map( (item, index) => {
+      const selected = (selectedCollection.includes(item[keyPropName]));
+      return (
+        <ListItem 
+          leftCheckbox={
+            <Checkbox 
+              onCheck={ (event, on) => { handleToggle(collectionName, on, item[keyPropName]) }}
+              checked={selected}
+            />
+          }
+          key={item.id || index}
+          checked={selected}
+          primaryText={item[displayPropName]}
+        />
+      );
+    });
 
     return (
       <ListItem 
@@ -57,7 +56,7 @@ class TogglesList extends React.PureComponent {
         initiallyOpen={false}
         primaryTogglesNestedList={true}
         nestedListStyle={nestedListStyle}
-        nestedItems={toggles(collectionName, collection)}
+        nestedItems={toggles}
       />
     );
   }

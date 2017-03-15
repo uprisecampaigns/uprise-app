@@ -25,17 +25,7 @@ export const EditCampaignMutation = gql`
     editCampaign(data:$data){
       id
       title
-      description
       slug
-      tags
-      issue_areas {
-        title
-      }
-      owner {
-        first_name
-        last_name
-        email
-      }
     }
   }
 `;

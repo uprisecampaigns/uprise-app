@@ -1,7 +1,5 @@
 
 
-
-
 const { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
@@ -51,6 +49,7 @@ module.exports = buildSchema(`
     owner: UserResult
     tags: [String]
     issue_areas: [IssueAreaResult]
+    levels: [LevelResult]
   }
 
   type OpportunityResult {
@@ -157,6 +156,9 @@ module.exports = buildSchema(`
     city: String
     state: String
     zipcode: String
+    issueAreas: [String]
+    levels: [String]
+    types: [String]
   }
 
   input DeleteCampaignInput {

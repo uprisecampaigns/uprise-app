@@ -9,6 +9,7 @@ export const CampaignsQuery = gql`
       slug
       tags
       issue_areas {
+        id
         title
       }
       owner {
@@ -61,6 +62,14 @@ export const CampaignQuery = gql`
         last_name
         email
       }
+      issue_areas {
+        id
+        title
+      }
+      levels {
+        id
+        title
+      }
     }
   }
 `;
@@ -87,6 +96,7 @@ export const OpportunityQuery = gql`
         description
       }
       issue_areas {
+        id
         title
       }
       owner {
@@ -124,6 +134,7 @@ export const OpportunitiesQuery = gql`
         description
       }
       issue_areas {
+        id
         title
       }
       owner {

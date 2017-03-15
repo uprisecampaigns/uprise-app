@@ -30,9 +30,10 @@ export default {
     require('./organize').default,
     require('./createCampaign').default,
     require('./manageCampaign').default,
+    require('./manageCampaignSettings').default,
     require('./manageCampaignProfile').default,
     require('./manageCampaignInfo').default,
-    require('./manageCampaignSettings').default,
+    require('./manageCampaignPreferences').default,
 
     // /search/
     require('./search').default,

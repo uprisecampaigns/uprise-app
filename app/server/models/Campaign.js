@@ -64,14 +64,54 @@ class Campaign {
   static async edit(options) {
 
     const user = await db.table('users').where('id', options.owner_id).first('id');
+    const campaignId = options.id;
 
     if (user) {
 
+      const levels = options.levels;
+      delete options.levels;
+
+      const types = options.types;
+      delete options.types;
+
+      const issueAreas = options.issue_areas;
+      delete options.issue_areas;
+
       const campaignResult = await db('campaigns')
-        .where('id', options.id)
+        .where('id', campaignId)
         .update(options, [
-        'id', 'title', 'slug', 'description', 'tags', 'owner_id'
+          'id', 'title', 'slug', 'description', 'tags', 'owner_id'
         ]);
+
+      const updateProperties = async (collection, name) => {
+        const deleteResult = await db('campaigns_' + name + 's')
+          .where('campaign_id', campaignId)
+          .delete();
+
+        const newItems = collection.map( (id) => ({
+          campaign_id: campaignId,
+          [name + '_id']: id
+        }));
+
+        const newItemsResult = await db('campaigns_' + name + 's')
+          .insert(newItems);
+
+        console.log(newItemsResult);
+
+        assert(newItemsResult.rowCount === collection.length);
+      }
+
+      if (levels && levels.length) {
+        await updateProperties(levels, 'level');
+      }
+
+      if (issueAreas && issueAreas.length) {
+        await updateProperties(issueAreas, 'issue_area');
+      }
+
+      if (types && types.length) {
+        await updateProperties(types, 'type');
+      }
 
       const campaign = campaignResult[0];
 
@@ -228,11 +268,23 @@ class Campaign {
     const issuesQuery = db('issue_areas')
       .innerJoin('campaigns_issue_areas', 'campaigns_issue_areas.issue_area_id', 'issue_areas.id')
       .where('campaigns_issue_areas.campaign_id', campaign.id)
-      .select('title');
-
-    console.log(issuesQuery.toString());
+      .select('issue_areas.id as id', 'issue_areas.title as title');
 
     details.issue_areas = await issuesQuery;
+
+    const levelsQuery = db('levels')
+      .innerJoin('campaigns_levels', 'campaigns_levels.level_id', 'levels.id')
+      .where('campaigns_levels.campaign_id', campaign.id)
+      .select('levels.id as id', 'levels.title as title');
+
+    details.levels = await levelsQuery;
+
+    const typesQuery = db('types')
+      .innerJoin('campaigns_types', 'campaigns_types.type_id', 'types.id')
+      .where('campaigns_types.campaign_id', campaign.id)
+      .select('types.id as id', 'types.title as title');
+
+    details.types = await typesQuery;
 
     return details;
   }
