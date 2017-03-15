@@ -1,8 +1,37 @@
 @import '~styles/variables';
-@import '~styles/Campaign';
 
 .outerContainer {
   width: 100%;
+
+  .organizeNavHeader {
+    width: 100%;
+    display: flex;
+    color: $brick-red;
+    padding: 1rem;
+    font-size: 1.5rem;
+    align-items: center;
+  }
+
+  .campaignHeader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4rem;
+    background-color: $azure;
+    color: darken($white, 5%) !important;
+    font-size: 2rem;
+    font-weight: 300;
+
+    :global .material-icons {
+      color: darken($white, 5%) !important;
+    }
+
+    .backArrow {
+      position: absolute !important;
+      left: 2rem !important;
+    }
+  }
 
   .campaignSubHeader {
     width: 100%;
@@ -19,8 +48,19 @@
     }
   }
 
-  .backArrow {
-    position: absolute !important;
-    left: 2rem !important;
+  .navSubHeader {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: $azure !important;
+    min-height: 5rem;
+    font-size: 2rem;
+    font-weight: 300;
+
+    :global .material-icons {
+      color: $azure !important;
+    }
   }
+
 }

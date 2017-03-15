@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import {List, ListItem} from 'material-ui/List';
+import FontIcon from 'material-ui/FontIcon';
 
 import history from 'lib/history';
 
@@ -25,6 +26,16 @@ class ManageCampaignContainer extends Component {
     const { campaign, ...props } = this.props;
     return (
       <div className={s.outerContainer}>
+
+        <Link to={'/organize'}>
+          <div className={s.organizeNavHeader}>
+            <FontIcon 
+              className={["material-icons", s.backArrow].join(' ')}
+            >arrow_back</FontIcon>
+            Organize
+          </div>
+        </Link>
+
         <div className={s.campaignHeader}>{campaign.title}</div>
 
         <List>

@@ -43,7 +43,6 @@ class ManageCampaignInfoForm extends Component {
                 className={s.form}
                 onSubmit={formSubmit}
               >
-                <div> {this.props.error} </div>
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Campaign Name"

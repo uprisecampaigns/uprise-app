@@ -174,7 +174,7 @@ class ManageCampaignInfoContainer extends Component {
         <div className={s.campaignHeader}>{campaign.title}</div>
 
         <Link to={'/organize/' + campaign.slug + '/settings'}>
-          <div className={s.campaignSubHeader}>
+          <div className={s.navSubHeader}>
             <FontIcon 
               className={["material-icons", s.backArrow].join(' ')}
             >arrow_back</FontIcon>
