@@ -42,7 +42,7 @@ export const CampaignTitlesQuery = gql`
 
 
 export const CampaignQuery = gql`
-  query CampaignQuery($search:CampaignInput) {
+  query CampaignQuery($search:CampaignQueryInput) {
     campaign(search:$search){
       id
       title
@@ -54,8 +54,8 @@ export const CampaignQuery = gql`
       zipcode
       city
       state
-      phone
-      website
+      phone_number
+      website_url
       owner {
         first_name
         last_name

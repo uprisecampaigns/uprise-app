@@ -1,5 +1,6 @@
 const graphqlHTTP = require('express-graphql');
 const assert = require('assert');
+const decamelize = require('decamelize');
 const bodyParser = require('body-parser');
 const graphqlServer = require('graphql-server-express');
 const graphqlExpress = graphqlServer.graphqlExpress;
@@ -150,27 +151,46 @@ module.exports = (app) => {
       return issueAreas;
     },
 
-
     createCampaign: async (options, context) => {
 
       if (!context.user) {
         throw new Error('User must be logged in');
       }
 
-      const campaign = await Campaign.create({
-        owner_id: context.user.id,
-        title: options.data.title,
-        street_address: options.data.streetAddress,
-        street_address2: options.data.streetAddress2,
-        website_url: options.data.websiteUrl,
-        city: options.data.city,
-        state: options.data.state,
-        zipcode: options.data.zipcode,
-        email: options.data.email,
-      });
+      console.log(options.data);
+
+      // Decamelizing property names
+      const input = Object.assign(...Object.keys(options.data).map(k => ({
+          [decamelize(k)]: options.data[k]
+      })));
+
+      input.owner_id = context.user.id;
+
+      const campaign = await Campaign.create(input);
 
       return campaign;
     },
+
+    editCampaign: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      console.log(options.data);
+
+      // Decamelizing property names
+      const input = Object.assign(...Object.keys(options.data).map(k => ({
+          [decamelize(k)]: options.data[k]
+      })));
+
+      input.owner_id = context.user.id;
+
+      const campaign = await Campaign.edit(input);
+
+      return campaign;
+    },
+
 
     deleteCampaign: async (options, context) => {
 

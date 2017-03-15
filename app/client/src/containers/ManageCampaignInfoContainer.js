@@ -8,6 +8,13 @@ import ManageCampaignInfoForm from 'components/ManageCampaignInfoForm';
 import Link from 'components/Link';
 
 import history from 'lib/history';
+import states from 'lib/states-list';
+import { 
+  validateString,
+  validateWebsiteUrl,
+  validateState,
+  validatePhoneNumber
+} from 'lib/validateComponentForms';
 
 import { 
   MeQuery,
@@ -15,16 +22,18 @@ import {
 } from 'schemas/queries';
 
 import { 
-  DeleteCampaignMutation
+  EditCampaignMutation
 } from 'schemas/mutations';
 
 import s from 'styles/Organize.scss';
 
 
+const statesList = Object.keys(states);
+
 class ManageCampaignInfoContainer extends Component {
 
   static PropTypes = {
-    campaign: PropTypes.object.isRequired
+    campaignSlug: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -36,7 +45,7 @@ class ManageCampaignInfoContainer extends Component {
         streetAddress: '',
         streetAddress2: '',
         websiteUrl: '',
-        phone: '',
+        phoneNumber: '',
         email: '',
         city: '',
         state: '',
@@ -53,7 +62,7 @@ class ManageCampaignInfoContainer extends Component {
     titleErrorText: null,
     streetAddressErrorText: null,
     websiteUrlErrorText: null,
-    phoneErrorText: null,
+    phoneNumberErrorText: null,
     cityErrorText: null,
     stateErrorText: null,
     zipcodeErrorText: null,
@@ -67,10 +76,20 @@ class ManageCampaignInfoContainer extends Component {
           [camelCase(k)]: nextProps.campaign[k] || ''
       })));
 
+      Object.keys(campaign).forEach( (k) => {
+        if (!Object.keys(this.state.formData).includes(camelCase(k))) {
+          delete campaign[k];
+        }
+      });
+
       this.setState( (prevState) => ({
         formData: Object.assign({}, prevState.formData, campaign)
       }));
     }
+  }
+
+  resetErrorText = () => {
+    this.setState({ errors: this.defaultErrorText });
   }
 
   handleInputChange = (event, type, value) => {
@@ -104,16 +123,51 @@ class ManageCampaignInfoContainer extends Component {
     } 
   }
 
-  formSubmit = (event) => {
+  formSubmit = async (event) => {
+    (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
 
-    console.log('submitted');
+    this.resetErrorText();
+    this.hasErrors = false;
 
+    validateString(this, 'title', 'titleErrorText', 'Campaign Name is Required');
+    validateWebsiteUrl(this);
+    validatePhoneNumber(this);
+    validateState(this);
+
+    if (!this.hasErrors) {
+      console.log('lets edit this campaign');
+
+      const { formData } = this.state;
+
+      formData.id = this.props.campaign.id;
+
+      try {
+
+        const results = await this.props.editCampaignMutation({ 
+          variables: {
+            data: formData
+          },
+          // TODO: decide between refetch and update
+          refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
+        });
+
+        console.log('edited campaign');
+
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 
   render() {
     const { state, formSubmit, handleInputChange } = this;
-    const { campaign, user, ...props } = this.props;
+    const { user, ...props } = this.props;
     const { formData, errors, refs } = state;
+
+    const campaign = props.campaign || {
+      title: '',
+      slug: ''
+    };
 
     return (
       <div className={s.outerContainer}>
@@ -150,16 +204,21 @@ const withMeQuery = graphql(MeQuery, {
   })
 });
 
+const withCampaignQuery = graphql(CampaignQuery, {
+  options: (ownProps) => ({ 
+    variables: {
+      search: {
+        slug: ownProps.campaignSlug
+      }
+    }
+  }),
+  props: ({ data }) => ({ 
+    campaign: data.campaign
+  })
+});
+
 export default compose(
   withMeQuery,
-  graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
-      variables: {
-        search: {
-          slug: ownProps.campaign.slug
-        }
-      }
-    })
-  }),
-  graphql(DeleteCampaignMutation, { name: 'deleteCampaignMutation' })
+  withCampaignQuery,
+  graphql(EditCampaignMutation, { name: 'editCampaignMutation' })
 )(ManageCampaignInfoContainer);

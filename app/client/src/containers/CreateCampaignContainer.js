@@ -1,10 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import isURL from 'validator/lib/isURL';
-import isMobilePhone from 'validator/lib/isMobilePhone';
 
 import history from 'lib/history';
 import states from 'lib/states-list';
+import { 
+  validateString,
+  validateWebsiteUrl,
+  validateState,
+  validatePhoneNumber
+} from 'lib/validateComponentForms';
 
 import { MeQuery } from 'schemas/queries';
 import { CreateCampaignMutation } from 'schemas/mutations';
@@ -32,7 +36,7 @@ class CreateCampaignContainer extends Component {
         streetAddress: '',
         streetAddress2: '',
         websiteUrl: '',
-        phone: '',
+        phoneNumber: '',
         city: '',
         state: '',
         zipcode: '',
@@ -69,74 +73,10 @@ class CreateCampaignContainer extends Component {
     titleErrorText: null,
     streetAddressErrorText: null,
     websiteUrlErrorText: null,
-    phoneErrorText: null,
+    phoneNumberErrorText: null,
     cityErrorText: null,
     stateErrorText: null,
     zipcodeErrorText: null,
-  }
-
-  validateString = (prop, errorProp, errorMsg) => {
-    if (typeof this.state.formData[prop] !== 'string' || 
-        this.state.formData[prop].trim() === '') {
-
-      this.setState( (prevState) => ({ 
-        errors: Object.assign({}, prevState.errors, {
-          [errorProp]: errorMsg 
-        })
-      }));
-
-      this.hasErrors = true;
-
-    } else {
-      this.setState( (prevState) => ({ 
-        errors: Object.assign({}, prevState.errors, {
-          [errorProp]: null 
-        })
-      }));
-    }
-  }
-
-  validateWebsiteUrl = () => {
-    if (this.state.formData.websiteUrl.trim() !== '' && !isURL(this.state.formData.websiteUrl)) {
-      this.hasErrors = true;
-      this.setState( (prevState) => ({
-        errors: Object.assign({}, prevState.errors, {
-          websiteUrlErrorText: 'Please enter valid website url'
-        })
-      }));
-    }
-  }
-
-  validateState = () => {
-    if (this.state.formData.state.trim() !== '' && !statesList.includes(this.state.formData.state)) {
-      this.hasErrors = true;
-      this.setState( (prevState) => ({
-        errors: Object.assign({}, prevState.errors, {
-          stateErrorText: 'Please enter valid state'
-        })
-      }));
-    }
-  }
-
-  validatePhone = () => {
-
-    if (this.state.formData.phone.trim() === '') {
-      this.hasErrors = true;
-      this.setState( (prevState) => ({
-        errors: Object.assign({}, prevState.errors, {
-          phoneErrorText: 'Phone number is required'
-        })
-      }));
-    } else if (this.state.formData.phone.match(/[^\(\d\s\)\-]/) || 
-               !isMobilePhone(this.state.formData.phone.replace(/\D/g,''), 'en-US')) {
-
-      this.hasErrors = true;
-      this.setState( (prevState) => ({
-        errors: Object.assign({}, prevState.errors, {
-          phoneErrorText: 'Please enter valid phone number'
-        })
-      }));
-    }
   }
 
   handleInputChange = (event, type, value) => {
@@ -176,12 +116,14 @@ class CreateCampaignContainer extends Component {
     this.resetErrorText();
     this.hasErrors = false;
 
-    this.validateString('title', 'titleErrorText', 'Campaign Name is Required');
-    this.validateWebsiteUrl();
-    this.validatePhone();
-    this.validateState();
+    validateString(this, 'title', 'titleErrorText', 'Campaign Name is Required');
+    validateWebsiteUrl(this);
+    validatePhoneNumber(this);
+    validateState(this);
 
     if (!this.hasErrors) {
+
+      const { formData } = this.state;
 
       try {
         const addCampaign = (prev, { mutationResult }) => {
@@ -190,9 +132,10 @@ class CreateCampaignContainer extends Component {
             campaigns: prev.campaigns.concat(newCampaign)
           })
         };
+
         const results = await this.props.createCampaignMutation({ 
           variables: {
-            data: this.state.formData
+            data: formData
           },
           // TODO: decide between refetch and update
           refetchQueries: ['CampaignsQuery', 'MyCampaignsQuery'],

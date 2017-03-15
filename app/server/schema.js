@@ -45,8 +45,8 @@ module.exports = buildSchema(`
     street_address2: String
     state: String
     city: String
-    phone: String
-    website: String
+    phone_number: String
+    website_url: String
     zipcode: String
     owner: UserResult
     tags: [String]
@@ -115,8 +115,9 @@ module.exports = buildSchema(`
     slug: String
   }
 
-  input CampaignInput {
+  input CampaignQueryInput {
     slug: String
+    id: String
   }
 
   type Query {
@@ -124,7 +125,7 @@ module.exports = buildSchema(`
     opportunities(search: OpportunitySearchInput): [OpportunityResult]
     campaigns(search: CampaignSearchInput): [CampaignResult]
     myCampaigns: [CampaignResult]
-    campaign(search: CampaignInput): CampaignResult
+    campaign(search: CampaignQueryInput): CampaignResult
     activities: [ActivityResult]
     types: [TypeResult]
     levels: [LevelResult]
@@ -139,7 +140,20 @@ module.exports = buildSchema(`
     streetAddress2: String
     websiteUrl: String
     email: String!
-    phone: String
+    phoneNumber: String
+    city: String
+    state: String
+    zipcode: String
+  }
+
+  input EditCampaignInput {
+    id: String!
+    title: String
+    streetAddress: String
+    streetAddress2: String
+    websiteUrl: String
+    email: String
+    phoneNumber: String
     city: String
     state: String
     zipcode: String
@@ -152,6 +166,7 @@ module.exports = buildSchema(`
 
   type Mutation {
     createCampaign(data: CreateCampaignInput): CampaignResult
+    editCampaign(data: EditCampaignInput): CampaignResult
     deleteCampaign(data: DeleteCampaignInput): Boolean
   }
 `);

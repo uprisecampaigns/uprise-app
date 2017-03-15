@@ -10,7 +10,7 @@ class ManageCampaignInfo extends React.Component {
   render() {
     return (
       <div>
-        <ManageCampaignInfoContainer campaign={this.props.campaign}/>
+        <ManageCampaignInfoContainer campaignSlug={this.props.campaign.slug}/>
       </div>
     );
   }

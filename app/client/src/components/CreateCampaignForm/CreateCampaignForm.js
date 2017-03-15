@@ -95,9 +95,9 @@ class CreateCampaignForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Phone"
-                    value={data.phone}
-                    onChange={ (event) => { handleInputChange(event, 'phone', event.target.value) } }
-                    errorText={errors.phoneErrorText}
+                    value={data.phoneNumber}
+                    onChange={ (event) => { handleInputChange(event, 'phoneNumber', event.target.value) } }
+                    errorText={errors.phoneNumberErrorText}
                     fullWidth={true}
                     type="tel"
                     pattern="[0-9]{10}"

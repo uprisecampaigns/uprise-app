@@ -46,9 +46,7 @@ class Campaign {
 
       } while (found)
 
-      const newCampaignData = Object.assign({}, options, {
-        slug: slug,
-      });
+      const newCampaignData = Object.assign({}, options, { slug });
 
       const campaignResult = await db.table('campaigns').insert(newCampaignData, [
         'id', 'title', 'slug', 'description', 'tags', 'owner_id'
@@ -57,8 +55,33 @@ class Campaign {
       const newCampaign = campaignResult[0];
 
       return Object.assign({}, newCampaign, await this.details(newCampaign));
+
+    } else {
+      throw new Error('User must be owner of campaign');
     }
   }
+
+  static async edit(options) {
+
+    const user = await db.table('users').where('id', options.owner_id).first('id');
+
+    if (user) {
+
+      const campaignResult = await db('campaigns')
+        .where('id', options.id)
+        .update(options, [
+        'id', 'title', 'slug', 'description', 'tags', 'owner_id'
+        ]);
+
+      const campaign = campaignResult[0];
+
+      return Object.assign({}, campaign, await this.details(campaign));
+
+    } else {
+      throw new Error('User must be owner of campaign');
+    }
+  }
+
 
   static async delete(deleteOptions, ownerId) {
 

@@ -24,13 +24,12 @@ class ManageCampaignInfoForm extends Component {
     refs: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    campaign: PropTypes.object.isRequired,
   }
 
   render() {
     const { 
       data, user, refs, formSubmit, errors,
-      handleInputChange, campaign
+      handleInputChange
     } = this.props;
 
     const statesList = Object.keys(states);
@@ -84,9 +83,9 @@ class ManageCampaignInfoForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Phone"
-                    value={data.phone}
-                    onChange={ (event) => { handleInputChange(event, 'phone', event.target.value) } }
-                    errorText={errors.phoneErrorText}
+                    value={data.phoneNumber}
+                    onChange={ (event) => { handleInputChange(event, 'phoneNumber', event.target.value) } }
+                    errorText={errors.phoneNumberErrorText}
                     fullWidth={true}
                     type="tel"
                     pattern="[0-9]{10}"
@@ -125,7 +124,7 @@ class ManageCampaignInfoForm extends Component {
                     onTouchTap={formSubmit} 
                     primary={true} 
                     type="submit"
-                    label="Create" 
+                    label="Save" 
                   />
                 </div>
               </form>
