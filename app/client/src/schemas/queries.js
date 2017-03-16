@@ -75,7 +75,7 @@ export const CampaignQuery = gql`
 `;
  
 export const OpportunityQuery = gql`
-  query OpportunityQuery($search:OpportunityInput) {
+  query OpportunityQuery($search:OpportunityQueryInput) {
     opportunity(search:$search){
       id
       title

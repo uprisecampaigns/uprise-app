@@ -11,13 +11,6 @@ import {
 
 import s from 'styles/Opportunity.scss';
 
-const graphqlOptions = (collection) => {
-  return {
-    props: ({ data }) => ({
-      [collection]: !data.loading && data[collection] ? data[collection] : []
-    })
-  };
-};
 
 class OpportunityContainer extends Component {
   constructor(props) {
@@ -25,12 +18,30 @@ class OpportunityContainer extends Component {
   }
 
   static propTypes = {
-    opportunity: PropTypes.object.isRequired
+    opportunity: PropTypes.object
   };
 
   render() {
-    const { opportunity } = this.props;
 
+    // TODO: Needs refactoring!
+    const opportunity = this.props.opportunity || {
+      slug: '',
+      start_time: new Date(),
+      end_time: new Date(),
+      issue_areas: [],
+      activities: [],
+      tags: [],
+      campaign: {
+        title: '',
+        slug: '',
+      },
+      owner: {
+        first_name: '',
+        last_name: '',
+        email: ''
+      }
+    };
+    
     const startTime = moment(opportunity.start_time);
     const endTime = moment(opportunity.end_time);
 
@@ -113,4 +124,21 @@ class OpportunityContainer extends Component {
   }
 }
 
-export default connect()(OpportunityContainer);
+const withOpportunityQuery = graphql(OpportunityQuery, {
+  options: (ownProps) => ({ 
+    variables: {
+      search: {
+        id: ownProps.opportunityId
+      }
+    }
+  }),
+  props: ({ data }) => ({ 
+    opportunity: data.opportunity
+  })
+});
+
+
+export default compose(
+  withOpportunityQuery,
+  connect()
+)(OpportunityContainer);

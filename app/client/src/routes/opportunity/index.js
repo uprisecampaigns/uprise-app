@@ -1,5 +1,5 @@
 import React from 'react';
-import Opportunity from './Opportunity';
+import Opportunity from 'scenes/Opportunity';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
@@ -28,7 +28,7 @@ export default {
         title: result.data.opportunity.title,
         component: (
           <Layout>
-            <OpportunityWithAuthentication opportunity={result.data.opportunity}/>
+            <OpportunityWithAuthentication opportunityId={result.data.opportunity.id}/>
           </Layout>
         ),
       };

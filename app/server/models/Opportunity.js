@@ -36,6 +36,11 @@ class Opportunity {
       .modify( (qb) => {
 
         if (search) {
+
+          if (search.id) {
+            qb.andWhere('id', search.id);
+          }
+
           if (search.keywords) {
 
             const tags = db('opportunities')

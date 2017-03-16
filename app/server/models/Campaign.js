@@ -156,6 +156,10 @@ class Campaign {
             });
           }
 
+          if (search.id) {
+            qb.andWhere('id', search.id);
+          }
+
           if (search.ownerId) {
             qb.andWhere('owner_id', search.ownerId);
           }

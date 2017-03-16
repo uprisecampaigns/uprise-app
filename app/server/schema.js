@@ -85,6 +85,7 @@ module.exports = buildSchema(`
   }
 
   input CampaignSearchInput {
+    id: [String]
     title: [String]
     keywords: [String]
     types: [String]
@@ -98,6 +99,7 @@ module.exports = buildSchema(`
   }
 
   input OpportunitySearchInput {
+    id: [String]
     keywords: [String]
     activities: [String]
     campaignNames: [String]
@@ -110,7 +112,8 @@ module.exports = buildSchema(`
     sortBy: SortByInput
   }
 
-  input OpportunityInput {
+  input OpportunityQueryInput {
+    id: String
     slug: String
   }
 
@@ -120,7 +123,7 @@ module.exports = buildSchema(`
   }
 
   type Query {
-    opportunity(search: OpportunityInput): OpportunityResult
+    opportunity(search: OpportunityQueryInput): OpportunityResult
     opportunities(search: OpportunitySearchInput): [OpportunityResult]
     campaigns(search: CampaignSearchInput): [CampaignResult]
     myCampaigns: [CampaignResult]
