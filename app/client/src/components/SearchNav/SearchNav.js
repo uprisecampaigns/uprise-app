@@ -10,7 +10,7 @@ const selections = [
 
 const baseUrl = '/search';
 
-class Search extends Component {
+class SearchNav extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     selected: PropTypes.string.isRequired
@@ -34,4 +34,4 @@ class Search extends Component {
   }
 }
 
-export default Search;
+export default SearchNav;

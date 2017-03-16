@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchOpportunities from './SearchOpportunities';
+import SearchOpportunities from 'scenes/SearchOpportunities';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';

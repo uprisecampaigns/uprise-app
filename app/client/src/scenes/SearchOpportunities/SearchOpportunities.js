@@ -4,12 +4,14 @@ import { graphql, compose } from 'react-apollo';
 import Popover from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
 
-import SearchOpportunityResults from 'components/SearchOpportunity/SearchOpportunityResults';
-import SearchOpportunityInputs from 'components/SearchOpportunity/SearchOpportunityInputs';
-import SearchOpportunitySelections from 'components/SearchOpportunity/SearchOpportunitySelections';
+import SearchNav from 'components/SearchNav';
 import SearchBar from 'components/SearchBar';
 import SearchSort from 'components/SearchSort';
 import ResultsCount from 'components/ResultsCount';
+
+import SearchOpportunityResults from './components/SearchOpportunityResults';
+import SearchOpportunityInputs from './components/SearchOpportunityInputs';
+import SearchOpportunitySelections from './components/SearchOpportunitySelections';
 
 import { 
   addSearchItem, sortBy
@@ -66,7 +68,7 @@ const ConnectedSearchSort = connect( (state) => ({
 }))(SearchSort);
   
 
-class SearchOpportunityContainer extends Component {
+class SearchOpportunities extends Component {
   constructor(props) {
     super(props);
 
@@ -132,89 +134,91 @@ class SearchOpportunityContainer extends Component {
   render() {
 
     return (
-      <div className={s.outerContainer}>
+      <SearchNav selected="search-opportunities">
+        <div className={s.outerContainer}>
 
-        <div className={s.titleContainer}>
-          Search Opportunities
-        </div>
-
-        <div className={s.searchBarContainer}>
-          <SearchBar
-            collectionName="keywords"
-            inputLabel="keyword search"
-            addItem={this.addSelectedItem}
-          />
-        </div>
-
-        <div className={s.countSortFilterContainer}>
-
-          <div className={s.countContainer}>
-            <ResultsCountWithData/>
+          <div className={s.titleContainer}>
+            Search Opportunities
           </div>
 
-          <div 
-            onTouchTap={this.handleOpenSort}
-            className={s.sortContainer}
-          >
-            <span>Sort by</span>
-            <IconButton 
-              iconClassName='material-icons'
-            >sort</IconButton>
+          <div className={s.searchBarContainer}>
+            <SearchBar
+              collectionName="keywords"
+              inputLabel="keyword search"
+              addItem={this.addSelectedItem}
+            />
+          </div>
 
-            <Popover
-              open={this.state.sortOpen}
-              onRequestClose={this.handleCloseSort}
-              anchorEl={this.state.sortPopoverAnchorEl}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              className={s.popover}
+          <div className={s.countSortFilterContainer}>
+
+            <div className={s.countContainer}>
+              <ResultsCountWithData/>
+            </div>
+
+            <div 
+              onTouchTap={this.handleOpenSort}
+              className={s.sortContainer}
             >
-              <ConnectedSearchSort 
-                onSelect={this.sortSelect}
-                items={[
-                  { label: 'Date', prop: 'date' },
-                  { label: 'Campaign Name', prop: 'campaignName' },
-                ]}
-              />
-            </Popover>
-          </div>
+              <span>Sort by</span>
+              <IconButton 
+                iconClassName='material-icons'
+              >sort</IconButton>
 
-          <div 
-            className={s.filterContainer}
-            onTouchTap={this.handleOpenFilter}
-          >
-            <span>Filter</span>
-            <IconButton 
-              iconClassName='material-icons'
-            >filter_list</IconButton>
+              <Popover
+                open={this.state.sortOpen}
+                onRequestClose={this.handleCloseSort}
+                anchorEl={this.state.sortPopoverAnchorEl}
+                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                className={s.popover}
+              >
+                <ConnectedSearchSort 
+                  onSelect={this.sortSelect}
+                  items={[
+                    { label: 'Date', prop: 'date' },
+                    { label: 'Campaign Name', prop: 'campaignName' },
+                  ]}
+                />
+              </Popover>
+            </div>
 
-            <Popover
-              open={this.state.filterOpen}
-              onRequestClose={this.handleCloseFilter}
-              anchorEl={this.state.filterPopoverAnchorEl}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              className={s.popover}
+            <div 
+              className={s.filterContainer}
+              onTouchTap={this.handleOpenFilter}
             >
-              <SearchOpportunityInputs 
-              />
-            </Popover>
+              <span>Filter</span>
+              <IconButton 
+                iconClassName='material-icons'
+              >filter_list</IconButton>
+
+              <Popover
+                open={this.state.filterOpen}
+                onRequestClose={this.handleCloseFilter}
+                anchorEl={this.state.filterPopoverAnchorEl}
+                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                className={s.popover}
+              >
+                <SearchOpportunityInputs 
+                />
+              </Popover>
+            </div>
           </div>
-        </div>
 
-        <div className={s.selectionsContainer}>
-          <SearchOpportunitySelections 
-          />
-        </div>
+          <div className={s.selectionsContainer}>
+            <SearchOpportunitySelections 
+            />
+          </div>
 
-        <div className={s.resultsContainer}>
-          <SearchOpportunityResultsWithData
-          />
-        </div>
+          <div className={s.resultsContainer}>
+            <SearchOpportunityResultsWithData
+            />
+          </div>
 
-      </div>
+        </div>
+      </SearchNav>
     );
   }
 }
 
-export default connect()(SearchOpportunityContainer);
+export default connect()(SearchOpportunities);

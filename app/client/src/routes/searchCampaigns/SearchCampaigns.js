@@ -1,6 +1,6 @@
 
 import React, { PropTypes } from 'react';
-import Search from 'components/Search';
+import SearchNav from 'components/SearchNav';
 import SearchCampaignContainer from 'components/SearchCampaign/SearchCampaignContainer';
 
 
@@ -11,9 +11,9 @@ class SearchCampaigns extends React.Component {
   render() {
     return (
       <div>
-        <Search selected="search-campaigns">
+        <SearchNav selected="search-campaigns">
           <SearchCampaignContainer />
-        </Search>
+        </SearchNav>
       </div>
     );
   }
