@@ -12,7 +12,7 @@ class Notifications extends React.Component {
       <div>
         <CommunicationsNav selected="notifications">
           <div>Actual Notifications Container/Component here!</div>
-        </Communications>
+        </CommunicationsNav>
       </div>
     );
   }

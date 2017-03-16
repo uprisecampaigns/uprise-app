@@ -1,5 +1,5 @@
 import React from 'react';
-import Notifications from './Notifications';
+import Notifications from 'scenes/Notifications';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';

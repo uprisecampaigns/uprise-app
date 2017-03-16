@@ -1,6 +1,6 @@
 
 import React, { PropTypes } from 'react';
-import Communications from 'components/Communications';
+import CommunicationsNav from 'components/CommunicationsNav';
 
 
 class Messages extends React.Component {
@@ -10,9 +10,9 @@ class Messages extends React.Component {
   render() {
     return (
       <div>
-        <Communications selected="messages">
+        <CommunicationsNav selected="messages">
           <div>Actual Messages Container/Component here!</div>
-        </Communications>
+        </CommunicationsNav>
       </div>
     );
   }

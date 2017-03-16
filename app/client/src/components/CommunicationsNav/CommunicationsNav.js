@@ -1,7 +1,6 @@
 
 import React, { Component, PropTypes } from 'react';
 import ContentNavigation from 'components/ContentNavigation';
-import s from './Communications.scss';
 
 const selections = [
   { title: 'notifications', path: 'notifications' },

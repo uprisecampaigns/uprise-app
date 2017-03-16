@@ -1,5 +1,5 @@
 import React from 'react';
-import Messages from './Messages';
+import Messages from 'scenes/Messages';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';

@@ -1,5 +1,5 @@
 import React from 'react';
-import Requests from './Requests';
+import Requests from 'scenes/Requests';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
