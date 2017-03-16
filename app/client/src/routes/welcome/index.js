@@ -1,6 +1,6 @@
 import React from 'react';
-import Welcome from './Welcome';
-import Layout from '../../components/Layout';
+import Welcome from 'scenes/Welcome';
+import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
 

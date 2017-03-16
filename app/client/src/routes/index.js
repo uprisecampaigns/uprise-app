@@ -12,7 +12,6 @@ export default {
     require('./forgotPassword').default,
     require('./changePassword').default,
     require('./welcome').default,
-    require('./settings').default,
 
     // TODO: probably want to sub-organize children url
     // /communications/
