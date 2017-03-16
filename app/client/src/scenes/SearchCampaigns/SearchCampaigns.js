@@ -4,12 +4,14 @@ import { graphql, compose } from 'react-apollo';
 import Popover from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
 
-import SearchCampaignResults from 'components/SearchCampaign/SearchCampaignResults';
-import SearchCampaignInputs from 'components/SearchCampaign/SearchCampaignInputs';
-import SearchCampaignSelections from 'components/SearchCampaign/SearchCampaignSelections';
+import SearchNav from 'components/SearchNav';
 import SearchBar from 'components/SearchBar';
 import SearchSort from 'components/SearchSort';
 import ResultsCount from 'components/ResultsCount';
+
+import SearchCampaignResults from './components/SearchCampaignResults';
+import SearchCampaignInputs from './components/SearchCampaignInputs';
+import SearchCampaignSelections from './components/SearchCampaignSelections';
 
 import { 
   addSearchItem, sortBy
@@ -61,7 +63,7 @@ const ConnectedSearchSort = connect( (state) => ({
 }))(SearchSort);
   
 
-class SearchCampaignContainer extends Component {
+class SearchCampaigns extends Component {
   constructor(props) {
     super(props);
 
@@ -127,88 +129,90 @@ class SearchCampaignContainer extends Component {
   render() {
 
     return (
-      <div className={s.outerContainer}>
+      <SearchNav selected="search-campaigns">
+        <div className={s.outerContainer}>
 
-        <div className={s.titleContainer}>
-          Search Campaigns
-        </div>
-
-        <div className={s.searchBarContainer}>
-          <SearchBar
-            collectionName="keywords"
-            inputLabel="keyword search"
-            addItem={this.addSelectedItem}
-          />
-        </div>
-
-        <div className={s.countSortFilterContainer}>
-
-          <div className={s.countContainer}>
-            <ResultsCountWithData/>
+          <div className={s.titleContainer}>
+            Search Campaigns
           </div>
 
-          <div 
-            onTouchTap={this.handleOpenSort}
-            className={s.sortContainer}
-          >
-            <span>Sort by</span>
-            <IconButton 
-              iconClassName='material-icons'
-            >sort</IconButton>
+          <div className={s.searchBarContainer}>
+            <SearchBar
+              collectionName="keywords"
+              inputLabel="keyword search"
+              addItem={this.addSelectedItem}
+            />
+          </div>
 
-            <Popover
-              open={this.state.sortOpen}
-              onRequestClose={this.handleCloseSort}
-              anchorEl={this.state.sortPopoverAnchorEl}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              className={s.popover}
+          <div className={s.countSortFilterContainer}>
+
+            <div className={s.countContainer}>
+              <ResultsCountWithData/>
+            </div>
+
+            <div 
+              onTouchTap={this.handleOpenSort}
+              className={s.sortContainer}
             >
-              <ConnectedSearchSort 
-                onSelect={this.sortSelect}
-                items={[
-                  { label: 'Campaign Name', prop: 'title' },
-                ]}
-              />
-            </Popover>
-          </div>
+              <span>Sort by</span>
+              <IconButton 
+                iconClassName='material-icons'
+              >sort</IconButton>
 
-          <div 
-            className={s.filterContainer}
-            onTouchTap={this.handleOpenFilter}
-          >
-            <span>Filter</span>
-            <IconButton 
-              iconClassName='material-icons'
-            >filter_list</IconButton>
+              <Popover
+                open={this.state.sortOpen}
+                onRequestClose={this.handleCloseSort}
+                anchorEl={this.state.sortPopoverAnchorEl}
+                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                className={s.popover}
+              >
+                <ConnectedSearchSort 
+                  onSelect={this.sortSelect}
+                  items={[
+                    { label: 'Campaign Name', prop: 'title' },
+                  ]}
+                />
+              </Popover>
+            </div>
 
-            <Popover
-              open={this.state.filterOpen}
-              onRequestClose={this.handleCloseFilter}
-              anchorEl={this.state.filterPopoverAnchorEl}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              className={s.popover}
+            <div 
+              className={s.filterContainer}
+              onTouchTap={this.handleOpenFilter}
             >
-              <SearchCampaignInputs 
-              />
-            </Popover>
+              <span>Filter</span>
+              <IconButton 
+                iconClassName='material-icons'
+              >filter_list</IconButton>
+
+              <Popover
+                open={this.state.filterOpen}
+                onRequestClose={this.handleCloseFilter}
+                anchorEl={this.state.filterPopoverAnchorEl}
+                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                className={s.popover}
+              >
+                <SearchCampaignInputs 
+                />
+              </Popover>
+            </div>
           </div>
-        </div>
 
-        <div className={s.selectionsContainer}>
-          <SearchCampaignSelections 
-          />
-        </div>
+          <div className={s.selectionsContainer}>
+            <SearchCampaignSelections 
+            />
+          </div>
 
-        <div className={s.resultsContainer}>
-          <SearchCampaignResultsWithData
-          />
-        </div>
+          <div className={s.resultsContainer}>
+            <SearchCampaignResultsWithData
+            />
+          </div>
 
-      </div>
+        </div>
+      </SearchNav>
     );
   }
 }
 
-export default connect()(SearchCampaignContainer);
+export default connect()(SearchCampaigns);

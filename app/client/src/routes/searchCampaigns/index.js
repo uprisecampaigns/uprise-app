@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchCampaigns from './SearchCampaigns';
+import SearchCampaigns from 'scenes/SearchCampaigns';
 import Layout from 'components/Layout';
 
 import { 

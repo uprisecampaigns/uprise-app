@@ -16,5 +16,4 @@ export default {
       component: <Layout><SearchOpportunitiesWithAuthentication/></Layout>,
     };
   },
-
 };
