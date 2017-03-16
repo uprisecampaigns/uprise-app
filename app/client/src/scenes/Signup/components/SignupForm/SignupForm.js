@@ -6,8 +6,10 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import Link from '../Link';
-import { attemptSignup } from '../../actions/AuthActions';
+
+import Link from 'components/Link';
+
+import { attemptSignup } from 'actions/AuthActions';
 
 import s from 'styles/Form.scss';
 

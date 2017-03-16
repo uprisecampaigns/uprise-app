@@ -75,6 +75,7 @@ class LoginFormContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    loggedIn: state.userAuthSession.isLoggedIn,
     loginError: state.userAuthSession.error,
     message: state.userAuthSession.message
   };

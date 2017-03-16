@@ -7,8 +7,8 @@ import isEmail from 'validator/lib/isEmail';
 import history from 'lib/history';
 import { EmailAvailable } from 'schemas/queries';
 
-import SignupForm from 'components/SignupForm';
-import PrivacyTerms from 'components/PrivacyTerms';
+import SignupForm from './components/SignupForm';
+import PrivacyTerms from './components/PrivacyTerms';
 
 
 class SignupFormContainer extends Component {
@@ -189,7 +189,8 @@ const SignupFormContainerWithApollo = withApollo(SignupFormContainer);
 
 const mapStateToProps = (state) => {
   return {
-    signupError: state.userAuthSession.error
+    signupError: state.userAuthSession.error,
+    loggedIn: state.userAuthSession.isLoggedIn,
   };
 }
 
