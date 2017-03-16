@@ -1,6 +1,6 @@
 
 import React, { PropTypes } from 'react';
-import Calendar from 'components/Calendar';
+import CalendarNav from 'components/CalendarNav';
 
 
 class ViewCalendar extends React.Component {
@@ -10,9 +10,9 @@ class ViewCalendar extends React.Component {
   render() {
     return (
       <div>
-        <Calendar selected="view-calendar">
+        <CalendarNav selected="view-calendar">
           <div>Actual ViewCalendar Container/Component here!</div>
-        </Calendar>
+        </CalendarNav>
       </div>
     );
   }

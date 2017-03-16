@@ -23,7 +23,7 @@ export default {
     // /calendar/
     require('./calendar').default,
     require('./viewCalendar').default,
-    require('./viewList').default,
+    require('./viewCalendarList').default,
 
     // /organize/
     require('./organize').default,

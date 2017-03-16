@@ -1,10 +1,10 @@
 import React from 'react';
-import ViewList from './ViewList';
+import ViewCalendarList from 'scenes/ViewCalendarList';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
 
-const ViewListWithAuthentication = withAuthentication(ViewList);
+const ViewListWithAuthentication = withAuthentication(ViewCalendarList);
 
 export default {
 

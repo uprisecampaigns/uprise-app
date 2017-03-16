@@ -1,5 +1,5 @@
 import React from 'react';
-import ViewCalendar from './ViewCalendar';
+import ViewCalendar from 'scenes/ViewCalendar';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
