@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateCampaign from './CreateCampaign';
+import CreateCampaign from 'scenes/CreateCampaign';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';

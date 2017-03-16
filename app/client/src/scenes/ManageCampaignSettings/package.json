@@ -1,0 +1,6 @@
+{
+  "name": "ManageCampaignSettings",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ManageCampaignSettings.js"
+}

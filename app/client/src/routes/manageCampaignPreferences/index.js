@@ -1,5 +1,5 @@
 import React from 'react';
-import ManageCampaignPreferences from './ManageCampaignPreferences';
+import ManageCampaignPreferences from 'scenes/ManageCampaignPreferences';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
@@ -12,7 +12,7 @@ export default organizeCampaignPaths({
   path: '/organize/:slug/preferences',
   component: (campaign) => (
     <Layout>
-      <ManageCampaignPreferencesWithAuthentication campaign={campaign}/>
+      <ManageCampaignPreferencesWithAuthentication campaignSlug={campaign.slug}/>
     </Layout>
   )
 });

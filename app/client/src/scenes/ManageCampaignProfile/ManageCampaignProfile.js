@@ -16,7 +16,7 @@ import s from 'styles/Organize.scss';
 class ManageCampaignProfileContainer extends Component {
 
   static PropTypes = {
-    campaign: PropTypes.object.isRequired
+    campaignSlug: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -24,7 +24,10 @@ class ManageCampaignProfileContainer extends Component {
   }
 
   render() {
-    const { campaign, ...props } = this.props;
+    const campaign = this.props.campaign || {
+      title: ''
+    };
+
     return (
       <div className={s.outerContainer}>
         <div className={s.campaignHeader}>{campaign.title}</div>
@@ -46,9 +49,12 @@ export default compose(
     options: (ownProps) => ({ 
       variables: {
         search: {
-          slug: ownProps.campaign.slug
+          slug: ownProps.campaignSlug
         }
       }
+    }),
+    props: ({ data }) => ({ 
+      campaign: data.campaign
     })
   }),
   graphql(DeleteCampaignMutation, { name: 'deleteCampaignMutation' })

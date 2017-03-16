@@ -1,0 +1,6 @@
+{
+  "name": "ManageCampaignLocation",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ManageCampaignLocation.js"
+}

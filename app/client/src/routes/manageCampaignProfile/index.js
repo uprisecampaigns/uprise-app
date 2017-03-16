@@ -1,5 +1,5 @@
 import React from 'react';
-import ManageCampaignProfile from './ManageCampaignProfile';
+import ManageCampaignProfile from 'scenes/ManageCampaignProfile';
 import Layout from 'components/Layout';
 
 import history from 'lib/history';
@@ -14,7 +14,7 @@ export default organizeCampaignPaths({
   path: '/organize/:slug/profile',
   component: (campaign) => (
     <Layout>
-      <ManageCampaignProfileWithAuthentication campaign={campaign}/>
+      <ManageCampaignProfileWithAuthentication campaignSlug={campaign.slug}/>
     </Layout>
   )
 });

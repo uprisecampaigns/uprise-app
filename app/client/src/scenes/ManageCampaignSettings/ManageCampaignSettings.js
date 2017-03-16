@@ -61,7 +61,10 @@ class ManageCampaignSettingsContainer extends Component {
   }
 
   render() {
-    const { campaign, ...props } = this.props;
+    const campaign = this.props.campaign || {
+      title: '',
+      slug: ''
+    }
 
     const modalActions = [
       <RaisedButton
@@ -148,9 +151,12 @@ export default compose(
     options: (ownProps) => ({ 
       variables: {
         search: {
-          slug: ownProps.campaign.slug
+          slug: ownProps.campaignSlug
         }
       }
+    }),
+    props: ({ data }) => ({ 
+      campaign: data.campaign
     })
   }),
   graphql(DeleteCampaignMutation, { name: 'deleteCampaignMutation' })

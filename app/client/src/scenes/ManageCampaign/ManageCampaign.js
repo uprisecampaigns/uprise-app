@@ -15,7 +15,7 @@ import s from 'styles/Organize.scss';
 class ManageCampaignContainer extends Component {
 
   static PropTypes = {
-    campaign: PropTypes.object.isRequired
+    campaignSlug: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -23,7 +23,12 @@ class ManageCampaignContainer extends Component {
   }
 
   render() {
-    const { campaign, ...props } = this.props;
+
+    const campaign = this.props.campaign || {
+      title: '',
+      slug: ''
+    }
+
     return (
       <div className={s.outerContainer}>
 
@@ -69,9 +74,12 @@ export default compose(
     options: (ownProps) => ({ 
       variables: {
         search: {
-          slug: ownProps.campaign.slug
+          slug: ownProps.campaignSlug
         }
       }
+    }),
+    props: ({ data }) => ({ 
+      campaign: data.campaign
     })
   }),
 )(ManageCampaignContainer);
