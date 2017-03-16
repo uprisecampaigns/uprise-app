@@ -1,5 +1,5 @@
 import React from 'react';
-import ChangePassword from './ChangePassword';
+import ChangePassword from 'scenes/ChangePassword';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';

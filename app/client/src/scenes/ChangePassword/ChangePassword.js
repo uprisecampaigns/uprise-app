@@ -5,7 +5,7 @@ import history from 'lib/history';
 
 import { attemptChangePassword } from 'actions/AuthActions';
 
-import ChangePasswordForm from 'components/ChangePasswordForm';
+import ChangePasswordForm from './components/ChangePasswordForm';
 
 class ChangePasswordFormContainer extends Component {
   constructor(props) {
