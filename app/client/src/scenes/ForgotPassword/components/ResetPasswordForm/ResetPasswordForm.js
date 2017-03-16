@@ -4,10 +4,11 @@ import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
-import Link from '../Link';
+
+import Link from 'components/Link';
 
 import s from 'styles/Form.scss';
-import b from 'styles/Base.scss';
+
 
 class ResetPasswordForm extends Component {
   constructor(props) {

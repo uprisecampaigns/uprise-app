@@ -5,9 +5,9 @@ import history from 'lib/history';
 
 import { attemptResetPassword } from 'actions/AuthActions';
 
-import ResetPasswordForm from 'components/ResetPasswordForm';
+import ResetPasswordForm from './components/ResetPasswordForm';
 
-class ResetPasswordFormContainer extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
   }
@@ -102,4 +102,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps)(ResetPasswordFormContainer);
+export default connect(mapStateToProps)(ForgotPassword);
