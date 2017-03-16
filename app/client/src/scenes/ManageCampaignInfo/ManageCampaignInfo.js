@@ -4,7 +4,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 const camelCase = require('camelcase');
 
-import ManageCampaignInfoForm from 'components/ManageCampaignInfoForm';
+import ManageCampaignInfoForm from './components/ManageCampaignInfoForm';
 import Link from 'components/Link';
 
 import history from 'lib/history';
