@@ -1,5 +1,5 @@
 import React from 'react';
-import Organize from './Organize';
+import Organize from 'scenes/Organize';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
