@@ -11,6 +11,7 @@ module.exports = {
   publicRoot: publicRoot,
   serverRoot: serverRoot,
   gulpDir: path.resolve(publicRoot, 'gulp'),
+  nodeModules: path.resolve(appRoot, 'node_modules'),
   dest: path.resolve(publicRoot, 'builds'),
   src: path.resolve(publicRoot, 'src')
 };

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
-const camelCase = require('camelcase');
+import camelCase from 'camelcase';
 
 import ManageCampaignInfoForm from './components/ManageCampaignInfoForm';
 import Link from 'components/Link';

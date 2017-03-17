@@ -4,7 +4,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
-const camelCase = require('camelcase');
+import camelCase from 'camelcase';
 
 import TogglesList from 'components/TogglesList';
 import SearchBar from 'components/SearchBar';

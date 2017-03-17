@@ -57,7 +57,10 @@ config.webpack = {
     {
       test: /\.jsx?$/,
       loader: 'babel-loader',
-      include: path.resolve(config.src),
+      include: [ 
+        path.resolve(config.publicRoot), 
+        path.resolve(config.nodeModules, 'camelcase'),
+      ],
       query: {
         cacheDirectory: true,
         presets: ['es2015', 'react', 'stage-3'],
