@@ -10,6 +10,98 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
   await knex('opportunities_levels').del();
 
   const opportunities = await knex('opportunities').insert([
+  {
+      title: 'House Party Fundraiser for Darryl Wade',
+      slug: 'house-party-fundraiser-for-darryl-wade',
+      description: `
+Darryl Wade needs your support. Help us throw a successful house party to raise awareness and funds to elect Darryl Wade as this city's next Mayor. We are especially looking for volunteers to cater appetizers and to break down and set up the event. Also we will need a volunteer to collect pledges and gather emails at the door.  
+`,
+      owner_id: users[1].id,
+      zipcode: '98102',
+      campaign_id: campaigns[2].id,
+      start_time: moment('2017-03-11 18:00').format(), 
+      end_time: moment('2017-03-11 21:00').format(), 
+      city: 'Springfield',
+      state: 'VA',
+      tags: [
+        'fundraising', 'party', 'house party', 'mayor', 
+        '#DarrylForMayor', '#JobsForVirginia', '#EducationNow',
+        '#gunviolence', '#obamacare', 'cooking', 'catering',
+        'event', 'hosting'
+      ]
+    },
+    {
+      title: 'Blog Post Writing',
+      slug: 'blog-post-writing-for-darryl-wade',
+      description: `
+We need a skilled volunteer to write relevant, accessible blog posts for a blog associated with the Daryll Wade For Mayor website. Volunteers can work remotely. Please contact our John Anderson for more information. 
+`,
+      owner_id: users[1].id,
+      campaign_id: campaigns[2].id,
+      start_time: moment('2017-03-13 09:00').format(), 
+      end_time: moment('2017-03-13 17:00').format(), 
+      city: 'Springfield',
+      state: 'VA',
+      tags: [
+        '#DarrylForMayor', '#JobsForVirginia', '#EducationNow',
+        '#gunviolence', '#obamacare', 'writing', 'social media',
+        'blogging', 'blog'
+      ]
+    },
+    {
+      title: 'Canvassing Richmond Fan District',
+      slug: 'canvassing-richmond-fan-district',
+      description: `
+No experience necessary!  We need volunteers to knock on doors and talk to neighbors about James Cole, the first student in our city's history to run for schoolboard. James Cole fights for an educational system that puts students first, values teachers above profits, and he needs our help to get elected. Please meet us at Park and N. Granby at 1pm sharp to help spread the word.
+`,
+      owner_id: users[6].id,
+      campaign_id: campaigns[3].id,
+      start_time: moment('2017-03-19 13:00').format(), 
+      end_time: moment('2017-03-19 18:00').format(), 
+      city: 'Richmond',
+      state: 'VA',
+      tags: [
+        '#schoolboard', 'education', 'canvass'
+      ]
+    },
+    {
+      title: 'HouseParty for Marian Shultz',
+      slug: 'houseparty-for-marian-shultz',
+      description: `
+Help raise awareness and funds to support Marian Shultz's run for State Senate. Speakers include former Lt. Governor as well as Hive Studio's very own Mari Wilson. Looking for volunteers to help set up and break down the event. Have experience with sound systems? We need your help. RSVP. 
+`,
+      owner_id: users[3].id,
+      campaign_id: campaigns[1].id,
+      start_time: moment('2017-03-11 17:00').format(), 
+      end_time: moment('2017-03-11 20:00').format(), 
+      city: 'Fairfax',
+      state: 'VA',
+      tags: [
+        '#ShultzForStateSenate', '@MarianShultz', '#EducationNow', '#JobsForVirginia',
+        '#ProgressForPeople', '#obamacare', '#ACA', '#womensday', '#SenateVA',
+        'house party', 'party'
+      ]
+    },
+    {
+      title: 'Tuesday Night Phone Bank for George Brown',
+      slug: 'tuesday-night-phone-bank-for-george-brown',
+      description: `
+Do you have experience phonebanking or IT support? We need volunteers with these skills and volunteers who can follow a script and make calls to fellow Virginians on behalf of George Brown, running for state Governor.  We plan to call voters every tuesday night until election night to raise support and win! Virtual volunteering is possible, contact the organizer about how to install our virtual phone bank software at home. Volunteers who can donate snacks and beverages and volunteers with IT support experience are also needed to make this a successful event.
+`,
+      owner_id: users[1].id,
+      campaign_id: campaigns[1].id,
+      start_time: moment('2017-03-20 17:00').format(), 
+      end_time: moment('2017-03-20 20:00').format(), 
+      city: 'Fairfax',
+      state: 'VA',
+      tags: [
+        '#GeorgeForGov', '#JobsForVirginia', 'government', 'transportation',
+        'healthcare', 'public safety', 'virginia', 'immigration', 'economy',
+        '#ProgressForPeople', '#VADemsOfFairfax', '#VirginiaVets', '#ACA',
+        '#obamacare', 'veterans', '#gunviolence', '#dems'
+      ]
+    },
+ 
     {
       title: 'Phone Bank Party',
       slug: 'phone-bank-party',
@@ -24,7 +116,7 @@ spontaneous movement of the majority.
 `,
       owner_id: users[0].id,
       zipcode: '94703',
-      campaign_id: campaigns[0].id,
+      campaign_id: campaigns[4].id,
       start_time: moment().add(1, 'days').local().format(), 
       end_time: moment().add(1, 'days').add(3, 'hours').local().format(), 
       city: 'Berkeley',
@@ -39,7 +131,7 @@ The Work of Art in the Age of Mechanical Reproduction production of innocence th
 `,
       zipcode: '90007',
       owner_id: users[0].id,
-      campaign_id: campaigns[0].id,
+      campaign_id: campaigns[4].id,
       start_time: moment().add(5, 'days').local().format(), 
       end_time: moment().add(5, 'days').add(2, 'hours').local().format(), 
       city: 'Los Angeles',
@@ -58,7 +150,7 @@ Tonight, we gather to affirm the greatness of our nation - not because of the he
 `,
       zipcode: '94601',
       owner_id: users[0].id,
-      campaign_id: campaigns[1].id,
+      campaign_id: campaigns[4].id,
       start_time: moment().add(10, 'days').local().format(), 
       end_time: moment().add(10, 'days').add(2, 'hours').local().format(), 
       city: 'Oakland',
@@ -79,7 +171,7 @@ We will all have to make concessions to achieve this. But what we know - what we
       city: 'San Leandro',
       state: 'CA',
       owner_id: users[0].id,
-      campaign_id: campaigns[1].id,
+      campaign_id: campaigns[4].id,
       start_time: moment().add(12, 'days').local().format(), 
       end_time: moment().add(12, 'days').add(2, 'hours').local().format(), 
       tags: ['Blogging']
@@ -94,7 +186,7 @@ I stand here knowing that my story is part of the larger American story, that I 
 `,
       zipcode: '80304',
       owner_id: users[0].id,
-      campaign_id: campaigns[2].id,
+      campaign_id: campaigns[5].id,
       start_time: moment().add(17, 'days').local().format(), 
       end_time: moment().add(17, 'days').add(2, 'hours').local().format(), 
       city: 'Boulder',
@@ -102,8 +194,6 @@ I stand here knowing that my story is part of the larger American story, that I 
       tags: ['Neighbors']
     },
   ], ['id']);
-
-  console.log(moment().add(1, 'days').local().format());
 
   const activities = await knex('activities').insert([
     { title: 'meet', description: 'General meeting' },
