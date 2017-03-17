@@ -18,6 +18,7 @@ class OpportunityContainer extends Component {
   }
 
   static propTypes = {
+    opportunityId: PropTypes.string.isRequired,
     opportunity: PropTypes.object
   };
 

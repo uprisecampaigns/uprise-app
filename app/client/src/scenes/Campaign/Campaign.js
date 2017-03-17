@@ -11,25 +11,32 @@ import {
 
 import s from 'styles/Campaign.scss';
 
-const graphqlOptions = (collection) => {
-  return {
-    props: ({ data }) => ({
-      [collection]: !data.loading && data[collection] ? data[collection] : []
-    })
-  };
-};
 
-class CampaignContainer extends Component {
+class Campaign extends Component {
   constructor(props) {
     super(props);
   }
 
   static propTypes = {
-    campaign: PropTypes.object.isRequired
+    campaign: PropTypes.object,
+    campaignId: PropTypes.string.isRequired
   };
 
   render() {
-    const { campaign } = this.props;
+
+    const campaign = this.props.campaign || {
+      first_name: '',
+      last_name: '',
+      description: '',
+      slug: '',
+      title: '',
+      tags: [],
+      owner: {
+        first_name: '',
+        last_name: '',
+        email: '',
+      }
+    };
 
     const keywords = (typeof campaign.tags === 'object') ? 
       campaign.tags.map( (tag, index) => {
@@ -67,4 +74,20 @@ class CampaignContainer extends Component {
   }
 }
 
-export default connect()(CampaignContainer);
+const withCampaignQuery = graphql(CampaignQuery, {
+  options: (ownProps) => ({ 
+    variables: {
+      search: {
+        id: ownProps.campaignId
+      }
+    }
+  }),
+  props: ({ data }) => ({ 
+    campaign: data.campaign
+  })
+});
+
+export default compose(
+  connect(),
+  withCampaignQuery
+)(Campaign);

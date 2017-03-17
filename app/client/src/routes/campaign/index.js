@@ -1,5 +1,5 @@
 import React from 'react';
-import Campaign from './Campaign';
+import Campaign from 'scenes/Campaign';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
@@ -28,7 +28,7 @@ export default {
         title: result.data.campaign.title,
         component: (
           <Layout>
-            <CampaignWithAuthentication campaign={result.data.campaign}/>
+            <CampaignWithAuthentication campaignId={result.data.campaign.id}/>
           </Layout>
         ),
       };

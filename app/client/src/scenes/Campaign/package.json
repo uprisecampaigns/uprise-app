@@ -1,0 +1,6 @@
+{
+  "name": "Campaign",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Campaign.js"
+}
