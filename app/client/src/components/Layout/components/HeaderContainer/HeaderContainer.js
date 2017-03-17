@@ -5,17 +5,15 @@ import { graphql, compose } from 'react-apollo';
 
 import { MeQuery } from 'schemas/queries';
 
-import NavDrawer from 'components/NavDrawer';
+import Header from './components/Header';
 
-class NavDrawerContainer extends Component {
+class HeaderContainer extends Component {
   constructor(props) {
     super(props);
   }
 
   static propTypes = {
-    open: PropTypes.bool.isRequired,
-    handleToggle: PropTypes.func.isRequired,
-    onRequestChange: PropTypes.func.isRequired,
+    handleDrawerToggle: PropTypes.func.isRequired,
   };
 
   clickedLogout = (event) => {
@@ -24,13 +22,11 @@ class NavDrawerContainer extends Component {
 
   render() {
     return (
-      <NavDrawer
-        open={this.props.open}
-        handleToggle={this.props.handleToggle}
-        onRequestChange={this.props.onRequestChange}
-        logout={this.clickedLogout}
-        loggedIn={this.props.loggedIn}
+      <Header
         userObject={this.props.userObject}
+        loggedIn={this.props.loggedIn}
+        clickedLogout={this.clickedLogout}
+        handleDrawerToggle={this.props.handleDrawerToggle}
       />
     );
   }
@@ -39,8 +35,6 @@ class NavDrawerContainer extends Component {
 const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     userObject: !data.loading && data.me ? data.me : {
-      first_name: '',
-      last_name: '',
       email: '',
     }
   }),
@@ -56,4 +50,4 @@ const mapStateToProps = (state) => {
 export default compose(
   connect(mapStateToProps),
   withMeQuery,
-)(NavDrawerContainer);
+)(HeaderContainer);

@@ -1,7 +1,7 @@
 
 import React, { PropTypes } from 'react';
-import HeaderContainer from 'components/HeaderContainer';
-import NavDrawerContainer from 'components/NavDrawerContainer';
+import HeaderContainer from './components/HeaderContainer';
+import NavDrawerContainer from './components/NavDrawerContainer';
 
 import s from './Layout.scss';
 

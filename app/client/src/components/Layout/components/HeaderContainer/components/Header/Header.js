@@ -6,7 +6,8 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import Link from '../Link';
+
+import Link from 'components/Link';
 
 import upriseLogo from 'img/uprise-logo.png';
 import s from './Header.scss';

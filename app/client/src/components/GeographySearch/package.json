@@ -1,0 +1,6 @@
+{
+  "name": "GeographySearch",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./GeographySearch.js"
+}
