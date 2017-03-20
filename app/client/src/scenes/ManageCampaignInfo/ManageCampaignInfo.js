@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux'
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import camelCase from 'camelcase';
@@ -24,6 +25,10 @@ import {
 import { 
   EditCampaignMutation
 } from 'schemas/mutations';
+
+import { 
+  notify
+} from 'actions/NotificationsActions';
 
 import s from 'styles/Organize.scss';
 
@@ -53,6 +58,7 @@ class ManageCampaignInfoContainer extends Component {
       },
       errors: {},
       refs: {},
+      saving: false
     }
 
     this.state = Object.assign({}, initialState, this.defaultErrorText);
@@ -140,6 +146,8 @@ class ManageCampaignInfoContainer extends Component {
 
       formData.id = this.props.campaign.id;
 
+      this.setState({ saving: true });
+
       try {
 
         const results = await this.props.editCampaignMutation({ 
@@ -150,6 +158,8 @@ class ManageCampaignInfoContainer extends Component {
           refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
         });
 
+        this.props.dispatch(notify('Changes Saved'));
+        this.setState({ saving: false });
       } catch (e) {
         console.error(e);
       }
@@ -159,7 +169,7 @@ class ManageCampaignInfoContainer extends Component {
   render() {
     const { state, formSubmit, handleInputChange } = this;
     const { user, ...props } = this.props;
-    const { formData, errors, refs } = state;
+    const { formData, errors, refs, saving } = state;
 
     const campaign = props.campaign || {
       title: '',
@@ -189,6 +199,7 @@ class ManageCampaignInfoContainer extends Component {
           errors={errors}
           user={user}
           refs={refs}
+          saving={saving}
         />
       </div>
     );
@@ -217,6 +228,7 @@ const withCampaignQuery = graphql(CampaignQuery, {
 });
 
 export default compose(
+  connect(),
   withMeQuery,
   withCampaignQuery,
   graphql(EditCampaignMutation, { name: 'editCampaignMutation' })

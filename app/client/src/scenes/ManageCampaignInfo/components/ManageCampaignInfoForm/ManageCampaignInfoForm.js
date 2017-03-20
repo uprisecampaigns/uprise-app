@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import Link from 'components/Link';
 
@@ -24,12 +25,13 @@ class ManageCampaignInfoForm extends Component {
     refs: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
+    saving: PropTypes.bool.isRequired
   }
 
   render() {
     const { 
       data, user, refs, formSubmit, errors,
-      handleInputChange
+      handleInputChange, saving
     } = this.props;
 
     const statesList = Object.keys(states);
@@ -118,14 +120,26 @@ class ManageCampaignInfoForm extends Component {
                     fullWidth={true}
                   />
                 </div>
-                <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={formSubmit} 
-                    primary={true} 
-                    type="submit"
-                    label="Save" 
-                  />
-                </div>
+
+                { saving ? (
+
+                  <div className={s.savingThrobberContainer}>
+                    <CircularProgress
+                      size={100}
+                      thickness={5}
+                    />
+                  </div>
+                ) : (
+
+                  <div className={s.button}>
+                    <RaisedButton 
+                      onTouchTap={formSubmit} 
+                      primary={true} 
+                      type="submit"
+                      label="Save Changes" 
+                    />
+                  </div>
+                )}
               </form>
             </div>
           </Paper>

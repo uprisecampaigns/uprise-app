@@ -1,9 +1,12 @@
+
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux'
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
+import CircularProgress from 'material-ui/CircularProgress';
 import camelCase from 'camelcase';
 
 import TogglesList from 'components/TogglesList';
@@ -24,6 +27,10 @@ import {
 import { 
   EditCampaignMutation
 } from 'schemas/mutations';
+
+import { 
+  notify
+} from 'actions/NotificationsActions';
 
 import s from 'styles/Organize.scss';
 
@@ -65,7 +72,8 @@ class ManageCampaignPreferencesContainer extends Component {
         levels: [],
         types: [],
         tags: []
-      }
+      },
+      saving: false
     };
   }
 
@@ -93,6 +101,8 @@ class ManageCampaignPreferencesContainer extends Component {
   saveChanges = async (event) => {
     (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
 
+    this.setState({ saving: true });
+
     try {
 
       const selectedIssueAreas = this.state.campaign.issueAreas.map( (issueArea) => ( issueArea.id ));
@@ -115,6 +125,8 @@ class ManageCampaignPreferencesContainer extends Component {
       });
 
       console.log('edited campaign');
+      this.props.dispatch(notify('Changes Saved'));
+      this.setState({ saving: false });
 
     } catch (e) {
       console.error(e);
@@ -166,7 +178,7 @@ class ManageCampaignPreferencesContainer extends Component {
   render() {
     const { saveChanges, handleToggle, addKeyword, removeKeyword } = this;
     const { user, ...props } = this.props;
-    const { campaign } = this.state;
+    const { campaign, saving } = this.state;
 
     const selectedIssueAreas = campaign.issueAreas.map( (issueArea) => issueArea.id );
     const selectedLevels = campaign.levels.map( (level) => level.id );
@@ -240,15 +252,25 @@ class ManageCampaignPreferencesContainer extends Component {
 
         </List>
 
-        <div className={s.button}>
-          <FlatButton 
-            onTouchTap={saveChanges} 
-            primary={true} 
-            type="submit"
-            label="Save Changes" 
-          />
-        </div>
+        { saving ? (
 
+          <div className={s.savingThrobberContainer}>
+            <CircularProgress
+              size={100}
+              thickness={5}
+            />
+          </div>
+        ) : (
+
+          <div className={s.button}>
+            <FlatButton 
+              onTouchTap={saveChanges} 
+              primary={true} 
+              type="submit"
+              label="Save Changes" 
+            />
+          </div>
+        )}
       </div>
     );
   }
@@ -276,6 +298,7 @@ const withCampaignQuery = graphql(CampaignQuery, {
 });
 
 export default compose(
+  connect(),
   withMeQuery,
   withCampaignQuery,
   graphql(EditCampaignMutation, { name: 'editCampaignMutation' })

@@ -1,13 +1,22 @@
 
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux'
+import Snackbar from 'material-ui/Snackbar';
 import HeaderContainer from './components/HeaderContainer';
 import NavDrawerContainer from './components/NavDrawerContainer';
 
 import s from './Layout.scss';
 
+import { 
+  clear
+} from 'actions/NotificationsActions';
+
+
 class Layout extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
+    notificationMessage: PropTypes.string.isRequired,
+    displayNotification: PropTypes.bool.isRequired
   };
 
   state = {
@@ -35,9 +44,19 @@ class Layout extends React.Component {
         />
 
         {this.props.children}
+
+        <Snackbar
+          open={this.props.displayNotification}
+          message={this.props.notificationMessage}
+          autoHideDuration={4000}
+          onRequestClose={ (reason) => this.props.dispatch(clear()) }
+        />
       </div>
     );
   }
 }
 
-export default Layout;
+export default connect((state) => ({ 
+  notificationMessage: state.notifications.message,
+  displayNotification: state.notifications.display
+}))(Layout)
