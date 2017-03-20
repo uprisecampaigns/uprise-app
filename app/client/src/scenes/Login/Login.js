@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
+import isEmail from 'validator/lib/isEmail';
+
 import { attemptLogin } from 'actions/AuthActions';
 
 import LoginForm from './components/LoginForm';
+
 
 class LoginFormContainer extends Component {
   constructor(props) {
@@ -43,12 +46,29 @@ class LoginFormContainer extends Component {
     }
   }
 
+  validateEmail = () => {
+    this.setState({
+      emailErrorText: null,
+    });
+
+    this.validateString('email', 'emailErrorText', 'Email is Required');
+
+    if (typeof this.state.email === 'string' &&
+        !isEmail(this.state.email)) {
+
+      this.setState({
+        emailErrorText: 'Please enter a valid email'
+      });
+      this.hasErrors = true;
+    }
+  }
+
   formSubmit = (event) => {
     console.log(event);
     event.preventDefault();
     this.hasErrors = false;
 
-    this.validateString('email', 'emailErrorText', 'Email is Required');
+    this.validateEmail();
     this.validateString('password', 'passwordErrorText', 'Password is Required');
     console.log(this.state);
 
