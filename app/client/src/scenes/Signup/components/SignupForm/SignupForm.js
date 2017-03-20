@@ -23,6 +23,7 @@ class SignupForm extends Component {
     formSubmit: PropTypes.func.isRequired,
     cancelSignup: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired
   }
 
   render() {
@@ -88,7 +89,7 @@ class SignupForm extends Component {
                     floatingLabelText="Zip"
                     value={data.zipcode}
                     onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
-                    errorText={data.zipErrorText}
+                    errorText={data.zipcodeErrorText}
                     fullWidth={true}
                   />
                 </div>
