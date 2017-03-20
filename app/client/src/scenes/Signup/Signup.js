@@ -128,7 +128,8 @@ class SignupFormContainer extends Component {
           query: EmailAvailable,
           variables: {
             email: this.state.email
-          }
+          },
+          fetchPolicy: 'network-only',
         });
 
 
