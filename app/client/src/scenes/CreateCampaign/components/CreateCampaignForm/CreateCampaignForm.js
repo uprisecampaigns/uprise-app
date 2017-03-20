@@ -165,7 +165,7 @@ class CreateCampaignForm extends Component {
               <Link to={'/campaign/' + newCampaign.slug} useAhref={true}>uprise.org/campaign/{newCampaign.slug}</Link>
             </p>
             <p>
-              Please feel free to contact us at <Link to="mailto:help@uprise.org" useAhref={true}>help@uprise.org</Link> for assistance.
+              Please feel free to contact us at <Link to="mailto:help@uprise.org" external={true} useAhref={true}>help@uprise.org</Link> for assistance.
             </p>
           </Dialog>
         )}

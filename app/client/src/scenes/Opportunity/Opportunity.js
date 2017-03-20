@@ -72,7 +72,7 @@ class OpportunityContainer extends Component {
 
           <div className={s.contactContainer}>
             Contact Coordinator: {opportunity.owner.first_name} {opportunity.owner.last_name} 
-            <Link to={'mailto:' + opportunity.owner.email} useAhref={true}>
+            <Link to={'mailto:' + opportunity.owner.email} external={true} useAhref={true}>
               {opportunity.owner.email}
             </Link>
           </div>
