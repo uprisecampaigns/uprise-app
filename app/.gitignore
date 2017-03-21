@@ -1,2 +1,5 @@
 dev.env
 prod.env
+node_modules
+client/builds
+npm-debug.log*
