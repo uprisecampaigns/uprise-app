@@ -12,15 +12,19 @@ import {
 } from 'actions/NotificationsActions';
 
 
-class Layout extends React.Component {
+export class Layout extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     notificationMessage: PropTypes.string.isRequired,
-    displayNotification: PropTypes.bool.isRequired
+    displayNotification: PropTypes.bool.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
 
-  state = {
-    drawerOpen: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      drawerOpen: false
+    }
   }
 
   handleDrawerToggle = () => this.setState({drawerOpen: !this.state.drawerOpen});
