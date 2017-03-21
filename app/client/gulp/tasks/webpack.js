@@ -102,6 +102,11 @@ config.webpack = {
     },
     ]
   },
+  externals: {
+    'react/addons': true,
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': true
+  },
   plugins: env.production() ? [
     htmlWebpackPlugin,
     extractTextPlugin,
