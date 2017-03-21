@@ -8,7 +8,7 @@ import {
   SORT_BY,
 } from 'actions/SearchActions.js';
 
-const defaultStartState = { 
+export const defaultStartState = { 
   keywords: [], 
   activities: [], 
   types: [], 
@@ -32,11 +32,11 @@ export function updateSearch(searchOpportunitiesState = defaultStartState, actio
 
       if (( typeof action.value === 'string' &&
             action.value.trim() !== '' &&
-            !collection.find(item => item.toLowerCase() === action.value.toLowerCase())) ||
+            !collection.find(item => item.trim().toLowerCase() === action.value.trim().toLowerCase())) ||
           ( typeof action.value === 'object' && 
             !collection.find(item => isEqual(item, action.value)))) {
 
-        collection.push(action.value);
+        collection.push(action.value.trim());
       }
       
       return Object.assign({}, searchOpportunitiesState, { 
