@@ -94,9 +94,7 @@ class CreateCampaignContainer extends Component {
       
       // Hack for AutoComplete
       if (!valid) {
-        this.state.refs.stateInput.setState( (prevState) => ({ 
-          searchText: prevState.formData.state 
-        }));
+        this.state.refs.stateInput.setState({ searchText: this.state.formData.state });
       }
     } 
 
