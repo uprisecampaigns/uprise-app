@@ -2,14 +2,14 @@ const moment = require('moment');
 
 module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) => {
   // Deletes ALL existing entries
-  await knex('opportunities').del();
+  await knex('actions').del();
   await knex('activities').del();
-  await knex('opportunities_activities').del();
-  await knex('opportunities_types').del();
-  await knex('opportunities_issue_areas').del();
-  await knex('opportunities_levels').del();
+  await knex('actions_activities').del();
+  await knex('actions_types').del();
+  await knex('actions_issue_areas').del();
+  await knex('actions_levels').del();
 
-  const opportunities = await knex('opportunities').insert([
+  const actions = await knex('actions').insert([
   {
       title: 'House Party Fundraiser for Darryl Wade',
       slug: 'house-party-fundraiser-for-darryl-wade',
@@ -161,58 +161,58 @@ Help us get a big turnout for upcoming Town Hall Meeting next Tuesday. We need v
   ], ['id']);
 
 
-  const opportunitiesActivities = await knex('opportunities_activities').insert([
-    { opportunity_id: opportunities[0].id, activity_id: activities[8].id },
-    { opportunity_id: opportunities[0].id, activity_id: activities[9].id },
-    { opportunity_id: opportunities[1].id, activity_id: activities[13].id },
-    { opportunity_id: opportunities[1].id, activity_id: activities[15].id },
-    { opportunity_id: opportunities[2].id, activity_id: activities[2].id },
-    { opportunity_id: opportunities[3].id, activity_id: activities[9].id },
-    { opportunity_id: opportunities[3].id, activity_id: activities[13].id },
-    { opportunity_id: opportunities[4].id, activity_id: activities[1].id },
-    { opportunity_id: opportunities[5].id, activity_id: activities[1].id },
-    { opportunity_id: opportunities[6].id, activity_id: activities[19].id },
+  const actionsActivities = await knex('actions_activities').insert([
+    { action_id: actions[0].id, activity_id: activities[8].id },
+    { action_id: actions[0].id, activity_id: activities[9].id },
+    { action_id: actions[1].id, activity_id: activities[13].id },
+    { action_id: actions[1].id, activity_id: activities[15].id },
+    { action_id: actions[2].id, activity_id: activities[2].id },
+    { action_id: actions[3].id, activity_id: activities[9].id },
+    { action_id: actions[3].id, activity_id: activities[13].id },
+    { action_id: actions[4].id, activity_id: activities[1].id },
+    { action_id: actions[5].id, activity_id: activities[1].id },
+    { action_id: actions[6].id, activity_id: activities[19].id },
   ], ['id']);
 
-  const opportunitiesLevels = await knex('opportunities_levels').insert([
-    { opportunity_id: opportunities[0].id, level_id: levels[1].id },
-    { opportunity_id: opportunities[1].id, level_id: levels[1].id },
-    { opportunity_id: opportunities[2].id, level_id: levels[3].id },
-    { opportunity_id: opportunities[3].id, level_id: levels[1].id },
-    { opportunity_id: opportunities[4].id, level_id: levels[1].id },
-    { opportunity_id: opportunities[5].id, level_id: levels[2].id },
-    { opportunity_id: opportunities[5].id, level_id: levels[3].id },
-    { opportunity_id: opportunities[6].id, level_id: levels[0].id },
-    { opportunity_id: opportunities[6].id, level_id: levels[1].id },
-    { opportunity_id: opportunities[6].id, level_id: levels[2].id },
-    { opportunity_id: opportunities[6].id, level_id: levels[3].id },
+  const actionsLevels = await knex('actions_levels').insert([
+    { action_id: actions[0].id, level_id: levels[1].id },
+    { action_id: actions[1].id, level_id: levels[1].id },
+    { action_id: actions[2].id, level_id: levels[3].id },
+    { action_id: actions[3].id, level_id: levels[1].id },
+    { action_id: actions[4].id, level_id: levels[1].id },
+    { action_id: actions[5].id, level_id: levels[2].id },
+    { action_id: actions[5].id, level_id: levels[3].id },
+    { action_id: actions[6].id, level_id: levels[0].id },
+    { action_id: actions[6].id, level_id: levels[1].id },
+    { action_id: actions[6].id, level_id: levels[2].id },
+    { action_id: actions[6].id, level_id: levels[3].id },
   ], ['id']);
 
-  const opportunitiesIssueAreas = await knex('opportunities_issue_areas').insert([
-    { opportunity_id: opportunities[0].id, issue_area_id: issueAreas[0].id },
-    { opportunity_id: opportunities[0].id, issue_area_id: issueAreas[8].id },
-    { opportunity_id: opportunities[1].id, issue_area_id: issueAreas[0].id },
-    { opportunity_id: opportunities[1].id, issue_area_id: issueAreas[8].id },
-    { opportunity_id: opportunities[2].id, issue_area_id: issueAreas[8].id },
-    { opportunity_id: opportunities[3].id, issue_area_id: issueAreas[8].id },
-    { opportunity_id: opportunities[3].id, issue_area_id: issueAreas[3].id },
-    { opportunity_id: opportunities[4].id, issue_area_id: issueAreas[8].id },
-    { opportunity_id: opportunities[4].id, issue_area_id: issueAreas[3].id },
-    { opportunity_id: opportunities[4].id, issue_area_id: issueAreas[9].id },
-    { opportunity_id: opportunities[5].id, issue_area_id: issueAreas[1].id },
-    { opportunity_id: opportunities[5].id, issue_area_id: issueAreas[3].id },
-    { opportunity_id: opportunities[6].id, issue_area_id: issueAreas[1].id },
-    { opportunity_id: opportunities[6].id, issue_area_id: issueAreas[3].id },
+  const actionsIssueAreas = await knex('actions_issue_areas').insert([
+    { action_id: actions[0].id, issue_area_id: issueAreas[0].id },
+    { action_id: actions[0].id, issue_area_id: issueAreas[8].id },
+    { action_id: actions[1].id, issue_area_id: issueAreas[0].id },
+    { action_id: actions[1].id, issue_area_id: issueAreas[8].id },
+    { action_id: actions[2].id, issue_area_id: issueAreas[8].id },
+    { action_id: actions[3].id, issue_area_id: issueAreas[8].id },
+    { action_id: actions[3].id, issue_area_id: issueAreas[3].id },
+    { action_id: actions[4].id, issue_area_id: issueAreas[8].id },
+    { action_id: actions[4].id, issue_area_id: issueAreas[3].id },
+    { action_id: actions[4].id, issue_area_id: issueAreas[9].id },
+    { action_id: actions[5].id, issue_area_id: issueAreas[1].id },
+    { action_id: actions[5].id, issue_area_id: issueAreas[3].id },
+    { action_id: actions[6].id, issue_area_id: issueAreas[1].id },
+    { action_id: actions[6].id, issue_area_id: issueAreas[3].id },
   ], ['id']);
 
-  const opportunitiesTypes = await knex('opportunities_types').insert([
-    { opportunity_id: opportunities[0].id, type_id: types[0].id },
-    { opportunity_id: opportunities[1].id, type_id: types[0].id },
-    { opportunity_id: opportunities[2].id, type_id: types[0].id },
-    { opportunity_id: opportunities[3].id, type_id: types[0].id },
-    { opportunity_id: opportunities[4].id, type_id: types[0].id },
+  const actionsTypes = await knex('actions_types').insert([
+    { action_id: actions[0].id, type_id: types[0].id },
+    { action_id: actions[1].id, type_id: types[0].id },
+    { action_id: actions[2].id, type_id: types[0].id },
+    { action_id: actions[3].id, type_id: types[0].id },
+    { action_id: actions[4].id, type_id: types[0].id },
   ], ['id']);
 
-  return opportunities;
+  return actions;
 
 };

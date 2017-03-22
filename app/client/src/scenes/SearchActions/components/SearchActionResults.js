@@ -10,26 +10,26 @@ import Link from 'components/Link';
 import s from 'styles/Search.scss';
 
 
-class SearchOpportunityResults extends React.PureComponent {
+class SearchActionResults extends React.PureComponent {
 
   constructor(props) {
     super(props);
   }
 
   static propTypes = {
-    opportunities: PropTypes.array,
+    actions: PropTypes.array,
     sortBy: PropTypes.object.isRequired,
     graphqlLoading: PropTypes.bool.isRequired
   }
 
   shouldComponentUpdate(nextProps) {
-    return (!nextProps.graphqlLoading && typeof nextProps.opportunities === 'object');
+    return (!nextProps.graphqlLoading && typeof nextProps.actions === 'object');
   }
 
   render() {
     const { sortBy, ...props } = this.props;
 
-    const opportunitiesSort = (a, b) => {
+    const actionsSort = (a, b) => {
       if (sortBy.name === 'date') {
         if (sortBy.descending) {
           return moment(a.start_time).isBefore(moment(b.start_time)) ? 1 : -1;
@@ -45,41 +45,41 @@ class SearchOpportunityResults extends React.PureComponent {
       }
     }
 
-    const opportunities = props.opportunities ? Array.from(props.opportunities).sort(opportunitiesSort).map( (opportunity, index) => {
+    const actions = props.actions ? Array.from(props.actions).sort(actionsSort).map( (action, index) => {
 
-      const tags = opportunity.tags ? opportunity.tags.map( (tag, index) => {
-        return <span key={index}>{tag}{(index === opportunity.tags.length - 1) ? '' : ', '}</span>;
+      const tags = action.tags ? action.tags.map( (tag, index) => {
+        return <span key={index}>{tag}{(index === action.tags.length - 1) ? '' : ', '}</span>;
       }) : [];
 
-      const activities = opportunity.activities ? opportunity.activities.map( (activity, index) => {
-        return <span key={index}>{activity.title}{(index === opportunity.activities.length - 1) ? '' : ', '}</span>;
+      const activities = action.activities ? action.activities.map( (activity, index) => {
+        return <span key={index}>{activity.title}{(index === action.activities.length - 1) ? '' : ', '}</span>;
       }) : [];
 
-      const issues = opportunity.issue_areas ? opportunity.issue_areas.map( (issue, index) => {
-        return <span key={index}>{issue.title}{(index === opportunity.issue_areas.length - 1) ? '' : ', '}</span>;
+      const issues = action.issue_areas ? action.issue_areas.map( (issue, index) => {
+        return <span key={index}>{issue.title}{(index === action.issue_areas.length - 1) ? '' : ', '}</span>;
       }) : [];
 
-      const startTime = moment(opportunity.start_time);
-      const endTime = moment(opportunity.end_time);
+      const startTime = moment(action.start_time);
+      const endTime = moment(action.end_time);
 
       return (
         <Card key={index}>
           <CardHeader
             title={
-              <Link to={'/opportunity/' + opportunity.slug}>{opportunity.title}</Link>
+              <Link to={'/action/' + action.slug}>{action.title}</Link>
             }
             subtitle={
-              <Link to={'/campaign/' + opportunity.campaign.slug}>{opportunity.campaign.title}</Link>
+              <Link to={'/campaign/' + action.campaign.slug}>{action.campaign.title}</Link>
             }
             showExpandableButton={true}
           >
             <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div>
             <div>Time: {startTime.format('h:mm a') + ' - ' + endTime.format('h:mm a')}</div>  
-            <div>Place: {opportunity.city}, {opportunity.state}</div>
+            <div>Place: {action.city}, {action.state}</div>
           </CardHeader>
           <CardText expandable={true}>
             <div className={s.descriptionContainer}>
-              {opportunity.description}
+              {action.description}
             </div>
           </CardText>
         </Card>
@@ -96,7 +96,7 @@ class SearchOpportunityResults extends React.PureComponent {
                 thickness={5}
               />
             </div>
-          ) : opportunities 
+          ) : actions 
         }
       </div>
     );
@@ -104,4 +104,4 @@ class SearchOpportunityResults extends React.PureComponent {
 }
 
 
-export default SearchOpportunityResults;
+export default SearchActionResults;

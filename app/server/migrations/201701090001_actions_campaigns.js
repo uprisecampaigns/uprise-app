@@ -1,5 +1,5 @@
 module.exports.up = async (knex, Promise) => {
-  console.log('running migration 201701090001_opportunities_campaigns.js');
+  console.log('running migration 201701090001_actions_campaigns.js');
 
   await knex.schema.createTable('campaigns', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
@@ -106,7 +106,7 @@ module.exports.up = async (knex, Promise) => {
   });
 
 
-  await knex.schema.createTable('opportunities', (table) => {
+  await knex.schema.createTable('actions', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
     table.timestamps(true, true);
     table.boolean('deleted').notNullable().defaultTo(false);
@@ -121,7 +121,7 @@ module.exports.up = async (knex, Promise) => {
     table.specificType('tags', 'text[]')
       .notNullable()
       .defaultTo(knex.raw("'{}'"))
-      .index('opportunity_tags_tags', 'gin');
+      .index('action_tags_tags', 'gin');
 
     table.text('location_name');
     table.text('street_address');
@@ -140,51 +140,51 @@ module.exports.up = async (knex, Promise) => {
       .onDelete('CASCADE');
   });
 
-  await knex.schema.createTable('opportunities_levels', (table) => {
+  await knex.schema.createTable('actions_levels', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()'));
     table.timestamps(true, true);
 
-    table.uuid('opportunity_id').notNullable()
-      .references('id').inTable('opportunities')
+    table.uuid('action_id').notNullable()
+      .references('id').inTable('actions')
       .onDelete('CASCADE');
 
     table.uuid('level_id').notNullable()
       .references('id').inTable('levels')
       .onDelete('CASCADE');
 
-    table.primary(['opportunity_id', 'level_id']);
+    table.primary(['action_id', 'level_id']);
 
   });
 
-  await knex.schema.createTable('opportunities_types', (table) => {
+  await knex.schema.createTable('actions_types', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()'));
     table.timestamps(true, true);
 
-    table.uuid('opportunity_id').notNullable()
-      .references('id').inTable('opportunities')
+    table.uuid('action_id').notNullable()
+      .references('id').inTable('actions')
       .onDelete('CASCADE');
 
     table.uuid('type_id').notNullable()
       .references('id').inTable('types')
       .onDelete('CASCADE');
 
-    table.primary(['opportunity_id', 'type_id']);
+    table.primary(['action_id', 'type_id']);
 
   });
 
-  await knex.schema.createTable('opportunities_issue_areas', (table) => {
+  await knex.schema.createTable('actions_issue_areas', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()'));
     table.timestamps(true, true);
 
-    table.uuid('opportunity_id').notNullable()
-      .references('id').inTable('opportunities')
+    table.uuid('action_id').notNullable()
+      .references('id').inTable('actions')
       .onDelete('CASCADE');
 
     table.uuid('issue_area_id').notNullable()
       .references('id').inTable('issue_areas')
       .onDelete('CASCADE');
 
-    table.primary(['opportunity_id', 'issue_area_id']);
+    table.primary(['action_id', 'issue_area_id']);
 
   });
 
@@ -198,19 +198,19 @@ module.exports.up = async (knex, Promise) => {
 
   });
 
-  await knex.schema.createTable('opportunities_activities', (table) => {
+  await knex.schema.createTable('actions_activities', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()'));
     table.timestamps(true, true);
 
-    table.uuid('opportunity_id').notNullable()
-      .references('id').inTable('opportunities')
+    table.uuid('action_id').notNullable()
+      .references('id').inTable('actions')
       .onDelete('CASCADE');
 
     table.uuid('activity_id').notNullable()
       .references('id').inTable('activities')
       .onDelete('CASCADE');
 
-    table.primary(['opportunity_id', 'activity_id']);
+    table.primary(['action_id', 'activity_id']);
 
   });
 
@@ -220,15 +220,15 @@ module.exports.down = async (knex, Promise) => {
   await knex.schema.dropTableIfExists('campaigns_issue_areas');
   await knex.schema.dropTableIfExists('campaigns_types');
   await knex.schema.dropTableIfExists('campaigns_levels');
-  await knex.schema.dropTableIfExists('opportunities_issue_areas');
-  await knex.schema.dropTableIfExists('opportunities_levels');
-  await knex.schema.dropTableIfExists('opportunities_types');
-  await knex.schema.dropTableIfExists('opportunities_activities');
+  await knex.schema.dropTableIfExists('actions_issue_areas');
+  await knex.schema.dropTableIfExists('actions_levels');
+  await knex.schema.dropTableIfExists('actions_types');
+  await knex.schema.dropTableIfExists('actions_activities');
   await knex.schema.dropTableIfExists('types');
   await knex.schema.dropTableIfExists('levels');
   await knex.schema.dropTableIfExists('issue_areas');
   await knex.schema.dropTableIfExists('activities');
-  await knex.schema.dropTableIfExists('opportunities');
+  await knex.schema.dropTableIfExists('actions');
   await knex.schema.dropTableIfExists('campaigns');
 };
 

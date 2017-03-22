@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import ContentNavigation from 'components/ContentNavigation';
 
 const selections = [
-  { title: 'opportunities', path: 'search-opportunities'},
+  { title: 'actions', path: 'search-actions'},
   { title: 'campaigns', path: 'search-campaigns'},
   { title: 'people', path: 'search-campaigns'},
 ];

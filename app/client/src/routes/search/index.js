@@ -3,7 +3,7 @@ export default {
   path: '/search',
   action() {
     return {
-      redirect: '/search/search-opportunities'
+      redirect: '/search/search-actions'
     };
   }
 };

@@ -74,9 +74,9 @@ export const CampaignQuery = gql`
   }
 `;
  
-export const OpportunityQuery = gql`
-  query OpportunityQuery($search:OpportunityQueryInput) {
-    opportunity(search:$search){
+export const ActionQuery = gql`
+  query ActionQuery($search:ActionQueryInput) {
+    action(search:$search){
       id
       title
       slug
@@ -112,9 +112,9 @@ export const OpportunityQuery = gql`
   }
 `;
  
-export const OpportunitiesQuery = gql`
-  query OpportunitiesQuery($search:OpportunitySearchInput) {
-    opportunities(search:$search){
+export const ActionsQuery = gql`
+  query ActionsQuery($search:ActionSearchInput) {
+    actions(search:$search){
       id
       title
       slug

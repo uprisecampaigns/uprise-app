@@ -5,7 +5,7 @@ import { graphql, compose } from 'react-apollo';
 import {List, ListItem} from 'material-ui/List';
 
 import { 
-  OpportunitiesQuery, 
+  ActionsQuery, 
   CampaignTitlesQuery, 
   ActivitiesQuery,
   TypesQuery,
@@ -35,25 +35,25 @@ const graphqlOptions = (collection) => {
 
 const ActivitiesTogglesList = compose(
   graphql(ActivitiesQuery, graphqlOptions('activities')),
-  connect((state) => ({ selectedCollection: state.opportunitiesSearch.activities }))
+  connect((state) => ({ selectedCollection: state.actionsSearch.activities }))
 )(TogglesList);
 
 const TypesTogglesList = compose(
   graphql(TypesQuery, graphqlOptions('types')),
-  connect((state) => ({ selectedCollection: state.opportunitiesSearch.types }))
+  connect((state) => ({ selectedCollection: state.actionsSearch.types }))
 )(TogglesList);
 
 const LevelsTogglesList = compose(
   graphql(LevelsQuery, graphqlOptions('levels')),
-  connect((state) => ({ selectedCollection: state.opportunitiesSearch.levels }))
+  connect((state) => ({ selectedCollection: state.actionsSearch.levels }))
 )(TogglesList);
 
 const IssueAreasTogglesList = compose(
   graphql(IssueAreasQuery, graphqlOptions('issueAreas')),
-  connect((state) => ({ selectedCollection: state.opportunitiesSearch.issueAreas }))
+  connect((state) => ({ selectedCollection: state.actionsSearch.issueAreas }))
 )(TogglesList);
 
-const ConnectedDateTimeSearch = connect((state) => ({ selectedTimes: state.opportunitiesSearch.times }))(DateTimeSearch);
+const ConnectedDateTimeSearch = connect((state) => ({ selectedTimes: state.actionsSearch.times }))(DateTimeSearch);
 
 const CampaignNameSearch = graphql(CampaignTitlesQuery, {
   props: ({ data }) => ({
@@ -62,7 +62,7 @@ const CampaignNameSearch = graphql(CampaignTitlesQuery, {
   })
 })(SearchBar);
 
-class SearchOpportunityInputs extends React.PureComponent {
+class SearchActionInputs extends React.PureComponent {
   constructor(props) {
     super(props);
   }
@@ -72,18 +72,18 @@ class SearchOpportunityInputs extends React.PureComponent {
 
   handleToggle = (collectionName, on, value) => {
     if (on) {
-      this.props.dispatch(addSearchItem('opportunity', collectionName, value));
+      this.props.dispatch(addSearchItem('action', collectionName, value));
     } else {
-      this.props.dispatch(removeSearchItem('opportunity', collectionName, value));
+      this.props.dispatch(removeSearchItem('action', collectionName, value));
     }
   }
 
   addSelectedItem = (collectionName, value) => {
-    this.props.dispatch(addSearchItem('opportunity', collectionName, value));
+    this.props.dispatch(addSearchItem('action', collectionName, value));
   }
 
   setDates = (dates) => {
-    this.props.dispatch(setSearchDates('opportunity', dates));
+    this.props.dispatch(setSearchDates('action', dates));
   }
 
   render() {
@@ -169,4 +169,4 @@ class SearchOpportunityInputs extends React.PureComponent {
   }
 };
 
-export default connect()(SearchOpportunityInputs);
+export default connect()(SearchActionInputs);

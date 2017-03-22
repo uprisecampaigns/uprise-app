@@ -24,11 +24,11 @@ export const defaultStartState = {
   }
 };
 
-export function updateSearch(searchOpportunitiesState = defaultStartState, action) {
+export function updateSearch(searchState = defaultStartState, action) {
   switch (action.type){
    
     case ADD_SEARCH_ITEM:
-      const collection = Array.from(searchOpportunitiesState[action.collection]);
+      const collection = Array.from(searchState[action.collection]);
 
       if (( typeof action.value === 'string' &&
             action.value.trim() !== '' &&
@@ -39,39 +39,39 @@ export function updateSearch(searchOpportunitiesState = defaultStartState, actio
         collection.push(action.value.trim());
       }
       
-      return Object.assign({}, searchOpportunitiesState, { 
+      return Object.assign({}, searchState, { 
         [action.collection]: collection
       });
 
     case REMOVE_SEARCH_ITEM:
-      return Object.assign({}, searchOpportunitiesState, { 
-        [action.collection]: searchOpportunitiesState[action.collection].filter( (item) => {
+      return Object.assign({}, searchState, { 
+        [action.collection]: searchState[action.collection].filter( (item) => {
           return item !== action.value && !isEqual(item, action.value);
         })
       });
 
     case SET_DATES:
-      return Object.assign({}, searchOpportunitiesState, { 
+      return Object.assign({}, searchState, { 
         dates: action.dates
       });
 
     case UNSET_DATES:
-      return Object.assign({}, searchOpportunitiesState, { 
+      return Object.assign({}, searchState, { 
         dates: {}
       });
 
     case SORT_BY:
 
-      const state = searchOpportunitiesState;
+      const state = searchState;
       const sortBy = {
         name: action.selection,
       };
 
       sortBy.descending = (state.sortBy.name === action.selection) ? !state.sortBy.descending : false;
 
-      return Object.assign({}, searchOpportunitiesState, { sortBy });
+      return Object.assign({}, searchState, { sortBy });
 
     default: 
-      return searchOpportunitiesState;
+      return searchState;
   }
 };

@@ -9,7 +9,7 @@ const graphiqlExpress = graphqlServer.graphiqlExpress;
 const schema = require('../schema');
 const authenticationMiddleware = require('middlewares/authentication.js');
 
-const Opportunity = require('models/Opportunity');
+const Action = require('models/Action');
 const Campaign = require('models/Campaign');
 const User = require('models/User');
 
@@ -44,7 +44,7 @@ module.exports = (app) => {
       return available;
     },
 
-    opportunity: async (data, context) => {
+    action: async (data, context) => {
 
       if (!context.user) {
         throw new Error('User must be logged in');
@@ -52,20 +52,20 @@ module.exports = (app) => {
 
       console.log(data);
 
-      const opportunity = await Opportunity.findOne(data.search);
-      console.log(opportunity);
-      return opportunity;
+      const action = await Action.findOne(data.search);
+      console.log(action);
+      return action;
     },
 
-    opportunities: async (data, context) => {
+    actions: async (data, context) => {
 
       if (!context.user) {
         throw new Error('User must be logged in');
       }
 
-      const opportunities = await Opportunity.search(data.search);
-      console.log(opportunities);
-      return opportunities;
+      const actions = await Action.search(data.search);
+      console.log(actions);
+      return actions;
     },
 
     campaign: async (data, context) => {
@@ -113,7 +113,7 @@ module.exports = (app) => {
         throw new Error('User must be logged in');
       }
 
-      const activities = await Opportunity.listActivities(data.search);
+      const activities = await Action.listActivities(data.search);
       console.log(activities);
       return activities;
     },

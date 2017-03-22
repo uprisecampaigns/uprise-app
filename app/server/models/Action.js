@@ -10,29 +10,29 @@ const User = require('models/User.js');
 const Campaign = require('models/Campaign.js');
 
 
-class Opportunity {
+class Action {
 
   static async findOne(...args) {
-    const opportunity = await db.table('opportunities').where(...args).first();
+    const action = await db.table('actions').where(...args).first();
 
-    Object.assign(opportunity, await this.details(opportunity));
+    Object.assign(action, await this.details(action));
 
-    return opportunity;
+    return action;
   }
 
   static async search(search) {
     
-    const searchQuery = db('opportunities')
-      .select(['opportunities.id as id', 'opportunities.title as title', 
-               db.raw('to_char(opportunities.start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
-               db.raw('to_char(opportunities.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
-               'opportunities.tags as tags', 'opportunities.owner_id as owner_id', 'opportunities.slug as slug', 'opportunities.description as description',
-               'opportunities.location_name as location_name', 'opportunities.street_address as street_address', 'opportunities.street_address2 as street_address2',
-               'opportunities.city as city', 'opportunities.state as state', 'opportunities.zipcode as zipcode', 'opportunities.location_notes as location_notes',
+    const searchQuery = db('actions')
+      .select(['actions.id as id', 'actions.title as title', 
+               db.raw('to_char(actions.start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
+               db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
+               'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
+               'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
+               'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes',
                'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug'])
  
-      .where('opportunities.deleted', false)
-      .innerJoin('campaigns', 'opportunities.campaign_id', 'campaigns.id')
+      .where('actions.deleted', false)
+      .innerJoin('campaigns', 'actions.campaign_id', 'campaigns.id')
       .modify( (qb) => {
 
         if (search) {
@@ -43,7 +43,7 @@ class Opportunity {
 
           if (search.keywords) {
 
-            const tags = db('opportunities')
+            const tags = db('actions')
               .select(db.raw('id, unnest(tags) tag'))
               .as('tags');
 
@@ -51,13 +51,13 @@ class Opportunity {
 
               search.keywords.forEach( (keyword) => {
                 
-                this.orWhere(db.raw('opportunities.title % ?', keyword));
-                this.orWhere(db.raw('opportunities.location_name % ?', keyword));
-                this.orWhere(db.raw('opportunities.street_address % ?', keyword));
-                this.orWhere(db.raw('opportunities.street_address2 % ?', keyword));
-                this.orWhere(db.raw('opportunities.city % ?', keyword));
-                this.orWhere(db.raw('opportunities.state % ?', keyword));
-                this.orWhere(db.raw('opportunities.location_notes % ?', keyword));
+                this.orWhere(db.raw('actions.title % ?', keyword));
+                this.orWhere(db.raw('actions.location_name % ?', keyword));
+                this.orWhere(db.raw('actions.street_address % ?', keyword));
+                this.orWhere(db.raw('actions.street_address2 % ?', keyword));
+                this.orWhere(db.raw('actions.city % ?', keyword));
+                this.orWhere(db.raw('actions.state % ?', keyword));
+                this.orWhere(db.raw('actions.location_notes % ?', keyword));
                 this.orWhere(db.raw('campaigns.title % ?', keyword));
 
                 const tagKeywordQuery = db.select('id')
@@ -65,7 +65,7 @@ class Opportunity {
                   .from(tags)
                   .whereRaw('tag % ?', keyword);
 
-                this.orWhere('opportunities.id', 'in', tagKeywordQuery);
+                this.orWhere('actions.id', 'in', tagKeywordQuery);
 
               });
             });
@@ -90,13 +90,13 @@ class Opportunity {
 
               search.activities.forEach( (activity) => {
 
-                const activityQuery = db.select('opportunity_id')
+                const activityQuery = db.select('action_id')
                   .distinct()
                   .from('activities')
-                  .innerJoin('opportunities_activities', 'activities.id', 'opportunities_activities.activity_id')
+                  .innerJoin('actions_activities', 'activities.id', 'actions_activities.activity_id')
                   .where('title', activity);
 
-                this.orWhere('opportunities.id', 'in', activityQuery);
+                this.orWhere('actions.id', 'in', activityQuery);
 
               });
             });
@@ -111,13 +111,13 @@ class Opportunity {
 
               search.types.forEach( (type) => {
 
-                const typeQuery = db.select('opportunity_id')
+                const typeQuery = db.select('action_id')
                   .distinct()
                   .from('types')
-                  .innerJoin('opportunities_types', 'types.id', 'opportunities_types.type_id')
+                  .innerJoin('actions_types', 'types.id', 'actions_types.type_id')
                   .where('title', type);
 
-                this.orWhere('opportunities.id', 'in', typeQuery);
+                this.orWhere('actions.id', 'in', typeQuery);
 
               });
             });
@@ -132,13 +132,13 @@ class Opportunity {
 
               search.levels.forEach( (level) => {
 
-                const levelQuery = db.select('opportunity_id')
+                const levelQuery = db.select('action_id')
                   .distinct()
                   .from('levels')
-                  .innerJoin('opportunities_levels', 'levels.id', 'opportunities_levels.level_id')
+                  .innerJoin('actions_levels', 'levels.id', 'actions_levels.level_id')
                   .where('title', level);
 
-                this.orWhere('opportunities.id', 'in', levelQuery);
+                this.orWhere('actions.id', 'in', levelQuery);
 
               });
             });
@@ -153,13 +153,13 @@ class Opportunity {
 
               search.issueAreas.forEach( (issueArea) => {
 
-                const issueAreaQuery = db.select('opportunity_id')
+                const issueAreaQuery = db.select('action_id')
                   .distinct()
                   .from('issue_areas')
-                  .innerJoin('opportunities_issue_areas', 'issue_areas.id', 'opportunities_issue_areas.issue_area_id')
+                  .innerJoin('actions_issue_areas', 'issue_areas.id', 'actions_issue_areas.issue_area_id')
                   .where('title', issueArea);
 
-                this.orWhere('opportunities.id', 'in', issueAreaQuery);
+                this.orWhere('actions.id', 'in', issueAreaQuery);
 
               });
             });
@@ -170,13 +170,13 @@ class Opportunity {
             if (search.dates.onDate) {
 
               qb.andWhere(function() {
-                this.andWhere(db.raw("date(?) >= opportunities.start_time::date", search.dates.onDate));
-                this.andWhere(db.raw("date(?) <= opportunities.end_time::date", search.dates.onDate));
+                this.andWhere(db.raw("date(?) >= actions.start_time::date", search.dates.onDate));
+                this.andWhere(db.raw("date(?) <= actions.end_time::date", search.dates.onDate));
               }); 
 
             } else if (search.dates.startDate && search.dates.endDate) {
               // OVERLAPS is exclusive at the endDate, so add a day to simulate inclusion
-              qb.andWhere(db.raw("(date(?), date(?) + interval '1 day') OVERLAPS (opportunities.start_time::date, opportunities.end_time::date)", [
+              qb.andWhere(db.raw("(date(?), date(?) + interval '1 day') OVERLAPS (actions.start_time::date, actions.end_time::date)", [
                 search.dates.startDate,
                 search.dates.endDate
               ])); 
@@ -189,12 +189,12 @@ class Opportunity {
             qb.andWhere(function() {
               search.times.forEach( (time) => {
                 if (time.toLowerCase() === 'saturdays') {
-                  this.orWhere(db.raw("EXTRACT (DOW FROM opportunities.start_time::date) = 6")); 
-                  this.orWhere(db.raw("EXTRACT (DOW FROM opportunities.end_time::date) = 6")); 
+                  this.orWhere(db.raw("EXTRACT (DOW FROM actions.start_time::date) = 6")); 
+                  this.orWhere(db.raw("EXTRACT (DOW FROM actions.end_time::date) = 6")); 
                 }
                 if (time.toLowerCase() === 'sundays') {
-                  this.orWhere(db.raw("EXTRACT (DOW FROM opportunities.start_time::date) = 0")); 
-                  this.orWhere(db.raw("EXTRACT (DOW FROM opportunities.end_time::date) = 0")); 
+                  this.orWhere(db.raw("EXTRACT (DOW FROM actions.start_time::date) = 0")); 
+                  this.orWhere(db.raw("EXTRACT (DOW FROM actions.end_time::date) = 0")); 
                 }
               });
             });
@@ -211,24 +211,24 @@ class Opportunity {
                 // TODO: It would be nice to refactor some of this out into knex language
                 const distanceQuery = db.select('id')
                   .from(function() {
-                    this.select('opportunities.id', db.raw('ST_DISTANCE(opportunities.location, target_zip.location) * ? AS distance', milesInMeter))
+                    this.select('actions.id', db.raw('ST_DISTANCE(actions.location, target_zip.location) * ? AS distance', milesInMeter))
                       .as('distances')
                       .from(db.raw(`
                         (SELECT postal_code, location from zipcodes where postal_code=?) target_zip
                         CROSS JOIN
-                        (select * from opportunities join zipcodes on zipcodes.postal_code = opportunities.zipcode) opportunities
+                        (select * from actions join zipcodes on zipcodes.postal_code = actions.zipcode) actions
                       `, zipcode))
                   })
                   .where('distance', '<=', distance);
 
-                this.orWhere('opportunities.id', 'in', distanceQuery);
+                this.orWhere('actions.id', 'in', distanceQuery);
               });
             });
           }
 
           if (search.sortBy) {
             if (search.sortBy.name === 'date') {
-              qb.orderBy('opportunities.start_time', (search.sortBy.descending) ? 'desc' : 'asc');
+              qb.orderBy('actions.start_time', (search.sortBy.descending) ? 'desc' : 'asc');
 
             } else if (search.sortBy.name === 'campaignName') {
               qb.orderBy('campaigns.title', (search.sortBy.descending) ? 'desc' : 'asc');
@@ -240,28 +240,28 @@ class Opportunity {
 
     console.log(searchQuery.toString());
 
-    const opportunityResults = await searchQuery;
+    const actionResults = await searchQuery;
 
-    console.log(opportunityResults);
+    console.log(actionResults);
 
-    for (let opportunity of opportunityResults) {
-      Object.assign(opportunity, await this.details(opportunity));
+    for (let action of actionResults) {
+      Object.assign(action, await this.details(action));
     };
 
-    console.log(opportunityResults);
-    return opportunityResults;
+    console.log(actionResults);
+    return actionResults;
   }
 
-  static async details(opportunity) {
+  static async details(action) {
     const details = {};
 
-    details.campaign = Campaign.findOne('id', opportunity.campaign_id); 
+    details.campaign = Campaign.findOne('id', action.campaign_id); 
 
-    details.owner = User.findOne('id', opportunity.owner_id); 
+    details.owner = User.findOne('id', action.owner_id); 
 
     const activitiesQuery = db('activities')
-      .innerJoin('opportunities_activities', 'opportunities_activities.activity_id', 'activities.id')
-      .where('opportunities_activities.opportunity_id', opportunity.id)
+      .innerJoin('actions_activities', 'actions_activities.activity_id', 'activities.id')
+      .where('actions_activities.action_id', action.id)
       .select('title', 'description');
 
     console.log(activitiesQuery.toString());
@@ -269,8 +269,8 @@ class Opportunity {
     details.activities = await activitiesQuery;
 
     const issuesQuery = db('issue_areas')
-      .innerJoin('opportunities_issue_areas', 'opportunities_issue_areas.issue_area_id', 'issue_areas.id')
-      .where('opportunities_issue_areas.opportunity_id', opportunity.id)
+      .innerJoin('actions_issue_areas', 'actions_issue_areas.issue_area_id', 'issue_areas.id')
+      .where('actions_issue_areas.action_id', action.id)
       .select('title');
 
     console.log(issuesQuery.toString());
@@ -313,16 +313,16 @@ class Opportunity {
     const user = await db.table('users').where('id', options.ownerId).first('id');
 
     if (user) {
-      const opportunity = {
+      const action = {
         title: options.title,
         owner_id: options.ownerId
       }
 
-      const opportunityResult = await db.table('opportunities').insert(opportunity, ['id', 'title']).first();
+      const actionResult = await db.table('actions').insert(action, ['id', 'title']).first();
 
-      return opportunityResult;
+      return actionResult;
     }
   }
 }
 
-module.exports = Opportunity;
+module.exports = Action;

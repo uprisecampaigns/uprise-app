@@ -52,7 +52,7 @@ module.exports = buildSchema(`
     levels: [LevelResult]
   }
 
-  type OpportunityResult {
+  type ActionResult {
     id: String
     title: String
     slug: String
@@ -98,7 +98,7 @@ module.exports = buildSchema(`
     descending: Boolean
   }
 
-  input OpportunitySearchInput {
+  input ActionSearchInput {
     id: [String]
     keywords: [String]
     activities: [String]
@@ -112,7 +112,7 @@ module.exports = buildSchema(`
     sortBy: SortByInput
   }
 
-  input OpportunityQueryInput {
+  input ActionQueryInput {
     id: String
     slug: String
   }
@@ -123,8 +123,8 @@ module.exports = buildSchema(`
   }
 
   type Query {
-    opportunity(search: OpportunityQueryInput): OpportunityResult
-    opportunities(search: OpportunitySearchInput): [OpportunityResult]
+    action(search: ActionQueryInput): ActionResult
+    actions(search: ActionSearchInput): [ActionResult]
     campaigns(search: CampaignSearchInput): [CampaignResult]
     myCampaigns: [CampaignResult]
     campaign(search: CampaignQueryInput): CampaignResult

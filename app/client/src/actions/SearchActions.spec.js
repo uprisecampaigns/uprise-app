@@ -23,14 +23,14 @@ describe('(Actions) SearchActions', () => {
 
     const expectedAction = {
       type: ADD_SEARCH_ITEM,
-      searchType: 'opportunities',
+      searchType: 'actions',
       collection: 'keywords',
       value: newKeyword
     };
 
     expect(
       isEqual(
-        addSearchItem('opportunities', 'keywords', newKeyword), 
+        addSearchItem('actions', 'keywords', newKeyword), 
         expectedAction
       )
     ).to.be.true;
@@ -43,14 +43,14 @@ describe('(Actions) SearchActions', () => {
 
     const expectedAction = {
       type: REMOVE_SEARCH_ITEM,
-      searchType: 'opportunities',
+      searchType: 'actions',
       collection: 'keywords',
       value: newKeyword
     };
 
     expect(
       isEqual(
-        removeSearchItem('opportunities', 'keywords', newKeyword), 
+        removeSearchItem('actions', 'keywords', newKeyword), 
         expectedAction
       )
     ).to.be.true;

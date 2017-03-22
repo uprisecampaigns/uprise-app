@@ -13,35 +13,35 @@ import s from 'styles/Search.scss';
 
 
 const SelectedKeywordsContainer = connect((state) => { 
-  return { items: state.opportunitiesSearch.keywords };
+  return { items: state.actionsSearch.keywords };
 })(SelectedItemsContainer);
 
 const SelectedActivitiesContainer = connect((state) => { 
-  return { items: state.opportunitiesSearch.activities };
+  return { items: state.actionsSearch.activities };
 })(SelectedItemsContainer);
 
 const SelectedCampaignNamesContainer = connect((state) => { 
-  return { items: state.opportunitiesSearch.campaignNames };
+  return { items: state.actionsSearch.campaignNames };
 })(SelectedItemsContainer);
 
 const SelectedTypesContainer = connect((state) => { 
-  return { items: state.opportunitiesSearch.types };
+  return { items: state.actionsSearch.types };
 })(SelectedItemsContainer);
 
 const SelectedLevelsContainer = connect((state) => { 
-  return { items: state.opportunitiesSearch.levels };
+  return { items: state.actionsSearch.levels };
 })(SelectedItemsContainer);
 
 const SelectedIssueAreasContainer = connect((state) => { 
-  return { items: state.opportunitiesSearch.issueAreas };
+  return { items: state.actionsSearch.issueAreas };
 })(SelectedItemsContainer);
 
 const SelectedTimesContainer = connect((state) => { 
-  return { items: state.opportunitiesSearch.times };
+  return { items: state.actionsSearch.times };
 })(SelectedItemsContainer);
 
 const SelectedDatesContainer = connect((state) => { 
-  const dates = state.opportunitiesSearch.dates;
+  const dates = state.actionsSearch.dates;
 
   const items = [];
 
@@ -54,7 +54,7 @@ const SelectedDatesContainer = connect((state) => {
 })(SelectedItemsContainer);
 
 const SelectedGeographiesContainer = connect((state) => { 
-  return { items: state.opportunitiesSearch.geographies };
+  return { items: state.actionsSearch.geographies };
 })(SelectedItemsContainer);
 
 const renderSelectedDateLabel = (dates) => {
@@ -69,7 +69,7 @@ const renderSelectedGeographyLabel = (geography) => {
   return 'Within ' + geography.distance + ' miles of ' + geography.zipcode;
 };
 
-class SearchOpportunitySelections extends React.PureComponent {
+class SearchActionSelections extends React.PureComponent {
   constructor(props) {
     super(props);
   }
@@ -78,11 +78,11 @@ class SearchOpportunitySelections extends React.PureComponent {
   };
 
   removeSelectedItem = (collectionName, value) => {
-    this.props.dispatch(removeSearchItem('opportunity', collectionName, value));
+    this.props.dispatch(removeSearchItem('action', collectionName, value));
   }
 
   unsetDates = () => {
-    this.props.dispatch(unsetSearchDates('opportunity'));
+    this.props.dispatch(unsetSearchDates('action'));
   }
 
   render() {
@@ -137,4 +137,4 @@ class SearchOpportunitySelections extends React.PureComponent {
   }
 }
 
-export default connect()(SearchOpportunitySelections); 
+export default connect()(SearchActionSelections); 

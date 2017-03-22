@@ -38,11 +38,11 @@ export default {
 
     // /search/
     require('./search').default,
-    require('./searchOpportunities').default,
+    require('./searchActions').default,
     require('./searchCampaigns').default,
 
-    // /opportunity/
-    require('./opportunity').default,
+    // /action/
+    require('./action').default,
 
     // /campaign/
     require('./campaign').default,

@@ -9,16 +9,16 @@ import SearchBar from 'components/SearchBar';
 import SearchSort from 'components/SearchSort';
 import ResultsCount from 'components/ResultsCount';
 
-import SearchOpportunityResults from './components/SearchOpportunityResults';
-import SearchOpportunityInputs from './components/SearchOpportunityInputs';
-import SearchOpportunitySelections from './components/SearchOpportunitySelections';
+import SearchActionResults from './components/SearchActionResults';
+import SearchActionInputs from './components/SearchActionInputs';
+import SearchActionSelections from './components/SearchActionSelections';
 
 import { 
   addSearchItem, sortBy
 } from 'actions/SearchActions';
 
 import { 
-  OpportunitiesQuery, 
+  ActionsQuery, 
 } from 'schemas/queries';
 
 import s from 'styles/Search.scss';
@@ -39,36 +39,36 @@ const graphqlOptions = (collection) => {
 
 const mapStateToProps = (state) => ({
   search: {
-    keywords: state.opportunitiesSearch.keywords,
-    types: state.opportunitiesSearch.types,
-    activities: state.opportunitiesSearch.activities,
-    campaignNames: state.opportunitiesSearch.campaignNames,
-    issueAreas: state.opportunitiesSearch.issueAreas,
-    levels: state.opportunitiesSearch.levels,
-    dates: state.opportunitiesSearch.dates,
-    times: state.opportunitiesSearch.times,
-    geographies: state.opportunitiesSearch.geographies,
+    keywords: state.actionsSearch.keywords,
+    types: state.actionsSearch.types,
+    activities: state.actionsSearch.activities,
+    campaignNames: state.actionsSearch.campaignNames,
+    issueAreas: state.actionsSearch.issueAreas,
+    levels: state.actionsSearch.levels,
+    dates: state.actionsSearch.dates,
+    times: state.actionsSearch.times,
+    geographies: state.actionsSearch.geographies,
   },
-  sortBy: state.opportunitiesSearch.sortBy
+  sortBy: state.actionsSearch.sortBy
 });
 
 const ResultsCountWithData = compose(
   connect(mapStateToProps),
-  graphql(OpportunitiesQuery, graphqlOptions('opportunities')),
+  graphql(ActionsQuery, graphqlOptions('actions')),
 )(ResultsCount);
 
-const SearchOpportunityResultsWithData = compose(
+const SearchActionResultsWithData = compose(
   connect(mapStateToProps),
-  graphql(OpportunitiesQuery, graphqlOptions('opportunities')),
-)(SearchOpportunityResults);
+  graphql(ActionsQuery, graphqlOptions('actions')),
+)(SearchActionResults);
 
 const ConnectedSearchSort = connect( (state) => ({
-  selected: state.opportunitiesSearch.sortBy.name,
-  descending: state.opportunitiesSearch.sortBy.descending,
+  selected: state.actionsSearch.sortBy.name,
+  descending: state.actionsSearch.sortBy.descending,
 }))(SearchSort);
   
 
-class SearchOpportunities extends Component {
+class SearchActions extends Component {
   constructor(props) {
     super(props);
 
@@ -84,13 +84,13 @@ class SearchOpportunities extends Component {
   };
 
   addSelectedItem = (collectionName, value) => {
-    this.props.dispatch(addSearchItem('opportunity', collectionName, value));
+    this.props.dispatch(addSearchItem('action', collectionName, value));
   }
 
   sortSelect = (value) => {
     this.handleCloseSort();
 
-    this.props.dispatch(sortBy('opportunity', value));
+    this.props.dispatch(sortBy('action', value));
   }
 
   handleOpenSort = (event) => {
@@ -134,11 +134,11 @@ class SearchOpportunities extends Component {
   render() {
 
     return (
-      <SearchNav selected="search-opportunities">
+      <SearchNav selected="search-actions">
         <div className={s.outerContainer}>
 
           <div className={s.titleContainer}>
-            Search Opportunities
+            Search Actions
           </div>
 
           <div className={s.searchBarContainer}>
@@ -199,19 +199,19 @@ class SearchOpportunities extends Component {
                 targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
                 className={s.popover}
               >
-                <SearchOpportunityInputs 
+                <SearchActionInputs 
                 />
               </Popover>
             </div>
           </div>
 
           <div className={s.selectionsContainer}>
-            <SearchOpportunitySelections 
+            <SearchActionSelections 
             />
           </div>
 
           <div className={s.resultsContainer}>
-            <SearchOpportunityResultsWithData
+            <SearchActionResultsWithData
             />
           </div>
 
@@ -221,4 +221,4 @@ class SearchOpportunities extends Component {
   }
 }
 
-export default connect()(SearchOpportunities);
+export default connect()(SearchActions);

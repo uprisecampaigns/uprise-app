@@ -1,21 +1,21 @@
 import React from 'react';
-import Opportunity from 'scenes/Opportunity';
+import Action from 'scenes/Action';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
 
-import { OpportunityQuery } from 'schemas/queries';
+import { ActionQuery } from 'schemas/queries';
 
-const OpportunityWithAuthentication = withAuthentication(Opportunity);
+const ActionWithAuthentication = withAuthentication(Action);
 
 export default {
 
-  path: '/opportunity/:slug',
+  path: '/action/:slug',
 
   async action(context) {
 
     const result = await context.apolloClient.query({
-      query: OpportunityQuery,
+      query: ActionQuery,
       variables: {
         search: {
           slug: context.params.slug
@@ -23,18 +23,18 @@ export default {
       }
     });
 
-    if (result.data.opportunity) {
+    if (result.data.action) {
       return {
-        title: result.data.opportunity.title,
+        title: result.data.action.title,
         component: (
           <Layout>
-            <OpportunityWithAuthentication opportunityId={result.data.opportunity.id}/>
+            <ActionWithAuthentication actionId={result.data.action.id}/>
           </Layout>
         ),
       };
     } else {
       return {
-        redirect: '/search/search-opportunities'
+        redirect: '/search/search-actions'
       }
     }
   },

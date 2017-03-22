@@ -15,7 +15,7 @@ function createFilteredReducer(reducerFunction, reducerPredicate) {
 const RootReducer = combineReducers({
   userAuthSession: updateUserInfo,
   notifications: updateNotifications,
-  opportunitiesSearch: createFilteredReducer(updateSearch, action => action.searchType === 'opportunity'),
+  actionsSearch: createFilteredReducer(updateSearch, action => action.searchType === 'action'),
   campaignsSearch: createFilteredReducer(updateSearch, action => action.searchType === 'campaign'),
   apollo: apolloClient.reducer(),
 });
