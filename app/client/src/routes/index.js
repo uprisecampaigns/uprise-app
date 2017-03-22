@@ -34,6 +34,7 @@ export default {
     require('./manageCampaignInfo').default,
     require('./manageCampaignPreferences').default,
     require('./manageCampaignLocation').default,
+    require('./manageCampaignActions').default,
 
     // /search/
     require('./search').default,
