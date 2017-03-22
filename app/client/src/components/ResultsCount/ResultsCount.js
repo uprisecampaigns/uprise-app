@@ -14,6 +14,10 @@ class ResultsCount extends React.PureComponent {
     graphqlLoading: PropTypes.bool.isRequired
   }
 
+  shouldComponentUpdate(nextProps) {
+    return (!nextProps.graphqlLoading && typeof nextProps.items === 'object');
+  }
+
   render() {
     const resultsCount = this.props.items ? this.props.items.length : 0;
     return (
