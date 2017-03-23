@@ -28,7 +28,7 @@ class GeographySearch extends React.PureComponent {
   handleInputChange = (event, type, value) => {
 
     if (typeof type === 'string' && (type === 'zipcode' || type === 'distance')) {
-      if (isNumeric(value)) {
+      if (isNumeric(value) || value === '') {
 
         this.setState(Object.assign({},
           this.state,
