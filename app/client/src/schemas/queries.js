@@ -105,6 +105,7 @@ export const ActionQuery = gql`
         email
       }
       campaign {
+        id
         title
         slug
       }

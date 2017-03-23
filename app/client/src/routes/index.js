@@ -28,6 +28,8 @@ export default {
     // /organize/
     require('./organize').default,
     require('./createCampaign').default,
+
+    // /organize/:slug/
     require('./manageCampaign').default,
     require('./manageCampaignSettings').default,
     require('./manageCampaignProfile').default,
@@ -37,6 +39,9 @@ export default {
     require('./manageCampaignActions').default,
     require('./manageCampaignActionsList').default,
     require('./createAction').default,
+
+    // /organize/:campaignSlug/action/:actionSlug
+    require('./manageAction').default,
 
     // /search/
     require('./search').default,

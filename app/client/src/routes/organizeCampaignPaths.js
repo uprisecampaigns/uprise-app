@@ -22,7 +22,8 @@ export default ({ path, component }) => ({
               slug: context.params.slug
             }
           }
-        })]);
+        })
+      ]);
 
       if (typeof myCampaignsResults.data.myCampaigns === 'object' && 
           myCampaignsResults.data.myCampaigns.length > 0) {
@@ -35,6 +36,10 @@ export default ({ path, component }) => ({
             component: component(campaignResult.data.campaign),
           };
         }
+      }
+
+      return {
+        redirect: '/organize'
       }
 
     } catch (e) {
