@@ -36,7 +36,9 @@ export function updateSearch(searchState = defaultStartState, action) {
           ( typeof action.value === 'object' && 
             !collection.find(item => isEqual(item, action.value)))) {
 
-        collection.push(action.value.trim());
+        collection.push(
+          typeof action.value === 'string' ? action.value.trim() : action.value
+        );
       }
       
       return Object.assign({}, searchState, { 

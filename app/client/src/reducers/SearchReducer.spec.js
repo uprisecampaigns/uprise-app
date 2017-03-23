@@ -33,7 +33,7 @@ describe('(Reducer) SearchReducer', () => {
     })).to.be.true;
   });
 
-  it('should handle adding a search term', () => {
+  it('should handle adding a search term string', () => {
 
     expect(
       isEqual(
@@ -61,7 +61,41 @@ describe('(Reducer) SearchReducer', () => {
     ).to.be.true;
   });
 
-  it('should handle removing a search term', () => {
+  it('should handle adding a search term object', () => {
+
+    expect(
+      isEqual(
+        updateSearch(undefined, {
+          type: ADD_SEARCH_ITEM,
+          collection: 'geographies',
+          value: {
+            distance: '10000',
+            zipcode: '12345'
+          }
+        }),
+        {
+          keywords: [], 
+          activities: [], 
+          types: [], 
+          levels: [], 
+          issueAreas: [], 
+          campaignNames: [], 
+          dates: {}, 
+          times: [], 
+          geographies: [{
+            distance: '10000',
+            zipcode: '12345'
+          }], 
+          sortBy: {
+            name: 'date',
+            descending: false
+          }
+        }
+      )
+    ).to.be.true;
+  });
+
+  it('should handle removing a search term string', () => {
     const state = updateSearch(undefined, {
       type: ADD_SEARCH_ITEM,
       collection: 'keywords',
@@ -80,7 +114,54 @@ describe('(Reducer) SearchReducer', () => {
     ).to.be.true;
   });
 
-  it('shouldn\'t add the same item twice', () => {
+  it('should handle removing a search term object', () => {
+    const state = updateSearch(undefined, {
+      type: ADD_SEARCH_ITEM,
+      collection: 'geographies',
+      value: {
+        distance: '10000',
+        zipcode: '12345'
+      }
+    });
+
+    expect(
+      isEqual(
+        updateSearch(state, {
+          type: REMOVE_SEARCH_ITEM,
+          collection: 'geographies',
+          value: {
+            distance: '10000',
+            zipcode: '12345'
+          }
+        }),
+        defaultStartState
+      )
+    ).to.be.true;
+  });
+
+  it('shouldn\'t add the same string item twice', () => {
+    const state = updateSearch(undefined, {
+      type: ADD_SEARCH_ITEM,
+      collection: 'keywords',
+      value: {
+        distance: '10000',
+        zipcode: '12345'
+      }
+    });
+
+    expect(
+      updateSearch(state, {
+        type: ADD_SEARCH_ITEM,
+        collection: 'keywords',
+        value: {
+          distance: '10000',
+          zipcode: '12345'
+        }
+      }).keywords
+    ).to.have.lengthOf(1);
+  });
+
+  it('shouldn\'t add the same string item twice', () => {
     const state = updateSearch(undefined, {
       type: ADD_SEARCH_ITEM,
       collection: 'keywords',
@@ -110,7 +191,6 @@ describe('(Reducer) SearchReducer', () => {
         value: '  a new keyword   '
       }).keywords
     ).to.have.lengthOf(1);
-
 
   });
 
