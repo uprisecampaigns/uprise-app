@@ -191,7 +191,6 @@ module.exports = (app) => {
       return campaign;
     },
 
-
     deleteCampaign: async (options, context) => {
 
       if (!context.user) {
@@ -210,7 +209,27 @@ module.exports = (app) => {
       const result = await Campaign.delete(options.data, context.user.id);
 
       return result;
-    }
+    },
+
+    createAction: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      console.log(options.data);
+
+      // Decamelizing property names
+      const input = Object.assign(...Object.keys(options.data).map(k => ({
+          [decamelize(k)]: options.data[k]
+      })));
+
+      input.owner_id = context.user.id;
+
+      const action = await Action.create(input);
+      return action;
+    },
+
 
   };
 

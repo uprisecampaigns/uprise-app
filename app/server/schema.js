@@ -170,9 +170,24 @@ module.exports = buildSchema(`
     slug: String
   }
 
+  input CreateActionInput {
+    title: String!
+    internalTitle: String!
+    campaignId: String!
+    virtual: Boolean
+    locationName: String
+    streetAddress: String
+    streetAddress2: String
+    city: String
+    state: String
+    zipcode: String
+    locationNotes: String
+  }
+
   type Mutation {
     createCampaign(data: CreateCampaignInput): CampaignResult
     editCampaign(data: EditCampaignInput): CampaignResult
     deleteCampaign(data: DeleteCampaignInput): Boolean
+    createAction(data: CreateActionInput): ActionResult
   }
 `);

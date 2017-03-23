@@ -2,6 +2,7 @@ import validator from 'validator';
 
 const assert = require('assert');
 const uuid = require('uuid/v4');
+const getSlug = require('speakingurl');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig.development);
@@ -310,17 +311,58 @@ class Action {
 
   static async create(options) {
 
-    const user = await db.table('users').where('id', options.ownerId).first('id');
+    const user = await db.table('users').where('id', options.owner_id).first('id');
+
+    console.log(user);
 
     if (user) {
-      const action = {
-        title: options.title,
-        owner_id: options.ownerId
+
+      const campaign = await db('campaigns').where('id', options.campaign_id).first();
+
+      if (!campaign) {
+        throw new Error('Cannot find campaign with id=' + options.campaign_id);
+
+      } else if (campaign.owner_id === user.id) {
+
+        let found;
+        let append = 0;
+        let slug;
+
+        do {
+          found = false;
+
+          if (append > 0) {
+            slug = getSlug(options.title + append, '');
+          } else {
+            slug = getSlug(options.title, '');
+          }
+
+          const slugQuery = await db('actions').where('slug', slug);
+          if (slugQuery.length > 0) {
+            found = true;
+          }
+
+          append++;
+
+        } while (found)
+
+        const newActionData = Object.assign({}, options, { slug });
+
+        try {
+          const actionResult = await db.table('actions').insert(newActionData, [
+            'id', 'title', 'slug', 'description', 'tags', 'owner_id', 'campaign_id'
+          ]);
+          return actionResult[0];
+
+        } catch(e) {
+          throw new Error('Cannot insert action: ' + e.message);
+        }
+
+      } else {
+        throw new Error('User must be owner of campaign');
       }
-
-      const actionResult = await db.table('actions').insert(action, ['id', 'title']).first();
-
-      return actionResult;
+    } else {
+      throw new Error('User not found');
     }
   }
 }

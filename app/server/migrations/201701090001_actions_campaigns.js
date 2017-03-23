@@ -112,6 +112,7 @@ module.exports.up = async (knex, Promise) => {
     table.boolean('deleted').notNullable().defaultTo(false);
 
     table.text('title');
+    table.text('internal_title');
     table.text('slug').notNullable().unique().index();
 
     table.timestamp('start_time');
@@ -122,6 +123,8 @@ module.exports.up = async (knex, Promise) => {
       .notNullable()
       .defaultTo(knex.raw("'{}'"))
       .index('action_tags_tags', 'gin');
+
+    table.boolean('virtual').notNullable().defaultTo(false);
 
     table.text('location_name');
     table.text('street_address');

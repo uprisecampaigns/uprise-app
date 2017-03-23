@@ -25,6 +25,15 @@
 .textFieldContainer {
   display: flex;
   text-align: left;
+
+  input, label {
+    font-size: 1.1rem !important;
+  }
+}
+
+.toggleContainer {
+  margin: 2rem auto 1rem auto;
+  font-size: 1.1rem;
 }
 
 .loginButton {
