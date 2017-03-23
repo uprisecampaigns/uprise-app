@@ -59,7 +59,7 @@ class ManageCampaignActionsContainer extends Component {
             />
           </Link>
 
-          <Link to={'/organize/' + campaign.slug + '/new-action'}>
+          <Link to={'/organize/' + campaign.slug + '/create-action'}>
             <ListItem 
               primaryText="New Action"
             />
