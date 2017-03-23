@@ -38,9 +38,29 @@ class Action {
 
         if (search) {
 
-          if (search.id) {
-            qb.andWhere('id', search.id);
+          if (search.ids) {
+            qb.andWhere(function() {
+              search.ids.forEach( (id) => {
+                this.orWhere('actions.id', id);
+              });
+            });
           }
+ 
+          if (search.slugs) {
+            qb.andWhere(function() {
+              search.slugs.forEach( (slug) => {
+                this.orWhere('actions.slug', slug);
+              });
+            });
+          }            
+
+          if (search.campaignIds) {
+            qb.andWhere(function() {
+              search.campaignIds.forEach( (id) => {
+                this.orWhere('campaigns.id', id);
+              });
+            });
+          }            
 
           if (search.keywords) {
 

@@ -99,9 +99,11 @@ module.exports = buildSchema(`
   }
 
   input ActionSearchInput {
-    id: [String]
+    ids: [String]
+    slugs: [String]
     keywords: [String]
     activities: [String]
+    campaignIds: [String]
     campaignNames: [String]
     types: [String]
     levels: [String]
