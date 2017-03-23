@@ -51,13 +51,15 @@ class TogglesList extends React.PureComponent {
     });
 
     return (
-      <ListItem 
-        primaryText={this.props.listTitle}
-        initiallyOpen={false}
-        primaryTogglesNestedList={true}
-        nestedListStyle={nestedListStyle}
-        nestedItems={toggles}
-      />
+      <div className={s.listContainer}>
+        <ListItem 
+          primaryText={this.props.listTitle}
+          initiallyOpen={false}
+          primaryTogglesNestedList={true}
+          nestedListStyle={nestedListStyle}
+          nestedItems={toggles}
+        />
+      </div>
     );
   }
 }
