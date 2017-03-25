@@ -1,0 +1,6 @@
+{
+  "name": "ManageActionInfo",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ManageActionInfo.js"
+}

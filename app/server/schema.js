@@ -55,11 +55,13 @@ module.exports = buildSchema(`
   type ActionResult {
     id: String
     title: String
+    internal_title: String
     slug: String
     description: String
     start_time: String
     end_time: String
     tags: [String]
+    virtual: Boolean
     location_name: String
     street_address: String
     street_address2: String
@@ -186,10 +188,30 @@ module.exports = buildSchema(`
     locationNotes: String
   }
 
+  input EditActionInput {
+    id: String!
+    title: String
+    internalTitle: String
+    campaignId: String
+    virtual: Boolean
+    locationName: String
+    streetAddress: String
+    streetAddress2: String
+    city: String
+    state: String
+    zipcode: String
+    locationNotes: String
+    issueAreas: [String]
+    levels: [String]
+    types: [String]
+    tags: [String]
+  }
+
   type Mutation {
     createCampaign(data: CreateCampaignInput): CampaignResult
     editCampaign(data: EditCampaignInput): CampaignResult
     deleteCampaign(data: DeleteCampaignInput): Boolean
     createAction(data: CreateActionInput): ActionResult
+    editAction(data: EditActionInput): ActionResult
   }
 `);

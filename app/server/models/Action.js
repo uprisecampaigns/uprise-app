@@ -10,6 +10,8 @@ const db = knex(knexConfig.development);
 const User = require('models/User.js');
 const Campaign = require('models/Campaign.js');
 
+const updateProperties = require('models/updateProperties');
+
 
 class Action {
 
@@ -380,6 +382,64 @@ class Action {
 
       } else {
         throw new Error('User must be owner of campaign');
+      }
+    } else {
+      throw new Error('User not found');
+    }
+  }
+
+  static async edit(options) {
+
+    const user = await db.table('users').where('id', options.owner_id).first('id');
+
+    console.log(user);
+
+    if (user) {
+
+      const action = await db('actions').where('id', options.id).first();
+
+      if (!action) {
+        throw new Error('Cannot find action with id=' + options.id);
+
+      } else if (action.owner_id === user.id) {
+
+        try {
+          const levels = options.levels;
+          delete options.levels;
+
+          const types = options.types;
+          delete options.types;
+
+          const issueAreas = options.issue_areas;
+          delete options.issue_areas;
+
+          const actionResult = await db('actions')
+            .where('id', options.id)
+            .update(options, [
+              'id', 'title', 'internal_title', 'slug', 'description', 'tags', 'owner_id', 'campaign_id'
+            ]);
+
+          if (levels && levels.length) {
+            await updateProperties(levels, 'level', action.id);
+          }
+
+          if (issueAreas && issueAreas.length) {
+            await updateProperties(issueAreas, 'issue_area', action.id);
+          }
+
+          if (types && types.length) {
+            await updateProperties(types, 'type', action.id);
+          }
+
+          const action = actionResult[0];
+
+          return Object.assign({}, action, await this.details(action));
+
+        } catch(e) {
+          throw new Error('Cannot edit action: ' + e.message);
+        }
+      } else {
+        throw new Error('User must be owner of action');
       }
     } else {
       throw new Error('User not found');

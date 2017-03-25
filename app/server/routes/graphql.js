@@ -230,6 +230,24 @@ module.exports = (app) => {
       return action;
     },
 
+    editAction: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      console.log(options.data);
+
+      // Decamelizing property names
+      const input = Object.assign(...Object.keys(options.data).map(k => ({
+          [decamelize(k)]: options.data[k]
+      })));
+
+      input.owner_id = context.user.id;
+
+      const action = await Action.edit(input);
+      return action;
+    },
 
   };
 

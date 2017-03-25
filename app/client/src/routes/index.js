@@ -42,6 +42,8 @@ export default {
 
     // /organize/:campaignSlug/action/:actionSlug
     require('./manageAction').default,
+    require('./manageActionSettings').default,
+    require('./manageActionInfo').default,
 
     // /search/
     require('./search').default,

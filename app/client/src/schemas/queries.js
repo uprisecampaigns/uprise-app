@@ -79,11 +79,13 @@ export const ActionQuery = gql`
     action(search:$search){
       id
       title
+      internal_title
       slug
       description
       start_time
       end_time
       tags
+      virtual
       location_name
       street_address
       street_address2

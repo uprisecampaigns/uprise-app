@@ -30,6 +30,15 @@ export const CreateActionMutation = gql`
   }
 `;
 
+export const EditActionMutation = gql`
+  mutation EditActionMutation ($data:EditActionInput) {
+    editAction(data:$data){
+      id
+      title
+      slug
+    }
+  }
+`;
 
 export const EditCampaignMutation = gql`
   mutation EditCampaignMutation ($data:EditCampaignInput) {

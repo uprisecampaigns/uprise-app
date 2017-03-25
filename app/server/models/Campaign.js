@@ -1,6 +1,5 @@
 import validator from 'validator';
 
-const assert = require('assert');
 const uuid = require('uuid/v4');
 const knex = require('knex');
 const getSlug = require('speakingurl');
@@ -9,23 +8,8 @@ const db = knex(knexConfig.development);
 
 const User = require('models/User.js');
 
-const updateProperties = async (collection, name, campaignId) => {
-  const deleteResult = await db('campaigns_' + name + 's')
-    .where('campaign_id', campaignId)
-    .delete();
+const updateProperties = require('models/updateProperties');
 
-  const newItems = collection.map( (id) => ({
-    campaign_id: campaignId,
-    [name + '_id']: id
-  }));
-
-  const newItemsResult = await db('campaigns_' + name + 's')
-    .insert(newItems);
-
-  console.log(newItemsResult);
-
-  assert(newItemsResult.rowCount === collection.length);
-}
 
 class Campaign {
 
@@ -85,39 +69,46 @@ class Campaign {
 
     if (user) {
 
-      const levels = options.levels;
-      delete options.levels;
+      const campaign = await db('campaigns').where('id', campaignId).first();
 
-      const types = options.types;
-      delete options.types;
+      if (campaign && campaign.owner_id === user.id) {
 
-      const issueAreas = options.issue_areas;
-      delete options.issue_areas;
+        const levels = options.levels;
+        delete options.levels;
 
-      const campaignResult = await db('campaigns')
-        .where('id', campaignId)
-        .update(options, [
-          'id', 'title', 'slug', 'description', 'tags', 'owner_id'
-        ]);
+        const types = options.types;
+        delete options.types;
 
-      if (levels && levels.length) {
-        await updateProperties(levels, 'level', campaignId);
+        const issueAreas = options.issue_areas;
+        delete options.issue_areas;
+
+        const campaignResult = await db('campaigns')
+          .where('id', campaignId)
+          .update(options, [
+            'id', 'title', 'slug', 'description', 'tags', 'owner_id'
+          ]);
+
+        if (levels && levels.length) {
+          await updateProperties('campaign', levels, 'level', campaignId);
+        }
+
+        if (issueAreas && issueAreas.length) {
+          await updateProperties('campaign', issueAreas, 'issue_area', campaignId);
+        }
+
+        if (types && types.length) {
+          await updateProperties('campaign', types, 'type', campaignId);
+        }
+
+        const campaign = campaignResult[0];
+
+        return Object.assign({}, campaign, await this.details(campaign));
+
+      } else {
+        throw new Error('User must be owner of campaign');
       }
-
-      if (issueAreas && issueAreas.length) {
-        await updateProperties(issueAreas, 'issue_area', campaignId);
-      }
-
-      if (types && types.length) {
-        await updateProperties(types, 'type', campaignId);
-      }
-
-      const campaign = campaignResult[0];
-
-      return Object.assign({}, campaign, await this.details(campaign));
-
     } else {
-      throw new Error('User must be owner of campaign');
+      throw new Error('User not found');
     }
   }
 
