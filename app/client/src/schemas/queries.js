@@ -13,6 +13,7 @@ export const CampaignsQuery = gql`
         title
       }
       owner {
+        id
         first_name
         last_name
         email
@@ -58,6 +59,7 @@ export const CampaignQuery = gql`
       phone_number
       website_url
       owner {
+        id
         first_name
         last_name
         email
@@ -67,6 +69,10 @@ export const CampaignQuery = gql`
         title
       }
       levels {
+        id
+        title
+      }
+      types {
         id
         title
       }
@@ -94,6 +100,7 @@ export const ActionQuery = gql`
       zipcode
       location_notes
       activities {
+        id
         title
         description
       }
@@ -102,6 +109,7 @@ export const ActionQuery = gql`
         title
       }
       owner {
+        id
         first_name
         last_name
         email
@@ -110,6 +118,18 @@ export const ActionQuery = gql`
         id
         title
         slug
+      }
+      issue_areas {
+        id
+        title
+      }
+      levels {
+        id
+        title
+      }
+      types {
+        id
+        title
       }
     }
   }
@@ -133,6 +153,7 @@ export const ActionsQuery = gql`
       zipcode
       location_notes
       activities {
+        id
         title
         description
       }
@@ -141,9 +162,11 @@ export const ActionsQuery = gql`
         title
       }
       owner {
+        id
         email
       }
       campaign {
+        id
         title
         slug
       }

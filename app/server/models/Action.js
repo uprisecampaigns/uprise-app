@@ -285,20 +285,30 @@ class Action {
     const activitiesQuery = db('activities')
       .innerJoin('actions_activities', 'actions_activities.activity_id', 'activities.id')
       .where('actions_activities.action_id', action.id)
-      .select('title', 'description');
-
-    console.log(activitiesQuery.toString());
+      .select('activities.id as id', 'activities.title as title', 'activities.description as description');
 
     details.activities = await activitiesQuery;
 
     const issuesQuery = db('issue_areas')
       .innerJoin('actions_issue_areas', 'actions_issue_areas.issue_area_id', 'issue_areas.id')
       .where('actions_issue_areas.action_id', action.id)
-      .select('title');
-
-    console.log(issuesQuery.toString());
+      .select('issue_areas.id as id', 'issue_areas.title as title');
 
     details.issue_areas = await issuesQuery;
+
+    const levelsQuery = db('levels')
+      .innerJoin('actions_levels', 'actions_levels.level_id', 'levels.id')
+      .where('actions_levels.action_id', action.id)
+      .select('levels.id as id', 'levels.title as title');
+
+    details.levels = await levelsQuery;
+
+    const typesQuery = db('types')
+      .innerJoin('actions_types', 'actions_types.type_id', 'types.id')
+      .where('actions_types.action_id', action.id)
+      .select('types.id as id', 'types.title as title');
+
+    details.types = await typesQuery;
 
     return details;
   }
@@ -393,6 +403,7 @@ class Action {
     const user = await db.table('users').where('id', options.owner_id).first('id');
 
     console.log(user);
+    console.log(options);
 
     if (user) {
 
@@ -413,11 +424,16 @@ class Action {
           const issueAreas = options.issue_areas;
           delete options.issue_areas;
 
+          const activities = options.activities;
+          delete options.activities;
+
           const actionResult = await db('actions')
             .where('id', options.id)
             .update(options, [
               'id', 'title', 'internal_title', 'slug', 'description', 'tags', 'owner_id', 'campaign_id'
             ]);
+
+          const action = actionResult[0];
 
           if (levels && levels.length) {
             await updateProperties(levels, 'level', action.id);
@@ -431,7 +447,9 @@ class Action {
             await updateProperties(types, 'type', action.id);
           }
 
-          const action = actionResult[0];
+          if (activities && activities.length) {
+            await updateProperties(activities, 'activity', action.id);
+          }
 
           return Object.assign({}, action, await this.details(action));
 
