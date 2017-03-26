@@ -8,7 +8,7 @@ const db = knex(knexConfig.development);
 
 const User = require('models/User.js');
 
-const updateProperties = require('models/updateProperties');
+const updateProperties = require('models/updateProperties')('campaign');
 
 
 class Campaign {
@@ -89,15 +89,15 @@ class Campaign {
           ]);
 
         if (levels && levels.length) {
-          await updateProperties('campaign', levels, 'level', campaignId);
+          await updateProperties(levels, 'level', campaignId);
         }
 
         if (issueAreas && issueAreas.length) {
-          await updateProperties('campaign', issueAreas, 'issue_area', campaignId);
+          await updateProperties(issueAreas, 'issue_area', campaignId);
         }
 
         if (types && types.length) {
-          await updateProperties('campaign', types, 'type', campaignId);
+          await updateProperties(types, 'type', campaignId);
         }
 
         const campaign = campaignResult[0];

@@ -10,7 +10,7 @@ const db = knex(knexConfig.development);
 const User = require('models/User.js');
 const Campaign = require('models/Campaign.js');
 
-const updateProperties = require('models/updateProperties');
+const updateProperties = require('models/updateProperties')('action');
 
 
 class Action {
