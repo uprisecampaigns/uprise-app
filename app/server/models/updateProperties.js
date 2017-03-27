@@ -9,9 +9,6 @@ const db = knex(knexConfig.development);
 const updateProperties = (type) => {
   return async (collection, name, id) => {
 
-    console.log('type = ' + type);
-    console.log('name = ' + name);
-
     const pluralType = pluralize(type);
     const pluralName = pluralize(name);
 
@@ -31,7 +28,7 @@ const updateProperties = (type) => {
     try {
       const newItemsResult = await db(pluralType + '_' + pluralName)
         .insert(newItems);
-      console.log(newItemsResult);
+
       assert(newItemsResult.rowCount === collection.length);
 
     } catch (e) {

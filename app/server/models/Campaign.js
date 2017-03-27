@@ -123,8 +123,6 @@ class Campaign {
       .where(options)
       .update({ deleted: true });
 
-    console.log(result);
-
     return result === 1;
   }
 
@@ -242,8 +240,6 @@ class Campaign {
         }
       });
 
-
-    console.log(searchQuery.toString());
 
     const results = await searchQuery;
 

@@ -261,17 +261,12 @@ class Action {
       });
 
 
-    console.log(searchQuery.toString());
-
     const actionResults = await searchQuery;
-
-    console.log(actionResults);
 
     for (let action of actionResults) {
       Object.assign(action, await this.details(action));
     };
 
-    console.log(actionResults);
     return actionResults;
   }
 
@@ -345,8 +340,6 @@ class Action {
 
     const user = await db.table('users').where('id', options.owner_id).first('id');
 
-    console.log(user);
-
     if (user) {
 
       const campaign = await db('campaigns').where('id', options.campaign_id).first();
@@ -401,9 +394,6 @@ class Action {
   static async edit(options) {
 
     const user = await db.table('users').where('id', options.owner_id).first('id');
-
-    console.log(user);
-    console.log(options);
 
     if (user) {
 
