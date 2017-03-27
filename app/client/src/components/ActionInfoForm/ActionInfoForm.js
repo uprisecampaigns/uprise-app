@@ -1,8 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
+import moment from 'moment';
+import DatePicker from 'material-ui/DatePicker';
+import TimePicker from 'material-ui/TimePicker';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Toggle from 'material-ui/Toggle';
+import CircularProgress from 'material-ui/CircularProgress';
 import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -21,23 +25,31 @@ class ActionInfoForm extends Component {
 
   static propTypes = {
     data: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
     refs: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    newAction: PropTypes.object.isRequired,
+    handleInputChange: PropTypes.func.isRequired,
     submitText: PropTypes.string.isRequired,
     saving: PropTypes.bool,
   }
 
   render() {
     const { 
-      data, user, refs, formSubmit, errors, saving,
-      handleInputChange, cancel, newAction, campaignTitle, submitText
+      data, refs, formSubmit, errors, saving, 
+      handleInputChange, cancel, campaignTitle, submitText
     } = this.props;
 
     const statesList = Object.keys(states);
+
+    const formatDate = (date) => {
+      return moment(date).format('M/D/YYYY');
+    }
+
+    const dialogStyle = {
+      zIndex: '3200'
+    }
 
     return (
       <div className={s.outerContainer}>
@@ -129,6 +141,38 @@ class ActionInfoForm extends Component {
                     </div>
                   </div>
                 )}
+
+                <div>
+                  <div>
+                    <DatePicker 
+                      value={data.date} 
+                      onChange={ (event, date) => { handleInputChange(event, 'date', date) } }
+                      container="dialog" 
+                      dialogContainerStyle={dialogStyle}
+                      floatingLabelText="Date"
+                      errorText={errors.dateErrorText}
+                      formatDate={formatDate}
+                    />
+                  </div>
+
+                  <div>
+                    <TimePicker
+                      floatingLabelText="Start Time"
+                      value={data.startTime} 
+                      errorText={errors.startTimeErrorText}
+                      onChange={ (event, date) => { handleInputChange(event, 'startTime', date) } }
+                    />
+                  </div>
+
+                  <div>
+                    <TimePicker
+                      floatingLabelText="End Time"
+                      value={data.endTime} 
+                      errorText={errors.endTimeErrorText}
+                      onChange={ (event, date) => { handleInputChange(event, 'endTime', date) } }
+                    />
+                  </div>
+                </div>
 
                 <div className={s.button}>
                   <RaisedButton 

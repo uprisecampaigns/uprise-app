@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux'
+import moment from 'moment';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -11,7 +13,8 @@ import {
   validateString,
   validateWebsiteUrl,
   validateState,
-  validatePhoneNumber
+  validatePhoneNumber,
+  validateStartEndTimes
 } from 'lib/validateComponentForms';
 
 import { CampaignQuery } from 'schemas/queries';
@@ -46,7 +49,10 @@ class CreateAction extends Component {
         city: '',
         state: '',
         zipcode: '',
-        locationNotes: ''
+        locationNotes: '',
+        date: undefined,
+        startTime: undefined,
+        endTime: undefined
       },
       errors: {},
       modalOpen: false,
@@ -72,6 +78,9 @@ class CreateAction extends Component {
     cityErrorText: null,
     stateErrorText: null,
     zipcodeErrorText: null,
+    dateErrorText: null,
+    startTimeErrorText: null,
+    endTimeErrorText: null
   }
 
   handleInputChange = (event, type, value) => {
@@ -112,10 +121,23 @@ class CreateAction extends Component {
     validateString(this, 'title', 'titleErrorText', 'Public Name is Required');
     validateString(this, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required');
     validateState(this);
+    validateStartEndTimes(this);
 
     if (!this.hasErrors) {
 
       const formData = Object.assign({}, this.state.formData, { campaignId: this.props.campaignId });
+
+      const startTime = moment(formData.date);
+      startTime.minutes(moment(formData.startTime).minutes());
+      startTime.hours(moment(formData.startTime).hours());
+
+      const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
+
+      const endTime = moment(startTime).add(timeDiff, 'milliseconds');
+
+      formData.startTime = startTime.format();
+      formData.endTime = endTime.format();
+      delete formData.date;
 
       try {
         const results = await this.props.createActionMutation({ 
@@ -134,6 +156,8 @@ class CreateAction extends Component {
           newAction: results.data.createAction
         });
       } catch (e) {
+        this.props.dispatch(notify('There was an error creating the event'));
+        this.setState({ saving: false });
         console.error(e);
       }
     }
@@ -189,7 +213,7 @@ class CreateAction extends Component {
             </p>
             <p>
               You can find and edit your action's public profile at 
-              <Link to={'/action/' + newAction.slug} useAhref={true}>uprise.org/organize/action/{newAction.slug}</Link>
+              <Link to={'/action/' + newAction.slug} useAhref={true}>uprise.org/action/{newAction.slug}</Link>
             </p>
             <p>
               Please feel free to contact us at <Link to="mailto:help@uprise.org" external={true} useAhref={true}>help@uprise.org</Link> for assistance.
@@ -215,6 +239,7 @@ const withCampaignQuery = graphql(CampaignQuery, {
 });
 
 export default compose(
+  connect(),
   withCampaignQuery,
   graphql(CreateActionMutation, { name: 'createActionMutation' })
 )(CreateAction);

@@ -1,5 +1,6 @@
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import isURL from 'validator/lib/isURL';
+import moment from 'moment';
 
 import states from 'lib/states-list';
 
@@ -66,5 +67,40 @@ export function validatePhoneNumber(component) {
         phoneNumberErrorText: 'Please enter valid phone number'
       })
     }));
+  }
+}
+
+export function validateStartEndTimes(component) {
+  const { date, startTime, endTime, ...formData } = component.state.formData;
+
+  const errors = {};
+  let hasError = false;
+
+  if (typeof startTime === 'undefined' || !moment(component.state.formData.startTime).isValid()) {
+    errors.startTimeErrorText = 'Please choose a start time';
+    hasError = true;
+  }
+
+  if (typeof endTime === 'undefined' || !moment(component.state.formData.endTime).isValid()) {
+    errors.endTimeErrorText = 'Please choose a end time';
+    hasError = true;
+  } 
+
+  if (typeof date === 'undefined' || !moment(component.state.formData.date).isValid()) {
+    errors.dateErrorText = 'Please choose a date';
+    hasError = true;
+  } 
+
+  if (!hasError && !moment(component.state.formData.endTime).isAfter(moment(component.state.formData.startTime))) {
+    errors.endTimeErrorText = 'Please choose end time after start time'
+    hasError = true;
+  }
+
+  if (hasError) {
+    component.setState( (prevState) => ({
+      errors: Object.assign({}, prevState.errors, errors)
+    }));
+
+    component.hasErrors = true;
   }
 }

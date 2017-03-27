@@ -189,6 +189,8 @@ module.exports = buildSchema(`
     state: String
     zipcode: String
     locationNotes: String
+    startTime: String
+    endTime: String
   }
 
   input EditActionInput {
@@ -204,6 +206,8 @@ module.exports = buildSchema(`
     state: String
     zipcode: String
     locationNotes: String
+    startTime: String
+    endTime: String
     activities: [String]
     issueAreas: [String]
     levels: [String]

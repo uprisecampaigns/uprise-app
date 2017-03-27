@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux'
+import moment from 'moment';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import camelCase from 'camelcase';
@@ -13,7 +14,8 @@ import states from 'lib/states-list';
 import { 
   validateString,
   validateState,
-  validatePhoneNumber
+  validatePhoneNumber,
+  validateStartEndTimes
 } from 'lib/validateComponentForms';
 
 import { 
@@ -57,7 +59,10 @@ class ManageActionInfoContainer extends Component {
         city: '',
         state: '',
         zipcode: '',
-        locationNotes: ''
+        locationNotes: '',
+        date: undefined,
+        startTime: undefined,
+        endTime: undefined
       },
       errors: {},
       refs: {},
@@ -75,6 +80,9 @@ class ManageActionInfoContainer extends Component {
     cityErrorText: null,
     stateErrorText: null,
     zipcodeErrorText: null,
+    dateErrorText: null,
+    startTimeErrorText: null,
+    endTimeErrorText: null
   }
 
   componentWillReceiveProps(nextProps) {
@@ -85,6 +93,13 @@ class ManageActionInfoContainer extends Component {
           [camelCase(k)]: nextProps.action[k] || ''
       })));
 
+      // Handle date/time
+      const newDateTimes = {
+        date: moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
+        startTime: moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
+        endTime: moment(action.endTime).isValid() ? moment(action.endTime).toDate() : undefined
+      };
+
       Object.keys(action).forEach( (k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
           delete action[k];
@@ -93,6 +108,10 @@ class ManageActionInfoContainer extends Component {
 
       this.setState( (prevState) => ({
         formData: Object.assign({}, prevState.formData, action)
+      }));
+
+      this.setState( (prevState) => ({
+        formData: Object.assign({}, prevState.formData, newDateTimes)
       }));
     }
   }
@@ -138,12 +157,25 @@ class ManageActionInfoContainer extends Component {
     this.resetErrorText();
     this.hasErrors = false;
 
+    const { formData } = this.state;
+
     validateString(this, 'title', 'titleErrorText', 'Action Name is Required');
     validateState(this);
+    validateStartEndTimes(this);
 
     if (!this.hasErrors) {
 
-      const { formData } = this.state;
+      const startTime = moment(formData.date);
+      startTime.minutes(moment(formData.startTime).minutes());
+      startTime.hours(moment(formData.startTime).hours());
+
+      const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
+
+      const endTime = moment(startTime).add(timeDiff, 'milliseconds');
+
+      formData.startTime = startTime.format();
+      formData.endTime = endTime.format();
+      delete formData.date;
 
       formData.id = this.props.action.id;
 
@@ -162,6 +194,8 @@ class ManageActionInfoContainer extends Component {
         this.props.dispatch(notify('Changes Saved'));
         this.setState({ saving: false });
       } catch (e) {
+        this.props.dispatch(notify('There was an error saving'));
+        this.setState({ saving: false });
         console.error(e);
       }
     }
