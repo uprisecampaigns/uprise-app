@@ -166,7 +166,7 @@ function AuthenticatedIcons(props) {
           titleIconName="work"
           className={s.rightIcon}
           dropdowns={[
-            { title: 'View All', path: '/organize/view-all' },
+            { title: 'View All', path: '/organize' },
             { title: 'Create Campaign', path: '/organize/create-campaign' },
           ]}
         />
