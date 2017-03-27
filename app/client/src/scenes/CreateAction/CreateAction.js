@@ -1,5 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import Link from 'components/Link';
 
 import history from 'lib/history';
 import states from 'lib/states-list';
@@ -13,12 +17,12 @@ import {
 import { CampaignQuery } from 'schemas/queries';
 import { CreateActionMutation } from 'schemas/mutations';
 
-import CreateActionForm from './components/CreateActionForm';
+import ActionInfoForm from 'components/ActionInfoForm';
 
 
 const statesList = Object.keys(states);
 
-class CreateActionContainer extends Component {
+class CreateAction extends Component {
 
   static PropTypes = {
     createActionMutation: PropTypes.func.isRequired,
@@ -147,22 +151,52 @@ class CreateActionContainer extends Component {
     const { newAction, modalOpen, formData, errors, refs } = state;
 
     const campaign = props.campaign || {
-      title: ''
+      title: '',
+      slug: ''
     };
 
-    return (
-      <CreateActionForm 
-        handleInputChange={handleInputChange}
-        cancel={cancel}
-        formSubmit={formSubmit}
-        data={formData}
-        errors={errors}
-        user={user}
-        refs={refs}
-        newAction={newAction}
-        modalOpen={modalOpen}
-        campaignTitle={campaign.title}
+    const modalActions = [
+      <RaisedButton
+        label="Set Preferences"
+        primary={true}
+        onTouchTap={ () => { history.push('/organize/' + campaign.slug + '/action/' + newAction.slug + '/preferences') }}
       />
+    ];
+
+    return (
+      <div>
+        <ActionInfoForm 
+          handleInputChange={handleInputChange}
+          cancel={cancel}
+          formSubmit={formSubmit}
+          submitText="Create"
+          data={formData}
+          errors={errors}
+          user={user}
+          refs={refs}
+          campaignTitle={campaign.title}
+        />
+
+        {modalOpen && (
+          <Dialog
+            title="Action Created"
+            modal={true}
+            actions={modalActions}
+            open={modalOpen}
+          >
+            <p>
+              Congratulations, you have created the action '{newAction.title}'.
+            </p>
+            <p>
+              You can find and edit your action's public profile at 
+              <Link to={'/action/' + newAction.slug} useAhref={true}>uprise.org/organize/action/{newAction.slug}</Link>
+            </p>
+            <p>
+              Please feel free to contact us at <Link to="mailto:help@uprise.org" external={true} useAhref={true}>help@uprise.org</Link> for assistance.
+            </p>
+          </Dialog>
+        )}
+      </div>
     );
   }
 }
@@ -183,4 +217,4 @@ const withCampaignQuery = graphql(CampaignQuery, {
 export default compose(
   withCampaignQuery,
   graphql(CreateActionMutation, { name: 'createActionMutation' })
-)(CreateActionContainer);
+)(CreateAction);

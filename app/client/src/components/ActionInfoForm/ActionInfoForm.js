@@ -2,10 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import AutoComplete from 'material-ui/AutoComplete';
 import Toggle from 'material-ui/Toggle';
+import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
 
 import Link from 'components/Link';
 
@@ -15,23 +14,27 @@ import states from 'lib/states-list';
 import s from 'styles/Form.scss';
 
 
-class ManageActionInfoForm extends Component {
+class ActionInfoForm extends Component {
   constructor(props) {
     super(props);
   }
 
   static propTypes = {
     data: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     refs: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
+    cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    saving: PropTypes.bool.isRequired
+    newAction: PropTypes.object.isRequired,
+    submitText: PropTypes.string.isRequired,
+    saving: PropTypes.bool,
   }
 
   render() {
     const { 
-      data, refs, formSubmit, errors,
-      handleInputChange, saving
+      data, user, refs, formSubmit, errors, saving,
+      handleInputChange, cancel, newAction, campaignTitle, submitText
     } = this.props;
 
     const statesList = Object.keys(states);
@@ -45,7 +48,14 @@ class ManageActionInfoForm extends Component {
                 className={s.form}
                 onSubmit={formSubmit}
               >
-                 
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Campaign"
+                    value={campaignTitle}
+                    disabled={true}
+                  />
+                </div>
+ 
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Action Internal Name"
@@ -120,7 +130,13 @@ class ManageActionInfoForm extends Component {
                   </div>
                 )}
 
-
+                <div className={s.button}>
+                  <RaisedButton 
+                    onTouchTap={cancel} 
+                    primary={false} 
+                    label="Cancel" 
+                  />
+                </div>
 
                 { saving ? (
 
@@ -137,10 +153,11 @@ class ManageActionInfoForm extends Component {
                       onTouchTap={formSubmit} 
                       primary={true} 
                       type="submit"
-                      label="Save Changes" 
+                      label={submitText} 
                     />
                   </div>
                 )}
+
               </form>
             </div>
           </Paper>
@@ -150,4 +167,4 @@ class ManageActionInfoForm extends Component {
   }
 }
 
-export default ManageActionInfoForm;
+export default ActionInfoForm;

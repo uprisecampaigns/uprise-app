@@ -5,7 +5,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import camelCase from 'camelcase';
 
-import ManageActionInfoForm from './components/ManageActionInfoForm';
+import ManageActionInfoForm from 'components/ActionInfoForm';
 import Link from 'components/Link';
 
 import history from 'lib/history';
@@ -167,8 +167,13 @@ class ManageActionInfoContainer extends Component {
     }
   }
 
+  cancel = (event) => {
+    event.preventDefault();
+    history.goBack();
+  }
+
   render() {
-    const { state, formSubmit, handleInputChange } = this;
+    const { state, formSubmit, handleInputChange, cancel } = this;
     const { ...props } = this.props;
     const { formData, errors, refs, saving } = state;
 
@@ -209,6 +214,8 @@ class ManageActionInfoContainer extends Component {
         <ManageActionInfoForm
           handleInputChange={handleInputChange}
           formSubmit={formSubmit}
+          submitText="Save Changes"
+          cancel={cancel}
           action={action}
           data={formData}
           errors={errors}

@@ -17,7 +17,7 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
 Darryl Wade needs your support. Help us throw a successful house party to raise awareness and funds to elect Darryl Wade as this city's next Mayor. We are especially looking for volunteers to cater appetizers and to break down and set up the event. Also we will need a volunteer to collect pledges and gather emails at the door.  
 `,
       owner_id: users[1].id,
-      zipcode: '98102',
+      zipcode: '22151',
       campaign_id: campaigns[2].id,
       start_time: moment('2017-04-11 18:00').format(), 
       end_time: moment('2017-04-11 21:00').format(), 
@@ -40,6 +40,7 @@ We need a skilled volunteer to write relevant, accessible blog posts for a blog 
       campaign_id: campaigns[2].id,
       start_time: moment('2017-04-13 09:00').format(), 
       end_time: moment('2017-04-13 17:00').format(), 
+      zipcode: '22151',
       city: 'Springfield',
       state: 'VA',
       tags: [
@@ -58,6 +59,7 @@ No experience necessary!  We need volunteers to knock on doors and talk to neigh
       campaign_id: campaigns[3].id,
       start_time: moment('2017-04-19 13:00').format(), 
       end_time: moment('2017-04-19 18:00').format(), 
+      zipcode: '23222',
       city: 'Richmond',
       state: 'VA',
       tags: [
@@ -75,6 +77,7 @@ Help raise awareness and funds to support Marian Shultz's run for State Senate. 
       start_time: moment('2017-04-11 17:00').format(), 
       end_time: moment('2017-04-11 20:00').format(), 
       city: 'Fairfax',
+      zipcode: '22030',
       state: 'VA',
       tags: [
         '#ShultzForStateSenate', '@MarianShultz', '#EducationNow', '#JobsForVirginia',
@@ -94,6 +97,7 @@ Do you have experience phonebanking or IT support? We need volunteers with these
       end_time: moment('2017-03-27 20:00').format(), 
       city: 'Fairfax',
       state: 'VA',
+      zipcode: '22030',
       tags: [
         '#GeorgeForGov', '#JobsForVirginia', 'government', 'transportation',
         'healthcare', 'public safety', 'virginia', 'immigration', 'economy',
