@@ -90,9 +90,9 @@ class ManageActionInfoContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.action) {
 
-      // Just camel-casing property keys and checking for null/undefined
+      // Just camel-casing property keys and checking for null
       const action = Object.assign(...Object.keys(nextProps.action).map(k => ({
-          [camelCase(k)]: nextProps.action[k] || ''
+          [camelCase(k)]: nextProps.action[k] === null ? undefined : nextProps.action[k]
       })));
 
       // Handle date/time
@@ -255,6 +255,7 @@ class ManageActionInfoContainer extends Component {
           handleInputChange={handleInputChange}
           formSubmit={formSubmit}
           submitText="Save Changes"
+          campaignTitle={campaign.title}
           cancel={cancel}
           action={action}
           data={formData}
