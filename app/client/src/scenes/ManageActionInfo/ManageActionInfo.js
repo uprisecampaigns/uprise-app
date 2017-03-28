@@ -75,6 +75,8 @@ class ManageActionInfoContainer extends Component {
   defaultErrorText = { 
     titleErrorText: null,
     streetAddressErrorText: null,
+    locationNameErrorText: null,
+    locationNotesErrorText: null,
     websiteUrlErrorText: null,
     phoneNumberErrorText: null,
     cityErrorText: null,

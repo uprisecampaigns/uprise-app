@@ -98,7 +98,18 @@ class ActionInfoForm extends Component {
                 </div>
 
                 { data.virtual || (
+
                   <div>
+                    <div className={s.textFieldContainer}>
+                      <TextField
+                        floatingLabelText="Place Name"
+                        value={data.locationName}
+                        onChange={ (event) => { handleInputChange(event, 'locationName', event.target.value) } }
+                        errorText={errors.locationNameErrorText}
+                        fullWidth={true}
+                      />
+                    </div>
+
                     <div className={s.textFieldContainer}>
                       <TextField
                         floatingLabelText="Street Address"
@@ -139,6 +150,18 @@ class ActionInfoForm extends Component {
                         fullWidth={true}
                       />
                     </div>
+
+                    <div className={s.textFieldContainer}>
+                      <TextField
+                        floatingLabelText="Location Notes"
+                        value={data.locationNotes}
+                        onChange={ (event) => { handleInputChange(event, 'locationNotes', event.target.value) } }
+                        errorText={errors.locationNotesErrorText}
+                        fullWidth={true}
+                      />
+                    </div>
+
+
                   </div>
                 )}
 

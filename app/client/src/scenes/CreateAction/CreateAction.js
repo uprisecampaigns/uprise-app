@@ -74,6 +74,8 @@ class CreateAction extends Component {
   defaultErrorText = { 
     titleErrorText: null,
     internalTitleErrorText: null,
+    locationNameErrorText: null,
+    locationNotesErrorText: null,
     streetAddressErrorText: null,
     cityErrorText: null,
     stateErrorText: null,
