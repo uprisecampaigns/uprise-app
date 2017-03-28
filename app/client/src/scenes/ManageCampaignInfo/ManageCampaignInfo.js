@@ -112,10 +112,9 @@ class ManageCampaignInfoContainer extends Component {
       value = value.toUpperCase();
       
       // Hack for AutoComplete
+      // TODO: Refactor - this is shared across several components!
       if (!valid) {
-        this.state.refs.stateInput.setState( (prevState) => ({ 
-          searchText: prevState.formData.state 
-        }));
+        this.state.refs.stateInput.setState({ searchText: this.state.formData.state });
       }
     } 
 
