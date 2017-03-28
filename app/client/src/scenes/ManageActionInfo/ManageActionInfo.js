@@ -102,6 +102,13 @@ class ManageActionInfoContainer extends Component {
         endTime: moment(action.endTime).isValid() ? moment(action.endTime).toDate() : undefined
       };
 
+      delete action.startTime;
+      delete action.endTime;
+
+      this.setState( (prevState) => ({
+        formData: Object.assign({}, prevState.formData, newDateTimes)
+      }));
+
       Object.keys(action).forEach( (k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
           delete action[k];
@@ -112,9 +119,6 @@ class ManageActionInfoContainer extends Component {
         formData: Object.assign({}, prevState.formData, action)
       }));
 
-      this.setState( (prevState) => ({
-        formData: Object.assign({}, prevState.formData, newDateTimes)
-      }));
     }
   }
 
@@ -159,7 +163,7 @@ class ManageActionInfoContainer extends Component {
     this.resetErrorText();
     this.hasErrors = false;
 
-    const { formData } = this.state;
+    const formData = Object.assign({}, this.state.formData);
 
     validateString(this, 'title', 'titleErrorText', 'Action Name is Required');
     validateState(this);
