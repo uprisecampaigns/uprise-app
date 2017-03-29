@@ -102,7 +102,6 @@ class CampaignLocationForm extends Component {
                         onUpdateInput={ (text) => { handleInputChange(undefined, 'locationState', text) } }
                         ref={ (input) => { refs.stateInput = input } }
                         errorText={errors.stateErrorText}
-                        fullWidth={true}
                       />
                     </div>
                   </div>
@@ -134,7 +133,6 @@ class CampaignLocationForm extends Component {
                         onUpdateInput={ (text) => { handleInputChange(undefined, 'locationState', text) } }
                         ref={ (input) => { refs.stateInput = input } }
                         errorText={errors.stateErrorText}
-                        fullWidth={true}
                       />
                     </div>
  
