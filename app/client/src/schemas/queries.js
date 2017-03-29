@@ -60,6 +60,7 @@ export const CampaignQuery = gql`
       location_district_number
       location_type 
       legislative_district_type
+      zipcode_list
       phone_number
       website_url
       owner {

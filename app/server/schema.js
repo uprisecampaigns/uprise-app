@@ -48,6 +48,7 @@ module.exports = buildSchema(`
     location_district_number: String
     legislative_district_type: String
     location_type: String
+    zipcode_list: [String]
     phone_number: String
     website_url: String
     owner: UserResult

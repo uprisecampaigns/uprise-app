@@ -3,6 +3,7 @@ import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux'
 import FontIcon from 'material-ui/FontIcon';
 import camelCase from 'camelcase';
+import isNumeric from 'validator/lib/isNumeric';
 
 import CampaignLocationForm from 'components/CampaignLocationForm';
 import Link from 'components/Link';
@@ -13,6 +14,7 @@ import states from 'lib/states-list';
 import { 
   validateString,
   validateState,
+  validateZipcodeList,
 } from 'lib/validateComponentForms';
 
 import { 
@@ -43,7 +45,7 @@ class ManageCampaignLocation extends Component {
 
     const initialState = {
       formData: {
-        zipcodeList: [],
+        zipcodeList: '',
         locationType: null,
         locationState: '',
         locationDistrictNumber: ''
@@ -58,25 +60,25 @@ class ManageCampaignLocation extends Component {
 
   defaultErrorText = { 
     zipcodeListErrorText: null,
+    locationDistrictNumberErrorText: null,
+    stateErrorText: null
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.campaign) {
-
-      console.log(nextProps.campaign);
 
       // Just camel-casing property keys and checking for null/undefined
       const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => ({
           [camelCase(k)]: nextProps.campaign[k] === null ? undefined : nextProps.campaign[k] || ''
       })));
 
-      console.log(campaign);
-
       Object.keys(campaign).forEach( (k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
           delete campaign[k];
         }
       });
+
+      campaign.zipcodeList = campaign.zipcodeList.join(',');
 
       this.setState( (prevState) => ({
         formData: Object.assign({}, prevState.formData, campaign)
@@ -125,12 +127,16 @@ class ManageCampaignLocation extends Component {
     this.hasErrors = false;
 
     validateState(this, 'locationState');
+    validateZipcodeList(this);
+
 
     if (!this.hasErrors) {
 
       const formData = Object.assign({}, this.state.formData);
 
       formData.id = this.props.campaign.id;
+
+      formData.zipcodeList = formData.zipcodeList.split(',').map(zip => zip.trim());
 
       this.setState({ saving: true });
 

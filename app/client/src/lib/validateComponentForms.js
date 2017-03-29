@@ -1,10 +1,14 @@
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import isURL from 'validator/lib/isURL';
+import isNumeric from 'validator/lib/isNumeric';
 import moment from 'moment';
 
 import states from 'lib/states-list';
 
 
+//TODO: I hate this entire validation system. It should be refactored into a 
+//      Higher order component or something sensible/fancy like that
+//      In the meantime, it could at least not be so rigid in the propnames, etc.
 const statesList = Object.keys(states);
 
 export function validateString(component, prop, errorProp, errorMsg) {
@@ -48,6 +52,28 @@ export function validateState(component, prop='state', errorProp='stateErrorText
       })
     }));
   }
+}
+
+export function validateZipcodeList(component) {
+  const zipcodeList = component.state.formData.zipcodeList.split(',').map(zip => zip.trim());
+
+  zipcodeList.forEach( (zipcode) => {
+    if (!isNumeric(zipcode)) {
+      component.hasErrors = true;
+      component.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          zipcodeListErrorText: 'All zipcodes should be numbers'
+        })
+      }));
+    } else if (zipcode.length !== 5) {
+      component.hasErrors = true;
+      component.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          zipcodeListErrorText: 'All zipcodes should be 5 digits long'
+        })
+      }));
+    }
+  });
 }
 
 export function validatePhoneNumber(component) {

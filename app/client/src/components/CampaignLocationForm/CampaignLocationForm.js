@@ -128,7 +128,7 @@ class CampaignLocationForm extends Component {
                         value={data.locationDistrictNumber}
                         type="number"
                         onChange={ (event) => { handleInputChange(event, 'locationDistrictNumber', event.target.value) } }
-                        errorText={errors.locationDistrictuNumberErrorText}
+                        errorText={errors.locationDistrictNumberErrorText}
                         fullWidth={true}
                       />
                     </div>
@@ -136,6 +136,16 @@ class CampaignLocationForm extends Component {
                   </div>
                 )}
 
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Zipcodes"
+                    value={data.zipcodeList}
+                    multiLine={true}
+                    onChange={ (event) => { handleInputChange(event, 'zipcodeList', event.target.value) } }
+                    errorText={errors.zipcodeListErrorText}
+                    fullWidth={true}
+                  />
+                </div>
 
                 <div className={s.button}>
                   <RaisedButton 
