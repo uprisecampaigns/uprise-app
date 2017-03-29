@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import history from 'lib/history';
 
-import s from './Link.scss';
+import s from 'styles/Link.scss';
 
 function isLeftClickEvent(event) {
   return event.button === 0;

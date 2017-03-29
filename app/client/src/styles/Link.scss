@@ -1,0 +1,12 @@
+@import '~styles/variables';
+
+.link {
+  cursor: pointer;
+}
+
+p a {
+  color: $brick-red;
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+}
+

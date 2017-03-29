@@ -5,7 +5,7 @@ import Snackbar from 'material-ui/Snackbar';
 import HeaderContainer from './components/HeaderContainer';
 import NavDrawerContainer from './components/NavDrawerContainer';
 
-import s from './Layout.scss';
+import s from 'styles/Layout.scss';
 
 import { 
   clear

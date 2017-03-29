@@ -205,7 +205,7 @@ class Header extends Component {
           </div>
         }
         title={
-          <Link useAhref={true} to='/'>
+          <Link useAhref={false} to='/'>
             <div className={s.logoContainer}>
               <img 
                 src={upriseLogo}
