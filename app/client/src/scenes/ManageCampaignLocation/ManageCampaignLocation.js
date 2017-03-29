@@ -1,17 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import { connect } from 'react-redux'
 import FontIcon from 'material-ui/FontIcon';
-import FlatButton from 'material-ui/FlatButton';
-import {List, ListItem} from 'material-ui/List';
 import camelCase from 'camelcase';
 
-import TogglesList from 'components/TogglesList';
-import SearchBar from 'components/SearchBar';
-import SelectedItemsContainer from 'components/SelectedItemsContainer';
+import CampaignLocationForm from 'components/CampaignLocationForm';
 import Link from 'components/Link';
 
 import history from 'lib/history';
+import states from 'lib/states-list';
+
+import { 
+  validateString,
+  validateState,
+} from 'lib/validateComponentForms';
 
 import { 
   CampaignQuery ,
@@ -21,10 +23,16 @@ import {
   EditCampaignMutation
 } from 'schemas/mutations';
 
+import { 
+  notify
+} from 'actions/NotificationsActions';
+
 import s from 'styles/Organize.scss';
 
 
-class ManageCampaignLocationContainer extends Component {
+const statesList = Object.keys(states);
+
+class ManageCampaignLocation extends Component {
 
   static PropTypes = {
     campaignSlug: PropTypes.string.isRequired
@@ -33,60 +41,131 @@ class ManageCampaignLocationContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      campaign: {
-        title: '',
-        slug: ''
-      }
-    };
+    const initialState = {
+      formData: {
+        zipcodeList: [],
+        locationType: null,
+        locationState: '',
+        locationDistrictNumber: ''
+      },
+      errors: {},
+      refs: {},
+      saving: false
+    }
+
+    this.state = Object.assign({}, initialState, this.defaultErrorText);
+  }
+
+  defaultErrorText = { 
+    zipcodeListErrorText: null,
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.campaign) {
 
+      console.log(nextProps.campaign);
+
       // Just camel-casing property keys and checking for null/undefined
       const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => ({
-          [camelCase(k)]: nextProps.campaign[k] || ''
+          [camelCase(k)]: nextProps.campaign[k] === null ? undefined : nextProps.campaign[k] || ''
       })));
 
+      console.log(campaign);
+
       Object.keys(campaign).forEach( (k) => {
-        if (!Object.keys(this.state.campaign).includes(camelCase(k))) {
+        if (!Object.keys(this.state.formData).includes(camelCase(k))) {
           delete campaign[k];
         }
       });
 
       this.setState( (prevState) => ({
-        campaign: Object.assign({}, prevState.campaign, campaign)
+        formData: Object.assign({}, prevState.formData, campaign)
       }));
     }
   }
 
-  saveChanges = async (event) => {
+  handleInputChange = (event, type, value) => {
+    let valid = true;
+
+    if (type === 'locationState') {
+      valid = false;
+
+      statesList.forEach( (state) => {
+        if (state.toLowerCase().includes(value.toLowerCase())) {
+          valid = true;
+        }
+      });
+      value = value.toUpperCase();
+      
+      // Hack for AutoComplete
+      // TODO: Refactor - this is shared across several components!
+      if (!valid) {
+        this.state.refs.stateInput.setState({ searchText: this.state.formData.locationState });
+      }
+    } 
+
+    if (valid) {
+      this.setState( (prevState) => ({
+        formData: Object.assign({},
+          prevState.formData,
+          { [type]: value }
+        )
+      }));
+    } 
+  }
+
+  resetErrorText = () => {
+    this.setState({ errors: this.defaultErrorText });
+  }
+
+  formSubmit = async (event) => {
     (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
 
-    try {
+    this.resetErrorText();
+    this.hasErrors = false;
 
-      const results = await this.props.editCampaignMutation({ 
-        variables: {
-          data: {
-            id: this.props.campaign.id,
-          }
-        },
-        // TODO: decide between refetch and update
-        refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
-      });
+    validateState(this, 'locationState');
 
-      console.log('edited campaign');
+    if (!this.hasErrors) {
 
-    } catch (e) {
-      console.error(e);
+      const formData = Object.assign({}, this.state.formData);
+
+      formData.id = this.props.campaign.id;
+
+      this.setState({ saving: true });
+
+      try {
+
+        const results = await this.props.editCampaignMutation({ 
+          variables: {
+            data: formData
+          },
+          // TODO: decide between refetch and update
+          refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
+        });
+
+        this.props.dispatch(notify('Changes Saved'));
+        this.setState({ saving: false });
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
+  cancel = (event) => {
+    event.preventDefault();
+    history.goBack();
+  }
+
   render() {
-    const { saveChanges } = this;
+    const { formSubmit, handleInputChange, cancel } = this;
     const { user, ...props } = this.props;
-    const { campaign } = this.state;
+    const { formData, refs, errors, saving } = this.state;
+
+    const campaign = props.campaign || {
+      title: '',
+      slug: ''
+    };
 
     return (
       <div className={s.outerContainer}>
@@ -103,15 +182,18 @@ class ManageCampaignLocationContainer extends Component {
 
         <div className={s.pageSubHeader}>Location</div>
 
-        <div className={s.button}>
-          <FlatButton 
-            onTouchTap={saveChanges} 
-            primary={true} 
-            type="submit"
-            label="Save Changes" 
-          />
-        </div>
+        <p>Define the geographic area in which you will be operating, so volunteers can find you.</p>
 
+        <CampaignLocationForm
+          data={formData}
+          errors={errors}
+          refs={refs}
+          formSubmit={formSubmit}
+          cancel={cancel}
+          handleInputChange={handleInputChange}
+          submitText="Save Changes"
+          saving={saving}
+        />
       </div>
     );
   }
@@ -131,6 +213,7 @@ const withCampaignQuery = graphql(CampaignQuery, {
 });
 
 export default compose(
+  connect(),
   withCampaignQuery,
   graphql(EditCampaignMutation, { name: 'editCampaignMutation' })
-)(ManageCampaignLocationContainer);
+)(ManageCampaignLocation);

@@ -43,9 +43,13 @@ module.exports = buildSchema(`
     street_address2: String
     state: String
     city: String
+    zipcode: String
+    location_state: String
+    location_district_number: String
+    legislative_district_type: String
+    location_type: String
     phone_number: String
     website_url: String
-    zipcode: String
     owner: UserResult
     tags: [String]
     issue_areas: [IssueAreaResult]
@@ -166,6 +170,11 @@ module.exports = buildSchema(`
     city: String
     state: String
     zipcode: String
+    zipcodeList: [String]
+    locationType: String
+    locationState: String
+    locationDistrictNumber: String
+    legislativeDistrictType: String
     issueAreas: [String]
     levels: [String]
     types: [String]

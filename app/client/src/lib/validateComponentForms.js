@@ -39,12 +39,12 @@ export function validateWebsiteUrl(component) {
   }
 }
 
-export function validateState(component) {
-  if (component.state.formData.state.trim() !== '' && !statesList.includes(component.state.formData.state)) {
+export function validateState(component, prop='state', errorProp='stateErrorText') {
+  if (component.state.formData[prop].trim() !== '' && !statesList.includes(component.state.formData[prop])) {
     component.hasErrors = true;
     component.setState( (prevState) => ({
       errors: Object.assign({}, prevState.errors, {
-        stateErrorText: 'Please enter valid state'
+        [errorProp]: 'Please enter valid state'
       })
     }));
   }

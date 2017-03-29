@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux'
-import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import camelCase from 'camelcase';
 
@@ -141,7 +140,7 @@ class ManageCampaignInfoContainer extends Component {
 
     if (!this.hasErrors) {
 
-      const { formData } = this.state;
+      const formData = Object.assign({}, this.state.formData);
 
       formData.id = this.props.campaign.id;
 

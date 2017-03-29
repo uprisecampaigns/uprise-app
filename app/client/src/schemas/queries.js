@@ -53,9 +53,13 @@ export const CampaignQuery = gql`
       tags
       street_address
       street_address2
-      zipcode
       city
       state
+      zipcode
+      location_state
+      location_district_number
+      location_type 
+      legislative_district_type
       phone_number
       website_url
       owner {

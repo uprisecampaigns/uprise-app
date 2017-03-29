@@ -18,6 +18,16 @@ module.exports.up = async (knex, Promise) => {
     table.text('state');
     table.text('zipcode');
 
+    table.text('location_state');
+    table.text('location_district_number');
+    table.text('location_type');
+    table.text('legislative_district_type');
+
+    table.specificType('zipcode_list', 'text[]')
+      .notNullable()
+      .defaultTo(knex.raw("'{}'"))
+      .index('campaign_zipcode_list', 'gin');
+
     table.specificType('zipcodes', 'text[]')
       .notNullable()
       .defaultTo(knex.raw("'{}'"));
