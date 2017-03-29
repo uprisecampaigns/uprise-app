@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import moment from 'moment';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
 
 import Link from 'components/Link';
 
@@ -21,6 +22,8 @@ import { CampaignQuery } from 'schemas/queries';
 import { CreateActionMutation } from 'schemas/mutations';
 
 import ActionInfoForm from 'components/ActionInfoForm';
+
+import s from 'styles/Organize.scss';
 
 
 const statesList = Object.keys(states);
@@ -190,7 +193,25 @@ class CreateAction extends Component {
     ];
 
     return (
-      <div>
+      <div className={s.outerContainer}>
+
+        <Link to={'/organize/' + campaign.slug}>
+          <div className={s.campaignHeader}>
+            {campaign.title}
+          </div>
+        </Link>
+
+        <Link to={'/organize/' + campaign.slug + '/actions'}>
+          <div className={s.navSubHeader}>
+            <FontIcon 
+              className={["material-icons", s.backArrow].join(' ')}
+            >arrow_back</FontIcon>
+            Actions
+          </div>
+        </Link>
+
+        <div className={s.campaignSubHeader}>New Action</div>
+
         <ActionInfoForm 
           handleInputChange={handleInputChange}
           cancel={cancel}

@@ -56,14 +56,19 @@ class ManageCampaignActionsList extends Component {
 
         <Link to={'/organize/' + campaign.slug}>
           <div className={s.campaignHeader}>
-
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
-
             {campaign.title}
           </div>
         </Link>
+
+        <Link to={'/organize/' + campaign.slug + '/actions'}>
+          <div className={s.navSubHeader}>
+            <FontIcon 
+              className={["material-icons", s.backArrow].join(' ')}
+            >arrow_back</FontIcon>
+            Actions
+          </div>
+        </Link>
+
 
         <div className={s.campaignSubHeader}>Calendar/List</div>
 
