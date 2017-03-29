@@ -137,7 +137,7 @@ class CreateCampaignForm extends Component {
                     label="Cancel" 
                   />
                 </div>
-                <div className={s.button}>
+                <div className={[s.organizeButton, s.button].join(' ')}>
                   <RaisedButton 
                     onTouchTap={formSubmit} 
                     primary={true} 

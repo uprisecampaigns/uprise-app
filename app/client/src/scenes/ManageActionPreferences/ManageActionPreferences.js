@@ -4,7 +4,7 @@ import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux'
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {List, ListItem} from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress';
 import camelCase from 'camelcase';
@@ -295,8 +295,8 @@ class ManageActionPreferencesContainer extends Component {
           </div>
         ) : (
 
-          <div className={s.button}>
-            <FlatButton 
+          <div className={s.organizeButton}>
+            <RaisedButton 
               onTouchTap={saveChanges} 
               primary={true} 
               type="submit"

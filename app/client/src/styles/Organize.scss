@@ -84,11 +84,15 @@
     text-align: center;
   }
 
-  .button {
+  .organizeButton {
     text-align: center;
 
-    button span {
-      color: $brick-red !important;
+    button {
+      background-color: lighten($brick-red, 25%) !important;
+      
+      span {
+        color: darken($brick-red, 10%) !important;
+      }
     }
   }
 }

@@ -215,7 +215,7 @@ class ActionInfoForm extends Component {
                   </div>
                 ) : (
 
-                  <div className={s.button}>
+                  <div className={[s.organizeButton, s.button].join(' ')}>
                     <RaisedButton 
                       onTouchTap={formSubmit} 
                       primary={true} 
