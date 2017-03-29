@@ -28,10 +28,6 @@ module.exports.up = async (knex, Promise) => {
       .defaultTo(knex.raw("'{}'"))
       .index('campaign_zipcode_list', 'gin');
 
-    table.specificType('zipcodes', 'text[]')
-      .notNullable()
-      .defaultTo(knex.raw("'{}'"));
-
     table.specificType('tags', 'text[]')
       .notNullable()
       .defaultTo(knex.raw("'{}'"))
