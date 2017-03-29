@@ -188,8 +188,6 @@ class ManageCampaignLocation extends Component {
 
         <div className={s.pageSubHeader}>Location</div>
 
-        <p>Define the geographic area in which you will be operating, so volunteers can find you.</p>
-
         <CampaignLocationForm
           data={formData}
           errors={errors}

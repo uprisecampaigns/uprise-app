@@ -56,6 +56,9 @@ class CampaignLocationForm extends Component {
         <div className={s.innerContainer}>
           <Paper zDepth={2}>
             <div className={s.formContainer}>
+
+              <p className={s.helpText}>Define the geographic area in which you will be operating, so volunteers can find you.</p>
+
               <form 
                 className={s.form}
                 onSubmit={formSubmit}
@@ -75,12 +78,22 @@ class CampaignLocationForm extends Component {
 
                 { data.locationType === 'multi-state' && (
                   <div>
-                    <p> Contact us at help@uprise.org about setting up your area.</p>
+
+                    <div className={s.sectionLabel}>Multi-state</div>
+
+                    <p className={s.helpText}> 
+                      Contact us at 
+                      <Link to="mailto:help@uprise.org" useAhref={true} external={true}>help@uprise.org</Link> 
+                      about setting up your area.
+                    </p>
                   </div>
                 )}
 
                 { data.locationType === 'statewide' && (
                   <div>
+
+                    <div className={s.sectionLabel}>Statewide</div>
+
                     <div className={s.textFieldContainer}>
                       <AutoComplete
                         floatingLabelText="State"
@@ -97,6 +110,9 @@ class CampaignLocationForm extends Component {
 
                 { data.locationType === 'legislative-district' && (
                   <div>
+
+                    <div className={s.sectionLabel}>Legislative District</div>
+
                     <div className={s.textFieldContainer}>
                       <SelectField
                         floatingLabelText="Legislative District Type"
@@ -136,9 +152,18 @@ class CampaignLocationForm extends Component {
                   </div>
                 )}
 
+                <div className={s.sectionLabel}>Zip Code List</div>
+
+                <p className={s.helpText}> 
+                  IMPORTANT: Please insert a list of all of the zip codes in which you will be
+                  seeking volunteers for local in-person volunteering activities. Contact us at
+                  <Link to="mailto:help@uprise.org" useAhref={true} external={true}>help@uprise.org</Link> if you 
+                  need assistance
+                </p>
+
                 <div className={s.textFieldContainer}>
                   <TextField
-                    floatingLabelText="Zipcodes"
+                    name="zipcodeList"
                     value={data.zipcodeList}
                     multiLine={true}
                     onChange={ (event) => { handleInputChange(event, 'zipcodeList', event.target.value) } }
