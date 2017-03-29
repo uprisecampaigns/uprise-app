@@ -14,56 +14,56 @@
     .formContainer {
       padding: 10px 50px 20px 50px;
       text-align: center;
-
-      .button {
-        margin: 30px 10px 10px 10px;
-        display: inline-block;
-      }
-
-      .organizeButton button {
-        background-color: lighten($brick-red, 25%) !important;
-        span {
-          color: darken($brick-red, 10%) !important;
-        }
-      }
-
-      .textFieldContainer {
-        display: flex;
-        text-align: left;
-
-        input, label {
-          font-size: 1.1rem !important;
-        }
-      }
-
-      .toggleContainer {
-        margin: 2rem auto 1rem auto;
-        font-size: 1.1rem;
-      }
-
-      .loginButton {
-        margin-top: 20px;
-      }
-
-      .forgotPassword {
-        display: block;
-        padding: 10px 0px 20px 0px;
-      }
-
-      .helpText {
-        color: lighten($azure, 10%);
-        font-weight: 300;
-        font-size: 1.2rem;
-        text-align: left;
-      }
-
-      .sectionLabel {
-        margin: 3rem 0 0 0;
-        text-align: left;
-        font-size: 1.3rem;
-        color: $azure;
-      }
     }
+  }
+
+  .button {
+    margin: 30px 10px 10px 10px;
+    display: inline-block;
+  }
+
+  .organizeButton button {
+    background-color: lighten($brick-red, 25%) !important;
+    span {
+      color: darken($brick-red, 10%) !important;
+    }
+  }
+
+  .textFieldContainer {
+    display: flex;
+    text-align: left;
+
+    input, label {
+      font-size: 1.1rem !important;
+    }
+  }
+
+  .toggleContainer {
+    margin: 2rem auto 1rem auto;
+    font-size: 1.1rem;
+  }
+
+  .loginButton {
+    margin-top: 20px;
+  }
+
+  .helpText {
+    color: lighten($azure, 10%);
+    font-weight: 300;
+    font-size: 1.2rem;
+    text-align: left;
+  }
+
+  .sectionLabel {
+    margin: 3rem 0 0 0;
+    text-align: left;
+    font-size: 1.3rem;
+    color: $azure;
+  }
+
+  .forgotPassword {
+    display: block;
+    padding: 10px 0px 20px 0px;
   }
 }
 
