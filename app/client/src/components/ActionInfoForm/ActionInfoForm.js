@@ -74,7 +74,6 @@ class ActionInfoForm extends Component {
                     value={data.internalTitle}
                     onChange={ (event) => { handleInputChange(event, 'internalTitle', event.target.value) } }
                     errorText={errors.internalTitleErrorText}
-                    fullWidth={true}
                   />
                 </div>
 
@@ -84,9 +83,12 @@ class ActionInfoForm extends Component {
                     value={data.title}
                     onChange={ (event) => { handleInputChange(event, 'title', event.target.value) } }
                     errorText={errors.titleErrorText}
-                    fullWidth={true}
                   />
                 </div>
+
+                <p className={s.helpText}>
+                  Please create separate listings for virtual and in-person actions.
+                </p>
 
                 <div className={s.toggleContainer}>
                   <Toggle
@@ -100,13 +102,15 @@ class ActionInfoForm extends Component {
                 { data.virtual || (
 
                   <div>
+
+                    <div className={s.sectionLabel}>Where:</div>
+
                     <div className={s.textFieldContainer}>
                       <TextField
                         floatingLabelText="Place Name"
                         value={data.locationName}
                         onChange={ (event) => { handleInputChange(event, 'locationName', event.target.value) } }
                         errorText={errors.locationNameErrorText}
-                        fullWidth={true}
                       />
                     </div>
 
@@ -116,7 +120,6 @@ class ActionInfoForm extends Component {
                         value={data.streetAddress}
                         onChange={ (event) => { handleInputChange(event, 'streetAddress', event.target.value) } }
                         errorText={errors.streetAddressErrorText}
-                        fullWidth={true}
                       />
                     </div>
 
@@ -125,7 +128,6 @@ class ActionInfoForm extends Component {
                         floatingLabelText="Street Address 2"
                         value={data.streetAddress2}
                         onChange={ (event) => { handleInputChange(event, 'streetAddress2', event.target.value) } }
-                        fullWidth={true}
                       />
                     </div>
 
@@ -135,7 +137,6 @@ class ActionInfoForm extends Component {
                         value={data.city}
                         onChange={ (event) => { handleInputChange(event, 'city', event.target.value) } }
                         errorText={errors.cityErrorText}
-                        fullWidth={true}
                       />
                     </div>
 
@@ -147,7 +148,6 @@ class ActionInfoForm extends Component {
                         onUpdateInput={ (text) => { handleInputChange(undefined, 'state', text) } }
                         ref={ (input) => { refs.stateInput = input } }
                         errorText={errors.stateErrorText}
-                        fullWidth={true}
                       />
                     </div>
 
@@ -157,16 +157,16 @@ class ActionInfoForm extends Component {
                         value={data.locationNotes}
                         onChange={ (event) => { handleInputChange(event, 'locationNotes', event.target.value) } }
                         errorText={errors.locationNotesErrorText}
-                        fullWidth={true}
                       />
                     </div>
-
-
                   </div>
                 )}
 
                 <div>
-                  <div>
+
+                  <div className={s.sectionLabel}>When:</div>
+
+                  <div className={s.textFieldContainer}>
                     <DatePicker 
                       value={data.date} 
                       onChange={ (event, date) => { handleInputChange(event, 'date', date) } }
@@ -175,10 +175,11 @@ class ActionInfoForm extends Component {
                       floatingLabelText="Date"
                       errorText={errors.dateErrorText}
                       formatDate={formatDate}
+                      
                     />
                   </div>
 
-                  <div>
+                  <div className={s.textFieldContainer}>
                     <TimePicker
                       floatingLabelText="Start Time"
                       value={data.startTime} 
@@ -187,7 +188,7 @@ class ActionInfoForm extends Component {
                     />
                   </div>
 
-                  <div>
+                  <div className={s.textFieldContainer}>
                     <TimePicker
                       floatingLabelText="End Time"
                       value={data.endTime} 
