@@ -130,7 +130,7 @@ class ManageCampaignSettingsContainer extends Component {
 
         {this.state.deleteModalOpen && (
           <Dialog
-            title="Campaign Created"
+            title="Are You Sure?"
             modal={true}
             actions={modalActions}
             open={this.state.deleteModalOpen}
