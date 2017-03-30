@@ -23,6 +23,19 @@ class Action {
     return action;
   }
 
+  static async delete(deleteOptions, ownerId) {
+
+    const options = Object.assign({}, deleteOptions, {
+      owner_id: ownerId
+    });
+
+    const result = await db('actions')
+      .where(options)
+      .update({ deleted: true });
+
+    return result === 1;
+  }
+
   static async search(search) {
     
     const searchQuery = db('actions')

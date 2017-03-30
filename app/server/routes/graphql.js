@@ -212,6 +212,27 @@ module.exports = (app) => {
       return result;
     },
 
+    deleteAction: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      console.log(options);
+      console.log(options.data);
+
+      const action = await Action.findOne(options.data);
+
+      if (action.owner_id !== context.user.id) {
+        throw new Error('User must own action');
+      }
+
+      const result = await Action.delete(options.data, context.user.id);
+
+      return result;
+    },
+
+
     createAction: async (options, context) => {
 
       if (!context.user) {

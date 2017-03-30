@@ -50,6 +50,11 @@ export const EditCampaignMutation = gql`
   }
 `;
 
+export const DeleteActionMutation = gql`
+  mutation DeleteActionMutation ($data:DeleteActionInput) {
+    deleteAction(data:$data)
+  }
+`;
 
 export const DeleteCampaignMutation = gql`
   mutation DeleteCampaignMutation ($data:DeleteCampaignInput) {

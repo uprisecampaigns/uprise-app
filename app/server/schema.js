@@ -183,8 +183,11 @@ module.exports = buildSchema(`
   }
 
   input DeleteCampaignInput {
-    id: String
-    slug: String
+    id: String!
+  }
+
+  input DeleteActionInput {
+    id: String!
   }
 
   input CreateActionInput {
@@ -229,6 +232,7 @@ module.exports = buildSchema(`
     createCampaign(data: CreateCampaignInput): CampaignResult
     editCampaign(data: EditCampaignInput): CampaignResult
     deleteCampaign(data: DeleteCampaignInput): Boolean
+    deleteAction(data: DeleteActionInput): Boolean
     createAction(data: CreateActionInput): ActionResult
     editAction(data: EditActionInput): ActionResult
   }
