@@ -162,6 +162,7 @@ class CampaignLocationForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     name="zipcodeList"
+                    floatingLabelText="List of zipcodes, separated by commas"
                     value={data.zipcodeList}
                     multiLine={true}
                     onChange={ (event) => { handleInputChange(event, 'zipcodeList', event.target.value) } }
