@@ -51,6 +51,7 @@ module.exports = buildSchema(`
     zipcode_list: [String]
     phone_number: String
     website_url: String
+    map_url: String
     owner: UserResult
     tags: [String]
     issue_areas: [IssueAreaResult]
@@ -164,9 +165,12 @@ module.exports = buildSchema(`
     id: String!
     title: String
     description: String
+    profileAboutContent: String
     streetAddress: String
     streetAddress2: String
+    mapUrl: String
     websiteUrl: String
+    profileImageUrl: String
     email: String
     phoneNumber: String
     city: String

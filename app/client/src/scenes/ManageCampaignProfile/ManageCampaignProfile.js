@@ -40,6 +40,7 @@ class ManageCampaignProfileContainer extends Component {
       formData: {
         title: '',
         websiteUrl: '',
+        mapUrl: '',
         description: ''
       },
       errors: {},
@@ -98,6 +99,7 @@ class ManageCampaignProfileContainer extends Component {
 
     validateString(this, 'title', 'titleErrorText', 'Campaign Name is Required');
     validateWebsiteUrl(this);
+    validateWebsiteUrl(this, 'mapUrl', 'mapUrlErrorText');
 
     if (!this.hasErrors) {
 

@@ -63,6 +63,7 @@ export const CampaignQuery = gql`
       zipcode_list
       phone_number
       website_url
+      map_url
       owner {
         id
         first_name

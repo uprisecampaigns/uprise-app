@@ -32,12 +32,12 @@ export function validateString(component, prop, errorProp, errorMsg) {
   }
 }
 
-export function validateWebsiteUrl(component) {
-  if (component.state.formData.websiteUrl.trim() !== '' && !isURL(component.state.formData.websiteUrl)) {
+export function validateWebsiteUrl(component, prop='websiteUrl', errorProp='websiteUrlErrorText') {
+  if (component.state.formData[prop].trim() !== '' && !isURL(component.state.formData[prop])) {
     component.hasErrors = true;
     component.setState( (prevState) => ({
       errors: Object.assign({}, prevState.errors, {
-        websiteUrlErrorText: 'Please enter valid website url'
+        [errorProp]: 'Please enter valid website url'
       })
     }));
   }

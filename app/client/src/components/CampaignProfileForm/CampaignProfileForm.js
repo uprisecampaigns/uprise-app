@@ -43,6 +43,18 @@ class CampaignProfileForm extends Component {
             />
           </div>
 
+          <div className={s.editMapUrlContainer}>
+            <TextField
+              className={s.textField}
+              value={data.mapUrl}
+              hintText="Map Url"
+              onChange={ (event) => { handleInputChange(event, 'mapUrl', event.target.value) } }
+              errorText={errors.mapUrlErrorText}
+              fullWidth={true}
+              underlineShow={false}
+            />
+          </div>
+
           <div className={s.editWebsiteUrlContainer}>
             <TextField
               value={data.websiteUrl}

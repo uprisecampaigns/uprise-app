@@ -7,6 +7,7 @@
     "prod": "node /src/app/client/bin/start.js & node /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
     "test": "cd client && ../node_modules/mocha/bin/mocha --require ignore-styles --require config/test.js './src/**/*.spec.js'",
     "test:watch": "cd client && ../node_modules/mocha/bin/mocha --require ignore-styles --require config/test.js --watch './src/**/*.spec.js'",
+    "db:migrate:make": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:make --name new",
     "db:migrate:rollback": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:rollback",
     "db:migrate:latest": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:latest",
     "db:seed:run": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:seed:run"
