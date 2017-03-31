@@ -1,0 +1,6 @@
+{
+  "name": "CampaignProfileForm",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./CampaignProfileForm.js"
+}

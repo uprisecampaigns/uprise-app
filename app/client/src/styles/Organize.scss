@@ -44,7 +44,7 @@
     justify-content: center;
     align-items: center;
     color: $azure !important;
-    min-height: 5rem;
+    min-height: 3rem;
     font-size: 2rem;
     font-weight: 300;
 
@@ -59,7 +59,7 @@
     justify-content: center;
     align-items: center;
     color: $azure !important;
-    min-height: 5rem;
+    min-height: 3rem;
     font-size: 2rem;
     font-weight: 300;
   }
@@ -70,7 +70,7 @@
     justify-content: left;
     align-items: center;
     color: lighten($azure, 10%) !important;
-    min-height: 5rem;
+    min-height: 3rem;
     font-size: 2rem;
     font-weight: 300;
 
@@ -95,4 +95,36 @@
       }
     }
   }
+
+  .editCampaignProfileContainer {
+    width: 90%;
+    margin: 1rem 5% 0 5%;
+  }
+
+  .editDescriptionContainer {
+    padding: 5rem 1rem 1rem 1rem;
+  }
+
+  .editTitleContainer {
+    padding: 1rem;
+    border: 1px solid rgba($black, 0.1);
+
+    input {
+      color: darken($azure, 10%) !important;
+      font-size: 2rem !important;
+      text-align: center !important;
+    }
+  }
+
+  .editWebsiteUrlContainer {
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 1px solid rgba($black, 0.1);
+
+    input {
+      color: $brick-red;
+      text-align: center !important;
+    }
+  }
+
 }

@@ -163,6 +163,7 @@ module.exports = buildSchema(`
   input EditCampaignInput {
     id: String!
     title: String
+    description: String
     streetAddress: String
     streetAddress2: String
     websiteUrl: String
