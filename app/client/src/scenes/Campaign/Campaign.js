@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
 import moment from 'moment';
 
+import CampaignProfile from 'components/CampaignProfile';
 import Link from 'components/Link';
 
 import { 
@@ -24,53 +25,30 @@ class Campaign extends Component {
 
   render() {
 
-    const campaign = this.props.campaign || {
-      first_name: '',
-      last_name: '',
-      description: '',
-      slug: '',
-      title: '',
-      tags: [],
-      owner: {
-        first_name: '',
-        last_name: '',
-        email: '',
-      }
-    };
+    if (this.props.campaign) { 
 
-    const keywords = (typeof campaign.tags === 'object') ? 
-      campaign.tags.map( (tag, index) => {
-        return <div key={index} className={s.detailLine}>{tag}</div>;
-      }) : [];
+      const { campaign, ...props } = this.props;
 
-    return (
-      <div className={s.outerContainer}>
-        <Link to={'/campaign/' + campaign.slug}>
-          <div className={s.campaignHeader}>{campaign.title}</div>
-        </Link>
-        <div className={s.innerContainer}>
+      const keywords = (typeof campaign.tags === 'object') ? 
+        campaign.tags.map( (tag, index) => {
+          return <div key={index} className={s.detailLine}>{tag}</div>;
+        }) : [];
 
-          <div className={s.contactContainer}>
-            Contact Coordinator: {campaign.owner.first_name} {campaign.owner.last_name} 
-            <Link to={'mailto:' + campaign.owner.email} external={true} useAhref={true}>
-              {campaign.owner.email}
+      return (
+        <div>
+          <div className={s.outerContainer}>
+            <Link to={'/campaign/' + campaign.slug}>
+              <div className={s.campaignHeader}>{campaign.title}</div>
             </Link>
           </div>
-
-          <div className={s.descriptionContainer}>{campaign.description}</div>
-
-          {keywords.length > 0 && (
-            <div className={s.keywordsContainer}>
-              <div className={s.header}>
-                Keywords:
-              </div>
-              <div>{keywords}</div>
-            </div>
-          )}
-
+          <CampaignProfile
+            campaign={campaign}
+          />
         </div>
-      </div>
-    );
+      );
+    } else {
+      return null;
+    }
   }
 }
 

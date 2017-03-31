@@ -24,14 +24,29 @@
     margin: 1rem 5% 0 5%;
 
     .titleContainer {
-      color: $azure;
+      color: darken($azure, 20%);
+      padding: 1rem;
       font-size: 1.6rem;
-      margin-top: 1rem;
+      margin-top: 2rem;
+      text-align: center;
+      border: 1px solid rgba($black, 0.1);
+    }
+
+    .websiteUrlContainer {
+      margin-top: 2rem;
+      text-align: center;
+      padding: 1rem;
+      border: 1px solid rgba($black, 0.1);
+
+      a {
+        color: $brick-red !important;
+      }
     }
 
     .contactContainer {
       font-size: 1.2rem;
       color: $fire-red;
+      margin-top: 1rem;
 
       a { 
         color: $fire-red;
@@ -51,7 +66,9 @@
     }
 
     .descriptionContainer {
+      color: $azure;
       white-space: pre-wrap;
     }
+
   }
 }
