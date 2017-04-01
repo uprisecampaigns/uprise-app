@@ -4,11 +4,10 @@ import { connect } from 'react-redux'
 import FontIcon from 'material-ui/FontIcon';
 import camelCase from 'camelcase';
 
-import ManageCampaignInfoForm from './components/ManageCampaignInfoForm';
+import CampaignInfoForm from 'components/CampaignInfoForm';
 import Link from 'components/Link';
 
-import history from 'lib/history';
-import states from 'lib/states-list';
+import organizeFormWrapper from 'lib/organizeFormWrapper';
 import { 
   validateString,
   validateWebsiteUrl,
@@ -32,7 +31,7 @@ import {
 import s from 'styles/Organize.scss';
 
 
-const statesList = Object.keys(states);
+const WrappedCampaignInfoForm = organizeFormWrapper(CampaignInfoForm);
 
 class ManageCampaignInfoContainer extends Component {
 
@@ -55,12 +54,10 @@ class ManageCampaignInfoContainer extends Component {
         state: '',
         zipcode: '',
       },
-      errors: {},
-      refs: {},
       saving: false
     }
 
-    this.state = Object.assign({}, initialState, this.defaultErrorText);
+    this.state = Object.assign({}, initialState);
   }
 
   defaultErrorText = { 
@@ -74,12 +71,14 @@ class ManageCampaignInfoContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.campaign) {
+    if (nextProps.campaign && !nextProps.graphqlLoading) {
 
       // Just camel-casing property keys and checking for null/undefined
-      const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => ({
-          [camelCase(k)]: nextProps.campaign[k] || ''
-      })));
+      const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => {
+        if (nextProps.campaign[k] !== null) {
+          return { [camelCase(k)]: nextProps.campaign[k] };
+        }
+      }));
 
       Object.keys(campaign).forEach( (k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
@@ -93,114 +92,83 @@ class ManageCampaignInfoContainer extends Component {
     }
   }
 
-  resetErrorText = () => {
-    this.setState({ errors: this.defaultErrorText });
-  }
-
-  handleInputChange = (event, type, value) => {
-    let valid = true;
-
-    if (type === 'state') {
-      valid = false;
-
-      statesList.forEach( (state) => {
-        if (state.toLowerCase().includes(value.toLowerCase())) {
-          valid = true;
-        }
-      });
-      value = value.toUpperCase();
+  formSubmit = async (data) => {
       
-      // Hack for AutoComplete
-      // TODO: Refactor - this is shared across several components!
-      if (!valid) {
-        this.state.refs.stateInput.setState({ searchText: this.state.formData.state });
-      }
-    } 
+    // A little hackish to avoid an annoying rerender with previous form data
+    // If I could figure out how to avoid keeping state here
+    // w/ the componentWillReceiveProps/apollo/graphql then
+    // I might not need this
+    this.setState({
+      formData: Object.assign({}, data)
+    });
 
-    if (valid) {
-      this.setState( (prevState) => ({
-        formData: Object.assign({},
-          prevState.formData,
-          { [type]: value }
-        )
-      }));
-    } 
-  }
+    const formData = Object.assign({}, data);
 
-  formSubmit = async (event) => {
-    (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
+    formData.id = this.props.campaign.id;
 
-    this.resetErrorText();
-    this.hasErrors = false;
+    this.setState({ saving: true });
 
-    validateString(this, 'title', 'titleErrorText', 'Campaign Name is Required');
-    validateWebsiteUrl(this);
-    validatePhoneNumber(this);
-    validateState(this);
+    try {
 
-    if (!this.hasErrors) {
+      const results = await this.props.editCampaignMutation({ 
+        variables: {
+          data: formData
+        },
+        // TODO: decide between refetch and update
+        refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
+      });
 
-      const formData = Object.assign({}, this.state.formData);
-
-      formData.id = this.props.campaign.id;
-
-      this.setState({ saving: true });
-
-      try {
-
-        const results = await this.props.editCampaignMutation({ 
-          variables: {
-            data: formData
-          },
-          // TODO: decide between refetch and update
-          refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
-        });
-
-        this.props.dispatch(notify('Changes Saved'));
-        this.setState({ saving: false });
-      } catch (e) {
-        console.error(e);
-      }
+      this.props.dispatch(notify('Changes Saved'));
+      this.setState({ saving: false });
+    } catch (e) {
+      console.error(e);
     }
   }
 
   render() {
-    const { state, formSubmit, handleInputChange } = this;
-    const { user, ...props } = this.props;
-    const { formData, errors, refs, saving } = state;
 
-    const campaign = props.campaign || {
-      title: '',
-      slug: ''
-    };
+    if (this.props.campaign) {
+      const { state, formSubmit, defaultErrorText } = this;
+      const { campaign, user, ...props } = this.props;
+      const { formData, saving } = state;
 
-    return (
-      <div className={s.outerContainer}>
-        <div className={s.campaignHeader}>{campaign.title}</div>
+      const validators = [
+        (component) => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+        (component) => validateWebsiteUrl(component),
+        (component) => validatePhoneNumber(component),
+        (component) => validateState(component),
+      ];
 
-        <Link to={'/organize/' + campaign.slug + '/settings'}>
-          <div className={s.navSubHeader}>
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
-            Settings
-          </div>
-        </Link>
+      return (
+        <div className={s.outerContainer}>
+          <div className={s.campaignHeader}>{campaign.title}</div>
 
-        <div className={s.pageSubHeader}>Info</div>
+          <Link to={'/organize/' + campaign.slug + '/settings'}>
+            <div className={s.navSubHeader}>
+              <FontIcon 
+                className={["material-icons", s.backArrow].join(' ')}
+              >arrow_back</FontIcon>
+              Settings
+            </div>
+          </Link>
 
-        <ManageCampaignInfoForm
-          handleInputChange={handleInputChange}
-          formSubmit={formSubmit}
-          campaign={campaign}
-          data={formData}
-          errors={errors}
-          user={user}
-          refs={refs}
-          saving={saving}
-        />
-      </div>
-    );
+          <div className={s.pageSubHeader}>Info</div>
+
+          <WrappedCampaignInfoForm
+            initialState={formData}
+            initialErrors={defaultErrorText}
+            validators={validators}
+            submit={formSubmit}
+            saving={saving}
+            submitText="Save Changes"
+            user={user}
+          />
+          
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
@@ -221,7 +189,8 @@ const withCampaignQuery = graphql(CampaignQuery, {
     }
   }),
   props: ({ data }) => ({ 
-    campaign: data.campaign
+    campaign: data.campaign,
+    graphqlLoading: data.loading
   })
 });
 

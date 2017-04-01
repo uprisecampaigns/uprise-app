@@ -2,15 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux'
 import moment from 'moment';
-import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import camelCase from 'camelcase';
 
-import ManageActionInfoForm from 'components/ActionInfoForm';
+import ActionInfoForm from 'components/ActionInfoForm';
 import Link from 'components/Link';
 
-import history from 'lib/history';
-import states from 'lib/states-list';
+import organizeFormWrapper from 'lib/organizeFormWrapper';
+
 import { 
   validateString,
   validateState,
@@ -34,7 +33,7 @@ import {
 import s from 'styles/Organize.scss';
 
 
-const statesList = Object.keys(states);
+const WrappedActionInfoForm = organizeFormWrapper(ActionInfoForm);
 
 class ManageActionInfoContainer extends Component {
 
@@ -64,12 +63,10 @@ class ManageActionInfoContainer extends Component {
         startTime: undefined,
         endTime: undefined
       },
-      errors: {},
-      refs: {},
       saving: false
     }
 
-    this.state = Object.assign({}, initialState, this.defaultErrorText);
+    this.state = Object.assign({}, initialState);
   }
 
   defaultErrorText = { 
@@ -88,12 +85,14 @@ class ManageActionInfoContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.action) {
+    if (nextProps.action && !nextProps.graphqlLoading) {
 
       // Just camel-casing property keys and checking for null
-      const action = Object.assign(...Object.keys(nextProps.action).map(k => ({
-          [camelCase(k)]: nextProps.action[k] === null ? undefined : nextProps.action[k]
-      })));
+      const action = Object.assign(...Object.keys(nextProps.action).map(k => {
+        if (nextProps.action[k] !== null) {
+          return { [camelCase(k)]: nextProps.action[k] };
+        }
+      }));
 
       // Handle date/time
       const newDateTimes = {
@@ -122,148 +121,106 @@ class ManageActionInfoContainer extends Component {
     }
   }
 
-  resetErrorText = () => {
-    this.setState({ errors: this.defaultErrorText });
-  }
+  formSubmit = async (data) => {
+    
+    // A little hackish to avoid an annoying rerender with previous form data
+    // If I could figure out how to avoid keeping state here
+    // w/ the componentWillReceiveProps/apollo/graphql then
+    // I might not need this
+    this.setState({
+      formData: Object.assign({}, data)
+    });
 
-  handleInputChange = (event, type, value) => {
-    let valid = true;
+    const formData = Object.assign({}, data);
 
-    if (type === 'state') {
-      valid = false;
+    const startTime = moment(formData.date);
+    startTime.minutes(moment(formData.startTime).minutes());
+    startTime.hours(moment(formData.startTime).hours());
 
-      statesList.forEach( (state) => {
-        if (state.toLowerCase().includes(value.toLowerCase())) {
-          valid = true;
-        }
+    const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
+
+    const endTime = moment(startTime).add(timeDiff, 'milliseconds');
+
+    formData.startTime = startTime.format();
+    formData.endTime = endTime.format();
+    delete formData.date;
+
+    formData.id = this.props.action.id;
+
+    this.setState({ saving: true });
+
+    try {
+
+      const results = await this.props.editActionMutation({ 
+        variables: {
+          data: formData
+        },
+        // TODO: decide between refetch and update
+        refetchQueries: ['ActionQuery', 'ActionsQuery'],
       });
-      value = value.toUpperCase();
-      
-      // Hack for AutoComplete
-      // TODO: Refactor - this is shared across several components!
-      if (!valid) {
-        this.state.refs.stateInput.setState({ searchText: this.state.formData.locationState });
-      }
-    } 
 
-    if (valid) {
-      this.setState( (prevState) => ({
-        formData: Object.assign({},
-          prevState.formData,
-          { [type]: value }
-        )
-      }));
-    } 
-  }
-
-  formSubmit = async (event) => {
-    (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
-
-    this.resetErrorText();
-    this.hasErrors = false;
-
-    const formData = Object.assign({}, this.state.formData);
-
-    validateString(this, 'title', 'titleErrorText', 'Action Name is Required');
-    validateState(this);
-    validateStartEndTimes(this);
-
-    if (!this.hasErrors) {
-
-      const startTime = moment(formData.date);
-      startTime.minutes(moment(formData.startTime).minutes());
-      startTime.hours(moment(formData.startTime).hours());
-
-      const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
-
-      const endTime = moment(startTime).add(timeDiff, 'milliseconds');
-
-      formData.startTime = startTime.format();
-      formData.endTime = endTime.format();
-      delete formData.date;
-
-      formData.id = this.props.action.id;
-
-      this.setState({ saving: true });
-
-      try {
-
-        const results = await this.props.editActionMutation({ 
-          variables: {
-            data: formData
-          },
-          // TODO: decide between refetch and update
-          refetchQueries: ['ActionQuery', 'ActionsQuery'],
-        });
-
-        this.props.dispatch(notify('Changes Saved'));
-        this.setState({ saving: false });
-      } catch (e) {
-        this.props.dispatch(notify('There was an error saving'));
-        this.setState({ saving: false });
-        console.error(e);
-      }
+      this.props.dispatch(notify('Changes Saved'));
+      this.setState({ saving: false });
+    } catch (e) {
+      this.props.dispatch(notify('There was an error saving'));
+      this.setState({ saving: false });
+      console.error(e);
     }
   }
 
-  cancel = (event) => {
-    event.preventDefault();
-    history.goBack();
-  }
-
   render() {
-    const { state, formSubmit, handleInputChange, cancel } = this;
-    const { ...props } = this.props;
-    const { formData, errors, refs, saving } = state;
 
-    const action = props.action || {
-      title: '',
-      slug: ''
-    };
+    if (this.props.action && this.props.campaign) {
 
-    const campaign = props.campaign || {
-      title: '',
-      slug: ''
-    };
+      const { formSubmit, defaultErrorText } = this;
+      const { action, campaign, ...props } = this.props;
+      const { formData, saving } = this.state;
 
-    const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
+      const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
 
-    return (
-      <div className={s.outerContainer}>
+      const validators = [
+        (component) => { validateString(component, 'title', 'titleErrorText', 'Action Name is Required') },
+        (component) => { validateState(component) }, //TODO: error is confusing if virtual is set and state input is invalid
+        (component) => { validateStartEndTimes(component) },
+      ];
 
-        <Link to={'/organize/' + campaign.slug}>
-          <div className={s.campaignHeader}>{campaign.title}</div>
-        </Link>
+      return (
+        <div className={s.outerContainer}>
 
-        <Link to={baseActionUrl}>
-          <div className={s.actionHeader}>{action.title}</div>
-        </Link>
+          <Link to={'/organize/' + campaign.slug}>
+            <div className={s.campaignHeader}>{campaign.title}</div>
+          </Link>
 
-        <Link to={baseActionUrl + '/settings'}>
-          <div className={s.navSubHeader}>
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
-            Settings
-          </div>
-        </Link>
+          <Link to={baseActionUrl}>
+            <div className={s.actionHeader}>{action.title}</div>
+          </Link>
 
-        <div className={s.pageSubHeader}>Info</div>
+          <Link to={baseActionUrl + '/settings'}>
+            <div className={s.navSubHeader}>
+              <FontIcon 
+                className={["material-icons", s.backArrow].join(' ')}
+              >arrow_back</FontIcon>
+              Settings
+            </div>
+          </Link>
 
-        <ManageActionInfoForm
-          handleInputChange={handleInputChange}
-          formSubmit={formSubmit}
-          submitText="Save Changes"
-          campaignTitle={campaign.title}
-          cancel={cancel}
-          action={action}
-          data={formData}
-          errors={errors}
-          refs={refs}
-          saving={saving}
-        />
-      </div>
-    );
+          <div className={s.pageSubHeader}>Info</div>
+
+          <WrappedActionInfoForm
+            initialState={formData}
+            initialErrors={defaultErrorText}
+            validators={validators}
+            submit={formSubmit}
+            saving={saving}
+            campaignTitle={campaign.title}
+            submitText="Save Changes"
+          />
+  
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
@@ -289,7 +246,8 @@ const withCampaignQuery = graphql(CampaignQuery, {
     }
   }),
   props: ({ data }) => ({ 
-    campaign: data.campaign
+    campaign: data.campaign,
+    graphqlLoading: data.loading
   })
 })
 

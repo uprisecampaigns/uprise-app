@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 import CampaignProfileForm from 'components/CampaignProfileForm';
 import Link from 'components/Link';
 
-import history from 'lib/history';
+import organizeFormWrapper from 'lib/organizeFormWrapper';
 
 import { 
   validateString,
@@ -27,6 +27,8 @@ import {
 import s from 'styles/Organize.scss';
 
 
+const WrappedCampaignProfileForm = organizeFormWrapper(CampaignProfileForm);
+
 class ManageCampaignProfileContainer extends Component {
 
   static PropTypes = {
@@ -43,12 +45,10 @@ class ManageCampaignProfileContainer extends Component {
         mapUrl: '',
         description: ''
       },
-      errors: {},
-      refs: {},
       saving: false
     }
 
-    this.state = Object.assign({}, initialState, this.defaultErrorText);
+    this.state = Object.assign({}, initialState);
   }
 
   defaultErrorText = { 
@@ -58,12 +58,14 @@ class ManageCampaignProfileContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.campaign) {
+    if (nextProps.campaign && !nextProps.graphqlLoading) {
 
       // Just camel-casing property keys and checking for null/undefined
-      const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => ({
-          [camelCase(k)]: nextProps.campaign[k] || ''
-      })));
+      const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => {
+        if (nextProps.campaign[k] !== null) {
+          return { [camelCase(k)]: nextProps.campaign[k] };
+        }
+      }));
 
       Object.keys(campaign).forEach( (k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
@@ -77,53 +79,36 @@ class ManageCampaignProfileContainer extends Component {
     }
   }
 
-  resetErrorText = () => {
-    this.setState({ errors: this.defaultErrorText });
-  }
+  formSubmit = async (data) => {
 
-  handleInputChange = (event, type, value) => {
+    // A little hackish to avoid an annoying rerender with previous form data
+    // If I could figure out how to avoid keeping state here
+    // w/ the componentWillReceiveProps/apollo/graphql then
+    // I might not need this
+    this.setState({
+      formData: Object.assign({}, data)
+    });
 
-    this.setState( (prevState) => ({
-      formData: Object.assign({},
-        prevState.formData,
-        { [type]: value }
-      )
-    }));
-  }
+    const formData = Object.assign({}, data);
 
-  formSubmit = async (event) => {
-    (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
+    formData.id = this.props.campaign.id;
 
-    this.resetErrorText();
-    this.hasErrors = false;
+    this.setState({ saving: true });
 
-    validateString(this, 'title', 'titleErrorText', 'Campaign Name is Required');
-    validateWebsiteUrl(this);
-    validateWebsiteUrl(this, 'mapUrl', 'mapUrlErrorText');
+    try {
 
-    if (!this.hasErrors) {
+      const results = await this.props.editCampaignMutation({ 
+        variables: {
+          data: formData
+        },
+        // TODO: decide between refetch and update
+        refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
+      });
 
-      const formData = Object.assign({}, this.state.formData);
-
-      formData.id = this.props.campaign.id;
-
-      this.setState({ saving: true });
-
-      try {
-
-        const results = await this.props.editCampaignMutation({ 
-          variables: {
-            data: formData
-          },
-          // TODO: decide between refetch and update
-          refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
-        });
-
-        this.props.dispatch(notify('Changes Saved'));
-        this.setState({ saving: false });
-      } catch (e) {
-        console.error(e);
-      }
+      this.props.dispatch(notify('Changes Saved'));
+      this.setState({ saving: false });
+    } catch (e) {
+      console.error(e);
     }
   }
 
@@ -133,7 +118,13 @@ class ManageCampaignProfileContainer extends Component {
 
       const { campaign, ...props } = this.props;
       const { formData, errors, saving, ...state } = this.state;
-      const { handleInputChange, formSubmit } = this;
+      const { formSubmit, defaultErrorText } = this;
+
+      const validators = [
+        (component) => { validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required') },
+        (component) => { validateWebsiteUrl(component) },
+        (component) => { validateWebsiteUrl(component, 'mapUrl', 'mapUrlErrorText') },
+      ];
 
       return (
         <div className={s.outerContainer}>
@@ -152,13 +143,15 @@ class ManageCampaignProfileContainer extends Component {
 
           <div className={s.pageSubHeader}>Profile</div>
 
-          <CampaignProfileForm
-            data={formData}
-            errors={errors}
-            handleInputChange={handleInputChange}
-            formSubmit={formSubmit}
+          <WrappedCampaignProfileForm
+            initialState={formData}
+            initialErrors={defaultErrorText}
+            validators={validators}
+            submit={formSubmit}
+            submitText="Save Changes"
             saving={saving}
           />
+          
         </div>
       );
     } else {
@@ -178,7 +171,8 @@ export default compose(
       }
     }),
     props: ({ data }) => ({ 
-      campaign: data.campaign
+      campaign: data.campaign,
+      graphqlLoading: data.loading
     })
   }),
   graphql(EditCampaignMutation, { name: 'editCampaignMutation' })

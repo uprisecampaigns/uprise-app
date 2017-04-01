@@ -1,8 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
+import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
+
+import Link from 'components/Link';
 
 import history from 'lib/history';
-import states from 'lib/states-list';
+import organizeFormWrapper from 'lib/organizeFormWrapper';
 import { 
   validateString,
   validateWebsiteUrl,
@@ -13,10 +17,10 @@ import {
 import { MeQuery } from 'schemas/queries';
 import { CreateCampaignMutation } from 'schemas/mutations';
 
-import CreateCampaignForm from './components/CreateCampaignForm';
+import CampaignInfoForm from 'components/CampaignInfoForm';
 
 
-const statesList = Object.keys(states);
+const WrappedCampaignInfoForm = organizeFormWrapper(CampaignInfoForm);
 
 class CreateCampaignContainer extends Component {
 
@@ -28,8 +32,6 @@ class CreateCampaignContainer extends Component {
     super(props);
 
     const initialState = {
-      // TODO: should refs be in state?
-      refs: {},
       formData: {
         email: props.user.email,
         title: '',
@@ -41,7 +43,6 @@ class CreateCampaignContainer extends Component {
         state: '',
         zipcode: '',
       },
-      errors: {},
       modalOpen: false,
       newCampaign: {
         title: '',
@@ -49,7 +50,7 @@ class CreateCampaignContainer extends Component {
       }
     };
 
-    this.state = Object.assign({}, initialState, this.defaultErrorText);
+    this.state = Object.assign({}, initialState);
 
   }
 
@@ -63,12 +64,6 @@ class CreateCampaignContainer extends Component {
     }
   }
 
-  hasErrors = false
-
-  resetErrorText = () => {
-    this.setState({ errors: this.defaultErrorText });
-  }
-
   defaultErrorText = { 
     titleErrorText: null,
     streetAddressErrorText: null,
@@ -79,102 +74,91 @@ class CreateCampaignContainer extends Component {
     zipcodeErrorText: null,
   }
 
-  handleInputChange = (event, type, value) => {
-    let valid = true;
+  formSubmit = async (data) => {
 
-    if (type === 'state') {
-      valid = false;
+    const formData = Object.assign({}, data);
 
-      statesList.forEach( (state) => {
-        if (state.toLowerCase().includes(value.toLowerCase())) {
-          valid = true;
-        }
+    try {
+      const addCampaign = (prev, { mutationResult }) => {
+        const newCampaign = mutationResult.data.createCampaign;
+        return Object.assign({}, prev, {
+          campaigns: prev.campaigns.concat(newCampaign)
+        })
+      };
+
+      const results = await this.props.createCampaignMutation({ 
+        variables: {
+          data: formData
+        },
+        // TODO: decide between refetch and update
+        refetchQueries: ['CampaignsQuery', 'MyCampaignsQuery'],
+        // updateQueries: {
+        //   CampaignsQuery: addCampaign,
+        //   MyCampaignsQuery: addCampaign
+        // }
       });
-      value = value.toUpperCase();
-      
-      // Hack for AutoComplete
-      if (!valid) {
-        this.state.refs.stateInput.setState({ searchText: this.state.formData.state });
-      }
-    } 
-
-    if (valid) {
-      this.setState( (prevState) => ({
-        formData: Object.assign({},
-          prevState.formData,
-          { [type]: value }
-        )
-      }));
-    } 
-  }
-
-  formSubmit = async (event) => {
-    event.preventDefault();
-
-    this.resetErrorText();
-    this.hasErrors = false;
-
-    validateString(this, 'title', 'titleErrorText', 'Campaign Name is Required');
-    validateWebsiteUrl(this);
-    validatePhoneNumber(this);
-    validateState(this);
-
-    if (!this.hasErrors) {
-
-      const { formData } = this.state;
-
-      try {
-        const addCampaign = (prev, { mutationResult }) => {
-          const newCampaign = mutationResult.data.createCampaign;
-          return Object.assign({}, prev, {
-            campaigns: prev.campaigns.concat(newCampaign)
-          })
-        };
-
-        const results = await this.props.createCampaignMutation({ 
-          variables: {
-            data: formData
-          },
-          // TODO: decide between refetch and update
-          refetchQueries: ['CampaignsQuery', 'MyCampaignsQuery'],
-          // updateQueries: {
-          //   CampaignsQuery: addCampaign,
-          //   MyCampaignsQuery: addCampaign
-          // }
-        });
-        this.setState({
-          modalOpen: true,
-          newCampaign: results.data.createCampaign
-        });
-      } catch (e) {
-        console.error(e);
-      }
+      this.setState({
+        modalOpen: true,
+        newCampaign: results.data.createCampaign
+      });
+    } catch (e) {
+      console.error(e);
     }
-  }
-
-  cancel = (event) => {
-    event.preventDefault();
-    history.goBack();
   }
 
   render() {
 
-    const { state, cancel, formSubmit, handleInputChange } = this;
-    const { user } = this.props;
-    const { newCampaign, modalOpen, formData, errors, refs } = state;
+    const { formSubmit, defaultErrorText } = this;
+    const { user, ...props } = this.props;
+    const { newCampaign, modalOpen, formData, ...state } = this.state;
+
+    const modalActions = [
+      <RaisedButton
+        label="Set Preferences"
+        primary={true}
+        onTouchTap={ () => { history.push('/organize/' + newCampaign.slug + '/preferences') }}
+      />
+    ];
+
+    const validators = [
+      (component) => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+      (component) => validateWebsiteUrl(component),
+      (component) => validatePhoneNumber(component),
+      (component) => validateState(component),
+    ];
 
     return (
-      <CreateCampaignForm 
-        handleInputChange={handleInputChange}
-        cancel={cancel}
-        formSubmit={formSubmit}
-        data={formData}
-        errors={errors}
-        user={user}
-        refs={refs}
-        newCampaign={newCampaign}
-        modalOpen={modalOpen}
-      />
+      <div>
+
+        <WrappedCampaignInfoForm
+          initialState={formData}
+          initialErrors={defaultErrorText}
+          validators={validators}
+          submit={formSubmit}
+          submitText="Create"
+          user={user}
+        />
+
+        {modalOpen && (
+          <Dialog
+            title="Campaign Created"
+            modal={true}
+            actions={modalActions}
+            open={modalOpen}
+          >
+            <p>
+              Congratulations, you have created the campaign '{newCampaign.title}'.
+            </p>
+            <p>
+              You can find and edit your campaign's public profile at 
+              <Link to={'/campaign/' + newCampaign.slug} useAhref={true}>uprise.org/campaign/{newCampaign.slug}</Link>
+            </p>
+            <p>
+              Please feel free to contact us at<Link to="mailto:help@uprise.org" external={true} useAhref={true}>help@uprise.org</Link>for assistance.
+            </p>
+          </Dialog>
+        )}
+      </div>
     );
   }
 }

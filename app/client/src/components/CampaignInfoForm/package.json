@@ -1,0 +1,6 @@
+{
+  "name": "CampaignInfoForm",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./CampaignInfoForm.js"
+}

@@ -14,7 +14,7 @@ import states from 'lib/states-list';
 import s from 'styles/Form.scss';
 
 
-class ManageCampaignInfoForm extends Component {
+class CampaignInfoForm extends Component {
   constructor(props) {
     super(props);
   }
@@ -24,17 +24,20 @@ class ManageCampaignInfoForm extends Component {
     user: PropTypes.object.isRequired,
     refs: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
+    cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    saving: PropTypes.bool.isRequired
+    saving: PropTypes.bool,
+    submitText: PropTypes.string.isRequired
   }
 
   render() {
     const { 
-      data, user, refs, formSubmit, errors,
-      handleInputChange, saving
+      data, user, refs, formSubmit, errors, saving,
+      handleInputChange, cancel, submitText 
     } = this.props;
 
     const statesList = Object.keys(states);
+
 
     return (
       <div className={s.outerContainer}>
@@ -120,7 +123,14 @@ class ManageCampaignInfoForm extends Component {
                     fullWidth={true}
                   />
                 </div>
-
+                <div className={s.button}>
+                  <RaisedButton 
+                    onTouchTap={cancel} 
+                    primary={false} 
+                    label="Cancel" 
+                  />
+                </div>
+                
                 { saving ? (
 
                   <div className={s.savingThrobberContainer}>
@@ -136,17 +146,19 @@ class ManageCampaignInfoForm extends Component {
                       onTouchTap={formSubmit} 
                       primary={true} 
                       type="submit"
-                      label="Save Changes" 
+                      label={submitText} 
                     />
                   </div>
                 )}
+
               </form>
             </div>
           </Paper>
         </div>
+
       </div>
     );
   }
 }
 
-export default ManageCampaignInfoForm;
+export default CampaignInfoForm;

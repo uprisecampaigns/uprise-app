@@ -9,7 +9,7 @@ import FontIcon from 'material-ui/FontIcon';
 import Link from 'components/Link';
 
 import history from 'lib/history';
-import states from 'lib/states-list';
+import organizeFormWrapper from 'lib/organizeFormWrapper';
 import { 
   validateString,
   validateWebsiteUrl,
@@ -26,7 +26,7 @@ import ActionInfoForm from 'components/ActionInfoForm';
 import s from 'styles/Organize.scss';
 
 
-const statesList = Object.keys(states);
+const WrappedActionInfoForm = organizeFormWrapper(ActionInfoForm);
 
 class CreateAction extends Component {
 
@@ -40,8 +40,6 @@ class CreateAction extends Component {
     super(props);
 
     const initialState = {
-      // TODO: should refs be in state?
-      refs: {},
       formData: {
         title: '',
         internalTitle: '',
@@ -57,7 +55,6 @@ class CreateAction extends Component {
         startTime: undefined,
         endTime: undefined
       },
-      errors: {},
       modalOpen: false,
       newAction: {
         title: '',
@@ -65,13 +62,7 @@ class CreateAction extends Component {
       }
     };
 
-    this.state = Object.assign({}, initialState, this.defaultErrorText);
-  }
-
-  hasErrors = false
-
-  resetErrorText = () => {
-    this.setState({ errors: this.defaultErrorText });
+    this.state = Object.assign({}, initialState);
   }
 
   defaultErrorText = { 
@@ -88,163 +79,120 @@ class CreateAction extends Component {
     endTimeErrorText: null
   }
 
-  handleInputChange = (event, type, value) => {
-    let valid = true;
+  formSubmit = async (data) => {
 
-    if (type === 'state') {
-      valid = false;
+    const formData = Object.assign({}, data, { campaignId: this.props.campaignId });
 
-      statesList.forEach( (state) => {
-        if (state.toLowerCase().includes(value.toLowerCase())) {
-          valid = true;
-        }
+    const startTime = moment(formData.date);
+    startTime.minutes(moment(formData.startTime).minutes());
+    startTime.hours(moment(formData.startTime).hours());
+
+    const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
+
+    const endTime = moment(startTime).add(timeDiff, 'milliseconds');
+
+    formData.startTime = startTime.format();
+    formData.endTime = endTime.format();
+    delete formData.date;
+
+    try {
+      const results = await this.props.createActionMutation({ 
+        variables: {
+          data: formData
+        },
+        // TODO: decide between refetch and update
+        refetchQueries: ['ActionsQuery'], //, 'CampaignActions'],
+        // updateQueries: {
+        //   ActionsQuery: addAction,
+        //   MyActionsQuery: addAction
+        // }
       });
-      value = value.toUpperCase();
-      
-      // Hack for AutoComplete
-      if (!valid) {
-        this.state.refs.stateInput.setState({ searchText: this.state.formData.state });
-      }
-    } 
-
-    if (valid) {
-      this.setState( (prevState) => ({
-        formData: Object.assign({},
-          prevState.formData,
-          { [type]: value }
-        )
-      }));
-    } 
-  }
-
-  formSubmit = async (event) => {
-    event.preventDefault();
-
-    this.resetErrorText();
-    this.hasErrors = false;
-
-    validateString(this, 'title', 'titleErrorText', 'Public Name is Required');
-    validateString(this, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required');
-    validateState(this);
-    validateStartEndTimes(this);
-
-    if (!this.hasErrors) {
-
-      const formData = Object.assign({}, this.state.formData, { campaignId: this.props.campaignId });
-
-      const startTime = moment(formData.date);
-      startTime.minutes(moment(formData.startTime).minutes());
-      startTime.hours(moment(formData.startTime).hours());
-
-      const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
-
-      const endTime = moment(startTime).add(timeDiff, 'milliseconds');
-
-      formData.startTime = startTime.format();
-      formData.endTime = endTime.format();
-      delete formData.date;
-
-      try {
-        const results = await this.props.createActionMutation({ 
-          variables: {
-            data: formData
-          },
-          // TODO: decide between refetch and update
-          refetchQueries: ['ActionsQuery'], //, 'CampaignActions'],
-          // updateQueries: {
-          //   ActionsQuery: addAction,
-          //   MyActionsQuery: addAction
-          // }
-        });
-        this.setState({
-          modalOpen: true,
-          newAction: results.data.createAction
-        });
-      } catch (e) {
-        this.props.dispatch(notify('There was an error creating the event'));
-        this.setState({ saving: false });
-        console.error(e);
-      }
+      this.setState({
+        modalOpen: true,
+        newAction: results.data.createAction
+      });
+    } catch (e) {
+      this.props.dispatch(notify('There was an error creating the event'));
+      console.error(e);
     }
-  }
-
-  cancel = (event) => {
-    event.preventDefault();
-    history.goBack();
   }
 
   render() {
 
-    const { state, cancel, formSubmit, handleInputChange } = this;
-    const { user, ...props } = this.props;
-    const { newAction, modalOpen, formData, errors, refs } = state;
+    if (this.props.campaign) {
 
-    const campaign = props.campaign || {
-      title: '',
-      slug: ''
-    };
+      const { defaultErrorText, formSubmit } = this;
+      const { campaign, ...props } = this.props;
+      const { newAction, modalOpen, formData, ...state } = this.state;
 
-    const modalActions = [
-      <RaisedButton
-        label="Set Preferences"
-        primary={true}
-        onTouchTap={ () => { history.push('/organize/' + campaign.slug + '/action/' + newAction.slug + '/preferences') }}
-      />
-    ];
-
-    return (
-      <div className={s.outerContainer}>
-
-        <Link to={'/organize/' + campaign.slug}>
-          <div className={s.campaignHeader}>
-            {campaign.title}
-          </div>
-        </Link>
-
-        <Link to={'/organize/' + campaign.slug + '/actions'}>
-          <div className={s.navSubHeader}>
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
-            Actions
-          </div>
-        </Link>
-
-        <div className={s.campaignSubHeader}>New Action</div>
-
-        <ActionInfoForm 
-          handleInputChange={handleInputChange}
-          cancel={cancel}
-          formSubmit={formSubmit}
-          submitText="Create"
-          data={formData}
-          errors={errors}
-          user={user}
-          refs={refs}
-          campaignTitle={campaign.title}
+      const modalActions = [
+        <RaisedButton
+          label="Set Preferences"
+          primary={true}
+          onTouchTap={ () => { history.push('/organize/' + campaign.slug + '/action/' + newAction.slug + '/preferences') }}
         />
+      ];
 
-        {modalOpen && (
-          <Dialog
-            title="Action Created"
-            modal={true}
-            actions={modalActions}
-            open={modalOpen}
-          >
-            <p>
-              Congratulations, you have created the action '{newAction.title}'.
-            </p>
-            <p>
-              You can find and edit your action's public profile at 
-              <Link to={'/action/' + newAction.slug} useAhref={true}>uprise.org/action/{newAction.slug}</Link>
-            </p>
-            <p>
-              Please feel free to contact us at<Link to="mailto:help@uprise.org" external={true} useAhref={true}>help@uprise.org</Link>for assistance.
-            </p>
-          </Dialog>
-        )}
-      </div>
-    );
+      const validators = [
+        (component) => { validateString(component, 'title', 'titleErrorText', 'Action Name is Required') },
+        (component) => { validateString(component, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required') },
+        (component) => { validateState(component) }, //TODO: error is confusing if virtual is set and state input is invalid
+        (component) => { validateStartEndTimes(component) },
+      ];
+
+      return (
+        <div className={s.outerContainer}>
+
+          <Link to={'/organize/' + campaign.slug}>
+            <div className={s.campaignHeader}>
+              {campaign.title}
+            </div>
+          </Link>
+
+          <Link to={'/organize/' + campaign.slug + '/actions'}>
+            <div className={s.navSubHeader}>
+              <FontIcon 
+                className={["material-icons", s.backArrow].join(' ')}
+              >arrow_back</FontIcon>
+              Actions
+            </div>
+          </Link>
+
+          <div className={s.campaignSubHeader}>New Action</div>
+
+          <WrappedActionInfoForm
+            initialState={formData}
+            initialErrors={defaultErrorText}
+            validators={validators}
+            submit={formSubmit}
+            campaignTitle={campaign.title}
+            submitText="Create"
+          />
+
+          {modalOpen && (
+            <Dialog
+              title="Action Created"
+              modal={true}
+              actions={modalActions}
+              open={modalOpen}
+            >
+              <p>
+                Congratulations, you have created the action '{newAction.title}'.
+              </p>
+              <p>
+                You can find and edit your action's public profile at 
+                <Link to={'/action/' + newAction.slug} useAhref={true}>uprise.org/action/{newAction.slug}</Link>
+              </p>
+              <p>
+                Please feel free to contact us at<Link to="mailto:help@uprise.org" external={true} useAhref={true}>help@uprise.org</Link>for assistance.
+              </p>
+            </Dialog>
+          )}
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
