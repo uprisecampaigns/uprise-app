@@ -3,6 +3,7 @@ services:
   web:
     build: ./app
     volumes:
+      - "./app/package.json:/src/app/package.json"
       - "./app/client:/src/app/client"
       - "./app/server:/src/app/server"
     ports:
@@ -16,7 +17,7 @@ services:
     # env_file: ./app/prod.env
     env_file: ./app/dev.env
     working_dir: /src/app
-    command: npm start
+    command: npm run dev
 
   nginx:
     build: nginx
