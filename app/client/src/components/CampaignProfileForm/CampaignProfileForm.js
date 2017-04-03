@@ -1,11 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import moment from 'moment';
+import Dropzone from 'react-dropzone';
+import ReactCrop from 'react-image-crop';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import Link from 'components/Link';
+
+import 'react-image-crop/dist/ReactCrop.css';
 
 import s from 'styles/Organize.scss';
 
@@ -13,6 +17,14 @@ import s from 'styles/Organize.scss';
 class CampaignProfileForm extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      editImageSrc: null,
+      imageCrop: {
+        aspect: 1
+      },
+      croppedImageSrc: null
+    };
   }
 
   static propTypes = {
@@ -23,6 +35,93 @@ class CampaignProfileForm extends Component {
     saving: PropTypes.bool,
   }
 
+  onDrop = (acceptedFiles, rejectedFiles) => {
+    console.log('received files');
+    console.log(acceptedFiles);
+
+    //TODO: 
+    // - handle accepted vs rejected files!!
+    // - check for image types
+
+    const fileReader = new FileReader();
+
+    fileReader.onload = (event) => {
+      this.setState({ editImageSrc: event.target.result });
+
+    };
+
+    fileReader.onerror = (event) => {
+      console.error(event);
+    };
+
+    fileReader.readAsDataURL(acceptedFiles[0]);
+  }
+
+  imageCropChange = (crop, pixelCrop) => {
+    const newCrop = Object.assign({}, crop, { aspect: 1 });
+    this.setState({ imageCrop: newCrop });
+  }
+
+  loadImage = (src, callback) => {
+    let image = new Image();
+    image.onload = (e) => {
+      callback(image);
+      image = null;
+    };
+
+    image.src = src;
+  }
+
+  acceptImageCrop = () => {
+    console.log(this.state);
+    const crop = this.state.imageCrop;
+
+    this.loadImage(this.state.editImageSrc, (loadedImg) => {
+      const imageWidth = loadedImg.naturalWidth;
+      const imageHeight = loadedImg.naturalHeight;
+
+      const cropX = (crop.x / 100) * imageWidth;
+      const cropY = (crop.y / 100) * imageHeight;
+
+      const cropWidth = (crop.width / 100) * imageWidth;
+      const cropHeight = (crop.height / 100) * imageHeight;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = cropWidth;
+      canvas.height = cropHeight;
+      const ctx = canvas.getContext('2d');
+
+      ctx.drawImage(loadedImg, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+
+      if (HTMLCanvasElement.prototype.toBlob) {
+
+        canvas.toBlob( (blob) => {
+          const url = URL.createObjectURL(blob);
+
+          this.setState({ 
+            croppedImageSrc: url,
+            editImageSrc: null
+          });
+
+          //TODO: Is `revokeObjectURL` important??
+          // imgDest.onload = function() {
+          //   URL.revokeObjectURL(url);
+          //   this.ready();
+          // };
+        });
+      } else {
+        this.setState({ 
+          croppedImageSrc: canvas.toDataURL('image/jpeg'),
+          editImageSrc: null
+        });
+      }
+    });
+  }
+
+  cancelImageEdit = () => {
+    this.setState({ editImageSrc: null });
+  }
+
   render() {
 
     const { data, formSubmit, errors,
@@ -31,6 +130,39 @@ class CampaignProfileForm extends Component {
     return (
       <div className={s.outerContainer}>
         <div className={s.editCampaignProfileContainer}>
+
+          <div className={s.imageUploadContainer}>
+            { this.state.editImageSrc ? (
+              <div>
+                <ReactCrop 
+                  src={this.state.editImageSrc} 
+                  onComplete={this.imageCropChange}
+                  crop={this.state.imageCrop}
+                />
+                <RaisedButton 
+                  onTouchTap={this.cancelImageEdit} 
+                  label="Cancel Crop" 
+                />
+                <RaisedButton 
+                  onTouchTap={this.acceptImageCrop} 
+                  primary={true} 
+                  label="Save Changes" 
+                />
+              </div>
+            ) : (
+              <Dropzone 
+                onDrop={this.onDrop}
+                multiple={false}
+              >
+                { this.state.croppedImageSrc ? (
+                  <img src={this.state.croppedImageSrc}/>
+                ): (
+                  <div>Drag and drop your profile image here, or click to select an image to upload.</div>
+                )}
+              </Dropzone>
+            )}
+
+          </div>
 
           <div className={s.editTitleContainer}>
             <TextField
