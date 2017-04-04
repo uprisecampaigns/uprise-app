@@ -64,6 +64,7 @@ export const CampaignQuery = gql`
       phone_number
       website_url
       map_url
+      profile_image_url
       owner {
         id
         first_name

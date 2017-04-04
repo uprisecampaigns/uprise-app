@@ -52,6 +52,7 @@ module.exports = buildSchema(`
     phone_number: String
     website_url: String
     map_url: String
+    profile_image_url: String
     owner: UserResult
     tags: [String]
     issue_areas: [IssueAreaResult]

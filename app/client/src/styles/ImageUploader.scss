@@ -1,0 +1,42 @@
+@import '~styles/variables';
+
+.imageUploadContainer {
+  padding: 3rem;
+}
+
+.cropContainer {
+  width: 100%;
+  text-align: center;
+}
+
+.reactCropContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .button {
+    margin: auto 2rem auto 2rem !important;
+  }
+}
+
+.fileDropContainer {
+  position: relative;
+  text-align: center;
+  border: 3px dashed $black;
+  width: 75%;
+  margin: 2rem auto 2rem auto;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+
+  img {
+    max-width: 100%;
+  }
+}

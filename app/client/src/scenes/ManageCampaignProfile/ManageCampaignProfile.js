@@ -43,7 +43,8 @@ class ManageCampaignProfileContainer extends Component {
         title: '',
         websiteUrl: '',
         mapUrl: '',
-        description: ''
+        description: '',
+        profileImageUrl: '',
       },
       saving: false
     }
