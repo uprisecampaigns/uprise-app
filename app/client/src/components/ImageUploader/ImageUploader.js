@@ -212,7 +212,7 @@ class ImageUploader extends React.Component {
             { imageSrc ? (
               <div>
                 <FontIcon 
-                  className="material-icons"
+                  className={[s.removeImageButton, 'material-icons'].join(' ')}
                   onTouchTap={this.removeImage}
                 >delete</FontIcon>
                 <img src={imageSrc}/>
@@ -221,7 +221,7 @@ class ImageUploader extends React.Component {
               <div>Drag and drop your image here, or click to select an image to upload.</div>
             )}
 
-            <FontIcon className="material-icons">add_a_photo</FontIcon>
+            <FontIcon className={[s.addImageButton, 'material-icons'].join(' ')}>add_a_photo</FontIcon>
           </Dropzone>
         )}
 

@@ -39,4 +39,16 @@
   img {
     max-width: 100%;
   }
+
+  .addImageButton {
+    position: absolute !important;
+    left: 0.5em !important;
+    top: 0.5em !important;
+  }
+
+  .removeImageButton {
+    position: absolute !important;
+    right: 0.5em !important;
+    top: 0.5em !important;
+  }
 }
