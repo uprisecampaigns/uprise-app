@@ -1,11 +1,17 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux'
+import { withApollo } from 'react-apollo';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dropzone from 'react-dropzone';
 import ReactCrop from 'react-image-crop';
 
-import s from 'styles/ImageUploader.scss';
-
 import 'react-image-crop/dist/ReactCrop.css';
+
+import { attemptUpload } from 'actions/UploadActions';
+
+import { base64ToBlob } from 'lib/base64ToBlob';
+
+import s from 'styles/ImageUploader.scss';
 
 
 class ImageUploader extends React.Component {
@@ -16,19 +22,19 @@ class ImageUploader extends React.Component {
       imageSrc: props.imageSrc || null,
       editImageSrc: null,
       imageCrop: {
-        width: 100,
-        height: 100,
-        x: 0,
-        y: 0,
+        width: 90,
+        height: 90,
+        x: 5,
+        y: 5,
         aspect: 1,
       },
     };
   }
   
   static propTypes = {
-    handleInputChange: PropTypes.func.isRequired,
     imageSrc: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    imageUploadOptions: PropTypes.object.isRequired
   };
 
   componentWillReceiveProps(nextProps) {
@@ -95,26 +101,22 @@ class ImageUploader extends React.Component {
 
       ctx.drawImage(loadedImg, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
 
+      const uploadBlob = (blob) => {
+        this.props.dispatch(attemptUpload({ 
+          onSuccess: this.props.onChange,
+          ...this.props.imageUploadOptions, 
+          contentType: 'image/jpeg', 
+          blob 
+        }));
+ 
+        this.setState({ 
+          editImageSrc: null,
+        });
+      }
+
       if (HTMLCanvasElement.prototype.toBlob) {
 
-        canvas.toBlob( (blob) => {
-
-          const fileReader = new FileReader();
-
-          fileReader.onload = (event) => {
-            this.props.onChange(event.target.result);
-
-            this.setState({ 
-              editImageSrc: null
-            });
-          };
-
-          fileReader.onerror = (event) => {
-            console.error(event);
-          };
-
-          fileReader.readAsDataURL(blob);
-
+        canvas.toBlob(uploadBlob);
           //TODO: Is `revokeObjectURL` important??
           //      would I have access to `onload`
           //      from a refs object?
@@ -122,16 +124,15 @@ class ImageUploader extends React.Component {
           //   URL.revokeObjectURL(url);
           //   this.ready();
           // };
-        });
       } else {
 
-
         const url = canvas.toDataURL('image/jpeg');
-        this.setState({ 
-          editImageSrc: null,
-        });
+
         this.props.onChange(url);
 
+        const blob = base64ToBlob(url);
+
+        uploadBlob(blob);
       }
     });
   }
@@ -192,4 +193,11 @@ class ImageUploader extends React.Component {
   }
 }
 
-export default ImageUploader;
+const mapStateToProps = (state) => {
+  return {
+    uploading: state.uploads.uploading,
+    error: state.uploads.error,
+  };
+}
+
+export default connect(mapStateToProps)(withApollo(ImageUploader));

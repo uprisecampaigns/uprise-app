@@ -20,13 +20,14 @@ class CampaignProfileForm extends Component {
     data: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired, 
     formSubmit: PropTypes.func.isRequired,
+    campaignId: PropTypes.string.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
   }
 
   render() {
 
-    const { data, formSubmit, errors,
+    const { data, formSubmit, errors, campaignId,
             handleInputChange, saving, ...props } = this.props;
 
     return (
@@ -36,6 +37,11 @@ class CampaignProfileForm extends Component {
           <ImageUploader 
             onChange={ (imgSrc) => { handleInputChange(undefined, 'profileImageUrl', imgSrc) } }
             imageSrc={data.profileImageUrl}
+            imageUploadOptions={{
+              collectionName: 'campaigns',
+              collectionId: campaignId,
+              filePath: 'profile'
+            }}
           />
 
           <div className={s.editTitleContainer}>

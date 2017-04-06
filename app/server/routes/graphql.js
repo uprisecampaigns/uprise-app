@@ -1,5 +1,7 @@
 const graphqlHTTP = require('express-graphql');
 const assert = require('assert');
+const moment = require('moment');
+const S3 = require('aws-sdk/clients/s3');
 const decamelize = require('decamelize');
 const bodyParser = require('body-parser');
 const graphqlServer = require('graphql-server-express');
@@ -13,7 +15,28 @@ const Action = require('models/Action');
 const Campaign = require('models/Campaign');
 const User = require('models/User');
 
+const awsConfig = require('config/config.js').aws;
+
+
+const s3 = new S3({
+  accessKeyId: awsConfig.accessKeyId,
+  secretAccessKey: awsConfig.accessKeySecret,
+  region: awsConfig.region
+});
+
 module.exports = (app) => {
+
+  const getS3Signature = ({ path, contentType }) => {
+    const url = s3.getSignedUrl('putObject', {
+      Bucket: awsConfig.bucketName,
+      Key: path,
+      ACL: 'public-read',
+      Expires: awsConfig.expirationTime,
+      ContentType: contentType,
+    });
+
+    return url;
+  };
 
   const root = {
     me: async (data, context) => {
@@ -43,6 +66,46 @@ module.exports = (app) => {
       }
 
       return available;
+    },
+
+    fileUploadSignature: async (data, context) => {
+
+      const { 
+        collectionId, collectionName, fileName, 
+        contentEncoding, contentType, ...input } = data.input;
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      if (collectionName === 'campaigns') {
+
+        const campaign = await Campaign.findOne('id', collectionId);
+
+        if (!campaign) {
+          throw new Error('Campaign not found');
+        }
+
+        // TODO: Replace this with more sophisticated implementation
+        //       inside of Campaign model
+        if (campaign.owner_id !== context.user.id) {
+          throw new Error('User must be owner of campaign');
+        }
+      } else {
+        throw new Error('collectionName: ' + collectionName + ' not recognized');
+      }
+
+      const path = collectionName + '/' + collectionId + '/' + fileName;
+
+      console.log(path);
+
+      const url = getS3Signature({ path, contentEncoding, contentType });
+
+      console.log(url);
+
+      return { 
+        url: url,
+      };
     },
 
     action: async (data, context) => {
@@ -105,8 +168,6 @@ module.exports = (app) => {
       console.log(myCampaigns);
       return myCampaigns;
     },
-
-
 
     activities: async (data, context) => {
 

@@ -85,6 +85,10 @@ module.exports = buildSchema(`
     campaign: CampaignResult
   }
 
+  type FileUploadSignatureResult {
+    url: String!
+  }
+
   input DateSearchInput {
     onDate: String
     startDate: String
@@ -136,6 +140,13 @@ module.exports = buildSchema(`
     id: String
   }
 
+  input FileToUpload {
+    collectionId: String!
+    collectionName: String!
+    fileName: String!
+    contentType: String!
+  }
+
   type Query {
     action(search: ActionQueryInput): ActionResult
     actions(search: ActionSearchInput): [ActionResult]
@@ -148,6 +159,7 @@ module.exports = buildSchema(`
     issueAreas: [IssueAreaResult]
     me: UserResult
     emailAvailable(email: String): Boolean
+    fileUploadSignature(input: FileToUpload!): FileUploadSignatureResult
   }
 
   input CreateCampaignInput {

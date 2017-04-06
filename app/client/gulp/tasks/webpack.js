@@ -38,7 +38,9 @@ const definePlugin = new webpack.DefinePlugin({
   'process.env': {
     'NODE_ENV': env.development() ? JSON.stringify('development') : JSON.stringify('production'),
     'SERVER_BASE_URL': '"' + process.env.SERVER_BASE_URL + '"',
-    'CLIENT_BASE_URL': '"' + process.env.CLIENT_BASE_URL + '"'
+    'CLIENT_BASE_URL': '"' + process.env.CLIENT_BASE_URL + '"',
+    'AWS_S3_REGION': '"' + process.env.AWS_S3_REGION + '"',
+    'AWS_S3_BUCKET_NAME': '"' + process.env.AWS_S3_BUCKET_NAME + '"',
   }
 });
 

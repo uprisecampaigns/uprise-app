@@ -149,6 +149,7 @@ class ManageCampaignProfileContainer extends Component {
             initialErrors={defaultErrorText}
             validators={validators}
             submit={formSubmit}
+            campaignId={campaign.id}
             submitText="Save Changes"
             saving={saving}
           />
@@ -176,5 +177,5 @@ export default compose(
       graphqlLoading: data.loading
     })
   }),
-  graphql(EditCampaignMutation, { name: 'editCampaignMutation' })
+  graphql(EditCampaignMutation, { name: 'editCampaignMutation' }),
 )(ManageCampaignProfileContainer);

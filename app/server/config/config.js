@@ -14,6 +14,13 @@ module.exports = {
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT
   },
+  aws: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    accessKeySecret: process.env.AWS_ACCESS_KEY_SECRET,
+    bucketName: process.env.AWS_S3_BUCKET_NAME,
+    region: process.env.AWS_S3_REGION,
+    expirationTime: 300
+  },
   postmark: {
     serverKey: process.env.POSTMARK_SECRET_KEY,
     validRecipient: (email) => {

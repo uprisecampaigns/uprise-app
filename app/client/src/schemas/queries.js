@@ -236,3 +236,11 @@ export const EmailAvailable = gql`
     emailAvailable(email:$email) 
   }
 `;
+
+export const FileUploadSignature = gql`
+  query FileUploadSignature($input: FileToUpload!) {
+    fileUploadSignature(input:$input) {
+      url
+    }
+  }
+`;

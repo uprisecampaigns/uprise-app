@@ -3,6 +3,7 @@ import apolloClient from 'store/apolloClient';
 import { updateUserInfo } from './AuthReducer';
 import { updateNotifications } from './NotificationsReducer';
 import { updateSearch } from './SearchReducer';
+import { updateUploads } from './UploadReducer';
 
 function createFilteredReducer(reducerFunction, reducerPredicate) {
   return (state, action) => {
@@ -14,6 +15,7 @@ function createFilteredReducer(reducerFunction, reducerPredicate) {
 
 const RootReducer = combineReducers({
   userAuthSession: updateUserInfo,
+  uploads: updateUploads,
   notifications: updateNotifications,
   actionsSearch: createFilteredReducer(updateSearch, action => action.searchType === 'action'),
   campaignsSearch: createFilteredReducer(updateSearch, action => action.searchType === 'campaign'),
