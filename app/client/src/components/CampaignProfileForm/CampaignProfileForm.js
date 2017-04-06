@@ -23,12 +23,13 @@ class CampaignProfileForm extends Component {
     campaignId: PropTypes.string.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
+    uploading: PropTypes.bool.isRequired
   }
 
   render() {
 
     const { data, formSubmit, errors, campaignId,
-            handleInputChange, saving, ...props } = this.props;
+            handleInputChange, saving, uploading, ...props } = this.props;
 
     return (
       <div className={s.outerContainer}>
@@ -37,10 +38,12 @@ class CampaignProfileForm extends Component {
           <ImageUploader 
             onChange={ (imgSrc) => { handleInputChange(undefined, 'profileImageUrl', imgSrc) } }
             imageSrc={data.profileImageUrl}
+            imageHeight={800}
+            imageWidth={800}
             imageUploadOptions={{
               collectionName: 'campaigns',
               collectionId: campaignId,
-              filePath: 'profile'
+              filePath: 'profile',
             }}
           />
 
@@ -90,7 +93,7 @@ class CampaignProfileForm extends Component {
             />
           </div>
 
-          { saving ? (
+          { ( saving || uploading ) ? (
 
             <div className={s.savingThrobberContainer}>
               <CircularProgress
@@ -117,4 +120,10 @@ class CampaignProfileForm extends Component {
   }
 }
 
-export default CampaignProfileForm;
+const mapStateToProps = (state) => {
+  return {
+    uploading: state.uploads.uploading,
+  };
+}
+
+export default connect(mapStateToProps)(CampaignProfileForm);

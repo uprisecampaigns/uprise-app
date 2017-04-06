@@ -3,6 +3,8 @@ import apolloClient from 'store/apolloClient';
 
 import { urls } from 'config/config';
 
+import { notify } from 'actions/NotificationsActions';
+
 import { FileUploadSignature } from 'schemas/queries';
 
 
@@ -13,7 +15,11 @@ export const UPLOAD_FAIL = 'UPLOAD_FAIL';
 export function attemptUpload({ onSuccess, filePath, collectionName, collectionId, contentType, blob }) {
   return async (dispatch, getState) => {
 
-    if (!getState().uploads.uploading) {
+    if (getState().uploads.uploading) {
+      dispatch(notify('Already uploading file. Please try again after previous upload is finished.'));
+      dispatch(uploadFail('Already uploading file'));
+    } else {
+
       try {
         dispatch(startedUpload());
 
@@ -29,11 +35,9 @@ export function attemptUpload({ onSuccess, filePath, collectionName, collectionI
           fetchPolicy: 'network-only',
         });
 
-        if (signatureResponse.data.fileUploadSignature.url) {
-
-        } else {
-
-        }
+        if (!signatureResponse.data.fileUploadSignature.url) {
+          throw new Error('Error retrieving signed url from server.');
+        } 
 
         const signatureUrl = signatureResponse.data.fileUploadSignature.url;
 
@@ -47,20 +51,21 @@ export function attemptUpload({ onSuccess, filePath, collectionName, collectionI
           },
         });
 
-        console.log(uploadResponse);
-
         const newUrl = urls.s3 + '/' + collectionName + '/' + collectionId + '/' + fileName;
-        console.log(newUrl);
 
         if (uploadResponse.ok) {
           onSuccess(newUrl);
+          dispatch(notify('Upload success.'));
           dispatch(uploadSuccess(newUrl));
         } else {
-          dispatch(uploadFail(uploadResponse));
+          console.error(uploadResponse);
+          dispatch(notify('Upload failed. Please try again or contact help@uprise.org for help.'));
+          dispatch(uploadFail('Could not PUT file to S3: ' + JSON.stringify(uploadResponse)));
         }
 
       } catch(err) {
-        console.log(err);
+        console.error(err);
+        dispatch(notify('Upload failed. Please try again or contact help@uprise.org for help.'));
         dispatch(uploadFail(err));
       }
     }
@@ -75,7 +80,7 @@ export function uploadSuccess(url) {
   return { type: UPLOAD_SUCCESS, url };
 }
 
-export function uploadFail() {
-  return { type: UPLOAD_FAIL };
+export function uploadFail(error) {
+  return { type: UPLOAD_FAIL, error };
 }
 

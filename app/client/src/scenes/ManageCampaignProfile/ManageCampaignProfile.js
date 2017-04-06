@@ -32,7 +32,7 @@ const WrappedCampaignProfileForm = organizeFormWrapper(CampaignProfileForm);
 class ManageCampaignProfileContainer extends Component {
 
   static PropTypes = {
-    campaignSlug: PropTypes.object.isRequired
+    campaignSlug: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -77,7 +77,7 @@ class ManageCampaignProfileContainer extends Component {
       this.setState( (prevState) => ({
         formData: Object.assign({}, prevState.formData, campaign)
       }));
-    }
+    } 
   }
 
   formSubmit = async (data) => {
