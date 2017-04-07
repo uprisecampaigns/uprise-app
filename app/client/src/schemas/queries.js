@@ -50,6 +50,7 @@ export const CampaignQuery = gql`
       title
       slug
       description
+      profile_subheader
       tags
       street_address
       street_address2
@@ -63,7 +64,6 @@ export const CampaignQuery = gql`
       zipcode_list
       phone_number
       website_url
-      map_url
       profile_image_url
       owner {
         id

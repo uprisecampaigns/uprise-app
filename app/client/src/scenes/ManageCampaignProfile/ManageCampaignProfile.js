@@ -42,7 +42,7 @@ class ManageCampaignProfileContainer extends Component {
       formData: {
         title: '',
         websiteUrl: '',
-        mapUrl: '',
+        profileSubheader: '',
         description: '',
         profileImageUrl: '',
       },
@@ -124,7 +124,6 @@ class ManageCampaignProfileContainer extends Component {
       const validators = [
         (component) => { validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required') },
         (component) => { validateWebsiteUrl(component) },
-        (component) => { validateWebsiteUrl(component, 'mapUrl', 'mapUrlErrorText') },
       ];
 
       return (

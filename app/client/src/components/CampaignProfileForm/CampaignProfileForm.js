@@ -50,6 +50,7 @@ class CampaignProfileForm extends Component {
           <div className={s.editTitleContainer}>
             <TextField
               value={data.title}
+              className={s.textField}
               hintText="Campaign Public Title"
               onChange={ (event) => { handleInputChange(event, 'title', event.target.value) } }
               errorText={errors.titleErrorText}
@@ -58,13 +59,13 @@ class CampaignProfileForm extends Component {
             />
           </div>
 
-          <div className={s.editMapUrlContainer}>
+          <div className={s.editSubheaderContainer}>
             <TextField
               className={s.textField}
-              value={data.mapUrl}
-              hintText="Map Url"
-              onChange={ (event) => { handleInputChange(event, 'mapUrl', event.target.value) } }
-              errorText={errors.mapUrlErrorText}
+              value={data.profileSubheader}
+              hintText="Subheader"
+              onChange={ (event) => { handleInputChange(event, 'profileSubheader', event.target.value) } }
+              errorText={errors.profileSubheaderErrorText}
               fullWidth={true}
               underlineShow={false}
             />
@@ -73,6 +74,7 @@ class CampaignProfileForm extends Component {
           <div className={s.editWebsiteUrlContainer}>
             <TextField
               value={data.websiteUrl}
+              className={s.textField}
               hintText="Website Url"
               onChange={ (event) => { handleInputChange(event, 'websiteUrl', event.target.value) } }
               errorText={errors.websiteUrlErrorText}

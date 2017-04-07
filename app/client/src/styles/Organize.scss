@@ -115,32 +115,44 @@
     padding: 1rem;
     border: 1px solid rgba($black, 0.1);
 
-    input {
-      color: darken($azure, 10%) !important;
-      font-size: 2rem !important;
+    div,input {
       text-align: center !important;
     }
+
+    input {
+      font-size: 2rem !important;
+      color: darken($azure, 10%) !important;
+    }
   }
+
+
+  .editSubheaderContainer {
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 1px solid rgba($black, 0.1);
+
+    div,input {
+      text-align: center !important;
+    }
+
+    input {
+      color: $azure !important;
+      font-size: 2rem !important;
+    }
+  }
+
 
   .editWebsiteUrlContainer {
     margin-top: 2rem;
     padding: 1rem;
     border: 1px solid rgba($black, 0.1);
 
-    input {
-      color: $brick-red;
+    div,input {
       text-align: center !important;
     }
-  }
-
-  .editMapUrlContainer {
-    margin-top: 2rem;
-    padding: 1rem;
-    background-color: lighten($azure, 50%);
 
     input {
-      color: darken($azure, 10%) !important;
-      text-align: center !important;
+      color: $brick-red !important;
     }
   }
 }
