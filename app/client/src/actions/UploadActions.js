@@ -59,12 +59,16 @@ export function attemptUpload({ onSuccess, filePath, collectionName, collectionI
           dispatch(uploadSuccess(newUrl));
         } else {
           console.error(uploadResponse);
+          //TODO: implement real error handler/callback
+          onSuccess('');
           dispatch(notify('Upload failed. Please try again or contact help@uprise.org for help.'));
           dispatch(uploadFail('Could not PUT file to S3: ' + JSON.stringify(uploadResponse)));
         }
 
       } catch(err) {
         console.error(err);
+        //TODO: implement real error handler/callback
+        onSuccess('');
         dispatch(notify('Upload failed. Please try again or contact help@uprise.org for help.'));
         dispatch(uploadFail(err));
       }
