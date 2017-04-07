@@ -36,11 +36,6 @@ class Campaign extends Component {
 
       return (
         <div>
-          <div className={s.outerContainer}>
-            <Link to={'/campaign/' + campaign.slug}>
-              <div className={s.campaignHeader}>{campaign.title}</div>
-            </Link>
-          </div>
           <CampaignProfile
             campaign={campaign}
           />

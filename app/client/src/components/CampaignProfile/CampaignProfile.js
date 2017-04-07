@@ -30,7 +30,15 @@ class CampaignProfile extends Component {
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
 
-          <div className={s.titleContainer}>{campaign.title}</div>
+          <Link to={'/campaign/' + campaign.slug}>
+            <div className={s.titleContainer}>{campaign.title}</div>
+          </Link>
+
+          { campaign.profile_image_url && (
+            <div className={s.profileImageContainer}>
+              <img src={campaign.profile_image_url} className={s.profileImage}/>
+            </div>
+          )}
 
           { campaign.website_url && (
             <div className={s.websiteUrlContainer}>
