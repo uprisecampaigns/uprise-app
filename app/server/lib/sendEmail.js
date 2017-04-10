@@ -28,11 +28,11 @@ module.exports = function sendEmail ({ to, subject, templateName, context = {} }
         });
       };
 
-      ejs.renderFile(config.api.basePath + '/views/' + templateName + '-text.ejs', context, function (err, textBody) {
+      ejs.renderFile(config.paths.base+ '/views/' + templateName + '-text.ejs', context, function (err, textBody) {
         if (err) {
           reject(err);
         } else {
-          ejs.renderFile(config.api.basePath + '/views/' + templateName + '-html.ejs', context, function (err, htmlBody) {
+          ejs.renderFile(config.paths.base+ '/views/' + templateName + '-html.ejs', context, function (err, htmlBody) {
             if (err) {
               reject(err);
             } else {

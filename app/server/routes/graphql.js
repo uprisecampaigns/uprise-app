@@ -10,6 +10,7 @@ const graphiqlExpress = graphqlServer.graphiqlExpress;
 
 const schema = require('../schema');
 const authenticationMiddleware = require('middlewares/authentication.js');
+const sendEmail = require('lib/sendEmail.js');
 
 const Action = require('models/Action');
 const Campaign = require('models/Campaign');
@@ -336,8 +337,48 @@ module.exports = (app) => {
         throw new Error('User must be logged in');
       }
 
-      const action = await Action.signup({ userId: context.user.id, actionId: options.actionId });
-      action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
+      const { user } = context;
+
+      const action = await Action.signup({ userId: user.id, actionId: options.actionId });
+      action.attending = await Action.attending({ actionId: action.id, userId: user.id });
+
+      let actionCoordinator;
+      let campaign;
+
+      // TODO: replace with more sophisticated model of "coordinator"
+      try {
+        actionCoordinator = await User.findOne('id', action.owner_id);
+      } catch (e) {
+        throw new Error('Cannot find action coordinator: ' + e.message);
+      }
+
+      try {
+        campaign = await Campaign.findOne('id', action.campaign_id);
+      } catch (e) {
+        throw new Error('Cannot find matching campaign: ' + e.message);
+      }
+
+      try {
+        await sendEmail({
+          to: actionCoordinator.email,
+          subject: user.first_name + ' ' + user.last_name + ' Signed up to Volunteer', 
+          templateName: 'action-signup-coordinator',
+          context: { action, user, campaign: action.campaign }
+        });
+      } catch (e) {
+        throw new Error('Error sending email to coordinator: ' + e.message);
+      }
+
+      try {
+        await sendEmail({
+          to: user.email,
+          subject: 'You Signed up to Volunteer',
+          templateName: 'action-signup-volunteer',
+          context: { action, user, actionCoordinator, campaign: action.campaign }
+        });
+      } catch (e) {
+        throw new Error('Error sending email to volunteer: ' + e.message);
+      }
 
       return action;
     },

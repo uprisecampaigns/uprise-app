@@ -1,0 +1,26 @@
+****Uprise Campaigns - You Signed up to Volunteer****
+
+You signed up for the following action:
+
+<%= campaign.title %> 
+<%= campaign.public_url %> 
+<%= action.title %>
+<%= action.public_url %>
+<%= action.start_time %>
+
+====
+
+<%= action.location_name && action.location_name %>
+<%= action.street_address && action.street_address %> 
+<%= action.street_address2 && action.street_address2 %> 
+<%= action.city && action.city + ', '%><%= action.state && action.state %> <%= action.zipcode && action.zipcode %>
+<%= action.location_notes && action.location_notes %>
+
+====
+
+You may contact the Action Coordinator, <%= actionCoordinator.first_name %> <%= actionCoordinator.last_name %> at email: <%= actionCoordinator.email %> 
+
+
+Regards
+
+Uprise Campaigns

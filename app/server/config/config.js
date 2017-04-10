@@ -28,8 +28,11 @@ module.exports = {
     },
     from: 'max@uprise.org'
   },
-  api: {
-    baseUrl: process.env.SERVER_BASE_URL,
-    basePath: path.resolve(__dirname, '..')
+  urls: {
+    api: process.env.SERVER_BASE_URL,
+    client: process.env.CLIENT_BASE_URL
+  },
+  paths: {
+    base: path.resolve(__dirname, '..')
   }
 }

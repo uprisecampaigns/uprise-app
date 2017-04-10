@@ -1,6 +1,7 @@
 import validator from 'validator';
 
 const assert = require('assert');
+const url = require('url');
 const uuid = require('uuid/v4');
 const getSlug = require('speakingurl');
 const knex = require('knex');
@@ -11,6 +12,8 @@ const User = require('models/User.js');
 const Campaign = require('models/Campaign.js');
 
 const updateProperties = require('models/updateProperties')('action');
+
+const config = require('config/config.js');
 
 
 class Action {
@@ -362,6 +365,9 @@ class Action {
       .select('types.id as id', 'types.title as title');
 
     details.types = await typesQuery;
+
+    details.public_url = url.resolve(config.urls.client, 'action/' + action.slug);
+    details.dashboard_url = url.resolve(config.urls.client, 'organize/' + details.campaign.slug + '/action/' + action.slug);
 
     return details;
   }

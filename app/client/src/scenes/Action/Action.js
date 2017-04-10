@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
 import moment from 'moment';
-
-import Link from 'components/Link';
+import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+
+import Link from 'components/Link';
 
 import {
   notify
@@ -28,7 +29,8 @@ class ActionContainer extends Component {
     super(props);
 
     this.state = {
-      saving: false
+      saving: false,
+      modalOpen: false
     }
   }
 
@@ -37,9 +39,13 @@ class ActionContainer extends Component {
     action: PropTypes.object
   };
 
-  signup = async () => {
+  signup = () => {
+    this.setState({ modalOpen: true });
+  }
 
-    this.setState({ saving: true });
+  confirmSignup = async () => {
+
+    this.setState({ saving: true, modalOpen: false });
     try {
       const results = await this.props.signup({
         variables: {
@@ -84,7 +90,8 @@ class ActionContainer extends Component {
     if (this.props.action) {
 
       const { action, ...props } = this.props;
-      const { signup, cancelSignup } = this;
+      const { modalOpen, ...state } = this.state;
+      const { signup, confirmSignup, cancelSignup } = this;
   
       const startTime = moment(action.start_time);
       const endTime = moment(action.end_time);
@@ -99,41 +106,32 @@ class ActionContainer extends Component {
           return <div key={index} className={s.detailLine}>{activity.description}</div>;
         }) : [];
 
-      const keywords = (typeof action.tags === 'object') ?
-        action.tags.map( (tag, index) => {
-          return <div key={index} className={s.detailLine}>{tag}</div>;
-        }) : [];
+      const keywords = (typeof action.tags === 'object') ? (
+          <div className={s.detailLine}>{action.tags.join(', ')}</div>
+        ) : [];
+
+      const modalActions = [
+        <RaisedButton
+          label="Cancel"
+          primary={false}
+          onTouchTap={ () => { this.setState({modalOpen: false}); }}
+        />,
+        <RaisedButton
+          label="Confirm"
+          primary={true}
+          onTouchTap={ () => { confirmSignup() }}
+        />
+      ];
 
       return (
         <div className={s.outerContainer}>
-          <Link to={'/campaign/' + action.campaign.slug}>
-            <div className={s.campaignHeader}>{action.campaign.title}</div>
-          </Link>
           <div className={s.innerContainer}>
             <div className={s.titleContainer}>{action.title}</div>
-            <div className={s.dateTimePlaceContainer}>{startTime.format('ddd MMM Do, YYYY')}, {action.city}, {action.state}</div>
-
-            <div className={s.contactContainer}>
-              Contact Coordinator: {action.owner.first_name} {action.owner.last_name}
-              <Link to={'mailto:' + action.owner.email} external={true} useAhref={true}>
-                {action.owner.email}
-              </Link>
-            </div>
-
-            <div className={s.descriptionContainer}>{action.description}</div>
-
-            <div className={s.locationContainer}>
-              <div className={s.header}>
-                Location Details
-              </div>
-              <div className={s.detailLine}>{action.location_name}</div>
-              <div className={s.detailLine}>{action.street_address}</div>
-              <div className={s.detailLine}>{action.street_address2}</div>
-              <div className={s.detailLine}>
-                {action.city}, {action.state} {action.zipcode}
-              </div>
-              <div className={s.detailLine}>{action.location_notes}</div>
-            </div>
+            <Link to={'/campaign/' + action.campaign.slug}>
+              <div className={s.campaignHeader}>{action.campaign.title}</div>
+            </Link>
+            <div className={s.dateTimePlaceContainer}>{startTime.format('ddd, MMM Do, YYYY')}</div>
+            <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
 
             <div className={s.attendingContainer}>
               {this.state.saving ? (
@@ -162,6 +160,28 @@ class ActionContainer extends Component {
               )}
             </div>
 
+            <div className={s.descriptionContainer}>{action.description}</div>
+
+            <div className={s.contactContainer}>
+              Contact Coordinator: {action.owner.first_name} {action.owner.last_name}
+              <Link to={'mailto:' + action.owner.email} external={true} useAhref={true}>
+                {action.owner.email}
+              </Link>
+            </div>
+
+            <div className={s.locationContainer}>
+              <div className={s.header}>
+                Location Details
+              </div>
+              <div className={s.detailLine}>{action.location_name}</div>
+              <div className={s.detailLine}>{action.street_address}</div>
+              <div className={s.detailLine}>{action.street_address2}</div>
+              <div className={s.detailLine}>
+                {action.city}, {action.state} {action.zipcode}
+              </div>
+              <div className={s.detailLine}>{action.location_notes}</div>
+            </div>
+
             {issueAreas.length > 0 && (
               <div className={s.issueAreasContainer}>
                 <div className={s.header}>
@@ -180,16 +200,28 @@ class ActionContainer extends Component {
               </div>
             )}
 
-            {keywords.length > 0 && (
-              <div className={s.keywordsContainer}>
-                <div className={s.header}>
-                  Keywords:
-                </div>
-                <div>{keywords}</div>
+            <div className={s.keywordsContainer}>
+              <div className={s.header}>
+                Keywords:
               </div>
-            )}
+              <div>{keywords}</div>
+            </div>
 
           </div>
+
+          {modalOpen && (
+            <Dialog
+              title="Are You Sure?"
+              modal={true}
+              actions={modalActions}
+              open={modalOpen}
+            >
+              <p>
+                In signing up for this action, you are agreeing to give the coordinator your email address for the purposes of contacting you about this action. The coordinator is not allowed to add your email address to the campaign’s general email or any other lists or to share or sell your email address without your expressed consent. Please notify UpRise if you believe that this policy has been violated.
+              </p>
+            </Dialog>
+          )}
+
         </div>
       );
     } else {

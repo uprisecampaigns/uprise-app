@@ -140,7 +140,7 @@ class User {
       subject: 'Reset your password', 
       templateName: 'password-reset-email',
       context: {
-        resetURL: config.api.baseUrl + '/use-password-reset/' + resetCode.code
+        resetURL: config.urls.api + '/use-password-reset/' + resetCode.code
       }
     });
 

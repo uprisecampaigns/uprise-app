@@ -3,26 +3,25 @@
 .outerContainer {
   width: 100%;
 
-  .campaignHeader {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 8rem;
-    background-color: $azure;
-    color: darken($white, 5%);
-    font-size: 2rem;
-    font-weight: 300;
-  }
-
   .innerContainer {
     width: 90%;
     margin: 1rem 5% 0 5%;
 
-    .titleContainer {
+    .campaignHeader {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
       color: $azure;
       font-size: 1.6rem;
+      text-align: center;
+      align-items: center;
+    }
+
+    .titleContainer {
       margin-top: 1rem;
+      margin-bottom: 1rem;
+      color: darken($azure, 10%);
+      text-align: center;
+      font-size: 2rem;
     }
 
     .dateTimePlaceContainer {
@@ -52,11 +51,16 @@
     }
 
     .descriptionContainer {
+      border: 1px solid darken($white, 20%);
+      padding: 1rem;
+      margin: 2rem auto;
+      color: $azure;
       white-space: pre-wrap;
     }
 
     .attendingContainer {
       text-align: center;
+      margin: 1rem auto 1rem auto;
 
       button {
         background-color: lighten($brick-red, 25%) !important;

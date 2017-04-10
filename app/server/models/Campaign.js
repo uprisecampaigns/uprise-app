@@ -1,6 +1,7 @@
 import validator from 'validator';
 
 const uuid = require('uuid/v4');
+const url = require('url');
 const knex = require('knex');
 const getSlug = require('speakingurl');
 const knexConfig = require('config/knexfile.js');
@@ -10,6 +11,7 @@ const User = require('models/User.js');
 
 const updateProperties = require('models/updateProperties')('campaign');
 
+const config = require('config/config.js');
 
 class Campaign {
 
@@ -275,6 +277,9 @@ class Campaign {
       .select('types.id as id', 'types.title as title');
 
     details.types = await typesQuery;
+
+    details.public_url = url.resolve(config.urls.client, 'campaign/' + campaign.slug);
+    details.dashboard_url = url.resolve(config.urls.client, 'organize/' + campaign.slug);
 
     return details;
   }

@@ -73,7 +73,7 @@ module.exports = (passport) => {
             subject: 'Confirm your email address', 
             templateName: 'verification-email',
             context: {
-              verifyURL: config.api.baseUrl + '/email-verification/' + user.verificationToken
+              verifyURL: config.urls.api + '/email-verification/' + user.verificationToken
             }
           });
 
