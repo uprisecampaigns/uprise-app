@@ -114,10 +114,8 @@ module.exports = (app) => {
         throw new Error('User must be logged in');
       }
 
-      console.log(data);
-
       const action = await Action.findOne(data.search);
-      console.log(action);
+      action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
       return action;
     },
 
@@ -329,6 +327,30 @@ module.exports = (app) => {
       input.owner_id = context.user.id;
 
       const action = await Action.edit(input);
+      return action;
+    },
+
+    actionSignup: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const action = await Action.signup({ userId: context.user.id, actionId: options.actionId });
+      action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
+
+      return action;
+    },
+
+    cancelActionSignup: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const action = await Action.cancelSignup({ userId: context.user.id, actionId: options.actionId });
+      action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
+
       return action;
     },
 

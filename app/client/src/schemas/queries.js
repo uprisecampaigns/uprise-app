@@ -99,6 +99,7 @@ export const ActionQuery = gql`
       end_time
       tags
       virtual
+      attending
       location_name
       street_address
       street_address2

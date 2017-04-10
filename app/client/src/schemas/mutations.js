@@ -40,6 +40,26 @@ export const EditActionMutation = gql`
   }
 `;
 
+export const ActionSignupMutation = gql`
+  mutation ActionSignupMutation ($actionId:String!) {
+    actionSignup(actionId:$actionId){
+      id
+      title
+      slug
+    }
+  }
+`;
+
+export const CancelActionSignupMutation = gql`
+  mutation CancelActionSignupMutation ($actionId:String!) {
+    cancelActionSignup(actionId:$actionId){
+      id
+      title
+      slug
+    }
+  }
+`;
+
 export const EditCampaignMutation = gql`
   mutation EditCampaignMutation ($data:EditCampaignInput) {
     editCampaign(data:$data){

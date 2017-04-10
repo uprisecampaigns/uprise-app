@@ -36,6 +36,51 @@ class Action {
     return result === 1;
   }
 
+  static async attending({ userId, actionId }) {
+
+    const signup = await db('action_signups')
+      .where({
+        action_id: actionId,
+        user_id: userId
+      });
+
+    if (signup.length > 1) {
+      throw new Error('More than one signup for user with id: ' + userId + 'for action with id: ' + actionId);
+    } else {
+      return signup.length === 1;
+    }
+  }
+
+  static async signup({ userId, actionId }) {
+    if (await this.attending({ userId, actionId })) {
+      return await Action.findOne({ id: actionId });
+    } else {
+      const result = await db('action_signups')
+        .insert({
+          user_id: userId,
+          action_id: actionId
+        });
+
+      return await Action.findOne({ id: actionId });
+    }
+  }
+
+  static async cancelSignup({ userId, actionId }) {
+    if (!await this.attending({ userId, actionId })) {
+      return await Action.findOne({ id: actionId });
+    } else {
+      const result = await db('action_signups')
+        .where({
+          user_id: userId,
+          action_id: actionId
+        })
+        .del();
+
+      return await Action.findOne({ id: actionId });
+    }
+  }
+
+
   static async search(search) {
     
     const searchQuery = db('actions')
@@ -286,9 +331,9 @@ class Action {
   static async details(action) {
     const details = {};
 
-    details.campaign = Campaign.findOne('id', action.campaign_id); 
+    details.campaign = await Campaign.findOne('id', action.campaign_id); 
 
-    details.owner = User.findOne('id', action.owner_id); 
+    details.owner = await User.findOne('id', action.owner_id); 
 
     const activitiesQuery = db('activities')
       .innerJoin('actions_activities', 'actions_activities.activity_id', 'activities.id')

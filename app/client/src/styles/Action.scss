@@ -54,5 +54,16 @@
     .descriptionContainer {
       white-space: pre-wrap;
     }
+
+    .attendingContainer {
+      text-align: center;
+
+      button {
+        background-color: lighten($brick-red, 25%) !important;
+        span {
+          color: darken($brick-red, 10%) !important;
+        }
+      }
+    }
   }
 }

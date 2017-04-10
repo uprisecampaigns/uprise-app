@@ -70,6 +70,7 @@ module.exports = buildSchema(`
     end_time: String
     tags: [String]
     virtual: Boolean
+    attending: Boolean
     location_name: String
     street_address: String
     street_address2: String
@@ -253,5 +254,7 @@ module.exports = buildSchema(`
     deleteAction(data: DeleteActionInput): Boolean
     createAction(data: CreateActionInput): ActionResult
     editAction(data: EditActionInput): ActionResult
+    actionSignup(actionId: String!): ActionResult
+    cancelActionSignup(actionId: String!): ActionResult
   }
 `);
