@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux'
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
+import CircularProgress from 'material-ui/CircularProgress';
 import Dropzone from 'react-dropzone';
 import ReactCrop from 'react-image-crop';
 
@@ -24,6 +25,7 @@ class ImageUploader extends React.Component {
     this.state = {
       imageSrc: props.imageSrc || null,
       editImageSrc: null,
+      uploading: false,
       imageCrop: {
         width: 90,
         height: 90,
@@ -33,7 +35,7 @@ class ImageUploader extends React.Component {
       },
     };
   }
-  
+ 
   static propTypes = {
     imageSrc: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -58,7 +60,7 @@ class ImageUploader extends React.Component {
     } else if (!file.type.match('image.*')) {
       dispatch(notify('File must be an image'));
     } else {
-      //TODO: 
+      //TODO:
       // - handle accepted vs rejected files!!
       const fileReader = new FileReader();
 
@@ -94,6 +96,8 @@ class ImageUploader extends React.Component {
     event.stopPropagation();
     const crop = this.state.imageCrop;
 
+    this.setState({ uploading: true });
+
     this.loadImage(this.state.editImageSrc, (loadedImg) => {
       const imageWidth = loadedImg.naturalWidth;
       const imageHeight = loadedImg.naturalHeight;
@@ -128,14 +132,17 @@ class ImageUploader extends React.Component {
       ctx.drawImage(loadedImg, cropX, cropY, cropWidth, cropHeight, 0, 0, destWidth, destHeight);
 
       const uploadBlob = (blob) => {
-        this.props.dispatch(attemptUpload({ 
-          onSuccess: this.props.onChange,
-          ...this.props.imageUploadOptions, 
-          contentType: 'image/jpeg', 
-          blob 
+        this.props.dispatch(attemptUpload({
+          ...this.props.imageUploadOptions,
+          contentType: 'image/jpeg',
+          blob,
+          onSuccess: (src) => {
+            this.setState({ uploading: false });
+            this.props.onChange(src);
+          }
         }));
- 
-        this.setState({ 
+
+        this.setState({
           editImageSrc: null,
         });
       }
@@ -174,44 +181,55 @@ class ImageUploader extends React.Component {
 
   render() {
     const { ...props } = this.props;
-    const { imageSrc, editImageSrc, imageCrop, ...state } = this.state;
+    const { imageSrc, editImageSrc, imageCrop, uploading, ...state } = this.state;
 
     return (
 
       <div className={s.imageUploadContainer}>
         { editImageSrc ? (
           <div className={s.cropContainer}>
-            <div className={s.reactCropContainer}>
-              <ReactCrop 
-                className={s.reactCrop}
-                src={editImageSrc} 
-                onComplete={this.imageCropChange}
-                crop={imageCrop}
-              />
-            </div>
-            <div className={s.buttonContainer}>
-              <RaisedButton 
-                className={s.button}
-                onTouchTap={this.cancelImageEdit} 
-                label="Cancel Crop" 
-              />
-              <RaisedButton 
-                className={s.button}
-                onTouchTap={this.acceptImageCrop} 
-                primary={true} 
-                label="Save Changes" 
-              />
-            </div>
+            { uploading ? (
+              <div className={s.uploadingThrobberContainer}>
+                <CircularProgress
+                  size={100}
+                  thickness={5}
+                />
+              </div>
+            ) : (
+              <div>
+                <div className={s.reactCropContainer}>
+                  <ReactCrop
+                    className={s.reactCrop}
+                    src={editImageSrc}
+                    onComplete={this.imageCropChange}
+                    crop={imageCrop}
+                  />
+                </div>
+                <div className={s.buttonContainer}>
+                  <RaisedButton
+                    className={s.button}
+                    onTouchTap={this.cancelImageEdit}
+                    label="Cancel Crop"
+                  />
+                  <RaisedButton
+                    className={s.button}
+                    onTouchTap={this.acceptImageCrop}
+                    primary={true}
+                    label="Save Changes"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         ) : (
-          <Dropzone 
+          <Dropzone
             className={s.fileDropContainer}
             onDrop={this.onDrop}
             multiple={false}
           >
             { imageSrc ? (
               <div>
-                <FontIcon 
+                <FontIcon
                   className={[s.removeImageButton, 'material-icons'].join(' ')}
                   onTouchTap={this.removeImage}
                 >delete</FontIcon>
