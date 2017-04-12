@@ -12,7 +12,7 @@ export default organizeCampaignPaths({
   path: '/organize/:slug/actions',
   component: (campaign) => (
     <Layout>
-      <ManageCampaignActionsWithAuthentication campaignSlug={campaign.slug}/>
+      <ManageCampaignActionsWithAuthentication campaignId={campaign.id}/>
     </Layout>
   )
 });

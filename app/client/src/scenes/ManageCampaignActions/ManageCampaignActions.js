@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
+import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import {List, ListItem} from 'material-ui/List';
@@ -9,7 +10,7 @@ import history from 'lib/history';
 
 import Link from 'components/Link';
 
-import { CampaignQuery } from 'schemas/queries';
+import { CampaignQuery, ActionsQuery } from 'schemas/queries';
 
 import { 
   DeleteCampaignMutation
@@ -30,44 +31,70 @@ class ManageCampaignActionsContainer extends Component {
   }
 
   render() {
-    const campaign = this.props.campaign || {
-      title: '',
-      slug: ''
-    }
 
-    return (
-      <div className={s.outerContainer}>
+    if (this.props.campaign && this.props.actions) {
+      const { campaign, actions, ...props } = this.props;
 
-        <Link to={'/organize/' + campaign.slug}>
-          <div className={s.campaignHeader}>
+      const actionsList = actions.map( (action) => (
+        <Link key={action.id} to={'/organize/' + campaign.slug + '/action/' + action.slug}>
+          <ListItem>
 
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
+            <div className={s.actionListTitle}>
+              {action.title}
+            </div>
 
-            {campaign.title}
-          </div>
+            {action.start_time && (
+              <div className={s.actionListDetailLine}>
+                {moment(action.start_time).format("ddd, MMM Do YYYY, h:mm:ss a")}
+              </div>
+            )}
+
+            {(action.city && action.state) && (
+              <div className={s.actionListDetailLine}>
+                {action.city}, {action.state}
+              </div>
+            )}
+
+          </ListItem>
         </Link>
+      ));
 
-        <div className={s.campaignSubHeader}>Actions</div>
+      return (
+        <div className={s.outerContainer}>
 
-        <List>
+          <Link to={'/organize/' + campaign.slug}>
+            <div className={s.campaignHeader}>
 
-          <Link to={'/organize/' + campaign.slug + '/actions-list'}>
-            <ListItem 
-              primaryText="Calendar/List"
-            />
+              <FontIcon 
+                className={["material-icons", s.backArrow].join(' ')}
+              >arrow_back</FontIcon>
+
+              {campaign.title}
+            </div>
           </Link>
+
+          <div className={s.campaignSubHeader}>Actions</div>
 
           <Link to={'/organize/' + campaign.slug + '/create-action'}>
-            <ListItem 
-              primaryText="New Action"
-            />
+            <div className={s.organizeButton}>
+              <RaisedButton
+                primary={true} 
+                type="submit"
+                label="Create Action" 
+              />
+            </div>
           </Link>
 
-        </List>
-      </div>
-    );
+          <List>
+
+            { actionsList }
+
+          </List>
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
@@ -76,7 +103,7 @@ export default compose(
     options: (ownProps) => ({ 
       variables: {
         search: {
-          slug: ownProps.campaignSlug
+          id: ownProps.campaignId
         }
       }
     }),
@@ -84,5 +111,19 @@ export default compose(
       campaign: data.campaign
     })
   }),
+
+  graphql(ActionsQuery, {
+    options: (ownProps) => ({ 
+      variables: {
+        search: {
+          campaignIds: [ownProps.campaignId]
+        }
+      }
+    }),
+    props: ({ data }) => ({ 
+      actions: data.actions
+    })
+  }),
+
   graphql(DeleteCampaignMutation, { name: 'deleteCampaignMutation' })
 )(ManageCampaignActionsContainer);

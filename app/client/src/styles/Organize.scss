@@ -45,9 +45,9 @@
     justify-content: center;
     align-items: center;
     color: $azure !important;
-    min-height: 3rem;
     font-size: 2rem;
     font-weight: 300;
+    margin: 2rem auto 2rem auto;
 
     :global .material-icons {
       color: $azure !important;
@@ -154,5 +154,17 @@
     input {
       color: $brick-red !important;
     }
+  }
+
+  .actionListTitle {
+    color: $azure;
+    font-size: 1.8rem;
+    padding: 1rem;
+  }
+
+  .actionListDetailLine {
+    color: lighten($black, 30%);
+    font-size: 1rem;
+    padding: 0.2rem 1rem 0.2rem 1rem;
   }
 }
