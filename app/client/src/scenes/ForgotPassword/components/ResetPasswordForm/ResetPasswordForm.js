@@ -37,6 +37,7 @@ class ResetPasswordForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Email"
+                    type="email"
                     value={data.email}
                     errorText={data.emailErrorText || resetError}
                     onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }

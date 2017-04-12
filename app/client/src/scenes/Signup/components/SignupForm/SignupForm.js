@@ -58,6 +58,7 @@ class SignupForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Email"
+                    type="email"
                     value={data.email}
                     onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
                     errorText={data.emailErrorText}

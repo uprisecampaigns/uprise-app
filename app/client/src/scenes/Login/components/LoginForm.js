@@ -42,6 +42,7 @@ class LoginForm extends Component {
                   <TextField
                     floatingLabelText="Email"
                     value={data.email}
+                    type="email"
                     errorText={data.emailErrorText || loginError}
                     onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
                   />
