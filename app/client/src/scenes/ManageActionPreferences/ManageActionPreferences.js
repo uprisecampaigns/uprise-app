@@ -205,14 +205,6 @@ class ManageActionPreferencesContainer extends Component {
     return (
       <div className={s.outerContainer}>
         
-        <Link to={'/organize/' + campaign.slug}>
-          <div className={s.campaignHeader}>{campaign.title}</div>
-        </Link>
-
-        <Link to={baseActionUrl}>
-          <div className={s.actionHeader}>{action.title}</div>
-        </Link>
-
         <Link to={baseActionUrl + '/settings'}>
           <div className={s.navSubHeader}>
             <FontIcon 

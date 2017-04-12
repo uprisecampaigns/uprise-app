@@ -143,12 +143,6 @@ class CreateAction extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug}>
-            <div className={s.campaignHeader}>
-              {campaign.title}
-            </div>
-          </Link>
-
           <Link to={'/organize/' + campaign.slug + '/actions'}>
             <div className={s.navSubHeader}>
               <FontIcon 
@@ -158,7 +152,7 @@ class CreateAction extends Component {
             </div>
           </Link>
 
-          <div className={s.campaignSubHeader}>New Action</div>
+          <div className={s.campaignSubHeader}>Create Action</div>
 
           <WrappedActionInfoForm
             initialState={formData}

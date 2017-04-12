@@ -41,8 +41,13 @@ class ManageActionContainer extends Component {
     return (
       <div className={s.outerContainer}>
 
-        <Link to={'/organize/' + campaign.slug}>
-          <div className={s.campaignHeader}>{campaign.title}</div>
+        <Link to={'/organize/' + campaign.slug + '/actions'}>
+          <div className={s.navSubHeader}>
+            <FontIcon 
+              className={["material-icons", s.backArrow].join(' ')}
+            >arrow_back</FontIcon>
+            Actions
+          </div>
         </Link>
 
         <div className={s.actionHeader}>{action.title}</div>

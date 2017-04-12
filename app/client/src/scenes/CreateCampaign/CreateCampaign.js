@@ -19,6 +19,8 @@ import { CreateCampaignMutation } from 'schemas/mutations';
 
 import CampaignInfoForm from 'components/CampaignInfoForm';
 
+import s from 'styles/Organize.scss';
+
 
 const WrappedCampaignInfoForm = organizeFormWrapper(CampaignInfoForm);
 
@@ -128,7 +130,9 @@ class CreateCampaignContainer extends Component {
     ];
 
     return (
-      <div>
+      <div className={s.outerContainer}>
+
+        <div className={s.pageSubHeader}>Create Campaign</div>
 
         <WrappedCampaignInfoForm
           initialState={formData}

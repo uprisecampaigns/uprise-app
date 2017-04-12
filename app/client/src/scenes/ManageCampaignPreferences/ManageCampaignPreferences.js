@@ -187,7 +187,6 @@ class ManageCampaignPreferencesContainer extends Component {
 
     return (
       <div className={s.outerContainer}>
-        <div className={s.campaignHeader}>{campaign.title}</div>
 
         <Link to={'/organize/' + campaign.slug + '/settings'}>
           <div className={s.navSubHeader}>
