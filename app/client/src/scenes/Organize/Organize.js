@@ -9,6 +9,9 @@ import {
   MyCampaignsQuery, 
 } from 'schemas/queries';
 
+import s from 'styles/Organize.scss';
+
+
 const baseUrl = '/organize';
 
 class Organize extends Component {
@@ -30,17 +33,24 @@ class Organize extends Component {
 
         
     return (
-      <List>
+      <div className={s.outerContainer}>
 
-        { campaignList }
-       
-        <Link to="/organize/create-campaign">
-          <ListItem 
-            primaryText="Create Campaign"
-          />
-        </Link>
-       
-      </List>
+        <div className={s.organizeHeader}>
+          Organize
+        </div>
+
+        <List>
+
+          { campaignList }
+         
+          <Link to="/organize/create-campaign">
+            <ListItem 
+              primaryText="Create Campaign"
+            />
+          </Link>
+         
+        </List>
+      </div>
     );
   }
 }
