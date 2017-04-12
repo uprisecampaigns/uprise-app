@@ -23,6 +23,7 @@ class ManageCampaignActionsContainer extends Component {
 
   static PropTypes = {
     campaign: PropTypes.object.isRequired,
+    actions: PropTypes.array.isRequired,
     campaignSlug: PropTypes.string.isRequired
   }
 

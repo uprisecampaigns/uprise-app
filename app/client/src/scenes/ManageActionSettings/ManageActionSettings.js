@@ -10,7 +10,7 @@ import history from 'lib/history';
 import Link from 'components/Link';
 
 import { 
-  CampaignQuery, ActionQuery 
+  CampaignQuery, ActionQuery, ActionsQuery
 } from 'schemas/queries';
 
 import { 
@@ -24,7 +24,8 @@ class ManageActionSettings extends Component {
 
   static PropTypes = {
     deleteActionMutation: PropTypes.func.isRequired,
-    campaignSlug: PropTypes.string.isRequired,
+    actionId: PropTypes.string.isRequired,
+    campaignId: PropTypes.string.isRequired,
     campaign: PropTypes.object,
     action: PropTypes.object,
   }
@@ -44,18 +45,32 @@ class ManageActionSettings extends Component {
   }
 
   confirmDelete = async () => {
+
+    const { actionId, campaignId, campaign, action, ...props } = this.props;
+
     try {
-      const results = await this.props.deleteActionMutation({ 
+      const results = await props.deleteActionMutation({ 
         variables: {
           data: {
-            id: this.props.action.id
+            id: action.id
           }
         },
-        refetchQueries: ['ActionsQuery', 'ActionQuery'],
+        refetchQueries: [{
+          query: ActionsQuery,
+          variables: {
+            search: { campaignIds: [campaignId] }
+          }
+        },
+        {
+          query: ActionQuery,
+          variables: {
+            search: { id: actionId }
+          }
+        }]
       });
 
       if (results.data.deleteAction) {
-        history.push('/organize/' + this.props.campaign.slug + '/actions');
+        history.push('/organize/' + campaign.slug + '/actions');
       } else {
         // TODO: Handle error!
         console.error(results);

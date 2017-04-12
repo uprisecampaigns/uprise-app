@@ -31,6 +31,7 @@ const graphqlOptions = (collection) => {
       graphqlLoading: data.loading
     }),
     options: (ownProps) => ({
+      fetchPolicy: 'cache-and-network',
       pollInterval: 30000,
       ...ownProps
     })
