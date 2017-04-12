@@ -54,6 +54,12 @@
     }
   }
 
+  .actionHeader {
+    border-bottom: none;
+    font-weight: 400;
+    color: lighten($azure, 20%) !important;
+  }
+
   .campaignSubHeader {
     width: 100%;
     display: flex;
@@ -188,5 +194,25 @@
     color: lighten($black, 30%);
     font-size: 1rem;
     padding: 0.2rem 1rem 0.2rem 1rem;
+  }
+
+  .settingsLinkContainer {
+    position: absolute;
+    display: flex;
+    right: 1rem;
+    margin-top: -3rem;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      margin-left: 1rem;
+    }
+  }
+
+  .composeMessageButtonContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

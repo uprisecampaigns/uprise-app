@@ -52,7 +52,7 @@ class ActionContainer extends Component {
           actionId: this.props.action.id
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['ActionsQuery', 'ActionQuery'],
+        refetchQueries: ['SignedUpVolunteersQuery', 'ActionQuery', 'ActionsQuery'],
       });
 
       this.props.dispatch(notify('Signed up!'));
@@ -73,7 +73,7 @@ class ActionContainer extends Component {
           actionId: this.props.action.id
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['ActionsQuery', 'ActionQuery'],
+        refetchQueries: ['SignedUpVolunteersQuery', 'ActionQuery', 'ActionsQuery'],
       });
 
       this.props.dispatch(notify('Signup canceled'));

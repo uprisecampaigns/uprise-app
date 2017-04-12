@@ -331,6 +331,25 @@ module.exports = (app) => {
       return action;
     },
 
+    signedUpVolunteers: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const { user } = context;
+
+      const action = await Action.findOne(data.search);
+
+      if (action.owner_id !== user.id) {
+        throw new Error('User must be action coordinator');
+      }
+
+      const volunteers = await Action.signedUpVolunteers({ actionId: action.id });
+
+      return volunteers;
+    },
+
     actionSignup: async (options, context) => {
 
       if (!context.user) {

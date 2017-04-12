@@ -83,6 +83,14 @@ class Action {
     }
   }
 
+  static async signedUpVolunteers({ actionId }) {
+
+    const result = await db('action_signups')
+      .where('action_id', actionId)
+      .innerJoin('users', 'action_signups.user_id', 'users.id')
+
+    return result;
+  }
 
   static async search(search) {
     

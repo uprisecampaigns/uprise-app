@@ -219,7 +219,18 @@ export const IssueAreasQuery = gql`
     }
   }
 `;
-
+ 
+export const SignedUpVolunteersQuery = gql`
+  query SignedUpVolunteersQuery ($search:ActionQueryInput) {
+    signedUpVolunteers(search:$search){
+      id
+      first_name
+      last_name
+      email
+    }
+  }
+`;
+ 
 export const MeQuery = gql`
   query MeQuery {
     me {
