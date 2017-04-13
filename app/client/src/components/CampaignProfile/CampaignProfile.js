@@ -39,6 +39,12 @@ class CampaignProfile extends Component {
             </div>
           )}
 
+          { campaign.profile_subheader && (
+            <div className={s.profileSubheaderContainer}>
+              {campaign.profile_subheader}
+            </div>
+          )}
+
           { campaign.website_url && (
             <div className={s.websiteUrlContainer}>
               <Link to={campaign.website_url} external={true} useAhref={true}>

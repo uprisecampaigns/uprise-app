@@ -42,9 +42,17 @@
       }
     }
 
-    .websiteUrlContainer {
-      margin-top: 2rem;
+    .profileSubheaderContainer {
+      color: lighten($azure, 10%);
+      padding: 1rem;
+      font-size: 2.5rem;
+      margin-top: 1rem;
       text-align: center;
+    }
+
+    .websiteUrlContainer {
+      text-align: center;
+      font-size: 2rem;
       padding: 1rem;
 
       a {
