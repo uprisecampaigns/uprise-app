@@ -17,6 +17,11 @@ class Link extends React.Component {
     useAhref: PropTypes.bool,
     children: PropTypes.node,
     onClick: PropTypes.func,
+    preventDefault: PropTypes.bool
+  };
+
+  defaultProps = {
+    preventDefault: true
   };
 
   handleClick = (event) => {
@@ -32,7 +37,9 @@ class Link extends React.Component {
       return;
     }
 
-    event.preventDefault();
+    if (this.props.preventDefault) {
+      event.preventDefault();
+    }
 
     if (this.props.external) {
       window.location = this.props.to;
@@ -42,7 +49,7 @@ class Link extends React.Component {
   };
 
   render() {
-    const { to, children, external, useAhref, className, ...props } = this.props;
+    const { to, children, external, useAhref, preventDefault, className, ...props } = this.props;
     if (useAhref) {
       return (
         <a 

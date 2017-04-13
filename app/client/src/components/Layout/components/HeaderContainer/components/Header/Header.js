@@ -52,6 +52,7 @@ class ContentDropdownMenu extends Component {
           to={dropdown.path}
           useAhref={false}
           onClick={itemClicked}
+          preventDefault={false}
         >
           <MenuItem 
             className={s.dropdownItemText}
@@ -135,6 +136,7 @@ function AuthenticatedIcons(props) {
         <Link 
           to="/search"
           useAhref={false}
+          preventDefault={false}
         >
           <IconButton 
             iconStyle={iconButtonStyle}
@@ -205,7 +207,7 @@ class Header extends Component {
           </div>
         }
         title={
-          <Link useAhref={false} to='/'>
+          <Link useAhref={false} preventDefault={false} to='/'>
             <div className={s.logoContainer}>
               <img 
                 src={upriseLogo}
