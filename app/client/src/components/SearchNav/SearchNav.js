@@ -5,7 +5,6 @@ import ContentNavigation from 'components/ContentNavigation';
 const selections = [
   { title: 'actions', path: 'search-actions'},
   { title: 'campaigns', path: 'search-campaigns'},
-  { title: 'people', path: 'search-campaigns'},
 ];
 
 const baseUrl = '/search';
