@@ -8,6 +8,9 @@ export const CampaignsQuery = gql`
       description
       slug
       tags
+      city
+      state
+      profile_subheader
       issue_areas {
         id
         title
