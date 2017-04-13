@@ -64,8 +64,8 @@ class SearchActionResults extends React.PureComponent {
       const endTime = moment(action.end_time);
 
       return (
-        <Link to={'/action/' + action.slug}>
-          <Card key={index}>
+        <Link key={index} to={'/action/' + action.slug}>
+          <Card>
             <CardHeader
               title={action.title}
               subtitle={

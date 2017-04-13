@@ -21,7 +21,7 @@ class CampaignProfile extends Component {
 
     const { campaign, ...props } = this.props;
 
-    const keywords = (typeof campaign.tags === 'object') && (
+    const keywords = (typeof campaign.tags === 'object' && campaign.tags.length > 0) && (
       <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
     );
 
@@ -47,7 +47,9 @@ class CampaignProfile extends Component {
             </div>
           )}
 
-          <div className={s.descriptionContainer}>{campaign.description}</div>
+          { (typeof campaign.description === 'string' && campaign.description.trim() !== '') &&
+            <div className={s.descriptionContainer}>{campaign.description}</div>
+          }
 
           <div className={s.contactContainer}>
             Contact Coordinator:  

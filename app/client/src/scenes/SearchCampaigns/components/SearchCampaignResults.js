@@ -64,10 +64,11 @@ class SearchCampaignResults extends Component {
       ) : null;
 
       return (
-        <Link to={'/campaign/' + campaign.slug}>
-          <Card 
-            key={index}
-          >
+        <Link 
+          to={'/campaign/' + campaign.slug}
+          key={index}
+        >
+          <Card>
             <CardHeader
               title={campaign.title}
               subtitle={subtitle}
