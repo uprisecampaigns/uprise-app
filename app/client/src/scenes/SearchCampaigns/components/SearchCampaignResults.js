@@ -48,27 +48,32 @@ class SearchCampaignResults extends Component {
         return <span key={index}>{issue.title}{(index === campaign.issue_areas.length - 1) ? '' : ', '}</span>;
       }) : [];
 
+      const subtitle = ((typeof campaign.profile_subheader === 'string' && campaign.profile_subheader.trim() !== '') || (campaign.city && campaign.state)) ? (
+        <div>
+          {(typeof campaign.profile_subheader === 'string' && campaign.profile_subheader.trim() !== '') && (
+            <div className={s.subheaderContainer}>
+              {campaign.profile_subheader}
+            </div>
+          )}
+          { (campaign.state && campaign.city) && (
+            <div className={s.locationContainer}>
+              {campaign.city}, {campaign.state}
+            </div>
+          )} 
+        </div>
+      ) : null;
+
       return (
-        <Card key={index}>
-          <CardHeader
-            title={
-              <Link to={'/campaign/' + campaign.slug}>{campaign.title}</Link>
-            }
-            showExpandableButton={true}
+        <Link to={'/campaign/' + campaign.slug}>
+          <Card 
+            key={index}
           >
-          </CardHeader>
-          <CardText expandable={true}>
-            <div className={s.descriptionContainer}>
-              {campaign.description}
-            </div>
-            <div className={s.issuesContainer}>
-              {issues}
-            </div>
-            <div className={s.tagsContainer}>
-              {tags}
-            </div>
-          </CardText>
-        </Card>
+            <CardHeader
+              title={campaign.title}
+              subtitle={subtitle}
+            />
+          </Card>
+        </Link>
       );
     }) : [];
 
