@@ -2,6 +2,7 @@
 
 .outerContainer {
   width: 100%;
+  margin-bottom: 4rem;
 
   .campaignHeader {
     width: 100%;
@@ -45,7 +46,6 @@
       margin-top: 2rem;
       text-align: center;
       padding: 1rem;
-      border: 1px solid rgba($black, 0.1);
 
       a {
         color: $brick-red !important;
@@ -74,10 +74,13 @@
       margin-left: 1rem;
     }
 
+    
     .descriptionContainer {
+      border: 1px solid darken($white, 20%);
+      padding: 1rem;
+      margin: 2rem auto;
       color: $azure;
       white-space: pre-wrap;
     }
-
   }
 }

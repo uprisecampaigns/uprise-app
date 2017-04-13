@@ -21,10 +21,9 @@ class CampaignProfile extends Component {
 
     const { campaign, ...props } = this.props;
 
-    const keywords = (typeof campaign.tags === 'object') ? 
-      campaign.tags.map( (tag, index) => {
-        return <div key={index} className={s.detailLine}>{tag}</div>;
-      }) : [];
+    const keywords = (typeof campaign.tags === 'object') && (
+      <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
+    );
 
     return (
       <div className={s.outerContainer}>
@@ -48,6 +47,8 @@ class CampaignProfile extends Component {
             </div>
           )}
 
+          <div className={s.descriptionContainer}>{campaign.description}</div>
+
           <div className={s.contactContainer}>
             Contact Coordinator:  
             <Link to={'mailto:' + campaign.owner.email} external={true} useAhref={true}>
@@ -55,7 +56,7 @@ class CampaignProfile extends Component {
             </Link>
           </div>
 
-          {keywords.length > 0 && (
+          {keywords && (
             <div className={s.keywordsContainer}>
               <div className={s.header}>
                 Keywords:

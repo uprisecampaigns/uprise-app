@@ -89,6 +89,7 @@ class CampaignProfileForm extends Component {
               hintText="Write a short description here. This will show up in the search results. You do not need to include the name of the campaign, your website url, or your issues, keywords, etc. as they will all appear automatically"
               value={data.description}
               multiLine={true}
+              rows={4}
               onChange={ (event) => { handleInputChange(event, 'description', event.target.value) } }
               errorText={errors.descriptionErrorText}
               fullWidth={true}
