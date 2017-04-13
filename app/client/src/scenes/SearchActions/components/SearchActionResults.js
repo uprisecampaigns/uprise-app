@@ -59,30 +59,25 @@ class SearchActionResults extends React.PureComponent {
         return <span key={index}>{issue.title}{(index === action.issue_areas.length - 1) ? '' : ', '}</span>;
       }) : [];
 
+      // TODO: better datetime parsing (not relying on native Date) and checking for missing values
       const startTime = moment(action.start_time);
       const endTime = moment(action.end_time);
 
       return (
-        <Card key={index}>
-          <CardHeader
-            title={
-              <Link to={'/action/' + action.slug}>{action.title}</Link>
-            }
-            subtitle={
-              <Link to={'/campaign/' + action.campaign.slug}>{action.campaign.title}</Link>
-            }
-            showExpandableButton={true}
-          >
-            <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div>
-            <div>Time: {startTime.format('h:mm a') + ' - ' + endTime.format('h:mm a')}</div>  
-            <div>Place: {action.city}, {action.state}</div>
-          </CardHeader>
-          <CardText expandable={true}>
-            <div className={s.descriptionContainer}>
-              {action.description}
-            </div>
-          </CardText>
-        </Card>
+        <Link to={'/action/' + action.slug}>
+          <Card key={index}>
+            <CardHeader
+              title={action.title}
+              subtitle={
+                <Link to={'/campaign/' + action.campaign.slug} className={s.campaignLink}>{action.campaign.title}</Link>
+              }
+            >
+              { startTime && <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div> }
+              { startTime && <div>Time: {startTime.format('h:mm a') + ' - ' + endTime.format('h:mm a')}</div> }
+              { (action.city && action.state) && <div>Place: {action.city}, {action.state}</div> }
+            </CardHeader>
+          </Card>
+        </Link>
       );
     }) : [];
 
