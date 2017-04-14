@@ -29,6 +29,7 @@ class SearchActionResults extends React.PureComponent {
   render() {
     const { sortBy, ...props } = this.props;
 
+    // TODO: This is shared by SearchCampaignResults and can definitely be refactored
     const actionsSort = (a, b) => {
       if (sortBy.name === 'date') {
         if (sortBy.descending) {
@@ -38,9 +39,9 @@ class SearchActionResults extends React.PureComponent {
         }
       } else if (sortBy.name === 'campaignName') {
         if (sortBy.descending) {
-          return (a.campaign.title < b.campaign.title) ? 1 : -1;
+          return (a.campaign.title.toLowerCase() < b.campaign.title.toLowerCase()) ? 1 : -1;
         } else {
-          return (a.campaign.title > b.campaign.title) ? 1 : -1;
+          return (a.campaign.title.toLowerCase() > b.campaign.title.toLowerCase()) ? 1 : -1;
         } 
       }
     }

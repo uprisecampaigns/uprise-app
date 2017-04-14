@@ -31,10 +31,14 @@ class SearchCampaignResults extends Component {
 
     const campaignsSort = (a, b) => {
       const prop = sortBy.name;
+
+      const testA = (typeof a[prop] === 'string') ? a[prop].toLowerCase() : a[prop];
+      const testB = (typeof b[prop] === 'string') ? b[prop].toLowerCase() : b[prop];
+
       if (sortBy.descending) {
-        return (a[prop] < b[prop]) ? 1 : -1;
+        return (testA < testB) ? 1 : -1;
       } else {
-        return (a[prop] > b[prop]) ? 1 : -1;
+        return (testA > testB) ? 1 : -1;
       } 
     }
 
