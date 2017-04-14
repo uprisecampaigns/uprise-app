@@ -50,13 +50,24 @@ class Link extends React.Component {
 
   render() {
     const { to, children, external, useAhref, preventDefault, className, ...props } = this.props;
+
+    // If link is external and no 'http' is included at beginning, add it
+
+    function addHttp(url) {
+      if (url && !/^(f|ht)tps?:\/\//i.test(url)) {
+        url = "http://" + url;
+      }
+      return url;
+    }
+
+    const url = addHttp(to);
+
     if (useAhref) {
       return (
         <a 
-          href={to} 
+          href={url} 
           {...props} 
-          onTouchTap={this.handleClick} 
-          onClick={this.handleClick}
+          onTouchTap={(e) => this.handleClick(e, url)} 
           className={[className].concat([s.link]).join(' ')}
         >
           {children}
@@ -66,8 +77,7 @@ class Link extends React.Component {
       return (
         <span 
           {...props} 
-          onTouchTap={this.handleClick} 
-          onClick={this.handleClick}
+          onTouchTap={(e) => this.handleClick(e, url)} 
           className={[className].concat([s.link]).join(' ')}
         >
           {children}
