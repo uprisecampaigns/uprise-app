@@ -4,7 +4,11 @@ import history from 'lib/history';
 import s from 'styles/Link.scss';
 
 function isLeftClickEvent(event) {
-  return (typeof event.nativeEvent === 'object' && event.type === 'touchend') || event.button === 0;
+  return isTouchTap(event) || event.button === 0;
+}
+
+function isTouchTap(event) {
+  return (typeof event.nativeEvent === 'object' && event.type === 'touchend');
 }
 
 function isModifiedEvent(event) {
@@ -68,6 +72,7 @@ class Link extends React.Component {
           href={url} 
           {...props} 
           onTouchTap={(e) => this.handleClick(e, url)} 
+          onClick={(e) => this.handleClick(e, url)} 
           className={[className].concat([s.link]).join(' ')}
         >
           {children}
@@ -78,6 +83,7 @@ class Link extends React.Component {
         <span 
           {...props} 
           onTouchTap={(e) => this.handleClick(e, url)} 
+          onClick={(e) => this.handleClick(e, url)} 
           className={[className].concat([s.link]).join(' ')}
         >
           {children}
