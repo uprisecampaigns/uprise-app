@@ -457,11 +457,19 @@ h4{
                                                             <%= action.start_time %> <br/>
                                                           </p>
                                                           <p>
-                                                            <%= action.location_name && action.location_name + '<br/>' %>
-                                                            <%= action.street_address && action.street_address + '<br/>' %> 
-                                                            <%= action.street_address2 && action.street_address2 + '<br/>' %> 
+                                                            <% if (action.location_name) { %>
+                                                              <%= action.location_name %><br/>
+                                                            <% } %>
+                                                            <% if (action.street_address) { %>
+                                                              <%= action.street_address %><br/>
+                                                            <% } %>
+                                                            <% if (action.street_address2) { %>
+                                                              <%= action.street_address2 %><br/>
+                                                            <% } %>
                                                             <%= action.city && action.city + ', '%><%= action.state && action.state %> <%= action.zipcode && action.zipcode %> <br/>
-                                                            <%= action.location_notes && action.location_notes  + '<br/>' %> 
+                                                            <% if (action.location_notes) { %>
+                                                              <%= action.location_notes %><br/>
+                                                            <% } %>
                                                           </p>
                                                           <p>
                                                             You may contact the Action Coordinator, <%= actionCoordinator.first_name %> <%= actionCoordinator.last_name %> at email: 
