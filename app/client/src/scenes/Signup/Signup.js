@@ -59,9 +59,9 @@ class SignupFormContainer extends Component {
     this.validateString('zipcode', 'zipcodeErrorText', 'Zipcode is Required');
 
     if (typeof this.state.zipcode === 'string' &&
-        this.state.zipcode.length > 12) {
+        this.state.zipcode.length !== 5) {
       this.setState({
-        zipcodeErrorText: 'Zipcode must be less than 12 characters long'
+        zipcodeErrorText: 'Zipcode must be 5 digits long'
       });
 
       this.hasErrors = true;

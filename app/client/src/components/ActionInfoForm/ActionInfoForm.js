@@ -63,6 +63,7 @@ class ActionInfoForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Campaign"
+                    fullWidth={true}
                     value={campaignTitle}
                     disabled={true}
                   />
@@ -71,6 +72,7 @@ class ActionInfoForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Action Internal Name"
+                    fullWidth={true}
                     value={data.internalTitle}
                     onChange={ (event) => { handleInputChange(event, 'internalTitle', event.target.value) } }
                     errorText={errors.internalTitleErrorText}
@@ -80,6 +82,7 @@ class ActionInfoForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Action Public Name"
+                    fullWidth={true}
                     value={data.title}
                     onChange={ (event) => { handleInputChange(event, 'title', event.target.value) } }
                     errorText={errors.titleErrorText}
@@ -141,6 +144,16 @@ class ActionInfoForm extends Component {
                     </div>
 
                     <div className={s.textFieldContainer}>
+                      <TextField
+                        floatingLabelText="Zipcode"
+                        type="number"
+                        value={data.zipcode}
+                        onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+                        errorText={errors.zipcodeErrorText}
+                      />
+                    </div>
+
+                    <div className={s.textFieldContainer}>
                       <AutoComplete
                         floatingLabelText="State"
                         searchText={data.state}
@@ -154,6 +167,7 @@ class ActionInfoForm extends Component {
                     <div className={s.textFieldContainer}>
                       <TextField
                         floatingLabelText="Location Notes"
+                        fullWidth={true}
                         value={data.locationNotes}
                         onChange={ (event) => { handleInputChange(event, 'locationNotes', event.target.value) } }
                         errorText={errors.locationNotesErrorText}

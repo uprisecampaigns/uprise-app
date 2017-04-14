@@ -13,6 +13,7 @@ import organizeFormWrapper from 'lib/organizeFormWrapper';
 import { 
   validateString,
   validateState,
+  validateZipcode,
   validatePhoneNumber,
   validateStartEndTimes
 } from 'lib/validateComponentForms';
@@ -180,7 +181,9 @@ class ManageActionInfoContainer extends Component {
 
       const validators = [
         (component) => { validateString(component, 'title', 'titleErrorText', 'Action Name is Required') },
+        (component) => { validateString(component, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required') },
         (component) => { validateState(component) }, //TODO: error is confusing if virtual is set and state input is invalid
+        (component) => { validateZipcode(component) },
         (component) => { validateStartEndTimes(component) },
       ];
 

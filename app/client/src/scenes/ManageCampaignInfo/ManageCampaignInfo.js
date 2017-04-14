@@ -12,6 +12,7 @@ import {
   validateString,
   validateWebsiteUrl,
   validateState,
+  validateZipcode,
   validatePhoneNumber
 } from 'lib/validateComponentForms';
 
@@ -134,6 +135,7 @@ class ManageCampaignInfoContainer extends Component {
 
       const validators = [
         (component) => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+        (component) => validateZipcode(component),
         (component) => validateWebsiteUrl(component),
         (component) => validatePhoneNumber(component),
         (component) => validateState(component),

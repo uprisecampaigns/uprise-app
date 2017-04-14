@@ -87,8 +87,9 @@ class SignupForm extends Component {
                 </div>
                 <div className={s.textFieldContainer}>
                   <TextField
-                    floatingLabelText="Zip"
+                    floatingLabelText="Zipcode"
                     value={data.zipcode}
+                    type="number"
                     onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
                     errorText={data.zipcodeErrorText}
                     fullWidth={true}

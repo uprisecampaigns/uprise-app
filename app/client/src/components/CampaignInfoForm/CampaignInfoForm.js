@@ -115,6 +115,17 @@ class CampaignInfoForm extends Component {
                     fullWidth={true}
                   />
                 </div>
+
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Zipcode"
+                    value={data.zipcode}
+                    type="number"
+                    onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+                    errorText={errors.zipcodeErrorText}
+                  />
+                </div>
+
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Email"

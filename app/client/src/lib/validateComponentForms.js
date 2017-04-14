@@ -54,6 +54,28 @@ export function validateState(component, prop='state', errorProp='stateErrorText
   }
 }
 
+export function validateZipcode(component, prop='zipcode', errorProp='zipcodeErrorText') {
+  const test = component.state.formData[prop];
+
+  if (typeof test === 'string' && test.trim() !== '') {
+    if (!isNumeric(test)) {
+      component.hasErrors = true;
+      component.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          [errorProp]: 'Zipcodes should be numbers'
+        })
+      }));
+    } else if (test.length !== 5) {
+      component.hasErrors = true;
+      component.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          [errorProp]: 'Zipcodes should be 5 digits long'
+        })
+      }));
+    }
+  }
+}
+
 export function validateZipcodeList(component) {
   const zipcodeList = component.state.formData.zipcodeList.split(',').map(zip => zip.trim());
 
