@@ -4,7 +4,7 @@ import history from 'lib/history';
 import s from 'styles/Link.scss';
 
 function isLeftClickEvent(event) {
-  return event.button === 0;
+  return (typeof event.nativeEvent === 'object' && event.type === 'touchend') || event.button === 0;
 }
 
 function isModifiedEvent(event) {
@@ -24,7 +24,7 @@ class Link extends React.Component {
     preventDefault: true
   };
 
-  handleClick = (event) => {
+  handleClick = (event, url) => {
     if (this.props.onClick) {
       this.props.onClick(event);
     }
@@ -42,9 +42,9 @@ class Link extends React.Component {
     }
 
     if (this.props.external) {
-      window.location = this.props.to;
+      window.location = url;
     } else {
-      history.push(this.props.to);
+      history.push(url);
     }
   };
 
@@ -60,7 +60,7 @@ class Link extends React.Component {
       return url;
     }
 
-    const url = addHttp(to);
+    const url = external ? addHttp(to) : to;
 
     if (useAhref) {
       return (
