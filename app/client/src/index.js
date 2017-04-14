@@ -117,7 +117,7 @@ async function onLocationChange(location) {
     }
 
     // Avoid broken navigation in production mode by a full page reload on error
-    window.location.reload();
+    window.location.reload(true);
   }
 }
 
