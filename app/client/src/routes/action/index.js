@@ -13,30 +13,35 @@ export default {
   path: '/action/:slug',
 
   async action(context) {
+    try {
+      const result = await context.apolloClient.query({
+        query: ActionQuery,
+        variables: {
+          search: {
+            slug: context.params.slug
+          }
+        }
+      });
 
-    const result = await context.apolloClient.query({
-      query: ActionQuery,
-      variables: {
-        search: {
-          slug: context.params.slug
+      if (result.data.action) {
+        return {
+          title: result.data.action.title,
+          component: (
+            <Layout>
+              <ActionWithAuthentication actionId={result.data.action.id}/>
+            </Layout>
+          ),
+        };
+      } else {
+        return {
+          redirect: '/search/search-actions'
         }
       }
-    });
-
-    if (result.data.action) {
-      return {
-        title: result.data.action.title,
-        component: (
-          <Layout>
-            <ActionWithAuthentication actionId={result.data.action.id}/>
-          </Layout>
-        ),
-      };
-    } else {
+    } catch (e) {
+      console.error(e);
       return {
         redirect: '/search/search-actions'
       }
     }
   },
-
 };

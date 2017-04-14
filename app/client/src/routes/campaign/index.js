@@ -13,30 +13,35 @@ export default {
   path: '/campaign/:slug',
 
   async action(context) {
+    try {
+      const result = await context.apolloClient.query({
+        query: CampaignQuery,
+        variables: {
+          search: {
+            slug: context.params.slug
+          }
+        }
+      });
 
-    const result = await context.apolloClient.query({
-      query: CampaignQuery,
-      variables: {
-        search: {
-          slug: context.params.slug
+      if (result.data.campaign) {
+        return {
+          title: result.data.campaign.title,
+          component: (
+            <Layout>
+              <CampaignWithAuthentication campaignId={result.data.campaign.id}/>
+            </Layout>
+          ),
+        };
+      } else {
+        return {
+          redirect: '/search/search-campaigns'
         }
       }
-    });
-
-    if (result.data.campaign) {
-      return {
-        title: result.data.campaign.title,
-        component: (
-          <Layout>
-            <CampaignWithAuthentication campaignId={result.data.campaign.id}/>
-          </Layout>
-        ),
-      };
-    } else {
+    } catch (e) {
+      console.error(e);
       return {
         redirect: '/search/search-campaigns'
       }
     }
   },
-
 };
