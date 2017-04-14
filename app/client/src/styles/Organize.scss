@@ -85,7 +85,7 @@
     justify-content: center;
     text-align: center;
     align-items: center;
-    color: $azure !important;
+    color: darken($azure, 15%) !important;
     min-height: 3rem;
     padding: 1rem 0px;
     font-size: 2rem;

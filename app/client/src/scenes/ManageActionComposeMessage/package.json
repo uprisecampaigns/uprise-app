@@ -1,0 +1,6 @@
+{
+  "name": "ManageActionComposeMessage",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ManageActionComposeMessage.js"
+}

@@ -44,6 +44,7 @@ export default {
     require('./manageActionSettings').default,
     require('./manageActionInfo').default,
     require('./manageActionPreferences').default,
+    require('./manageActionComposeMessage').default,
 
     // /search/
     require('./search').default,
