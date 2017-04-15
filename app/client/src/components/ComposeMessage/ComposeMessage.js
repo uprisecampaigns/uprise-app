@@ -8,6 +8,10 @@ import TextField from 'material-ui/TextField';
 
 import { notify } from 'actions/NotificationsActions';
 
+import { 
+  validateString,
+} from 'lib/validateComponentForms';
+
 import s from 'styles/ComposeMessage.scss';
 
 
@@ -15,28 +19,58 @@ class ComposeMessage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      modalOpen: false
+    const initialState = {
+      formData: {
+        subject: '',
+        body: '',
+      },
+      errors: {
+        subjectErrorText: null,
+        bodyErrorText: null,
+      },
+      modalOpen: false,
     };
+
+    this.state = Object.assign({}, initialState);
   }
  
   static propTypes = {
     fromEmail: PropTypes.string.isRequired,
     detailLines: PropTypes.array.isRequired,
-    recipients: PropTypes.array.isRequired
+    recipients: PropTypes.array.isRequired,
+    sendMessage: PropTypes.func.isRequired
   };
 
   clickedSend = (event) => {
-    this.setState({modalOpen: true});
+    this.hasErrors = false;
+
+    validateString(this, 'subject', 'subjectErrorText', 'Subject is Required');
+    validateString(this, 'body', 'bodyErrorText', 'Please enter some content');
+
+    if (!this.hasErrors) {
+      this.setState({modalOpen: true});
+    }
   };
 
   confirmSend = (event) => {
-    console.log('sending email....');
+    const { body, subject } = this.state.formData;
+
+    this.props.sendMessage({ subject, body });
+  }
+
+  handleInputChange = (event, type, value) => {
+    this.setState( (prevState) => ({
+      formData: Object.assign({},
+        prevState.formData,
+        { [type]: value }
+      )
+    }));
   }
 
   render() {
     const { recipients, detailLines, fromEmail, ...props } = this.props;
-    const { modalOpen, ...state } = this.state;
+    const { modalOpen, formData, errors, ...state } = this.state;
+    const { handleInputChange } = this;
 
     const modalActions = [
       <RaisedButton
@@ -65,6 +99,9 @@ class ComposeMessage extends React.Component {
             className={s.subjectContainer}
             hintText="Subject"
             underlineShow={false}
+            value={formData.subject}
+            onChange={ (event) => { handleInputChange(event, 'subject', event.target.value) } }
+            errorText={errors.subjectErrorText}
             multiLine={true}
             rows={1}
             fullWidth={false}
@@ -82,6 +119,9 @@ class ComposeMessage extends React.Component {
             className={s.contentContainer}
             underlineShow={false}
             hintText="Content (text only)"
+            value={formData.body}
+            onChange={ (event) => { handleInputChange(event, 'body', event.target.value) } }
+            errorText={errors.bodyErrorText}
             fullWidth={true}
             multiLine={true}
             rows={4}
@@ -112,8 +152,6 @@ class ComposeMessage extends React.Component {
             Pressing send here is final!
           </p>
         </Dialog>
-
-
       </div>
     );
   }

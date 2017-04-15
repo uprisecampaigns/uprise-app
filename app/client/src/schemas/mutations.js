@@ -81,3 +81,9 @@ export const DeleteCampaignMutation = gql`
     deleteCampaign(data:$data)
   }
 `;
+
+export const SendMessageMutation = gql`
+  mutation SendMessageMutation ($data:SendMessageInput!) {
+    sendMessage(data:$data)
+  }
+`;

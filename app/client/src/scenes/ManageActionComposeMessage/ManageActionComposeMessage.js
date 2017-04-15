@@ -13,6 +13,9 @@ import {
   CampaignQuery, ActionQuery, SignedUpVolunteersQuery, MeQuery
 } from 'schemas/queries';
 
+import { SendMessageMutation } from 'schemas/mutations';
+
+import { notify } from 'actions/NotificationsActions';
 
 class ManageActionComposeMessage extends Component {
 
@@ -21,10 +24,34 @@ class ManageActionComposeMessage extends Component {
     campaignId: PropTypes.string.isRequired,
     campaign: PropTypes.object,
     action: PropTypes.object,
+    sendMessage: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props);
+  }
+
+  sendMessage = async ({ subject, body }) => {
+
+    const { userObject, recipients, sendMessage, ...props } = this.props;
+
+    try {
+      const results = await sendMessage({
+        variables: {
+          data: {
+            replyToEmail: userObject.email,
+            recipientEmails: recipients.map(r => r.email),
+            subject,
+            body
+          }
+        },
+      });
+
+      this.props.dispatch(notify('Message Sent'));
+    } catch (e) {
+      console.error(e);
+      this.props.dispatch(notify('There was an error sending your message.'));
+    }
   }
 
   render() {
@@ -60,6 +87,7 @@ class ManageActionComposeMessage extends Component {
             fromEmail={userObject.email}
             detailLines={detailLines}
             recipients={recipients}
+            sendMessage={this.sendMessage}
           />
 
         </div>
@@ -106,5 +134,6 @@ export default compose(
     props: ({ data }) => ({
       userObject: data.me
     }),
-  })
+  }),
+  graphql(SendMessageMutation, { name: 'sendMessage' })
 )(ManageActionComposeMessage);
