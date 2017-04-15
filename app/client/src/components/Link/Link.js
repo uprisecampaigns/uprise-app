@@ -24,7 +24,7 @@ class Link extends React.Component {
     preventDefault: PropTypes.bool
   };
 
-  defaultProps = {
+  static defaultProps = {
     preventDefault: true
   };
 
