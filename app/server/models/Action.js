@@ -26,6 +26,16 @@ class Action {
     return action;
   }
 
+  static async find(...args) {
+    const actions = await db.table('actions').where(...args);
+
+    for (let action of actions) {
+      Object.assign(action, await this.details(action));
+    };
+
+    return actions;
+  }
+
   static async delete(deleteOptions, ownerId) {
 
     const options = Object.assign({}, deleteOptions, {

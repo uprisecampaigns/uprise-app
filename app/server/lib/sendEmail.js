@@ -4,7 +4,7 @@ const config = require('config/config.js');
 
 const emailClient = postmark(config.postmark.serverKey);
 
-module.exports = function sendEmail ({ to, subject, templateName, context = {} }) {
+module.exports = function sendEmail ({ to, subject, templateName, context = {}, replyTo }) {
   return new Promise( (resolve, reject) => {
 
     if (config.postmark.validRecipient(to)) {
@@ -16,7 +16,8 @@ module.exports = function sendEmail ({ to, subject, templateName, context = {} }
           'To': to,
           'Subject': subject, 
           'TextBody': textBody,
-          'HtmlBody': htmlBody
+          'HtmlBody': htmlBody,
+          'ReplyTo': replyTo || config.postmark.from
         }, (err, result) => {
           if (err) {
             console.error('Unable to send via postmark: ' + err.message);

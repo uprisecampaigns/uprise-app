@@ -414,6 +414,59 @@ module.exports = (app) => {
       return action;
     },
 
+    sendMessage: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const { user } = context;
+      const { data } = options;
+
+      // TODO: more sophisticated notion of 'from' emails
+      if (data.replyToEmail !== context.user.email) {
+        throw new Error('Message must be sent from user\'s email');
+      }
+
+      // TODO: more sophisticated determining who can send to whom
+      const userActions = await Action.find('owner_id', user.id);
+      let allowedRecipients = [];
+
+      // TODO: replace this with parallel promises
+      for (let action of userActions) {
+        const signedUpVolunteers = await Action.signedUpVolunteers({ actionId: action.id });
+        allowedRecipients = allowedRecipients.concat(signedUpVolunteers);
+      };
+
+      const allowedEmails = allowedRecipients.map( v => v.email);
+
+      const errors = [];
+      data.recipientEmails.forEach( async (recipient) => {
+
+        if (!allowedEmails.includes(recipient)) {
+          errors.push('User not allowed to message ' + recipient);
+        } else {
+          try {
+            await sendEmail({
+              to: recipient,
+              replyTo: data.replyToEmail,
+              subject: data.subject,
+              templateName: 'compose-message',
+              context: { user, body: data.body }
+            });
+          } catch (e) {
+            console.error(e);
+            errors.push(e.message);
+          }
+        }
+      });
+
+      if (errors.length) {
+        throw new Error('Errors sending email: ' + errors.join(' | '));
+      }
+
+      return true;
+    },
   };
 
   app.use('/api/graphql', graphqlExpress(req => ({
