@@ -55,6 +55,7 @@ export const CampaignQuery = gql`
       description
       profile_subheader
       tags
+      subscribed
       street_address
       street_address2
       city

@@ -46,6 +46,7 @@ export const ActionSignupMutation = gql`
       id
       title
       slug
+      attending
     }
   }
 `;
@@ -56,6 +57,29 @@ export const CancelActionSignupMutation = gql`
       id
       title
       slug
+      attending
+    }
+  }
+`;
+
+export const CampaignSubscriptionMutation = gql`
+  mutation CampaignSubscriptionMutation ($campaignId:String!) {
+    campaignSubscription(campaignId:$campaignId){
+      id
+      title
+      slug
+      subscribed
+    }
+  }
+`;
+
+export const CancelCampaignSubscriptionMutation = gql`
+  mutation CancelCampaignSubscriptionMutation ($campaignId:String!) {
+    cancelCampaignSubscription(campaignId:$campaignId){
+      id
+      title
+      slug
+      subscribed
     }
   }
 `;

@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import moment from 'moment';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import Link from 'components/Link';
 
@@ -15,11 +17,14 @@ class CampaignProfile extends Component {
 
   static propTypes = {
     campaign: PropTypes.object.isRequired,
+    subscribe: PropTypes.func.isRequired,
+    cancelSubscription: PropTypes.func.isRequired,
+    saving: PropTypes.bool.isRequired
   }
 
   render() {
 
-    const { campaign, ...props } = this.props;
+    const { campaign, saving, subscribe, cancelSubscription, ...props } = this.props;
 
     const keywords = (typeof campaign.tags === 'object' && campaign.tags.length > 0) && (
       <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
@@ -52,6 +57,33 @@ class CampaignProfile extends Component {
               </Link>
             </div>
           )}
+
+          <div className={s.subscribedContainer}>
+            {saving ? (
+              <div className={s.savingThrobberContainer}>
+                <CircularProgress
+                  size={100}
+                  thickness={5}
+                />
+              </div>
+            ) : (
+              <div>
+                {campaign.subscribed ? (
+                  <RaisedButton
+                    onTouchTap={cancelSubscription}
+                    primary={true}
+                    label="Cancel Subscription"
+                  />
+                ) : (
+                  <RaisedButton
+                    onTouchTap={subscribe}
+                    primary={true}
+                    label="Subscribe"
+                  />
+                )}
+              </div>
+            )}
+          </div>
 
           { (typeof campaign.description === 'string' && campaign.description.trim() !== '') &&
             <div className={s.descriptionContainer}>{campaign.description}</div>

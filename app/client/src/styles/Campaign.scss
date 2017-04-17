@@ -94,5 +94,17 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .subscribedContainer {
+      text-align: center;
+      margin: 1rem auto 1rem auto;
+
+      button {
+        background-color: lighten($brick-red, 25%) !important;
+        span {
+          color: darken($brick-red, 10%) !important;
+        }
+      }
+    }
   }
 }

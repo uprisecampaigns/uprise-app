@@ -116,6 +116,7 @@ module.exports = (app) => {
       }
 
       const action = await Action.findOne(data.search);
+      // TODO: This is repeated in a bunch of places and should be DRYed
       action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
       return action;
     },
@@ -140,6 +141,10 @@ module.exports = (app) => {
       console.log(data);
 
       const campaign = await Campaign.findOne(data.search);
+
+      // TODO: This is repeated in a bunch of places and should be DRYed
+      campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id });
+
       console.log(campaign);
       return campaign;
     },
