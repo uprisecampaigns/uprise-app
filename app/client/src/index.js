@@ -46,6 +46,8 @@ let onRenderComplete = function initialRenderComplete() {
 
 // Re-render the app when window.location changes
 async function onLocationChange(location) {
+
+  // TODO: Not only does this seem to occasionally get stuck, it also just reeks of code smell
   const fetchingSessionStatus = store.getState().userAuthSession.fetchingAuthUpdate;
   if (!fetchingSessionStatus) {
     store.dispatch(checkSessionStatus());
@@ -114,10 +116,12 @@ async function onLocationChange(location) {
       document.title = `Error: ${error.message}`;
       ReactDOM.render(<RedBox error={error} />, container);
       return;
+    } else {
+      // Avoid broken navigation in production mode by a full page reload on error
+      // TODO: Send to home page?
+      // TODO: production error reporting?
+      window.location.reload(true);
     }
-
-    // Avoid broken navigation in production mode by a full page reload on error
-    window.location.reload(true);
   }
 }
 
