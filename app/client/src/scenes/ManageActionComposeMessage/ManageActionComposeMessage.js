@@ -13,6 +13,8 @@ import {
   CampaignQuery, ActionQuery, SignedUpVolunteersQuery, MeQuery
 } from 'schemas/queries';
 
+import history from 'lib/history';
+
 import { SendMessageMutation } from 'schemas/mutations';
 
 import { notify } from 'actions/NotificationsActions';
@@ -48,6 +50,11 @@ class ManageActionComposeMessage extends Component {
       });
 
       this.props.dispatch(notify('Message Sent'));
+
+      setTimeout( () => {
+        history.goBack();
+      }, 500);
+
     } catch (e) {
       console.error(e);
       this.props.dispatch(notify('There was an error sending your message.'));

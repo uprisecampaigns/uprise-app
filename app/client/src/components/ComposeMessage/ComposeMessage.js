@@ -56,6 +56,8 @@ class ComposeMessage extends React.Component {
     const { body, subject } = this.state.formData;
 
     this.props.sendMessage({ subject, body });
+
+    this.setState({modalOpen: false});
   }
 
   handleInputChange = (event, type, value) => {
