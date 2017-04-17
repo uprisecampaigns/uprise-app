@@ -414,6 +414,63 @@ module.exports = (app) => {
       return action;
     },
 
+    campaignSubscription: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const { user } = context;
+
+      const campaign = await Campaign.subscribe({ userId: user.id, campaignId: options.campaignId });
+      campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: user.id });
+
+      let campaignCoordinator;
+
+      // TODO: replace with more sophisticated model of "coordinator"
+      try {
+        campaignCoordinator = await User.findOne('id', campaign.owner_id);
+      } catch (e) {
+        throw new Error('Cannot find campaign coordinator: ' + e.message);
+      }
+
+      try {
+        await sendEmail({
+          to: campaignCoordinator.email,
+          subject: user.first_name + ' ' + user.last_name + ' Subscribed to your Campaign', 
+          templateName: 'campaign-subscription-coordinator',
+          context: { campaign, user }
+        });
+      } catch (e) {
+        throw new Error('Error sending email to coordinator: ' + e.message);
+      }
+
+      try {
+        await sendEmail({
+          to: user.email,
+          subject: 'You Subscribed to a Campaign',
+          templateName: 'campaign-subscription-user',
+          context: { campaign, user, campaignCoordinator }
+        });
+      } catch (e) {
+        throw new Error('Error sending email to user: ' + e.message);
+      }
+
+      return campaign;
+    },
+
+    cancelCampaignSubscription: async (options, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const campaign = await Campaign.cancelSubscription({ userId: context.user.id, campaignId: options.campaignId });
+      campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id });
+
+      return campaign;
+    },
+
     sendMessage: async (options, context) => {
 
       if (!context.user) {

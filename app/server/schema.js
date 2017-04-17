@@ -39,6 +39,7 @@ module.exports = buildSchema(`
     title: String
     slug: String
     description: String
+    subscribed: Boolean
     street_address: String
     street_address2: String
     state: String
@@ -264,6 +265,8 @@ module.exports = buildSchema(`
     editAction(data: EditActionInput): ActionResult
     actionSignup(actionId: String!): ActionResult
     cancelActionSignup(actionId: String!): ActionResult
+    campaignSubscription(campaignId: String!): CampaignResult
+    cancelCampaignSubscription(campaignId: String!): CampaignResult
     sendMessage(data: SendMessageInput!): Boolean
   }
 `);

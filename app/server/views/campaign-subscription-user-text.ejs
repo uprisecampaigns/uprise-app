@@ -1,0 +1,20 @@
+****Uprise Campaigns - You Subscribed to a Campaign****
+
+You subscribed to receive messages about volunteering for <%= campaign.title %>
+<%= campaign.public_url %>
+                                                              
+
+====
+
+<%= campaign.street_address && campaign.street_address %> 
+<%= campaign.street_address2 && campaign.street_address2 %> 
+<%= campaign.city && campaign.city + ', '%><%= campaign.state && campaign.state %> <%= campaign.zipcode && campaign.zipcode %>
+
+====
+
+You may contact the Campaign Coordinator, <%= campaignCoordinator.first_name %> <%= campaignCoordinator.last_name %> at email: <%= campaignCoordinator.email %> 
+
+
+Regards
+
+Uprise Campaigns

@@ -114,9 +114,7 @@ class Campaign {
     }
   }
 
-
   static async delete(deleteOptions, ownerId) {
-
     const options = Object.assign({}, deleteOptions, {
       owner_id: ownerId
     });
@@ -126,6 +124,59 @@ class Campaign {
       .update({ deleted: true });
 
     return result === 1;
+  }
+
+  static async subscribed({ userId, campaignId }) {
+
+    const subscription = await db('campaign_signups')
+      .where({
+        campaign_id: campaignId,
+        user_id: userId
+      });
+
+    if (subscription.length > 1) {
+      throw new Error('More than one subscription for user with id: ' + userId + 'for campaign with id: ' + campaignId);
+    } else {
+      return subscription.length === 1;
+    }
+  }
+
+  static async subscribe({ userId, campaignId }) {
+    if (await this.subscribed({ userId, campaignId })) {
+      return await Campaign.findOne({ id: campaignId });
+    } else {
+      const result = await db('campaign_signups')
+        .insert({
+          user_id: userId,
+          campaign_id: campaignId
+        });
+
+      return await Campaign.findOne({ id: campaignId });
+    }
+  }
+
+  static async cancelSubscription({ userId, campaignId }) {
+    if (!await this.subscribed({ userId, campaignId })) {
+      return await Campaign.findOne({ id: campaignId });
+    } else {
+      const result = await db('campaign_signups')
+        .where({
+          user_id: userId,
+          campaign_id: campaignId
+        })
+        .del();
+
+      return await Campaign.findOne({ id: campaignId });
+    }
+  }
+
+  static async subscribedUsers({ campaignId }) {
+
+    const result = await db('campaign_signups')
+      .where('campaign_id', campaignId)
+      .innerJoin('users', 'campaign_signups.user_id', 'users.id')
+
+    return result;
   }
 
   static async search(search) {
