@@ -411,8 +411,9 @@ h4{
                                                           <h1 style="display: block;font-family: Helvetica;font-size: 26px;font-style: normal;font-weight: bold;line-height: 100%;letter-spacing: normal;margin: 0;text-align: left;color: #202020 !important;">
                                                             A message from <%= user.first_name %> <%= user.last_name %>
                                                           </h1>
+                                                            <br/>
                                                             <% body.split('\n').forEach( (line) => { %>
-                                                              <p><%= line %></p>
+                                                              <%= line %><br/>
                                                             <% }) %>
                                                         </td>
                                                     </tr>

@@ -37,6 +37,12 @@ class ManageActionComposeMessage extends Component {
 
     const { userObject, recipients, sendMessage, ...props } = this.props;
 
+    body = 'From: ' + userObject.first_name + ' ' + userObject.last_name + 
+      '\nPlease reply to: ' + userObject.email + 
+      '\n' + this.props.campaign.title + 
+      '\n' + this.props.action.title +
+      '\n\n' + body;
+
     try {
       const results = await sendMessage({
         variables: {
