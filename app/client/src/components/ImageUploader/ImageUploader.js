@@ -209,13 +209,13 @@ class ImageUploader extends React.Component {
                   <RaisedButton
                     className={s.button}
                     onTouchTap={this.cancelImageEdit}
-                    label="Cancel Crop"
+                    label="Cancel"
                   />
                   <RaisedButton
                     className={s.button}
                     onTouchTap={this.acceptImageCrop}
                     primary={true}
-                    label="Save Changes"
+                    label="Save"
                   />
                 </div>
               </div>
