@@ -36,6 +36,7 @@ export const EditActionMutation = gql`
       id
       title
       slug
+      description
     }
   }
 `;

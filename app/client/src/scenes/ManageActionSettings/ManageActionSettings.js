@@ -129,6 +129,12 @@ class ManageActionSettings extends Component {
             />
           </Link>
 
+          <Link to={baseActionUrl + '/profile' }>
+            <ListItem 
+              primaryText="Profile"
+            />
+          </Link>
+
           <Link to={baseActionUrl + '/preferences' }>
             <ListItem 
               primaryText="Preferences"

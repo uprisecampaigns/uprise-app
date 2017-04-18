@@ -45,6 +45,7 @@ export default {
     require('./manageAction').default,
     require('./manageActionSettings').default,
     require('./manageActionInfo').default,
+    require('./manageActionProfile').default,
     require('./manageActionPreferences').default,
     require('./manageActionComposeMessage').default,
 
