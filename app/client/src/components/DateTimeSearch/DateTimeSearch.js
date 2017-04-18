@@ -16,7 +16,7 @@ class DateTimeSearch extends React.Component {
     super(props);
 
     this.state = {
-      onDate: new Date(),
+      onDate: null,
       startDate: null,
       endDate: null,
       startDateError: '',
