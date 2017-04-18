@@ -10,7 +10,7 @@ import Link from 'components/Link';
 import s from 'styles/Organize.scss';
 
 import { 
-  CampaignQuery, ActionQuery, MeQuery
+  CampaignQuery, MeQuery
 } from 'schemas/queries';
 
 import history from 'lib/history';
@@ -19,13 +19,11 @@ import { SendMessageMutation } from 'schemas/mutations';
 
 import { notify } from 'actions/NotificationsActions';
 
-class ManageActionComposeMessage extends Component {
+class ManageCampaignComposeMessage extends Component {
 
   static PropTypes = {
-    actionId: PropTypes.string.isRequired,
     campaignId: PropTypes.string.isRequired,
     campaign: PropTypes.object,
-    action: PropTypes.object,
     sendMessage: PropTypes.func.isRequired
   }
 
@@ -40,7 +38,6 @@ class ManageActionComposeMessage extends Component {
     body = 'From: ' + userObject.first_name + ' ' + userObject.last_name + 
       '\nPlease reply to: ' + userObject.email + 
       '\n' + this.props.campaign.title + 
-      '\n' + this.props.action.title +
       '\n\n' + body;
 
     try {
@@ -69,28 +66,27 @@ class ManageActionComposeMessage extends Component {
 
   render() {
 
-    if (this.props.campaign && this.props.action && this.props.recipients && this.props.userObject) {
+    if (this.props.campaign && this.props.recipients && this.props.userObject) {
 
-      const { campaign, action, userObject, recipients, ...props } = this.props;
+      const { campaign, userObject, recipients, ...props } = this.props;
 
-      const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
+      const baseUrl = '/organize/' + campaign.slug;
 
       const detailLines = [
         'From: ' + userObject.first_name + ' ' + userObject.last_name,
         'Please reply to: ' + userObject.email,
         campaign.title,
-        action.title,
       ];
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={baseActionUrl}>
+          <Link to={baseUrl + '/volunteers'}>
             <div className={s.navSubHeader}>
               <FontIcon 
                 className={["material-icons", s.backArrow].join(' ')}
               >arrow_back</FontIcon>
-              Dashboard
+              Volunteers
             </div>
           </Link>
 
@@ -131,22 +127,10 @@ export default compose(
       campaign: data.campaign
     })
   }),
-  graphql(ActionQuery, {
-    options: (ownProps) => ({ 
-      variables: {
-        search: {
-          id: ownProps.actionId
-        }
-      }
-    }),
-    props: ({ data }) => ({ 
-      action: data.action
-    })
-  }),
   graphql(MeQuery, {
     props: ({ data }) => ({
       userObject: data.me
     }),
   }),
   graphql(SendMessageMutation, { name: 'sendMessage' })
-)(ManageActionComposeMessage);
+)(ManageCampaignComposeMessage);

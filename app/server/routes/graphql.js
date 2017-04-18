@@ -476,6 +476,26 @@ module.exports = (app) => {
       return campaign;
     },
 
+    subscribedUsers: async (data, context) => {
+
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const { user } = context;
+
+      const campaign = await Campaign.findOne(data.search);
+
+      if (campaign.owner_id !== user.id) {
+        throw new Error('User must be campaign coordinator');
+      }
+
+      const volunteers = await Campaign.subscribedUsers({ campaignId: campaign.id });
+
+      return volunteers;
+    },
+
+
     sendMessage: async (options, context) => {
 
       if (!context.user) {

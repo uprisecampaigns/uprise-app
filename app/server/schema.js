@@ -153,6 +153,7 @@ module.exports = buildSchema(`
     action(search: ActionQueryInput): ActionResult
     actions(search: ActionSearchInput): [ActionResult]
     signedUpVolunteers(search: ActionQueryInput): [UserResult]
+    subscribedUsers(search: CampaignQueryInput): [UserResult]
     campaigns(search: CampaignSearchInput): [CampaignResult]
     myCampaigns: [CampaignResult]
     campaign(search: CampaignQueryInput): CampaignResult

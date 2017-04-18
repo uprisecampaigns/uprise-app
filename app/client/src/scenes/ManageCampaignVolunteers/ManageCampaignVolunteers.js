@@ -17,19 +17,18 @@ import Link from 'components/Link';
 import { setRecipients } from 'actions/MessageActions';
 
 import { 
-  CampaignQuery, ActionQuery, SignedUpVolunteersQuery
+  CampaignQuery, SubscribedUsersQuery
 } from 'schemas/queries';
 
 import s from 'styles/Organize.scss';
 
 
-class ManageActionContainer extends Component {
+class ManageCampaignVolunteers extends Component {
 
   static PropTypes = {
     campaignSlug: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     campaign: PropTypes.object,
-    action: PropTypes.object,
   }
 
   constructor(props) {
@@ -42,7 +41,7 @@ class ManageActionContainer extends Component {
   }
 
   handleRowSelection = (selectedRows) => {
-    const selected = this.props.volunteers.filter( (volunteer, index) => (
+    const selected = this.props.subscribers.filter( (volunteer, index) => (
       (selectedRows === 'all' || selectedRows.includes(index))
     ));
 
@@ -51,7 +50,7 @@ class ManageActionContainer extends Component {
 
   composeMessage = (event) => {
 
-    const { campaign, action, dispatch, ...props } = this.props;
+    const { campaign, dispatch, ...props } = this.props;
 
     if (this.state.selected.length === 0) {
       this.setState({ emptyRecipientsModalOpen: true });
@@ -60,18 +59,18 @@ class ManageActionContainer extends Component {
       dispatch(setRecipients(this.state.selected));
       console.log(this.state.selected);
 
-      history.push('/organize/' + campaign.slug + '/action/' + action.slug + '/compose');
+      history.push('/organize/' + campaign.slug + '/compose');
     }
   }
 
   render() {
 
-    if (this.props.action && this.props.campaign && this.props.volunteers) {
+    if (this.props.campaign && this.props.subscribers) {
 
-      const { action, campaign, volunteers, ...props } = this.props;
+      const { campaign, subscribers, ...props } = this.props;
       const { emptyRecipientsModalOpen, ...state } = this.state;
 
-      const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
+      const baseUrl = '/organize/' + campaign.slug;
 
       const modalActions = [
         <RaisedButton
@@ -84,27 +83,18 @@ class ManageActionContainer extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug + '/actions'}>
-            <div className={s.navSubHeader}>
+          <Link to={'/organize/' + campaign.slug}>
+            <div className={s.campaignHeader}>
+
               <FontIcon 
                 className={["material-icons", s.backArrow].join(' ')}
               >arrow_back</FontIcon>
-              Actions
+
+              {campaign.title}
             </div>
           </Link>
 
-          <div className={s.actionHeader}>{action.title}</div>
-
-          <div className={s.pageSubHeader}>Dashboard</div>
-
-          <Link to={baseActionUrl + '/settings' }>
-            <div className={s.settingsLinkContainer}>
-              Settings
-              <FontIcon 
-                className={["material-icons"].join(' ')}
-              >settings</FontIcon>
-            </div>
-          </Link>
+          <div className={s.campaignSubHeader}>Volunteers</div>
 
           <div className={s.composeMessageButtonContainer}>
             <RaisedButton
@@ -137,11 +127,11 @@ class ManageActionContainer extends Component {
               showRowHover={true}
               stripedRows={false}
             >
-              {volunteers.map( (volunteer, index) => (
-                <TableRow key={volunteer.id} selectable={true}>
-                  <TableRowColumn>{volunteer.first_name + ' ' + volunteer.last_name}</TableRowColumn>
-                  <TableRowColumn>{volunteer.email}</TableRowColumn>
-                  <TableRowColumn>{volunteer.phone_number}</TableRowColumn>
+              {subscribers.map( (subscriber, index) => (
+                <TableRow key={subscriber.id} selectable={true}>
+                  <TableRowColumn>{subscriber.first_name + ' ' + subscriber.last_name}</TableRowColumn>
+                  <TableRowColumn>{subscriber.email}</TableRowColumn>
+                  <TableRowColumn>{subscriber.phone_number}</TableRowColumn>
                 </TableRow>
                 ))}
             </TableBody>
@@ -182,28 +172,16 @@ export default compose(
       campaign: data.campaign
     })
   }),
-  graphql(ActionQuery, {
+  graphql(SubscribedUsersQuery, {
     options: (ownProps) => ({ 
       variables: {
         search: {
-          id: ownProps.actionId
+          id: ownProps.campaignId
         }
       }
     }),
     props: ({ data }) => ({ 
-      action: data.action
-    })
-  }),
-  graphql(SignedUpVolunteersQuery, {
-    options: (ownProps) => ({ 
-      variables: {
-        search: {
-          id: ownProps.actionId
-        }
-      }
-    }),
-    props: ({ data }) => ({ 
-      volunteers: data.signedUpVolunteers
+      subscribers: data.subscribedUsers
     })
   })
-)(ManageActionContainer);
+)(ManageCampaignVolunteers);

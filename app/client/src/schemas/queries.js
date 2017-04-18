@@ -234,7 +234,19 @@ export const SignedUpVolunteersQuery = gql`
     }
   }
 `;
+  
+export const SubscribedUsersQuery = gql`
+  query SubscribedUsersQuery ($search:CampaignQueryInput) {
+    subscribedUsers(search:$search){
+      id
+      first_name
+      last_name
+      email
+    }
+  }
+`;
  
+
 export const MeQuery = gql`
   query MeQuery {
     me {

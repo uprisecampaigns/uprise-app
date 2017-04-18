@@ -32,6 +32,8 @@ export default {
     // /organize/:slug/
     require('./manageCampaign').default,
     require('./manageCampaignSettings').default,
+    require('./manageCampaignVolunteers').default,
+    require('./manageCampaignComposeMessage').default,
     require('./manageCampaignProfile').default,
     require('./manageCampaignInfo').default,
     require('./manageCampaignPreferences').default,
