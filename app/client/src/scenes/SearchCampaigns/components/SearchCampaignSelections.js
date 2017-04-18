@@ -66,7 +66,7 @@ const renderSelectedDateLabel = (dates) => {
 }
 
 const renderSelectedGeographyLabel = (geography) => {
-  return 'Within ' + geography.distance + ' miles of ' + geography.zipcode;
+  return 'Active in zipcodes that include: ' + geography.zipcode;
 };
 
 class SearchCampaignSelections extends React.PureComponent {

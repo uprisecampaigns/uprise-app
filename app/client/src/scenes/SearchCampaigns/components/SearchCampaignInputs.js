@@ -16,7 +16,7 @@ import {
 } from 'actions/SearchActions';
 
 import SearchBar from 'components/SearchBar';
-import GeographySearch from 'components/GeographySearch';
+import ZipcodeSearch from 'components/ZipcodeSearch';
 import TogglesList from 'components/TogglesList';
 import DateTimeSearch from 'components/DateTimeSearch';
 
@@ -80,7 +80,20 @@ class SearchCampaignInputs extends React.PureComponent {
 
     return (
       <List>
-        
+
+        <ListItem 
+          primaryText="Location"
+          initiallyOpen={true}
+          primaryTogglesNestedList={true}
+          nestedItems={[(
+            <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
+              <ZipcodeSearch 
+                addItem={addSelectedItem}
+              />
+            </div>
+          )]}
+        />
+
         <IssueAreasTogglesList 
           listTitle="Issue Areas"
           collectionName="issueAreas" 

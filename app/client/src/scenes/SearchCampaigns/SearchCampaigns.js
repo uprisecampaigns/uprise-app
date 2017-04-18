@@ -39,11 +39,13 @@ const graphqlOptions = (collection) => {
 };
 
 const mapStateToProps = (state) => ({
+  // TODO: something fancy to just pass along campaignsSearch?
   search: {
     keywords: state.campaignsSearch.keywords,
     types: state.campaignsSearch.types,
     issueAreas: state.campaignsSearch.issueAreas,
     levels: state.campaignsSearch.levels,
+    geographies: state.campaignsSearch.geographies,
   },
   sortBy: state.campaignsSearch.sortBy
 });

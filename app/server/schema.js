@@ -110,6 +110,7 @@ module.exports = buildSchema(`
     types: [String]
     levels: [String]
     issueAreas: [String]
+    geographies: [GeographySearchInput]
   }
 
   input SortByInput {

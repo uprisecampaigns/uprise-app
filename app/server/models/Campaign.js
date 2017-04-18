@@ -290,6 +290,21 @@ class Campaign {
               });
             });
           }
+
+          if (search.geographies) {
+
+            qb.andWhere(function() {
+              search.geographies.forEach( (geography) => {
+
+                if (validator.isNumeric(geography.zipcode)) {
+
+                  const zipcode = geography.zipcode;
+                  this.orWhereRaw('? = ANY(zipcode_list)', zipcode);
+                }
+              });
+            });
+          }
+
         }
       });
 
