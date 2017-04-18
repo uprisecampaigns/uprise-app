@@ -66,7 +66,9 @@ const renderSelectedDateLabel = (dates) => {
 }
 
 const renderSelectedGeographyLabel = (geography) => {
-  return 'Within ' + geography.distance + ' miles of ' + geography.zipcode;
+  return (typeof geography.virtual === 'boolean' && geography.virtual) ? 
+    'Virtual' :
+    'Within ' + geography.distance + ' miles of ' + geography.zipcode;
 };
 
 class SearchActionSelections extends React.PureComponent {

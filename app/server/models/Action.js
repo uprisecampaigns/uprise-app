@@ -110,7 +110,7 @@ class Action {
                db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
                'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
                'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
-               'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes',
+               'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual',
                'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug'])
  
       .where('actions.deleted', false)
@@ -306,24 +306,32 @@ class Action {
 
             qb.andWhere(function() {
               search.geographies.forEach( (geography) => {
-                const distance = geography.distance || 10; // default to 10 miles
-                const zipcode = geography.zipcode;
-                const milesInMeter = 0.000621371192237;
 
-                // TODO: It would be nice to refactor some of this out into knex language
-                const distanceQuery = db.select('id')
-                  .from(function() {
-                    this.select('actions.id', db.raw('ST_DISTANCE(actions.location, target_zip.location) * ? AS distance', milesInMeter))
-                      .as('distances')
-                      .from(db.raw(`
-                        (SELECT postal_code, location from zipcodes where postal_code=?) target_zip
-                        CROSS JOIN
-                        (select * from actions join zipcodes on zipcodes.postal_code = actions.zipcode) actions
-                      `, zipcode))
-                  })
-                  .where('distance', '<=', distance);
+                if (typeof geography.virtual === 'boolean' && geography.virtual) {
 
-                this.orWhere('actions.id', 'in', distanceQuery);
+                  this.orWhere('actions.virtual', geography.virtual);
+
+                } else {
+
+                  const distance = geography.distance || 10; // default to 10 miles
+                  const zipcode = geography.zipcode;
+                  const milesInMeter = 0.000621371192237;
+
+                  // TODO: It would be nice to refactor some of this out into knex language
+                  const distanceQuery = db.select('id')
+                    .from(function() {
+                      this.select('actions.id', db.raw('ST_DISTANCE(actions.location, target_zip.location) * ? AS distance', milesInMeter))
+                        .as('distances')
+                        .from(db.raw(`
+                          (SELECT postal_code, location from zipcodes where postal_code=?) target_zip
+                          CROSS JOIN
+                          (select * from actions join zipcodes on zipcodes.postal_code = actions.zipcode) actions
+                        `, zipcode))
+                    })
+                    .where('distance', '<=', distance);
+
+                  this.orWhere('actions.id', 'in', distanceQuery);
+                }
               });
             });
           }

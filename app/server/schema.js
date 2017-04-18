@@ -100,6 +100,7 @@ module.exports = buildSchema(`
   input GeographySearchInput {
     zipcode: String
     distance: Int
+    virtual: Boolean
   }
 
   input CampaignSearchInput {
