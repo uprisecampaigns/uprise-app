@@ -350,9 +350,9 @@ class Action {
 
     const actionResults = await searchQuery;
 
-    for (let action of actionResults) {
-      Object.assign(action, await this.details(action));
-    };
+    await Promise.all(actionResults.map( async (action) => {
+      action.campaign = await Campaign.findOne('id', action.campaign_id); 
+    }));
 
     return actionResults;
   }

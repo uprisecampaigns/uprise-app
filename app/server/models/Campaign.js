@@ -308,12 +308,7 @@ class Campaign {
         }
       });
 
-
     const results = await searchQuery;
-
-    for (let campaign of results) {
-      Object.assign(campaign, await this.details(campaign));
-    };
 
     return results;
   }
