@@ -63,8 +63,7 @@ class NavDrawer extends Component {
 
   menuItems = [
     { path: '/search', title: 'Search' },
-    { path: '/communications', title: 'Communications' },
-    { path: '/calendar', title: 'Calendar' },
+    { path: '/actions', title: 'Actions' },
     { path: '/organize', title: 'Organize' },
   ]
 
