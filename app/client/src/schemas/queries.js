@@ -185,6 +185,38 @@ export const ActionsQuery = gql`
     }
   }
 `;
+ 
+export const MyActionsQuery = gql`
+  query MyActionsQuery {
+    myActions {
+      id
+      title
+      slug
+      description
+      start_time
+      end_time
+      tags
+      location_name
+      street_address
+      street_address2
+      city
+      state
+      zipcode
+      location_notes
+      owner {
+        id
+        first_name
+        last_name
+        email
+      }
+      campaign {
+        id
+        title
+        slug
+      }
+    }
+  }
+`;
 
 export const ActivitiesQuery = gql`
   query ActivitiesQuery {

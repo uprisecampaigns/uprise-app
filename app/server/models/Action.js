@@ -104,11 +104,15 @@ class Action {
 
   static async usersActions({ userId }) {
 
-    const result = await db('action_signups')
+    const results = await db('action_signups')
       .where('user_id', userId)
       .innerJoin('actions', 'action_signups.action_id', 'actions.id')
 
-    return result;
+    await Promise.all(results.map( async (action) => {
+      Object.assign(action, await this.details(action));
+    }));
+
+    return results;
   }
 
   static async search(search) {

@@ -54,6 +54,9 @@ export default {
     require('./searchActions').default,
     require('./searchCampaigns').default,
 
+    // /actions
+    require('./myActions').default,
+
     // /action/
     require('./action').default,
 

@@ -4,8 +4,11 @@
   cursor: pointer;
 }
 
-p a {
+a.link {
   color: $brick-red;
+}
+
+p a {
   padding-left: 0.2rem;
   padding-right: 0.2rem;
 }
