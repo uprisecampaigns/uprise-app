@@ -102,6 +102,15 @@ class Action {
     return result;
   }
 
+  static async usersActions({ userId }) {
+
+    const result = await db('action_signups')
+      .where('user_id', userId)
+      .innerJoin('actions', 'action_signups.action_id', 'actions.id')
+
+    return result;
+  }
+
   static async search(search) {
     
     const searchQuery = db('actions')
