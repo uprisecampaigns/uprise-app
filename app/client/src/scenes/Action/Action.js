@@ -24,7 +24,7 @@ import {
 import s from 'styles/Action.scss';
 
 
-class ActionContainer extends Component {
+class Action extends Component {
   constructor(props) {
     super(props);
 
@@ -52,7 +52,7 @@ class ActionContainer extends Component {
           actionId: this.props.action.id
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['SignedUpVolunteersQuery', 'ActionQuery', 'ActionsQuery'],
+        refetchQueries: ['MyActionsQuery', 'SignedUpVolunteersQuery', 'ActionQuery', 'ActionsQuery'],
       });
 
       this.props.dispatch(notify('Signed up!'));
@@ -73,7 +73,7 @@ class ActionContainer extends Component {
           actionId: this.props.action.id
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['SignedUpVolunteersQuery', 'ActionQuery', 'ActionsQuery'],
+        refetchQueries: ['MyActionsQuery', 'SignedUpVolunteersQuery', 'ActionQuery', 'MyActionsQuery', 'ActionsQuery'],
       });
 
       this.props.dispatch(notify('Signup canceled'));
@@ -96,17 +96,18 @@ class ActionContainer extends Component {
       const startTime = moment(action.start_time);
       const endTime = moment(action.end_time);
 
-      const issueAreas = (typeof action.issue_areas === 'object') ?
+      const issueAreas = (Array.isArray(action.issue_areas) && action.issue_areas.length) ?
         action.issue_areas.map( (issue, index) => {
           return <div key={index} className={s.detailLine}>{issue.title}</div>;
         }) : [];
 
-      const activities = (typeof action.activities === 'object') ?
+      const activities = (Array.isArray(action.activities) && action.activities.length) ?
         action.activities.map( (activity, index) => {
           return <div key={index} className={s.detailLine}>{activity.description}</div>;
         }) : [];
 
-      const keywords = (typeof action.tags === 'object' && action.tags.length > 0) && (
+      // TODO: keywords just gets auto-assigned 'null' if not filled array?
+      const keywords = (Array.isArray(action.tags) && action.tags.length) && (
         <div className={s.detailLine}>{action.tags.join(', ')}</div>
       );
 
@@ -170,12 +171,14 @@ class ActionContainer extends Component {
               <div className={s.descriptionContainer}>{action.description}</div>
             }
 
-            <div className={s.contactContainer}>
-              Contact Coordinator: {action.owner.first_name} {action.owner.last_name}
-              <Link to={'mailto:' + action.owner.email} external={true} useAhref={true}>
-                {action.owner.email}
-              </Link>
-            </div>
+            { action.owner && (
+              <div className={s.contactContainer}>
+                Contact Coordinator: {action.owner.first_name} {action.owner.last_name}
+                <Link to={'mailto:' + action.owner.email} external={true} useAhref={true}>
+                  {action.owner.email}
+                </Link>
+              </div>
+            )}
 
             { (action.location_name || action.street_address || (action.city && action.state && action.zipcode)) && (
               <div className={s.locationContainer}>
@@ -274,4 +277,4 @@ export default compose(
   withActionQuery,
   graphql(ActionSignupMutation, { name: 'signup' }),
   graphql(CancelActionSignupMutation, { name: 'cancelSignup' }),
-)(ActionContainer);
+)(Action);
