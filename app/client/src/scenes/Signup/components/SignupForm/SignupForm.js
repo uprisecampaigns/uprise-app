@@ -89,7 +89,8 @@ class SignupForm extends Component {
                   <TextField
                     floatingLabelText="Zipcode"
                     value={data.zipcode}
-                    type="number"
+                    pattern="[0-9]{5}"
+                    type="text"
                     onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
                     errorText={data.zipcodeErrorText}
                     fullWidth={true}

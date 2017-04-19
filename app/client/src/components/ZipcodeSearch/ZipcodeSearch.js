@@ -67,7 +67,8 @@ class ZipcodeSearch extends React.PureComponent {
         Active in areas that include zipcode:  
         <TextField
           floatingLabelText="Zipcode"
-          type="number"
+          type="text"
+          pattern="[0-9]{5}"
           value={zipcode}
           style={textFieldStyle}
           underlineShow={false}

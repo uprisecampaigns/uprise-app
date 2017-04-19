@@ -120,7 +120,8 @@ class CampaignInfoForm extends Component {
                   <TextField
                     floatingLabelText="Zipcode"
                     value={data.zipcode}
-                    type="number"
+                    type="text"
+                    pattern="[0-9]{5}"
                     onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
                     errorText={errors.zipcodeErrorText}
                   />

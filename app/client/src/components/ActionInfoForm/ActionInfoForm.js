@@ -146,7 +146,8 @@ class ActionInfoForm extends Component {
                     <div className={s.textFieldContainer}>
                       <TextField
                         floatingLabelText="Zipcode"
-                        type="number"
+                        type="text"
+                        pattern="[0-9]{5}"
                         value={data.zipcode}
                         onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
                         errorText={errors.zipcodeErrorText}

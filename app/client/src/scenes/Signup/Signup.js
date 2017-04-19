@@ -103,10 +103,13 @@ class SignupFormContainer extends Component {
   }
 
   handleInputChange = (event, type, value) => {
-    this.setState(Object.assign({},
-      this.state,
-      { [type]: value }
-    ));
+    if (!(typeof type === 'string' && type === 'zipcode' && value.length > 5)) {
+
+      this.setState(Object.assign({},
+        this.state,
+        { [type]: value }
+      ));
+    }
   }
 
   formSubmit = async (event) => {

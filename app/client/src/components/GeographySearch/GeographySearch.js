@@ -29,7 +29,7 @@ class GeographySearch extends React.PureComponent {
 
   handleInputChange = (event, type, value) => {
 
-    if (typeof type === 'string' && (type === 'zipcode' || type === 'distance')) {
+    if (typeof type === 'string' && ((type === 'zipcode' && value.length < 6) || type === 'distance')) {
       if (isNumeric(value) || value === '') {
 
         this.setState(Object.assign({},
@@ -104,7 +104,8 @@ class GeographySearch extends React.PureComponent {
             of 
             <TextField
               floatingLabelText="Zipcode"
-              type="number"
+              type="text"
+              pattern="[0-9]{5}"
               value={zipcode}
               style={textFieldStyle}
               underlineShow={false}
