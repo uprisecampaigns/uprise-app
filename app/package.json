@@ -66,6 +66,7 @@
     "chai-enzyme": "^0.6.1",
     "compression-webpack-plugin": "^0.3.2",
     "css-loader": "^0.26.1",
+    "csv-parse": "^1.2.0",
     "del": "~2.2.2",
     "enzyme": "^2.7.1",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
