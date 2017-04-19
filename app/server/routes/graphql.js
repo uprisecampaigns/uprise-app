@@ -98,11 +98,7 @@ module.exports = (app) => {
 
       const path = collectionName + '/' + collectionId + '/' + fileName;
 
-      console.log(path);
-
       const url = getS3Signature({ path, contentEncoding, contentType });
-
-      console.log(url);
 
       return { 
         url: url,
@@ -128,7 +124,6 @@ module.exports = (app) => {
       }
 
       const actions = await Action.search(data.search);
-      console.log(actions);
       return actions;
     },
 
@@ -138,14 +133,11 @@ module.exports = (app) => {
         throw new Error('User must be logged in');
       }
 
-      console.log(data);
-
       const campaign = await Campaign.findOne(data.search);
 
       // TODO: This is repeated in a bunch of places and should be DRYed
       campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id });
 
-      console.log(campaign);
       return campaign;
     },
 
@@ -156,7 +148,6 @@ module.exports = (app) => {
       }
 
       const campaigns = await Campaign.search(data.search);
-      console.log(campaigns);
       return campaigns;
     },
 
@@ -169,7 +160,6 @@ module.exports = (app) => {
       const myCampaigns = await Campaign.search({
         ownerId: context.user.id
       });
-      console.log(myCampaigns);
       return myCampaigns;
     },
 
@@ -180,7 +170,6 @@ module.exports = (app) => {
       }
 
       const activities = await Action.listActivities(data.search);
-      console.log(activities);
       return activities;
     },
 
@@ -191,7 +180,6 @@ module.exports = (app) => {
       }
 
       const types = await Campaign.listTypes(data.search);
-      console.log(types);
       return types;
     },
 
@@ -202,7 +190,6 @@ module.exports = (app) => {
       }
 
       const levels = await Campaign.listLevels(data.search);
-      console.log(levels);
       return levels;
     },
 
@@ -213,7 +200,6 @@ module.exports = (app) => {
       }
 
       const issueAreas = await Campaign.listIssueAreas(data.search);
-      console.log(issueAreas);
       return issueAreas;
     },
 
@@ -222,8 +208,6 @@ module.exports = (app) => {
       if (!context.user) {
         throw new Error('User must be logged in');
       }
-
-      console.log(options.data);
 
       // Decamelizing property names
       const input = Object.assign(...Object.keys(options.data).map(k => ({
@@ -243,8 +227,6 @@ module.exports = (app) => {
         throw new Error('User must be logged in');
       }
 
-      console.log(options.data);
-
       // Decamelizing property names
       const input = Object.assign(...Object.keys(options.data).map(k => ({
           [decamelize(k)]: options.data[k]
@@ -263,9 +245,6 @@ module.exports = (app) => {
         throw new Error('User must be logged in');
       }
 
-      console.log(options);
-      console.log(options.data);
-
       const campaign = await Campaign.findOne(options.data);
 
       if (campaign.owner_id !== context.user.id) {
@@ -282,9 +261,6 @@ module.exports = (app) => {
       if (!context.user) {
         throw new Error('User must be logged in');
       }
-
-      console.log(options);
-      console.log(options.data);
 
       const action = await Action.findOne(options.data);
 
@@ -304,8 +280,6 @@ module.exports = (app) => {
         throw new Error('User must be logged in');
       }
 
-      console.log(options.data);
-
       // Decamelizing property names
       const input = Object.assign(...Object.keys(options.data).map(k => ({
           [decamelize(k)]: options.data[k]
@@ -322,8 +296,6 @@ module.exports = (app) => {
       if (!context.user) {
         throw new Error('User must be logged in');
       }
-
-      console.log(options.data);
 
       // Decamelizing property names
       const input = Object.assign(...Object.keys(options.data).map(k => ({
