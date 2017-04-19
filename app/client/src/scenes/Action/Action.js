@@ -106,9 +106,9 @@ class ActionContainer extends Component {
           return <div key={index} className={s.detailLine}>{activity.description}</div>;
         }) : [];
 
-      const keywords = (typeof action.tags === 'object') ? (
-          <div className={s.detailLine}>{action.tags.join(', ')}</div>
-        ) : [];
+      const keywords = (typeof action.tags === 'object' && action.tags.length > 0) && (
+        <div className={s.detailLine}>{action.tags.join(', ')}</div>
+      );
 
       const modalActions = [
         <RaisedButton
@@ -130,8 +130,14 @@ class ActionContainer extends Component {
             <Link to={'/campaign/' + action.campaign.slug}>
               <div className={s.campaignHeader}>{action.campaign.title}</div>
             </Link>
-            <div className={s.dateTimePlaceContainer}>{startTime.format('ddd, MMM Do, YYYY')}</div>
-            <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
+
+            { startTime.isValid() && 
+              <div className={s.dateTimePlaceContainer}>{startTime.format('ddd, MMM Do, YYYY')}</div>
+            }
+
+            { (action.city && action.state) && 
+              <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
+            }
 
             <div className={s.attendingContainer}>
               {this.state.saving ? (
@@ -160,7 +166,9 @@ class ActionContainer extends Component {
               )}
             </div>
 
-            <div className={s.descriptionContainer}>{action.description}</div>
+            { (typeof action.description === 'string' && action.description.trim() !== '') &&
+              <div className={s.descriptionContainer}>{action.description}</div>
+            }
 
             <div className={s.contactContainer}>
               Contact Coordinator: {action.owner.first_name} {action.owner.last_name}
@@ -169,18 +177,34 @@ class ActionContainer extends Component {
               </Link>
             </div>
 
-            <div className={s.locationContainer}>
-              <div className={s.header}>
-                Location Details
+            { (action.location_name || action.street_address || (action.city && action.state && action.zipcode)) && (
+              <div className={s.locationContainer}>
+                <div className={s.header}>
+                  Location Details
+                </div>
+                {action.location_name && 
+                  <div className={s.detailLine}>{action.location_name}</div>
+                }
+
+                {action.street_address && 
+                  <div className={s.detailLine}>{action.street_address}</div>
+                }
+
+                {action.street_address2 && 
+                  <div className={s.detailLine}>{action.street_address2}</div>
+                }
+
+                { (action.city && action.state && action.zipcode) && (
+                  <div className={s.detailLine}>
+                    {action.city}, {action.state} {action.zipcode}
+                  </div>
+                )}
+
+                {action.location_notes && 
+                  <div className={s.detailLine}>{action.location_notes}</div>
+                }
               </div>
-              <div className={s.detailLine}>{action.location_name}</div>
-              <div className={s.detailLine}>{action.street_address}</div>
-              <div className={s.detailLine}>{action.street_address2}</div>
-              <div className={s.detailLine}>
-                {action.city}, {action.state} {action.zipcode}
-              </div>
-              <div className={s.detailLine}>{action.location_notes}</div>
-            </div>
+            )}
 
             {issueAreas.length > 0 && (
               <div className={s.issueAreasContainer}>
@@ -200,12 +224,14 @@ class ActionContainer extends Component {
               </div>
             )}
 
-            <div className={s.keywordsContainer}>
-              <div className={s.header}>
-                Keywords:
+            {keywords && ( 
+              <div className={s.keywordsContainer}>
+                <div className={s.header}>
+                  Keywords:
+                </div>
+                <div>{keywords}</div>
               </div>
-              <div>{keywords}</div>
-            </div>
+            )}
 
           </div>
 
