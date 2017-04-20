@@ -175,6 +175,8 @@ class Action {
                 this.orWhere(db.raw('actions.location_notes % ?', keyword));
                 this.orWhere(db.raw('campaigns.title % ?', keyword));
 
+                this.orWhere(db.raw("campaigns.title ILIKE '%' || ? || '%' ", keyword));
+
                 const tagKeywordQuery = db.select('id')
                   .distinct()
                   .from(tags)
@@ -190,7 +192,7 @@ class Action {
             qb.andWhere(function() {
 
               search.campaignNames.forEach( (campaignName) => {
-                this.orWhere(db.raw('campaigns.title % ?', campaignName));
+                this.orWhere(db.raw("campaigns.title ILIKE '%' || ? || '%' ", campaignName));
               });
             });
           }
@@ -359,7 +361,6 @@ class Action {
           }
         }
       });
-
 
     const actionResults = await searchQuery;
 

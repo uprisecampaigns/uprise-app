@@ -193,6 +193,7 @@ class Campaign {
 
               search.titles.forEach( (title) => {
                 this.orWhere(db.raw('title % ?', title));
+                this.orWhere(db.raw("title ILIKE '%' || ? || '%' ", title));
 
               });
             });
@@ -217,6 +218,7 @@ class Campaign {
               search.keywords.forEach( (keyword) => {
                 
                 this.orWhere(db.raw('title % ?', keyword));
+                this.orWhere(db.raw("title ILIKE '%' || ? || '%' ", keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
