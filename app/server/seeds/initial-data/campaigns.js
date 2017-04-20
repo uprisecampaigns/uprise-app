@@ -58,15 +58,12 @@ module.exports = async (knex, users) => {
       }
     }
 
-    console.log(chosenTags);
     return [...new Set(chosenTags)];
   }
 
   vaCampaigns.forEach( (campaign) => {
     campaign.tags = genTags(vaKeywords);
   });
-
-  console.log(vaCampaigns);
 
   const campaigns = await knex('campaigns').insert(vaCampaigns , ['id']);
 
