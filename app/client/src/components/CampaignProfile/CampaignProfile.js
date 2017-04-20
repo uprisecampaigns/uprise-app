@@ -26,9 +26,9 @@ class CampaignProfile extends Component {
 
     const { campaign, saving, subscribe, cancelSubscription, ...props } = this.props;
 
-    const keywords = (typeof campaign.tags === 'object' && campaign.tags.length > 0) && (
+    const keywords = (typeof campaign.tags === 'object' && campaign.tags.length > 0) ? (
       <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
-    );
+    ) : [];
 
     return (
       <div className={s.outerContainer}>
@@ -96,7 +96,7 @@ class CampaignProfile extends Component {
             </Link>
           </div>
 
-          {keywords && (
+          {keywords.length > 0 && (
             <div className={s.keywordsContainer}>
               <div className={s.header}>
                 Keywords:

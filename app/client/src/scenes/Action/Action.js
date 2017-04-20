@@ -107,9 +107,9 @@ class Action extends Component {
         }) : [];
 
       // TODO: keywords just gets auto-assigned 'null' if not filled array?
-      const keywords = (Array.isArray(action.tags) && action.tags.length) && (
+      const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.detailLine}>{action.tags.join(', ')}</div>
-      );
+      ) : [];
 
       const modalActions = [
         <RaisedButton
@@ -227,7 +227,7 @@ class Action extends Component {
               </div>
             )}
 
-            {keywords && ( 
+            {keywords.length > 0 && ( 
               <div className={s.keywordsContainer}>
                 <div className={s.header}>
                   Keywords:
