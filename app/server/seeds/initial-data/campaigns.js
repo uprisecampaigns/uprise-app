@@ -1,4 +1,5 @@
 const vaCampaigns = require('./campaigns/VA-campaigns-4.18.17.json');
+const vaKeywords = require('./campaigns/VA-keywords-4.18.17.json');
 
 module.exports = async (knex, users) => {
   // Deletes ALL existing entries
@@ -37,6 +38,35 @@ module.exports = async (knex, users) => {
     { title: 'Issue Advocacy', description: 'For or against an issue in general' },
   ], ['id']);
 
+  const maxTagNum = 6;
+
+  const pickTag = (tags) => {
+    return tags[Math.floor(Math.random(0,tags.length) * 10)];
+  }
+
+  const genTags = (tags) => {
+    const tagNum = Math.floor(Math.random(0,maxTagNum) * 10);
+    const chosenTags = [];
+
+    let i = 0;
+
+    while (i < tagNum) {
+      let tag = pickTag(tags);
+      if (!chosenTags.includes(tag)) {
+        chosenTags.push(tag);
+        i++;
+      }
+    }
+
+    console.log(chosenTags);
+    return [...new Set(chosenTags)];
+  }
+
+  vaCampaigns.forEach( (campaign) => {
+    campaign.tags = genTags(vaKeywords);
+  });
+
+  console.log(vaCampaigns);
 
   const campaigns = await knex('campaigns').insert(vaCampaigns , ['id']);
 
