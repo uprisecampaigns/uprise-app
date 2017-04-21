@@ -37,7 +37,7 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     { title: 'legal', description: 'Legal' }, // 21 
     { title: 'compliance', description: 'Accounting' }, // 22 
     { title: 'finance', description: 'Fundraising' }, // 23 
-  ], ['id']);
+  ], ['id', 'title', 'description']);
 
   const antoniaUser = await knex.table('users').where('email', 'antonia@uprise.org').first();
 
@@ -68,19 +68,22 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     return slug;
   }
 
-  const actionActivities = vaActions.map( (action) => ({ action_id: action.id, activity: action.skill }));
+  const actionActivities = [];
 
   const actions = [];
   for (let action of vaActions) {
+    const skills = action.skills;
+    delete action.skills;
+
     action.owner_id = antoniaUser.id;
     action.start_time = moment(action.start_time).format(),
     action.end_time = moment(action.end_time).format(),
     action.campaign_id = campaigns.find( (campaign) => campaign.title === action.campaign_title).id;
     action.slug = await getActionSlug(action.title);
-    delete action.skills;
     delete action.campaign_title;
     const result = await knex('actions').insert([action], ['id', 'title']);
     actions.push(result[0]);
+    actionActivities.push({ id: result[0].id, activity: skills });
   }
 
   console.log('inserted actions: ');
@@ -101,10 +104,19 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
   //   { action_id: actions[6].id, activity_id: activities[19].id },
   // ], ['id']);
 
-  const actionActivitiesData = actions.map( (action) => ({
-    action_id: action.id,
-    activity_id: activities.find( activity => activity.title === action.activity).id
-  }));
+  const actionActivitiesData = actionActivities.map( (action) => {
+
+    console.log(activities);
+    console.log(action);
+
+    const foundActivity = activities.find( (activity) => (activity.description.toLowerCase() === action.activity.toLowerCase()));
+
+    console.log(foundActivity);
+    return {
+      action_id: action.id,
+      activity_id: foundActivity.id
+    }
+  });
 
   console.log('actionActivitiesData');
   console.log(actionActivitiesData);
