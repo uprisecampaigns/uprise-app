@@ -77,25 +77,29 @@ export function validateZipcode(component, prop='zipcode', errorProp='zipcodeErr
 }
 
 export function validateZipcodeList(component) {
-  const zipcodeList = component.state.formData.zipcodeList.split(',').map(zip => zip.trim());
+  const { formData } = component.state;
 
-  zipcodeList.forEach( (zipcode) => {
-    if (!isNumeric(zipcode)) {
-      component.hasErrors = true;
-      component.setState( (prevState) => ({
-        errors: Object.assign({}, prevState.errors, {
-          zipcodeListErrorText: 'All zipcodes should be numbers'
-        })
-      }));
-    } else if (zipcode.length !== 5) {
-      component.hasErrors = true;
-      component.setState( (prevState) => ({
-        errors: Object.assign({}, prevState.errors, {
-          zipcodeListErrorText: 'All zipcodes should be 5 digits long'
-        })
-      }));
-    }
-  });
+  if (typeof formData.zipcodeList === 'string' && formData.zipcodeList.trim() !== '') {
+    const zipcodeList = formData.zipcodeList.split(',').map(zip => zip.trim());
+
+    zipcodeList.forEach( (zipcode) => {
+      if (!isNumeric(zipcode)) {
+        component.hasErrors = true;
+        component.setState( (prevState) => ({
+          errors: Object.assign({}, prevState.errors, {
+            zipcodeListErrorText: 'All zipcodes should be numbers'
+          })
+        }));
+      } else if (zipcode.length !== 5) {
+        component.hasErrors = true;
+        component.setState( (prevState) => ({
+          errors: Object.assign({}, prevState.errors, {
+            zipcodeListErrorText: 'All zipcodes should be 5 digits long'
+          })
+        }));
+      }
+    });
+  }
 }
 
 export function validatePhoneNumber(component) {
