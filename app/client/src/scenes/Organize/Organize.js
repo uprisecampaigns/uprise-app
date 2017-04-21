@@ -1,7 +1,8 @@
 
 import React, { Component, PropTypes } from 'react';
-import {List, ListItem} from 'material-ui/List';
 import { graphql } from 'react-apollo';
+import { List, ListItem } from 'material-ui/List';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import Link from 'components/Link';
 
@@ -39,15 +40,18 @@ class Organize extends Component {
           Organize
         </div>
 
+        <Link to={'/organize/create-campaign'}>
+          <div className={s.organizeButton}>
+            <RaisedButton
+              primary={true} 
+              label="Create Campaign" 
+            />
+          </div>
+        </Link>
+
         <List>
 
           { campaignList }
-         
-          <Link to="/organize/create-campaign">
-            <ListItem 
-              primaryText="Create Campaign"
-            />
-          </Link>
          
         </List>
       </div>
