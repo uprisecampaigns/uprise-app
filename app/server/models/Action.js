@@ -364,9 +364,13 @@ class Action {
 
     const actionResults = await searchQuery;
 
-    await Promise.all(actionResults.map( async (action) => {
-      action.campaign = await Campaign.findOne('id', action.campaign_id); 
-    }));
+    actionResults.forEach( (action) => {
+      action.campaign = {
+        id: action.campaign_id,
+        title: action.campaign_title,
+        slug: action.campaign_slug
+      };
+    });
 
     return actionResults;
   }
