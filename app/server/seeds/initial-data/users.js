@@ -2,7 +2,7 @@ const vaUsers = require('./users/VA-users-4.20.17.json');
 
 module.exports = async (knex) => {
 
-  let testUser = await knex('users').where('email', 'test@uprise.org').select('id');
+  let testUser = await knex('users').where('email', 'test@uprise.org').select(['id', 'email']);
 
   if (!testUser.length) {
     testUser = await knex('users').insert([
@@ -14,26 +14,37 @@ module.exports = async (knex) => {
         password_hash: '$2a$10$/dGp5EQFDO/5pqRSFryjSO3FUq.Rs6svkof/fiSics32mRPU8QCcS' // the password is password!
       }, 
 
-    ], ['id'] );
+    ], ['id', 'email'] );
   }
 
-  console.log(testUser);
+  let antoniaUser = await knex('users').where('email', 'antonia@uprise.org').select(['id', 'email']);
+
+  if (!antoniaUser.length) {
+    antoniaUser = await knex('users').insert([
+      {
+        email: 'antonia@uprise.org',
+        first_name: 'Antonia',
+        last_name: 'Scatton',
+        zipcode: '12345',
+        password_hash: '$2a$10$/dGp5EQFDO/5pqRSFryjSO3FUq.Rs6svkof/fiSics32mRPU8QCcS' // the password is password!
+      }, 
+
+    ], ['id', 'email'] );
+  }
 
   const newVaUsers = [];
 
   for (let userRecord of vaUsers) {
 
-    const dbUser = await knex('users').where('email', userRecord.email).select('id');
+    const dbUser = await knex('users').where('email', userRecord.email).select(['id', 'email']);
 
     if (dbUser.length === 0) {
-      const newUser = await knex('users').insert([userRecord], ['id']);
+      const newUser = await knex('users').insert([userRecord], ['id', 'email']);
       newVaUsers.push(newUser);
     } else {
       newVaUsers.push(dbUser[0]);
     }
   }
 
-  console.log(newVaUsers);
-
-  return testUser.concat(newVaUsers);
+  return testUser.concat(antoniaUser).concat(newVaUsers);
 };

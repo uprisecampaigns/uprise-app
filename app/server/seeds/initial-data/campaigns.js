@@ -65,7 +65,7 @@ module.exports = async (knex, users) => {
     campaign.tags = genTags(vaKeywords);
   });
 
-  const campaigns = await knex('campaigns').insert(vaCampaigns , ['id']);
+  const campaigns = await knex('campaigns').insert(vaCampaigns , ['id', 'title']);
 
   const vaCampaignsLevelsData = campaigns.map( (campaign) => ({ 
     campaign_id: campaign.id,
