@@ -180,7 +180,7 @@ class CreateAction extends Component {
                 <Link to={'/action/' + newAction.slug} useAhref={true}>uprise.org/action/{newAction.slug}</Link>
               </p>
               <p>
-                Please feel free to contact us at<Link to="mailto:help@uprise.org" external={true} useAhref={true}>help@uprise.org</Link>for assistance.
+                Please feel free to contact us at<Link to="mailto:help@uprise.org" mailTo={true} external={true} useAhref={true}>help@uprise.org</Link>for assistance.
               </p>
             </Dialog>
           )}

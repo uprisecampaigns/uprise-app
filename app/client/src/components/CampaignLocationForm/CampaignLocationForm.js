@@ -83,7 +83,7 @@ class CampaignLocationForm extends Component {
 
                     <p className={s.helpText}> 
                       Contact us at 
-                      <Link to="mailto:help@uprise.org" useAhref={true} external={true}>help@uprise.org</Link> 
+                      <Link to="mailto:help@uprise.org" mailTo={true} useAhref={true} external={true}>help@uprise.org</Link> 
                       about setting up your area.
                     </p>
                   </div>

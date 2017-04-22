@@ -19,6 +19,7 @@ class Link extends React.Component {
   static propTypes = {
     to: PropTypes.string.isRequired,
     useAhref: PropTypes.bool,
+    mailTo: PropTypes.bool,
     children: PropTypes.node,
     onClick: PropTypes.func,
     preventDefault: PropTypes.bool
@@ -53,9 +54,9 @@ class Link extends React.Component {
   };
 
   render() {
-    const { to, children, external, useAhref, preventDefault, className, ...props } = this.props;
+    const { to, children, external, mailTo, useAhref, preventDefault, className, ...props } = this.props;
 
-    // If link is external and no 'http' is included at beginning, add it
+    // If link is external and not mailTo no 'http' is included at beginning, add it
 
     function addHttp(url) {
       if (url && !/^(f|ht)tps?:\/\//i.test(url)) {
@@ -64,7 +65,7 @@ class Link extends React.Component {
       return url;
     }
 
-    const url = external ? addHttp(to) : to;
+    const url = (external && !mailTo) ? addHttp(to) : to;
 
     if (useAhref) {
       return (

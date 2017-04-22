@@ -51,7 +51,7 @@ class MyActions extends Component {
 
             {(action.owner) && (
               <div className={s.actionListDetailLine}>
-                Coordinator: {action.owner.first_name} {action.owner.last_name} <Link to={"mailto:" + action.owner.email} external={true} useAhref={true}>{action.owner.email}</Link>
+                Coordinator: {action.owner.first_name} {action.owner.last_name} <Link to={"mailto:" + action.owner.email} mailTo={true} external={true} useAhref={true}>{action.owner.email}</Link>
               </div>
             )}
 

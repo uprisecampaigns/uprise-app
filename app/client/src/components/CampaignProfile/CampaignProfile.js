@@ -91,7 +91,7 @@ class CampaignProfile extends Component {
 
           <div className={s.contactContainer}>
             Contact Coordinator:  
-            <Link to={'mailto:' + campaign.owner.email} external={true} useAhref={true}>
+            <Link to={'mailto:' + campaign.owner.email} external={true} mailTo={true} useAhref={true}>
               {campaign.owner.first_name} {campaign.owner.last_name}
             </Link>
           </div>
