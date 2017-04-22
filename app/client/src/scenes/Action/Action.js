@@ -265,7 +265,8 @@ const withActionQuery = graphql(ActionQuery, {
       search: {
         id: ownProps.actionId
       }
-    }
+    },
+    fetchPolicy: 'cache-and-network',
   }),
   props: ({ data }) => ({
     action: data.action

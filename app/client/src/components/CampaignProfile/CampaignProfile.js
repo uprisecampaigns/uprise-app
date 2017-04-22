@@ -30,85 +30,90 @@ class CampaignProfile extends Component {
       <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
     ) : [];
 
-    return (
-      <div className={s.outerContainer}>
-        <div className={s.innerContainer}>
+    if (campaign) {
+      return (
+        <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
 
-          <Link to={'/campaign/' + campaign.slug}>
-            <div className={s.titleContainer}>{campaign.title}</div>
-          </Link>
+            <Link to={'/campaign/' + campaign.slug}>
+              <div className={s.titleContainer}>{campaign.title}</div>
+            </Link>
 
-          { campaign.profile_image_url && (
-            <div className={s.profileImageContainer}>
-              <img src={campaign.profile_image_url} className={s.profileImage}/>
-            </div>
-          )}
-
-          { campaign.profile_subheader && (
-            <div className={s.profileSubheaderContainer}>
-              {campaign.profile_subheader}
-            </div>
-          )}
-
-          { campaign.website_url && (
-            <div className={s.websiteUrlContainer}>
-              <Link to={campaign.website_url} external={true} useAhref={true}>
-                {campaign.website_url}
-              </Link>
-            </div>
-          )}
-
-          <div className={s.subscribedContainer}>
-            {saving ? (
-              <div className={s.savingThrobberContainer}>
-                <CircularProgress
-                  size={100}
-                  thickness={5}
-                />
-              </div>
-            ) : (
-              <div>
-                {campaign.subscribed ? (
-                  <RaisedButton
-                    onTouchTap={cancelSubscription}
-                    primary={true}
-                    label="Cancel Subscription"
-                  />
-                ) : (
-                  <RaisedButton
-                    onTouchTap={subscribe}
-                    primary={true}
-                    label="Subscribe"
-                  />
-                )}
+            { campaign.profile_image_url && (
+              <div className={s.profileImageContainer}>
+                <img src={campaign.profile_image_url} className={s.profileImage}/>
               </div>
             )}
-          </div>
 
-          { (typeof campaign.description === 'string' && campaign.description.trim() !== '') &&
-            <div className={s.descriptionContainer}>{campaign.description}</div>
-          }
-
-          <div className={s.contactContainer}>
-            Contact Coordinator:  
-            <Link to={'mailto:' + campaign.owner.email} external={true} mailTo={true} useAhref={true}>
-              {campaign.owner.first_name} {campaign.owner.last_name}
-            </Link>
-          </div>
-
-          {keywords.length > 0 && (
-            <div className={s.keywordsContainer}>
-              <div className={s.header}>
-                Keywords:
+            { campaign.profile_subheader && (
+              <div className={s.profileSubheaderContainer}>
+                {campaign.profile_subheader}
               </div>
-              <div>{keywords}</div>
-            </div>
-          )}
+            )}
 
+            { campaign.website_url && (
+              <div className={s.websiteUrlContainer}>
+                <Link to={campaign.website_url} external={true} useAhref={true}>
+                  {campaign.website_url}
+                </Link>
+              </div>
+            )}
+
+            <div className={s.subscribedContainer}>
+              {saving ? (
+                <div className={s.savingThrobberContainer}>
+                  <CircularProgress
+                    size={100}
+                    thickness={5}
+                  />
+                </div>
+              ) : (
+                <div>
+                  {campaign.subscribed ? (
+                    <RaisedButton
+                      onTouchTap={cancelSubscription}
+                      primary={true}
+                      label="Cancel Subscription"
+                    />
+                  ) : (
+                    <RaisedButton
+                      onTouchTap={subscribe}
+                      primary={true}
+                      label="Subscribe"
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+
+            { (typeof campaign.description === 'string' && campaign.description.trim() !== '') &&
+              <div className={s.descriptionContainer}>{campaign.description}</div>
+            }
+
+            { campaign.owner && (
+              <div className={s.contactContainer}>
+                Contact Coordinator:  
+                <Link to={'mailto:' + campaign.owner.email} external={true} mailTo={true} useAhref={true}>
+                  {campaign.owner.first_name} {campaign.owner.last_name}
+                </Link>
+              </div>
+            )}
+
+            {keywords.length > 0 && (
+              <div className={s.keywordsContainer}>
+                <div className={s.header}>
+                  Keywords:
+                </div>
+                <div>{keywords}</div>
+              </div>
+            )}
+
+          </div>
         </div>
-      </div>
-    );
-;
+      );
+    } else {
+      return null;
+    }
   }
 }
 

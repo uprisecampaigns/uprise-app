@@ -146,7 +146,8 @@ const withCampaignQuery = graphql(CampaignQuery, {
       search: {
         id: ownProps.campaignId
       }
-    }
+    },
+    fetchPolicy: 'cache-and-network',
   }),
   props: ({ data }) => ({ 
     campaign: data.campaign
