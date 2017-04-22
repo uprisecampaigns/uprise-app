@@ -220,6 +220,9 @@ class Campaign {
                 this.orWhere(db.raw('title % ?', keyword));
                 this.orWhere(db.raw("title ILIKE '%' || ? || '%' ", keyword));
 
+                this.orWhere(db.raw('profile_subheader % ?', keyword));
+                this.orWhere(db.raw('description % ?', keyword));
+
                 const tagKeywordQuery = db.select('id')
                   .distinct()
                   .from(tags)
