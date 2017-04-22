@@ -117,10 +117,10 @@ function LoginButton(props) {
       <ContentDropdownMenu
         titleIconName="account_box"
         dropdowns={[
-          { title: 'Profile', path: '/account/profile' },
-          { title: 'Preferences', path: '/account/preferences' },
-          { title: 'Settings', path: '/account/settings' },
-          { title: 'Help', path: '/account/help' },
+          // { title: 'Profile', path: '/account/profile' },
+          // { title: 'Preferences', path: '/account/preferences' },
+          // { title: 'Settings', path: '/account/settings' },
+          // { title: 'Help', path: '/account/help' },
           { title: 'Logout', path: '#', action: props.logout },
         ]}
       />
@@ -145,6 +145,7 @@ function AuthenticatedIcons(props) {
           >search</IconButton>
         </Link>
 
+{/*
         <ContentDropdownMenu
           titleIconName="notifications"
           className={s.rightIcon}
@@ -164,6 +165,7 @@ function AuthenticatedIcons(props) {
           ]}
         />
 
+*/}
         <ContentDropdownMenu
           titleIconName="work"
           className={s.rightIcon}

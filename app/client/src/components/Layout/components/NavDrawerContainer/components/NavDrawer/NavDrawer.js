@@ -68,13 +68,13 @@ class NavDrawer extends Component {
   ]
 
   accountMenuItems = [
-    { path: '/account/profile', title: 'Profile' },
-    { path: '/account/preferences', title: 'Preferences' },
-    { path: '/account/settings', title: 'Settings' },
+    // { path: '/account/profile', title: 'Profile' },
+    // { path: '/account/preferences', title: 'Preferences' },
+    // { path: '/account/settings', title: 'Settings' },
   ]
 
   bottomMenuItems = [
-    { path: '/account/help', title: 'Help' },
+    // { path: '/account/help', title: 'Help' },
     { path: '#', title: 'Logout', action: this.props.logout }
   ]
 
@@ -128,13 +128,14 @@ class NavDrawer extends Component {
           />
 
           {navItems}
-
+{/*
           <Divider className={s.divider}/>
 
           <Subheader className={s.subheader}>Account</Subheader>
 
           {accountNavItems}
 
+*/}
           <div className={s.bottomNavContainer}>
             {bottomNavItems}
           </div>
