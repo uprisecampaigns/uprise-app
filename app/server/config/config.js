@@ -26,7 +26,7 @@ module.exports = {
     validRecipient: (email) => {
       return (email.split('@').pop() === 'uprise.org'); // only send to @uprise.org email accounts for now
     },
-    from: 'max@uprise.org'
+    from: 'notifications@uprise.org'
   },
   urls: {
     api: process.env.SERVER_BASE_URL,
