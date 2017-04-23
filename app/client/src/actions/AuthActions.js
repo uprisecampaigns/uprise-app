@@ -175,6 +175,7 @@ export function clickedLogout() {
 }
 
 export function logoutSuccess() {
+  apolloClient.resetStore();
   return { type: LOGOUT_SUCCESS };
 }
 
@@ -202,8 +203,6 @@ export function attemptLogout(){
         const json = await response.json();
 
         if (!json.error) {
-
-          apolloClient.resetStore();
           dispatch(logoutSuccess());
         } else {
           // TODO: error handler

@@ -14,7 +14,7 @@ function createFilteredReducer(reducerFunction, reducerPredicate) {
   }
 }
 
-const RootReducer = combineReducers({
+const appReducer = combineReducers({
   userAuthSession: updateUserInfo,
   uploads: updateUploads,
   messages: updateMessages,
@@ -24,5 +24,13 @@ const RootReducer = combineReducers({
   apollo: apolloClient.reducer(),
 });
 
-export default RootReducer;
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGOUT_SUCCESS ') {
+    state = undefined
+  }
+
+  return appReducer(state, action)
+}
+
+export default rootReducer;
 
