@@ -22,6 +22,16 @@ class Campaign {
     return campaign;
   }
 
+  static async find(...args) {
+    const campaigns = await db.table('campaigns').where(...args);
+
+    for (let campaign of campaigns) {
+      Object.assign(campaign, await this.details(campaign));
+    };
+
+    return campaigns;
+  }
+
   static async create(options) {
 
     const user = await db.table('users').where('id', options.owner_id).first('id');

@@ -494,13 +494,21 @@ module.exports = (app) => {
       }
 
       // TODO: more sophisticated determining who can send to whom
-      const userActions = await Action.find('owner_id', user.id);
       let allowedRecipients = [];
+      const userActions = await Action.find('owner_id', user.id);
 
       // TODO: replace this with parallel promises
       for (let action of userActions) {
         const signedUpVolunteers = await Action.signedUpVolunteers({ actionId: action.id });
         allowedRecipients = allowedRecipients.concat(signedUpVolunteers);
+      };
+
+      const userCampaigns = await Campaign.find('owner_id', user.id);
+
+      // TODO: replace this with parallel promises
+      for (let campaign of userCampaigns) {
+        const subscribedUsers = await Campaign.subscribedUsers({ campaignId: campaign.id });
+        allowedRecipients = allowedRecipients.concat(subscribedUsers );
       };
 
       const allowedEmails = allowedRecipients.map( v => v.email);
