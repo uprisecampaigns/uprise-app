@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import history from 'lib/history';
+import apolloClient from 'store/apolloClient';
 
 
 export const CLICKED_SIGNUP = 'CLICKED_SIGNUP';
@@ -201,6 +202,8 @@ export function attemptLogout(){
         const json = await response.json();
 
         if (!json.error) {
+
+          apolloClient.resetStore();
           dispatch(logoutSuccess());
         } else {
           // TODO: error handler
