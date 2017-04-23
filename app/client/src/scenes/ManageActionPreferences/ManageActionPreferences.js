@@ -185,119 +185,119 @@ class ManageActionPreferencesContainer extends Component {
   }
 
   render() {
-    const { saveChanges, handleToggle, addKeyword, removeKeyword } = this;
-    const { ...props } = this.props;
-    const { action, saving } = this.state;
 
-    const selectedActivities = action.activities.map( (activity) => activity.id );
-    const selectedIssueAreas = action.issueAreas.map( (issueArea) => issueArea.id );
-    const selectedLevels = action.levels.map( (level) => level.id );
-    const selectedTypes = action.types.map( (type) => type.id );
-    const selectedTags = action.tags;
+    if (this.state.action && this.props.campaign) {
+      const { saveChanges, handleToggle, addKeyword, removeKeyword } = this;
+      const { campaign, ...props } = this.props;
+      const { action, saving } = this.state;
 
-    const campaign = props.campaign || {
-      title: '',
-      slug: ''
-    };
+      const selectedActivities = action.activities ? action.activities.map( (activity) => activity.id ) : [];
+      const selectedIssueAreas = action.issueAreas ? action.issueAreas.map( (issueArea) => issueArea.id ): [];
+      const selectedLevels = action.levels ? action.levels.map( (level) => level.id ) : [];
+      const selectedTypes = action.types ? action.types.map( (type) => type.id ) : [];
+      const selectedTags = action.tags;
 
-    const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
+      const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
 
-    return (
-      <div className={s.outerContainer}>
-        
-        <Link to={baseActionUrl + '/settings'}>
-          <div className={s.navSubHeader}>
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
-            Settings
-          </div>
-        </Link>
-
-        <div className={s.pageSubHeader}>Preferences</div>
-
-        <List>
+      return (
+        <div className={s.outerContainer}>
           
-          <IssueAreasTogglesList 
-            listTitle="Issue Areas"
-            collectionName="issueAreas" 
-            displayPropName="title"
-            keyPropName="id"
-            handleToggle={handleToggle}
-            selectedCollection={selectedIssueAreas}
-          />
+          <Link to={baseActionUrl + '/settings'}>
+            <div className={s.navSubHeader}>
+              <FontIcon 
+                className={["material-icons", s.backArrow].join(' ')}
+              >arrow_back</FontIcon>
+              Settings
+            </div>
+          </Link>
 
-          <LevelsTogglesList 
-            listTitle="Campaign Levels"
-            collectionName="levels" 
-            displayPropName="title"
-            keyPropName="id"
-            handleToggle={handleToggle}
-            selectedCollection={selectedLevels}
-          />
+          <div className={s.pageSubHeader}>Preferences</div>
 
-          <TypesTogglesList 
-            listTitle="Campaign Types"
-            collectionName="types" 
-            displayPropName="title"
-            keyPropName="id"
-            handleToggle={handleToggle}
-            selectedCollection={selectedTypes}
-          />
-
-          <ActivitiesTogglesList 
-            listTitle="Activities"
-            collectionName="activities" 
-            displayPropName="description"
-            keyPropName="id"
-            handleToggle={handleToggle}
-            selectedCollection={selectedActivities}
-          />
-
-          <ListItem 
-            primaryText="Keywords"
-            initiallyOpen={false}
-            primaryTogglesNestedList={true}
-            nestedItems={[(
-              <ListItem key={0} disabled={true} className={[s.listItem, s.searchBar].join(' ')}>
-                <SearchBar
-                  collectionName="tags"
-                  inputLabel="Keyword"
-                  addItem={addKeyword}
-                  iconName="add"
-                />
-                <SelectedItemsContainer
-                  collectionName="tags"
-                  removeItem={removeKeyword}
-                  items={selectedTags}
-                />
-              </ListItem>
-            )]}
-          />
-
-        </List>
-
-        { saving ? (
-
-          <div className={s.savingThrobberContainer}>
-            <CircularProgress
-              size={100}
-              thickness={5}
+          <List>
+            
+            <IssueAreasTogglesList 
+              listTitle="Issue Areas"
+              collectionName="issueAreas" 
+              displayPropName="title"
+              keyPropName="id"
+              handleToggle={handleToggle}
+              selectedCollection={selectedIssueAreas}
             />
-          </div>
-        ) : (
 
-          <div className={s.organizeButton}>
-            <RaisedButton 
-              onTouchTap={saveChanges} 
-              primary={true} 
-              type="submit"
-              label="Save Changes" 
+            <LevelsTogglesList 
+              listTitle="Campaign Levels"
+              collectionName="levels" 
+              displayPropName="title"
+              keyPropName="id"
+              handleToggle={handleToggle}
+              selectedCollection={selectedLevels}
             />
-          </div>
-        )}
-      </div>
-    );
+
+            <TypesTogglesList 
+              listTitle="Campaign Types"
+              collectionName="types" 
+              displayPropName="title"
+              keyPropName="id"
+              handleToggle={handleToggle}
+              selectedCollection={selectedTypes}
+            />
+
+            <ActivitiesTogglesList 
+              listTitle="Activities"
+              collectionName="activities" 
+              displayPropName="description"
+              keyPropName="id"
+              handleToggle={handleToggle}
+              selectedCollection={selectedActivities}
+            />
+
+            <ListItem 
+              primaryText="Keywords"
+              initiallyOpen={false}
+              primaryTogglesNestedList={true}
+              nestedItems={[(
+                <ListItem key={0} disabled={true} className={[s.listItem, s.searchBar].join(' ')}>
+                  <SearchBar
+                    collectionName="tags"
+                    inputLabel="Keyword"
+                    addItem={addKeyword}
+                    iconName="add"
+                  />
+                  <SelectedItemsContainer
+                    collectionName="tags"
+                    removeItem={removeKeyword}
+                    items={selectedTags}
+                  />
+                </ListItem>
+              )]}
+            />
+
+          </List>
+
+          { saving ? (
+
+            <div className={s.savingThrobberContainer}>
+              <CircularProgress
+                size={100}
+                thickness={5}
+              />
+            </div>
+          ) : (
+
+            <div className={s.organizeButton}>
+              <RaisedButton 
+                onTouchTap={saveChanges} 
+                primary={true} 
+                type="submit"
+                label="Save Changes" 
+              />
+            </div>
+          )}
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
@@ -307,7 +307,8 @@ const withActionQuery = graphql(ActionQuery, {
       search: {
         id: ownProps.actionId
       }
-    }
+    },
+    fetchPolicy: 'cache-and-network',
   }),
   props: ({ data }) => ({ 
     action: data.action

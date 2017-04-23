@@ -178,7 +178,8 @@ export default compose(
         search: {
           id: ownProps.campaignId
         }
-      }
+      },
+      fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({ 
       subscribers: data.subscribedUsers

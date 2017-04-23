@@ -166,7 +166,8 @@ export default compose(
         search: {
           slug: ownProps.campaignSlug
         }
-      }
+      },
+      fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({ 
       campaign: data.campaign,

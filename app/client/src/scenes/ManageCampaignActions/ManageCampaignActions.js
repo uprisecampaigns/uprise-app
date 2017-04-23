@@ -119,7 +119,8 @@ export default compose(
         search: {
           campaignIds: [ownProps.campaignId]
         }
-      }
+      },
+      fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({ 
       actions: data.actions

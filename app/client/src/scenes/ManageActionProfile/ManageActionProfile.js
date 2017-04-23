@@ -176,7 +176,8 @@ export default compose(
         search: {
           id: ownProps.actionId
         }
-      }
+      },
+      fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({ 
       action: data.action,
