@@ -136,6 +136,7 @@ class SearchActionInputs extends React.PureComponent {
             </div>
           )]}
         />
+        {/* Commenting out for demo
         <ListItem 
           primaryText="Campaign Name"
           initiallyOpen={false}
@@ -150,6 +151,7 @@ class SearchActionInputs extends React.PureComponent {
             </div>
           )]}
         />
+        */}
         <TypesTogglesList 
           listTitle="Campaign Types"
           collectionName="types" 
