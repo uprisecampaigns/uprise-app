@@ -94,7 +94,7 @@ class ComposeMessage extends React.Component {
             Send From: {fromEmail}
           </div>
           <div className={s.detailLine}>
-            Recipients: {recipients.map(r => r.email).join(',')}
+            Recipients: {recipients.map(r => r.email).join(', ')}
           </div>
 
           <TextField 
