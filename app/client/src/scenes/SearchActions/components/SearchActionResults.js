@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import Avatar from 'material-ui/Avatar';
 import CircularProgress from 'material-ui/CircularProgress';
 const isEqual = require('lodash.isequal');
 
@@ -69,6 +70,7 @@ class SearchActionResults extends React.PureComponent {
           <Card>
             <CardHeader
               title={action.title}
+              avatar={action.campaign.profile_image_url ? <Avatar src={action.campaign.profile_image_url} size={40}/> : undefined}
               subtitle={
                 <Link to={'/campaign/' + action.campaign.slug} className={s.campaignLink}>{action.campaign.title}</Link>
               }

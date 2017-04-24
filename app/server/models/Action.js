@@ -124,7 +124,7 @@ class Action {
                'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
                'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
                'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual',
-               'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug'])
+               'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
  
       .where('actions.deleted', false)
       .innerJoin('campaigns', 'actions.campaign_id', 'campaigns.id')
@@ -380,7 +380,8 @@ class Action {
       action.campaign = {
         id: action.campaign_id,
         title: action.campaign_title,
-        slug: action.campaign_slug
+        slug: action.campaign_slug,
+        profile_image_url: action.campaign_profile_image_url
       };
     });
 

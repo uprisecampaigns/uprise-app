@@ -61,6 +61,9 @@
 
   .resultsContainer {
 
+    width: 100%;
+    overflow-x: hidden;
+
     .campaignLink, .subheaderContainer {
       color: lighten($azure, 20%);
     }

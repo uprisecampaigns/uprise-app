@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import Avatar from 'material-ui/Avatar';
 import CircularProgress from 'material-ui/CircularProgress';
 const isEqual = require('lodash.isequal');
 
@@ -75,6 +76,7 @@ class SearchCampaignResults extends Component {
           <Card>
             <CardHeader
               title={campaign.title}
+              avatar={campaign.profile_image_url ? <Avatar src={campaign.profile_image_url} size={80}/> : undefined}
               subtitle={subtitle}
             />
           </Card>

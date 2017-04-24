@@ -11,6 +11,7 @@ export const CampaignsQuery = gql`
       city
       state
       profile_subheader
+      profile_image_url
       issue_areas {
         id
         title
@@ -181,6 +182,7 @@ export const ActionsQuery = gql`
         id
         title
         slug
+        profile_image_url
       }
     }
   }
