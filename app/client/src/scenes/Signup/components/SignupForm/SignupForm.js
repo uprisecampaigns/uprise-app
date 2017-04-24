@@ -93,7 +93,6 @@ class SignupForm extends Component {
                     type="text"
                     onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
                     errorText={data.zipcodeErrorText}
-                    fullWidth={true}
                   />
                 </div>
                 <div className={s.button}>

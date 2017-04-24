@@ -4,7 +4,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 1rem;
+  margin-bottom: 5rem;
 
   .innerContainer {
     display: block;
@@ -37,6 +38,10 @@
     input, label {
       font-size: 1.1rem !important;
     }
+  }
+
+  .textFieldContainer.centered {
+    justify-content: center;
   }
 
   .toggleContainer {

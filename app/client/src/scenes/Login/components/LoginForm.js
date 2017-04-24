@@ -38,7 +38,7 @@ class LoginForm extends Component {
                 className={s.form}
                 onSubmit={formSubmit}
               >
-                <div className={s.textFieldContainer}>
+                <div className={[s.textFieldContainer, s.centered].join(' ')}>
                   <TextField
                     floatingLabelText="Email"
                     value={data.email}
@@ -47,7 +47,7 @@ class LoginForm extends Component {
                     onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
                   />
                 </div>
-                <div className={s.textFieldContainer}>
+                <div className={[s.textFieldContainer, s.centered].join(' ')}>
                   <TextField
                     floatingLabelText="Password"
                     value={data.password}
