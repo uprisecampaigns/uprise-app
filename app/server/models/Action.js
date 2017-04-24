@@ -184,6 +184,18 @@ class Action {
 
                 this.orWhere('actions.id', 'in', tagKeywordQuery);
 
+                const activityQuery = db.select('action_id')
+                  .distinct()
+                  .from('activities')
+                  .innerJoin('actions_activities', 'activities.id', 'actions_activities.activity_id')
+                  .whereRaw('title % ?', keyword)
+                  .orWhereRaw('description % ?', keyword)
+                  .orWhereRaw("title ILIKE '%' || ? || '%' ", keyword)
+                  .orWhereRaw("description ILIKE '%' || ? || '%' ", keyword);
+
+                this.orWhere('actions.id', 'in', activityQuery);
+
+
               });
             });
           }
