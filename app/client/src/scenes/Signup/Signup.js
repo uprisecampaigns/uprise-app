@@ -4,6 +4,7 @@ import { withApollo } from 'react-apollo';
 
 import { attemptSignup } from 'actions/AuthActions';
 import isEmail from 'validator/lib/isEmail';
+import isNumeric from 'validator/lib/isNumeric';
 import history from 'lib/history';
 import { EmailAvailable } from 'schemas/queries';
 
@@ -103,7 +104,7 @@ class SignupFormContainer extends Component {
   }
 
   handleInputChange = (event, type, value) => {
-    if (!(typeof type === 'string' && type === 'zipcode' && value.length > 5)) {
+    if (!(typeof type === 'string' && type === 'zipcode' && (value.length > 5 || !isNumeric(value)))) {
 
       this.setState(Object.assign({},
         this.state,
