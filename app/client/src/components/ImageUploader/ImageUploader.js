@@ -215,7 +215,7 @@ class ImageUploader extends React.Component {
                     className={s.button}
                     onTouchTap={this.acceptImageCrop}
                     primary={true}
-                    label="Save"
+                    label="Accept"
                   />
                 </div>
               </div>
