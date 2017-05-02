@@ -82,87 +82,83 @@ class ManageActionSettings extends Component {
 
   render() {
 
-    const campaign = this.props.campaign || {
-      title: '',
-      slug: ''
+    if (this.props.campaign && this.props.action) {
+      const { campaign, action, ...props } = this.props;
+
+      const modalActions = [
+        <RaisedButton
+          label="I'm sure"
+          primary={true}
+          onTouchTap={this.confirmDelete}
+        />,
+        <RaisedButton
+          label="Cancel"
+          primary={false}
+          onTouchTap={ () => this.setState({ deleteModalOpen: false }) }
+        />
+      ];
+
+      const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
+
+      return (
+        <div className={s.outerContainer}>
+
+          <Link to={baseActionUrl}>
+            <div className={s.navSubHeader}>
+              <FontIcon 
+                className={["material-icons", s.backArrow].join(' ')}
+              >arrow_back</FontIcon>
+              Dashboard
+            </div>
+          </Link>
+
+          <div className={s.pageSubHeader}>Settings</div>
+
+          <List>
+
+            <Link to={baseActionUrl + '/info' }>
+              <ListItem 
+                primaryText="Info"
+              />
+            </Link>
+
+            <Link to={baseActionUrl + '/profile' }>
+              <ListItem 
+                primaryText="Profile"
+              />
+            </Link>
+
+            <Link to={baseActionUrl + '/preferences' }>
+              <ListItem 
+                primaryText="Preferences"
+              />
+            </Link>
+
+            <ListItem 
+              primaryText="Delete"
+              onTouchTap={this.handleDelete}
+            />
+
+          </List>
+
+          {this.state.deleteModalOpen && (
+            <Dialog
+              title="Are You Sure?"
+              modal={true}
+              actions={modalActions}
+              open={this.state.deleteModalOpen}
+            >
+              <p>
+                Are you sure you want to delete this action?
+              </p>
+            </Dialog>
+          )}
+
+        </div>
+      );
+    } else {
+      return null;
     }
-
-    const action = this.props.action || {
-      title: '',
-      slug: ''
-    }
-
-    const modalActions = [
-      <RaisedButton
-        label="I'm sure"
-        primary={true}
-        onTouchTap={this.confirmDelete}
-      />,
-      <RaisedButton
-        label="Cancel"
-        primary={false}
-        onTouchTap={ () => this.setState({ deleteModalOpen: false }) }
-      />
-    ];
-
-    const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
-
-    return (
-      <div className={s.outerContainer}>
-
-        <Link to={baseActionUrl}>
-          <div className={s.navSubHeader}>
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
-            Dashboard
-          </div>
-        </Link>
-
-        <div className={s.pageSubHeader}>Settings</div>
-
-        <List>
-
-          <Link to={baseActionUrl + '/info' }>
-            <ListItem 
-              primaryText="Info"
-            />
-          </Link>
-
-          <Link to={baseActionUrl + '/profile' }>
-            <ListItem 
-              primaryText="Profile"
-            />
-          </Link>
-
-          <Link to={baseActionUrl + '/preferences' }>
-            <ListItem 
-              primaryText="Preferences"
-            />
-          </Link>
-
-          <ListItem 
-            primaryText="Delete"
-            onTouchTap={this.handleDelete}
-          />
-
-        </List>
-
-        {this.state.deleteModalOpen && (
-          <Dialog
-            title="Are You Sure?"
-            modal={true}
-            actions={modalActions}
-            open={this.state.deleteModalOpen}
-          >
-            <p>
-              Are you sure you want to delete this action?
-            </p>
-          </Dialog>
-        )}
-
-      </div>
-    );
   }
 }
 

@@ -61,88 +61,90 @@ class ManageCampaignSettingsContainer extends Component {
   }
 
   render() {
-    const campaign = this.props.campaign || {
-      title: '',
-      slug: ''
+
+    if (this.props.campaign) {
+      const { campaign, ...props } = this.props;
+
+      const modalActions = [
+        <RaisedButton
+          label="I'm sure"
+          primary={true}
+          onTouchTap={this.confirmDelete}
+        />,
+        <RaisedButton
+          label="Cancel"
+          primary={false}
+          onTouchTap={ () => this.setState({ deleteModalOpen: false }) }
+        />
+      ];
+
+      return (
+        <div className={s.outerContainer}>
+
+          <Link to={'/organize/' + campaign.slug}>
+            <div className={s.campaignHeader}>
+
+              <FontIcon 
+                className={["material-icons", s.backArrow].join(' ')}
+              >arrow_back</FontIcon>
+
+              {campaign.title}
+            </div>
+          </Link>
+
+          <div className={s.campaignSubHeader}>Settings</div>
+
+          <List>
+
+            <Link to={'/organize/' + campaign.slug + '/info'}>
+              <ListItem 
+                primaryText="Info"
+              />
+            </Link>
+
+            <Link to={'/organize/' + campaign.slug + '/preferences'}>
+              <ListItem 
+                primaryText="Preferences"
+              />
+            </Link>
+
+            <Link to={'/organize/' + campaign.slug + '/location'}>
+              <ListItem 
+                primaryText="Location"
+              />
+            </Link>
+
+            <Link to={'/organize/' + campaign.slug + '/profile'}>
+              <ListItem 
+                primaryText="Profile"
+              />
+            </Link>
+
+            <ListItem 
+              primaryText="Delete"
+              onTouchTap={this.handleDelete}
+            />
+
+          </List>
+
+          {this.state.deleteModalOpen && (
+            <Dialog
+              title="Are You Sure?"
+              modal={true}
+              actions={modalActions}
+              open={this.state.deleteModalOpen}
+            >
+              <p>
+                Are you sure you want to delete this campaign?
+              </p>
+            </Dialog>
+          )}
+
+        </div>
+      );
+    } else {
+      return null;
     }
-
-    const modalActions = [
-      <RaisedButton
-        label="I'm sure"
-        primary={true}
-        onTouchTap={this.confirmDelete}
-      />,
-      <RaisedButton
-        label="Cancel"
-        primary={false}
-        onTouchTap={ () => this.setState({ deleteModalOpen: false }) }
-      />
-    ];
-
-    return (
-      <div className={s.outerContainer}>
-
-        <Link to={'/organize/' + campaign.slug}>
-          <div className={s.campaignHeader}>
-
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
-
-            {campaign.title}
-          </div>
-        </Link>
-
-        <div className={s.campaignSubHeader}>Settings</div>
-
-        <List>
-
-          <Link to={'/organize/' + campaign.slug + '/info'}>
-            <ListItem 
-              primaryText="Info"
-            />
-          </Link>
-
-          <Link to={'/organize/' + campaign.slug + '/preferences'}>
-            <ListItem 
-              primaryText="Preferences"
-            />
-          </Link>
-
-          <Link to={'/organize/' + campaign.slug + '/location'}>
-            <ListItem 
-              primaryText="Location"
-            />
-          </Link>
-
-          <Link to={'/organize/' + campaign.slug + '/profile'}>
-            <ListItem 
-              primaryText="Profile"
-            />
-          </Link>
-
-          <ListItem 
-            primaryText="Delete"
-            onTouchTap={this.handleDelete}
-          />
-
-        </List>
-
-        {this.state.deleteModalOpen && (
-          <Dialog
-            title="Are You Sure?"
-            modal={true}
-            actions={modalActions}
-            open={this.state.deleteModalOpen}
-          >
-            <p>
-              Are you sure you want to delete this campaign?
-            </p>
-          </Dialog>
-        )}
-
-      </div>
-    );
   }
 }
 

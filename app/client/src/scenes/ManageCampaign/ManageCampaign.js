@@ -24,48 +24,49 @@ class ManageCampaignContainer extends Component {
 
   render() {
 
-    const campaign = this.props.campaign || {
-      title: '',
-      slug: ''
+    if (this.props.campaign) {
+      const { campaign, ...props } = this.props;
+
+      return (
+        <div className={s.outerContainer}>
+
+          <Link to={'/organize'}>
+            <div className={s.organizeNavHeader}>
+              <FontIcon 
+                className={["material-icons", s.backArrow].join(' ')}
+              >arrow_back</FontIcon>
+              Organize
+            </div>
+          </Link>
+
+          <div className={s.campaignHeader}>{campaign.title}</div>
+
+          <List>
+
+            <Link to={'/organize/' + campaign.slug + '/actions'}>
+              <ListItem 
+                primaryText="Actions"
+              />
+            </Link>
+
+            <Link to={'/organize/' + campaign.slug + '/volunteers'}>
+              <ListItem 
+                primaryText="Volunteers"
+              />
+            </Link>
+
+            <Link to={'/organize/' + campaign.slug + '/settings'}>
+              <ListItem 
+                primaryText="Settings"
+              />
+            </Link>
+
+          </List>
+        </div>
+      );
+    } else {
+      return null;
     }
-
-    return (
-      <div className={s.outerContainer}>
-
-        <Link to={'/organize'}>
-          <div className={s.organizeNavHeader}>
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
-            Organize
-          </div>
-        </Link>
-
-        <div className={s.campaignHeader}>{campaign.title}</div>
-
-        <List>
-
-          <Link to={'/organize/' + campaign.slug + '/actions'}>
-            <ListItem 
-              primaryText="Actions"
-            />
-          </Link>
-
-          <Link to={'/organize/' + campaign.slug + '/volunteers'}>
-            <ListItem 
-              primaryText="Volunteers"
-            />
-          </Link>
-
-          <Link to={'/organize/' + campaign.slug + '/settings'}>
-            <ListItem 
-              primaryText="Settings"
-            />
-          </Link>
-
-        </List>
-      </div>
-    );
   }
 }
 
