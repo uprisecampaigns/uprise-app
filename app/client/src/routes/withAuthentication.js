@@ -9,16 +9,26 @@ export default (WrappedComponent) => {
       super(props);
     }
 
-    componentWillMount = () => {
-      if (!this.props.fetchingUpdate && !this.props.loggedIn) {
-        history.push('/');
+    redirect = (props) => {
+      if (!props.fetchingUpdate) {
+        console.log(history.location);
+
+        if (history.location.pathname === '/login') {
+          props.loggedIn && history.push('/search');
+        } else {
+          if (!props.loggedIn) {
+            history.push('/');
+          }
+        }
       }
     }
 
+    componentWillMount = () => {
+      this.redirect(this.props);
+    }
+
     componentWillReceiveProps = (nextProps) => {
-      if (!nextProps.fetchingUpdate && !nextProps.loggedIn) {
-        history.push('/');
-      }
+      this.redirect(nextProps);
     }
 
     render() {
