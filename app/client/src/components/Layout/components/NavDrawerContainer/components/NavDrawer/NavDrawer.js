@@ -65,6 +65,7 @@ class NavDrawer extends Component {
     { path: '/search', title: 'Search' },
     { path: '/actions', title: 'Actions' },
     { path: '/organize', title: 'Organize' },
+    { path: '/settings', title: 'Settings' },
   ]
 
   accountMenuItems = [

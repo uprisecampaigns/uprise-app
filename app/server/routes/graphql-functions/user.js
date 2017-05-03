@@ -1,3 +1,5 @@
+const decamelize = require('decamelize');
+
 const User = require('models/User');
 
 module.exports = {
@@ -30,5 +32,26 @@ module.exports = {
 
     return available;
   },
+
+  editAccount: async ({ data }, context) => {
+
+    if (!context.user) {
+      throw new Error('User must be logged in');
+    }
+
+    if (context.user.id !== data.id) {
+      throw new Error('Cannot edit another user\'s account info');
+    }
+
+    // Decamelizing property names
+    const input = Object.assign(...Object.keys(data).map(k => ({
+        [decamelize(k)]: data[k]
+    })));
+
+    const user = await User.edit(input);
+
+    return user;
+
+  }
 
 };

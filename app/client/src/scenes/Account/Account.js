@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
+import camelCase from 'camelcase';
 import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -44,6 +45,8 @@ class Account extends Component {
       formData: {
         firstName: '',
         lastName: '',
+        phoneNumber: '',
+        zipcode: '',
       },
       saving: false
     }
@@ -54,26 +57,28 @@ class Account extends Component {
   defaultErrorText = { 
     firstNameErrorText: null,
     lastNameErrorText: null,
+    zipcodeErrorText: null,
+    phoneNumberErrorText: null,
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.campaign && !nextProps.graphqlLoading) {
+    if (nextProps.user && !nextProps.graphqlLoading) {
 
       // Just camel-casing property keys and checking for null/undefined
-      const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => {
-        if (nextProps.campaign[k] !== null) {
-          return { [camelCase(k)]: nextProps.campaign[k] };
+      const user = Object.assign(...Object.keys(nextProps.user).map(k => {
+        if (nextProps.user[k] !== null) {
+          return { [camelCase(k)]: nextProps.user[k] };
         }
       }));
 
-      Object.keys(campaign).forEach( (k) => {
+      Object.keys(user).forEach( (k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
-          delete campaign[k];
+          delete user[k];
         }
       });
 
       this.setState( (prevState) => ({
-        formData: Object.assign({}, prevState.formData, campaign)
+        formData: Object.assign({}, prevState.formData, user)
       }));
     }
   }
@@ -96,18 +101,20 @@ class Account extends Component {
 
     try {
 
-      const results = await this.props.editCampaignMutation({ 
+      const results = await this.props.editAccountMutation({ 
         variables: {
           data: formData
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
+        refetchQueries: ['MeQuery'],
       });
 
       this.props.dispatch(notify('Changes Saved'));
       this.setState({ saving: false });
     } catch (e) {
       console.error(e);
+      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+      this.setState({ saving: false });
     }
   }
 
@@ -123,7 +130,7 @@ class Account extends Component {
         (component) => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
         (component) => validateZipcode(component),
         (component) => validatePhoneNumber(component),
-        (component) => validateState(component),
+        // (component) => validateState(component),
       ];
 
 

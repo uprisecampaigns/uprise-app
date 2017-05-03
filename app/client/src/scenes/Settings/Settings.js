@@ -34,7 +34,7 @@ class Settings extends Component {
             Settings
           </div>
 
-          <List classname={s.navList}>
+          <List className={s.navList}>
 
             <Divider/>
 

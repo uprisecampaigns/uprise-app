@@ -102,6 +102,8 @@ export const EditAccountMutation = gql`
       first_name
       last_name
       email
+      phone_number
+      zipcode
     }
   }
 `;

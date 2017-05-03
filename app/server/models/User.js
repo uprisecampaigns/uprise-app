@@ -12,7 +12,9 @@ const sendEmail = require('lib/sendEmail.js');
 class User {
 
   static findOne(...args) {
-    return db.table('users').where(...args).first('id', 'first_name', 'last_name', 'email', 'zipcode');
+    return db.table('users').where(...args).first(
+      'id', 'first_name', 'last_name', 'email', 
+      'phone_number', 'zipcode');
   }
 
   static async create(user) {
@@ -36,6 +38,17 @@ class User {
     userInfo.verificationToken = rows[0].token;
 
     return userInfo;
+  }
+
+  static async edit(options) {
+
+    const userResult = await db('users')
+      .where('id', options.id)
+      .update(options, [
+        'id', 'first_name', 'last_name', 'email', 'phone_number', 'zipcode'
+      ]);
+
+    return userResult[0];
   }
 
   static getUserProfile(id) {

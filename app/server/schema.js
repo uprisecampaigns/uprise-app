@@ -8,6 +8,7 @@ module.exports = buildSchema(`
     id: String!
     first_name: String
     last_name: String
+    phone_number: String
     email: String
     zipcode: String
   }
@@ -169,6 +170,17 @@ module.exports = buildSchema(`
     fileUploadSignature(input: FileToUpload!): FileUploadSignatureResult
   }
 
+  input EditAccountInput {
+    id: String!
+    firstName: String
+    lastName: String
+    email: String
+    phoneNumber: String
+    city: String
+    state: String
+    zipcode: String
+  }
+
   input CreateCampaignInput {
     title: String!
     streetAddress: String
@@ -262,6 +274,7 @@ module.exports = buildSchema(`
   }
 
   type Mutation {
+    editAccount(data: EditAccountInput): UserResult
     createCampaign(data: CreateCampaignInput): CampaignResult
     editCampaign(data: EditCampaignInput): CampaignResult
     deleteCampaign(data: DeleteCampaignInput): Boolean

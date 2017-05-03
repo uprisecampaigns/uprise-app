@@ -64,6 +64,26 @@ class AccountForm extends Component {
                   />
                 </div>
  
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Phone Number"
+                    value={data.phoneNumber}
+                    onChange={ (event) => { handleInputChange(event, 'phoneNumber', event.target.value) } }
+                    errorText={errors.phoneNumberErrorText}
+                    fullWidth={true}
+                  />
+                </div>
+ 
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Zipcode"
+                    value={data.zipcode}
+                    onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+                    errorText={errors.zipcodeErrorText}
+                    fullWidth={true}
+                  />
+                </div>
+
                 { saving ? (
 
                   <div className={s.savingThrobberContainer}>
