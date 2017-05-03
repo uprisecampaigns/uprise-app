@@ -9,7 +9,7 @@ import FontIcon from 'material-ui/FontIcon';
 import Link from 'components/Link';
 
 import history from 'lib/history';
-import organizeFormWrapper from 'lib/organizeFormWrapper';
+import formWrapper from 'lib/formWrapper';
 import { 
   validateString,
   validateWebsiteUrl,
@@ -27,7 +27,7 @@ import ActionInfoForm from 'components/ActionInfoForm';
 import s from 'styles/Organize.scss';
 
 
-const WrappedActionInfoForm = organizeFormWrapper(ActionInfoForm);
+const WrappedActionInfoForm = formWrapper(ActionInfoForm);
 
 class CreateAction extends Component {
 

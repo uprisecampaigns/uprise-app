@@ -10,8 +10,12 @@ export default {
     require('./login').default,
     require('./signup').default,
     require('./forgotPassword').default,
-    require('./changePassword').default,
     require('./welcome').default,
+
+    // /settings/
+    require('./settings').default,
+    require('./account').default,
+    require('./changePassword').default,
 
     // TODO: probably want to sub-organize children url
     // /communications/

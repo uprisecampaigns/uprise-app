@@ -31,7 +31,7 @@ class ManageCampaignContainer extends Component {
         <div className={s.outerContainer}>
 
           <Link to={'/organize'}>
-            <div className={s.organizeNavHeader}>
+            <div className={s.navHeader}>
               <FontIcon 
                 className={["material-icons", s.backArrow].join(' ')}
               >arrow_back</FontIcon>
@@ -41,7 +41,9 @@ class ManageCampaignContainer extends Component {
 
           <div className={s.campaignHeader}>{campaign.title}</div>
 
-          <List>
+          <List classname={s.navList}>
+
+            <Divider/>
 
             <Link to={'/organize/' + campaign.slug + '/actions'}>
               <ListItem 
@@ -49,11 +51,15 @@ class ManageCampaignContainer extends Component {
               />
             </Link>
 
+            <Divider/>
+
             <Link to={'/organize/' + campaign.slug + '/volunteers'}>
               <ListItem 
                 primaryText="Volunteers"
               />
             </Link>
+
+            <Divider/>
 
             <Link to={'/organize/' + campaign.slug + '/settings'}>
               <ListItem 

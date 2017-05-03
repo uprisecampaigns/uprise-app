@@ -36,7 +36,7 @@ class Organize extends Component {
     return (
       <div className={s.outerContainer}>
 
-        <div className={s.organizeHeader}>
+        <div className={s.pageHeader}>
           Organize
         </div>
 

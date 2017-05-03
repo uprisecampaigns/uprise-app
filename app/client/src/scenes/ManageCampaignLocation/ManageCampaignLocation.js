@@ -8,7 +8,7 @@ import isNumeric from 'validator/lib/isNumeric';
 import CampaignLocationForm from 'components/CampaignLocationForm';
 import Link from 'components/Link';
 
-import organizeFormWrapper from 'lib/organizeFormWrapper';
+import formWrapper from 'lib/formWrapper';
 
 import { 
   validateString,
@@ -31,7 +31,7 @@ import {
 import s from 'styles/Organize.scss';
 
 
-const WrappedCampaignLocationForm = organizeFormWrapper(CampaignLocationForm);
+const WrappedCampaignLocationForm = formWrapper(CampaignLocationForm);
 
 class ManageCampaignLocation extends Component {
 

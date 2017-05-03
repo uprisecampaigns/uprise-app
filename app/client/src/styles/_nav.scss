@@ -1,0 +1,111 @@
+@import '~styles/variables';
+
+.navHeader {
+  width: 100%;
+  display: flex;
+  color: $brick-red;
+  height: 5rem;
+  font-size: 2rem;
+  align-items: center;
+  justify-content: left;
+  border-bottom: 1px solid lighten($black, 60%);
+
+  :global .material-icons {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    color: darken($white, 30%) !important;
+  }
+}
+
+.pageHeader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  height: 5rem;
+  color: $brick-red !important;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.campaignHeader, .actionHeader, .settingsHeader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  min-height: 3rem;
+  padding: 1rem 0px;
+  color: $azure !important;
+  font-size: 2rem;
+  font-weight: 300;
+  border-bottom: 1px solid lighten($black, 60%);
+
+  :global .material-icons {
+    color: darken($white, 30%) !important;
+  }
+
+  .backArrow {
+    position: absolute !important;
+    left: 1rem !important;
+  }
+}
+
+.actionHeader {
+  border-bottom: none;
+  font-weight: 400;
+  color: lighten($azure, 20%) !important;
+}
+
+.campaignSubHeader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  color: $azure !important;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 1.5rem auto;
+
+  :global .material-icons {
+    color: $azure !important;
+  }
+}
+
+.pageSubHeader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  color: darken($azure, 15%) !important;
+  min-height: 3rem;
+  padding: 1rem 0px;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.navSubHeader {
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  color: lighten($azure, 10%) !important;
+  min-height: 3rem;
+  padding: 1rem 0px;
+  font-size: 2rem;
+  font-weight: 300;
+  border-bottom: 1px solid lighten($black, 60%);
+
+  :global .material-icons {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    color: lighten($azure, 10%) !important;
+  }
+}
+
+.navList {
+  padding: 0px !important;
+}

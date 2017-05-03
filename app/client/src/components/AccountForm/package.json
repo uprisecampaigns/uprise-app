@@ -1,0 +1,6 @@
+{
+  "name": "AccountForm",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./AccountForm.js"
+}

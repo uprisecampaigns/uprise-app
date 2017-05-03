@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 import ActionProfileForm from 'components/ActionProfileForm';
 import Link from 'components/Link';
 
-import organizeFormWrapper from 'lib/organizeFormWrapper';
+import formWrapper from 'lib/formWrapper';
 
 import { 
   validateString,
@@ -26,7 +26,7 @@ import {
 import s from 'styles/Organize.scss';
 
 
-const WrappedActionProfileForm = organizeFormWrapper(ActionProfileForm);
+const WrappedActionProfileForm = formWrapper(ActionProfileForm);
 
 class ManageActionProfile extends Component {
 

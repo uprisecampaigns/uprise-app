@@ -95,6 +95,17 @@ export const EditCampaignMutation = gql`
   }
 `;
 
+export const EditAccountMutation = gql`
+  mutation EditAccountMutation ($data:EditAccountInput) {
+    editAccount(data:$data){
+      id
+      first_name
+      last_name
+      email
+    }
+  }
+`;
+
 export const DeleteActionMutation = gql`
   mutation DeleteActionMutation ($data:DeleteActionInput) {
     deleteAction(data:$data)

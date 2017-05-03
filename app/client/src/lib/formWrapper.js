@@ -8,7 +8,7 @@ const statesList = Object.keys(states);
 
 export default (WrappedComponent) => {
 
-  class OrganizeFormWrapper extends React.Component {
+  class FormWrapper extends React.Component {
     constructor(props) {
       super(props);
 
@@ -104,6 +104,6 @@ export default (WrappedComponent) => {
       );
     }
   }
-  return OrganizeFormWrapper;
+  return FormWrapper;
 }
 

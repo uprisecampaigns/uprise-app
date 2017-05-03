@@ -8,7 +8,7 @@ import camelCase from 'camelcase';
 import ActionInfoForm from 'components/ActionInfoForm';
 import Link from 'components/Link';
 
-import organizeFormWrapper from 'lib/organizeFormWrapper';
+import formWrapper from 'lib/formWrapper';
 
 import { 
   validateString,
@@ -34,7 +34,7 @@ import {
 import s from 'styles/Organize.scss';
 
 
-const WrappedActionInfoForm = organizeFormWrapper(ActionInfoForm);
+const WrappedActionInfoForm = formWrapper(ActionInfoForm);
 
 class ManageActionInfoContainer extends Component {
 

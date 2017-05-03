@@ -6,7 +6,7 @@ import Dialog from 'material-ui/Dialog';
 import Link from 'components/Link';
 
 import history from 'lib/history';
-import organizeFormWrapper from 'lib/organizeFormWrapper';
+import formWrapper from 'lib/formWrapper';
 import { 
   validateString,
   validateWebsiteUrl,
@@ -23,7 +23,7 @@ import CampaignInfoForm from 'components/CampaignInfoForm';
 import s from 'styles/Organize.scss';
 
 
-const WrappedCampaignInfoForm = organizeFormWrapper(CampaignInfoForm);
+const WrappedCampaignInfoForm = formWrapper(CampaignInfoForm);
 
 class CreateCampaignContainer extends Component {
 

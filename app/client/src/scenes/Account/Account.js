@@ -1,43 +1,40 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import { connect } from 'react-redux'
+import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
-import camelCase from 'camelcase';
 
-import CampaignInfoForm from 'components/CampaignInfoForm';
-import Link from 'components/Link';
+import history from 'lib/history';
 
 import formWrapper from 'lib/formWrapper';
+
 import { 
   validateString,
-  validateWebsiteUrl,
-  validateState,
   validateZipcode,
   validatePhoneNumber
 } from 'lib/validateComponentForms';
 
-import { 
-  MeQuery,
-  CampaignQuery 
-} from 'schemas/queries';
+import Link from 'components/Link';
+import AccountForm from 'components/AccountForm';
+
+import { MeQuery } from 'schemas/queries';
 
 import { 
-  EditCampaignMutation
+  EditAccountMutation
 } from 'schemas/mutations';
 
 import { 
   notify
 } from 'actions/NotificationsActions';
 
-import s from 'styles/Organize.scss';
+
+import s from 'styles/Settings.scss';
 
 
-const WrappedCampaignInfoForm = formWrapper(CampaignInfoForm);
+const WrappedAccountForm = formWrapper(AccountForm);
 
-class ManageCampaignInfoContainer extends Component {
+class Account extends Component {
 
   static PropTypes = {
-    campaignSlug: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -45,15 +42,8 @@ class ManageCampaignInfoContainer extends Component {
 
     const initialState = {
       formData: {
-        title: '',
-        streetAddress: '',
-        streetAddress2: '',
-        websiteUrl: '',
-        phoneNumber: '',
-        email: '',
-        city: '',
-        state: '',
-        zipcode: '',
+        firstName: '',
+        lastName: '',
       },
       saving: false
     }
@@ -62,13 +52,8 @@ class ManageCampaignInfoContainer extends Component {
   }
 
   defaultErrorText = { 
-    titleErrorText: null,
-    streetAddressErrorText: null,
-    websiteUrlErrorText: null,
-    phoneNumberErrorText: null,
-    cityErrorText: null,
-    stateErrorText: null,
-    zipcodeErrorText: null,
+    firstNameErrorText: null,
+    lastNameErrorText: null,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,7 +90,7 @@ class ManageCampaignInfoContainer extends Component {
 
     const formData = Object.assign({}, data);
 
-    formData.id = this.props.campaign.id;
+    formData.id = this.props.user.id;
 
     this.setState({ saving: true });
 
@@ -128,24 +113,25 @@ class ManageCampaignInfoContainer extends Component {
 
   render() {
 
-    if (this.props.campaign) {
+    if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
-      const { campaign, user, ...props } = this.props;
+      const { user, ...props } = this.props;
       const { formData, saving } = state;
 
       const validators = [
-        (component) => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+        (component) => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
+        (component) => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
         (component) => validateZipcode(component),
-        (component) => validateWebsiteUrl(component),
         (component) => validatePhoneNumber(component),
         (component) => validateState(component),
       ];
 
+
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug + '/settings'}>
-            <div className={s.navSubHeader}>
+          <Link to={'/settings'}>
+            <div className={s.navHeader}>
               <FontIcon 
                 className={["material-icons", s.backArrow].join(' ')}
               >arrow_back</FontIcon>
@@ -153,9 +139,9 @@ class ManageCampaignInfoContainer extends Component {
             </div>
           </Link>
 
-          <div className={s.pageSubHeader}>Info</div>
+          <div className={s.settingsHeader}>Account</div>
 
-          <WrappedCampaignInfoForm
+          <WrappedAccountForm
             initialState={formData}
             initialErrors={defaultErrorText}
             validators={validators}
@@ -164,7 +150,7 @@ class ManageCampaignInfoContainer extends Component {
             submitText="Save Changes"
             user={user}
           />
-          
+
         </div>
       );
     } else {
@@ -173,32 +159,15 @@ class ManageCampaignInfoContainer extends Component {
   }
 }
 
-const withMeQuery = graphql(MeQuery, {
-  props: ({ data }) => ({
-    user: !data.loading && data.me ? data.me : {
-      email: '',
-    }, 
-  })
-});
-
-const withCampaignQuery = graphql(CampaignQuery, {
-  options: (ownProps) => ({ 
-    variables: {
-      search: {
-        slug: ownProps.campaignSlug
-      }
-    },
-    fetchPolicy: 'cache-and-network',
-  }),
-  props: ({ data }) => ({ 
-    campaign: data.campaign,
-    graphqlLoading: data.loading
-  })
-});
-
 export default compose(
-  connect(),
-  withMeQuery,
-  withCampaignQuery,
-  graphql(EditCampaignMutation, { name: 'editCampaignMutation' })
-)(ManageCampaignInfoContainer);
+  graphql(MeQuery, {
+    options: (ownProps) => ({ 
+      fetchPolicy: 'cache-and-network',
+    }),
+    props: ({ data }) => ({ 
+      user: data.me,
+      graphqlLoading: data.loading
+    })
+  }),
+  graphql(EditAccountMutation, { name: 'editAccountMutation' })
+)(Account);

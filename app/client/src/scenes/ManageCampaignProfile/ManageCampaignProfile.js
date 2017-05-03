@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 import CampaignProfileForm from 'components/CampaignProfileForm';
 import Link from 'components/Link';
 
-import organizeFormWrapper from 'lib/organizeFormWrapper';
+import formWrapper from 'lib/formWrapper';
 
 import { 
   validateString,
@@ -27,7 +27,7 @@ import {
 import s from 'styles/Organize.scss';
 
 
-const WrappedCampaignProfileForm = organizeFormWrapper(CampaignProfileForm);
+const WrappedCampaignProfileForm = formWrapper(CampaignProfileForm);
 
 class ManageCampaignProfileContainer extends Component {
 
