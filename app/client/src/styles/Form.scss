@@ -44,6 +44,12 @@
     justify-content: center;
   }
 
+  // Annoying hack to line up hint text with textarea input
+  .textareaContainer div:first-child div:first-child {
+    bottom: inherit !important;
+    top: 12px !important;
+  }
+
   .toggleContainer {
     margin: 2rem auto 1rem auto;
     font-size: 1.1rem;

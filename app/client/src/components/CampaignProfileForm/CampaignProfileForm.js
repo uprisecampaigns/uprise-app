@@ -83,7 +83,7 @@ class CampaignProfileForm extends Component {
             />
           </div>
 
-          <div className={s.editDescriptionContainer}>
+          <div className={s.textareaContainer}>
             <TextField
               name="description"
               hintText="Write a short description here. This will show up in the search results. You do not need to include the name of the campaign, your website url, or your issues, keywords, etc. as they will all appear automatically"
