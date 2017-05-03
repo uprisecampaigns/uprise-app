@@ -273,6 +273,11 @@ module.exports = buildSchema(`
     body: String
   }
 
+  input ContactInput {
+    subject: String!
+    body: String!
+  }
+
   type Mutation {
     editAccount(data: EditAccountInput): UserResult
     createCampaign(data: CreateCampaignInput): CampaignResult
@@ -286,5 +291,6 @@ module.exports = buildSchema(`
     campaignSubscription(campaignId: String!): CampaignResult
     cancelCampaignSubscription(campaignId: String!): CampaignResult
     sendMessage(data: SendMessageInput!): Boolean
+    contact(data: ContactInput!): Boolean
   }
 `);

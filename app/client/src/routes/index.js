@@ -15,6 +15,7 @@ export default {
     // /settings/
     require('./settings').default,
     require('./account').default,
+    require('./contact').default,
     require('./changePassword').default,
 
     // TODO: probably want to sub-organize children url

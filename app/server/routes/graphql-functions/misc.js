@@ -4,7 +4,10 @@ const Campaign = require('models/Campaign');
 const Action = require('models/Action');
 const sendEmail = require('lib/sendEmail.js');
 
-const awsConfig = require('config/config.js').aws;
+const config = require('config/config.js');
+
+const awsConfig = config.aws;
+const contactEmail = config.postmark.contactEmail;
 
 const s3 = new S3({
   accessKeyId: awsConfig.accessKeyId,
@@ -119,6 +122,30 @@ module.exports = {
 
     if (errors.length) {
       throw new Error('Errors sending email: ' + errors.join(' | '));
+    }
+
+    return true;
+  },
+
+  contact: async ({ data }, context) => {
+
+    if (!context.user) {
+      throw new Error('User must be logged in');
+    }
+
+    const { user } = context;
+    
+    try {
+      await sendEmail({
+        to: contactEmail,
+        replyTo: user.email,
+        subject: '[Uprise Campaigns Contact Form Submission] - ' + data.subject,
+        templateName: 'contact-message',
+        context: Object.assign({ user }, data)
+      });
+    } catch (e) {
+      console.error(e);
+      throw new Error('Errors sending email: ' + e.message);
     }
 
     return true;

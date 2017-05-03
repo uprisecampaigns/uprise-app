@@ -125,3 +125,9 @@ export const SendMessageMutation = gql`
     sendMessage(data:$data)
   }
 `;
+
+export const ContactMutation = gql`
+  mutation ContactMutation ($data:ContactInput!) {
+    contact(data:$data)
+  }
+`;
