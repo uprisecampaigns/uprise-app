@@ -56,6 +56,7 @@ class ActionProfileForm extends Component {
               onChange={ (event) => { handleInputChange(event, 'description', event.target.value) } }
               errorText={errors.descriptionErrorText}
               fullWidth={true}
+              underlineShow={false}
             />
           </div>
 

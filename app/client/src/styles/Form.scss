@@ -44,6 +44,12 @@
     justify-content: center;
   }
 
+  .textareaContainer {
+    margin-top: 1rem;
+    border: 1px solid darken($white, 20%);
+    padding: 1rem;
+  }
+
   // Annoying hack to line up hint text with textarea input
   .textareaContainer div:first-child div:first-child {
     bottom: inherit !important;
