@@ -68,6 +68,11 @@ class Contact extends Component {
 
       this.props.dispatch(notify('Message Sent!'));
       this.setState({ saving: false });
+
+      setTimeout( () => {
+        history.goBack();
+      }, 500);
+
     } catch (e) {
       console.error(e);
       this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
