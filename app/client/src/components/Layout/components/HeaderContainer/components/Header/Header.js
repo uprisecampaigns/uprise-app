@@ -119,7 +119,7 @@ function LoginButton(props) {
         dropdowns={[
           // { title: 'Profile', path: '/account/profile' },
           // { title: 'Preferences', path: '/account/preferences' },
-          // { title: 'Settings', path: '/account/settings' },
+          { title: 'Settings', path: '/settings' },
           // { title: 'Help', path: '/account/help' },
           { title: 'Logout', path: '#', action: props.logout },
         ]}
