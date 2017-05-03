@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
+import Divider from 'material-ui/Divider';
 
 import history from 'lib/history';
 
@@ -41,7 +42,7 @@ class ManageCampaignContainer extends Component {
 
           <div className={s.campaignHeader}>{campaign.title}</div>
 
-          <List classname={s.navList}>
+          <List className={s.navList}>
 
             <Divider/>
 
@@ -66,6 +67,8 @@ class ManageCampaignContainer extends Component {
                 primaryText="Settings"
               />
             </Link>
+
+            <Divider/>
 
           </List>
         </div>
