@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
 
 import Link from 'components/Link';
 
@@ -23,12 +24,18 @@ class Organize extends Component {
   render() {
 
     const campaignList = this.props.myCampaigns ? this.props.myCampaigns.map( (campaign) => (
-      
-      <Link to={'/organize/' + campaign.slug} key={campaign.id}>
-        <ListItem 
-          primaryText={campaign.title}
-        />
-      </Link>
+
+      <div>
+        
+        <Link to={'/organize/' + campaign.slug} key={campaign.id}>
+          <ListItem 
+            primaryText={campaign.title}
+          />
+        </Link>
+
+        <Divider />
+
+      </div>
       
     )) : [];
 
@@ -49,7 +56,9 @@ class Organize extends Component {
           </div>
         </Link>
 
-        <List>
+        <List className={[s.campaignsList, s.navList].join(' ')}>
+
+          <Divider />
 
           { campaignList }
          

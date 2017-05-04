@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
+import Divider from 'material-ui/Divider';
 
 import history from 'lib/history';
 
@@ -94,7 +95,9 @@ class ManageCampaignSettingsContainer extends Component {
 
           <div className={s.campaignSubHeader}>Settings</div>
 
-          <List>
+          <List className={s.navList}>
+
+            <Divider />
 
             <Link to={'/organize/' + campaign.slug + '/info'}>
               <ListItem 
@@ -102,11 +105,15 @@ class ManageCampaignSettingsContainer extends Component {
               />
             </Link>
 
+            <Divider />
+
             <Link to={'/organize/' + campaign.slug + '/preferences'}>
               <ListItem 
                 primaryText="Preferences"
               />
             </Link>
+
+            <Divider />
 
             <Link to={'/organize/' + campaign.slug + '/location'}>
               <ListItem 
@@ -114,16 +121,22 @@ class ManageCampaignSettingsContainer extends Component {
               />
             </Link>
 
+            <Divider />
+
             <Link to={'/organize/' + campaign.slug + '/profile'}>
               <ListItem 
                 primaryText="Profile"
               />
             </Link>
 
+            <Divider />
+
             <ListItem 
               primaryText="Delete"
               onTouchTap={this.handleDelete}
             />
+
+            <Divider />
 
           </List>
 

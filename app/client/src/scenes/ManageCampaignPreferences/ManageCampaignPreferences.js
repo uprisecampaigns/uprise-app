@@ -7,6 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 import {List, ListItem} from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress';
+import Divider from 'material-ui/Divider';
 import camelCase from 'camelcase';
 
 import TogglesList from 'components/TogglesList';
@@ -199,8 +200,10 @@ class ManageCampaignPreferencesContainer extends Component {
 
         <div className={s.pageSubHeader}>Preferences</div>
 
-        <List>
+        <List className={s.navList}>
           
+          <Divider />
+
           <IssueAreasTogglesList 
             listTitle="Issue Areas"
             collectionName="issueAreas" 
@@ -209,6 +212,8 @@ class ManageCampaignPreferencesContainer extends Component {
             handleToggle={handleToggle}
             selectedCollection={selectedIssueAreas}
           />
+
+          <Divider />
 
           <LevelsTogglesList 
             listTitle="Campaign Levels"
@@ -219,6 +224,8 @@ class ManageCampaignPreferencesContainer extends Component {
             selectedCollection={selectedLevels}
           />
 
+          <Divider />
+
           <TypesTogglesList 
             listTitle="Campaign Types"
             collectionName="types" 
@@ -227,6 +234,8 @@ class ManageCampaignPreferencesContainer extends Component {
             handleToggle={handleToggle}
             selectedCollection={selectedTypes}
           />
+
+          <Divider />
 
           <ListItem 
             primaryText="Keywords"
@@ -248,6 +257,8 @@ class ManageCampaignPreferencesContainer extends Component {
               </ListItem>
             )]}
           />
+
+          <Divider />
 
         </List>
 

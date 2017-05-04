@@ -9,6 +9,7 @@ import ImageUploader from 'components/ImageUploader';
 import Link from 'components/Link';
 
 import s from 'styles/Organize.scss';
+import f from 'styles/Form.scss';
 
 
 class ActionProfileForm extends Component {
@@ -46,7 +47,7 @@ class ActionProfileForm extends Component {
             />
           </div>
 
-          <div className={s.textareaContainer}>
+          <div className={f.textareaContainer}>
             <TextField
               name="description"
               hintText="Write a short description here. This will show up in the search results. You do not need to include the name of the action, or issues, keywords, etc. as they will all appear automatically"

@@ -4,6 +4,7 @@ import {List, ListItem} from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import FontIcon from 'material-ui/FontIcon';
+import Divider from 'material-ui/Divider';
 
 import history from 'lib/history';
 
@@ -114,7 +115,9 @@ class ManageActionSettings extends Component {
 
           <div className={s.pageSubHeader}>Settings</div>
 
-          <List>
+          <List className={s.navList}>
+
+            <Divider />
 
             <Link to={baseActionUrl + '/info' }>
               <ListItem 
@@ -122,11 +125,15 @@ class ManageActionSettings extends Component {
               />
             </Link>
 
+            <Divider />
+
             <Link to={baseActionUrl + '/profile' }>
               <ListItem 
                 primaryText="Profile"
               />
             </Link>
+
+            <Divider />
 
             <Link to={baseActionUrl + '/preferences' }>
               <ListItem 
@@ -134,10 +141,14 @@ class ManageActionSettings extends Component {
               />
             </Link>
 
+            <Divider />
+
             <ListItem 
               primaryText="Delete"
               onTouchTap={this.handleDelete}
             />
+
+            <Divider />
 
           </List>
 

@@ -1,4 +1,3 @@
-
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux'
@@ -7,6 +6,7 @@ import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 import {List, ListItem} from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress';
+import Divider from 'material-ui/Divider';
 import camelCase from 'camelcase';
 
 import TogglesList from 'components/TogglesList';
@@ -213,8 +213,10 @@ class ManageActionPreferencesContainer extends Component {
 
           <div className={s.pageSubHeader}>Preferences</div>
 
-          <List>
+          <List className={s.navList}>
             
+            <Divider />
+
             <IssueAreasTogglesList 
               listTitle="Issue Areas"
               collectionName="issueAreas" 
@@ -223,6 +225,8 @@ class ManageActionPreferencesContainer extends Component {
               handleToggle={handleToggle}
               selectedCollection={selectedIssueAreas}
             />
+
+            <Divider />
 
             <LevelsTogglesList 
               listTitle="Campaign Levels"
@@ -233,6 +237,8 @@ class ManageActionPreferencesContainer extends Component {
               selectedCollection={selectedLevels}
             />
 
+            <Divider />
+
             <TypesTogglesList 
               listTitle="Campaign Types"
               collectionName="types" 
@@ -242,6 +248,8 @@ class ManageActionPreferencesContainer extends Component {
               selectedCollection={selectedTypes}
             />
 
+            <Divider />
+
             <ActivitiesTogglesList 
               listTitle="Activities"
               collectionName="activities" 
@@ -250,6 +258,8 @@ class ManageActionPreferencesContainer extends Component {
               handleToggle={handleToggle}
               selectedCollection={selectedActivities}
             />
+
+            <Divider />
 
             <ListItem 
               primaryText="Keywords"
@@ -271,6 +281,8 @@ class ManageActionPreferencesContainer extends Component {
                 </ListItem>
               )]}
             />
+
+            <Divider />
 
           </List>
 
