@@ -19,6 +19,7 @@ module.exports = {
       last_name: user.last_name,
       email: user.email,
       zipcode: user.zipcode,
+      phone_number: user.phone_number
     }
   },
 

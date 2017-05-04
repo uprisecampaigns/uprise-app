@@ -289,6 +289,7 @@ export const MeQuery = gql`
       last_name
       email
       zipcode
+      phone_number
     }
   }
 `;
