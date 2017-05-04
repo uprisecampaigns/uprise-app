@@ -2,6 +2,8 @@ import fetch from 'isomorphic-fetch';
 import history from 'lib/history';
 import apolloClient from 'store/apolloClient';
 
+import { notify } from 'actions/NotificationsActions';
+
 
 export const CLICKED_SIGNUP = 'CLICKED_SIGNUP';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
@@ -230,7 +232,7 @@ export function changePasswordFail(error) {
   return { type: CHANGE_PASSWORD_FAIL, error };
 }
 
-export function attemptChangePassword(data){
+export function attemptChangePassword(data, successCallback){
   return async (dispatch, getState) => {
 
     if (!getState().userAuthSession.fetchingAuthUpdate) {
@@ -253,17 +255,19 @@ export function attemptChangePassword(data){
         const json = await response.json();
 
         if (!json.error) {
-          history.push('/');
+          dispatch(notify('Password changed'));
+          (typeof successCallback === 'function') && successCallback();
           dispatch(changePasswordSuccess(json));
         } else {
-          // TODO: error handler
           console.error(json.error);
-          dispatch(changePasswordFail(json.error));
+          throw new Error(json.error);
         }
       } catch(err) {
         // TODO: error handler
         console.error(err);
-        dispatch(changePasswordFail(err));
+        console.log(err);
+        dispatch(notify('Error changing password: ' + err.message));
+        dispatch(changePasswordFail(err.message));
       }
     }
   }

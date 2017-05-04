@@ -46,7 +46,7 @@ class Settings extends Component {
 
             <Divider/>
 
-            <Link to={'/settings/privacy'}>
+            <Link to={'/settings/privacy-security'}>
               <ListItem 
                 primaryText="Privacy & Security"
               />

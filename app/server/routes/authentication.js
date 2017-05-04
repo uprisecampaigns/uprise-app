@@ -92,7 +92,7 @@ module.exports = (app, passport) => {
         if (err) { 
           return next(err); 
         }
-        res.redirect('/settings/change-password');
+        res.redirect('/settings/privacy-security');
       });
     } catch(err) {
       next(err);

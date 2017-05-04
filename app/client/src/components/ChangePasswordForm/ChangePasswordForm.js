@@ -9,16 +9,17 @@ import Link from 'components/Link';
 
 import s from 'styles/Form.scss';
 
-function OldPassword({show, data, handleInputChange, error}) {
+function OldPassword({show, data, errors, handleInputChange, error}) {
   if(show) {
     return (
       <div className={s.textFieldContainer}>
         <TextField
           floatingLabelText="Old Password"
           value={data.oldPassword}
-          errorText={data.oldPasswordErrorText || error}
+          errorText={errors.oldPasswordErrorText || error}
           type="password"
           onChange={ (event) => { handleInputChange(event, 'oldPassword', event.target.value) } }
+          fullWidth={true}
         />
       </div>
     );
@@ -27,7 +28,7 @@ function OldPassword({show, data, handleInputChange, error}) {
   }
 }
 
-function ChangePasswordForm({data, handleInputChange, formSubmit, passwordBeingReset, cancel, error}) {
+function ChangePasswordForm({data, errors, handleInputChange, formSubmit, passwordBeingReset, cancel, error}) {
 
   return (
     <div className={s.outerContainer}>
@@ -41,6 +42,7 @@ function ChangePasswordForm({data, handleInputChange, formSubmit, passwordBeingR
               <OldPassword 
                 show={!passwordBeingReset}
                 data={data}
+                errors={errors}
                 error={error}
                 handleInputChange={handleInputChange}
               />
@@ -48,18 +50,20 @@ function ChangePasswordForm({data, handleInputChange, formSubmit, passwordBeingR
                 <TextField
                   floatingLabelText="New Password"
                   value={data.newPassword1}
-                  errorText={data.newPassword1ErrorText}
+                  errorText={errors.newPassword1ErrorText}
                   type="password"
                   onChange={ (event) => { handleInputChange(event, 'newPassword1', event.target.value) } }
+                  fullWidth={true}
                 />
               </div>
               <div className={s.textFieldContainer}>
                 <TextField
-                  floatingLabelText="Please Enter your Password Again"
+                  floatingLabelText="New Password Again"
                   value={data.newPassword2}
-                  errorText={data.newPassword2ErrorText}
+                  errorText={errors.newPassword2ErrorText}
                   type="password"
                   onChange={ (event) => { handleInputChange(event, 'newPassword2', event.target.value) } }
+                  fullWidth={true}
                 />
               </div>
               <div className={s.button}>

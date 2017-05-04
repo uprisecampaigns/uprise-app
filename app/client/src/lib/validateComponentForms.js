@@ -156,3 +156,17 @@ export function validateStartEndTimes(component) {
     component.hasErrors = true;
   }
 }
+
+export function validateNewPasswords(component, password1='newPassword1', password2='newPassword2', errorProp1='newPassword1ErrorText', errorProp2='newPassword2ErrorText') {
+  const { formData } = component.state;
+
+  if (formData[password1] !== formData[password2]) {
+    component.setState( (prevState) => ({
+      errors: Object.assign({}, prevState.errors, {
+        [errorProp1]: 'Passwords must match',
+        [errorProp2]: 'Passwords must match',
+      })
+    }));
+    component.hasErrors = true;
+  }
+}
