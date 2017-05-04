@@ -107,15 +107,32 @@ class Contact extends Component {
 
           <div className={s.settingsHeader}>Contact</div>
 
-          <WrappedContactForm
-            initialState={formData}
-            initialErrors={defaultErrorText}
-            validators={validators}
-            submit={formSubmit}
-            saving={saving}
-            submitText="Send"
-            user={user}
-          />
+          <div className={s.innerContainer}>
+            <p>
+              Email us at <Link to="mailto:help@uprise.org" useAhref={true} mailTo={true}>help@uprise.org</Link>
+            </p>
+
+            <p>
+              Uprise Campaigns, SPC <br/>
+              1442A Walnut St. #149 <br/>
+              Berkeley, CA 94709
+            </p>
+
+            <p>
+              Or send us a message:
+            </p>
+
+            <WrappedContactForm
+              initialState={formData}
+              initialErrors={defaultErrorText}
+              validators={validators}
+              submit={formSubmit}
+              saving={saving}
+              submitText="Send"
+              user={user}
+            />
+
+          </div>
 
         </div>
       );

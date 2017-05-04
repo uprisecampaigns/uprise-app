@@ -6,84 +6,82 @@
   justify-content: center;
   margin-top: 1rem;
   margin-bottom: 5rem;
+}
 
-  .innerContainer {
-    display: block;
-    text-align: center;
-    max-width: 80%;
-    min-width: 55%;
+.innerContainer {
+  display: block;
+  text-align: center;
+  max-width: 80%;
+  min-width: 55%;
 
-    .formContainer {
-      padding: 10px 50px 20px 50px;
-      text-align: center;
-    }
-  }
+}
 
-  .button {
-    margin: 30px 10px 10px 10px;
-    display: inline-block;
-  }
+.formContainer {
+  padding: 10px 50px 20px 50px;
+  text-align: center;
+}
 
-  .organizeButton button {
-    background-color: lighten($brick-red, 25%) !important;
-    span {
-      color: darken($brick-red, 10%) !important;
-    }
-  }
+.button {
+  margin: 30px 10px 10px 10px;
+  display: inline-block;
+}
 
-  .textFieldContainer {
-    display: flex;
-    text-align: left;
-
-    input, label {
-      font-size: 1.1rem !important;
-    }
-  }
-
-  .textFieldContainer.centered {
-    justify-content: center;
-  }
-
-  .textareaContainer {
-    margin-top: 1rem;
-    border: 1px solid darken($white, 20%);
-    padding: 1rem;
-  }
-
-  // Annoying hack to line up hint text with textarea input
-  .textareaContainer div:first-child div:first-child {
-    bottom: inherit !important;
-    top: 12px !important;
-  }
-
-  .toggleContainer {
-    margin: 2rem auto 1rem auto;
-    font-size: 1.1rem;
-  }
-
-  .loginButton {
-    margin-top: 20px;
-  }
-
-  .helpText {
-    color: lighten($azure, 10%);
-    font-weight: 300;
-    font-size: 1.2rem;
-    text-align: left;
-  }
-
-  .sectionLabel {
-    margin: 3rem 0 0 0;
-    text-align: left;
-    font-size: 1.3rem;
-    color: $azure;
-  }
-
-  .forgotPassword {
-    display: block;
-    padding: 10px 0px 20px 0px;
+.organizeButton button {
+  background-color: lighten($brick-red, 25%) !important;
+  span {
+    color: darken($brick-red, 10%) !important;
   }
 }
 
+.textFieldContainer {
+  display: flex;
+  text-align: left;
 
+  input, label {
+    font-size: 1.1rem !important;
+  }
+}
 
+.textFieldContainer.centered {
+  justify-content: center;
+}
+
+.textareaContainer {
+  margin-top: 1rem;
+  border: 1px solid darken($white, 20%);
+  padding: 1rem;
+}
+
+// Annoying hack to line up hint text with textarea input
+.textareaContainer div:first-child div:first-child {
+  bottom: inherit !important;
+  top: 12px !important;
+}
+
+.toggleContainer {
+  margin: 2rem auto 1rem auto;
+  font-size: 1.1rem;
+}
+
+.loginButton {
+  margin-top: 20px;
+}
+
+.helpText {
+  color: lighten($azure, 10%);
+  font-weight: 300;
+  font-size: 1.2rem;
+  text-align: left;
+}
+
+.sectionLabel {
+  margin: 3rem 0 0 0;
+  text-align: left;
+  font-size: 1.3rem;
+  color: $azure;
+}
+
+.forgotPassword {
+  display: block;
+  padding: 10px 0px 20px 0px;
+}

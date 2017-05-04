@@ -37,71 +37,65 @@ class ContactForm extends Component {
 
 
     return (
-      <div className={s.outerContainer}>
-        <div className={s.innerContainer}>
-          <Paper zDepth={2}>
-            <div className={s.formContainer}>
-              <form 
-                className={s.form}
-                onSubmit={formSubmit}
-              >
-                <div className={s.textFieldContainer}>
-                  <TextField
-                    floatingLabelText="Subject"
-                    value={data.subject}
-                    onChange={ (event) => { handleInputChange(event, 'subject', event.target.value) } }
-                    errorText={errors.subjectErrorText}
-                    fullWidth={true}
-                  />
-                </div>
-                
-                <div className={s.textareaContainer}>
-                  <TextField
-                    name="description"
-                    hintText="Compose message"
-                    value={data.body}
-                    multiLine={true}
-                    rows={4}
-                    onChange={ (event) => { handleInputChange(event, 'body', event.target.value) } }
-                    errorText={errors.bodyErrorText}
-                    fullWidth={true}
-                    underlineShow={false}
-                  />
-                </div>
+      
+      <div className={s.formContainer}>
+        <form 
+          className={s.form}
+          onSubmit={formSubmit}
+        >
+          <div className={s.textFieldContainer}>
+            <TextField
+              floatingLabelText="Subject"
+              value={data.subject}
+              onChange={ (event) => { handleInputChange(event, 'subject', event.target.value) } }
+              errorText={errors.subjectErrorText}
+              fullWidth={true}
+            />
+          </div>
+          
+          <div className={s.textareaContainer}>
+            <TextField
+              name="description"
+              hintText="Compose message"
+              value={data.body}
+              multiLine={true}
+              rows={4}
+              onChange={ (event) => { handleInputChange(event, 'body', event.target.value) } }
+              errorText={errors.bodyErrorText}
+              fullWidth={true}
+              underlineShow={false}
+            />
+          </div>
 
-                { saving ? (
+          { saving ? (
 
-                  <div className={s.savingThrobberContainer}>
-                    <CircularProgress
-                      size={100}
-                      thickness={5}
-                    />
-                  </div>
-                ) : (
-
-                  <div className={[s.organizeButton, s.button].join(' ')}>
-                    <RaisedButton 
-                      onTouchTap={formSubmit} 
-                      primary={true} 
-                      type="submit"
-                      label={submitText} 
-                    />
-                  </div>
-                )}
-
-                <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={cancel} 
-                    primary={false} 
-                    label="Cancel" 
-                  />
-                </div>
-
-              </form>
+            <div className={s.savingThrobberContainer}>
+              <CircularProgress
+                size={100}
+                thickness={5}
+              />
             </div>
-          </Paper>
-        </div>
+          ) : (
 
+            <div className={[s.organizeButton, s.button].join(' ')}>
+              <RaisedButton 
+                onTouchTap={formSubmit} 
+                primary={true} 
+                type="submit"
+                label={submitText} 
+              />
+            </div>
+          )}
+
+          <div className={s.button}>
+            <RaisedButton 
+              onTouchTap={cancel} 
+              primary={false} 
+              label="Cancel" 
+            />
+          </div>
+
+        </form>
       </div>
     );
   }
