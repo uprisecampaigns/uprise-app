@@ -82,7 +82,6 @@ class Security extends Component {
         validators={validators}
         submit={formSubmit}
         saving={saving}
-        submitText="Save Changes"
         error={changeError}
       />
 

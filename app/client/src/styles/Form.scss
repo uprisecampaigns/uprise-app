@@ -18,6 +18,9 @@
 
 .formContainer {
   padding: 10px 50px 20px 50px;
+}
+
+.form {
   text-align: center;
 }
 
@@ -26,10 +29,15 @@
   display: inline-block;
 }
 
-.organizeButton button {
-  background-color: lighten($brick-red, 25%) !important;
-  span {
-    color: darken($brick-red, 10%) !important;
+.organizeButton, .primaryButton {
+  
+  @extend .button;
+
+  button {
+    background-color: lighten($brick-red, 25%) !important;
+    span {
+      color: darken($brick-red, 10%) !important;
+    }
   }
 }
 

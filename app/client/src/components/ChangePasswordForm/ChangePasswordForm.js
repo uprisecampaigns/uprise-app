@@ -14,7 +14,7 @@ function OldPassword({show, data, errors, handleInputChange, error}) {
     return (
       <div className={s.textFieldContainer}>
         <TextField
-          floatingLabelText="Old Password"
+          floatingLabelText="Current Password"
           value={data.oldPassword}
           errorText={errors.oldPasswordErrorText || error}
           type="password"
@@ -31,61 +31,46 @@ function OldPassword({show, data, errors, handleInputChange, error}) {
 function ChangePasswordForm({data, errors, handleInputChange, formSubmit, passwordBeingReset, cancel, error}) {
 
   return (
-    <div className={s.outerContainer}>
-      <div className={s.innerContainer}>
-        <Paper zDepth={2}>
-          <div className={s.formContainer}>
-            <form 
-              className={s.form}
-              onSubmit={formSubmit}
-            >
-              <OldPassword 
-                show={!passwordBeingReset}
-                data={data}
-                errors={errors}
-                error={error}
-                handleInputChange={handleInputChange}
-              />
-              <div className={s.textFieldContainer}>
-                <TextField
-                  floatingLabelText="New Password"
-                  value={data.newPassword1}
-                  errorText={errors.newPassword1ErrorText}
-                  type="password"
-                  onChange={ (event) => { handleInputChange(event, 'newPassword1', event.target.value) } }
-                  fullWidth={true}
-                />
-              </div>
-              <div className={s.textFieldContainer}>
-                <TextField
-                  floatingLabelText="New Password Again"
-                  value={data.newPassword2}
-                  errorText={errors.newPassword2ErrorText}
-                  type="password"
-                  onChange={ (event) => { handleInputChange(event, 'newPassword2', event.target.value) } }
-                  fullWidth={true}
-                />
-              </div>
-              <div className={s.button}>
-                <RaisedButton 
-                  onTouchTap={cancel} 
-                  primary={false} 
-                  label="Cancel" 
-                />
-              </div>
-              <div className={s.button}>
-                <RaisedButton 
-                  onTouchTap={formSubmit} 
-                  type="submit"
-                  primary={true} 
-                  label="Change" 
-                />
-              </div>
-            </form>
-          </div>
-        </Paper>
+    <form 
+      className={s.form}
+      onSubmit={formSubmit}
+    >
+      <OldPassword 
+        show={!passwordBeingReset}
+        data={data}
+        errors={errors}
+        error={error}
+        handleInputChange={handleInputChange}
+      />
+      <div className={s.textFieldContainer}>
+        <TextField
+          floatingLabelText="New Password"
+          value={data.newPassword1}
+          errorText={errors.newPassword1ErrorText}
+          type="password"
+          onChange={ (event) => { handleInputChange(event, 'newPassword1', event.target.value) } }
+          fullWidth={true}
+        />
       </div>
-    </div>
+      <div className={s.textFieldContainer}>
+        <TextField
+          floatingLabelText="Confirm New Password"
+          value={data.newPassword2}
+          errorText={errors.newPassword2ErrorText}
+          type="password"
+          onChange={ (event) => { handleInputChange(event, 'newPassword2', event.target.value) } }
+          fullWidth={true}
+        />
+      </div>
+      <div className={s.primaryButton}>
+        <RaisedButton 
+          onTouchTap={formSubmit} 
+          type="submit"
+          primary={true} 
+          label="Save Changes" 
+        />
+      </div>
+    </form>
   );
 }
 

@@ -4,6 +4,7 @@ import FontIcon from 'material-ui/FontIcon';
 import Link from 'components/Link';
 
 import Security from './components/Security';
+import Privacy from './components/Privacy';
 
 import s from 'styles/Settings.scss';
 
@@ -32,10 +33,18 @@ class PrivacySecurity extends Component {
           </div>
         </Link>
 
-        <div className={s.settingsHeader}>Privacy and Security</div>
+        <div className={s.innerContainer}>
 
-        <Security />
+          <div className={s.settingsHeader}>Privacy and Security</div>
 
+          <div className={s.sectionHeader}>Change Password</div>
+
+          <Security />
+
+          <div className={s.sectionHeader}>Privacy Policy</div>
+
+          <Privacy />
+        </div>
       </div>
     );
   }
