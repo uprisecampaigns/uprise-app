@@ -4,25 +4,18 @@
   width: 100%;
   margin-bottom: 4rem;
 
-  .campaignHeader {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 8rem;
-    background-color: $azure;
-    color: darken($white, 5%) !important;
-    font-size: 2rem;
-    font-weight: 300;
-
-    :global .material-icons {
-      color: darken($white, 5%) !important;
-    }
-  }
-
   .innerContainer {
     width: 90%;
     margin: 1rem 5% 0 5%;
+
+    .campaignHeader {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      color: $azure;
+      font-size: 1.6rem;
+      text-align: center;
+      align-items: center;
+    }
 
     .titleContainer {
       color: darken($azure, 20%);
@@ -50,6 +43,11 @@
       text-align: center;
     }
 
+    .dateTimePlaceContainer {
+      color: lighten($azure, 10%);
+      font-size: 1.2rem;
+    }
+
     .websiteUrlContainer {
       text-align: center;
       font-size: 2rem;
@@ -65,7 +63,6 @@
     .contactContainer {
       font-size: 1.2rem;
       color: $fire-red;
-      margin-top: 1rem;
 
       a { 
         color: $fire-red;
@@ -84,7 +81,6 @@
       margin-left: 1rem;
     }
 
-    
     .descriptionContainer {
       border: 1px solid darken($white, 20%);
       padding: 1rem;
@@ -95,7 +91,7 @@
       text-overflow: ellipsis;
     }
 
-    .subscribedContainer {
+    .attendingContainer, .subscribedContainer {
       text-align: center;
       margin: 1rem auto 1rem auto;
 

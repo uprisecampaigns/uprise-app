@@ -60,9 +60,9 @@ class SearchCampaignResults extends Component {
               {campaign.profile_subheader}
             </div>
           )}
-          { (campaign.state && campaign.city) && (
+          { (campaign.state || campaign.city) && (
             <div className={s.locationContainer}>
-              {campaign.city}, {campaign.state}
+              {campaign.city && (<span>{campaign.city}, </span>)} {campaign.state}
             </div>
           )} 
         </div>

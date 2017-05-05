@@ -21,7 +21,7 @@ import {
   CancelActionSignupMutation
 } from 'schemas/mutations';
 
-import s from 'styles/Action.scss';
+import s from 'styles/Profile.scss';
 
 
 class Action extends Component {
@@ -106,10 +106,9 @@ class Action extends Component {
           return <div key={index} className={s.detailLine}>{activity.description}</div>;
         }) : [];
 
-      // TODO: keywords just gets auto-assigned 'null' if not filled array?
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.detailLine}>{action.tags.join(', ')}</div>
-      ) : [];
+      ) : '';
 
       const modalActions = [
         <RaisedButton
@@ -227,7 +226,7 @@ class Action extends Component {
               </div>
             )}
 
-            {keywords.length > 0 && ( 
+            {keywords && ( 
               <div className={s.keywordsContainer}>
                 <div className={s.header}>
                   Keywords:

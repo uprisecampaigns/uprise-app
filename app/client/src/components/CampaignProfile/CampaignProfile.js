@@ -7,7 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import Link from 'components/Link';
 
-import s from 'styles/Campaign.scss';
+import s from 'styles/Profile.scss';
 
 
 class CampaignProfile extends Component {
@@ -28,7 +28,7 @@ class CampaignProfile extends Component {
 
     const keywords = (typeof campaign.tags === 'object' && campaign.tags.length > 0) ? (
       <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
-    ) : [];
+    ) : '';
 
     if (campaign) {
       return (
@@ -99,7 +99,7 @@ class CampaignProfile extends Component {
               </div>
             )}
 
-            {keywords.length > 0 && (
+            {keywords && (
               <div className={s.keywordsContainer}>
                 <div className={s.header}>
                   Keywords:

@@ -22,8 +22,6 @@ import {
   notify
 } from 'actions/NotificationsActions';
 
-import s from 'styles/Campaign.scss';
-
 
 class Campaign extends Component {
   constructor(props) {
