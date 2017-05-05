@@ -17,11 +17,21 @@
     padding: 0 10%;
 
     >form {
-      border: 1px solid lighten($black, 10%);
+      border: 1px solid darken($white, 30%);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
     }
 
     :global .searchBarInput {
       width: 80% !important;
+      height: 1rem !important;
+      font-size: 1.2rem !important;
+
+      div:first-child {
+        bottom: inherit !important;
+        font-style: italic;
+      }
     }
   }
 
