@@ -17,7 +17,7 @@ class GeographySearch extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      distance: '',
+      distance: '10',
       zipcode: '',
       virtual: false
     }
@@ -29,21 +29,22 @@ class GeographySearch extends React.PureComponent {
 
   handleInputChange = (event, type, value) => {
 
-    if (typeof type === 'string' && ((type === 'zipcode' && value.length < 6) || type === 'distance')) {
-      if (isNumeric(value) || value === '') {
+    let valid = false;
+    if (typeof type === 'string') {
+      
+      if ((type === 'zipcode' && value.length < 6 && (isNumeric(value) || value === '')) || 
+          (type === 'distance' && ((isNumeric(value) && parseInt(value, 10) > 0) || value === '')) ||
+          (type === 'virtual' && typeof value === 'boolean')) {
 
-        this.setState(Object.assign({},
-          this.state,
-          { [type]: value }
-        ));
+        valid = true;
       }
-    } else if (typeof type === 'string' && type === 'virtual' && typeof value === 'boolean') {
 
-      this.setState(Object.assign({},
-        this.state,
-        { [type]: value }
-      ));
     }
+
+    valid && this.setState(Object.assign({},
+      this.state,
+      { [type]: value }
+    ));
   }
 
   addItem = (event) => {
@@ -96,6 +97,7 @@ class GeographySearch extends React.PureComponent {
             <TextField
               floatingLabelText="miles"
               type="number"
+              min="1"
               value={distance}
               style={textFieldStyle}
               underlineShow={false}
