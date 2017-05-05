@@ -70,6 +70,7 @@ class SearchActionResults extends React.PureComponent {
           <Card>
             <CardHeader
               title={action.title}
+              className={s.resultsHeader}
               avatar={action.campaign.profile_image_url ? <Avatar src={action.campaign.profile_image_url} size={40}/> : undefined}
               subtitle={
                 <Link to={'/campaign/' + action.campaign.slug} className={s.campaignLink}>{action.campaign.title}</Link>

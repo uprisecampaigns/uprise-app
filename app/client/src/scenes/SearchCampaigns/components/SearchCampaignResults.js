@@ -76,6 +76,7 @@ class SearchCampaignResults extends Component {
           <Card>
             <CardHeader
               title={campaign.title}
+              className={s.resultsHeader}
               avatar={campaign.profile_image_url ? <Avatar src={campaign.profile_image_url} size={80}/> : undefined}
               subtitle={subtitle}
             />

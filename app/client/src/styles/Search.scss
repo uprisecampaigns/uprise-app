@@ -74,6 +74,17 @@
     width: 100%;
     overflow-x: hidden;
 
+    .resultsHeader {
+      font-size: 1rem;
+
+      >div:first-of-type {
+        >span:first-of-type {
+          font-size: 1.4rem !important;
+          color: darken($azure, 20%) !important;
+        }
+      }
+    }
+
     .campaignLink, .subheaderContainer {
       color: lighten($azure, 20%);
     }
