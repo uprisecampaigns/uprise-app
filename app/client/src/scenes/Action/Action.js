@@ -240,13 +240,19 @@ class Action extends Component {
 
           {modalOpen && (
             <Dialog
-              title="Are You Sure?"
+              title="Permission to Share?"
               modal={true}
               actions={modalActions}
               open={modalOpen}
             >
               <p>
-                In signing up for this action, you are agreeing to give the coordinator your email address for the purposes of contacting you about this action. The coordinator is not allowed to add your email address to the campaign’s general email or any other lists or to share or sell your email address without your expressed consent. Please notify UpRise if you believe that this policy has been violated.
+                May we have your permission to share your email address with the coordinator for the purpose of contacting you about this action?
+              </p>
+              <p>
+                The coordinator is not allowed to add your email address to the campaign’s general email or any other lists or to share or sell your email address without your expressed consent.
+              </p>
+              <p>
+                Please notify UpRise if you believe that this policy has been violated.
               </p>
             </Dialog>
           )}

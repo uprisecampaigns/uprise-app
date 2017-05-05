@@ -116,13 +116,13 @@ class Campaign extends Component {
           />
 
           <Dialog
-            title="Are You Sure?"
+            title="Permission to Share?"
             modal={true}
             actions={modalActions}
             open={modalOpen}
           >
             <p>
-              In subscribing to this campaign, you are agreeing to give the campaign coordinator your email address for the purposes of contacting you about volunteering for this campaign. 
+              May we have your permission to share your email address with the coordinator for the purpose of contacting you about volunteering for this campaign?
             </p>
             <p>
               The coordinator is not allowed to add your email address to the campaign’s general email or any other lists or to share or sell your email address without your expressed consent. 
