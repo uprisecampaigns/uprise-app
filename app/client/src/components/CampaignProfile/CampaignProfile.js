@@ -30,6 +30,11 @@ class CampaignProfile extends Component {
       <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
     ) : '';
 
+    const issues = (typeof campaign.issue_areas === 'object' && campaign.issue_areas.length > 0) ? (
+      <div className={s.detailLine}>{campaign.issue_areas.map(issue => issue.title).join(', ')}</div>
+    ) : '';
+
+
     if (campaign) {
       return (
         <div className={s.outerContainer}>
@@ -96,6 +101,15 @@ class CampaignProfile extends Component {
                 <Link to={'mailto:' + campaign.owner.email} external={true} mailTo={true} useAhref={true}>
                   {campaign.owner.first_name} {campaign.owner.last_name}
                 </Link>
+              </div>
+            )}
+
+            {issues && (
+              <div className={s.issuesContainer}>
+                <div className={s.header}>
+                  Issues:
+                </div>
+                <div>{issues}</div>
               </div>
             )}
 
