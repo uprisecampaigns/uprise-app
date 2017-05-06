@@ -140,8 +140,10 @@ export function checkSessionStatus() {
   return async (dispatch, getState) => {
 
     if (!getState().userAuthSession.fetchingAuthUpdate) {
+
+      dispatch(startedSessionCheck());
+
       try {
-        dispatch(startedSessionCheck());
 
         const response = await fetch('/api/checkSession', {
           method: 'POST',
@@ -152,6 +154,10 @@ export function checkSessionStatus() {
             'Content-Type': 'application/json',
           },
         });
+
+        if (response.status >= 400) {
+          throw new Error('Bad response from server.');
+        }
 
         const json = await response.json();
 
@@ -166,7 +172,7 @@ export function checkSessionStatus() {
       } catch(err) {
         // TODO: error handler
         console.error(err);
-        dispatch(sessionCheckFail(err));
+        dispatch(sessionCheckFail(err.message || err));
       }
     }
   }
