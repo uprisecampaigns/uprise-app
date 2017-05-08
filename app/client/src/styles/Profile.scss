@@ -101,6 +101,14 @@
           color: darken($brick-red, 10%) !important;
         }
       }
+
+      .calendarLinkContainer {
+        margin-bottom: 1rem;
+
+        button {
+          background-color: transparent !important;
+        }
+      }
     }
   }
 }

@@ -4,9 +4,12 @@ import { graphql, compose } from 'react-apollo';
 import moment from 'moment';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
+import FlatButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import Link from 'components/Link';
+import AddToCalendar from 'components/AddToCalendar';
 
 import {
   notify
@@ -150,11 +153,22 @@ class Action extends Component {
               ) : (
                 <div>
                   {action.attending ? (
-                    <RaisedButton
-                      onTouchTap={cancelSignup}
-                      primary={true}
-                      label="Cancel attendance"
-                    />
+                    <div>
+
+                      <AddToCalendar className={s.calendarLinkContainer} event={action}>
+                        <FlatButton
+                          label="Add to Calendar"
+                          secondary={true}
+                          icon={<FontIcon className="material-icons">add_circle_outline</FontIcon>}
+                        />
+                      </AddToCalendar>
+
+                      <RaisedButton
+                        onTouchTap={cancelSignup}
+                        primary={true}
+                        label="Cancel attendance"
+                      />
+                    </div>
                   ) : (
                     <RaisedButton
                       onTouchTap={signup}

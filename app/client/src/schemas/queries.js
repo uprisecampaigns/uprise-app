@@ -112,6 +112,7 @@ export const ActionQuery = gql`
       state
       zipcode
       location_notes
+      public_url
       activities {
         id
         title

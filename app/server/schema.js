@@ -80,6 +80,7 @@ module.exports = buildSchema(`
     state: String
     zipcode: String
     location_notes: String
+    public_url: String
     activities: [ActivityResult]
     issue_areas: [IssueAreaResult]
     levels: [LevelResult]

@@ -158,6 +158,9 @@ config.webpack = {
   bail: env.production(),
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json'],
+  },
+  node: {
+    fs: 'empty'
   }
 };
 
