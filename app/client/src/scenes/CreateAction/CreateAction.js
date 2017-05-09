@@ -154,7 +154,7 @@ class CreateAction extends Component {
             </div>
           </Link>
 
-          <div className={s.campaignSubHeader}>Create Action</div>
+          <div className={s.pageSubHeader}>Create Action</div>
 
           <WrappedActionInfoForm
             initialState={formData}

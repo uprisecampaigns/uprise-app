@@ -45,7 +45,7 @@
   font-weight: 500;
 }
 
-.campaignHeader, .actionHeader, .settingsHeader {
+.pageSubHeader, .campaignHeader, .actionHeader, .settingsHeader {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -56,50 +56,12 @@
   color: darken($azure, 20%) !important;
   font-size: 2rem;
   font-weight: 500;
-
-  :global .material-icons {
-    color: darken($white, 30%) !important;
-  }
-
-  .backArrow {
-    position: absolute !important;
-    left: 1rem !important;
-  }
 }
 
 .actionHeader {
   border-bottom: none;
   font-weight: 500;
   color: lighten($azure, 20%) !important;
-}
-
-.campaignSubHeader {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-  color: $azure !important;
-  font-size: 2rem;
-  font-weight: 500;
-  margin: 1.5rem auto;
-
-  :global .material-icons {
-    color: $azure !important;
-  }
-}
-
-.pageSubHeader {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-  color: darken($azure, 15%) !important;
-  min-height: 3rem;
-  padding: 1rem 0px;
-  font-size: 2rem;
-  font-weight: 500;
 }
 
 .navList {

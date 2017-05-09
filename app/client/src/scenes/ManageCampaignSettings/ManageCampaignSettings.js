@@ -93,7 +93,7 @@ class ManageCampaignSettingsContainer extends Component {
             </div>
           </Link>
 
-          <div className={s.campaignSubHeader}>Settings</div>
+          <div className={s.pageSubHeader}>Settings</div>
 
           <List className={s.navList}>
 

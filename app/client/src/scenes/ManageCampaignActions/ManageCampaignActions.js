@@ -74,7 +74,7 @@ class ManageCampaignActionsContainer extends Component {
             </div>
           </Link>
 
-          <div className={s.campaignSubHeader}>Actions</div>
+          <div className={s.pageSubHeader}>Actions</div>
 
           <Link to={'/organize/' + campaign.slug + '/create-action'}>
             <div className={s.organizeButton}>

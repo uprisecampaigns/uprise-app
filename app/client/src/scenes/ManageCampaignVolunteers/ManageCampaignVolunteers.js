@@ -94,7 +94,7 @@ class ManageCampaignVolunteers extends Component {
             </div>
           </Link>
 
-          <div className={s.campaignSubHeader}>Volunteers</div>
+          <div className={s.pageSubHeader}>Volunteers</div>
 
           <div className={s.composeMessageButtonContainer}>
             <RaisedButton

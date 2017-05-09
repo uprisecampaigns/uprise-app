@@ -62,7 +62,7 @@ class MyActions extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <div className={s.campaignSubHeader}>Actions</div>
+          <div className={s.pageSubHeader}>Actions</div>
 
           <List>
 
