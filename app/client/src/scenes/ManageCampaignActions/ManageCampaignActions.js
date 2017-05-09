@@ -64,7 +64,7 @@ class ManageCampaignActionsContainer extends Component {
         <div className={s.outerContainer}>
 
           <Link to={'/organize/' + campaign.slug}>
-            <div className={s.campaignHeader}>
+            <div className={[s.navHeader, s.campaignNavHeader].join(' ')}>
 
               <FontIcon 
                 className={["material-icons", s.backArrow].join(' ')}

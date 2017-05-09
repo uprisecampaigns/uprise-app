@@ -3,9 +3,10 @@
 .navHeader {
   width: 100%;
   display: flex;
-  color: $brick-red;
+  color: lighten($azure, 10%);
   height: 5rem;
   font-size: 2rem;
+  font-weight: 300;
   align-items: center;
   justify-content: left;
   border-bottom: 1px solid darken($white, 20%);
@@ -14,6 +15,21 @@
     margin-left: 1rem;
     margin-right: 1rem;
     color: darken($white, 30%) !important;
+  }
+}
+
+.navHeader.organizeNavHeader, .navHeader.settingsNavHeader {
+  color: $brick-red;
+}
+
+.navHeader.campaignNavHeader {
+  justify-content: center;
+  text-align: center;
+  text-transform: uppercase;
+
+  .backArrow {
+    position: absolute !important;
+    left: 1rem !important;
   }
 }
 
@@ -26,7 +42,7 @@
   height: 5rem;
   color: $brick-red !important;
   font-size: 2rem;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .campaignHeader, .actionHeader, .settingsHeader {
@@ -39,7 +55,7 @@
   padding: 1rem 0px;
   color: darken($azure, 20%) !important;
   font-size: 2rem;
-  font-weight: 300;
+  font-weight: 500;
 
   :global .material-icons {
     color: darken($white, 30%) !important;
@@ -53,7 +69,7 @@
 
 .actionHeader {
   border-bottom: none;
-  font-weight: 400;
+  font-weight: 500;
   color: lighten($azure, 20%) !important;
 }
 
@@ -65,7 +81,7 @@
   align-items: center;
   color: $azure !important;
   font-size: 2rem;
-  font-weight: 400;
+  font-weight: 500;
   margin: 1.5rem auto;
 
   :global .material-icons {
@@ -83,26 +99,7 @@
   min-height: 3rem;
   padding: 1rem 0px;
   font-size: 2rem;
-  font-weight: 400;
-}
-
-.navSubHeader {
-  width: 100%;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  color: lighten($azure, 10%) !important;
-  min-height: 3rem;
-  padding: 1rem 0px;
-  font-size: 2rem;
-  font-weight: 300;
-  border-bottom: 1px solid darken($white, 20%);
-
-  :global .material-icons {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    color: lighten($azure, 10%) !important;
-  }
+  font-weight: 500;
 }
 
 .navList {

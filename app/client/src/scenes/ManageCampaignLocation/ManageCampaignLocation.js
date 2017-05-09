@@ -137,7 +137,7 @@ class ManageCampaignLocation extends Component {
         <div className={s.outerContainer}>
 
           <Link to={'/organize/' + campaign.slug + '/settings'}>
-            <div className={s.navSubHeader}>
+            <div className={s.navHeader}>
               <FontIcon 
                 className={["material-icons", s.backArrow].join(' ')}
               >arrow_back</FontIcon>

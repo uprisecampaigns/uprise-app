@@ -82,7 +82,7 @@ class ManageCampaignComposeMessage extends Component {
         <div className={s.outerContainer}>
 
           <Link to={baseUrl + '/volunteers'}>
-            <div className={s.navSubHeader}>
+            <div className={s.navHeader}>
               <FontIcon 
                 className={["material-icons", s.backArrow].join(' ')}
               >arrow_back</FontIcon>

@@ -9,6 +9,8 @@
     width: 100%;
     font-size: 2rem;
     padding: 1rem 0;
+    font-weight: 500;
+    color: darken($azure, 20%) !important;
   }
 
   .searchBarContainer {
@@ -78,7 +80,7 @@
 
     .resultsHeader {
       font-size: 1rem;
-
+      font-weight: 400 !important;
       padding-left: 3rem !important;
       padding-right: 3rem !important;
 
