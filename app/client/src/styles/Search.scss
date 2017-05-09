@@ -78,8 +78,14 @@
 
     .resultsHeader {
       font-size: 1rem;
+
       padding-left: 3rem !important;
       padding-right: 3rem !important;
+
+      @media (max-width: $screen-xs-min) {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+      }
 
       >div:first-of-type {
         >span:first-of-type {
