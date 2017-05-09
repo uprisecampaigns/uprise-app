@@ -19,13 +19,16 @@ class TogglesList extends React.PureComponent {
     collection: PropTypes.array.isRequired,
     selectedCollection: PropTypes.array.isRequired,
     handleToggle: PropTypes.func.isRequired,
+    containerClassName: PropTypes.string.isRequired,
+    className: PropTypes.string.isRequired,
   }
 
   render() {
 
     const { 
       collectionName, displayPropName, keyPropName, 
-      collection, selectedCollection, handleToggle 
+      collection, selectedCollection, handleToggle,
+      containerClassName, className
     } = this.props;
 
     const nestedListStyle = {
@@ -43,6 +46,7 @@ class TogglesList extends React.PureComponent {
               checked={selected}
             />
           }
+          className={containerClassName}
           key={item.id || index}
           checked={selected}
           primaryText={item[displayPropName]}
@@ -51,7 +55,7 @@ class TogglesList extends React.PureComponent {
     });
 
     return (
-      <div className={s.listContainer}>
+      <div className={className}>
         <ListItem 
           primaryText={this.props.listTitle}
           initiallyOpen={false}

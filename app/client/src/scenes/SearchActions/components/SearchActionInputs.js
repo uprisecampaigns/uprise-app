@@ -2,7 +2,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 
 import { 
   ActionsQuery, 
@@ -95,11 +96,13 @@ class SearchActionInputs extends React.PureComponent {
     } = this;
 
     return (
-      <List>
+      <List className={s.searchInputsList}>
+
         <ListItem 
           primaryText="Location"
           initiallyOpen={true}
           primaryTogglesNestedList={true}
+          className={s.listItemContainer}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
               <GeographySearch 
@@ -108,25 +111,38 @@ class SearchActionInputs extends React.PureComponent {
             </div>
           )]}
         />
+
+        <Divider />
+
         <ActivitiesTogglesList 
           listTitle="Activities"
           collectionName="activities" 
           displayPropName="description"
           keyPropName="title"
           handleToggle={handleToggle}
+          className={s.listItemContainer}
+          containerClassName={s.listItem}
         />
         
+        <Divider />
+
         <IssueAreasTogglesList 
           listTitle="Issue Areas"
           collectionName="issueAreas" 
           displayPropName="title"
           keyPropName="title"
           handleToggle={handleToggle}
+          className={s.listItemContainer}
+          containerClassName={s.listItem}
         />
+
+        <Divider />
+
         <ListItem 
           primaryText="Date"
           initiallyOpen={false}
           primaryTogglesNestedList={true}
+          className={s.listItemContainer}
           nestedItems={[(
             <div key={0} className={s.listItem}>
               <ConnectedDateTimeSearch 
@@ -152,19 +168,29 @@ class SearchActionInputs extends React.PureComponent {
           )]}
         />
         */}
+
+        <Divider />
+
         <TypesTogglesList 
           listTitle="Campaign Types"
           collectionName="types" 
           displayPropName="title"
           keyPropName="title"
           handleToggle={handleToggle}
+          className={s.listItemContainer}
+          containerClassName={s.listItem}
         />
+
+        <Divider />
+
         <LevelsTogglesList 
           listTitle="Campaign Level"
           collectionName="levels" 
           displayPropName="title"
           keyPropName="title"
           handleToggle={handleToggle}
+          className={s.listItemContainer}
+          containerClassName={s.listItem}
         />
       </List>
     );

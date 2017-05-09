@@ -2,7 +2,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 
 import { 
   CampaignsQuery, 
@@ -79,12 +80,13 @@ class SearchCampaignInputs extends React.PureComponent {
     } = this;
 
     return (
-      <List>
+      <List className={s.searchInputsList}>
 
         <ListItem 
           primaryText="Location"
           initiallyOpen={true}
           primaryTogglesNestedList={true}
+          className={s.listItemContainer}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
               <ZipcodeSearch 
@@ -94,13 +96,19 @@ class SearchCampaignInputs extends React.PureComponent {
           )]}
         />
 
+        <Divider />
+
         <IssueAreasTogglesList 
           listTitle="Issue Areas"
           collectionName="issueAreas" 
           displayPropName="title"
           keyPropName="title"
           handleToggle={handleToggle}
+          className={s.listItemContainer}
+          containerClassName={s.listItem}
         />
+
+        <Divider />
 
         <TypesTogglesList 
           listTitle="Campaign Types"
@@ -108,7 +116,11 @@ class SearchCampaignInputs extends React.PureComponent {
           displayPropName="title"
           keyPropName="title"
           handleToggle={handleToggle}
+          className={s.listItemContainer}
+          containerClassName={s.listItem}
         />
+
+        <Divider />
 
         <LevelsTogglesList 
           listTitle="Campaign Level"
@@ -116,6 +128,8 @@ class SearchCampaignInputs extends React.PureComponent {
           displayPropName="title"
           keyPropName="title"
           handleToggle={handleToggle}
+          className={s.listItemContainer}
+          containerClassName={s.listItem}
         />
 
       </List>

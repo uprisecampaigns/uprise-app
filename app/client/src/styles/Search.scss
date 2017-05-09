@@ -125,8 +125,19 @@
   }
 }
 
+.searchInputsList {
+  padding: 0px 0px !important;
+}
+
+.listItemContainer, .listItemContainer div:first-of-type span:first-of-type {
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+}
+
 .listItem {
   padding: 1rem;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
 }
 
 .listItem.searchBar {
@@ -139,11 +150,10 @@
   }
 }
 
-.geographySearchContainer >form {
-  position: relative;
-  margin-top: -2rem;
-}
-
 .sortSelected {
   background-color: darken($white, 10%) !important;
+}
+
+.dateSearch {
+  font-size: 1.4rem;
 }
