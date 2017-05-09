@@ -91,14 +91,16 @@
 
       >div:first-of-type {
         >span:first-of-type {
-          font-size: 1.4rem !important;
+          font-size: 1.8rem !important;
           color: darken($azure, 20%) !important;
+          font-weight: 500;
         }
       }
     }
 
-    .campaignLink, .subheaderContainer {
+    .subheaderContainer {
       color: lighten($azure, 20%);
+      font-size: 1.2rem;
     }
 
     .locationContainer {
