@@ -25,10 +25,11 @@
 
     :global .searchBarInput {
       width: 80% !important;
-      height: 1rem !important;
+      height: 2rem !important;
       font-size: 1.2rem !important;
 
       div:first-child {
+        line-height: 2rem !important;
         bottom: inherit !important;
         font-style: italic;
       }
@@ -38,14 +39,13 @@
   .countSortFilterContainer {
     display: flex;
     align-items: baseline;
-    font-size: 1.2rem;
-    padding-left: 3rem;
-    padding-right: 3rem;
+    font-size: 1rem;
+    text-align: center;
 
     .countContainer {
       color: $brick-red;
       width: 30%;
-      font-size: 1.2rem;
+      font-size: 1rem;
 
       >span {
         padding: 0 0 0 1rem;
