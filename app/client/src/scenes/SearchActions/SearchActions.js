@@ -139,7 +139,7 @@ class SearchActions extends Component {
       <div className={s.outerContainer}>
 
         <Link to="/search">
-          <div className={s.navHeader}>
+          <div className={[s.navHeader, s.searchNavHeader].join(' ')}>
             <FontIcon 
               className={["material-icons", s.backArrow].join(' ')}
             >arrow_back</FontIcon>
