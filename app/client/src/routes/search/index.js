@@ -1,9 +1,14 @@
+import React from 'react';
+import Layout from 'components/Layout';
+import Search from 'scenes/Search';
 
 export default {
   path: '/search',
+  
   action() {
     return {
-      redirect: '/search/search-actions'
+      title: 'Search',
+      component: <Layout><Search/></Layout>,
     };
-  }
+  },
 };
