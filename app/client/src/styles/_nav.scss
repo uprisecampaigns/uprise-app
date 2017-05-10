@@ -41,8 +41,9 @@
   align-items: center;
   height: 5rem;
   color: $brick-red !important;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 500;
+  padding: 2rem 0px;
 }
 
 .pageSubHeader, .campaignHeader, .actionHeader, .settingsHeader {
@@ -52,9 +53,9 @@
   text-align: center;
   align-items: center;
   min-height: 3rem;
-  padding: 1rem 0px;
+  padding: 2rem 0px;
   color: darken($azure, 20%) !important;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 500;
 }
 

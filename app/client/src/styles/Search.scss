@@ -8,8 +8,8 @@
     display: block;
     text-align: center;
     width: 100%;
-    font-size: 2rem;
-    padding: 1rem 0;
+    font-size: 3rem;
+    padding: 2rem 0;
     font-weight: 500;
     color: darken($azure, 20%) !important;
   }
@@ -82,8 +82,7 @@
     .resultsHeader {
       font-size: 1rem;
       font-weight: 400 !important;
-      padding-left: 3rem !important;
-      padding-right: 3rem !important;
+      padding: 1.7rem 3rem 1.7rem 3rem !important;
 
       @media (max-width: $screen-xs-min) {
         padding-left: 1rem !important;
@@ -93,7 +92,7 @@
       >div:first-of-type {
         >span:first-of-type {
           font-size: 1.8rem !important;
-          color: darken($azure, 20%) !important;
+          color: darken($azure, 5%) !important;
           font-weight: 500;
         }
       }
@@ -103,6 +102,8 @@
       color: lighten($azure, 20%);
       font-size: 1.2rem;
       white-space: normal !important;
+      display: inline-block;
+      margin-top: 1rem;
     }
 
     .locationContainer {
