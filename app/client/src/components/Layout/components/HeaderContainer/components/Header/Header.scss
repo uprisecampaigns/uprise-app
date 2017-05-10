@@ -18,6 +18,12 @@
   }
 }
 
+.appBar {
+  background-color: rgb(255, 255, 255) !important;
+  align-items: center;
+  height: 108px;
+}
+
 .iconButton {
   padding: 0px !important;
   margin: 0 0.3rem !important;
@@ -60,6 +66,7 @@
 @media (max-width: $screen-sm-min) {
   .menuIconContainer {
     margin-right: 20px;
+    margin-top: -8px;
     display: inline-flex;
   }
 
