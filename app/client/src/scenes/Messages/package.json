@@ -1,6 +1,0 @@
-{
-  "name": "Messages",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./Messages.js"
-}

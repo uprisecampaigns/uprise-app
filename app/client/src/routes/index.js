@@ -18,18 +18,6 @@ export default {
     require('./contact').default,
     require('./privacySecurity').default,
 
-    // TODO: probably want to sub-organize children url
-    // /communications/
-    require('./communications').default,
-    require('./notifications').default,
-    require('./requests').default,
-    require('./messages').default,
-
-    // /calendar/
-    require('./calendar').default,
-    require('./viewCalendar').default,
-    require('./viewCalendarList').default,
-
     // /organize/
     require('./organize').default,
     require('./createCampaign').default,
