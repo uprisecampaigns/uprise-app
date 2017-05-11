@@ -74,16 +74,29 @@ export default (WrappedComponent) => {
       } 
     }
 
-    formSubmit = (event) => {
+    formSubmit = async (event) => {
       (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
 
-      this.hasErrors = false;
-      this.resetErrorText();
+      if (!this.saving) {
 
-      this.props.validators.forEach( (validator) => validator(this) );
+        try {
 
-      if (!this.hasErrors) {
-        this.props.submit(this.state.formData); 
+          this.saving = true;
+
+          this.hasErrors = false;
+          this.resetErrorText();
+
+          this.props.validators.forEach( (validator) => validator(this) );
+
+          if (!this.hasErrors) {
+            await this.props.submit(this.state.formData);
+          }
+
+          this.saving = false;
+        } catch (e) {
+          console.error(e);
+          console.log(e);
+        }
       }
     }
 
