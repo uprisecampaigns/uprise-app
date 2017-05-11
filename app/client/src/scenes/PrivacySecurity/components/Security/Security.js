@@ -15,8 +15,6 @@ import Link from 'components/Link';
 import ChangePasswordForm from 'components/ChangePasswordForm';
 
 import { attemptChangePassword } from 'actions/AuthActions';
-import { notify } from 'actions/NotificationsActions';
-
 
 import s from 'styles/Settings.scss';
 
@@ -37,7 +35,6 @@ class Security extends Component {
         newPassword1: '',
         newPassword2: '',
       },
-      saving: false
     }
 
     this.state = Object.assign({}, initialState);
@@ -65,7 +62,7 @@ class Security extends Component {
 
     const { state, formSubmit, defaultErrorText } = this;
     const { passwordBeingReset, changeError, ...props } = this.props;
-    const { formData, saving } = state;
+    const { formData } = state;
 
     const validators = [
       (component) => { passwordBeingReset || validateString(component, 'oldPassword', 'oldPasswordErrorText', 'Please enter your password') },
@@ -81,7 +78,6 @@ class Security extends Component {
         passwordBeingReset={passwordBeingReset}
         validators={validators}
         submit={formSubmit}
-        saving={saving}
         error={changeError}
       />
 

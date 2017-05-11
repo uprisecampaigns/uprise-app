@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux';
 import {List, ListItem} from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
@@ -17,6 +18,8 @@ import {
 import { 
   DeleteActionMutation
 } from 'schemas/mutations';
+
+import { notify } from 'actions/NotificationsActions';
 
 import s from 'styles/Organize.scss';
 
@@ -49,35 +52,46 @@ class ManageActionSettings extends Component {
 
     const { actionId, campaignId, campaign, action, ...props } = this.props;
 
-    try {
-      const results = await props.deleteActionMutation({ 
-        variables: {
-          data: {
-            id: action.id
-          }
-        },
-        refetchQueries: [{
-          query: ActionsQuery,
-          variables: {
-            search: { campaignIds: [campaignId] }
-          }
-        },
-        {
-          query: ActionQuery,
-          variables: {
-            search: { id: actionId }
-          }
-        }]
-      });
+    if (!this.deleting) {
 
-      if (results.data.deleteAction) {
-        history.push('/organize/' + campaign.slug + '/actions');
-      } else {
-        // TODO: Handle error!
-        console.error(results);
+      try {
+
+        this.deleting = true;
+
+        const results = await props.deleteActionMutation({ 
+          variables: {
+            data: {
+              id: action.id
+            }
+          },
+          refetchQueries: [{
+            query: ActionsQuery,
+            variables: {
+              search: { campaignIds: [campaignId] }
+            }
+          },
+          {
+            query: ActionQuery,
+            variables: {
+              search: { id: actionId }
+            }
+          }]
+        });
+
+        this.deleting = false;
+
+        if (results.data.deleteAction) {
+          this.props.dispatch(notify('Action deleted'));
+          history.push('/organize/' + campaign.slug + '/actions');
+        } else {
+          console.error(results);
+          this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+        }
+      } catch (e) {
+        console.error(e);
+        this.deleting = false;
+        this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
       }
-    } catch (e) {
-      console.error(e);
     }
   }
 
@@ -174,6 +188,7 @@ class ManageActionSettings extends Component {
 }
 
 export default compose(
+  connect(),
   graphql(CampaignQuery, {
     options: (ownProps) => ({ 
       variables: {

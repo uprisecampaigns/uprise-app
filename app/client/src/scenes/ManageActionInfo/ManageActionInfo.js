@@ -27,10 +27,6 @@ import {
   EditActionMutation
 } from 'schemas/mutations';
 
-import { 
-  notify
-} from 'actions/NotificationsActions';
-
 import s from 'styles/Organize.scss';
 
 
@@ -64,7 +60,6 @@ class ManageActionInfoContainer extends Component {
         startTime: undefined,
         endTime: undefined
       },
-      saving: false
     }
 
     this.state = Object.assign({}, initialState);
@@ -148,8 +143,6 @@ class ManageActionInfoContainer extends Component {
 
     formData.id = this.props.action.id;
 
-    this.setState({ saving: true });
-
     try {
 
       const results = await this.props.editActionMutation({ 
@@ -160,12 +153,11 @@ class ManageActionInfoContainer extends Component {
         refetchQueries: ['ActionQuery', 'ActionsQuery'],
       });
 
-      this.props.dispatch(notify('Changes Saved'));
-      this.setState({ saving: false });
+      return { success: true, message: 'Changes Saved' };
+
     } catch (e) {
-      this.props.dispatch(notify('There was an error saving'));
-      this.setState({ saving: false });
       console.error(e);
+      return { success: false, message: e.message };
     }
   }
 
@@ -175,7 +167,7 @@ class ManageActionInfoContainer extends Component {
 
       const { formSubmit, defaultErrorText } = this;
       const { action, campaign, ...props } = this.props;
-      const { formData, saving } = this.state;
+      const { formData } = this.state;
 
       const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
 
@@ -206,7 +198,6 @@ class ManageActionInfoContainer extends Component {
             initialErrors={defaultErrorText}
             validators={validators}
             submit={formSubmit}
-            saving={saving}
             campaignTitle={campaign.title}
             submitText="Save Changes"
           />

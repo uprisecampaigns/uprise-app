@@ -79,9 +79,9 @@ class CreateCampaignContainer extends Component {
 
   formSubmit = async (data) => {
 
-    const formData = Object.assign({}, data);
-
     try {
+      const formData = Object.assign({}, data);
+
       const addCampaign = (prev, { mutationResult }) => {
         const newCampaign = mutationResult.data.createCampaign;
         return Object.assign({}, prev, {
@@ -100,12 +100,15 @@ class CreateCampaignContainer extends Component {
         //   MyCampaignsQuery: addCampaign
         // }
       });
+
       this.setState({
         modalOpen: true,
         newCampaign: results.data.createCampaign
       });
+
+      return { success: true, message: 'Campaign Added' };
     } catch (e) {
-      console.error(e);
+      return { success: false, message: e.message };
     }
   }
 

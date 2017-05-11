@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import FontIcon from 'material-ui/FontIcon';
 import camelCase from 'camelcase';
 
@@ -24,10 +24,6 @@ import {
 import { 
   EditCampaignMutation
 } from 'schemas/mutations';
-
-import { 
-  notify
-} from 'actions/NotificationsActions';
 
 import s from 'styles/Organize.scss';
 
@@ -55,7 +51,6 @@ class ManageCampaignInfoContainer extends Component {
         state: '',
         zipcode: '',
       },
-      saving: false
     }
 
     this.state = Object.assign({}, initialState);
@@ -107,8 +102,6 @@ class ManageCampaignInfoContainer extends Component {
 
     formData.id = this.props.campaign.id;
 
-    this.setState({ saving: true });
-
     try {
 
       const results = await this.props.editCampaignMutation({ 
@@ -119,10 +112,10 @@ class ManageCampaignInfoContainer extends Component {
         refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
       });
 
-      this.props.dispatch(notify('Changes Saved'));
-      this.setState({ saving: false });
+      return { success: true, message: 'Changes Saved' };
     } catch (e) {
       console.error(e);
+      return { success: false, message: e.message };
     }
   }
 
@@ -131,7 +124,7 @@ class ManageCampaignInfoContainer extends Component {
     if (this.props.campaign) {
       const { state, formSubmit, defaultErrorText } = this;
       const { campaign, user, ...props } = this.props;
-      const { formData, saving } = state;
+      const { formData } = state;
 
       const validators = [
         (component) => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
@@ -160,7 +153,6 @@ class ManageCampaignInfoContainer extends Component {
             initialErrors={defaultErrorText}
             validators={validators}
             submit={formSubmit}
-            saving={saving}
             submitText="Save Changes"
             user={user}
           />

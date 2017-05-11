@@ -24,10 +24,6 @@ import {
   EditCampaignMutation
 } from 'schemas/mutations';
 
-import { 
-  notify
-} from 'actions/NotificationsActions';
-
 import s from 'styles/Organize.scss';
 
 
@@ -53,7 +49,6 @@ class ManageCampaignLocation extends Component {
       locationDistrictNumber: '',
       locationState: '',
     },
-    saving: false
   }
 
   defaultErrorText = { 
@@ -102,8 +97,6 @@ class ManageCampaignLocation extends Component {
 
     formData.zipcodeList = formData.zipcodeList.split(',').map(zip => zip.trim());
 
-    this.setState({ saving: true });
-
     try {
 
       const results = await this.props.editCampaignMutation({ 
@@ -114,10 +107,11 @@ class ManageCampaignLocation extends Component {
         refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
       });
 
-      this.props.dispatch(notify('Changes Saved'));
-      this.setState({ saving: false });
+      return { success: true, message: 'Changes Saved' };
+
     } catch (e) {
       console.error(e);
+      return { success: false, message: e.message };
     }
   }
 
@@ -126,7 +120,7 @@ class ManageCampaignLocation extends Component {
 
       const { formSubmit, cancel, defaultErrorText } = this;
       const { campaign, ...props } = this.props;
-      const { formData, saving } = this.state;
+      const { formData } = this.state;
 
       const validators = [
         (component) => { validateState(component, 'locationState') },
@@ -153,7 +147,6 @@ class ManageCampaignLocation extends Component {
             validators={validators}
             submit={formSubmit}
             submitText="Save Changes"
-            saving={saving}
           />
 
         </div>

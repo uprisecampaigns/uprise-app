@@ -40,27 +40,35 @@ class ManageCampaignComposeMessage extends Component {
       '\n' + this.props.campaign.title + 
       '\n\n' + body;
 
-    try {
-      const results = await sendMessage({
-        variables: {
-          data: {
-            replyToEmail: userObject.email,
-            recipientEmails: recipients.map(r => r.email),
-            subject,
-            body
-          }
-        },
-      });
+    if (!this.sending) {
 
-      this.props.dispatch(notify('Message Sent'));
+      try {
 
-      setTimeout( () => {
-        history.goBack();
-      }, 500);
+        this.sending = true;
 
-    } catch (e) {
-      console.error(e);
-      this.props.dispatch(notify('There was an error sending your message.'));
+        const results = await sendMessage({
+          variables: {
+            data: {
+              replyToEmail: userObject.email,
+              recipientEmails: recipients.map(r => r.email),
+              subject,
+              body
+            }
+          },
+        });
+
+        this.sending = false;
+        this.props.dispatch(notify('Message Sent'));
+
+        setTimeout( () => {
+          history.goBack();
+        }, 500);
+
+      } catch (e) {
+        console.error(e);
+        this.sending = false;
+        this.props.dispatch(notify('There was an error sending your message.'));
+      }
     }
   }
 

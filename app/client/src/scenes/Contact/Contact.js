@@ -19,10 +19,6 @@ import { MeQuery } from 'schemas/queries';
 
 import { ContactMutation } from 'schemas/mutations';
 
-import { 
-  notify
-} from 'actions/NotificationsActions';
-
 import s from 'styles/Settings.scss';
 
 
@@ -41,7 +37,6 @@ class Contact extends Component {
         subject: '',
         body: '',
       },
-      saving: false
     }
 
     this.state = Object.assign({}, initialState);
@@ -56,8 +51,6 @@ class Contact extends Component {
       
     const formData = Object.assign({}, data);
 
-    this.setState({ saving: true });
-
     try {
 
       const results = await this.props.contactMutation({ 
@@ -66,17 +59,15 @@ class Contact extends Component {
         },
       });
 
-      this.props.dispatch(notify('Message Sent!'));
-      this.setState({ saving: false });
-
       setTimeout( () => {
         history.goBack();
       }, 500);
 
+      return { success: true, message: 'Message Sent!' };
+
     } catch (e) {
       console.error(e);
-      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
-      this.setState({ saving: false });
+      return { success: false, message: e.message };
     }
   }
 
@@ -85,7 +76,7 @@ class Contact extends Component {
     if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
       const { user, ...props } = this.props;
-      const { formData, saving } = state;
+      const { formData } = state;
 
       const validators = [
         (component) => validateString(component, 'subject', 'subjectErrorText', 'Please enter a subject'),
@@ -127,7 +118,6 @@ class Contact extends Component {
               initialErrors={defaultErrorText}
               validators={validators}
               submit={formSubmit}
-              saving={saving}
               submitText="Send"
               user={user}
             />

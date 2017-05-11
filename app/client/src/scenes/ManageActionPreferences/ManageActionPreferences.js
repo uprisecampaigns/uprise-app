@@ -133,12 +133,13 @@ class ManageActionPreferencesContainer extends Component {
         refetchQueries: ['ActionQuery', 'ActionsQuery'],
       });
 
-      console.log('edited action');
       this.props.dispatch(notify('Changes Saved'));
       this.setState({ saving: false });
 
     } catch (e) {
       console.error(e);
+      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+      this.setState({ saving: false });
     }
   }
 

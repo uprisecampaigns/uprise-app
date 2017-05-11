@@ -112,8 +112,10 @@ class CreateAction extends Component {
         modalOpen: true,
         newAction: results.data.createAction
       });
+      return { success: true, message: 'Action Created' };
+
     } catch (e) {
-      this.props.dispatch(notify('There was an error creating the event'));
+      return { success: false, message: e.message };
       console.error(e);
     }
   }

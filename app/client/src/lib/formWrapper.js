@@ -1,7 +1,10 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import history from 'lib/history';
 
 import states from 'lib/states-list';
+
+import { notify } from 'actions/NotificationsActions';
 
 
 const statesList = Object.keys(states);
@@ -27,7 +30,7 @@ export default (WrappedComponent) => {
     }
 
     componentWillReceiveProps(nextProps) {
-      if (nextProps.initialState && !nextProps.saving) {
+      if (nextProps.initialState && !this.state.saving) {
 
         this.setState({
           formData: Object.assign({}, nextProps.initialState)
@@ -77,36 +80,46 @@ export default (WrappedComponent) => {
     formSubmit = async (event) => {
       (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
 
-      if (!this.saving) {
+      this.hasErrors = false;
+      this.resetErrorText();
+
+      this.props.validators.forEach( (validator) => validator(this) );
+
+      const notifyError = () => {
+        this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+      };
+
+      if (!this.hasErrors && !this.state.saving) {
 
         try {
 
-          this.saving = true;
+          this.setState({ saving: true });
 
-          this.hasErrors = false;
-          this.resetErrorText();
+          const result = await this.props.submit(this.state.formData);
 
-          this.props.validators.forEach( (validator) => validator(this) );
-
-          if (!this.hasErrors) {
-            await this.props.submit(this.state.formData);
+          if (result.success) {
+            this.props.dispatch(notify(result.message || 'Success'));
+          } else {
+            notifyError();
           }
+          this.setState({ saving: false });
 
-          this.saving = false;
         } catch (e) {
           console.error(e);
-          console.log(e);
+          notifyError();
+          this.setState({ saving: false });
         }
       }
     }
 
     render() {
       const { cancel, handleInputChange, formSubmit } = this;
-      const { formData, errors, refs, ...state } = this.state;
+      const { formData, saving, errors, refs, ...state } = this.state;
 
       return (
         <WrappedComponent 
           data={formData}
+          saving={saving}
           cancel={cancel}
           errors={errors}
           refs={refs}
@@ -117,6 +130,6 @@ export default (WrappedComponent) => {
       );
     }
   }
-  return FormWrapper;
+  return connect()(FormWrapper);
 }
 

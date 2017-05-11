@@ -1,4 +1,3 @@
-
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux'
@@ -125,12 +124,12 @@ class ManageCampaignPreferencesContainer extends Component {
         refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
       });
 
-      console.log('edited campaign');
       this.props.dispatch(notify('Changes Saved'));
       this.setState({ saving: false });
 
     } catch (e) {
       console.error(e);
+      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
     }
   }
 

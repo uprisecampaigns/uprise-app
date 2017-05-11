@@ -19,10 +19,6 @@ import {
   EditActionMutation,
 } from 'schemas/mutations';
 
-import { 
-  notify
-} from 'actions/NotificationsActions';
-
 import s from 'styles/Organize.scss';
 
 
@@ -45,7 +41,6 @@ class ManageActionProfile extends Component {
         title: '',
         description: '',
       },
-      saving: false
     }
 
     this.state = Object.assign({}, initialState);
@@ -92,8 +87,6 @@ class ManageActionProfile extends Component {
 
     formData.id = this.props.action.id;
 
-    this.setState({ saving: true });
-
     try {
 
       const results = await this.props.editActionMutation({ 
@@ -104,10 +97,10 @@ class ManageActionProfile extends Component {
         refetchQueries: ['ActionQuery', 'ActionsQuery'],
       });
 
-      this.props.dispatch(notify('Changes Saved'));
-      this.setState({ saving: false });
+      return { success: true, message: 'Changes Saved' };
     } catch (e) {
       console.error(e);
+      return { success: false, message: e.message };
     }
   }
 
@@ -116,7 +109,7 @@ class ManageActionProfile extends Component {
     if (this.props.campaign && this.props.action) {
 
       const { campaign, action, ...props } = this.props;
-      const { formData, errors, saving, ...state } = this.state;
+      const { formData, errors, ...state } = this.state;
       const { formSubmit, defaultErrorText } = this;
 
       const validators = [
@@ -145,7 +138,6 @@ class ManageActionProfile extends Component {
             validators={validators}
             submit={formSubmit}
             submitText="Save Changes"
-            saving={saving}
           />
           
         </div>

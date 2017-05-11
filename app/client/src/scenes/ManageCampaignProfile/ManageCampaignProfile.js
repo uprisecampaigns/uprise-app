@@ -20,10 +20,6 @@ import {
   EditCampaignMutation,
 } from 'schemas/mutations';
 
-import { 
-  notify
-} from 'actions/NotificationsActions';
-
 import s from 'styles/Organize.scss';
 
 
@@ -46,7 +42,6 @@ class ManageCampaignProfileContainer extends Component {
         description: '',
         profileImageUrl: '',
       },
-      saving: false
     }
 
     this.state = Object.assign({}, initialState);
@@ -94,8 +89,6 @@ class ManageCampaignProfileContainer extends Component {
 
     formData.id = this.props.campaign.id;
 
-    this.setState({ saving: true });
-
     try {
 
       const results = await this.props.editCampaignMutation({ 
@@ -106,10 +99,10 @@ class ManageCampaignProfileContainer extends Component {
         refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
       });
 
-      this.props.dispatch(notify('Changes Saved'));
-      this.setState({ saving: false });
+      return { success: true, message: 'Changes Saved' };
     } catch (e) {
       console.error(e);
+      return { success: false, message: e.message };
     }
   }
 
@@ -118,7 +111,7 @@ class ManageCampaignProfileContainer extends Component {
     if (this.props.campaign) {
 
       const { campaign, ...props } = this.props;
-      const { formData, errors, saving, ...state } = this.state;
+      const { formData, errors, ...state } = this.state;
       const { formSubmit, defaultErrorText } = this;
 
       const validators = [
@@ -147,7 +140,6 @@ class ManageCampaignProfileContainer extends Component {
             submit={formSubmit}
             campaignId={campaign.id}
             submitText="Save Changes"
-            saving={saving}
           />
           
         </div>
