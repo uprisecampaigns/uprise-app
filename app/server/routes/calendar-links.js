@@ -11,11 +11,7 @@ const getAction = async (id) => {
   const startTime = moment(action.start_time);
   const endTime = moment(action.end_time);
 
-  const dates = {
-    startTime, endTime,
-    startString: startTime.tz('America/New_York').format("dddd, MMMM Do YYYY, h:mma z"),
-    endString: endTime.tz('America/New_York').format("dddd, MMMM Do YYYY, h:mma z"),
-  }
+  const dates = { startTime, endTime }
 
   const location = `${ action.location_name || '' } 
     ${ action.street_address1 || '' } 
