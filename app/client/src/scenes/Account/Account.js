@@ -23,10 +23,6 @@ import {
   EditAccountMutation
 } from 'schemas/mutations';
 
-import { 
-  notify
-} from 'actions/NotificationsActions';
-
 
 import s from 'styles/Settings.scss';
 
@@ -48,7 +44,6 @@ class Account extends Component {
         phoneNumber: '',
         zipcode: '',
       },
-      saving: false
     }
 
     this.state = Object.assign({}, initialState);
@@ -97,8 +92,6 @@ class Account extends Component {
 
     formData.id = this.props.user.id;
 
-    this.setState({ saving: true });
-
     try {
 
       const results = await this.props.editAccountMutation({ 
@@ -109,12 +102,10 @@ class Account extends Component {
         refetchQueries: ['MeQuery'],
       });
 
-      this.props.dispatch(notify('Changes Saved'));
-      this.setState({ saving: false });
+      return { success: true, message: 'Changes Saved' };
     } catch (e) {
       console.error(e);
-      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
-      this.setState({ saving: false });
+      return { success: false, message: e.message };
     }
   }
 
@@ -123,7 +114,7 @@ class Account extends Component {
     if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
       const { user, ...props } = this.props;
-      const { formData, saving } = state;
+      const { formData } = state;
 
       const validators = [
         (component) => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
@@ -153,7 +144,6 @@ class Account extends Component {
             initialErrors={defaultErrorText}
             validators={validators}
             submit={formSubmit}
-            saving={saving}
             submitText="Save Changes"
             user={user}
           />
