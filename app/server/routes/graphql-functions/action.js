@@ -1,5 +1,6 @@
 const decamelize = require('decamelize');
-const moment = require('moment');
+const moment = require('moment-timezone');
+const zipcodeToTimezone = require('zipcode-to-timezone');
 
 const Action = require('models/Action');
 const Campaign = require('models/Campaign');
@@ -155,9 +156,11 @@ module.exports = {
     const startTime = moment(action.start_time);
     const endTime = moment(action.end_time);
 
+    const timezone = (user.zipcode && zipcodeToTimezone.lookup(user.zipcode)) ? zipcodeToTimezone.lookup(user.zipcode) : 'America/New_York';
+
     const dates = {
-      start: startTime.format("dddd, MMMM Do YYYY, h:mma z"),
-      end: endTime.format("dddd, MMMM Do YYYY, h:mma z"),
+      start: startTime.tz(timezone).format("dddd, MMMM Do YYYY, h:mma z"),
+      end: endTime.tz(timezone).format("dddd, MMMM Do YYYY, h:mma z"),
     }
 
     try {
