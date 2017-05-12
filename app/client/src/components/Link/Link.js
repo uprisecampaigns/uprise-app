@@ -46,7 +46,9 @@ class Link extends React.Component {
       event.preventDefault();
     }
 
-    if (this.props.external) {
+    if (this.props.external && !this.props.mailTo) {
+      window.open(url);
+    } else if (this.props.mailTo) {
       window.location = url;
     } else {
       history.push(url);

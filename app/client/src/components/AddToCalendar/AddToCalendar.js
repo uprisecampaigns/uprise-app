@@ -47,16 +47,16 @@ class AddToCalendar extends React.Component {
     const googleUrl = urls.api + '/calendar-links/google/' + event.id;
 
     return (
-      <div 
+      <div
         {...props}
       >
-        <div 
+        <div
           className={s.buttonContainer}
           onTouchTap={this.handleTouchTap}
         >
           {children}
         </div>
-        
+
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
@@ -67,18 +67,20 @@ class AddToCalendar extends React.Component {
           <Menu
             className={s.menu}
           >
-            <a 
-              href={icalUrl}
-              target="_blank"
+            <Link
+              to={icalUrl}
+              useAhref={true}
+              external={true}
             >
               <MenuItem primaryText="iCal"/>
-            </a>      
-            <a 
-              href={googleUrl}
-              target="_blank"
+            </Link>
+            <Link
+              to={googleUrl}
+              useAhref={true}
+              external={true}
             >
               <MenuItem primaryText="Google Calendar" />
-            </a>
+            </Link>
           </Menu>
         </Popover>
       </div>
