@@ -11,6 +11,19 @@ const sendEmail = require('lib/sendEmail.js');
 import { urls } from 'config/config'
 
 
+const getFormattedDates = ({ user, action }) => {
+  const startTime = moment(action.start_time);
+  const endTime = moment(action.end_time);
+
+  const timezone = (user.zipcode && zipcodeToTimezone.lookup(user.zipcode)) ? zipcodeToTimezone.lookup(user.zipcode) : 'America/New_York';
+
+  return {
+    timezone,
+    start: startTime.tz(timezone).format("dddd, MMMM Do YYYY, h:mma z"),
+    end: endTime.tz(timezone).format("dddd, MMMM Do YYYY, h:mma z"),
+  }
+};
+
 module.exports = {
 
   action: async (data, context) => {
@@ -153,22 +166,14 @@ module.exports = {
       throw new Error('Cannot find matching campaign: ' + e.message);
     }
 
-    const startTime = moment(action.start_time);
-    const endTime = moment(action.end_time);
-
-    const timezone = (user.zipcode && zipcodeToTimezone.lookup(user.zipcode)) ? zipcodeToTimezone.lookup(user.zipcode) : 'America/New_York';
-
-    const dates = {
-      start: startTime.tz(timezone).format("dddd, MMMM Do YYYY, h:mma z"),
-      end: endTime.tz(timezone).format("dddd, MMMM Do YYYY, h:mma z"),
-    }
+    const dates = getFormattedDates({ user, action });
 
     try {
       await sendEmail({
         to: actionCoordinator.email,
         subject: user.first_name + ' ' + user.last_name + ' Signed up to Volunteer', 
         templateName: 'action-signup-coordinator',
-        context: { action, user, campaign: action.campaign }
+        context: { action, user, dates, campaign: action.campaign }
       });
     } catch (e) {
       throw new Error('Error sending email to coordinator: ' + e.message);
