@@ -78,7 +78,7 @@ module.exports = async (app) => {
       res.setHeader('Content-disposition', 'attachment;filename=' + icalFilename);
       res.setHeader('Content-type', 'data:text/Calendar');
 
-      res.end(ical.toString());
+      res.end(cal.toString());
 
     } catch (e) {
       next(e);
