@@ -134,9 +134,12 @@ class Action extends Component {
               <div className={s.campaignHeader}>{action.campaign.title}</div>
             </Link>
 
-            { startTime.isValid() && 
-              <div className={s.dateTimePlaceContainer}>{startTime.format('ddd, MMM Do, YYYY')}</div>
-            }
+            { (startTime.isValid() && endTime.isValid()) && (
+              <div>
+                <div className={s.dateTimePlaceContainer}>{startTime.format('ddd, MMM Do, YYYY')}</div>
+                <div className={s.dateTimePlaceContainer}>{startTime.format('h:mm a')} - {endTime.format('h:mm a')}</div>
+              </div>
+            )}
 
             { (action.city && action.state) && 
               <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
