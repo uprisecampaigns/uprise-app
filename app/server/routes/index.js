@@ -9,6 +9,8 @@ module.exports = (app, passport) => {
 
   require('./graphql.js')(app);
 
+  require('./calendar-links.js')(app);
+
   // set other routes
   app.use('/', router);
 };

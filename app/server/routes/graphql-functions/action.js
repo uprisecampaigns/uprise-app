@@ -6,6 +6,9 @@ const User = require('models/User');
 
 const sendEmail = require('lib/sendEmail.js');
 
+import { urls } from 'config/config'
+
+
 module.exports = {
 
   action: async (data, context) => {
@@ -148,6 +151,14 @@ module.exports = {
       throw new Error('Cannot find matching campaign: ' + e.message);
     }
 
+    const startTime = moment(action.start_time);
+    const endTime = moment(action.end_time);
+
+    const dates = {
+      start: startTime.tz('America/New_York').format("dddd, MMMM Do YYYY, h:mma z"),
+      end: endTime.tz('America/New_York').format("dddd, MMMM Do YYYY, h:mma z"),
+    }
+
     try {
       await sendEmail({
         to: actionCoordinator.email,
@@ -159,12 +170,15 @@ module.exports = {
       throw new Error('Error sending email to coordinator: ' + e.message);
     }
 
+    const icsCalendarUrl  = urls.api + '/calendar-links/ics/' + action.id;
+    const googleCalendarUrl = urls.api + '/calendar-links/google/' + action.id;
+
     try {
       await sendEmail({
         to: user.email,
         subject: 'You Signed up to Volunteer',
         templateName: 'action-signup-volunteer',
-        context: { action, user, actionCoordinator, campaign: action.campaign }
+        context: { action, dates, user, actionCoordinator, campaign: action.campaign, googleCalendarUrl, icsCalendarUrl }
       });
     } catch (e) {
       throw new Error('Error sending email to volunteer: ' + e.message);
