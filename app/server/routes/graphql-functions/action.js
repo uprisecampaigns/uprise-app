@@ -156,8 +156,8 @@ module.exports = {
     const endTime = moment(action.end_time);
 
     const dates = {
-      start: startTime.tz('America/New_York').format("dddd, MMMM Do YYYY, h:mma z"),
-      end: endTime.tz('America/New_York').format("dddd, MMMM Do YYYY, h:mma z"),
+      start: startTime.format("dddd, MMMM Do YYYY, h:mma z"),
+      end: endTime.format("dddd, MMMM Do YYYY, h:mma z"),
     }
 
     try {
