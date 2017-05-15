@@ -40,8 +40,28 @@ if (window.history && 'scrollRestoration' in window.history) {
 const context = {
 };
 
-let onRenderComplete = function initialRenderComplete() {
-  console.log('render complete');
+let onRenderComplete = function initialRenderComplete(route, location) {
+
+  let scrollX = 0;
+  let scrollY = 0;
+
+  const pos = scrollPositionsHistory[location.key];
+  if (pos) {
+    scrollX = pos.scrollX;
+    scrollY = pos.scrollY;
+  } else {
+    const targetHash = location.hash.substr(1);
+    if (targetHash) {
+      const target = document.getElementById(targetHash);
+      if (target) {
+        scrollY = window.pageYOffset + target.getBoundingClientRect().top;
+      }
+    }
+  }
+
+  // Restore the scroll position if it was saved into the state
+  // or scroll to top of the page
+  window.scrollTo(scrollX, scrollY);
 }
 
 // Re-render the app when window.location changes
@@ -130,4 +150,12 @@ async function onLocationChange(location) {
 history.listen(onLocationChange);
 onLocationChange(currentLocation);
 
-
+// Handle errors that might happen after rendering
+// Display the error in full-screen for development mode
+if (__DEV__) {
+  window.addEventListener('error', (event) => {
+    appInstance = null;
+    document.title = `Runtime Error: ${event.error.message}`;
+    ReactDOM.render(<RedBox error={event.error} />, container);
+  });
+}
