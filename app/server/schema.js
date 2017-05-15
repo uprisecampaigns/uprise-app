@@ -60,6 +60,7 @@ module.exports = buildSchema(`
     issue_areas: [IssueAreaResult]
     levels: [LevelResult]
     types: [TypeResult]
+    actions: [ActionResult]
   }
 
   type ActionResult {

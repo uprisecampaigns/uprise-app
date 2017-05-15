@@ -88,6 +88,15 @@ export const CampaignQuery = gql`
         id
         title
       }
+      actions {
+        id
+        title
+        slug
+        start_time
+        end_time
+        city
+        state
+      }
     }
   }
 `;

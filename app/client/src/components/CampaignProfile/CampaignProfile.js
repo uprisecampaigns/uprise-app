@@ -34,6 +34,24 @@ class CampaignProfile extends Component {
       <div className={s.detailLine}>{campaign.issue_areas.map(issue => issue.title).join(', ')}</div>
     ) : '';
 
+    const actions = (typeof campaign.actions === 'object' && campaign.actions.length > 0) ? campaign.actions.map(action => {
+
+      if (action.start_time && action.end_time) {
+
+        const startTime = moment(action.start_time);
+        const endTime = moment(action.end_time);
+
+        return (
+          <Link to={'/action/' + action.slug} key={action.id}>
+            <div className={[s.detailLine, s.actionListing].join(' ')}>
+              {action.title}, {startTime.format('MMM Do, YYYY')}, {startTime.format('h:mm a')} - {endTime.format('h:mm a')}{action.city && ', ' + action.city}{action.state && ', ' + action.state}
+            </div>
+          </Link>
+        );
+      } else return null;
+    }) : '';
+
+
 
     if (campaign) {
       return (
@@ -101,6 +119,15 @@ class CampaignProfile extends Component {
                 <Link to={'mailto:' + campaign.owner.email} external={true} mailTo={true} useAhref={true}>
                   {campaign.owner.first_name} {campaign.owner.last_name}
                 </Link>
+              </div>
+            )}
+
+            {actions && (
+              <div className={s.actionsContainer}>
+                <div className={s.header}>
+                  Upcoming Actions:
+                </div>
+                <div>{actions}</div>
               </div>
             )}
 

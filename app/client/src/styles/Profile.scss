@@ -63,7 +63,7 @@
     }
 
     .contactContainer {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       color: $fire-red;
 
       a { 
@@ -74,13 +74,18 @@
 
     .header {
       color: lighten($azure, 10%);
-      font-size: 1.2rem;
-      margin: 1rem 0 0rem 0;
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin: 2rem 0 0rem 0;
     }
 
     .detailLine {
-      color: lighten($black, 10%);
-      margin-left: 1rem;
+      color: darken($azure, 20%);
+      font-size: 1.2rem;
+    }
+
+    .detailLine.actionListing {
+      margin: 1rem 0 0 0;
     }
 
     .descriptionContainer {
