@@ -96,6 +96,7 @@ export const CampaignQuery = gql`
         end_time
         city
         state
+        zipcode
       }
     }
   }

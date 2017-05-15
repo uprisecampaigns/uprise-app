@@ -7,6 +7,7 @@ import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
 import history from 'lib/history';
+import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
 
@@ -46,7 +47,7 @@ class ManageCampaignActionsContainer extends Component {
 
             {action.start_time && (
               <div className={s.actionListDetailLine}>
-                {moment(action.start_time).format("ddd, MMM Do YYYY, h:mm:ss a")}
+                {timeWithZone(action.start_time, action.zipcode, 'ddd, MMM Do YYYY, h:mma z')}
               </div>
             )}
 

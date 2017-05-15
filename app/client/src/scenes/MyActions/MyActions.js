@@ -6,6 +6,8 @@ import Dialog from 'material-ui/Dialog';
 import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
+import timeWithZone from 'lib/timeWithZone';
+
 import Link from 'components/Link';
 
 import { MyActionsQuery } from 'schemas/queries';
@@ -39,7 +41,7 @@ class MyActions extends Component {
 
             {action.start_time && (
               <div className={s.actionListDetailLine}>
-                {moment(action.start_time).format("ddd, MMM Do YYYY, h:mm:ss a")}
+                {timeWithZone(action.start_time, action.zipcode, 'ddd, MMM Do YYYY, h:mma z')}
               </div>
             )}
 

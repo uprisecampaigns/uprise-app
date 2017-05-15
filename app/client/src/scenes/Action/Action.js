@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+
+import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
 import AddToCalendar from 'components/AddToCalendar';
@@ -96,9 +98,6 @@ class Action extends Component {
       const { modalOpen, ...state } = this.state;
       const { signup, confirmSignup, cancelSignup } = this;
   
-      const startTime = moment(action.start_time);
-      const endTime = moment(action.end_time);
-
       const issueAreas = (Array.isArray(action.issue_areas) && action.issue_areas.length) ?
         action.issue_areas.map( (issue, index) => {
           return <div key={index} className={s.detailLine}>{issue.title}</div>;
@@ -112,6 +111,12 @@ class Action extends Component {
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.detailLine}>{action.tags.join(', ')}</div>
       ) : '';
+
+      const startTime = moment(action.start_time);
+      const endTime = moment(action.end_time);
+
+      const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
+      const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
       const modalActions = [
         <RaisedButton
@@ -137,7 +142,7 @@ class Action extends Component {
             { (startTime.isValid() && endTime.isValid()) && (
               <div>
                 <div className={s.dateTimePlaceContainer}>{startTime.format('ddd, MMM Do, YYYY')}</div>
-                <div className={s.dateTimePlaceContainer}>{startTime.format('h:mm a')} - {endTime.format('h:mm a')}</div>
+                <div className={s.dateTimePlaceContainer}>{startTimeString} - {endTimeString}</div>
               </div>
             )}
 

@@ -6,6 +6,8 @@ import Avatar from 'material-ui/Avatar';
 import CircularProgress from 'material-ui/CircularProgress';
 const isEqual = require('lodash.isequal');
 
+import timeWithZone from 'lib/timeWithZone';
+
 import Link from 'components/Link';
 
 import s from 'styles/Search.scss';
@@ -65,6 +67,9 @@ class SearchActionResults extends React.PureComponent {
       const startTime = moment(action.start_time);
       const endTime = moment(action.end_time);
 
+      const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
+      const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
+
       return (
         <Link key={index} to={'/action/' + action.slug}>
           <Card>
@@ -75,7 +80,7 @@ class SearchActionResults extends React.PureComponent {
             >
               <div><Link to={'/campaign/' + action.campaign.slug} className={s.subheaderContainer}>{action.campaign.title}</Link></div>
               { startTime && <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div> }
-              { startTime && <div>Time: {startTime.format('h:mm a') + ' - ' + endTime.format('h:mm a')}</div> }
+              { startTime && <div>Time: {startTimeString + ' - ' + endTimeString}</div> }
               { (action.city && action.state) && <div>Place: {action.city}, {action.state}</div> }
             </CardHeader>
           </Card>

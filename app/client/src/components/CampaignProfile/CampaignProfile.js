@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import moment from 'moment';
+import moment from 'moment-timezone';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+
+import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
 
@@ -41,10 +43,13 @@ class CampaignProfile extends Component {
         const startTime = moment(action.start_time);
         const endTime = moment(action.end_time);
 
+        const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
+        const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
+
         return (
           <Link to={'/action/' + action.slug} key={action.id}>
             <div className={[s.detailLine, s.actionListing].join(' ')}>
-              {action.title}, {startTime.format('MMM Do, YYYY')}, {startTime.format('h:mm a')} - {endTime.format('h:mm a')}{action.city && ', ' + action.city}{action.state && ', ' + action.state}
+              {action.title}, {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}{action.city && ', ' + action.city}{action.state && ', ' + action.state}
             </div>
           </Link>
         );
