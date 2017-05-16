@@ -398,37 +398,35 @@ class Action {
   static async details(action) {
     const details = {};
 
-    details.campaign = await Campaign.findOne('id', action.campaign_id); 
-
-    details.owner = await User.findOne('id', action.owner_id); 
-
     const activitiesQuery = db('activities')
       .innerJoin('actions_activities', 'actions_activities.activity_id', 'activities.id')
       .where('actions_activities.action_id', action.id)
       .select('activities.id as id', 'activities.title as title', 'activities.description as description');
-
-    details.activities = await activitiesQuery;
 
     const issuesQuery = db('issue_areas')
       .innerJoin('actions_issue_areas', 'actions_issue_areas.issue_area_id', 'issue_areas.id')
       .where('actions_issue_areas.action_id', action.id)
       .select('issue_areas.id as id', 'issue_areas.title as title');
 
-    details.issue_areas = await issuesQuery;
-
     const levelsQuery = db('levels')
       .innerJoin('actions_levels', 'actions_levels.level_id', 'levels.id')
       .where('actions_levels.action_id', action.id)
       .select('levels.id as id', 'levels.title as title');
-
-    details.levels = await levelsQuery;
 
     const typesQuery = db('types')
       .innerJoin('actions_types', 'actions_types.type_id', 'types.id')
       .where('actions_types.action_id', action.id)
       .select('types.id as id', 'types.title as title');
 
-    details.types = await typesQuery;
+    [ details.campaign, details.owner, details.activities,
+      details.issue_areas, details.levels, details.types ] = await Promise.all([
+      Campaign.findOne('id', action.campaign_id),
+      User.findOne('id', action.owner_id),
+      activitiesQuery,
+      issuesQuery,
+      levelsQuery,
+      typesQuery,
+    ]);
 
     details.public_url = url.resolve(config.urls.client, 'action/' + action.slug);
     details.dashboard_url = url.resolve(config.urls.client, 'organize/' + details.campaign.slug + '/action/' + action.slug);

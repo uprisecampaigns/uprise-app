@@ -331,31 +331,20 @@ class Campaign {
   static async details(campaign) {
     const details = {};
 
-    details.owner = User.findOne('id', campaign.owner_id); 
-
     const issuesQuery = db('issue_areas')
       .innerJoin('campaigns_issue_areas', 'campaigns_issue_areas.issue_area_id', 'issue_areas.id')
       .where('campaigns_issue_areas.campaign_id', campaign.id)
       .select('issue_areas.id as id', 'issue_areas.title as title');
-
-    details.issue_areas = await issuesQuery;
 
     const levelsQuery = db('levels')
       .innerJoin('campaigns_levels', 'campaigns_levels.level_id', 'levels.id')
       .where('campaigns_levels.campaign_id', campaign.id)
       .select('levels.id as id', 'levels.title as title');
 
-    details.levels = await levelsQuery;
-
     const typesQuery = db('types')
       .innerJoin('campaigns_types', 'campaigns_types.type_id', 'types.id')
       .where('campaigns_types.campaign_id', campaign.id)
       .select('types.id as id', 'types.title as title');
-
-    details.types = await typesQuery;
-
-    details.public_url = url.resolve(config.urls.client, 'campaign/' + campaign.slug);
-    details.dashboard_url = url.resolve(config.urls.client, 'organize/' + campaign.slug);
 
     const actionsQuery = db('actions')
       .select(['id', 'title', 'slug', 'city', 'state', 'zipcode',
@@ -363,7 +352,17 @@ class Campaign {
                db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time')])
       .where('campaign_id', campaign.id);
 
-    details.actions = await actionsQuery;
+    [ details.owner, details.issue_areas, details.levels,
+      details.types, details.actions ] = await Promise.all([
+      User.findOne('id', campaign.owner_id),
+      issuesQuery,
+      levelsQuery,
+      typesQuery,
+      actionsQuery
+    ]);
+
+    details.public_url = url.resolve(config.urls.client, 'campaign/' + campaign.slug);
+    details.dashboard_url = url.resolve(config.urls.client, 'organize/' + campaign.slug);
 
     return details;
   }
