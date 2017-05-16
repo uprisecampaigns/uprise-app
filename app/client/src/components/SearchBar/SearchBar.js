@@ -19,6 +19,7 @@ class SearchBar extends React.PureComponent {
     collectionToSearch: PropTypes.array,
     addItem: PropTypes.func.isRequired,
     inputLabel: PropTypes.string.isRequired,
+    inputRef: PropTypes.func.isRequired,
     iconName: PropTypes.string
   }
 
@@ -45,7 +46,7 @@ class SearchBar extends React.PureComponent {
 
   render() {
 
-    const { collectionToSearch, inputLabel, iconName, ...props } = this.props;
+    const { collectionToSearch, inputLabel, iconName, inputRef, ...props } = this.props;
 
     const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
       <AutoComplete
@@ -58,6 +59,7 @@ class SearchBar extends React.PureComponent {
         dataSource={collectionToSearch}
         openOnFocus={true}
         filter={(searchText, item) => searchText !== '' && item.toLowerCase().includes(searchText.toLowerCase())}
+        ref={inputRef}
       />
     ) : (
       <TextField
@@ -66,6 +68,7 @@ class SearchBar extends React.PureComponent {
         className="searchBarInput"
         value={this.state.value}
         onChange={ (event) => { this.handleInputChange(event.target.value) } }
+        ref={inputRef}
       />
     );
 

@@ -86,6 +86,7 @@ class SearchActions extends Component {
   };
 
   addSelectedItem = (collectionName, value) => {
+    this.searchBarInputElement.blur();
     this.props.dispatch(addSearchItem('action', collectionName, value));
   }
 
@@ -96,6 +97,7 @@ class SearchActions extends Component {
   }
 
   handleOpenSort = (event) => {
+    this.searchBarInputElement.blur();
     event.preventDefault();
 
     this.setState(Object.assign({},
@@ -115,6 +117,7 @@ class SearchActions extends Component {
   }
 
   handleOpenFilter = (event) => {
+    this.searchBarInputElement.blur();
     event.preventDefault();
 
     this.setState(Object.assign({},
@@ -156,6 +159,7 @@ class SearchActions extends Component {
             collectionName="keywords"
             inputLabel="keyword search"
             addItem={this.addSelectedItem}
+            inputRef={el => this.searchBarInputElement = el}
           />
         </div>
 
