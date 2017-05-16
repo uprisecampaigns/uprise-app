@@ -7,7 +7,6 @@ import Divider from 'material-ui/Divider';
 
 import { 
   ActionsQuery, 
-  CampaignTitlesQuery, 
   ActivitiesQuery,
   TypesQuery,
   LevelsQuery,
@@ -55,13 +54,6 @@ const IssueAreasTogglesList = compose(
 )(TogglesList);
 
 const ConnectedDateTimeSearch = connect((state) => ({ selectedTimes: state.actionsSearch.times }))(DateTimeSearch);
-
-const CampaignNameSearch = graphql(CampaignTitlesQuery, {
-  props: ({ data }) => ({
-    collectionToSearch: !data.loading && data.campaigns ? 
-      data.campaigns.map( (campaign) => campaign.title) : []
-  })
-})(SearchBar);
 
 class SearchActionInputs extends React.PureComponent {
   constructor(props) {
@@ -152,22 +144,6 @@ class SearchActionInputs extends React.PureComponent {
             </div>
           )]}
         />
-        {/* Commenting out for demo
-        <ListItem 
-          primaryText="Campaign Name"
-          initiallyOpen={false}
-          primaryTogglesNestedList={true}
-          nestedItems={[(
-            <div key={0} className={[s.listItem, s.searchBar].join(' ')}>
-              <CampaignNameSearch
-                collectionName="campaignNames"
-                inputLabel="campaign name"
-                addItem={addSelectedItem}
-              />
-            </div>
-          )]}
-        />
-        */}
 
         <Divider />
 
