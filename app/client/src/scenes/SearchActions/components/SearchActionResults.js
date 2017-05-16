@@ -21,12 +21,16 @@ class SearchActionResults extends React.PureComponent {
 
   static propTypes = {
     actions: PropTypes.array,
+    items: PropTypes.array,
     sortBy: PropTypes.object.isRequired,
     graphqlLoading: PropTypes.bool.isRequired
   }
 
   shouldComponentUpdate(nextProps) {
-    return (!nextProps.graphqlLoading && typeof nextProps.actions === 'object');
+    return (!nextProps.graphqlLoading &&
+            this.props.graphqlLoading &&
+            typeof nextProps.actions === 'object' ||
+            !isEqual(this.props.sortBy, nextProps.sortBy));
   }
 
   render() {
@@ -111,6 +115,5 @@ class SearchActionResults extends React.PureComponent {
     );
   }
 }
-
 
 export default SearchActionResults;

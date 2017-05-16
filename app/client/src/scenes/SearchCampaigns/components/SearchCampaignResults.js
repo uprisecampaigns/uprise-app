@@ -19,12 +19,16 @@ class SearchCampaignResults extends Component {
 
   static propTypes = {
     campaigns: PropTypes.array,
+    items: PropTypes.array,
     sortBy: PropTypes.object.isRequired,
     graphqlLoading: PropTypes.bool.isRequired
   }
 
   shouldComponentUpdate(nextProps) {
-    return (!nextProps.graphqlLoading && typeof nextProps.campaigns === 'object');
+    return (!nextProps.graphqlLoading &&
+            this.props.graphqlLoading &&
+            typeof nextProps.campaigns === 'object' ||
+            !isEqual(this.props.sortBy, nextProps.sortBy));
   }
 
   render() {
