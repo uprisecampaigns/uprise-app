@@ -14,12 +14,11 @@ export default {
 
   async action(context) {
     try {
+      const { slug } = context.params;
       const result = await context.apolloClient.query({
         query: ActionQuery,
         variables: {
-          search: {
-            slug: context.params.slug
-          }
+          search: { slug }
         }
       });
 
@@ -28,7 +27,7 @@ export default {
           title: result.data.action.title,
           component: (
             <Layout>
-              <ActionWithAuthentication actionId={result.data.action.id}/>
+              <ActionWithAuthentication actionSlug={slug} actionId={result.data.action.id}/>
             </Layout>
           ),
         };

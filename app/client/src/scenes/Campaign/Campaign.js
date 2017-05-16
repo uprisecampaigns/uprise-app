@@ -35,7 +35,8 @@ class Campaign extends Component {
 
   static propTypes = {
     campaign: PropTypes.object,
-    campaignId: PropTypes.string.isRequired
+    campaignId: PropTypes.string.isRequired,
+    campaignSlug: PropTypes.string.isRequired
   };
 
   subscribe = () => {
@@ -142,7 +143,7 @@ const withCampaignQuery = graphql(CampaignQuery, {
   options: (ownProps) => ({ 
     variables: {
       search: {
-        id: ownProps.campaignId
+        slug: ownProps.campaignSlug
       }
     },
     fetchPolicy: 'cache-and-network',

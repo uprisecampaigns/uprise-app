@@ -41,6 +41,7 @@ class Action extends Component {
 
   static propTypes = {
     actionId: PropTypes.string.isRequired,
+    actionSlug: PropTypes.string.isRequired,
     action: PropTypes.object
   };
 
@@ -290,7 +291,7 @@ const withActionQuery = graphql(ActionQuery, {
   options: (ownProps) => ({
     variables: {
       search: {
-        id: ownProps.actionId
+        slug: ownProps.actionSlug
       }
     },
     fetchPolicy: 'cache-and-network',
