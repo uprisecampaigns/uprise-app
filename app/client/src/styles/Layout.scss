@@ -47,6 +47,18 @@ button, button span {
 }
 
 /*
+ * Page Loading Container
+ */
+
+.pageLoadingContainer {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 9999999;
+}
+
+/*
  * A better looking default horizontal rule
  */
 

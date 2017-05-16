@@ -15,6 +15,7 @@ import configureStore from 'store/configureStore';
 import apolloClient from 'store/apolloClient';
 
 import { checkSessionStatus } from 'actions/AuthActions';
+import { startPageLoad, endPageLoad } from 'actions/NotificationsActions';
 
 import history from 'lib/history';
 import routes from 'routes';
@@ -41,6 +42,8 @@ const context = {
 };
 
 let onRenderComplete = function initialRenderComplete(route, location) {
+
+  store.dispatch(endPageLoad());
 
   let scrollX = 0;
   let scrollY = 0;
@@ -83,6 +86,8 @@ async function onLocationChange(location) {
     delete scrollPositionsHistory[location.key];
   }
   currentLocation = location;
+
+  store.dispatch(startPageLoad());
 
   try {
     // Traverses the list of routes in the order they are defined until

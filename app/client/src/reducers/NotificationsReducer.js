@@ -1,12 +1,12 @@
 
-import { 
-  NOTIFY, 
-  CLEAR
+import { NOTIFY, CLEAR,
+  START_PAGE_LOAD, END_PAGE_LOAD
 } from 'actions/NotificationsActions.js';
 
 const defaultStartState = { 
   display: false,
-  message: ''
+  message: '',
+  pageLoading: false
 };
 
 export function updateNotifications(notificationsState = defaultStartState, action) {
@@ -22,6 +22,16 @@ export function updateNotifications(notificationsState = defaultStartState, acti
       return Object.assign({}, notificationsState, { 
         display: false,
         message: ''
+      });
+
+    case START_PAGE_LOAD:
+      return Object.assign({}, notificationsState, { 
+        pageLoading: true,
+      });
+
+    case END_PAGE_LOAD:
+      return Object.assign({}, notificationsState, { 
+        pageLoading: false,
       });
 
     default: 

@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux'
 import Snackbar from 'material-ui/Snackbar';
+import LinearProgress from 'material-ui/LinearProgress';
 import HeaderContainer from './components/HeaderContainer';
 import NavDrawerContainer from './components/NavDrawerContainer';
 
@@ -39,6 +40,12 @@ export class Layout extends React.Component {
     return (
       <div>
 
+        { this.props.pageLoading && 
+          <div className={s.pageLoadingContainer}>
+            <LinearProgress mode="indeterminate" />
+          </div>
+        }
+
         <HeaderContainer handleDrawerToggle={this.handleDrawerToggle}/>
 
         <NavDrawerContainer 
@@ -61,6 +68,7 @@ export class Layout extends React.Component {
 }
 
 export default connect((state) => ({ 
+  pageLoading: state.notifications.pageLoading,
   notificationMessage: state.notifications.message,
   displayNotification: state.notifications.display
 }))(Layout)
