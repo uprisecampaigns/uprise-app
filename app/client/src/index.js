@@ -152,10 +152,15 @@ onLocationChange(currentLocation);
 
 // Handle errors that might happen after rendering
 // Display the error in full-screen for development mode
-if (__DEV__) {
-  window.addEventListener('error', (event) => {
+window.addEventListener('error', (event) => {
+  if (process.env.NODE_ENV !== 'production') {
     appInstance = null;
     document.title = `Runtime Error: ${event.error.message}`;
     ReactDOM.render(<RedBox error={event.error} />, container);
-  });
-}
+  } else {
+    // Avoid broken navigation in production mode by a full page reload on error
+    // TODO: Send to home page?
+    // TODO: production error reporting?
+    window.location.reload(true);
+  }
+});
