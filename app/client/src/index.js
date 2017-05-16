@@ -17,6 +17,14 @@ import apolloClient from 'store/apolloClient';
 import { checkSessionStatus } from 'actions/AuthActions';
 import { startPageLoad, endPageLoad } from 'actions/NotificationsActions';
 
+import {
+  CampaignTitlesQuery,
+  ActivitiesQuery,
+  TypesQuery,
+  LevelsQuery,
+  IssueAreasQuery,
+} from 'schemas/queries';
+
 import history from 'lib/history';
 import routes from 'routes';
 
@@ -169,3 +177,9 @@ window.addEventListener('error', (event) => {
     window.location.reload(true);
   }
 });
+
+// We can prefetch these basic queries because they're integral to UI performance
+apolloClient.query({query: ActivitiesQuery});
+apolloClient.query({query: IssueAreasQuery});
+apolloClient.query({query: LevelsQuery});
+apolloClient.query({query: TypesQuery});
