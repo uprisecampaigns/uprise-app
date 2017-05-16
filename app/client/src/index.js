@@ -40,8 +40,28 @@ if (window.history && 'scrollRestoration' in window.history) {
 const context = {
 };
 
-let onRenderComplete = function initialRenderComplete() {
-  console.log('render complete');
+let onRenderComplete = function initialRenderComplete(route, location) {
+
+  let scrollX = 0;
+  let scrollY = 0;
+
+  const pos = scrollPositionsHistory[location.key];
+  if (pos) {
+    scrollX = pos.scrollX;
+    scrollY = pos.scrollY;
+  } else {
+    const targetHash = location.hash.substr(1);
+    if (targetHash) {
+      const target = document.getElementById(targetHash);
+      if (target) {
+        scrollY = window.pageYOffset + target.getBoundingClientRect().top;
+      }
+    }
+  }
+
+  // Restore the scroll position if it was saved into the state
+  // or scroll to top of the page
+  window.scrollTo(scrollX, scrollY);
 }
 
 // Re-render the app when window.location changes

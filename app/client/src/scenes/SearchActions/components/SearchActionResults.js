@@ -1,5 +1,5 @@
-
 import React, { Component, PropTypes } from 'react';
+import Infinite from 'react-infinite';
 import moment from 'moment';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
@@ -98,7 +98,14 @@ class SearchActionResults extends React.PureComponent {
                 thickness={5}
               />
             </div>
-          ) : actions 
+          ) : (
+
+            <Infinite elementHeight={200}
+              useWindowAsScrollContainer>
+              {actions}
+            </Infinite>
+
+          )
         }
       </div>
     );

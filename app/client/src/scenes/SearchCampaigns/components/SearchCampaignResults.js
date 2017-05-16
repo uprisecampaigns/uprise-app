@@ -1,5 +1,5 @@
-
 import React, { Component, PropTypes } from 'react';
+import Infinite from 'react-infinite';
 import moment from 'moment';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
@@ -95,7 +95,15 @@ class SearchCampaignResults extends Component {
                 thickness={5}
               />
             </div>
-          ) : campaigns 
+          ) :  (
+
+            <Infinite elementHeight={138}
+              useWindowAsScrollContainer>
+              {campaigns}
+            </Infinite>
+
+          )
+ 
         }
       </div>
     );
