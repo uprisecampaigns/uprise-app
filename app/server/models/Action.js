@@ -20,7 +20,7 @@ class Action {
 
   static async findOne(...args) {
     const action = await db('actions')
-      .select(['id', 'title', 'slug', 'tags', 'owner_id', 'description', 'campaign_id',
+      .select(['id', 'title', 'internal_title', 'slug', 'tags', 'owner_id', 'description', 'campaign_id',
                db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
                db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
                'location_name', 'street_address', 'street_address2',
