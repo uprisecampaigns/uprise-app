@@ -94,6 +94,12 @@ module.exports = buildSchema(`
     url: String!
   }
 
+  type ActionSearchResult {
+    total: Int!
+    cursor: ActionResult
+    actions: [ActionResult]!
+  }
+
   input DateSearchInput {
     onDate: String
     startDate: String
@@ -135,6 +141,15 @@ module.exports = buildSchema(`
     times: [String]
     geographies: [GeographySearchInput]
     sortBy: SortByInput
+    cursor: ActionCursorInput
+    limit: Int
+  }
+
+  input ActionCursorInput {
+    id: String
+    slug: String
+    start_time: String
+    campaign_name: String
   }
 
   input ActionQueryInput {
@@ -157,7 +172,7 @@ module.exports = buildSchema(`
   type Query {
     action(search: ActionQueryInput): ActionResult
     myActions: [ActionResult]
-    actions(search: ActionSearchInput): [ActionResult]
+    actions(search: ActionSearchInput): ActionSearchResult
     signedUpVolunteers(search: ActionQueryInput): [UserResult]
     subscribedUsers(search: CampaignQueryInput): [UserResult]
     campaigns(search: CampaignSearchInput): [CampaignResult]

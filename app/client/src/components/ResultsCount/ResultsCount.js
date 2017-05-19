@@ -11,6 +11,7 @@ class ResultsCount extends React.PureComponent {
 
   static propTypes = {
     items: PropTypes.array,
+    totals: PropTypes.number,
     graphqlLoading: PropTypes.bool.isRequired
   }
 
@@ -19,7 +20,7 @@ class ResultsCount extends React.PureComponent {
   }
 
   render() {
-    const resultsCount = this.props.items ? this.props.items.length : 0;
+    const resultsCount = this.props.total || (this.props.items ? this.props.items.length : 0);
     return (
       <span>
         {resultsCount} results

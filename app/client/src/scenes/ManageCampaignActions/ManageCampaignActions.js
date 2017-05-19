@@ -118,13 +118,16 @@ export default compose(
     options: (ownProps) => ({ 
       variables: {
         search: {
-          campaignIds: [ownProps.campaignId]
+          campaignIds: [ownProps.campaignId],
+          // This prevents paging - we just want them all at once
+          // TODO: better implementation
+          limit: 1000
         }
       },
       fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({ 
-      actions: data.actions
+      actions: data.actions ? data.actions.actions : []
     })
   }),
 

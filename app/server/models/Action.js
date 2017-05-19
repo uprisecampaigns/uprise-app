@@ -123,6 +123,8 @@ class Action {
   }
 
   static async search(search) {
+
+    const defaultPageLimit = 20;
     
     const searchQuery = db('actions')
       .select(['actions.id as id', 'actions.title as title', 
@@ -369,19 +371,65 @@ class Action {
               });
             });
           }
-
-          if (search.sortBy) {
-            if (search.sortBy.name === 'date') {
-              qb.orderBy('actions.start_time', (search.sortBy.descending) ? 'desc' : 'asc');
-
-            } else if (search.sortBy.name === 'campaignName') {
-              qb.orderBy('campaigns.title', (search.sortBy.descending) ? 'desc' : 'asc');
-            }
-          }
         }
       });
 
-    const actionResults = await searchQuery;
+    const searchPageQuery = searchQuery.clone().modify( (qb) => {
+
+      if (search.sortBy) {
+        if (search.sortBy.name === 'campaignName') {
+          qb.orderBy('campaigns.title', (search.sortBy.descending) ? 'desc' : 'asc');
+        } else if (search.sortBy.name === 'date') {
+          qb.orderBy('actions.start_time', (search.sortBy.descending) ? 'desc' : 'asc');
+        }
+      } else {
+        qb.orderBy('actions.start_time', 'asc');
+      }
+
+      if (search.cursor) {
+        if (search.sortBy) {
+          if (search.sortBy.name === 'campaignName') {
+            qb.andWhere(function() {
+              this.orWhere('campaigns.title', (search.sortBy.descending) ? '<' : '>', search.cursor.campaign_name);
+              this.orWhere(function() {
+                this.andWhere('campaigns.title', '=', search.cursor.campaign_name);
+                this.andWhere('actions.slug', '>', search.cursor.slug);
+              });
+            });
+
+          } else if (search.sortBy.name === 'date') {
+            qb.andWhere(function() {
+              this.orWhere(db.raw("?::timestamptz", search.cursor.start_time), (search.sortBy.descending) ? '>' : '<', db.raw('actions.start_time'));
+              this.orWhere(function() {
+                this.andWhere(db.raw("?::timestamptz", search.cursor.start_time), '=', db.raw('actions.start_time'));
+                this.andWhere('actions.slug', '>', search.cursor.slug);
+              });
+            });
+
+
+          }
+        } else {
+          this.orWhere(db.raw("?::timestamptz", search.cursor.start_time), '<', db.raw('actions.start_time'));
+          this.orWhere(function() {
+            this.andWhere(db.raw("?::timestamptz", search.cursor.start_time), '=', db.raw('actions.start_time'));
+            this.andWhere('actions.slug', '>', search.cursor.slug);
+          });
+        }
+      }
+
+      if (search.limit && typeof search.limit === 'number') {
+        qb.limit(parseInt(search.limit, 10));
+      } else {
+        qb.limit(defaultPageLimit);
+      }
+
+      qb.orderBy('actions.slug', 'asc');
+    });
+
+    const searchTotalsQuery = db.count('id').from(searchQuery.as('count_rows'));
+
+    const total = (await searchTotalsQuery)[0].count;
+    const actionResults = await searchPageQuery;
 
     actionResults.forEach( (action) => {
       action.campaign = {
@@ -392,7 +440,11 @@ class Action {
       };
     });
 
-    return actionResults;
+    return {
+      total,
+      actions: actionResults,
+      cursor: actionResults.length ? [...actionResults].pop() : undefined
+    };
   }
 
   static async details(action) {

@@ -17,24 +17,39 @@ class SearchActionResults extends React.PureComponent {
 
   constructor(props) {
     super(props);
+
   }
 
   static propTypes = {
     actions: PropTypes.array,
     items: PropTypes.array,
     sortBy: PropTypes.object.isRequired,
-    graphqlLoading: PropTypes.bool.isRequired
+    graphqlLoading: PropTypes.bool.isRequired,
+    allItemsLoaded: PropTypes.bool.isRequired,
+    isInfiniteLoading: PropTypes.bool.isRequired,
+    handleInfiniteLoad: PropTypes.func.isRequired
   }
 
   shouldComponentUpdate(nextProps) {
-    return (!nextProps.graphqlLoading &&
-            this.props.graphqlLoading &&
+    return (((!nextProps.graphqlLoading && this.props.graphqlLoading) ||
+            (!isEqual(this.props.cursor, nextProps.cursor))) &&
             typeof nextProps.actions === 'object' ||
             !isEqual(this.props.sortBy, nextProps.sortBy));
   }
 
+  elementInfiniteLoad = () => {
+    return (
+      <div className={s.loadingContainer}>
+        <CircularProgress
+          size={60}
+          thickness={5}
+        />
+      </div>
+    );
+  }
+
   render() {
-    const { sortBy, ...props } = this.props;
+    const { sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, ...props } = this.props;
 
     // TODO: This is shared by SearchCampaignResults and can definitely be refactored
     const actionsSort = (a, b) => {
@@ -49,7 +64,7 @@ class SearchActionResults extends React.PureComponent {
           return (a.campaign.title.toLowerCase() < b.campaign.title.toLowerCase()) ? 1 : -1;
         } else {
           return (a.campaign.title.toLowerCase() > b.campaign.title.toLowerCase()) ? 1 : -1;
-        } 
+        }
       }
     }
 
@@ -94,7 +109,7 @@ class SearchActionResults extends React.PureComponent {
 
     return (
       <div>
-        { 
+        {
           props.graphqlLoading ? (
             <div className={s.loadingContainer}>
               <CircularProgress
@@ -104,8 +119,14 @@ class SearchActionResults extends React.PureComponent {
             </div>
           ) : (
 
-            <Infinite elementHeight={200}
-              useWindowAsScrollContainer>
+            <Infinite
+              elementHeight={200}
+              useWindowAsScrollContainer
+              onInfiniteLoad={handleInfiniteLoad}
+              isInfiniteLoading={isInfiniteLoading}
+              infiniteLoadBeginEdgeOffset={allItemsLoaded ? undefined : 200}
+              loadingSpinnerDelegate={this.elementInfiniteLoad()}
+            >
               {actions}
             </Infinite>
 

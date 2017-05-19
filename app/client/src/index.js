@@ -72,7 +72,9 @@ let onRenderComplete = function initialRenderComplete(route, location) {
 
   // Restore the scroll position if it was saved into the state
   // or scroll to top of the page
-  window.scrollTo(scrollX, scrollY);
+  window.setTimeout(() => {
+    window.scrollTo(scrollX, scrollY);
+  }, 10);
 }
 
 // Re-render the app when window.location changes

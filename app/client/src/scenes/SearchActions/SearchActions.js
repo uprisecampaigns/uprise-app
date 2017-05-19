@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo';
+import uniqWith from 'lodash.uniqwith';
 import Popover from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -24,19 +25,60 @@ import {
 
 import s from 'styles/Search.scss';
 
-const graphqlOptions = (collection) => {
-  return {
-    props: ({ data }) => ({
-      [collection]: data[collection],
-      items: data[collection],
-      graphqlLoading: data.loading
-    }),
-    options: (ownProps) => ({
-      fetchPolicy: 'cache-and-network',
-      pollInterval: 30000,
-      ...ownProps,
-    })
-  };
+const graphqlOptions = {
+  props: ({ data }) => {
+    const result = data.actions || {};
+    const allItemsLoaded = result.actions && result.total === result.actions.length;
+
+    return {
+      actions: result.actions,
+      items: result.actions,
+      graphqlLoading: data.loading,
+      cursor: result.cursor,
+      total: result.total,
+      isInfiniteLoading: false,
+      allItemsLoaded,
+      handleInfiniteLoad: () => {
+
+        if (!allItemsLoaded) {
+
+          return data.fetchMore({
+            query: ActionsQuery,
+            variables: {
+              search: Object.assign({}, data.variables.search, {
+                cursor: {
+                  start_time: result.cursor.start_time,
+                  id: result.cursor.id,
+                  slug: result.cursor.slug,
+                  campaign_name: result.cursor.campaign.title
+                }
+              })
+            },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+              const previousActions = previousResult.actions.actions;
+              const newActions = fetchMoreResult.actions.actions;
+
+              const mergedActions = uniqWith([...previousActions, ...newActions], (a, b) => (a.id === b.id));
+
+              return {
+                actions: {
+                  cursor: fetchMoreResult.actions.cursor,
+                  total: fetchMoreResult.actions.total,
+                  actions: mergedActions,
+                  __typename: fetchMoreResult.__typename
+                }
+              };
+            },
+          });
+        }
+      }
+    }
+  },
+  options: (ownProps) => ({
+    // Refresh every 5 min should be safe
+    pollInterval: 60000 * 5,
+    ...ownProps,
+  })
 };
 
 const mapStateToProps = (state) => ({
@@ -50,18 +92,19 @@ const mapStateToProps = (state) => ({
     dates: state.actionsSearch.dates,
     times: state.actionsSearch.times,
     geographies: state.actionsSearch.geographies,
+    sortBy: state.actionsSearch.sortBy
   },
   sortBy: state.actionsSearch.sortBy
 });
 
 const ResultsCountWithData = compose(
   connect(mapStateToProps),
-  graphql(ActionsQuery, graphqlOptions('actions')),
+  graphql(ActionsQuery, graphqlOptions),
 )(ResultsCount);
 
 const SearchActionResultsWithData = compose(
   connect(mapStateToProps),
-  graphql(ActionsQuery, graphqlOptions('actions')),
+  graphql(ActionsQuery, graphqlOptions),
 )(SearchActionResults);
 
 const ConnectedSearchSort = connect( (state) => ({

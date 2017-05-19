@@ -162,38 +162,48 @@ export const ActionQuery = gql`
 export const ActionsQuery = gql`
   query ActionsQuery($search:ActionSearchInput) {
     actions(search:$search){
-      id
-      title
-      slug
-      description
-      start_time
-      end_time
-      tags
-      location_name
-      street_address
-      street_address2
-      city
-      state
-      zipcode
-      location_notes
-      activities {
-        id
-        title
-        description
+      total
+      cursor {
+        start_time
+        slug
+        campaign {
+          title
+        }
       }
-      issue_areas {
-        id
-        title
-      }
-      owner {
-        id
-        email
-      }
-      campaign {
+      actions {
         id
         title
         slug
-        profile_image_url
+        description
+        start_time
+        end_time
+        tags
+        location_name
+        street_address
+        street_address2
+        city
+        state
+        zipcode
+        location_notes
+        activities {
+          id
+          title
+          description
+        }
+        issue_areas {
+          id
+          title
+        }
+        owner {
+          id
+          email
+        }
+        campaign {
+          id
+          title
+          slug
+          profile_image_url
+        }
       }
     }
   }
