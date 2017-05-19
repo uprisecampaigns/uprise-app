@@ -4,7 +4,7 @@ import { compose, graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import Dialog from 'material-ui/Dialog';
 import {
-  Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, 
+  Table, TableBody, TableFooter, TableHeader, TableHeaderColumn,
   TableRow, TableRowColumn
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -16,7 +16,7 @@ import Link from 'components/Link';
 
 import { setRecipients } from 'actions/MessageActions';
 
-import { 
+import {
   CampaignQuery, SubscribedUsersQuery
 } from 'schemas/queries';
 
@@ -40,12 +40,21 @@ class ManageCampaignVolunteers extends Component {
     };
   }
 
-  handleRowSelection = (selectedRows) => {
-    const selected = this.props.subscribers.filter( (volunteer, index) => (
-      (selectedRows === 'all' || selectedRows.includes(index))
-    ));
+  isSelected = (id) => {
+    return (this.state.selected.find((row) => row.id === id) !== undefined);
+  }
 
-    this.setState({ selected });
+  handleRowSelection = (selectedRows) => {
+    if (selectedRows === 'none') {
+      this.setState({ selected: [] });
+    } else {
+
+      const selected = this.props.volunteers.filter( (volunteer, index) => (
+        (selectedRows === 'all' || selectedRows.includes(index))
+      ));
+
+      this.setState({ selected });
+    }
   }
 
   composeMessage = (event) => {
@@ -55,10 +64,7 @@ class ManageCampaignVolunteers extends Component {
     if (this.state.selected.length === 0) {
       this.setState({ emptyRecipientsModalOpen: true });
     } else {
-    
       dispatch(setRecipients(this.state.selected));
-      console.log(this.state.selected);
-
       history.push('/organize/' + campaign.slug + '/compose');
     }
   }
@@ -86,7 +92,7 @@ class ManageCampaignVolunteers extends Component {
           <Link to={'/organize/' + campaign.slug}>
             <div className={[s.navHeader, s.campaignNavHeader].join(' ')}>
 
-              <FontIcon 
+              <FontIcon
                 className={["material-icons", s.backArrow].join(' ')}
               >arrow_back</FontIcon>
 
@@ -126,9 +132,10 @@ class ManageCampaignVolunteers extends Component {
               displayRowCheckbox={true}
               showRowHover={true}
               stripedRows={false}
+              deselectOnClickaway={false}
             >
               {subscribers.map( (subscriber, index) => (
-                <TableRow key={subscriber.id} selectable={true}>
+                <TableRow key={subscriber.id} selected={this.isSelected(subscriber.id)} selectable={true}>
                   <TableRowColumn>{subscriber.first_name + ' ' + subscriber.last_name}</TableRowColumn>
                   <TableRowColumn>{subscriber.email}</TableRowColumn>
                   <TableRowColumn>{subscriber.phone_number}</TableRowColumn>
@@ -161,19 +168,19 @@ class ManageCampaignVolunteers extends Component {
 export default compose(
   connect(),
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.campaignId
         }
       }
     }),
-    props: ({ data }) => ({ 
+    props: ({ data }) => ({
       campaign: data.campaign
     })
   }),
   graphql(SubscribedUsersQuery, {
-    options: (ownProps) => ({ 
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.campaignId
@@ -181,7 +188,7 @@ export default compose(
       },
       fetchPolicy: 'cache-and-network',
     }),
-    props: ({ data }) => ({ 
+    props: ({ data }) => ({
       subscribers: data.subscribedUsers
     })
   })

@@ -4,7 +4,7 @@ import { compose, graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import Dialog from 'material-ui/Dialog';
 import {
-  Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, 
+  Table, TableBody, TableFooter, TableHeader, TableHeaderColumn,
   TableRow, TableRowColumn
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -16,7 +16,7 @@ import Link from 'components/Link';
 
 import { setRecipients } from 'actions/MessageActions';
 
-import { 
+import {
   CampaignQuery, ActionQuery, SignedUpVolunteersQuery
 } from 'schemas/queries';
 
@@ -41,12 +41,21 @@ class ManageActionContainer extends Component {
     };
   }
 
-  handleRowSelection = (selectedRows) => {
-    const selected = this.props.volunteers.filter( (volunteer, index) => (
-      (selectedRows === 'all' || selectedRows.includes(index))
-    ));
+  isSelected = (id) => {
+    return (this.state.selected.find((row) => row.id === id) !== undefined);
+  }
 
-    this.setState({ selected });
+  handleRowSelection = (selectedRows) => {
+    if (selectedRows === 'none') {
+      this.setState({ selected: [] });
+    } else {
+
+      const selected = this.props.volunteers.filter( (volunteer, index) => (
+        (selectedRows === 'all' || selectedRows.includes(index))
+      ));
+
+      this.setState({ selected });
+    }
   }
 
   composeMessage = (event) => {
@@ -56,10 +65,7 @@ class ManageActionContainer extends Component {
     if (this.state.selected.length === 0) {
       this.setState({ emptyRecipientsModalOpen: true });
     } else {
-    
       dispatch(setRecipients(this.state.selected));
-      console.log(this.state.selected);
-
       history.push('/organize/' + campaign.slug + '/action/' + action.slug + '/compose');
     }
   }
@@ -86,7 +92,7 @@ class ManageActionContainer extends Component {
 
           <Link to={'/organize/' + campaign.slug + '/actions'}>
             <div className={s.navHeader}>
-              <FontIcon 
+              <FontIcon
                 className={["material-icons", s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Actions
@@ -100,7 +106,7 @@ class ManageActionContainer extends Component {
           <Link to={baseActionUrl + '/settings' }>
             <div className={s.settingsLinkContainer}>
               Settings
-              <FontIcon 
+              <FontIcon
                 className={["material-icons"].join(' ')}
               >settings</FontIcon>
             </div>
@@ -136,9 +142,10 @@ class ManageActionContainer extends Component {
               displayRowCheckbox={true}
               showRowHover={true}
               stripedRows={false}
+              deselectOnClickaway={false}
             >
               {volunteers.map( (volunteer, index) => (
-                <TableRow key={volunteer.id} selectable={true}>
+                <TableRow key={volunteer.id} selected={this.isSelected(volunteer.id)} selectable={true}>
                   <TableRowColumn>{volunteer.first_name + ' ' + volunteer.last_name}</TableRowColumn>
                   <TableRowColumn>{volunteer.email}</TableRowColumn>
                   <TableRowColumn>{volunteer.phone_number}</TableRowColumn>
@@ -171,38 +178,38 @@ class ManageActionContainer extends Component {
 export default compose(
   connect(),
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.campaignId
         }
       }
     }),
-    props: ({ data }) => ({ 
+    props: ({ data }) => ({
       campaign: data.campaign
     })
   }),
   graphql(ActionQuery, {
-    options: (ownProps) => ({ 
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.actionId
         }
       }
     }),
-    props: ({ data }) => ({ 
+    props: ({ data }) => ({
       action: data.action
     })
   }),
   graphql(SignedUpVolunteersQuery, {
-    options: (ownProps) => ({ 
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.actionId
         }
       }
     }),
-    props: ({ data }) => ({ 
+    props: ({ data }) => ({
       volunteers: data.signedUpVolunteers
     })
   })
