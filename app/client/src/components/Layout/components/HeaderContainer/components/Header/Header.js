@@ -241,6 +241,9 @@ class Header extends Component {
           alignItems: 'center'
         }}
         className={s.appBar}
+        style={{
+          'backgroundColor': 'rgb(255, 255, 255)'
+        }}
       />
     );
   }
