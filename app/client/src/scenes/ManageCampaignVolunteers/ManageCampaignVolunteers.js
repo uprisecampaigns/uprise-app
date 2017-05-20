@@ -49,7 +49,7 @@ class ManageCampaignVolunteers extends Component {
       this.setState({ selected: [] });
     } else {
 
-      const selected = this.props.volunteers.filter( (volunteer, index) => (
+      const selected = this.props.subscribers.filter( (volunteer, index) => (
         (selectedRows === 'all' || selectedRows.includes(index))
       ));
 
