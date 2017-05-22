@@ -58,6 +58,7 @@ class SearchActionInputs extends React.PureComponent {
   }
 
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
   };
 
   handleToggle = (collectionName, on, value) => {

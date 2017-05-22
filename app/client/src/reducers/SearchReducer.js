@@ -28,13 +28,21 @@ export function updateSearch(searchState = defaultStartState, action) {
   switch (action.type){
    
     case ADD_SEARCH_ITEM:
-      const collection = Array.from(searchState[action.collection]);
+      let collection = Array.from(searchState[action.collection]);
 
       if (( typeof action.value === 'string' &&
             action.value.trim() !== '' &&
             !collection.find(item => item.trim().toLowerCase() === action.value.trim().toLowerCase())) ||
           ( typeof action.value === 'object' && 
             !collection.find(item => isEqual(item, action.value)))) {
+
+        // If doing geography search, replace item if the zipcode is already in the collection
+        if (action.collection === 'geographies' && typeof action.value.zipcode !== undefined) {
+          const existing = collection.find(item => item.zipcode === action.value.zipcode);
+          if (existing) {
+            collection = collection.filter(item => item.zipcode !== action.value.zipcode)
+          }
+        }
 
         collection.push(
           typeof action.value === 'string' ? action.value.trim() : action.value

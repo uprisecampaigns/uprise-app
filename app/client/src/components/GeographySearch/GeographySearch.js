@@ -41,10 +41,10 @@ class GeographySearch extends React.PureComponent {
 
     }
 
-    valid && this.setState(Object.assign({},
-      this.state,
+    valid && this.setState((prevState) => (Object.assign({},
+      prevState,
       { [type]: value }
-    ));
+    )));
   }
 
   addItem = (event) => {
@@ -64,14 +64,14 @@ class GeographySearch extends React.PureComponent {
 
     this.props.addItem('geographies', searchItem);
 
-    this.setState(Object.assign({},
-      this.state,
+    this.setState((prevState) => (Object.assign({},
+      prevState,
       {
         distance: '',
         zipcode: '',
         virtual: false
       }
-    ));
+    )));
   }
 
   render() {
