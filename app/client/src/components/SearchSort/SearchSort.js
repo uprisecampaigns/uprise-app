@@ -34,13 +34,13 @@ class SearchSort extends React.PureComponent {
           primaryText={item.label}
           className={s.sortSelected}
           rightIcon={arrow}
-          onTouchTap={ (event) => onSelect(item.prop) }
+          onTouchTap={ (event) => onSelect(item.prop, event) }
         />
       ) : (
         <ListItem 
           key={item.prop}
           primaryText={item.label}
-          onTouchTap={ (event) => onSelect(item.prop) }
+          onTouchTap={ (event) => onSelect(item.prop, event) }
         />
       );
     });

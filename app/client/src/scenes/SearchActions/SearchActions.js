@@ -5,6 +5,7 @@ import uniqWith from 'lodash.uniqwith';
 import Popover from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
+import Divider from 'material-ui/Divider';
 
 import SearchBar from 'components/SearchBar';
 import SearchSort from 'components/SearchSort';
@@ -15,7 +16,7 @@ import SearchActionResults from './components/SearchActionResults';
 import SearchActionInputs from './components/SearchActionInputs';
 import SearchActionSelections from './components/SearchActionSelections';
 
-import { 
+import {
   addSearchItem, sortBy
 } from 'actions/SearchActions';
 
@@ -109,7 +110,7 @@ const ConnectedSearchSort = connect( (state) => ({
   selected: state.actionsSearch.sortBy.name,
   descending: state.actionsSearch.sortBy.descending,
 }))(SearchSort);
-  
+
 
 class SearchActions extends Component {
   constructor(props) {
@@ -131,8 +132,8 @@ class SearchActions extends Component {
     this.props.dispatch(addSearchItem('action', collectionName, value));
   }
 
-  sortSelect = (value) => {
-    this.handleCloseSort();
+  sortSelect = (value, event) => {
+    this.handleCloseSort(event);
 
     this.props.dispatch(sortBy('action', value));
   }
@@ -143,7 +144,7 @@ class SearchActions extends Component {
 
     this.setState(Object.assign({},
       this.state,
-      { 
+      {
         sortOpen: true,
         sortPopoverAnchorEl: event.currentTarget
       }
@@ -151,6 +152,7 @@ class SearchActions extends Component {
   }
 
   handleCloseSort = (event) => {
+    typeof event.preventDefault === 'function' && event.preventDefault();
     this.setState(Object.assign({},
       this.state,
       { sortOpen: false }
@@ -161,20 +163,21 @@ class SearchActions extends Component {
     this.searchBarInputElement.blur();
     event.preventDefault();
 
-    this.setState(Object.assign({},
-      this.state,
-      { 
-        filterOpen: true,
+    this.setState((prevState) => (Object.assign({},
+      prevState,
+      {
+        filterOpen: !prevState.filterOpen,
         filterPopoverAnchorEl: event.currentTarget
       }
-    ));
+    )));
   }
 
   handleCloseFilter = (event) => {
-    this.setState(Object.assign({},
-      this.state,
+    typeof event.preventDefault === 'function' && event.preventDefault();
+    this.setState((prevState) => (Object.assign({},
+      prevState,
       { filterOpen: false }
-    ));
+    )));
   }
 
   render() {
@@ -184,7 +187,7 @@ class SearchActions extends Component {
 
         <Link to="/search">
           <div className={[s.navHeader, s.searchNavHeader].join(' ')}>
-            <FontIcon 
+            <FontIcon
               className={["material-icons", s.backArrow].join(' ')}
             >arrow_back</FontIcon>
             Search
@@ -210,24 +213,24 @@ class SearchActions extends Component {
             <ResultsCountWithData/>
           </div>
 
-          <div 
+          <div
             onTouchTap={this.handleOpenSort}
             className={s.sortContainer}
           >
             <span>Sort by</span>
-            <IconButton 
+            <IconButton
               iconClassName='material-icons'
             >sort</IconButton>
 
             <Popover
               open={this.state.sortOpen}
-              onRequestClose={this.handleCloseSort}
               anchorEl={this.state.sortPopoverAnchorEl}
+              onRequestClose={this.handleCloseSort}
               anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
               targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
               className={s.popover}
             >
-              <ConnectedSearchSort 
+              <ConnectedSearchSort
                 onSelect={this.sortSelect}
                 items={[
                   { label: 'Date', prop: 'date' },
@@ -237,31 +240,79 @@ class SearchActions extends Component {
             </Popover>
           </div>
 
-          <div 
+          <div
             className={s.filterContainer}
             onTouchTap={this.handleOpenFilter}
           >
             <span>Filter</span>
-            <IconButton 
+            <IconButton
               iconClassName='material-icons'
             >filter_list</IconButton>
 
+{ /*
             <Popover
               open={this.state.filterOpen}
-              onRequestClose={this.handleCloseFilter}
+              autoCloseWhenOffScreen={false}
               anchorEl={this.state.filterPopoverAnchorEl}
               anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
               targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
               className={s.popover}
             >
-              <SearchActionInputs 
-              />
+              <div>
+                <div className={s.sortFilterHeaderContainer}>
+                  <span>Filter</span>
+
+                  <span
+                    className={s.closePopoverContainer}
+                    onClick={this.handleCloseFilter}
+                  >
+                    <IconButton
+                      iconClassName='material-icons'
+                    >close</IconButton>
+                  </span>
+                </div>
+
+                <SearchActionInputs
+                />
+
+              </div>
             </Popover>
+*/}
           </div>
         </div>
 
+        <div className={s.filterOptionsContainer}>
+          { this.state.filterOpen && (
+            <div>
+
+              <Divider />
+
+              <div className={s.filterHeaderContainer}>
+                <span className={s.filterHeader}>Filter</span>
+
+                <span
+                  className={s.closeIcon}
+                  onClick={this.handleCloseFilter}
+                >
+                  <IconButton
+                    iconClassName='material-icons'
+                  >close</IconButton>
+                </span>
+              </div>
+
+              <Divider />
+
+              <SearchActionInputs
+              />
+
+            </div>
+          )}
+        </div>
+
+        <Divider />
+
         <div className={s.selectionsContainer}>
-          <SearchActionSelections 
+          <SearchActionSelections
           />
         </div>
 

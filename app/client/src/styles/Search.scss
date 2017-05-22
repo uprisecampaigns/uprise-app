@@ -74,6 +74,27 @@
     }
   }
 
+  .filterOptionsContainer {
+
+    .filterHeaderContainer {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      justify-content: center;
+
+      .filterHeader {
+        font-size: 1.8rem;
+        font-weight: 500;
+      }
+
+      .closeIcon {
+        position: absolute;
+        right: 0px;
+
+      }
+    }
+  }
+
   .resultsContainer {
 
     width: 100%;
