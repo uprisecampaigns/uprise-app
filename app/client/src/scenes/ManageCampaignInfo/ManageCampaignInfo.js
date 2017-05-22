@@ -16,14 +16,10 @@ import {
   validatePhoneNumber
 } from 'lib/validateComponentForms';
 
-import { 
-  MeQuery,
-  CampaignQuery 
-} from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import MeQuery from 'schemas/queries/MeQuery.graphql';
 
-import { 
-  EditCampaignMutation
-} from 'schemas/mutations';
+import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql';
 
 import s from 'styles/Organize.scss';
 

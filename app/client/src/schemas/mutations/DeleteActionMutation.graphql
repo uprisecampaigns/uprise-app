@@ -1,0 +1,3 @@
+mutation DeleteActionMutation ($data:DeleteActionInput) {
+  deleteAction(data:$data)
+}

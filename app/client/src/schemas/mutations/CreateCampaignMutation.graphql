@@ -1,0 +1,9 @@
+#import "../fragments/CampaignBasicInfoFragment.graphql"
+#import "../fragments/CampaignDetailsFragment.graphql"
+
+mutation CreateCampaignMutation($data:CreateCampaignInput) {
+  createCampaign(data:$data){
+    ...CampaignBasicInfo
+    ...CampaignDetails
+  }
+}

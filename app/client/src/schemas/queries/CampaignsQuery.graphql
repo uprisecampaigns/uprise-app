@@ -1,0 +1,9 @@
+#import "../fragments/CampaignBasicInfoFragment.graphql"
+#import "../fragments/CampaignDetailsFragment.graphql"
+
+query CampaignsQuery($search:CampaignSearchInput) {
+  campaigns(search:$search){
+    ...CampaignBasicInfo
+    ...CampaignDetails
+  }
+}

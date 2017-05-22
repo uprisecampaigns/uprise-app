@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { attemptLogout } from 'actions/AuthActions';
 import { graphql, compose } from 'react-apollo';
 
-import { MeQuery } from 'schemas/queries';
+import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import Header from './components/Header';
 

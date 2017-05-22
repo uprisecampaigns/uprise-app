@@ -1,7 +1,7 @@
 
-import { 
-  MyCampaignsQuery, CampaignQuery, ActionQuery
-} from 'schemas/queries';
+import MyCampaignsQuery from 'schemas/queries/MyCampaignsQuery.graphql';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
 
 
 export default ({ path, component }) => ({

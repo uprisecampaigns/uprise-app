@@ -11,11 +11,8 @@ import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
 
-import { CampaignQuery, ActionsQuery } from 'schemas/queries';
-
-import { 
-  DeleteCampaignMutation
-} from 'schemas/mutations';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
 
 import s from 'styles/Organize.scss';
 
@@ -114,7 +111,7 @@ export default compose(
     })
   }),
 
-  graphql(ActionsQuery, {
+  graphql(SearchActionsQuery, {
     options: (ownProps) => ({ 
       variables: {
         search: {
@@ -131,5 +128,4 @@ export default compose(
     })
   }),
 
-  graphql(DeleteCampaignMutation, { name: 'deleteCampaignMutation' })
 )(ManageCampaignActionsContainer);

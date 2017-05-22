@@ -8,7 +8,7 @@ import history from 'lib/history';
 
 import Link from 'components/Link';
 
-import { MeQuery } from 'schemas/queries';
+import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import s from 'styles/Settings.scss';
 

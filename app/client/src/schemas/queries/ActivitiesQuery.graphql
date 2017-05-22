@@ -1,0 +1,7 @@
+query ActivitiesQuery {
+  activities {
+    id
+    title
+    description
+  }
+}

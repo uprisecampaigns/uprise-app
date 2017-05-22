@@ -1,0 +1,5 @@
+fragment CampaignBasicInfo on CampaignResult {
+  id
+  title
+  slug
+}

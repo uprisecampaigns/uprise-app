@@ -10,11 +10,9 @@ import history from 'lib/history';
 
 import Link from 'components/Link';
 
-import { CampaignQuery } from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
-import { 
-  DeleteCampaignMutation
-} from 'schemas/mutations';
+import DeleteCampaignMutation from 'schemas/mutations/DeleteCampaignMutation.graphql';
 
 import s from 'styles/Organize.scss';
 

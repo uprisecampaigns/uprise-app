@@ -18,9 +18,7 @@ import {
   addSearchItem, sortBy
 } from 'actions/SearchActions';
 
-import { 
-  CampaignsQuery, 
-} from 'schemas/queries';
+import CampaignsQuery from 'schemas/queries/CampaignsQuery.graphql';
 
 import s from 'styles/Search.scss';
 

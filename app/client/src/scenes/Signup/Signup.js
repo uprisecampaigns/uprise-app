@@ -6,7 +6,8 @@ import { attemptSignup } from 'actions/AuthActions';
 import isEmail from 'validator/lib/isEmail';
 import isNumeric from 'validator/lib/isNumeric';
 import history from 'lib/history';
-import { EmailAvailable } from 'schemas/queries';
+
+import EmailAvailableQuery from 'schemas/queries/EmailAvailableQuery.graphql';
 
 import SignupForm from './components/SignupForm';
 import PrivacyTerms from './components/PrivacyTerms';
@@ -129,7 +130,7 @@ class SignupFormContainer extends Component {
       try {
 
         const response = await this.props.client.query({
-          query: EmailAvailable,
+          query: EmailAvailableQuery,
           variables: {
             email: this.state.email
           },

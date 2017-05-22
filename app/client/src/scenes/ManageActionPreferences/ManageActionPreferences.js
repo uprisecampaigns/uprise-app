@@ -16,18 +16,14 @@ import Link from 'components/Link';
 
 import history from 'lib/history';
 
-import { 
-  ActionQuery,
-  CampaignQuery,
-  ActivitiesQuery,
-  TypesQuery,
-  LevelsQuery,
-  IssueAreasQuery,
-} from 'schemas/queries';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import TypesQuery from 'schemas/queries/TypesQuery.graphql';
+import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
+import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
+import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
-import { 
-  EditActionMutation
-} from 'schemas/mutations';
+import EditActionMutation from 'schemas/mutations/EditActionMutation.graphql';
 
 import { 
   notify
@@ -130,7 +126,7 @@ class ManageActionPreferencesContainer extends Component {
           }
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['ActionQuery', 'ActionsQuery'],
+        refetchQueries: ['ActionQuery', 'SearchActionsQuery'],
       });
 
       this.props.dispatch(notify('Changes Saved'));

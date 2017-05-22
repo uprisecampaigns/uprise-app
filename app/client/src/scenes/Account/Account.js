@@ -17,12 +17,9 @@ import {
 import Link from 'components/Link';
 import AccountForm from 'components/AccountForm';
 
-import { MeQuery } from 'schemas/queries';
+import MeQuery from 'schemas/queries/MeQuery.graphql';
 
-import { 
-  EditAccountMutation
-} from 'schemas/mutations';
-
+import EditAccountMutation from 'schemas/mutations/EditAccountMutation.graphql';
 
 import s from 'styles/Settings.scss';
 

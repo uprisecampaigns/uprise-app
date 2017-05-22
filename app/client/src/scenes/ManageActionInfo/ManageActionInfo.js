@@ -18,14 +18,10 @@ import {
   validateStartEndTimes
 } from 'lib/validateComponentForms';
 
-import { 
-  ActionQuery,
-  CampaignQuery
-} from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
 
-import { 
-  EditActionMutation
-} from 'schemas/mutations';
+import EditActionMutation from 'schemas/mutations/EditActionMutation.graphql';
 
 import s from 'styles/Organize.scss';
 
@@ -150,7 +146,7 @@ class ManageActionInfoContainer extends Component {
           data: formData
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['ActionQuery', 'ActionsQuery'],
+        refetchQueries: ['ActionQuery', 'SearchActionsQuery'],
       });
 
       return { success: true, message: 'Changes Saved' };

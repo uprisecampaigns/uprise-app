@@ -1,0 +1,3 @@
+mutation DeleteCampaignMutation ($data:DeleteCampaignInput) {
+  deleteCampaign(data:$data)
+}

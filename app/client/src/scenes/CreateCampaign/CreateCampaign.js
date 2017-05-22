@@ -15,8 +15,9 @@ import {
   validatePhoneNumber
 } from 'lib/validateComponentForms';
 
-import { MeQuery } from 'schemas/queries';
-import { CreateCampaignMutation } from 'schemas/mutations';
+import MeQuery from 'schemas/queries/MeQuery.graphql';
+
+import CreateCampaignMutation from 'schemas/mutations/CreateCampaignMutation.graphql';
 
 import CampaignInfoForm from 'components/CampaignInfoForm';
 

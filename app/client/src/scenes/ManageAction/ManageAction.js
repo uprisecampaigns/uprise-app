@@ -16,9 +16,9 @@ import Link from 'components/Link';
 
 import { setRecipients } from 'actions/MessageActions';
 
-import {
-  CampaignQuery, ActionQuery, SignedUpVolunteersQuery
-} from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
+import SignedUpVolunteersQuery from 'schemas/queries/SignedUpVolunteersQuery.graphql';
 
 import s from 'styles/Organize.scss';
 

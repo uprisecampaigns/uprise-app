@@ -1,0 +1,8 @@
+#import "../fragments/ActionBasicInfoFragment.graphql"
+
+mutation CancelActionSignupMutation ($actionId:String!) {
+  cancelActionSignup(actionId:$actionId){
+    ...ActionBasicInfo
+    attending
+  }
+}

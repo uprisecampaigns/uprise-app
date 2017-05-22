@@ -13,11 +13,10 @@ import {
   validateString,
 } from 'lib/validateComponentForms';
 
-import { CampaignQuery, ActionQuery } from 'schemas/queries';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
-import { 
-  EditActionMutation,
-} from 'schemas/mutations';
+import EditActionMutation from 'schemas/mutations/EditActionMutation.graphql';
 
 import s from 'styles/Organize.scss';
 
@@ -94,7 +93,7 @@ class ManageActionProfile extends Component {
           data: formData
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['ActionQuery', 'ActionsQuery'],
+        refetchQueries: ['ActionQuery', 'SearchActionsQuery'],
       });
 
       return { success: true, message: 'Changes Saved' };

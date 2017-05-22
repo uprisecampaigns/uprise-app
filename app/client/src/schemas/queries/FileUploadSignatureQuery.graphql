@@ -1,0 +1,5 @@
+query FileUploadSignatureQuery($input: FileToUpload!) {
+  fileUploadSignature(input:$input) {
+    url
+  }
+}

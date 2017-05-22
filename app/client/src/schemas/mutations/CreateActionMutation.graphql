@@ -1,0 +1,9 @@
+#import "../fragments/ActionBasicInfoFragment.graphql"
+#import "../fragments/ActionDetailsFragment.graphql"
+
+mutation CreateActionMutation ($data:CreateActionInput) {
+  createAction(data:$data){
+    ...ActionBasicInfo
+    ...ActionDetails
+  }
+}

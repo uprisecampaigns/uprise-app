@@ -16,13 +16,9 @@ import {
   validateZipcodeList,
 } from 'lib/validateComponentForms';
 
-import { 
-  CampaignQuery ,
-} from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
-import { 
-  EditCampaignMutation
-} from 'schemas/mutations';
+import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql';
 
 import s from 'styles/Organize.scss';
 
@@ -73,7 +69,7 @@ class ManageCampaignLocation extends Component {
         }
       });
 
-      campaign.zipcodeList = campaign.zipcodeList.join(',');
+      campaign.zipcodeList = typeof campaign.zipcodeList === 'object' ? campaign.zipcodeList.join(',') : '';
 
       this.setState( (prevState) => ({
         formData: Object.assign({}, prevState.formData, campaign)

@@ -1,0 +1,3 @@
+mutation ContactMutation ($data:ContactInput!) {
+  contact(data:$data)
+}

@@ -10,7 +10,7 @@ import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
 
-import { MyActionsQuery } from 'schemas/queries';
+import MyActionsQuery from 'schemas/queries/MyActionsQuery.graphql';
 
 // TODO: better css importing
 import s from 'styles/Organize.scss';

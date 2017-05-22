@@ -1,0 +1,6 @@
+query IssueAreasQuery {
+  issueAreas {
+    id
+    title
+  }
+}

@@ -7,9 +7,7 @@ import Divider from 'material-ui/Divider';
 
 import Link from 'components/Link';
 
-import { 
-  MyCampaignsQuery, 
-} from 'schemas/queries';
+import MyCampaignsQuery from 'schemas/queries/MyCampaignsQuery.graphql';
 
 import s from 'styles/Organize.scss';
 

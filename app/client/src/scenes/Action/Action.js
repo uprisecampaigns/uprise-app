@@ -17,14 +17,10 @@ import {
   notify
 } from 'actions/NotificationsActions';
 
-import {
-  ActionQuery,
-} from 'schemas/queries';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
 
-import {
-  ActionSignupMutation,
-  CancelActionSignupMutation
-} from 'schemas/mutations';
+import ActionSignupMutation from 'schemas/mutations/ActionSignupMutation.graphql';
+import CancelActionSignupMutation from 'schemas/mutations/CancelActionSignupMutation.graphql';
 
 import s from 'styles/Profile.scss';
 
@@ -79,7 +75,7 @@ class Action extends Component {
           actionId: this.props.action.id
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['MyActionsQuery', 'SignedUpVolunteersQuery', 'ActionQuery', 'MyActionsQuery'],
+        refetchQueries: ['MyActionsQuery', 'SignedUpVolunteersQuery', 'ActionQuery'],
       });
 
       this.props.dispatch(notify('Signup canceled'));

@@ -4,7 +4,7 @@ import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
 
-import { ActionQuery } from 'schemas/queries';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
 
 const ActionWithAuthentication = withAuthentication(Action);
 

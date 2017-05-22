@@ -1,0 +1,8 @@
+#import "../fragments/CampaignBasicInfoFragment.graphql"
+
+mutation CampaignSubscriptionMutation ($campaignId:String!) {
+  campaignSubscription(campaignId:$campaignId){
+    ...CampaignBasicInfo
+    subscribed
+  }
+}

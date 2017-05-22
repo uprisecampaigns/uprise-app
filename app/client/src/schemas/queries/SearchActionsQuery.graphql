@@ -1,0 +1,18 @@
+#import "../fragments/ActionBasicInfoFragment.graphql"
+
+query SearchActionsQuery($search:ActionSearchInput) {
+  actions(search:$search){
+    total
+    cursor {
+      start_time
+      slug
+      campaign {
+        title
+      }
+    }
+    actions {
+      ...ActionBasicInfo
+    }
+  }
+}
+

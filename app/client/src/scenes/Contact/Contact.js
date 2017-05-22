@@ -15,9 +15,9 @@ import {
 import Link from 'components/Link';
 import ContactForm from 'components/ContactForm';
 
-import { MeQuery } from 'schemas/queries';
+import MeQuery from 'schemas/queries/MeQuery.graphql';
 
-import { ContactMutation } from 'schemas/mutations';
+import ContactMutation from 'schemas/mutations/ContactMutation.graphql';
 
 import s from 'styles/Settings.scss';
 

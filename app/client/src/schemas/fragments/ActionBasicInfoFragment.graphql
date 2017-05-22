@@ -1,0 +1,25 @@
+fragment ActionBasicInfo on ActionResult {
+  id
+  title
+  internal_title
+  slug
+  start_time
+  end_time
+  virtual
+  attending
+  location_name
+  street_address
+  street_address2
+  city
+  state
+  zipcode
+  location_notes
+  public_url
+  campaign {
+    id
+    title
+    slug
+    profile_image_url
+  }
+}
+

@@ -9,14 +9,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CampaignProfile from 'components/CampaignProfile';
 import Link from 'components/Link';
 
-import {
-  CampaignSubscriptionMutation,
-  CancelCampaignSubscriptionMutation,
-} from 'schemas/mutations';
+import CampaignSubscriptionMutation from 'schemas/mutations/CampaignSubscriptionMutation.graphql';
+import CancelCampaignSubscriptionMutation from 'schemas/mutations/CancelCampaignSubscriptionMutation.graphql';
 
-import { 
-  CampaignQuery, 
-} from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
 import {
   notify

@@ -1,0 +1,7 @@
+#import "../fragments/CampaignBasicInfoFragment.graphql"
+
+query MyCampaignsQuery{
+  myCampaigns{
+    ...CampaignBasicInfo
+  }
+}

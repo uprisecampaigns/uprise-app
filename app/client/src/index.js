@@ -17,13 +17,10 @@ import apolloClient from 'store/apolloClient';
 import { checkSessionStatus } from 'actions/AuthActions';
 import { startPageLoad, endPageLoad } from 'actions/NotificationsActions';
 
-import {
-  CampaignTitlesQuery,
-  ActivitiesQuery,
-  TypesQuery,
-  LevelsQuery,
-  IssueAreasQuery,
-} from 'schemas/queries';
+import TypesQuery from 'schemas/queries/TypesQuery.graphql';
+import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
+import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
+import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import history from 'lib/history';
 import routes from 'routes';

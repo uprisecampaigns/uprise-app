@@ -5,7 +5,7 @@ import { urls } from 'config/config';
 
 import { notify } from 'actions/NotificationsActions';
 
-import { FileUploadSignature } from 'schemas/queries';
+import FileUploadSignatureQuery from 'schemas/queries/FileUploadSignatureQuery.graphql';
 
 
 export const START_UPLOAD = 'START_UPLOAD';
@@ -26,7 +26,7 @@ export function attemptUpload({ onSuccess, filePath, collectionName, collectionI
         const fileName = filePath + '/' + new Date().toISOString(); 
 
         const signatureResponse = await apolloClient.query({
-          query: FileUploadSignature,
+          query: FileUploadSignatureQuery,
           variables: {
             input: { 
               fileName, collectionId, collectionName, contentType

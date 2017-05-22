@@ -16,17 +16,13 @@ import Link from 'components/Link';
 
 import history from 'lib/history';
 
-import { 
-  MeQuery,
-  CampaignQuery ,
-  TypesQuery,
-  LevelsQuery,
-  IssueAreasQuery,
-} from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import MeQuery from 'schemas/queries/MeQuery.graphql';
+import TypesQuery from 'schemas/queries/TypesQuery.graphql';
+import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
+import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
 
-import { 
-  EditCampaignMutation
-} from 'schemas/mutations';
+import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql';
 
 import { 
   notify

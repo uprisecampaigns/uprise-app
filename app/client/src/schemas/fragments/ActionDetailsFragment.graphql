@@ -1,0 +1,31 @@
+fragment ActionDetails on ActionResult {
+  description
+  tags
+  activities {
+    id
+    title
+    description
+  }
+  issue_areas {
+    id
+    title
+  }
+  owner {
+    id
+    first_name
+    last_name
+    email
+  }
+  issue_areas {
+    id
+    title
+  }
+  levels {
+    id
+    title
+  }
+  types {
+    id
+    title
+  }
+}

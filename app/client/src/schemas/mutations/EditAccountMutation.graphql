@@ -1,0 +1,10 @@
+mutation EditAccountMutation ($data:EditAccountInput) {
+  editAccount(data:$data){
+    id
+    first_name
+    last_name
+    email
+    phone_number
+    zipcode
+  }
+}

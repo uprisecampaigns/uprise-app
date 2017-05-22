@@ -5,13 +5,10 @@ import { graphql, compose } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 
-import { 
-  ActionsQuery, 
-  ActivitiesQuery,
-  TypesQuery,
-  LevelsQuery,
-  IssueAreasQuery,
-} from 'schemas/queries';
+import TypesQuery from 'schemas/queries/TypesQuery.graphql';
+import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
+import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
+import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import { 
   addSearchItem, setSearchDates, removeSearchItem

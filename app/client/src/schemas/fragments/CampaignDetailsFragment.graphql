@@ -1,0 +1,47 @@
+fragment CampaignDetails on CampaignResult {
+  description
+  profile_subheader
+  tags
+  subscribed
+  street_address
+  street_address2
+  city
+  state
+  zipcode
+  location_state
+  location_district_number
+  location_type 
+  legislative_district_type
+  zipcode_list
+  phone_number
+  website_url
+  profile_image_url
+  owner {
+    id
+    first_name
+    last_name
+    email
+  }
+  issue_areas {
+    id
+    title
+  }
+  levels {
+    id
+    title
+  }
+  types {
+    id
+    title
+  }
+  actions {
+    id
+    title
+    slug
+    start_time
+    end_time
+    city
+    state
+    zipcode
+  }
+}

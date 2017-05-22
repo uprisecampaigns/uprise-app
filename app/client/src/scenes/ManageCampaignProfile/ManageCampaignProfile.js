@@ -14,11 +14,9 @@ import {
   validateWebsiteUrl,
 } from 'lib/validateComponentForms';
 
-import { CampaignQuery } from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
-import { 
-  EditCampaignMutation,
-} from 'schemas/mutations';
+import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql';
 
 import s from 'styles/Organize.scss';
 

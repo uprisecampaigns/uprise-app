@@ -16,9 +16,8 @@ import Link from 'components/Link';
 
 import { setRecipients } from 'actions/MessageActions';
 
-import {
-  CampaignQuery, SubscribedUsersQuery
-} from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import SubscribedUsersQuery from 'schemas/queries/SubscribedUsersQuery.graphql';
 
 import s from 'styles/Organize.scss';
 

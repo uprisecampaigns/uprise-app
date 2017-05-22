@@ -1,0 +1,3 @@
+mutation SendMessageMutation ($data:SendMessageInput!) {
+  sendMessage(data:$data)
+}

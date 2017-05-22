@@ -19,8 +19,9 @@ import {
   validateStartEndTimes
 } from 'lib/validateComponentForms';
 
-import { CampaignQuery } from 'schemas/queries';
-import { CreateActionMutation } from 'schemas/mutations';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+
+import CreateActionMutation from 'schemas/mutations/CreateActionMutation.graphql';
 
 import ActionInfoForm from 'components/ActionInfoForm';
 
@@ -102,7 +103,7 @@ class CreateAction extends Component {
           data: formData
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['ActionsQuery'], //, 'CampaignActions'],
+        refetchQueries: ['SearchActionsQuery'], //, 'CampaignActions'],
         // updateQueries: {
         //   ActionsQuery: addAction,
         //   MyActionsQuery: addAction

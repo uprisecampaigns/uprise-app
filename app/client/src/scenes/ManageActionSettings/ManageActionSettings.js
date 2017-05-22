@@ -11,13 +11,11 @@ import history from 'lib/history';
 
 import Link from 'components/Link';
 
-import { 
-  CampaignQuery, ActionQuery, ActionsQuery
-} from 'schemas/queries';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
 
-import { 
-  DeleteActionMutation
-} from 'schemas/mutations';
+import DeleteActionMutation from 'schemas/mutations/DeleteActionMutation.graphql';
 
 import { notify } from 'actions/NotificationsActions';
 
@@ -65,7 +63,7 @@ class ManageActionSettings extends Component {
             }
           },
           refetchQueries: [{
-            query: ActionsQuery,
+            query: SearchActionsQuery,
             variables: {
               search: { campaignIds: [campaignId] }
             }

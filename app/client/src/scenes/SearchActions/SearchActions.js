@@ -19,9 +19,7 @@ import {
   addSearchItem, sortBy
 } from 'actions/SearchActions';
 
-import { 
-  ActionsQuery, 
-} from 'schemas/queries';
+import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
 
 import s from 'styles/Search.scss';
 
@@ -43,7 +41,7 @@ const graphqlOptions = {
         if (!allItemsLoaded) {
 
           return data.fetchMore({
-            query: ActionsQuery,
+            query: SearchActionsQuery,
             variables: {
               search: Object.assign({}, data.variables.search, {
                 cursor: {
@@ -99,12 +97,12 @@ const mapStateToProps = (state) => ({
 
 const ResultsCountWithData = compose(
   connect(mapStateToProps),
-  graphql(ActionsQuery, graphqlOptions),
+  graphql(SearchActionsQuery, graphqlOptions),
 )(ResultsCount);
 
 const SearchActionResultsWithData = compose(
   connect(mapStateToProps),
-  graphql(ActionsQuery, graphqlOptions),
+  graphql(SearchActionsQuery, graphqlOptions),
 )(SearchActionResults);
 
 const ConnectedSearchSort = connect( (state) => ({

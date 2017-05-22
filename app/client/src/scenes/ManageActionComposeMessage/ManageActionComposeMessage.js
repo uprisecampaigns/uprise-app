@@ -9,13 +9,13 @@ import Link from 'components/Link';
 
 import s from 'styles/Organize.scss';
 
-import { 
-  CampaignQuery, ActionQuery, MeQuery
-} from 'schemas/queries';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import history from 'lib/history';
 
-import { SendMessageMutation } from 'schemas/mutations';
+import SendMessageMutation from 'schemas/mutations/SendMessageMutation.graphql';
 
 import { notify } from 'actions/NotificationsActions';
 

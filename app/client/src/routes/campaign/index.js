@@ -4,7 +4,7 @@ import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
 
-import { CampaignQuery } from 'schemas/queries';
+import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
 const CampaignWithAuthentication = withAuthentication(Campaign);
 
