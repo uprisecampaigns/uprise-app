@@ -281,8 +281,8 @@ class SearchActions extends Component {
           </div>
         </div>
 
-        <div className={s.filterOptionsContainer}>
-          { this.state.filterOpen && (
+        { this.state.filterOpen && (
+          <div className={s.filterOptionsContainer}>
             <div>
 
               <Divider />
@@ -306,10 +306,10 @@ class SearchActions extends Component {
               />
 
             </div>
-          )}
-        </div>
+            <Divider />
+          </div>
+        )}
 
-        <Divider />
 
         <div className={s.selectionsContainer}>
           <SearchActionSelections
