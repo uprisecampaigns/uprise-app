@@ -310,16 +310,17 @@ class SearchActions extends Component {
           </div>
         )}
 
-
         <div className={s.selectionsContainer}>
           <SearchActionSelections
           />
         </div>
 
-        <div className={s.resultsContainer}>
-          <SearchActionResultsWithData
-          />
-        </div>
+        { !this.state.filterOpen && (
+          <div className={s.resultsContainer}>
+            <SearchActionResultsWithData
+            />
+          </div>
+        )}
 
       </div>
     );
