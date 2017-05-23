@@ -39,6 +39,12 @@
     }
   }
 
+  .mobileSearchBarContainer {
+    @media (min-width: $screen-sm-min) {
+      display: none;
+    }
+  }
+
   .countSortFilterContainer {
     display: flex;
     align-items: baseline;
@@ -59,6 +65,10 @@
       width: 35%;
       font-weight: 400;
 
+      @media (min-width: $screen-sm-min) {
+        width: 70%;
+      }
+
       >button {
         top: 0.5rem;
       }
@@ -67,6 +77,10 @@
     .filterContainer {
       width: 35%;
       font-weight: 400;
+      display: block;
+      @media (min-width: $screen-sm-min) {
+        display: none;
+      }
 
       >button {
         top: 0.5rem;
@@ -97,10 +111,42 @@
     }
   }
 
+  .filterResultsOuterContainer {
+    display: block;
+
+    @media (min-width: $screen-sm-min) {
+      display: flex;
+    }
+  }
+
+  .desktopSearchOptionsContainer {
+    display: none;
+    @media (min-width: $screen-sm-min) {
+      display: block;
+      width: 33%;
+      padding: 2%;
+    }
+
+    .desktopFilterHeader {
+      font-size: 1.5rem;
+      color: darken($azure, 20%);
+      margin: 1rem;
+      font-weight: 500;
+    }
+
+    .searchBarContainer {
+      padding: 0px;
+      margin: 1rem;
+    }
+  }
+
   .resultsContainer {
 
     width: 100%;
     overflow-x: hidden;
+
+    @media (min-width: $screen-sm-min) {
+    }
 
     .resultsHeader {
       font-size: 1rem;

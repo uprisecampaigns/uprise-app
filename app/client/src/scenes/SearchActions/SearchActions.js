@@ -198,129 +198,152 @@ class SearchActions extends Component {
           Search Actions
         </div>
 
-        <div className={s.searchBarContainer}>
-          <SearchBar
-            collectionName="keywords"
-            inputLabel="keyword search"
-            addItem={this.addSelectedItem}
-            inputRef={el => this.searchBarInputElement = el}
-          />
-        </div>
-
-        <div className={s.countSortFilterContainer}>
-
-          <div className={s.countContainer}>
-            <ResultsCountWithData/>
-          </div>
-
-          <div
-            onTouchTap={this.handleOpenSort}
-            className={s.sortContainer}
-          >
-            <span>Sort by</span>
-            <IconButton
-              iconClassName='material-icons'
-            >sort</IconButton>
-
-            <Popover
-              open={this.state.sortOpen}
-              anchorEl={this.state.sortPopoverAnchorEl}
-              onRequestClose={this.handleCloseSort}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              className={s.popover}
-            >
-              <ConnectedSearchSort
-                onSelect={this.sortSelect}
-                items={[
-                  { label: 'Date', prop: 'date' },
-                  { label: 'Campaign Name', prop: 'campaignName' },
-                ]}
-              />
-            </Popover>
-          </div>
-
-          <div
-            className={s.filterContainer}
-            onTouchTap={this.handleOpenFilter}
-          >
-            <span>Filter</span>
-            <IconButton
-              iconClassName='material-icons'
-            >filter_list</IconButton>
-
-{ /*
-            <Popover
-              open={this.state.filterOpen}
-              autoCloseWhenOffScreen={false}
-              anchorEl={this.state.filterPopoverAnchorEl}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              className={s.popover}
-            >
-              <div>
-                <div className={s.sortFilterHeaderContainer}>
-                  <span>Filter</span>
-
-                  <span
-                    className={s.closePopoverContainer}
-                    onClick={this.handleCloseFilter}
-                  >
-                    <IconButton
-                      iconClassName='material-icons'
-                    >close</IconButton>
-                  </span>
-                </div>
-
-                <SearchActionInputs
-                />
-
-              </div>
-            </Popover>
-*/}
-          </div>
-        </div>
-
-        { this.state.filterOpen && (
-          <div className={s.filterOptionsContainer}>
-            <div>
-
-              <Divider />
-
-              <div className={s.filterHeaderContainer}>
-                <span className={s.filterHeader}>Filter</span>
-
-                <span
-                  className={s.closeIcon}
-                  onClick={this.handleCloseFilter}
-                >
-                  <IconButton
-                    iconClassName='material-icons'
-                  >close</IconButton>
-                </span>
-              </div>
-
-              <Divider />
-
-              <SearchActionInputs
-              />
-
-            </div>
-            <Divider />
-          </div>
-        )}
-
-        <div className={s.selectionsContainer}>
-          <SearchActionSelections
-          />
-        </div>
-
-        { !this.state.filterOpen && (
-          <div className={s.resultsContainer}>
-            <SearchActionResultsWithData
+        <div className={s.mobileSearchBarContainer}>
+          <div className={s.searchBarContainer}>
+            <SearchBar
+              collectionName="keywords"
+              inputLabel="keyword search"
+              addItem={this.addSelectedItem}
+              inputRef={el => this.searchBarInputElement = el}
             />
           </div>
-        )}
+        </div>
+        <div className={s.filterResultsOuterContainer}>
+
+          <div className={s.desktopSearchOptionsContainer}>
+            <div className={s.desktopFilterHeader}>Narrow Your Search</div>
+
+            <div className={s.searchBarContainer}>
+              <SearchBar
+                collectionName="keywords"
+                inputLabel="keyword search"
+                addItem={this.addSelectedItem}
+                inputRef={el => this.searchBarInputElement = el}
+              />
+            </div>
+
+            <SearchActionInputs
+            />
+
+          </div>
+
+          <div>
+            <div className={s.countSortFilterContainer}>
+
+              <div className={s.countContainer}>
+                <ResultsCountWithData/>
+              </div>
+
+              <div
+                onTouchTap={this.handleOpenSort}
+                className={s.sortContainer}
+              >
+                <span>Sort by</span>
+                <IconButton
+                  iconClassName='material-icons'
+                >sort</IconButton>
+
+                <Popover
+                  open={this.state.sortOpen}
+                  anchorEl={this.state.sortPopoverAnchorEl}
+                  onRequestClose={this.handleCloseSort}
+                  anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                  targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                  className={s.popover}
+                >
+                  <ConnectedSearchSort
+                    onSelect={this.sortSelect}
+                    items={[
+                      { label: 'Date', prop: 'date' },
+                      { label: 'Campaign Name', prop: 'campaignName' },
+                    ]}
+                  />
+                </Popover>
+              </div>
+
+              <div
+                className={s.filterContainer}
+                onTouchTap={this.handleOpenFilter}
+              >
+                <span>Filter</span>
+                <IconButton
+                  iconClassName='material-icons'
+                >filter_list</IconButton>
+
+    { /*
+                <Popover
+                  open={this.state.filterOpen}
+                  autoCloseWhenOffScreen={false}
+                  anchorEl={this.state.filterPopoverAnchorEl}
+                  anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                  targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                  className={s.popover}
+                >
+                  <div>
+                    <div className={s.sortFilterHeaderContainer}>
+                      <span>Filter</span>
+
+                      <span
+                        className={s.closePopoverContainer}
+                        onClick={this.handleCloseFilter}
+                      >
+                        <IconButton
+                          iconClassName='material-icons'
+                        >close</IconButton>
+                      </span>
+                    </div>
+
+                    <SearchActionInputs
+                    />
+
+                  </div>
+                </Popover>
+    */}
+              </div>
+            </div>
+
+            { this.state.filterOpen && (
+              <div className={s.filterOptionsContainer}>
+                <div>
+
+                  <Divider />
+
+                  <div className={s.filterHeaderContainer}>
+                    <span className={s.filterHeader}>Filter</span>
+
+                    <span
+                      className={s.closeIcon}
+                      onClick={this.handleCloseFilter}
+                    >
+                      <IconButton
+                        iconClassName='material-icons'
+                      >close</IconButton>
+                    </span>
+                  </div>
+
+                  <Divider />
+
+                  <SearchActionInputs
+                  />
+
+                </div>
+                <Divider />
+              </div>
+            )}
+
+            <div className={s.selectionsContainer}>
+              <SearchActionSelections
+              />
+            </div>
+
+            { !this.state.filterOpen && (
+              <div className={s.resultsContainer}>
+                <SearchActionResultsWithData
+                />
+              </div>
+            )}
+          </div>
+        </div>
 
       </div>
     );
