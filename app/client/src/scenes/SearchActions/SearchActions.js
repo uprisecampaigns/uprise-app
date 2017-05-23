@@ -6,6 +6,7 @@ import Popover from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import Divider from 'material-ui/Divider';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import SearchBar from 'components/SearchBar';
 import SearchSort from 'components/SearchSort';
@@ -309,11 +310,17 @@ class SearchActions extends Component {
                   <Divider />
 
                   <div className={s.filterHeaderContainer}>
+                    <RaisedButton
+                      onTouchTap={this.handleCloseFilter}
+                      primary={true}
+                      label="Done"
+                    />
+
                     <span className={s.filterHeader}>Filter</span>
 
                     <span
                       className={s.closeIcon}
-                      onClick={this.handleCloseFilter}
+                      onTouchTap={this.handleCloseFilter}
                     >
                       <IconButton
                         iconClassName='material-icons'
