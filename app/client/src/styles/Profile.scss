@@ -33,6 +33,11 @@
         top: 0px;
         right: 0px;
         position: absolute;
+
+        :global .material-icons {
+          font-size: 3rem !important;
+          color: darken($white, 45%) !important;
+        }
       }
     }
 
