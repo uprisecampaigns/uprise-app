@@ -204,15 +204,35 @@
   padding: 0px 0px !important;
 }
 
-.listItemContainer, .listItemContainer div:first-of-type span:first-of-type {
+.listItemContainer, .listItemContainer >div:first-of-type >span:first-of-type {
   font-size: 1.5rem !important;
   font-weight: 500 !important;
+}
+
+.listItemContainer >div:first-of-type >div:first-of-type {
+  max-height: inherit !important;
+  overflow-y: inherit !important;
 }
 
 .listItem {
   padding: 1rem;
   font-size: 1rem !important;
   font-weight: 400 !important;
+}
+
+.geographySearchContainer {
+  padding: 1rem 2rem 0rem 2rem;
+}
+
+label.listItem {
+  margin-left: 1rem !important;
+  padding: .8rem 1rem .8rem 5rem !important;
+  display: flex !important;
+  align-items: center;
+
+  >div:first-of-type {
+    top: inherit !important;
+  }
 }
 
 .listItem.searchBar {
