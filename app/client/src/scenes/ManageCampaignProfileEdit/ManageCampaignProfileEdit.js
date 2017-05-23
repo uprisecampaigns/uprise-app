@@ -120,7 +120,7 @@ class ManageCampaignProfileEdit extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug + '/profile/edit'}>
+          <Link to={'/organize/' + campaign.slug + '/settings'}>
             <div className={s.navHeader}>
               <FontIcon 
                 className={["material-icons", s.backArrow].join(' ')}
