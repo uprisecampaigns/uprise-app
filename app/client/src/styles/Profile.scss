@@ -26,6 +26,16 @@
       text-align: center;
     }
 
+    .profileHeaderContainer {
+      position: relative;
+
+      .settingsIcon {
+        top: 0px;
+        right: 0px;
+        position: absolute;
+      }
+    }
+
     .profileImageContainer {
       padding: 1rem;
       font-size: 1.6rem;

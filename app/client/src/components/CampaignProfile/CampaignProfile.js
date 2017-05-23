@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import FontIcon from 'material-ui/FontIcon';
 
 import timeWithZone from 'lib/timeWithZone';
 
@@ -26,46 +27,55 @@ class CampaignProfile extends Component {
 
   render() {
 
-    const { campaign, saving, subscribe, cancelSubscription, ...props } = this.props;
+    if (this.props.campaign) {
 
-    const keywords = (typeof campaign.tags === 'object' && campaign.tags.length > 0) ? (
-      <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
-    ) : '';
+      const { campaign, saving, subscribe, cancelSubscription, ...props } = this.props;
 
-    const issues = (typeof campaign.issue_areas === 'object' && campaign.issue_areas.length > 0) ? (
-      <div className={s.detailLine}>{campaign.issue_areas.map(issue => issue.title).join(', ')}</div>
-    ) : '';
+      const keywords = (Array.isArray(campaign.tags) && campaign.tags.length > 0) ? (
+        <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
+      ) : '';
 
-    const actions = (typeof campaign.actions === 'object' && campaign.actions.length > 0) ? campaign.actions.map(action => {
+      const issues = (Array.isArray(campaign.issue_areas) && campaign.issue_areas.length > 0) ? (
+        <div className={s.detailLine}>{campaign.issue_areas.map(issue => issue.title).join(', ')}</div>
+      ) : '';
 
-      if (action.start_time && action.end_time) {
+      const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ? campaign.actions.map(action => {
 
-        const startTime = moment(action.start_time);
-        const endTime = moment(action.end_time);
+        if (action.start_time && action.end_time) {
 
-        const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
-        const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
+          const startTime = moment(action.start_time);
+          const endTime = moment(action.end_time);
 
-        return (
-          <Link to={'/action/' + action.slug} key={action.id}>
-            <div className={[s.detailLine, s.actionListing].join(' ')}>
-              {action.title}, {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}{action.city && ', ' + action.city}{action.state && ', ' + action.state}
-            </div>
-          </Link>
-        );
-      } else return null;
-    }) : '';
+          const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
+          const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
+
+          return (
+            <Link to={'/action/' + action.slug} key={action.id}>
+              <div className={[s.detailLine, s.actionListing].join(' ')}>
+                {action.title}, {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}{action.city && ', ' + action.city}{action.state && ', ' + action.state}
+              </div>
+            </Link>
+          );
+        } else return null;
+      }) : '';
 
 
-
-    if (campaign) {
       return (
         <div className={s.outerContainer}>
           <div className={s.innerContainer}>
 
-            <Link to={'/campaign/' + campaign.slug}>
+            <div className={s.profileHeaderContainer}>
               <div className={s.titleContainer}>{campaign.title}</div>
-            </Link>
+              { campaign.is_owner && (
+                <div className={s.settingsIcon}>
+                  <Link to={'/organize/' + campaign.slug}>
+                    <FontIcon
+                      className={["material-icons"].join(' ')}
+                    >settings</FontIcon>
+                  </Link>
+                </div>
+              )}
+            </div>
 
             { campaign.profile_image_url && (
               <div className={s.profileImageContainer}>

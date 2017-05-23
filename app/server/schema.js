@@ -41,6 +41,7 @@ module.exports = buildSchema(`
     slug: String
     description: String
     subscribed: Boolean
+    is_owner: Boolean
     street_address: String
     street_address2: String
     state: String
@@ -74,6 +75,7 @@ module.exports = buildSchema(`
     tags: [String]
     virtual: Boolean
     attending: Boolean
+    is_owner: Boolean
     location_name: String
     street_address: String
     street_address2: String

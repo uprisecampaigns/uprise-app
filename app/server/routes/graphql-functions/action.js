@@ -35,6 +35,10 @@ module.exports = {
     const action = await Action.findOne(data.search);
     // TODO: This is repeated in a bunch of places and should be DRYed
     action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
+
+    // TODO: Better notion of action "ownership"
+    action.is_owner = (context.user.id === action.owner_id);
+
     return action;
   },
 

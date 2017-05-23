@@ -3,6 +3,7 @@ fragment CampaignDetails on CampaignResult {
   profile_subheader
   tags
   subscribed
+  is_owner
   street_address
   street_address2
   city

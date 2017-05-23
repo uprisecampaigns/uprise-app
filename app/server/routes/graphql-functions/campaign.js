@@ -17,6 +17,9 @@ module.exports = {
     // TODO: This is repeated in a bunch of places and should be DRYed
     campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id });
 
+    // TODO: Better notion of campaign "ownership"
+    campaign.is_owner = (context.user.id === campaign.owner_id);
+
     return campaign;
   },
 
