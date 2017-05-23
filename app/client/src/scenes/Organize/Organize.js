@@ -23,7 +23,7 @@ class Organize extends Component {
 
     const campaignList = this.props.myCampaigns ? this.props.myCampaigns.map( (campaign) => (
 
-      <div>
+      <div key={campaign.id}>
         
         <Link to={'/organize/' + campaign.slug} key={campaign.id}>
           <ListItem 

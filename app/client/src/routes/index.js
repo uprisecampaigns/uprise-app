@@ -28,6 +28,7 @@ export default {
     require('./manageCampaignVolunteers').default,
     require('./manageCampaignComposeMessage').default,
     require('./manageCampaignProfile').default,
+    require('./manageCampaignProfileEdit').default,
     require('./manageCampaignInfo').default,
     require('./manageCampaignPreferences').default,
     require('./manageCampaignLocation').default,
@@ -39,6 +40,7 @@ export default {
     require('./manageActionSettings').default,
     require('./manageActionInfo').default,
     require('./manageActionProfile').default,
+    require('./manageActionProfileEdit').default,
     require('./manageActionPreferences').default,
     require('./manageActionComposeMessage').default,
 
