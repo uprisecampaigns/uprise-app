@@ -4,6 +4,8 @@ import AutoComplete from 'material-ui/AutoComplete';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 
+import s from './SearchBar.scss';
+
 
 class SearchBar extends React.PureComponent {
 
@@ -73,14 +75,16 @@ class SearchBar extends React.PureComponent {
     );
 
     return (
-      <form onSubmit={this.addItem}>
-        {input}
-        <IconButton 
-          iconClassName='material-icons'
-          type="submit"
-          onTouchTap={this.addItem} 
-        >{iconName || "search"}</IconButton>
-      </form>
+      <div className={s.searchBarContainer}>
+        <form onSubmit={this.addItem}>
+          {input}
+          <IconButton 
+            iconClassName='material-icons'
+            type="submit"
+            onTouchTap={this.addItem} 
+          >{iconName || "search"}</IconButton>
+        </form>
+      </div>
     )
   }
 }

@@ -263,13 +263,15 @@ class ManageActionPreferencesContainer extends Component {
               initiallyOpen={false}
               primaryTogglesNestedList={true}
               nestedItems={[(
-                <ListItem key={0} disabled={true} className={[s.listItem, s.searchBar].join(' ')}>
-                  <SearchBar
-                    collectionName="tags"
-                    inputLabel="Keyword"
-                    addItem={addKeyword}
-                    iconName="add"
-                  />
+                <ListItem key={0} disabled={true} className={s.keywordsContainer}>
+                  <div className={s.keywordsInputContainer}>
+                    <SearchBar
+                      collectionName="tags"
+                      inputLabel="Keyword"
+                      addItem={addKeyword}
+                      iconName="add"
+                    />
+                  </div>
                   <SelectedItemsContainer
                     collectionName="tags"
                     removeItem={removeKeyword}

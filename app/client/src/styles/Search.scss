@@ -15,31 +15,6 @@
     color: darken($azure, 20%) !important;
   }
 
-  .searchBarContainer {
-    display: block;
-    text-align: center;
-    padding: 0 10%;
-
-    >form {
-      border: 1px solid darken($white, 30%);
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-    }
-
-    :global .searchBarInput {
-      width: 80% !important;
-      height: 2rem !important;
-      font-size: 1.2rem !important;
-
-      div:first-child {
-        line-height: 2rem !important;
-        bottom: inherit !important;
-        font-style: italic;
-      }
-    }
-  }
-
   .mobileSearchBarContainer {
     @media (min-width: $screen-sm-min) {
       display: none;
@@ -135,7 +110,7 @@
       font-weight: 500;
     }
 
-    .searchBarContainer {
+    .searchBarContainer > div:first-of-type {
       padding: 0px;
       margin: 1rem;
     }
@@ -233,16 +208,6 @@ label.listItem {
 
   >div:first-of-type {
     top: inherit !important;
-  }
-}
-
-.listItem.searchBar {
-  >form >div {
-    width: auto !important;
-
-    :global .searchBarInput {
-      width: 80% !important;
-    }
   }
 }
 
