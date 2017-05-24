@@ -46,31 +46,16 @@ module.exports = {
   },
 
   types: async (data, context) => {
-
-    if (!context.user) {
-      throw new Error('User must be logged in');
-    }
-
     const types = await Campaign.listTypes(data.search);
     return types;
   },
 
   levels: async (data, context) => {
-
-    if (!context.user) {
-      throw new Error('User must be logged in');
-    }
-
     const levels = await Campaign.listLevels(data.search);
     return levels;
   },
 
   issueAreas: async (data, context) => {
-
-    if (!context.user) {
-      throw new Error('User must be logged in');
-    }
-
     const issueAreas = await Campaign.listIssueAreas(data.search);
     return issueAreas;
   },

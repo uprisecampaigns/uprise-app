@@ -64,11 +64,6 @@ module.exports = {
   },
 
   activities: async (data, context) => {
-
-    if (!context.user) {
-      throw new Error('User must be logged in');
-    }
-
     const activities = await Action.listActivities(data.search);
     return activities;
   },
