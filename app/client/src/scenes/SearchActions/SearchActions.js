@@ -123,13 +123,15 @@ class SearchActions extends Component {
       sortOpen: false,
       sortPopoverAnchorEl: null,
     }
+
+    this.searchBarInputElements = [];
   }
 
   static propTypes = {
   };
 
   addSelectedItem = (collectionName, value) => {
-    this.searchBarInputElement.blur();
+    this.searchBarInputElements.forEach( (element) => element.blur());
     this.props.dispatch(addSearchItem('action', collectionName, value));
   }
 
@@ -140,7 +142,7 @@ class SearchActions extends Component {
   }
 
   handleOpenSort = (event) => {
-    this.searchBarInputElement.blur();
+    this.searchBarInputElements.forEach( (element) => element.blur());
     event.preventDefault();
 
     this.setState(Object.assign({},
@@ -161,7 +163,7 @@ class SearchActions extends Component {
   }
 
   handleOpenFilter = (event) => {
-    this.searchBarInputElement.blur();
+    this.searchBarInputElements.forEach( (element) => element.blur());
     event.preventDefault();
 
     this.setState((prevState) => (Object.assign({},
@@ -205,7 +207,7 @@ class SearchActions extends Component {
               collectionName="keywords"
               inputLabel="keyword search"
               addItem={this.addSelectedItem}
-              inputRef={el => this.searchBarInputElement = el}
+              inputRef={el => this.searchBarInputElements[0] = el}
             />
           </div>
         </div>
@@ -219,7 +221,7 @@ class SearchActions extends Component {
                 collectionName="keywords"
                 inputLabel="keyword search"
                 addItem={this.addSelectedItem}
-                inputRef={el => this.searchBarInputElement = el}
+                inputRef={el => this.searchBarInputElements[1] = el}
               />
             </div>
 
