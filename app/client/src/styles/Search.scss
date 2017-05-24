@@ -46,6 +46,10 @@
     }
   }
 
+  .countSortFilterResultsContainer {
+    flex: 2;
+  }
+
   .countSortFilterContainer {
     display: flex;
     align-items: baseline;
@@ -121,8 +125,15 @@
     display: none;
     @media (min-width: $screen-sm-min) {
       display: block;
-      width: 33%;
+      flex: 1;
       padding: 2%;
+
+      // Hack to get hr to expand to full size of parents
+      // padded container
+      hr {
+        margin-left: -20rem !important;
+        width: 200% !important;
+      }
     }
 
     .desktopFilterHeader {

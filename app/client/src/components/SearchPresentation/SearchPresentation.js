@@ -1,0 +1,224 @@
+import React, { Component, PropTypes } from 'react';
+import Popover from 'material-ui/Popover';
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
+import Divider from 'material-ui/Divider';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import SearchBar from 'components/SearchBar';
+import SearchSort from 'components/SearchSort';
+import Link from 'components/Link';
+
+import s from 'styles/Search.scss';
+
+
+class SearchPresentation extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filterOpen: false,
+      filterPopoverAnchorEl: null,
+      sortOpen: false,
+      sortPopoverAnchorEl: null,
+    }
+
+    this.searchBarInputElements = [];
+  }
+
+  static propTypes = {
+    sortSelect: PropTypes.func.isRequired,
+    resultsCount: PropTypes.node.isRequired,
+    searchSortWrapper: PropTypes.func.isRequired,
+    searchSortItems: PropTypes.array.isRequired,
+    searchSelections: PropTypes.node.isRequired,
+    searchInputs: PropTypes.node.isRequired,
+    searchResults: PropTypes.node.isRequired,
+  };
+
+  addSelectedItem = (collectionName, value) => {
+    this.searchBarInputElements.forEach( (element) => element.blur());
+    this.props.addSelectedItem(collectionName, value);
+  }
+
+  sortSelect = (value, event) => {
+    this.handleCloseSort(event);
+    this.props.sortSelect(value);
+  }
+
+  handleOpenSort = (event) => {
+    this.searchBarInputElements.forEach( (element) => element.blur());
+    event.preventDefault();
+
+    this.setState(Object.assign({},
+      this.state,
+      {
+        sortOpen: true,
+        sortPopoverAnchorEl: event.currentTarget
+      }
+    ));
+  }
+
+  handleCloseSort = (event) => {
+    typeof event.preventDefault === 'function' && event.preventDefault();
+    this.setState(Object.assign({},
+      this.state,
+      { sortOpen: false }
+    ));
+  }
+
+  handleOpenFilter = (event) => {
+    this.searchBarInputElements.forEach( (element) => element.blur());
+    event.preventDefault();
+
+    this.setState((prevState) => (Object.assign({},
+      prevState,
+      {
+        filterOpen: !prevState.filterOpen,
+        filterPopoverAnchorEl: event.currentTarget
+      }
+    )));
+  }
+
+  handleCloseFilter = (event) => {
+    typeof event.preventDefault === 'function' && event.preventDefault();
+    this.setState((prevState) => (Object.assign({},
+      prevState,
+      { filterOpen: false }
+    )));
+  }
+
+  render() {
+
+    const { 
+      searchSortWrapper, resultsCount, searchSortItems,
+      searchSelections, searchInputs, searchResults, ...props 
+    } = this.props;
+
+    const ConnectedSearchSort = searchSortWrapper(SearchSort);
+
+    return (
+      <div>
+        <div className={s.mobileSearchBarContainer}>
+          <div className={s.searchBarContainer}>
+            <SearchBar
+              collectionName="keywords"
+              inputLabel="keyword search"
+              addItem={this.addSelectedItem}
+              inputRef={el => this.searchBarInputElements[0] = el}
+            />
+          </div>
+        </div>
+        <div className={s.filterResultsOuterContainer}>
+
+          <div className={s.desktopSearchOptionsContainer}>
+            <div className={s.desktopFilterHeader}>Narrow Your Search</div>
+
+            <div className={s.searchBarContainer}>
+              <SearchBar
+                collectionName="keywords"
+                inputLabel="keyword search"
+                addItem={this.addSelectedItem}
+                inputRef={el => this.searchBarInputElements[1] = el}
+              />
+            </div>
+
+            {searchInputs}
+
+          </div>
+
+          <div className={s.countSortFilterResultsContainer}>
+            <div className={s.countSortFilterContainer}>
+
+              <div className={s.countContainer}>
+                {resultsCount}
+              </div>
+
+              <div
+                onTouchTap={this.handleOpenSort}
+                className={s.sortContainer}
+              >
+                <span>Sort by</span>
+                <IconButton
+                  iconClassName='material-icons'
+                >sort</IconButton>
+
+                <Popover
+                  open={this.state.sortOpen}
+                  anchorEl={this.state.sortPopoverAnchorEl}
+                  onRequestClose={this.handleCloseSort}
+                  anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                  targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                  className={s.popover}
+                >
+                  <ConnectedSearchSort
+                    onSelect={this.sortSelect}
+                    items={searchSortItems}
+                  />
+                </Popover>
+              </div>
+
+              <div
+                className={s.filterContainer}
+                onTouchTap={this.handleOpenFilter}
+              >
+                <span>Filter</span>
+                <IconButton
+                  iconClassName='material-icons'
+                >filter_list</IconButton>
+              </div>
+            </div>
+
+            <div className={s.selectionsContainer}>
+              {searchSelections}
+            </div>
+
+            { this.state.filterOpen && (
+              <div className={s.filterOptionsContainer}>
+                <div>
+
+                  <Divider />
+
+                  <div className={s.filterHeaderContainer}>
+                    <RaisedButton
+                      className={s.primaryButton}
+                      onTouchTap={this.handleCloseFilter}
+                      primary={true}
+                      label="Done"
+                    />
+
+                    <span className={s.filterHeader}>Filter</span>
+
+                    <span
+                      className={s.closeIcon}
+                      onTouchTap={this.handleCloseFilter}
+                    >
+                      <IconButton
+                        iconClassName='material-icons'
+                      >close</IconButton>
+                    </span>
+                  </div>
+
+                  <Divider />
+
+                  {searchInputs}
+
+                </div>
+                <Divider />
+              </div>
+            )}
+
+            { !this.state.filterOpen && (
+              <div className={s.resultsContainer}>
+                {searchResults}
+              </div>
+            )}
+          </div>
+        </div>
+
+      </div>
+    );
+  }
+}
+
+export default SearchPresentation;
