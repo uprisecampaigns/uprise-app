@@ -36,6 +36,12 @@
   @extend .primaryButton;
 }
 
+.signupButton {
+  @extend .secondaryButton;
+  @extend .button;
+  margin: 10px 10px 30px 10px;
+}
+
 .textFieldContainer {
   display: flex;
   text-align: left;

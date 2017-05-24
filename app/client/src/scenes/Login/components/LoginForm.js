@@ -27,6 +27,16 @@ class LoginForm extends Component {
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
+
+          <div className={s.signupButton}>
+            <Link
+              useAhref={false}
+              to='/signup'
+            >
+              <RaisedButton secondary={true} label="Signup" />
+            </Link>
+          </div>
+
           <Paper zDepth={2}>
             <div className={s.formContainer}>
               <div
@@ -76,14 +86,6 @@ class LoginForm extends Component {
             </Link>
           </Paper>
 
-          <div className={[s.button, s.secondaryButton].join(' ')}>
-            <Link
-              useAhref={false}
-              to='/signup'
-            >
-              <RaisedButton secondary={true} label="Signup" />
-            </Link>
-          </div>
         </div>
       </div>
     );
