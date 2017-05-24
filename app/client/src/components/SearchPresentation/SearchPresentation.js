@@ -123,7 +123,11 @@ class SearchPresentation extends Component {
               />
             </div>
 
+            <Divider />
+
             {searchInputs}
+
+            <Divider />
 
           </div>
 
