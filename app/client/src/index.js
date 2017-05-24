@@ -162,21 +162,6 @@ async function onLocationChange(location) {
 history.listen(onLocationChange);
 onLocationChange(currentLocation);
 
-// Handle errors that might happen after rendering
-// Display the error in full-screen for development mode
-window.addEventListener('error', (event) => {
-  if (process.env.NODE_ENV !== 'production') {
-    appInstance = null;
-    document.title = `Runtime Error: ${event.error ? event.error.message : event.message}`;
-    ReactDOM.render(<RedBox error={event.error || event} />, container);
-  } else {
-    // Avoid broken navigation in production mode by a full page reload on error
-    // TODO: Send to home page?
-    // TODO: production error reporting?
-    window.location.reload(true);
-  }
-});
-
 // We can prefetch these basic queries because they're integral to UI performance
 apolloClient.query({query: ActivitiesQuery});
 apolloClient.query({query: IssueAreasQuery});
