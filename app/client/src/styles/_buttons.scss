@@ -1,0 +1,18 @@
+@import '~styles/variables';
+
+.primaryButton button {
+  background-color: lighten($brick-red, 25%) !important;
+  span {
+    color: darken($brick-red, 10%) !important;
+  }
+}
+
+.secondaryButton button {
+  background-color: darken($white, 20%) !important;
+  span {
+    color: darken($azure, 30%) !important;
+  }
+}
+
+
+

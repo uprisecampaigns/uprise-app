@@ -311,6 +311,7 @@ class SearchActions extends Component {
 
                   <div className={s.filterHeaderContainer}>
                     <RaisedButton
+                      className={s.primaryButton}
                       onTouchTap={this.handleCloseFilter}
                       primary={true}
                       label="Done"

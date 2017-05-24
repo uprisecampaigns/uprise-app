@@ -34,7 +34,7 @@ class LoginForm extends Component {
               >
                 {message}
               </div>
-              <form 
+              <form
                 className={s.form}
                 onSubmit={formSubmit}
               >
@@ -56,17 +56,19 @@ class LoginForm extends Component {
                     type="password"
                   />
                 </div>
-                <RaisedButton 
-                  className={s.button}
-                  onTouchTap={formSubmit} 
-                  type="submit"
-                  primary={true} 
-                  label="Login" 
-                />
+                <div className={[s.button, s.primaryButton].join(' ')}>
+                  <RaisedButton
+                    className={s.button}
+                    onTouchTap={formSubmit}
+                    type="submit"
+                    primary={true}
+                    label="Login"
+                  />
+                </div>
               </form>
             </div>
-            <Link 
-              useAhref={false} 
+            <Link
+              useAhref={false}
               to='/forgot-password'
               className={s.forgotPassword}
             >
@@ -74,13 +76,14 @@ class LoginForm extends Component {
             </Link>
           </Paper>
 
-          <Link 
-            useAhref={false} 
-            to='/signup'
-            className={s.button}
-          >
-            <RaisedButton secondary={true} label="Signup" />
-          </Link>
+          <div className={[s.button, s.secondaryButton].join(' ')}>
+            <Link
+              useAhref={false}
+              to='/signup'
+            >
+              <RaisedButton secondary={true} label="Signup" />
+            </Link>
+          </div>
         </div>
       </div>
     );

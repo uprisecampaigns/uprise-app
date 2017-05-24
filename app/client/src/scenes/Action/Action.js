@@ -191,6 +191,7 @@ class Action extends Component {
                     <RaisedButton
                       onTouchTap={signup}
                       primary={true}
+                      className={s.primaryButton}
                       label="Sign up now"
                     />
                   )}

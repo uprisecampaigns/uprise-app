@@ -102,7 +102,7 @@ class SignupForm extends Component {
                     label="Cancel" 
                   />
                 </div>
-                <div className={s.button}>
+                <div className={[s.button, s.primaryButton].join(' ')}>
                   <RaisedButton 
                     onTouchTap={formSubmit} 
                     primary={true} 

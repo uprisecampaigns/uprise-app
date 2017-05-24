@@ -1,4 +1,5 @@
 @import '~styles/variables';
+@import '~styles/buttons';
 
 .outerContainer {
   width: 100%;
@@ -117,12 +118,7 @@
       text-align: center;
       margin: 1rem auto 1rem auto;
 
-      button {
-        background-color: lighten($brick-red, 25%) !important;
-        span {
-          color: darken($brick-red, 10%) !important;
-        }
-      }
+      @extend .primaryButton;
 
       .calendarLinkContainer {
         margin-bottom: 1rem;
