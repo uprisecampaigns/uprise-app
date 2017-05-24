@@ -7,7 +7,7 @@ import Divider from 'material-ui/Divider';
 
 import TogglesList from 'components/TogglesList';
 
-import s from './DateTimeSearch.scss';
+import s from 'styles/Search.scss';
 
 
 class DateTimeSearch extends React.Component {
@@ -147,10 +147,11 @@ class DateTimeSearch extends React.Component {
             autoOk={true}
           />
         </div>
-        <RaisedButton 
-          onTouchTap={setDates} 
-          primary={true} 
-          label="Add to Search" 
+        <RaisedButton
+          className={s.primaryButton}
+          onTouchTap={setDates}
+          primary={true}
+          label="Add to Search"
         />
       </div>
     );

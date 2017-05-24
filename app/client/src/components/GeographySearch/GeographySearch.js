@@ -1,10 +1,12 @@
 
 import React, { PureComponent, PropTypes } from 'react';
 import isNumeric from 'validator/lib/isNumeric';
-import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 
+
+import s from 'styles/Search.scss';
 
 const textFieldStyle = {
   display: 'inline-block',
@@ -115,11 +117,13 @@ class GeographySearch extends React.PureComponent {
             />
           </div>
         )}
-
-        <IconButton 
-          iconClassName='material-icons'
+        <RaisedButton
+          className={s.primaryButton}
+          onTouchTap={addItem}
           type="submit"
-        >search</IconButton>
+          primary={true}
+          label="Add to Search"
+        />
       </form>
     )
   }

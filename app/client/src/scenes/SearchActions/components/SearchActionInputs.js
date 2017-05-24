@@ -134,7 +134,7 @@ class SearchActionInputs extends React.PureComponent {
           primaryTogglesNestedList={true}
           className={s.listItemContainer}
           nestedItems={[(
-            <div key={0} className={s.listItem}>
+            <div key={0} className={[s.listItem, s.dateSearchContainer].join(' ')}>
               <ConnectedDateTimeSearch 
                 setDates={setDates}
                 handleToggle={handleToggle}
