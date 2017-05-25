@@ -59,23 +59,6 @@ class CampaignInfoForm extends Component {
                 </div>
                 <div className={s.textFieldContainer}>
                   <TextField
-                    floatingLabelText="Street Address"
-                    value={data.streetAddress}
-                    onChange={ (event) => { handleInputChange(event, 'streetAddress', event.target.value) } }
-                    errorText={errors.streetAddressErrorText}
-                    fullWidth={true}
-                  />
-                </div>
-                <div className={s.textFieldContainer}>
-                  <TextField
-                    floatingLabelText="Street Address 2"
-                    value={data.streetAddress2}
-                    onChange={ (event) => { handleInputChange(event, 'streetAddress2', event.target.value) } }
-                    fullWidth={true}
-                  />
-                </div>
-                <div className={s.textFieldContainer}>
-                  <TextField
                     floatingLabelText="Website"
                     value={data.websiteUrl}
                     onChange={ (event) => { handleInputChange(event, 'websiteUrl', event.target.value) } }
@@ -95,6 +78,24 @@ class CampaignInfoForm extends Component {
                     pattern="[0-9]{10}"
                   />
                 </div>
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Street Address"
+                    value={data.streetAddress}
+                    onChange={ (event) => { handleInputChange(event, 'streetAddress', event.target.value) } }
+                    errorText={errors.streetAddressErrorText}
+                    fullWidth={true}
+                  />
+                </div>
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Street Address 2"
+                    value={data.streetAddress2}
+                    onChange={ (event) => { handleInputChange(event, 'streetAddress2', event.target.value) } }
+                    fullWidth={true}
+                  />
+                </div>
+
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="City"
