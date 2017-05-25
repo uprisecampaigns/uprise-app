@@ -1,3 +1,5 @@
+@import '~styles/variables';
+
 .header {
   text-align: center;
   font-weight: 300;
@@ -10,5 +12,5 @@
   overflow-y: scroll;
   text-align: left;
   padding: 0px 2rem 2rem 2rem;
+  border: 1px solid darken($white, 30%);
 }
-

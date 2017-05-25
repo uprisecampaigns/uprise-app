@@ -28,7 +28,7 @@ class ResetPasswordForm extends Component {
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
-          <Paper zDepth={2}>
+          <Paper zDepth={0}>
             <div className={s.formContainer}>
               <form 
                 className={s.form}
@@ -40,6 +40,7 @@ class ResetPasswordForm extends Component {
                     type="email"
                     value={data.email}
                     errorText={data.emailErrorText || resetError}
+                    fullWidth={true}
                     onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
                   />
                 </div>
@@ -50,7 +51,7 @@ class ResetPasswordForm extends Component {
                     label="Cancel" 
                   />
                 </div>
-                <div className={s.button}>
+                <div className={[s.button, s.secondaryButton].join(' ')}>
                   <RaisedButton 
                     onTouchTap={formSubmit} 
                     type="submit"

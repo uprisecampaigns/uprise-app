@@ -37,10 +37,27 @@
   @extend .primaryButton;
 }
 
+.loginButton {
+  @extend .secondaryButton;
+  margin: 1rem auto 0rem auto;
+}
+
 .signupButton {
   @extend .secondaryButton;
-  @extend .button;
   margin: 10px 10px 30px 10px;
+  font-size: 2rem;
+
+  button {
+
+    height: 4rem !important;
+    padding: 1rem !important;
+    
+    span {
+      font-size: 2rem !important;
+      font-weight: 500 !important;
+      text-transform: none !important;
+    }
+  }
 }
 
 .textFieldContainer {
@@ -73,10 +90,6 @@
   max-width: 12rem;
 }
 
-.loginButton {
-  margin-top: 20px;
-}
-
 .helpText {
   color: lighten($azure, 10%);
   font-weight: 300;
@@ -94,4 +107,10 @@
 .forgotPassword {
   display: block;
   padding: 10px 0px 20px 0px;
+}
+
+.loginHeader {
+  font-size: 1.8rem;
+  color: darken($azure, 20%);
+  margin-top: 5rem;
 }

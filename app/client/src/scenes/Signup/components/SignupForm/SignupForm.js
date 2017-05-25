@@ -32,7 +32,7 @@ class SignupForm extends Component {
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
-          <Paper zDepth={2}>
+          <Paper zDepth={0}>
             <div className={s.formContainer}>
               <form 
                 className={s.form}
@@ -47,6 +47,8 @@ class SignupForm extends Component {
                     errorText={data.firstNameErrorText}
                     fullWidth={true}
                   />
+                </div>
+                <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Last Name"
                     value={data.lastName}
@@ -102,12 +104,12 @@ class SignupForm extends Component {
                     label="Cancel" 
                   />
                 </div>
-                <div className={[s.button, s.primaryButton].join(' ')}>
+                <div className={[s.button, s.secondaryButton].join(' ')}>
                   <RaisedButton 
                     onTouchTap={formSubmit} 
                     primary={true} 
                     type="submit"
-                    label="Signup" 
+                    label="Create Account" 
                   />
                 </div>
               </form>

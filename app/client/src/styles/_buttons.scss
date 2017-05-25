@@ -8,9 +8,9 @@
 }
 
 .secondaryButton button {
-  background-color: darken($white, 20%) !important;
+  background-color: lighten($azure, 40%) !important;
   span {
-    color: darken($azure, 30%) !important;
+    color: darken($azure, 20%) !important;
   }
 }
 

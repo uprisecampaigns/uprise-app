@@ -33,11 +33,12 @@ class LoginForm extends Component {
               useAhref={false}
               to='/signup'
             >
-              <RaisedButton secondary={true} label="Signup" />
+              <RaisedButton secondary={true} label="Sign Up" />
             </Link>
           </div>
 
-          <Paper zDepth={2}>
+          <Paper zDepth={0}>
+            <div className={s.loginHeader}>Log In</div>
             <div className={s.formContainer}>
               <div
                 className={s.messageContainer}
@@ -68,17 +69,17 @@ class LoginForm extends Component {
                 </div>
                 <div className={[s.button, s.primaryButton].join(' ')}>
                   <RaisedButton
-                    className={s.button}
+                    className={s.secondaryButton}
                     onTouchTap={formSubmit}
                     type="submit"
                     primary={true}
-                    label="Login"
+                    label="Go"
                   />
                 </div>
               </form>
             </div>
             <Link
-              useAhref={false}
+              useAhref={true}
               to='/forgot-password'
               className={s.forgotPassword}
             >

@@ -23,9 +23,9 @@ class PrivacyTerms extends Component {
     return (
       <div className={formStyle.outerContainer}>
         <div className={formStyle.innerContainer}>
-          <Paper zDepth={2}>
+          <Paper zDepth={0}>
+            <h1 className={termsStyle.header}>Privacy and Terms</h1>
             <div className={termsStyle.termsContainer}>
-              <h1 className={termsStyle.header}>Privacy and Terms</h1>
               <p>
                 We’re going to have some pretty special terms, as we’re
                 going to have some very stringent privacy policies, plus
@@ -91,8 +91,8 @@ class PrivacyTerms extends Component {
             <RaisedButton 
               onTouchTap={agreeToTerms} 
               primary={true} 
-              label="Agree" 
-              className={formStyle.button}
+              label="I Agree" 
+              className={[formStyle.secondaryButton, formStyle.button].join(' ')}
             />
           </Paper>
         </div>
