@@ -295,7 +295,7 @@ class ManageActionPreferencesContainer extends Component {
             </div>
           ) : (
 
-            <div className={s.organizeButton}>
+            <div className={[s.organizeButton, s.saveButton].join(' ')}>
               <RaisedButton 
                 onTouchTap={saveChanges} 
                 primary={true} 

@@ -71,7 +71,7 @@ class ActionProfileForm extends Component {
             </div>
           ) : (
 
-            <div className={[s.organizeButton, s.button].join(' ')}>
+            <div className={[s.organizeButton, s.saveButton].join(' ')}>
               <RaisedButton 
                 onTouchTap={formSubmit} 
                 primary={true} 

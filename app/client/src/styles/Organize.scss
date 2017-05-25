@@ -17,6 +17,10 @@
     @extend .primaryButton;
   }
 
+  .saveButton {
+    margin-top: 2rem;
+  }
+
   .textField div {
     text-align: center !important;
     width: 100%;

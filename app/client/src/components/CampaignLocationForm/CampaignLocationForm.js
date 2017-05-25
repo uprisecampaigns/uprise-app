@@ -189,7 +189,7 @@ class CampaignLocationForm extends Component {
                   </div>
                 ) : (
 
-                  <div className={[s.organizeButton, s.button].join(' ')}>
+                  <div className={s.organizeButton}>
                     <RaisedButton 
                       onTouchTap={formSubmit} 
                       primary={true} 
