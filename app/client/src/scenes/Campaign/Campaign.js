@@ -119,6 +119,7 @@ class Campaign extends Component {
             actions={modalActions}
             actionsContainerClassName={s.modalActionsContainer}
             open={modalOpen}
+            autoScrollBodyContent={true}
           >
             <p>
               May we have your permission to share your email address with the coordinator for the purpose of contacting you about volunteering for this campaign?
