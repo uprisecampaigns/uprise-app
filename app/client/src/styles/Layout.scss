@@ -18,6 +18,10 @@ html {
   @media (max-width: $screen-sm-min) {
     font-size: 0.875em; /* ~14px; */
   }
+
+  @media (max-width: $screen-xs-min) {
+    font-size: 0.75em; /* ~12px; */
+  }
 }
 
 body {
