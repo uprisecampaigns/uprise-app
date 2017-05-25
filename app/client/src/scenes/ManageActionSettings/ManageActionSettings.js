@@ -100,15 +100,15 @@ class ManageActionSettings extends Component {
 
       const modalActions = [
         <RaisedButton
+          label="Cancel"
+          primary={false}
+          onTouchTap={ () => this.setState({ deleteModalOpen: false }) }
+        />,
+        <RaisedButton
           label="I'm sure"
           primary={true}
           onTouchTap={this.confirmDelete}
         />,
-        <RaisedButton
-          label="Cancel"
-          primary={false}
-          onTouchTap={ () => this.setState({ deleteModalOpen: false }) }
-        />
       ];
 
       const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
