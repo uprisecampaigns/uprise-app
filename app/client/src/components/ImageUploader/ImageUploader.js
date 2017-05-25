@@ -212,7 +212,7 @@ class ImageUploader extends React.Component {
                     label="Cancel"
                   />
                   <RaisedButton
-                    className={s.button}
+                    className={s.primaryButton}
                     onTouchTap={this.acceptImageCrop}
                     primary={true}
                     label="Accept"
@@ -236,7 +236,7 @@ class ImageUploader extends React.Component {
                 <img src={imageSrc}/>
               </div>
             ): (
-              <div>Drag and drop your image here, or click to select an image to upload.</div>
+              <div className={s.instructions}>Drag and drop your image here, or click to select an image to upload.</div>
             )}
 
             <FontIcon className={[s.addImageButton, 'material-icons'].join(' ')}>add_a_photo</FontIcon>

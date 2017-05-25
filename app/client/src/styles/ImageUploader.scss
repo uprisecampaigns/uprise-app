@@ -1,7 +1,10 @@
 @import '~styles/variables';
+@import '~styles/buttons';
 
 .imageUploadContainer {
-  padding: 0 3rem;
+  max-height: 450px;
+  max-width: 450px;
+  margin: 0px auto 3rem auto;
 }
 
 .cropContainer {
@@ -20,6 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 3rem;
 
   .button {
     margin: auto 2rem auto 2rem !important;
@@ -32,14 +36,21 @@
 }
 
 .fileDropContainer {
+  display: flex;
   position: relative;
   text-align: center;
   border: 3px dashed $black;
-  width: 75%;
-  margin: 2rem auto 2rem auto;
+  margin: 1rem auto;
   justify-content: center;
   align-items: center;
-  padding: 3rem;
+  width: 80vw;
+  height: 80vw;
+  max-height: 450px;
+  max-width: 450px;
+
+  .instructions {
+    margin: 10%;
+  }
 
   img {
     max-width: 100%;
