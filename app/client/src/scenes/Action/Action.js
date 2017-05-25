@@ -119,12 +119,13 @@ class Action extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ () => { this.setState({modalOpen: false}); }}
+          onTouchTap={ (event) => { event.preventDefault(); this.setState({modalOpen: false}); }}
         />,
         <RaisedButton
           label="Confirm"
           primary={true}
-          onTouchTap={ () => { confirmSignup() }}
+          onTouchTap={ (event) => { event.preventDefault(); confirmSignup() }}
+          className={s.primaryButton}
         />
       ];
 
@@ -275,6 +276,7 @@ class Action extends Component {
               title="Permission to Share?"
               modal={true}
               actions={modalActions}
+              actionsContainerClassName={s.modalActionsContainer}
               open={modalOpen}
             >
               <p>

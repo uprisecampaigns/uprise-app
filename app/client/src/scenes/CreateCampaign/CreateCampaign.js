@@ -123,7 +123,7 @@ class CreateCampaignContainer extends Component {
       <RaisedButton
         label="Set Preferences"
         primary={true}
-        onTouchTap={ () => { history.push('/organize/' + newCampaign.slug + '/preferences') }}
+        onTouchTap={ (event) => { event.preventDefault(); history.push('/organize/' + newCampaign.slug + '/preferences') }}
       />
     ];
 
@@ -155,6 +155,7 @@ class CreateCampaignContainer extends Component {
             modal={true}
             actions={modalActions}
             open={modalOpen}
+            actionsContainerClassName={s.modalActionsContainer}
           >
             <p>
               Congratulations, you have created the campaign '{newCampaign.title}'.

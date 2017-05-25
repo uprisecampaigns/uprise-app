@@ -18,6 +18,8 @@ import {
   notify
 } from 'actions/NotificationsActions';
 
+import s from 'styles/Profile.scss';
+
 
 class Campaign extends Component {
   constructor(props) {
@@ -92,12 +94,13 @@ class Campaign extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ () => { this.setState({modalOpen: false}); }}
+          onTouchTap={ (event) => { event.preventDefault(); this.setState({modalOpen: false}); }}
         />,
         <RaisedButton
           label="Confirm"
           primary={true}
-          onTouchTap={ () => { this.confirmSubscription() }}
+          onTouchTap={ (event) => { event.preventDefault(); this.confirmSubscription() }}
+          className={s.primaryButton}
         />
       ];
 
@@ -114,6 +117,7 @@ class Campaign extends Component {
             title="Permission to Share?"
             modal={true}
             actions={modalActions}
+            actionsContainerClassName={s.modalActionsContainer}
             open={modalOpen}
           >
             <p>

@@ -83,7 +83,7 @@ class ManageActionContainer extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ () => { this.setState({emptyRecipientsModalOpen: false}); }}
+          onTouchTap={ (event) => { event.preventDefault(); this.setState({emptyRecipientsModalOpen: false}); }}
         />
       ];
 
@@ -160,6 +160,7 @@ class ManageActionContainer extends Component {
               modal={true}
               actions={modalActions}
               open={emptyRecipientsModalOpen}
+              actionsContainerClassName={s.modalActionsContainer}
             >
               <p>
                 Please select at least one recipient in order to send them a message.

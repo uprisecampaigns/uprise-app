@@ -46,7 +46,8 @@ class ManageActionSettings extends Component {
     });
   }
 
-  confirmDelete = async () => {
+  confirmDelete = async (event) => {
+    event.preventDefault();
 
     const { actionId, campaignId, campaign, action, ...props } = this.props;
 
@@ -102,12 +103,13 @@ class ManageActionSettings extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ () => this.setState({ deleteModalOpen: false }) }
+          onTouchTap={ (event) => { event.preventDefault(); this.setState({ deleteModalOpen: false })} }
         />,
         <RaisedButton
           label="I'm sure"
           primary={true}
           onTouchTap={this.confirmDelete}
+          className={s.primaryButton}
         />,
       ];
 
@@ -169,6 +171,7 @@ class ManageActionSettings extends Component {
               title="Are You Sure?"
               modal={true}
               actions={modalActions}
+              actionsContainerClassName={s.modalActionsContainer}
               open={this.state.deleteModalOpen}
             >
               <p>

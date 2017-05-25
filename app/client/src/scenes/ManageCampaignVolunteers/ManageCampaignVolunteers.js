@@ -81,7 +81,7 @@ class ManageCampaignVolunteers extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ () => { this.setState({emptyRecipientsModalOpen: false}); }}
+          onTouchTap={ (event) => { event.preventDefault(); this.setState({emptyRecipientsModalOpen: false}); }}
         />
       ];
 
@@ -149,6 +149,7 @@ class ManageCampaignVolunteers extends Component {
               modal={true}
               actions={modalActions}
               open={emptyRecipientsModalOpen}
+              actionsContainerClassName={s.modalActionsContainer}
             >
               <p>
                 Please select at least one recipient in order to send them a message.

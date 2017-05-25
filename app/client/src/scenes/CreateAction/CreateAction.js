@@ -173,6 +173,7 @@ class CreateAction extends Component {
               title="Action Created"
               modal={true}
               actions={modalActions}
+              actionsContainerClassName={s.modalActionsContainer}
               open={modalOpen}
             >
               <p>

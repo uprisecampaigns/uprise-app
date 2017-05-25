@@ -53,6 +53,8 @@ class ComposeMessage extends React.Component {
   };
 
   confirmSend = (event) => {
+    event.preventDefault();
+
     const { body, subject } = this.state.formData;
 
     this.props.sendMessage({ subject, body });
@@ -78,12 +80,13 @@ class ComposeMessage extends React.Component {
       <RaisedButton
         label="Cancel"
         primary={false}
-        onTouchTap={ () => { this.setState({modalOpen: false}) }}
+        onTouchTap={ (event) => { event.preventDefault(); this.setState({modalOpen: false}) }}
       />,
       <RaisedButton
         label="Confirm"
         primary={true}
         onTouchTap={this.confirmSend}
+        className={s.primaryButton}
       />
     ];
 
@@ -142,6 +145,7 @@ class ComposeMessage extends React.Component {
           title="Are You Sure?"
           modal={true}
           actions={modalActions}
+          actionsContainerClassName={s.modalActionsContainer}
           open={modalOpen}
         >
           <p>
