@@ -133,7 +133,8 @@ class CreateAction extends Component {
         <RaisedButton
           label="Set Preferences"
           primary={true}
-          onTouchTap={ () => { history.push('/organize/' + campaign.slug + '/action/' + newAction.slug + '/preferences') }}
+          className={s.primaryButton}
+          onTouchTap={ (event) => { event.preventDefault(); history.push('/organize/' + campaign.slug + '/action/' + newAction.slug + '/preferences') }}
         />
       ];
 
@@ -180,11 +181,10 @@ class CreateAction extends Component {
                 Congratulations, you have created the action '{newAction.title}'.
               </p>
               <p>
-                You can find and edit your action's public profile at 
-                <Link to={'/action/' + newAction.slug} useAhref={true}>uprise.org/action/{newAction.slug}</Link>
+                You can find and edit your action's public profile at {window.location.origin}/action/{newAction.slug}
               </p>
               <p>
-                Please feel free to contact us at<Link to="mailto:help@uprise.org" mailTo={true} external={true} useAhref={true}>help@uprise.org</Link>for assistance.
+                Please set your campaign's preferences so volunteers are able to search for you effectively.
               </p>
             </Dialog>
           )}

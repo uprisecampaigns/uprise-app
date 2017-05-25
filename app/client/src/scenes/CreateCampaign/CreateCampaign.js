@@ -123,6 +123,7 @@ class CreateCampaignContainer extends Component {
       <RaisedButton
         label="Set Preferences"
         primary={true}
+        className={s.primaryButton}
         onTouchTap={ (event) => { event.preventDefault(); history.push('/organize/' + newCampaign.slug + '/preferences') }}
       />
     ];
@@ -161,11 +162,10 @@ class CreateCampaignContainer extends Component {
               Congratulations, you have created the campaign '{newCampaign.title}'.
             </p>
             <p>
-              You can find and edit your campaign's public profile at 
-              <Link to={'/campaign/' + newCampaign.slug} useAhref={true}>uprise.org/campaign/{newCampaign.slug}</Link>
+              You can find and edit your campaign's public profile at {window.location.origin}/campaign/{newCampaign.slug}
             </p>
             <p>
-              Please feel free to contact us at<Link to="mailto:help@uprise.org" mailTo={true} external={true} useAhref={true}>help@uprise.org</Link>for assistance.
+              Please set your campaign's preferences so volunteers are able to search for you effectively.
             </p>
           </Dialog>
         )}
