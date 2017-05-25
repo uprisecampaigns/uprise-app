@@ -69,7 +69,7 @@
 
     .websiteUrlContainer {
       text-align: center;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       padding: 1rem;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -80,8 +80,9 @@
     }
 
     .contactContainer {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       color: $fire-red;
+      margin-top: 2rem;
 
       a { 
         color: $fire-red;
