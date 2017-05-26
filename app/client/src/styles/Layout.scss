@@ -13,14 +13,14 @@ html {
   font-family: $font-family;
   line-height: 1.375; /* ~22px */
 
-  font-size: 1em; /* ~16px; */
+  font-size: 1.125em; /* ~18px; */
 
   @media (max-width: $screen-sm-min) {
-    font-size: 0.875em; /* ~14px; */
+    font-size: 1em; /* ~16px; */
   }
 
   @media (max-width: $screen-xs-min) {
-    font-size: 0.75em; /* ~12px; */
+    font-size: 0.875em; /* ~14px; */
   }
 }
 
