@@ -64,16 +64,21 @@ class GeographySearch extends React.PureComponent {
       zipcode
     };
 
-    this.props.addItem('geographies', searchItem);
+    if (searchItem.virtual ||
+        (isNumeric(searchItem.distance) && isNumeric(searchItem.zipcode) && 
+         parseInt(searchItem.distance, 10) > 0 && searchItem.zipcode.length === 5)) {
 
-    this.setState((prevState) => (Object.assign({},
-      prevState,
-      {
-        distance: '',
-        zipcode: '',
-        virtual: false
-      }
-    )));
+      this.props.addItem('geographies', searchItem);
+
+      this.setState((prevState) => (Object.assign({},
+        prevState,
+        {
+          distance: '10',
+          zipcode: '',
+          virtual: false
+        }
+      )));
+    }
   }
 
   render() {
