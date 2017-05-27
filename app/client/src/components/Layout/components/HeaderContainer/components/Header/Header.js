@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
 import Link from 'components/Link';
+import ContentDropdownMenu from 'components/ContentDropdownMenu';
 
 import upriseLogo from 'img/uprise-logo.png';
 import s from './Header.scss';
@@ -17,93 +15,6 @@ const iconButtonStyle = {
   fontSize: '3rem',
 }
 
-const dropdownMenuItemStyle = {
-  padding: '0px'
-}
-
-
-class ContentDropdownMenu extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  state = {}
-
-  static propTypes = {
-    titleIconName: PropTypes.string.isRequired,
-    dropdowns: PropTypes.array.isRequired,
-  }
-
-  renderDropdown = (dropdown, index) => {
-
-    const itemClicked = (event) => {
-      if (typeof dropdown.action === 'function') {
-        dropdown.action(event);
-      }
-
-      this.setState({
-        openMenu: false
-      });
-    }
-
-    return (
-      <div key={index}>
-        <Link 
-          to={dropdown.path}
-          useAhref={false}
-          onClick={itemClicked}
-          preventDefault={false}
-        >
-          <MenuItem 
-            className={s.dropdownItemText}
-            value={index + 1}
-            primaryText={dropdown.title}
-          />
-        </Link>
-        {(index < this.props.dropdowns.length - 1) && <Divider/>}
-      </div>
-    );
-  }
-
-  handleOpenMenu = () => {
-    this.setState({
-      openMenu: true
-    });
-  }
-
-  handleOnRequestChange = (value) => {
-    this.setState({
-      openMenu: false
-    });
-  }
-
-  render() {
-
-    const dropdownItems = this.props.dropdowns.map(this.renderDropdown);
-
-    return (
-      <IconMenu
-        iconButtonElement={
-          <IconButton 
-            iconStyle={iconButtonStyle}
-            iconClassName='material-icons'
-            className={s.iconButton}
-            onTouchTap={this.handleOpenMenu}
-          >{this.props.titleIconName}</IconButton>
-        }
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'middle'}}
-        targetOrigin={{ vertical: 'top', horizontal: 'middle'}}
-        onRequestChange={this.handleOnRequestChange}
-        open={this.state.openMenu}
-      >
-        <div className={s.dropdownContainer}>
-          {dropdownItems}
-        </div>
-      </IconMenu>
-    );
-  }
-}
- 
 function LoginButton(props) {
   if (!props.loggedIn) {
     return (
@@ -115,12 +26,11 @@ function LoginButton(props) {
     return (
 
       <ContentDropdownMenu
-        titleIconName="account_box"
+        title="Settings"
         dropdowns={[
-          // { title: 'Profile', path: '/account/profile' },
-          // { title: 'Preferences', path: '/account/preferences' },
-          { title: 'Settings', path: '/settings' },
-          // { title: 'Help', path: '/account/help' },
+          { title: 'Account', path: '/settings/account' },
+          { title: 'Privacy & Security', path: '/settings/privacy-security' },
+          { title: 'Contact', path: '/settings/contact' },
           { title: 'Logout', path: '#', action: props.logout },
         ]}
       />
@@ -133,41 +43,26 @@ function AuthenticatedIcons(props) {
     return (
       <div className={s.authenticatedIconsContainer}>
 
-        <Link 
-          to="/search"
-          useAhref={false}
-          preventDefault={false}
-        >
-          <IconButton 
-            iconStyle={iconButtonStyle}
-            iconClassName='material-icons'
-            className={s.iconButton}
-          >search</IconButton>
-        </Link>
-
-{/*
         <ContentDropdownMenu
-          titleIconName="notifications"
+          title="Search"
           className={s.rightIcon}
           dropdowns={[
-            { title: 'Notifications', path: '/communications/notifications' },
-            { title: 'Requests', path: '/communications/requests' },
-            { title: 'Messages', path: '/communications/messages' },
+            { title: 'Actions', path: '/search/search-actions' },
+            { title: 'Campaigns', path: '/search/search-campaigns' },
           ]}
         />
 
         <ContentDropdownMenu
-          titleIconName="event"
+          title="Volunteer"
           className={s.rightIcon}
           dropdowns={[
-            { title: 'View Calendar', path: '/calendar/view-calendar' },
-            { title: 'View List', path: '/calendar/view-list' },
+            { title: 'Action Commitments', path: '/actions' },
+            { title: 'Campaign Subscriptions', path: '/campaigns' },
           ]}
         />
 
-*/}
         <ContentDropdownMenu
-          titleIconName="work"
+          title="Organize"
           className={s.rightIcon}
           dropdowns={[
             { title: 'View All', path: '/organize' },

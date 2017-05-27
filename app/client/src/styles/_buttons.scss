@@ -14,5 +14,8 @@
   }
 }
 
-
-
+.lowerCaseButton button {
+  span {
+    text-transform: none !important;
+  }
+}
