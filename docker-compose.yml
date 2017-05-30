@@ -14,7 +14,6 @@ services:
     links:
       - "db:postgres"
       - redis
-    # env_file: ./app/prod.env
     env_file: ./app/dev.env
     working_dir: /src/app
     command: npm run dev
@@ -30,11 +29,8 @@ services:
       - ./nginx:/opt/docker
     volumes_from:
       - web
-      - letsencrypt
     links:
       - web:web
-      - letsencrypt:letsencrypt
-    # env_file: ./nginx/prod.env
     env_file: ./nginx/dev.env
     entrypoint: /opt/docker/entrypoint.sh
 
@@ -49,18 +45,3 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - /data
-
-  letsencrypt:
-    image: quay.io/letsencrypt/letsencrypt:latest
-    command:  bash -c "sleep 6 && certbot certonly --standalone -d staging.uprise.me --text --agree-tos --email tech@uprise.org --server https://acme-staging.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --renew-by-default --standalone-supported-challenges http-01"
-    # command:  bash -c "sleep 6 && certbot certonly --standalone -d staging.uprise.me --text --agree-tos --email tech@uprise.org --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --renew-by-default --standalone-supported-challenges http-01"
-    entrypoint: ""
-    volumes:
-      - /etc/letsencrypt
-      - /var/lib/letsencrypt
-    ports:
-      - "433"
-      - "80"
-    environment:
-      - TERM=xterm
-      - TZ=America/Los_Angeles
