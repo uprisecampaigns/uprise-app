@@ -143,9 +143,11 @@ export function checkSessionStatus() {
 
       dispatch(startedSessionCheck());
 
+      let response;
+
       try {
 
-        const response = await fetch('/api/checkSession', {
+        response = await fetch('/api/checkSession', {
           method: 'POST',
           credentials: 'include',
           body: JSON.stringify({}),
@@ -158,21 +160,27 @@ export function checkSessionStatus() {
         if (response.status >= 400) {
           throw new Error('Bad response from server.');
         }
-
-        const json = await response.json();
-
-        if (!json.error) {
-          dispatch(checkedSessionStatus(json));
-        } else {
-          // TODO: error handler
-          console.error(json.error);
-          dispatch(sessionCheckFail(json.error));
-        }
-
       } catch(err) {
         // TODO: error handler
         console.error(err);
         dispatch(sessionCheckFail(err.message || err));
+      }
+
+      let json;
+      try {
+        json = await response.json();
+      } catch(err) {
+        // TODO: error handler
+        console.error(err);
+        dispatch(sessionCheckFail(err.message || err));
+      }
+
+      if (!json.error) {
+        dispatch(checkedSessionStatus(json));
+      } else {
+        // TODO: error handler
+        console.error(json.error);
+        dispatch(sessionCheckFail(json.error));
       }
     }
   }
