@@ -10,16 +10,15 @@ import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
 
-import MyActionsQuery from 'schemas/queries/MyActionsQuery.graphql';
+import ActionCommitmentsQuery from 'schemas/queries/ActionCommitmentsQuery.graphql';
 
-// TODO: better css importing
-import s from 'styles/Organize.scss';
+import s from 'styles/Volunteer.scss';
 
 
-class MyActions extends Component {
+class ActionCommitments extends Component {
 
   static PropTypes = {
-    myActions: PropTypes.array.isRequired,
+    actionCommitments: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -28,10 +27,10 @@ class MyActions extends Component {
 
   render() {
 
-    if (this.props.myActions) {
-      const { myActions, ...props } = this.props;
+    if (this.props.actionCommitments) {
+      const { actionCommitments, ...props } = this.props;
 
-      const actionsList = myActions.map( (action) => (
+      const actionsList = actionCommitments.map( (action) => (
         <Link key={action.id} to={'/action/' + action.slug}>
           <ListItem>
 
@@ -80,9 +79,9 @@ class MyActions extends Component {
 }
 
 export default compose(
-  graphql(MyActionsQuery, {
+  graphql(ActionCommitmentsQuery, {
     props: ({ data }) => ({ 
-      myActions: data.myActions
+      actionCommitments: data.actionCommitments
     })
   }),
-)(MyActions);
+)(ActionCommitments);

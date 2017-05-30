@@ -50,7 +50,8 @@ export default {
     require('./searchCampaigns').default,
 
     // /actions
-    require('./myActions').default,
+    require('./volunteer').default,
+    require('./actionCommitments').default,
 
     // /action/
     require('./action').default,

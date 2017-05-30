@@ -52,15 +52,15 @@ module.exports = {
     return actions;
   },
 
-  myActions: async (data, context) => {
+  actionCommitments: async (data, context) => {
 
     if (!context.user) {
       throw new Error('User must be logged in');
     }
 
-    const myActions = await Action.usersActions({ userId: context.user.id });
+    const actionCommitments = await Action.usersActions({ userId: context.user.id });
 
-    return myActions;
+    return actionCommitments;
   },
 
   activities: async (data, context) => {

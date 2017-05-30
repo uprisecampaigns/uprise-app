@@ -173,7 +173,7 @@ module.exports = buildSchema(`
 
   type Query {
     action(search: ActionQueryInput): ActionResult
-    myActions: [ActionResult]
+    actionCommitments: [ActionResult]
     actions(search: ActionSearchInput): ActionSearchResult
     signedUpVolunteers(search: ActionQueryInput): [UserResult]
     subscribedUsers(search: CampaignQueryInput): [UserResult]

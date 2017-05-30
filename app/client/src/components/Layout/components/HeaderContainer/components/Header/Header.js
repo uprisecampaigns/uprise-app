@@ -56,8 +56,8 @@ function AuthenticatedIcons(props) {
           title="Volunteer"
           className={s.rightIcon}
           dropdowns={[
-            { title: 'Action Commitments', path: '/actions' },
-            { title: 'Campaign Subscriptions', path: '/campaigns' },
+            { title: 'Action Commitments', path: '/volunteer/action-commitments' },
+            { title: 'Campaign Subscriptions', path: '/volunteer/campaign-subscriptions' },
           ]}
         />
 

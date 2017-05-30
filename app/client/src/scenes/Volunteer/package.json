@@ -1,0 +1,6 @@
+{
+  "name": "Volunteer",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Volunteer.js"
+}

@@ -1,8 +1,8 @@
 #import "../fragments/ActionDetailsFragment.graphql"
 #import "../fragments/ActionBasicInfoFragment.graphql"
 
-query MyActionsQuery {
-  myActions {
+query ActionCommitmentsQuery {
+  actionCommitments {
     ...ActionBasicInfo
     ...ActionDetails
   }

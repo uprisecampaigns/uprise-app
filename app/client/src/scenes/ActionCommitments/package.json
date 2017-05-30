@@ -1,0 +1,6 @@
+{
+  "name": "ActionCommitments",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ActionCommitments.js"
+}
