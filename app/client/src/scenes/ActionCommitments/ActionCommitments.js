@@ -3,7 +3,7 @@ import { compose, graphql } from 'react-apollo';
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
 import timeWithZone from 'lib/timeWithZone';
@@ -34,24 +34,24 @@ class ActionCommitments extends Component {
         <Link key={action.id} to={'/action/' + action.slug}>
           <ListItem>
 
-            <div className={s.actionListTitle}>
+            <div className={s.listTitle}>
               {action.title}
             </div>
 
             {action.start_time && (
-              <div className={s.actionListDetailLine}>
+              <div className={s.listDetailLine}>
                 {timeWithZone(action.start_time, action.zipcode, 'ddd, MMM Do YYYY, h:mma z')}
               </div>
             )}
 
             {(action.city && action.state) && (
-              <div className={s.actionListDetailLine}>
+              <div className={s.listDetailLine}>
                 {action.city}, {action.state}
               </div>
             )}
 
             {(action.owner) && (
-              <div className={s.actionListDetailLine}>
+              <div className={s.listDetailLine}>
                 Coordinator: {action.owner.first_name} {action.owner.last_name} <Link to={"mailto:" + action.owner.email} mailTo={true} external={true} useAhref={true}>{action.owner.email}</Link>
               </div>
             )}

@@ -50,7 +50,7 @@ class Campaign extends Component {
           campaignId: this.props.campaign.id
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['SubscribersQuery', 'CampaignQuery'],
+        refetchQueries: ['CampaignSubscriptionsQuery', 'SubscribersQuery', 'CampaignQuery'],
       });
 
       this.props.dispatch(notify('Subscribed!'));
@@ -71,7 +71,7 @@ class Campaign extends Component {
           campaignId: this.props.campaign.id
         },
         // TODO: decide between refetch and update
-        refetchQueries: ['SubscribersQuery', 'CampaignQuery'],
+        refetchQueries: ['CampaignSubscriptionsQuery', 'SubscribersQuery', 'CampaignQuery'],
       });
 
       this.props.dispatch(notify('Subscription canceled'));

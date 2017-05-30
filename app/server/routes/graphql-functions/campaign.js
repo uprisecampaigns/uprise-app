@@ -45,6 +45,18 @@ module.exports = {
     return myCampaigns;
   },
 
+  campaignSubscriptions: async (data, context) => {
+
+    if (!context.user) {
+      throw new Error('User must be logged in');
+    }
+
+    const campaignSubscriptions = await Campaign.usersSubscriptions({ userId: context.user.id });
+
+    return campaignSubscriptions;
+  },
+
+
   types: async (data, context) => {
     const types = await Campaign.listTypes(data.search);
     return types;

@@ -8,7 +8,7 @@
   overflow-x: hidden;
   margin-bottom: 5rem;
 
-  .actionListTitle {
+  .listTitle {
     color: $azure;
     font-size: 1.8rem;
     line-height: 1.8rem;
@@ -16,7 +16,7 @@
     padding: 0rem 1rem; 
   }
 
-  .actionListDetailLine {
+  .listDetailLine {
     color: lighten($black, 30%);
     font-size: 1rem;
     padding: 0.2rem 1rem 0.2rem 1rem;

@@ -189,6 +189,20 @@ class Campaign {
     return result;
   }
 
+  static async usersSubscriptions({ userId }) {
+
+    const results = await db('campaign_signups')
+      .where('user_id', userId)
+      .innerJoin('campaigns', 'campaign_signups.campaign_id', 'campaigns.id')
+
+    await Promise.all(results.map( async (campaign) => {
+      Object.assign(campaign, await this.details(campaign));
+    }));
+
+    return results;
+  }
+
+
   static async search(search) {
     
     const searchQuery = db('campaigns')

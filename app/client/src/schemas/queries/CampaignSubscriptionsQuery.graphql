@@ -1,0 +1,9 @@
+#import "../fragments/CampaignDetailsFragment.graphql"
+#import "../fragments/CampaignBasicInfoFragment.graphql"
+
+query CampaignSubscriptionsQuery {
+  campaignSubscriptions {
+    ...CampaignBasicInfo
+    ...CampaignDetails
+  }
+}

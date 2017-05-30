@@ -52,6 +52,7 @@ export default {
     // /actions
     require('./volunteer').default,
     require('./actionCommitments').default,
+    require('./campaignSubscriptions').default,
 
     // /action/
     require('./action').default,
