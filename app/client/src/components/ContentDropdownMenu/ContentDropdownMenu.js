@@ -6,6 +6,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
+import NavigationArrowDropDown  from 'material-ui/svg-icons/navigation/arrow-drop-down';
 
 import history from 'lib/history';
 
@@ -39,13 +40,13 @@ class ContentDropdownMenu extends Component {
 
     return (
       <div key={index}>
-        <Link 
+        <Link
           to={dropdown.path}
           useAhref={false}
           onClick={itemClicked}
           preventDefault={false}
         >
-          <MenuItem 
+          <MenuItem
             className={s.dropdownItemText}
             value={index}
             primaryText={dropdown.title}
@@ -90,11 +91,14 @@ class ContentDropdownMenu extends Component {
             {dropdownItems}
           </Menu>
         </Popover>
-        <div className={s.dropdownButton}>
-          <FlatButton 
+        <div
+          className={s.dropdownButton}
+          onTouchTap={this.handleOpenMenu}
+        >
+          <FlatButton
             label={this.props.title}
-            onTouchTap={this.handleOpenMenu}
           />
+          <NavigationArrowDropDown />
         </div>
       </div>
     );
