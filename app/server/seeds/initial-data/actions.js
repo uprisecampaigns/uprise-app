@@ -19,12 +19,12 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     { title: 'outreach', description: 'Public outreach' }, // 3 
     { title: 'rallies', description: 'Rallies, marches' }, // 4 
     { title: 'visibility', description: 'Visibility, visual arts' }, // 5 
-    { title: 'precinct', description: 'Organize neighborhood' }, // 6 
-    { title: 'political', description: 'Organize issue groups' }, // 7 
+    { title: 'neighborhood', description: 'Organize neighborhood' }, // 6
+    { title: 'issue groups', description: 'Organize issue groups' }, // 7
     { title: 'host', description: 'Host an event' }, // 8 
     { title: 'event', description: 'Event production' }, // 9 
     { title: 'policy', description: 'Policy research' }, // 10 
-    { title: 'advertising', description: 'Communication' }, // 11 
+    { title: 'communication', description: 'Communication' }, // 11
     { title: 'polling', description: 'Polling, analytics' }, // 12 
     { title: 'writing', description: 'Writing, editing' }, // 13 
     { title: 'press', description: 'Press relations' }, // 14 
@@ -35,7 +35,7 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     { title: 'office', description: 'Office admin' }, // 19 
     { title: 'data', description: 'Data management' }, // 20 
     { title: 'legal', description: 'Legal' }, // 21 
-    { title: 'compliance', description: 'Accounting' }, // 22 
+    { title: 'accounting', description: 'Accounting' }, // 22
     { title: 'finance', description: 'Fundraising' }, // 23 
   ], ['id', 'title', 'description']);
 
