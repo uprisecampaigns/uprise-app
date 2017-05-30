@@ -152,7 +152,7 @@ class SearchPresentation extends Component {
                   anchorEl={this.state.sortPopoverAnchorEl}
                   onRequestClose={this.handleCloseSort}
                   anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                  targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                  targetOrigin={{horizontal: 'left', vertical: 'top'}}
                   className={s.popover}
                 >
                   <ConnectedSearchSort
