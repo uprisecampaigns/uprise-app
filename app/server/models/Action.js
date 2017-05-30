@@ -112,7 +112,15 @@ class Action {
   static async usersActions({ userId }) {
 
     const results = await db('action_signups')
-      .where('user_id', userId)
+      //TODO: DRY this fancy select out
+      .select(['actions.id as id', 'actions.title as title', 'actions.campaign_id as campaign_id',
+               db.raw('to_char(actions.start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
+               db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
+               'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
+               'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
+               'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual',])
+      .where('action_signups.user_id', userId)
+      .andWhere('actions.deleted', false)
       .innerJoin('actions', 'action_signups.action_id', 'actions.id')
 
     await Promise.all(results.map( async (action) => {

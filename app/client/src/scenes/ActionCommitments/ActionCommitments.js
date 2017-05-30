@@ -7,6 +7,7 @@ import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
 import timeWithZone from 'lib/timeWithZone';
+import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
 
@@ -30,7 +31,7 @@ class ActionCommitments extends Component {
     if (this.props.actionCommitments) {
       const { actionCommitments, ...props } = this.props;
 
-      const actionsList = actionCommitments.map( (action) => (
+      const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map( (action) => (
         <Link key={action.id} to={'/action/' + action.slug}>
           <ListItem>
 

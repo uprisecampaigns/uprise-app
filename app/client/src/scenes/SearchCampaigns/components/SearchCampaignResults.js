@@ -6,6 +6,8 @@ import Avatar from 'material-ui/Avatar';
 import CircularProgress from 'material-ui/CircularProgress';
 const isEqual = require('lodash.isequal');
 
+import itemsSort from 'lib/itemsSort';
+
 import Link from 'components/Link';
 
 import s from 'styles/Search.scss';
@@ -34,20 +36,7 @@ class SearchCampaignResults extends Component {
   render() {
     const { sortBy, ...props } = this.props;
 
-    const campaignsSort = (a, b) => {
-      const prop = sortBy.name;
-
-      const testA = (typeof a[prop] === 'string') ? a[prop].toLowerCase() : a[prop];
-      const testB = (typeof b[prop] === 'string') ? b[prop].toLowerCase() : b[prop];
-
-      if (sortBy.descending) {
-        return (testA < testB) ? 1 : -1;
-      } else {
-        return (testA > testB) ? 1 : -1;
-      } 
-    }
-
-    const campaigns = props.campaigns ? Array.from(props.campaigns).sort(campaignsSort).map( (campaign, index) => {
+    const campaigns = props.campaigns ? Array.from(props.campaigns).sort(itemsSort(sortBy)).map( (campaign, index) => {
 
       const tags = campaign.tags ? campaign.tags.map( (tag, index) => {
         return <span key={index}>{tag}{(index === campaign.tags.length - 1) ? '' : ', '}</span>;

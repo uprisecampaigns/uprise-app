@@ -7,6 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 const isEqual = require('lodash.isequal');
 
 import timeWithZone from 'lib/timeWithZone';
+import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
 
@@ -51,24 +52,7 @@ class SearchActionResults extends React.PureComponent {
   render() {
     const { sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, ...props } = this.props;
 
-    // TODO: This is shared by SearchCampaignResults and can definitely be refactored
-    const actionsSort = (a, b) => {
-      if (sortBy.name === 'date') {
-        if (sortBy.descending) {
-          return moment(a.start_time).isBefore(moment(b.start_time)) ? 1 : -1;
-        } else {
-          return moment(a.start_time).isAfter(moment(b.start_time)) ? 1 : -1;
-        }
-      } else if (sortBy.name === 'campaignName') {
-        if (sortBy.descending) {
-          return (a.campaign.title.toLowerCase() < b.campaign.title.toLowerCase()) ? 1 : -1;
-        } else {
-          return (a.campaign.title.toLowerCase() > b.campaign.title.toLowerCase()) ? 1 : -1;
-        }
-      }
-    }
-
-    const actions = props.actions ? Array.from(props.actions).sort(actionsSort).map( (action, index) => {
+    const actions = props.actions ? Array.from(props.actions).sort(itemsSort(sortBy)).map( (action, index) => {
 
       const tags = action.tags ? action.tags.map( (tag, index) => {
         return <span key={index}>{tag}{(index === action.tags.length - 1) ? '' : ', '}</span>;
