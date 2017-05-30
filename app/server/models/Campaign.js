@@ -193,6 +193,7 @@ class Campaign {
 
     const results = await db('campaign_signups')
       .where('user_id', userId)
+      .andWhere('deleted', false)
       .innerJoin('campaigns', 'campaign_signups.campaign_id', 'campaigns.id')
 
     await Promise.all(results.map( async (campaign) => {
