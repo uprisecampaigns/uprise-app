@@ -77,26 +77,26 @@ let onRenderComplete = function initialRenderComplete(route, location) {
 // Re-render the app when window.location changes
 async function onLocationChange(location) {
 
-  // TODO: Not only does this seem to occasionally get stuck, it also just reeks of code smell
-  const fetchingSessionStatus = store.getState().userAuthSession.fetchingAuthUpdate;
-  if (!fetchingSessionStatus) {
-    store.dispatch(checkSessionStatus());
-  }
-
-  // Remember the latest scroll position for the previous location
-  scrollPositionsHistory[currentLocation.key] = {
-    scrollX: window.pageXOffset,
-    scrollY: window.pageYOffset,
-  };
-  // Delete stored scroll position for next page if any
-  if (history.action === 'PUSH') {
-    delete scrollPositionsHistory[location.key];
-  }
-  currentLocation = location;
-
-  store.dispatch(startPageLoad());
-
   try {
+    // TODO: Not only does this seem to occasionally get stuck, it also just reeks of code smell
+    const fetchingSessionStatus = store.getState().userAuthSession.fetchingAuthUpdate;
+    if (!fetchingSessionStatus) {
+      store.dispatch(checkSessionStatus());
+    }
+
+    // Remember the latest scroll position for the previous location
+    scrollPositionsHistory[currentLocation.key] = {
+      scrollX: window.pageXOffset,
+      scrollY: window.pageYOffset,
+    };
+    // Delete stored scroll position for next page if any
+    if (history.action === 'PUSH') {
+      delete scrollPositionsHistory[location.key];
+    }
+    currentLocation = location;
+
+    store.dispatch(startPageLoad());
+
     // Traverses the list of routes in the order they are defined until
     // it finds the first route that matches provided URL path string
     // and whose action method returns anything other than `undefined`.
