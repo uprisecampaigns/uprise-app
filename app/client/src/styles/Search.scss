@@ -13,9 +13,12 @@
     padding: 2rem 0;
     font-weight: 500;
     color: darken($azure, 20%) !important;
+    background-color: darken($white, 4%);
   }
 
   .mobileSearchBarContainer {
+    background-color: darken($white, 4%);
+
     @media (min-width: $screen-sm-min) {
       display: none;
     }
@@ -30,6 +33,8 @@
     align-items: baseline;
     font-size: 1rem;
     text-align: center;
+    padding-bottom: .5rem;
+    background-color: darken($white, 4%);
 
     .countContainer {
       color: $brick-red;
@@ -101,6 +106,8 @@
     @media (min-width: $screen-sm-min) {
       display: block;
       flex: 1;
+      background-color: darken($white, 4%);
+      padding-right: 5%;
     }
 
     .desktopFilterHeader {
@@ -120,6 +127,7 @@
 
     width: 100%;
     overflow-x: hidden;
+    border: 1px solid darken($white, 9%);
 
     @media (min-width: $screen-sm-min) {
     }
