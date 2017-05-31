@@ -1,6 +1,7 @@
 const graphqlHTTP = require('express-graphql');
 const bodyParser = require('body-parser');
 const graphqlServer = require('graphql-server-express');
+const Raven = require('raven');
 
 const graphqlExpress = graphqlServer.graphqlExpress;
 const graphiqlExpress = graphqlServer.graphiqlExpress;
@@ -22,7 +23,37 @@ module.exports = (app) => {
     schema: schema,
     rootValue: root,
     context: { user: req.user },
-    debug: (app.get('env') === 'development')
+    debug: (app.get('env') === 'development'),
+    formatError: (error) => {
+      if (error.path || error.name !== 'GraphQLError') {
+        console.error(error);
+        Raven.captureException(error,
+          Raven.parsers.parseRequest(req, {
+            tags: { graphql: 'exec_error' },
+            extra: {
+              source: error.source && error.source.body,
+              positions: error.positions,
+              path: error.path,
+            },
+          })
+        );
+      } else {
+        console.error(error.message);
+        Raven.captureMessage(`GraphQLWrongQuery: ${error.message}`,
+          Raven.parsers.parseRequest(req, {
+            tags: { graphql: 'wrong_query' },
+            extra: {
+              source: error.source && error.source.body,
+              positions: error.positions,
+            },
+          })
+        );
+      }
+      return {
+        message: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack.split('\n') : null,
+      };
+    }
   })));
 
   app.use('/api/graphiql', authenticationMiddleware.isLoggedIn, graphiqlExpress({

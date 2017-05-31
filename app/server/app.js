@@ -8,6 +8,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const Raven = require('raven');
 
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -15,6 +16,9 @@ const config = require('config/config.js');
 
 const app = express();
 
+
+Raven.config(config.sentry.dsn).install();
+app.use(Raven.requestHandler());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -59,6 +63,8 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
+
+app.use(Raven.errorHandler());
 
 // development error handler
 // will print stacktrace

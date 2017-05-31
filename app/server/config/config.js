@@ -35,5 +35,8 @@ module.exports = {
   },
   paths: {
     base: path.resolve(__dirname, '..')
+  },
+  sentry: {
+    dsn: process.env.SENTRY_PRIVATE_DSN
   }
 }
