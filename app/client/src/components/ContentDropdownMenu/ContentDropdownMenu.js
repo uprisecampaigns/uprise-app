@@ -6,7 +6,8 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
-import NavigationArrowDropDown  from 'material-ui/svg-icons/navigation/arrow-drop-down';
+import NavigationExpandMore  from 'material-ui/svg-icons/navigation/expand-more';
+import NavigationExpandLess  from 'material-ui/svg-icons/navigation/expand-less';
 
 import history from 'lib/history';
 
@@ -98,7 +99,7 @@ class ContentDropdownMenu extends Component {
           <FlatButton
             label={this.props.title}
           />
-          <NavigationArrowDropDown />
+          { menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore /> }
         </div>
       </div>
     );
