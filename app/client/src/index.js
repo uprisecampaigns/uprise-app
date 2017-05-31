@@ -156,12 +156,11 @@ async function onLocationChange(location) {
       document.title = `Error: ${error.message}`;
       ReactDOM.render(<RedBox error={error} />, container);
       return;
-    } else {
-      // Avoid broken navigation in production mode by a full page reload on error
-      // TODO: Send to home page?
-      // TODO: production error reporting?
-      window.location.reload(true);
     }
+
+    // Avoid broken navigation in production mode by a full page reload on error
+    // TODO: Send to home page? I'm nervous about a permanent reload loop...
+    window.location.reload(true);
   }
 }
 

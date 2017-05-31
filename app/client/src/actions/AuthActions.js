@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import history from 'lib/history';
 import apolloClient from 'store/apolloClient';
+import Raven from 'raven-js';
 
 import { notify } from 'actions/NotificationsActions';
 
@@ -36,6 +37,7 @@ export function clickedSignup() {
 
 export function signupSuccess(userObject) {
   history.push('/welcome');
+  Raven.setUserContext(userObject)
   return { type: SIGNUP_SUCCESS, userObject };
 }
 
@@ -61,8 +63,8 @@ export function attemptSignup(data) {
 
         const json = await response.json();
 
-        // TODO: passportjs local-signup/login returns a "missing credentials" 
-        // message with no explicit error 
+        // TODO: passportjs local-signup/login returns a "missing credentials"
+        // message with no explicit error
         if (!json.error) {
           dispatch(signupSuccess(json));
         } else {
@@ -82,6 +84,7 @@ export function clickedLogin() {
 }
 
 export function loginSuccess(userObject) {
+  Raven.setUserContext(userObject)
   return { type: LOGIN_SUCCESS, userObject };
 }
 
@@ -107,8 +110,8 @@ export function attemptLogin(data) {
 
         const json = await response.json();
 
-        // TODO: passportjs local-signup/login returns a "missing credentials" 
-        // message with no explicit error 
+        // TODO: passportjs local-signup/login returns a "missing credentials"
+        // message with no explicit error
         if (!json.error) {
           history.push('/search');
           dispatch(loginSuccess(json));
@@ -129,6 +132,12 @@ export function startedSessionCheck() {
 }
 
 export function checkedSessionStatus(result) {
+  if (result.isLoggedIn){
+    Raven.setUserContext(result.userObject)
+  } else {
+    Raven.setUserContext()
+  }
+
   return { type: CHECKED_SESSION_STATUS, result };
 }
 
@@ -187,10 +196,11 @@ export function checkSessionStatus() {
 }
 
 export function clickedLogout() {
-  return { type: CLICKED_LOGOUT }; 
+  return { type: CLICKED_LOGOUT };
 }
 
 export function logoutSuccess() {
+  Raven.setUserContext()
   apolloClient.resetStore();
   return { type: LOGOUT_SUCCESS };
 }
@@ -235,7 +245,7 @@ export function attemptLogout(){
 }
 
 export function clickedChangePassword() {
-  return { type: CLICKED_CHANGE_PASSWORD }; 
+  return { type: CLICKED_CHANGE_PASSWORD };
 }
 
 export function changePasswordSuccess(message) {
@@ -287,7 +297,7 @@ export function attemptChangePassword(data, successCallback){
   }
 }
 export function clickedResetPassword() {
-  return { type: CLICKED_RESET_PASSWORD }; 
+  return { type: CLICKED_RESET_PASSWORD };
 }
 
 export function resetPasswordSuccess(message) {
