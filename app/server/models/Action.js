@@ -184,6 +184,8 @@ class Action {
               search.keywords.forEach( (keyword) => {
                 
                 this.orWhere(db.raw('actions.title % ?', keyword));
+                this.orWhere(db.raw("actions.title ILIKE '%' || ? || '%' ", keyword));
+
                 this.orWhere(db.raw('actions.location_name % ?', keyword));
                 this.orWhere(db.raw('actions.street_address % ?', keyword));
                 this.orWhere(db.raw('actions.street_address2 % ?', keyword));
