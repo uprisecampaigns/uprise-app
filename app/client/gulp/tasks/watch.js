@@ -7,7 +7,8 @@ const config = require('config/gulp.js');
 gulp.task('watch', () => {
 
 	gulp.watch([
-    path.join(config.src, '**', '*') 
+    path.join(config.src, '**', '*'),
+    path.join(config.gitWatchDir, '**', '*'),
   ], ['webpack']);
 
 });
