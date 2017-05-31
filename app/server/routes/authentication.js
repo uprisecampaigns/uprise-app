@@ -1,6 +1,10 @@
+const childProcess = require('child_process');
+
 // TODO create and use utility fuction that converts req.user to userObject
 const authenticationMiddleware = require('middlewares/authentication.js');
 const User = require('models/User.js');
+
+const gitCommit = childProcess.execSync('git rev-parse HEAD').toString().trim();
 
 // Note: if user is already signed in, this will overwrite the previous session
 // on the client side
@@ -124,7 +128,8 @@ module.exports = (app, passport) => {
           id: req.user.id, 
           email: req.user.email,
           passwordBeingReset: req.user.password_being_reset
-        }
+        },
+        gitCommit
       });
     }
     return res.json({

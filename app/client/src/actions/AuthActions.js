@@ -3,6 +3,7 @@ import history from 'lib/history';
 import apolloClient from 'store/apolloClient';
 import Raven from 'raven-js';
 
+import { gitCommit } from 'config/config';
 import { notify } from 'actions/NotificationsActions';
 
 
@@ -132,6 +133,16 @@ export function startedSessionCheck() {
 }
 
 export function checkedSessionStatus(result) {
+
+  // If the hash of the server commit has changed,
+  // hard reload the page to get new code
+  // TODO: more elegant solution 
+  if (typeof result.gitCommit === 'string' &&
+      result.gitCommit.trim() !== gitCommit.trim()) {
+
+    window.location.reload(true);
+  }
+
   if (result.isLoggedIn){
     Raven.setUserContext(result.userObject)
   } else {

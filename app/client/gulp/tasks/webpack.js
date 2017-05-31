@@ -5,6 +5,7 @@ const notify = require('gulp-notify');
 const env = require('gulp-environments');
 const del = require('del');
 const path = require('path');
+const childProcess = require('child_process');
 const webpack = require('webpack');
 const gulpWebpack = require('gulp-webpack');
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
@@ -18,6 +19,8 @@ const config = require('config/gulp.js');
 
 const extractTextPlugin = new ExtractTextPlugin('[name].css');
 const occurenceOrderPlugin = new webpack.optimize.OccurrenceOrderPlugin()
+
+const gitCommit = childProcess.execSync('git rev-parse HEAD').toString().trim();
 
 const commonsChunkPlugin = new CommonsChunkPlugin({
   names: ['fonts-loader'],
@@ -42,6 +45,7 @@ const definePlugin = new webpack.DefinePlugin({
     'AWS_S3_REGION': '"' + process.env.AWS_S3_REGION + '"',
     'AWS_S3_BUCKET_NAME': '"' + process.env.AWS_S3_BUCKET_NAME + '"',
     'SENTRY_PUBLIC_DSN': '"' + process.env.SENTRY_PUBLIC_DSN + '"',
+    'GIT_COMMIT': '"' + gitCommit + '"',
   }
 });
 

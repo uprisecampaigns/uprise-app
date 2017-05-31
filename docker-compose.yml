@@ -4,6 +4,7 @@ services:
     build: ./app
     volumes:
       - "./app/package.json:/src/app/package.json"
+      - "./.git:/src/.git"
       - "./app/client:/src/app/client"
       - "./app/server:/src/app/server"
     ports:

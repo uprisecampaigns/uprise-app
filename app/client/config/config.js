@@ -6,3 +6,5 @@ export const urls = {
 };
 
 export const sentryDsn = process.env.SENTRY_PUBLIC_DSN;
+
+export const gitCommit =  process.env.GIT_COMMIT;
