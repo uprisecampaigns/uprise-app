@@ -1,0 +1,11 @@
+version: '2'
+services:
+  web:
+    build: ./app
+    env_file: ./app/dev.env
+
+  nginx:
+    ports:
+      - "8080:80"
+      - "4443:443"
+    env_file: ./nginx/dev.env

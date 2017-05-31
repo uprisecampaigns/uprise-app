@@ -14,16 +14,12 @@ services:
     links:
       - "db:postgres"
       - redis
-    env_file: ./app/dev.env
     working_dir: /src/app
     command: npm run dev
 
   nginx:
     build: nginx
     restart: always
-    ports:
-      - "8080:80"
-      - "4443:443"
     volumes:
       - /www/public
       - ./nginx:/opt/docker

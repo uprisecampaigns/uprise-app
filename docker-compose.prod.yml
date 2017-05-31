@@ -1,5 +1,10 @@
 version: '2'
 services:
+  web:
+    image: upriseapp_web:latest
+    env_file: ./app/prod.env
+    command: npm run prod
+
   nginx:
     env_file: ./nginx/prod.env
     ports:
@@ -11,11 +16,7 @@ services:
     links:
       - web:web
       - letsencrypt:letsencrypt
-
-  web:
-    image: upriseapp_web:latest
-    env_file: ./app/prod.env
-    command: npm run prod
+    restart: always
 
   letsencrypt:
     image: quay.io/letsencrypt/letsencrypt:latest
