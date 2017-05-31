@@ -98,7 +98,7 @@ class SearchPresentation extends Component {
     const ConnectedSearchSort = searchSortWrapper(SearchSort);
 
     return (
-      <div>
+      <div className={s.searchContentContainer}>
         <div className={s.mobileSearchBarContainer}>
           <div className={s.searchBarContainer}>
             <SearchBar
@@ -112,16 +112,7 @@ class SearchPresentation extends Component {
         <div className={s.filterResultsOuterContainer}>
 
           <div className={s.desktopSearchOptionsContainer}>
-            <div className={s.desktopFilterHeader}>Narrow Your Search</div>
-
-            <div className={s.searchBarContainer}>
-              <SearchBar
-                collectionName="keywords"
-                inputLabel="keyword search"
-                addItem={this.addSelectedItem}
-                inputRef={el => this.searchBarInputElements[1] = el}
-              />
-            </div>
+            <div className={s.desktopFilterHeader}>Filter</div>
 
             <Divider />
 
@@ -132,6 +123,18 @@ class SearchPresentation extends Component {
           </div>
 
           <div className={s.countSortFilterResultsContainer}>
+
+            <div className={s.desktopSearchBarContainer}>
+              <div className={s.searchBarContainer}>
+                <SearchBar
+                  collectionName="keywords"
+                  inputLabel="keyword search"
+                  addItem={this.addSelectedItem}
+                  inputRef={el => this.searchBarInputElements[0] = el}
+                />
+              </div>
+            </div>
+
             <div className={s.countSortFilterContainer}>
 
               <div className={s.countContainer}>

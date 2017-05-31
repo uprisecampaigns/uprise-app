@@ -16,9 +16,25 @@
     background-color: darken($white, 4%);
   }
 
-  .mobileSearchBarContainer {
-    background-color: darken($white, 4%);
+  .searchBarContainer {
+  }
 
+  .searchContentContainer {
+    border-top: 1px solid darken($white, 9%);
+  }
+
+  .desktopSearchBarContainer {
+    display: none;
+
+    @media (min-width: $screen-sm-min) {
+      margin-top: 2rem;
+      display: block;
+    }
+  }
+
+  .mobileSearchBarContainer {
+
+    margin-top: 1rem;
     @media (min-width: $screen-sm-min) {
       display: none;
     }
@@ -26,6 +42,10 @@
 
   .countSortFilterResultsContainer {
     flex: 2;
+    @media (min-width: $screen-sm-min) {
+      border: 1px solid darken($white, 9%);
+      border-top: none;
+    }
   }
 
   .countSortFilterContainer {
@@ -34,7 +54,6 @@
     font-size: 1rem;
     text-align: center;
     padding-bottom: .5rem;
-    background-color: darken($white, 4%);
 
     .countContainer {
       color: $brick-red;
@@ -107,10 +126,10 @@
       display: block;
       flex: 1;
       background-color: darken($white, 4%);
-      padding-right: 5%;
     }
 
     .desktopFilterHeader {
+      text-align: center;
       font-size: 1.5rem;
       color: darken($azure, 20%);
       margin: 1rem;
@@ -127,7 +146,6 @@
 
     width: 100%;
     overflow-x: hidden;
-    border: 1px solid darken($white, 9%);
 
     @media (min-width: $screen-sm-min) {
     }
@@ -186,16 +204,24 @@
 
 .searchInputsList {
   padding: 0px 0px !important;
+
+  > div {
+    padding-right: 5%;
+  }
 }
 
 .listItemContainer, .listItemContainer >div:first-of-type >span:first-of-type {
-  font-size: 1.5rem !important;
+  font-size: 1rem !important;
   font-weight: 500 !important;
 }
 
 .listItemContainer >div:first-of-type >div:first-of-type {
   max-height: inherit !important;
   overflow-y: inherit !important;
+}
+ 
+.listItemContainer button svg {
+  color: $brick-red !important;
 }
 
 .listItem {
