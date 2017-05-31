@@ -217,8 +217,7 @@ class Campaign {
             qb.andWhere(function() {
 
               search.titles.forEach( (title) => {
-                this.orWhere(db.raw('title % ?', title));
-                this.orWhere(db.raw("title ILIKE '%' || ? || '%' ", title));
+                this.orWhere(db.raw('title %> ?', title));
 
               });
             });
@@ -242,16 +241,16 @@ class Campaign {
 
               search.keywords.forEach( (keyword) => {
                 
-                this.orWhere(db.raw('title % ?', keyword));
-                this.orWhere(db.raw("title ILIKE '%' || ? || '%' ", keyword));
+                this.orWhere(db.raw('title %> ?', keyword));
 
-                this.orWhere(db.raw('profile_subheader % ?', keyword));
-                this.orWhere(db.raw('description % ?', keyword));
+                this.orWhere(db.raw('profile_subheader %> ?', keyword));
+
+                this.orWhere(db.raw('description %> ?', keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
                   .from(tags)
-                  .whereRaw('tag % ?', keyword);
+                  .whereRaw('tag %> ?', keyword);
 
                 this.orWhere('id', 'in', tagKeywordQuery);
 
@@ -393,14 +392,14 @@ class Campaign {
           if (search.keywords) {
             qb.andWhere(function() {
               search.keywords.forEach( (keyword) => {
-                this.orWhere(db.raw('title % ?', keyword));
-                this.orWhere(db.raw('description % ?', keyword));
+                this.orWhere(db.raw('title %> ?', keyword));
+                this.orWhere(db.raw('description %> ?', keyword));
               });
             });
           }
 
           if (search.title) {
-            qb.orWhere(db.raw('title % ?', search.title));
+            qb.orWhere(db.raw('title %> ?', search.title));
           }
         }
       });

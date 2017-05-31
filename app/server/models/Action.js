@@ -183,18 +183,14 @@ class Action {
 
               search.keywords.forEach( (keyword) => {
                 
-                this.orWhere(db.raw('actions.title % ?', keyword));
-                this.orWhere(db.raw("actions.title ILIKE '%' || ? || '%' ", keyword));
-
+                this.orWhere(db.raw('actions.title %> ?', keyword));
                 this.orWhere(db.raw('actions.location_name % ?', keyword));
                 this.orWhere(db.raw('actions.street_address % ?', keyword));
                 this.orWhere(db.raw('actions.street_address2 % ?', keyword));
                 this.orWhere(db.raw('actions.city % ?', keyword));
                 this.orWhere(db.raw('actions.state % ?', keyword));
-                this.orWhere(db.raw('actions.location_notes % ?', keyword));
-                this.orWhere(db.raw('campaigns.title % ?', keyword));
-
-                this.orWhere(db.raw("campaigns.title ILIKE '%' || ? || '%' ", keyword));
+                this.orWhere(db.raw('actions.location_notes %> ?', keyword));
+                this.orWhere(db.raw('campaigns.title %> ?', keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
@@ -207,10 +203,8 @@ class Action {
                   .distinct()
                   .from('activities')
                   .innerJoin('actions_activities', 'activities.id', 'actions_activities.activity_id')
-                  .whereRaw('title % ?', keyword)
-                  .orWhereRaw('description % ?', keyword)
-                  .orWhereRaw("title ILIKE '%' || ? || '%' ", keyword)
-                  .orWhereRaw("description ILIKE '%' || ? || '%' ", keyword);
+                  .whereRaw('title %> ?', keyword)
+                  .orWhereRaw('description %> ?', keyword)
 
                 this.orWhere('actions.id', 'in', activityQuery);
 
@@ -223,7 +217,7 @@ class Action {
             qb.andWhere(function() {
 
               search.campaignNames.forEach( (campaignName) => {
-                this.orWhere(db.raw("campaigns.title ILIKE '%' || ? || '%' ", campaignName));
+                this.orWhere(db.raw('campaigns.title %> ?', campaignName));
               });
             });
           }
@@ -507,8 +501,8 @@ class Action {
           if (search.keywords) {
             qb.andWhere(function() {
               search.keywords.forEach( (keyword) => {
-                this.orWhere(db.raw('title % ?', keyword));
-                this.orWhere(db.raw('description % ?', keyword));
+                this.orWhere(db.raw('title %> ?', keyword));
+                this.orWhere(db.raw('description %> ?', keyword));
               });
             });
           }
