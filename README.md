@@ -39,7 +39,8 @@ There are 5 containers delineated in the docker-compose file:
 Configuring and installing the platform should consist of two steps: 
 
 1. Properly set environment variables
-2. Run `docker-compose up`
+2. Run `docker-compose build`
+3. Run `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
 
 This should start up all appropriate containers. With default environment variables, visiting `localhost:8080` should direct you to the application.
 
@@ -111,6 +112,7 @@ Several companies (including digital ocean) offer docker-ready VMs or more speci
 Kubernetes would be an interesting direction, though likely only in the longer term as it has a much higher learning curve/operational-deployment overhead.
 
 Important notes for deployment/production:
+ - There are separate additional docker-compose files for dev and prod environments. The `docker-compose.yml` file contains base configurations, while the additional files extend that configuration. To run in production you would use: `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up`
  - Because of the way that docker networking works, iptables and ufw in particular are slightly less intuitive than they might otherwise be. 
 Technically, connections from the outside world to the docker containers are governed by `FORWARD` rules, NOT `INPUT` ones. 
 You could therefore potentially block all `INPUT` traffic except to a limited set of ports (22, 80, 443, etc) and still end up allowing unlimited access to ports within the containers. 
