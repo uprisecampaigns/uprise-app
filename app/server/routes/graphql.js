@@ -14,6 +14,8 @@ const campaignFuncs = require('./graphql-functions/campaign.js');
 const actionFuncs = require('./graphql-functions/action.js');
 const miscFuncs = require('./graphql-functions/misc.js');
 
+const ravenCallback = require('lib/ravenCallback.js');
+
 
 module.exports = (app) => {
 
@@ -25,29 +27,28 @@ module.exports = (app) => {
     context: { user: req.user },
     debug: (app.get('env') === 'development'),
     formatError: (error) => {
+      Raven.setContext({ req });
       if (error.path || error.name !== 'GraphQLError') {
         console.error(error);
-        Raven.captureException(error,
-          Raven.parsers.parseRequest(req, {
-            tags: { graphql: 'exec_error' },
-            extra: {
-              source: error.source && error.source.body,
-              positions: error.positions,
-              path: error.path,
-            },
-          })
-        );
+        Raven.mergeContext({
+          tags: { graphql: 'exec_error' },
+          extra: {
+            source: error.source && error.source.body,
+            positions: error.positions,
+            path: error.path,
+          },
+        });
+        Raven.captureException(error, ravenCallback);
       } else {
         console.error(error.message);
-        Raven.captureMessage(`GraphQLWrongQuery: ${error.message}`,
-          Raven.parsers.parseRequest(req, {
-            tags: { graphql: 'wrong_query' },
-            extra: {
-              source: error.source && error.source.body,
-              positions: error.positions,
-            },
-          })
-        );
+        Raven.mergeContext({
+          tags: { graphql: 'query_error' },
+          extra: {
+            source: error.source && error.source.body,
+            positions: error.positions,
+          },
+        });
+        Raven.captureMessage(`GraphQLQueryError: ${error.message}`, ravenCallback);
       }
       return {
         message: error.message,

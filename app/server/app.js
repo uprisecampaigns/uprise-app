@@ -17,7 +17,10 @@ const config = require('config/config.js');
 const app = express();
 
 
-Raven.config(config.sentry.dsn).install();
+Raven.config(config.sentry.dsn, {
+  parseUser: ['id', 'email', 'first_name', 'last_name', 'zipcode', 'phone_number']
+}).install();
+
 app.use(Raven.requestHandler());
 
 // view engine setup

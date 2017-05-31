@@ -25,6 +25,12 @@ import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 import history from 'lib/history';
 import routes from 'routes';
 
+import { sentryDsn } from 'config/config';
+
+import Raven from 'raven-js';
+
+Raven.config(sentryDsn).install();
+
 const container = document.getElementById('app');
 
 const store = configureStore();
@@ -135,7 +141,9 @@ async function onLocationChange(location) {
       () => onRenderComplete(route, location),
     );
   } catch (error) {
-    console.error(error); 
+
+    Raven.captureException(error);
+    window.console && console.error && console.error(error);
 
     // Current url has been changed during navigation process, do nothing
     if (currentLocation.key !== location.key) {

@@ -41,6 +41,7 @@ const definePlugin = new webpack.DefinePlugin({
     'CLIENT_BASE_URL': '"' + process.env.CLIENT_BASE_URL + '"',
     'AWS_S3_REGION': '"' + process.env.AWS_S3_REGION + '"',
     'AWS_S3_BUCKET_NAME': '"' + process.env.AWS_S3_BUCKET_NAME + '"',
+    'SENTRY_PUBLIC_DSN': '"' + process.env.SENTRY_PUBLIC_DSN + '"',
   }
 });
 
