@@ -48,7 +48,7 @@ class ManageCampaignContainer extends Component {
 
             <Link to={'/organize/' + campaign.slug + '/actions'}>
               <ListItem 
-                primaryText="Actions"
+                primaryText="Campaign Actions"
               />
             </Link>
 
