@@ -13,7 +13,6 @@
     padding: 2rem 0;
     font-weight: 500;
     color: darken($azure, 20%) !important;
-    background-color: darken($white, 4%);
   }
 
   .searchBarContainer {
@@ -125,7 +124,6 @@
     @media (min-width: $screen-sm-min) {
       display: block;
       flex: 1;
-      background-color: darken($white, 4%);
     }
 
     .desktopFilterHeader {
@@ -150,10 +148,14 @@
     @media (min-width: $screen-sm-min) {
     }
 
+    .card {
+      box-shadow: none !important;
+    }
+
     .resultsHeader {
-      font-size: 1rem;
+      font-size: 0.8rem;
       font-weight: 400 !important;
-      padding: 1.7rem 3rem 1.7rem 3rem !important;
+      padding: 0.5rem 3rem 0.5rem 3rem !important;
 
       @media (max-width: $screen-xs-min) {
         padding-left: 1rem !important;
@@ -162,7 +164,7 @@
 
       >div:first-of-type {
         >span:first-of-type {
-          font-size: 1.8rem !important;
+          font-size: 1.4rem !important;
           color: darken($azure, 5%) !important;
           font-weight: 500;
         }
@@ -171,10 +173,10 @@
 
     .subheaderContainer {
       color: lighten($azure, 20%);
-      font-size: 1.2rem;
+      font-size: 1rem;
       white-space: normal !important;
       display: inline-block;
-      margin-top: 1rem;
+      margin-top: 0rem;
     }
 
     .locationContainer {

@@ -75,7 +75,7 @@ class SearchActionResults extends React.PureComponent {
 
       return (
         <Link key={index} to={'/action/' + action.slug}>
-          <Card>
+          <Card className={s.card}>
             <CardHeader
               title={action.title}
               className={s.resultsHeader}

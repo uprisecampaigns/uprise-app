@@ -80,7 +80,7 @@ class SearchCampaignInputs extends React.PureComponent {
 
         <ListItem 
           primaryText="Location"
-          initiallyOpen={true}
+          initiallyOpen={false}
           primaryTogglesNestedList={true}
           className={s.listItemContainer}
           nestedItems={[(
