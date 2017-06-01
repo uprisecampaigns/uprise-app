@@ -142,7 +142,12 @@ async function onLocationChange(location) {
     );
   } catch (error) {
 
-    Raven.captureException(error);
+    Raven.captureException(error, {
+      extra: {
+        state: store.getState(),
+      }
+    });
+
     window.console && console.error && console.error(error);
 
     // Current url has been changed during navigation process, do nothing
