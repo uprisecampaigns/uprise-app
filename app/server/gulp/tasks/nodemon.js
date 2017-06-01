@@ -1,5 +1,6 @@
 "use strict";
 
+const fs = require('fs');
 const gulp = require('gulp');
 const path = require('path');
 const yargs = require('yargs');
@@ -16,14 +17,18 @@ gulp.task('nodemon', () => {
     exec = path.resolve(config.appRoot, 'node_modules', 'babel-cli', 'bin', 'babel-node.js');
   }
 
-  console.log('exec path = ' + exec);
+  const gitWatchFiles = fs.readdirSync(config.gitWatchDir)
+    .map((filename) => path.resolve(config.gitWatchDir, filename));
 
   const nodemonOpts = {
     script: path.resolve(config.serverRoot, 'bin', 'www'), 
     exec: exec,
+    ignoreRoot: [ 'node_modules' ],
     ignore: [ config.publicRoot ],
-    ext: 'js json', 
-    legacyWatch: true 
+    watch: [ config.serverRoot, ...gitWatchFiles ],
+    ext: 'js,json,ejs',
+    legacyWatch: true,
+    verbose: true,
   };
 
   const monitor = nodemon(nodemonOpts);
