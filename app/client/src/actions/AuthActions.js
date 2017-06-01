@@ -140,7 +140,12 @@ export function checkedSessionStatus(result) {
   if (typeof result.gitCommit === 'string' &&
       result.gitCommit.trim() !== gitCommit.trim()) {
 
-    window.location.reload(true);
+    window.setTimeout(() => {
+      window.location.reload(true);
+    }, 100);
+    Raven.captureMessage('git commit rev does not match clients', {
+      extra: { result, gitCommit }
+    });
   }
 
   if (result.isLoggedIn){
