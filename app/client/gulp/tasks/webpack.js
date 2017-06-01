@@ -19,6 +19,8 @@ const config = require('config/gulp.js');
 
 gulp.task('webpack', ['webpack:clean'], (done) => {
 
+  console.log('Running webpack task');
+
   const gitCommit = childProcess.execSync('git rev-parse HEAD').toString().trim();
 
   const extractTextPlugin = new ExtractTextPlugin('[name].css');
