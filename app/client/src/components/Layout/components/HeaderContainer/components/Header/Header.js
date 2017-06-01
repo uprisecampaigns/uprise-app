@@ -47,8 +47,8 @@ function AuthenticatedIcons(props) {
           title="Search"
           className={s.rightIcon}
           dropdowns={[
-            { title: 'Actions Commitments', path: '/search/search-actions' },
-            { title: 'Campaign Subscriptions', path: '/search/search-campaigns' },
+            { title: 'Actions', path: '/search/search-actions' },
+            { title: 'Campaigns', path: '/search/search-campaigns' },
           ]}
         />
 
@@ -56,8 +56,8 @@ function AuthenticatedIcons(props) {
           title="Volunteer"
           className={s.rightIcon}
           dropdowns={[
-            { title: 'Action Commitments', path: '/volunteer/action-commitments' },
-            { title: 'Campaign Subscriptions', path: '/volunteer/campaign-subscriptions' },
+            { title: 'My Actions', path: '/volunteer/action-commitments' },
+            { title: 'My Subscriptions', path: '/volunteer/campaign-subscriptions' },
           ]}
         />
 

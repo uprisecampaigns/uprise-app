@@ -31,7 +31,7 @@ class Volunteer extends Component {
 
           <Link to={'/volunteer/action-commitments'}>
             <ListItem 
-              primaryText="Action Commitments"
+              primaryText="My Actions"
             />
           </Link>
 
@@ -39,7 +39,7 @@ class Volunteer extends Component {
 
           <Link to={'/volunteer/campaign-subscriptions'}>
             <ListItem 
-              primaryText="Campaign Subscriptions"
+              primaryText="My Subscriptions"
             />
           </Link>
 

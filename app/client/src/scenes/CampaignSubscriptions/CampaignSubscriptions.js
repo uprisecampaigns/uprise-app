@@ -67,7 +67,7 @@ class CampaignSubscriptions extends Component {
           </Link>
 
 
-          <div className={s.pageSubHeader}>Campaign Subscriptions</div>
+          <div className={s.pageSubHeader}>My Campaigns</div>
 
           <List>
 

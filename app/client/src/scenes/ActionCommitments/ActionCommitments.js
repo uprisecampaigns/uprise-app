@@ -73,7 +73,7 @@ class ActionCommitments extends Component {
             </div>
           </Link>
 
-          <div className={s.pageSubHeader}>Action Commitments</div>
+          <div className={s.pageSubHeader}>My Actions</div>
 
           <List>
 
