@@ -46,16 +46,16 @@
   padding: 2rem 0px;
 }
 
-.pageSubHeader, .campaignHeader, .actionHeader, .settingsHeader {
+.pageSubHeader, .campaignHeader, .actionHeader, .settingsHeader, .titleContainer {
   width: 100%;
   display: flex;
   justify-content: center;
   text-align: center;
   align-items: center;
-  min-height: 3rem;
-  padding: 2rem 0px;
+  padding: 1rem 0px;
   color: darken($azure, 20%) !important;
   font-size: 3rem;
+  line-height: 3rem;
   font-weight: 500;
 }
 
