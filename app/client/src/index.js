@@ -113,9 +113,6 @@ async function onLocationChange(location) {
       store: store // be wary of using the store in routing considering async updates
     });
 
-    console.log(store);
-    console.log(apolloClient);
-
     // Prevent multiple page renders during the routing process
     if (currentLocation.key !== location.key) {
       return;
