@@ -17,8 +17,7 @@ module.exports = {
     // TODO: This is repeated in a bunch of places and should be DRYed
     campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id });
 
-    // TODO: Better notion of campaign "ownership"
-    campaign.is_owner = (context.user.id === campaign.owner_id);
+    campaign.is_owner = User.ownsObject({ user: context.user, object: campaign });
 
     return campaign;
   },
@@ -39,9 +38,16 @@ module.exports = {
       throw new Error('User must be logged in');
     }
 
-    const myCampaigns = await Campaign.search({
-      ownerId: context.user.id
-    });
+    let myCampaigns;
+    if (context.user.superuser) {
+      myCampaigns = Campaign.search({});
+    } else {
+
+      myCampaigns = await Campaign.search({
+        ownerId: context.user.id
+      });
+    }
+
     return myCampaigns;
   },
 
@@ -116,7 +122,7 @@ module.exports = {
 
     const campaign = await Campaign.findOne(options.data);
 
-    if (campaign.owner_id !== context.user.id) {
+    if (!User.ownsObject({ user: context.user, object: campaign })) {
       throw new Error('User must own campaign');
     }
 
@@ -192,7 +198,7 @@ module.exports = {
 
     const campaign = await Campaign.findOne(data.search);
 
-    if (campaign.owner_id !== user.id) {
+    if (!User.ownsObject({ user: user, object: campaign })) {
       throw new Error('User must be campaign coordinator');
     }
 

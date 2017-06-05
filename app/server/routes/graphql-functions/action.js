@@ -36,8 +36,7 @@ module.exports = {
     // TODO: This is repeated in a bunch of places and should be DRYed
     action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
 
-    // TODO: Better notion of action "ownership"
-    action.is_owner = (context.user.id === action.owner_id);
+    action.is_owner = await User.ownsObject({ user: context.user, object: action });
 
     return action;
   },
@@ -76,7 +75,7 @@ module.exports = {
 
     const action = await Action.findOne(options.data);
 
-    if (action.owner_id !== context.user.id) {
+    if (!await User.ownsObject({ user: context.user, object: action })) {
       throw new Error('User must own action');
     }
 
@@ -129,7 +128,7 @@ module.exports = {
 
     const action = await Action.findOne(data.search);
 
-    if (action.owner_id !== user.id) {
+    if (!await User.ownsObject({ user: user, object: action })) {
       throw new Error('User must be action coordinator');
     }
 

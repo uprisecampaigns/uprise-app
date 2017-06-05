@@ -34,7 +34,7 @@ class Action {
   }
 
   static async find(...args) {
-    const actions = await db.table('actions').where(...args);
+    const actions = await db.table('actions').where(...args).orderBy('slug', 'asc');
 
     for (let action of actions) {
       Object.assign(action, await this.details(action));
@@ -520,7 +520,7 @@ class Action {
 
   static async create(options) {
 
-    const user = await db.table('users').where('id', options.owner_id).first('id');
+    const user = await db.table('users').where('id', options.owner_id).first('id', 'superuser');
 
     if (user) {
 
@@ -529,7 +529,7 @@ class Action {
       if (!campaign) {
         throw new Error('Cannot find campaign with id=' + options.campaign_id);
 
-      } else if (campaign.owner_id === user.id) {
+      } else if (await User.ownsObject({ user, object: campaign })) {
 
         let found;
         let append = 0;
@@ -575,7 +575,7 @@ class Action {
 
   static async edit(options) {
 
-    const user = await db.table('users').where('id', options.owner_id).first('id');
+    const user = await db.table('users').where('id', options.owner_id).first('id', 'superuser');
 
     if (user) {
 
@@ -584,7 +584,7 @@ class Action {
       if (!action) {
         throw new Error('Cannot find action with id=' + options.id);
 
-      } else if (action.owner_id === user.id) {
+      } else if (await User.ownsObject({ user, object: action })) {
 
         try {
           const levels = options.levels;

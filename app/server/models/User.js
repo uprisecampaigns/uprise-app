@@ -196,6 +196,13 @@ class User {
 
     return userResults[0];
   }
+
+  static async ownsObject({ user, object, userId }) {
+    if (! (user && typeof user.superuser === 'boolean')) {
+      user = await db.table('users').where('id', userId).first();
+    }
+    return (object.owner_id === user.id || user.superuser);
+  }
 }
 
 module.exports = User;

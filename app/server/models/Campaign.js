@@ -23,7 +23,7 @@ class Campaign {
   }
 
   static async find(...args) {
-    const campaigns = await db.table('campaigns').where(...args);
+    const campaigns = await db.table('campaigns').where(...args).orderBy('slug', 'asc');
 
     for (let campaign of campaigns) {
       Object.assign(campaign, await this.details(campaign));
@@ -70,20 +70,20 @@ class Campaign {
       return Object.assign({}, newCampaign, await this.details(newCampaign));
 
     } else {
-      throw new Error('User must be owner of campaign');
+      throw new Error('User not found');
     }
   }
 
   static async edit(options) {
 
-    const user = await db.table('users').where('id', options.owner_id).first('id');
+    const user = await db.table('users').where('id', options.owner_id).first('id', 'superuser');
     const campaignId = options.id;
 
     if (user) {
 
       const campaign = await db('campaigns').where('id', campaignId).first();
 
-      if (campaign && campaign.owner_id === user.id) {
+      if (await User.ownsObject({ user, object: campaign })) {
 
         const levels = options.levels;
         delete options.levels;
@@ -209,6 +209,7 @@ class Campaign {
     const searchQuery = db('campaigns')
       .select('*')
       .where('deleted', false)
+      .orderBy('slug', 'asc')
       .modify( (qb) => {
 
         if (search) {
