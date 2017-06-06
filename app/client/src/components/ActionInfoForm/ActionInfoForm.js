@@ -144,17 +144,6 @@ class ActionInfoForm extends Component {
                     </div>
 
                     <div className={s.textFieldContainer}>
-                      <TextField
-                        floatingLabelText="Zipcode"
-                        type="text"
-                        pattern="[0-9]{5}"
-                        value={data.zipcode}
-                        onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
-                        errorText={errors.zipcodeErrorText}
-                      />
-                    </div>
-
-                    <div className={s.textFieldContainer}>
                       <AutoComplete
                         floatingLabelText="State"
                         searchText={data.state}
@@ -162,6 +151,17 @@ class ActionInfoForm extends Component {
                         onUpdateInput={ (text) => { handleInputChange(undefined, 'state', text) } }
                         ref={ (input) => { refs.stateInput = input } }
                         errorText={errors.stateErrorText}
+                      />
+                    </div>
+
+                    <div className={s.textFieldContainer}>
+                      <TextField
+                        floatingLabelText="Zipcode"
+                        type="text"
+                        pattern="[0-9]{5}"
+                        value={data.zipcode}
+                        onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+                        errorText={errors.zipcodeErrorText}
                       />
                     </div>
 
