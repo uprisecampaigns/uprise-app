@@ -11,6 +11,7 @@ module.exports = buildSchema(`
     phone_number: String
     email: String
     zipcode: String
+    email_confirmed: Boolean
   }
 
   type ActivityResult {
@@ -312,5 +313,6 @@ module.exports = buildSchema(`
     cancelCampaignSubscription(campaignId: String!): CampaignResult
     sendMessage(data: SendMessageInput!): Boolean
     contact(data: ContactInput!): Boolean
+    resendEmailVerification: Boolean
   }
 `);

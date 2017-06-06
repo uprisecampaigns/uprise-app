@@ -6,5 +6,6 @@ query MeQuery {
     email
     zipcode
     phone_number
+    email_confirmed
   }
 }

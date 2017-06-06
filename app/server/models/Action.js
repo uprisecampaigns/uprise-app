@@ -520,7 +520,7 @@ class Action {
 
   static async create(options) {
 
-    const user = await db.table('users').where('id', options.owner_id).first('id', 'superuser');
+    const user = await db.table('users').where('id', options.owner_id).first('id', 'superuser', 'email_confirmed');
 
     if (user) {
 
@@ -528,7 +528,8 @@ class Action {
 
       if (!campaign) {
         throw new Error('Cannot find campaign with id=' + options.campaign_id);
-
+      } else if (!user.email_confirmed) {
+        throw new Error('User must confirm email to create an action');
       } else if (await User.ownsObject({ user, object: campaign })) {
 
         let found;

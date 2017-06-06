@@ -13,14 +13,7 @@ module.exports = {
       id: context.user.id
     });
 
-    return {
-      id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      zipcode: user.zipcode,
-      phone_number: user.phone_number
-    }
+    return user;
   },
 
   emailAvailable: async (data, context) => {
@@ -53,6 +46,15 @@ module.exports = {
 
     return user;
 
+  },
+
+  resendEmailVerification: async (data, context) => {
+
+    if (!context.user) {
+      throw new Error('User must be logged in');
+    }
+
+    return User.sendVerificationEmail(context.user);
   }
 
 };

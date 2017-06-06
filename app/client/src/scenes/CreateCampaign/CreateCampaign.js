@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 
@@ -15,9 +16,12 @@ import {
   validatePhoneNumber
 } from 'lib/validateComponentForms';
 
+import { notify } from 'actions/NotificationsActions';
+
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import CreateCampaignMutation from 'schemas/mutations/CreateCampaignMutation.graphql';
+import ResendEmailVerificationMutation from 'schemas/mutations/ResendEmailVerificationMutation.graphql';
 
 import CampaignInfoForm from 'components/CampaignInfoForm';
 
@@ -113,9 +117,27 @@ class CreateCampaignContainer extends Component {
     }
   }
 
+  resendEmailVerification = async (data) => {
+
+    const { dispatch, resendEmailVerification, ...props } = this.props;
+    try {
+
+      const results = await resendEmailVerification();
+
+      if (results) {
+        dispatch(notify('Email resent'));
+        history.push('/organize')
+      } else {
+        dispatch(notify('Error resending email'));
+      }
+    } catch (e) {
+      dispatch(notify('Error resending email'));
+    }
+  }
+
   render() {
 
-    const { formSubmit, defaultErrorText } = this;
+    const { formSubmit, defaultErrorText, resendEmailVerification } = this;
     const { user, ...props } = this.props;
     const { newCampaign, modalOpen, formData, ...state } = this.state;
 
@@ -141,31 +163,59 @@ class CreateCampaignContainer extends Component {
 
         <div className={s.pageSubHeader}>Create Campaign</div>
 
-        <WrappedCampaignInfoForm
-          initialState={formData}
-          initialErrors={defaultErrorText}
-          validators={validators}
-          submit={formSubmit}
-          submitText="Create"
-          user={user}
-        />
+        { user.email_confirmed ? (
+          <div>
+            <WrappedCampaignInfoForm
+              initialState={formData}
+              initialErrors={defaultErrorText}
+              validators={validators}
+              submit={formSubmit}
+              submitText="Create"
+              user={user}
+            />
 
-        {modalOpen && (
+            {modalOpen && (
+              <Dialog
+                title="Campaign Created"
+                modal={true}
+                actions={modalActions}
+                open={modalOpen}
+                actionsContainerClassName={s.modalActionsContainer}
+              >
+                <p>
+                  Congratulations, you have created the campaign '{newCampaign.title}'.
+                </p>
+                <p>
+                  You can find and edit your campaign's public profile at {window.location.origin}/campaign/{newCampaign.slug}
+                </p>
+                <p>
+                  Please set your campaign's preferences so volunteers are able to search for you effectively.
+                </p>
+              </Dialog>
+            )}
+          </div>
+        ) : (
           <Dialog
-            title="Campaign Created"
+            title="Confirm Email Address to Proceed"
             modal={true}
-            actions={modalActions}
-            open={modalOpen}
             actionsContainerClassName={s.modalActionsContainer}
+            actions={[
+              <RaisedButton
+                label="Resend"
+                primary={true}
+                className={s.primaryButton}
+                onTouchTap={ (event) => { event.preventDefault(); resendEmailVerification(); }}
+              />,
+              <RaisedButton
+                label="Ok"
+                primary={false}
+                className={s.secondaryButton}
+                onTouchTap={ (event) => { event.preventDefault(); history.push('/organize') }}
+              />]}
+            open={true}
           >
             <p>
-              Congratulations, you have created the campaign '{newCampaign.title}'.
-            </p>
-            <p>
-              You can find and edit your campaign's public profile at {window.location.origin}/campaign/{newCampaign.slug}
-            </p>
-            <p>
-              Please set your campaign's preferences so volunteers are able to search for you effectively.
+              Please check your inbox for an email verification message. Please check your spam folder. If you don't see it, you can have it resent.
             </p>
           </Dialog>
         )}
@@ -178,12 +228,18 @@ const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     user: !data.loading && data.me ? data.me : {
       email: '',
+      email_confirmed: true
     }, 
     data
+  }),
+  options: (ownProps) => ({
+    fetchPolicy: 'cache-and-network',
   })
 });
 
 export default compose(
+  connect(),
   withMeQuery, 
-  graphql(CreateCampaignMutation, { name: 'createCampaignMutation' })
+  graphql(CreateCampaignMutation, { name: 'createCampaignMutation' }),
+  graphql(ResendEmailVerificationMutation, { name: 'resendEmailVerification' })
 )(CreateCampaignContainer);

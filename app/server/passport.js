@@ -68,14 +68,8 @@ module.exports = (passport) => {
           };
 
           const user = await User.create(userInfo);
-          await sendEmail({
-            to: user.email,
-            subject: 'Confirm your email address', 
-            templateName: 'verification-email',
-            context: {
-              verifyURL: config.urls.api + '/email-verification/' + user.verificationToken
-            }
-          });
+
+          await User.sendVerificationEmail(user);
 
           return done(null, {
             id: user.id,

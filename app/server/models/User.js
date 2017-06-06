@@ -14,7 +14,7 @@ class User {
   static findOne(...args) {
     return db.table('users').where(...args).first(
       'id', 'first_name', 'last_name', 'email', 
-      'phone_number', 'zipcode');
+      'phone_number', 'zipcode', 'email_confirmed');
   }
 
   static async create(user) {
@@ -27,16 +27,6 @@ class User {
     let rows = await db.table('users').insert(user, ['id', 'email']);
 
     Object.assign(userInfo, rows[0]);
-
-    const verification = {
-      token: uuid(),
-      user_id: userInfo.id
-    };
-
-    rows = await db.table('user_email_verifications').insert(verification, ['id', 'token']);
-
-    userInfo.verificationToken = rows[0].token;
-
     return userInfo;
   }
 
@@ -45,7 +35,7 @@ class User {
     const userResult = await db('users')
       .where('id', options.id)
       .update(options, [
-        'id', 'first_name', 'last_name', 'email', 'phone_number', 'zipcode'
+        'id', 'first_name', 'last_name', 'email', 'phone_number', 'zipcode', 'email_confirmed'
       ]);
 
     return userResult[0];
@@ -202,6 +192,27 @@ class User {
       user = await db.table('users').where('id', userId).first();
     }
     return (object.owner_id === user.id || user.superuser);
+  }
+
+  static async sendVerificationEmail(user) {
+
+    const verification = {
+      token: uuid(),
+      user_id: user.id
+    };
+
+    const rows = await db.table('user_email_verifications').insert(verification, ['id', 'token']);
+
+    user.verificationToken = rows[0].token;
+
+    return await sendEmail({
+      to: user.email,
+      subject: 'Confirm your email address',
+      templateName: 'verification-email',
+      context: {
+        verifyURL: config.urls.api + '/email-verification/' + user.verificationToken
+      }
+    });
   }
 }
 

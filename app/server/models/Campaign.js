@@ -34,44 +34,47 @@ class Campaign {
 
   static async create(options) {
 
-    const user = await db.table('users').where('id', options.owner_id).first('id');
+    const user = await db.table('users').where('id', options.owner_id).first('id', 'email_confirmed');
 
-    if (user) {
-      let found;
-      let append = 0;
-      let slug;
+    if (!user.email_confirmed) {
+      throw new Error('User must confirm email to create a campaign');
+    }
 
-      do {
-        found = false;
-
-        if (append > 0) {
-          slug = getSlug(options.title + append, '');
-        } else {
-          slug = getSlug(options.title, '');
-        }
-
-        const slugQuery = await db('campaigns').where('slug', slug);
-        if (slugQuery.length > 0) {
-          found = true;
-        }
-
-        append++;
-
-      } while (found)
-
-      const newCampaignData = Object.assign({}, options, { slug });
-
-      const campaignResult = await db.table('campaigns').insert(newCampaignData, [
-        'id', 'title', 'slug', 'description', 'tags', 'owner_id'
-      ]);
-
-      const newCampaign = campaignResult[0];
-
-      return Object.assign({}, newCampaign, await this.details(newCampaign));
-
-    } else {
+    if (!user) {
       throw new Error('User not found');
     }
+
+    let found;
+    let append = 0;
+    let slug;
+
+    do {
+      found = false;
+
+      if (append > 0) {
+        slug = getSlug(options.title + append, '');
+      } else {
+        slug = getSlug(options.title, '');
+      }
+
+      const slugQuery = await db('campaigns').where('slug', slug);
+      if (slugQuery.length > 0) {
+        found = true;
+      }
+
+      append++;
+
+    } while (found)
+
+    const newCampaignData = Object.assign({}, options, { slug });
+
+    const campaignResult = await db.table('campaigns').insert(newCampaignData, [
+      'id', 'title', 'slug', 'description', 'tags', 'owner_id'
+    ]);
+
+    const newCampaign = campaignResult[0];
+
+    return Object.assign({}, newCampaign, await this.details(newCampaign));
   }
 
   static async edit(options) {
