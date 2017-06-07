@@ -4,7 +4,11 @@ import history from 'lib/history';
 
 import states from 'lib/states-list';
 
-import { notify } from 'actions/NotificationsActions';
+import {
+  notify,
+  dirtyForm,
+  cleanForm
+} from 'actions/NotificationsActions';
 
 
 const statesList = Object.keys(states);
@@ -44,6 +48,7 @@ export default (WrappedComponent) => {
 
     cancel = (event) => {
       event.preventDefault();
+      this.props.dispatch(cleanForm());
       history.goBack();
     }
 
@@ -68,13 +73,16 @@ export default (WrappedComponent) => {
       } 
 
       if (valid) {
+
+        this.props.dispatch(dirtyForm());
+
         this.setState( (prevState) => ({
           formData: Object.assign({},
             prevState.formData,
             { [type]: value }
           )
         }));
-      } 
+      }
     }
 
     formSubmit = async (event) => {
@@ -102,11 +110,14 @@ export default (WrappedComponent) => {
           } else {
             notifyError();
           }
+
+          this.props.dispatch(cleanForm());
           this.setState({ saving: false });
 
         } catch (e) {
           console.error(e);
           notifyError();
+          this.props.dispatch(cleanForm());
           this.setState({ saving: false });
         }
       }

@@ -26,7 +26,9 @@ import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 import EditActionMutation from 'schemas/mutations/EditActionMutation.graphql';
 
 import { 
-  notify
+  notify,
+  dirtyForm,
+  cleanForm
 } from 'actions/NotificationsActions';
 
 import s from 'styles/Organize.scss';
@@ -129,7 +131,10 @@ class ManageActionPreferencesContainer extends Component {
         refetchQueries: ['ActionQuery', 'SearchActionsQuery'],
       });
 
+      this.props.dispatch(cleanForm());
+
       this.props.dispatch(notify('Changes Saved'));
+
       this.setState({ saving: false });
 
     } catch (e) {
@@ -151,6 +156,8 @@ class ManageActionPreferencesContainer extends Component {
 
     const newAction = Object.assign({}, this.state.action, { [collectionName]: newCollection });
 
+    this.props.dispatch(dirtyForm());
+
     this.setState( (prevState) => ({
       action: Object.assign({}, prevState.action, newAction)
     }));
@@ -166,12 +173,15 @@ class ManageActionPreferencesContainer extends Component {
       tags.push(tag);
     }
 
+    this.props.dispatch(dirtyForm());
+
     this.setState( (prevState) => ({
       action: Object.assign({}, prevState.action, { tags })
     }));
   }
 
   removeKeyword = (collectionName, tagToRemove) => {
+    this.props.dispatch(dirtyForm());
     this.setState( (prevState) => ({
       action: Object.assign({}, prevState.action, { 
         tags: prevState.action.tags.filter( (tag) => {

@@ -25,7 +25,9 @@ import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
 import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql';
 
 import { 
-  notify
+  notify,
+  dirtyForm,
+  cleanForm
 } from 'actions/NotificationsActions';
 
 import s from 'styles/Organize.scss';
@@ -120,7 +122,10 @@ class ManageCampaignPreferencesContainer extends Component {
         refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
       });
 
+      this.props.dispatch(cleanForm());
+
       this.props.dispatch(notify('Changes Saved'));
+
       this.setState({ saving: false });
 
     } catch (e) {
@@ -141,6 +146,8 @@ class ManageCampaignPreferencesContainer extends Component {
 
     const newCampaign = Object.assign({}, this.state.campaign, { [collectionName]: newCollection });
 
+    this.props.dispatch(dirtyForm());
+
     this.setState( (prevState) => ({
       campaign: Object.assign({}, prevState.campaign, newCampaign)
     }));
@@ -156,12 +163,17 @@ class ManageCampaignPreferencesContainer extends Component {
       tags.push(tag);
     }
 
+    this.props.dispatch(dirtyForm());
+
     this.setState( (prevState) => ({
       campaign: Object.assign({}, prevState.campaign, { tags })
     }));
   }
 
   removeKeyword = (collectionName, tagToRemove) => {
+
+    this.props.dispatch(dirtyForm());
+
     this.setState( (prevState) => ({
       campaign: Object.assign({}, prevState.campaign, { 
         tags: prevState.campaign.tags.filter( (tag) => {

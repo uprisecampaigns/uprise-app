@@ -15,7 +15,11 @@ import configureStore from 'store/configureStore';
 import apolloClient from 'store/apolloClient';
 
 import { checkSessionStatus } from 'actions/AuthActions';
-import { startPageLoad, endPageLoad } from 'actions/NotificationsActions';
+import {
+  startPageLoad,
+  endPageLoad,
+  attemptNavFromDirtyForm
+} from 'actions/NotificationsActions';
 
 import TypesQuery from 'schemas/queries/TypesQuery.graphql';
 import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
@@ -84,6 +88,7 @@ let onRenderComplete = function initialRenderComplete(route, location) {
 async function onLocationChange(location) {
 
   try {
+
     // TODO: Not only does this seem to occasionally get stuck, it also just reeks of code smell
     const fetchingSessionStatus = store.getState().userAuthSession.fetchingAuthUpdate;
     if (!fetchingSessionStatus) {
@@ -165,6 +170,14 @@ async function onLocationChange(location) {
     window.location.reload(true);
   }
 }
+
+history.block((location, action) => {
+  if (!store.getState().notifications.formStateClean) {
+    store.dispatch(attemptNavFromDirtyForm(location.pathname));
+    // This just needs to return a string in order to tell the history API to block
+    return 'unsaved changes';
+  }
+});
 
 // Handle client-side navigation by using HTML5 History API
 // For more information visit https://github.com/mjackson/history#readme
