@@ -84,6 +84,18 @@ class AccountForm extends Component {
                   />
                 </div>
 
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Email"
+                    value={data.email}
+                    onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
+                    errorText={errors.emailErrorText}
+                    fullWidth={true}
+                    type="email"
+                  />
+                </div>
+
+
                 { saving ? (
 
                   <div className={s.savingThrobberContainer}>

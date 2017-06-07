@@ -91,7 +91,9 @@ export default (WrappedComponent) => {
       this.hasErrors = false;
       this.resetErrorText();
 
-      this.props.validators.forEach( (validator) => validator(this) );
+      for (let validator of this.props.validators) {
+        await validator(this);
+      }
 
       const notifyError = () => {
         this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
@@ -117,7 +119,7 @@ export default (WrappedComponent) => {
         } catch (e) {
           console.error(e);
           notifyError();
-          this.props.dispatch(cleanForm());
+          this.props.dispatch(dirtyForm());
           this.setState({ saving: false });
         }
       }

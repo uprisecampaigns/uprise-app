@@ -1,7 +1,12 @@
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import isURL from 'validator/lib/isURL';
 import isNumeric from 'validator/lib/isNumeric';
+import isEmail from 'validator/lib/isEmail';
 import moment from 'moment';
+
+import apolloClient from 'store/apolloClient';
+
+import EmailAvailableQuery from 'schemas/queries/EmailAvailableQuery.graphql';
 
 import states from 'lib/states-list';
 
@@ -51,6 +56,45 @@ export function validateState(component, prop='state', errorProp='stateErrorText
         [errorProp]: 'Please enter valid state'
       })
     }));
+  }
+}
+
+export function validateEmail(component, prop='email', errorProp='emailErrorText') {
+  const test = component.state.formData[prop];
+
+  if (typeof test === 'string' && test.trim() !== '') {
+    if (!isEmail(test)) {
+      component.hasErrors = true;
+      component.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          [errorProp]: 'Please enter valid email'
+        })
+      }));
+    }
+  }
+}
+
+export async function validateEmailAvailable(component, previousEmail, prop='email', errorProp='emailErrorText') {
+  const test = component.state.formData[prop];
+
+  if (typeof test === 'string' && test.trim() !== '' && previousEmail !== test) {
+
+    const response = await apolloClient.query({
+      query: EmailAvailableQuery,
+        variables: {
+          email: test
+        },
+        fetchPolicy: 'network-only',
+      });
+
+    if (!response.data.emailAvailable) {
+      component.hasErrors = true;
+      component.setState( (prevState) => ({
+        errors: Object.assign({}, prevState.errors, {
+          [errorProp]: 'That email is already taken'
+        })
+      }));
+    }
   }
 }
 

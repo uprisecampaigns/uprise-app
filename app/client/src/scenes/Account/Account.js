@@ -11,6 +11,8 @@ import formWrapper from 'lib/formWrapper';
 import { 
   validateString,
   validateZipcode,
+  validateEmail,
+  validateEmailAvailable,
   validatePhoneNumber
 } from 'lib/validateComponentForms';
 
@@ -40,6 +42,7 @@ class Account extends Component {
         lastName: '',
         phoneNumber: '',
         zipcode: '',
+        email: '',
       },
     }
 
@@ -51,6 +54,7 @@ class Account extends Component {
     lastNameErrorText: null,
     zipcodeErrorText: null,
     phoneNumberErrorText: null,
+    emailErrorText: null,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -101,7 +105,6 @@ class Account extends Component {
 
       return { success: true, message: 'Changes Saved' };
     } catch (e) {
-      console.error(e);
       return { success: false, message: e.message };
     }
   }
@@ -116,7 +119,10 @@ class Account extends Component {
       const validators = [
         (component) => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
         (component) => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
+        (component) => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
         (component) => validateZipcode(component),
+        (component) => validateEmail(component),
+        (component) => validateEmailAvailable(component, user.email),
         (component) => validatePhoneNumber(component),
         // (component) => validateState(component),
       ];

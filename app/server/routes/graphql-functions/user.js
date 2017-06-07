@@ -42,7 +42,14 @@ module.exports = {
         [decamelize(k)]: data[k]
     })));
 
+    const previousEmail = context.user.email;
+
     const user = await User.edit(input);
+
+    if (previousEmail !== user.email) {
+      await User.edit({ id: user.id, email_confirmed: false });
+      await User.sendVerificationEmail(user);
+    };
 
     return user;
 
@@ -54,7 +61,7 @@ module.exports = {
       throw new Error('User must be logged in');
     }
 
-    return User.sendVerificationEmail(context.user);
+    return await User.sendVerificationEmail(context.user);
   }
 
 };
