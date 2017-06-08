@@ -1,19 +1,25 @@
 import React from 'react';
-import Welcome from 'scenes/Welcome';
+import Page from 'components/Page';
 import Layout from 'components/Layout';
 
 import withAuthentication from 'routes/withAuthentication';
 
-const WelcomeWithAuthentication = withAuthentication(Welcome);
+const PageWithAuthentication = withAuthentication(Page);
 
 export default {
 
   path: '/welcome',
 
-  action() {
+  async action() {
+    const data = await new Promise((resolve) => {
+      require.ensure([], require => {
+        resolve(require('./welcome.md'));
+      }, 'welcome');
+    });
+
     return {
-      title: 'Welcome',
-      component: <Layout><WelcomeWithAuthentication/></Layout>,
+      title: data.title,
+      component: <Layout><Page {...data} /></Layout>,
     };
   },
 
