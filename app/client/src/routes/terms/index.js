@@ -8,13 +8,13 @@ const PageWithAuthentication = withAuthentication(Page);
 
 export default {
 
-  path: '/welcome',
+  path: '/terms-and-conditions',
 
   async action() {
     const data = await new Promise((resolve) => {
       require.ensure([], require => {
-        resolve(require('content/welcome.md'));
-      }, 'welcome');
+        resolve(require('content/terms.md'));
+      }, 'terms');
     });
 
     return {

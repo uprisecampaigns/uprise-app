@@ -10,10 +10,15 @@ import history from 'lib/history';
 import EmailAvailableQuery from 'schemas/queries/EmailAvailableQuery.graphql';
 
 import SignupForm from './components/SignupForm';
-import PrivacyTerms from './components/PrivacyTerms';
+import Terms from './components/Terms';
 
 
 class SignupFormContainer extends Component {
+
+  static PropTypes = {
+    termsContent: PropTypes.object.isRequired
+  }
+
   constructor(props) {
     super(props);
   }
@@ -182,9 +187,10 @@ class SignupFormContainer extends Component {
       );
     } else if (this.state.page === 1) {
       return (
-        <PrivacyTerms
+        <Terms
           agreeToTerms={this.agreeToTerms}
           cancel={(event) => this.setState({page:0})}
+          content={this.props.termsContent}
         />
       );
     }

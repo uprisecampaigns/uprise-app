@@ -11,6 +11,7 @@ export default {
     require('./signup').default,
     require('./forgotPassword').default,
     require('./welcome').default,
+    require('./terms').default,
 
     // /settings/
     require('./settings').default,

@@ -10,10 +10,16 @@ export default {
 
   path: '/settings/privacy-security',
 
-  action() {
+  async action() {
+    const privacyContent = await new Promise((resolve) => {
+      require.ensure([], require => {
+        resolve(require('content/privacy.md'));
+      }, 'privacy');
+    });
+
     return {
       title: 'Privacy and Security',
-      component: <Layout><PrivacySecurityWithAuthentication/></Layout>,
+      component: <Layout><PrivacySecurityWithAuthentication privacyContent={privacyContent}/></Layout>,
     };
   },
 };

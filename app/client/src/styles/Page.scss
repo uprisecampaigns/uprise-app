@@ -1,0 +1,56 @@
+
+@import '~styles/variables';
+@import '~styles/nav';
+
+.root {
+  h1 {
+    @extend .titleContainer;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    color: $brick-red;
+    font-weight: 500;
+  }
+
+  h3, strong {
+    font-size: 1.0rem;
+    color: lighten($black, 15%);
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: lighten($black, 10%);
+    font-weight: 400;
+  }
+
+  p a {
+    text-decoration: underline;
+    color: $brick-red;
+    font-style: normal;
+    padding: 0px !important;
+  }
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0rem 1.5rem 3rem 1.5rem;
+  max-width: $max-content-width;
+}
+
+.privacyContainer {
+  margin-top: 1rem;
+  border: 1px solid darken($white, 20%);
+  padding: 0rem 1rem;
+}
+
+.termsContainer {
+  @extend .container;
+  max-height: 70vh;
+  margin-top: 4rem;
+  width: 80%;
+  overflow-y: scroll;
+  text-align: left;
+  border: 1px solid darken($white, 20%);
+}

@@ -12,14 +12,16 @@ import s from 'styles/Settings.scss';
 class PrivacySecurity extends Component {
 
   static PropTypes = {
+    privacyContent: PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props);
-
   }
 
   render() {
+
+    const { privacyContent, ...props } = this.props;
 
     return (
       <div className={s.outerContainer}>
@@ -43,7 +45,7 @@ class PrivacySecurity extends Component {
 
           <div className={s.sectionHeader}>Privacy Policy</div>
 
-          <Privacy />
+          <Privacy content={privacyContent}/>
         </div>
       </div>
     );
