@@ -74,13 +74,13 @@ export class Layout extends React.Component {
           actionsContainerClassName={s.modalActionsContainer}
           actions={[
             <RaisedButton
-              label="Cancel"
+              label="Leave"
               primary={false}
               className={s.secondaryButton}
               onTouchTap={ (event) => { event.preventDefault(); this.props.dispatch(cancelNavFromDirtyForm()) }}
             />,
             <RaisedButton
-              label="Ok"
+              label="Keep Editing"
               primary={true}
               className={s.primaryButton}
               onTouchTap={ (event) => { event.preventDefault(); this.props.dispatch(confirmNavFromDirtyForm()) }}
