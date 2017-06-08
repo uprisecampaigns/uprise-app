@@ -59,7 +59,7 @@ module.exports = async (app) => {
       const { action, dates, location } = await getAction(id);
  
       const cal = ical({
-        name: 'Uprise Campaigns Calendar',
+        name: 'UpRise Campaigns Calendar',
         domain: os.hostname()
       });
 
