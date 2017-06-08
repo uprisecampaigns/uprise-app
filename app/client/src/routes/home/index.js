@@ -9,8 +9,8 @@ export default {
 
   async action() {
     return {
-      title: 'Uprise App Home',
-      component: <Layout><Home title="Uprise app home"/></Layout>,
+      title: 'UpRise App Home',
+      component: <Layout><Home title="UpRise app home"/></Layout>,
     };
   },
 

@@ -104,7 +104,7 @@ class Contact extends Component {
             </p>
 
             <p>
-              Uprise Campaigns, SPC <br/>
+              UpRise Campaigns, SPC <br/>
               1442A Walnut St. #149 <br/>
               Berkeley, CA 94709
             </p>

@@ -1,5 +1,5 @@
 ---
-title: Welcome to Uprise
+title: Welcome to UpRise
 ---
 
 Here’s what you will find in our main menu:
