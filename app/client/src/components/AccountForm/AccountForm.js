@@ -95,6 +95,13 @@ class AccountForm extends Component {
                   />
                 </div>
 
+                <div className={s.button}>
+                  <RaisedButton 
+                    onTouchTap={cancel} 
+                    primary={false} 
+                    label="Cancel" 
+                  />
+                </div>
 
                 { saving ? (
 
@@ -115,15 +122,6 @@ class AccountForm extends Component {
                     />
                   </div>
                 )}
-
-                <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={cancel} 
-                    primary={false} 
-                    label="Cancel" 
-                  />
-                </div>
-
               </form>
             </div>
           </Paper>

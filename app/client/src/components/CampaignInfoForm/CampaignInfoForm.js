@@ -136,7 +136,15 @@ class CampaignInfoForm extends Component {
                     fullWidth={true}
                   />
                 </div>
- 
+
+                <div className={s.button}>
+                  <RaisedButton 
+                    onTouchTap={cancel} 
+                    primary={false} 
+                    label="Cancel" 
+                  />
+                </div>
+
                 { saving ? (
 
                   <div className={s.savingThrobberContainer}>
@@ -157,13 +165,6 @@ class CampaignInfoForm extends Component {
                   </div>
                 )}
 
-                <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={cancel} 
-                    primary={false} 
-                    label="Cancel" 
-                  />
-                </div>
 
               </form>
             </div>
