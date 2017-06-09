@@ -77,13 +77,13 @@ export class Layout extends React.Component {
               label="Leave"
               primary={false}
               className={s.secondaryButton}
-              onTouchTap={ (event) => { event.preventDefault(); this.props.dispatch(cancelNavFromDirtyForm()) }}
+              onTouchTap={ (event) => { event.preventDefault(); this.props.dispatch(confirmNavFromDirtyForm()) }}
             />,
             <RaisedButton
               label="Keep Editing"
               primary={true}
               className={s.primaryButton}
-              onTouchTap={ (event) => { event.preventDefault(); this.props.dispatch(confirmNavFromDirtyForm()) }}
+              onTouchTap={ (event) => { event.preventDefault(); this.props.dispatch(cancelNavFromDirtyForm()) }}
             />,
             ]}
           open={this.props.displayFormNavWarning}
