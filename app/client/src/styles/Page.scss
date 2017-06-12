@@ -60,19 +60,24 @@
   width: 100vw;
   min-height: 20rem;
   color: $white;
+  font-weight: 500;
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
   text-shadow: 0 0 0.15em rgba(0, 0, 0, 0.5);
   padding: 6rem 0 4rem 0;
 
-  > div {
+  .fullContainer {
     position: relative;
     margin-left: auto;
     margin-right: auto;
     max-width: $max-content-width;
     width: 90%;
     z-index: 3;
+  }
+
+  .halfContainer {
+    flex: 1 0 50%;
   }
 
   .contentTitle {
@@ -87,19 +92,28 @@
     margin-top: 1.5rem;
   }
 
-  .signupButtonContainer {
+  .homeButtonContainer {
     text-align: center;
 
-    .signupButton {
+    .homeButton {
       text-transform: uppercase;
-      background-color: darken($brick-red, 10%) !important;
+      background-color: $red !important;
       color: $white !important;
-      padding: 0 2rem !important;
+      width: 80%;
+      max-width: 20rem;
+      height: 2.3rem !important;
+      line-height: 2.3rem !important;
 
       span {
         font-size: 1.2rem !important;
         font-weight: 300 !important;
       }
+    }
+  }
+
+  .linkContainer {
+    a {
+      color: darken($white, 25%);
     }
   }
 }
@@ -134,5 +148,57 @@
 
 .homeContentSection4 {
   @extend .homeContentSection;
-  background-color: $brick-red;
+  background-color: $red;
+  min-height: 12rem;
+  padding: 4rem 0 4rem 0;
+
+  .fullContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    @media (max-width: $screen-xs-min) {
+      display: block;
+    }
+  }
+
+  .homeButtonContainer button.homeButton {
+    background-color: #003c4c !important;
+    width: 20rem !important;
+  }
+
+  .contentTitle {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .contentText {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+
+}
+
+.homeContentSection5 {
+  @extend .homeContentSection;
+  background-color: $white;
+  color: lighten($black, 10%);
+  text-shadow: none;
+  min-height: 12rem;
+  padding: 4rem 0 4rem 0;
+
+  .contentTitle {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .contentText {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
 }
