@@ -4,7 +4,7 @@ const knex = require('knex');
 const pluralize = require('pluralize');
 
 const knexConfig = require('config/knexfile.js');
-const db = knex(knexConfig.development);
+const db = knex(knexConfig[process.env.NODE_ENV]);
 
 const updateProperties = (type) => {
   return async (collection, name, id) => {
