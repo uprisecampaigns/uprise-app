@@ -1,6 +1,7 @@
 @import '~styles/variables';
+@import '~styles/buttons';
 
-.authenticatedIconsContainer {
+.menuItemsContainer {
   display: flex;
 }
 
@@ -23,11 +24,6 @@
   align-items: center;
 }
 
-.iconButton {
-  padding: 0px !important;
-  margin: 0 0.3rem !important;
-}
-
 .rightIconsContainer {
   display: inline-flex;
   margin-right: 1rem;
@@ -38,28 +34,20 @@
   }
 }
 
-.dropdownContainer {
-  margin: -8px 0px;
-
-  hr {
-    margin: 0px;
-  }
-}
-
 .menuIconContainer {
   display: none;
   cursor: pointer;
 }
 
-.searchContainer {
-  display: flex;
-  flex: 1;
-  align-items: center;
+.headerButton {
+  @extend .lowerCaseButton;
+  button span {
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+    padding-right: 0px !important;
+  }
 }
 
-.dropdownItemText {
-  color: $brick-red !important;
-}
 
 
 @media (max-width: $screen-sm-min) {

@@ -15,15 +15,121 @@ const iconButtonStyle = {
   fontSize: '3rem',
 }
 
-function LoginButton(props) {
-  if (!props.loggedIn) {
-    return (
-      <Link useAhref={false} to='/login'>
-        <FlatButton label="Login" />
-      </Link>
-    )
-  } else {
-    return (
+function UnauthenticatedIcons(props) {
+  return (
+    <div className={s.menuItemsContainer}>
+
+      <div 
+        className={s.headerButton}
+      >
+        <Link useAhref={false} to='/login'>
+          <FlatButton label="LOGIN" />
+        </Link>
+      </div>
+
+      <ContentDropdownMenu
+        title="Home"
+        className={s.rightIcon}
+        dropdowns={[
+          {
+            title: 'Volunteers',
+            path: 'http://uprisecampaigns.org/home/volunteers',
+            external: true,
+            sameTab: true,
+          },
+          {
+            title: 'Campaigns',
+            path: 'http://uprisecampaigns.org/home/campaigns',
+            external: true,
+            sameTab: true,
+          }
+        ]}
+      />
+
+      <ContentDropdownMenu
+        title="About Uprise"
+        className={s.rightIcon}
+        dropdowns={[
+          {
+            title: 'About',
+            path: 'http://uprisecampaigns.org/about',
+            external: true,
+            sameTab: true,
+          },
+          {
+            title: 'People',
+            path: 'http://uprisecampaigns.org/people',
+            external: true,
+            sameTab: true,
+          },
+          {
+            title: 'Contact',
+            path: 'http://uprisecampaigns.org/contact',
+            external: true,
+            sameTab: true,
+          },
+        ]}
+      />
+
+      <ContentDropdownMenu
+        title="Campaign Reform"
+        className={s.rightIcon}
+        dropdowns={[
+          {
+            title: 'What Works',
+            path: 'http://uprisecampaigns.org/whatworks',
+            external: true,
+            sameTab: true,
+          },
+          {
+            title: 'Volunteer Engagement',
+            path: 'http://uprisecampaigns.org/volunteerengagement',
+            external: true,
+            sameTab: true,
+          },
+          {
+            title: 'Research',
+            path: 'http://uprisecampaigns.org/research',
+            external: true,
+            sameTab: true,
+          },
+        ]}
+      />
+
+    </div>
+  );
+}
+
+function AuthenticatedIcons(props) {
+  return (
+    <div className={s.menuItemsContainer}>
+
+      <ContentDropdownMenu
+        title="Search"
+        className={s.rightIcon}
+        dropdowns={[
+          { title: 'Actions', path: '/search/search-actions' },
+          { title: 'Campaigns', path: '/search/search-campaigns' },
+        ]}
+      />
+
+      <ContentDropdownMenu
+        title="Volunteer"
+        className={s.rightIcon}
+        dropdowns={[
+          { title: 'My Actions', path: '/volunteer/action-commitments' },
+          { title: 'My Subscriptions', path: '/volunteer/campaign-subscriptions' },
+        ]}
+      />
+
+      <ContentDropdownMenu
+        title="Organize"
+        className={s.rightIcon}
+        dropdowns={[
+          { title: 'My Campaigns', path: '/organize' },
+          { title: 'Create Campaign', path: '/organize/create-campaign' },
+        ]}
+      />
 
       <ContentDropdownMenu
         title="Settings"
@@ -34,47 +140,9 @@ function LoginButton(props) {
           { title: 'Logout', path: '#', action: props.logout },
         ]}
       />
-    )
-  }
-}
 
-function AuthenticatedIcons(props) {
-  if (props.loggedIn) {
-    return (
-      <div className={s.authenticatedIconsContainer}>
-
-        <ContentDropdownMenu
-          title="Search"
-          className={s.rightIcon}
-          dropdowns={[
-            { title: 'Actions', path: '/search/search-actions' },
-            { title: 'Campaigns', path: '/search/search-campaigns' },
-          ]}
-        />
-
-        <ContentDropdownMenu
-          title="Volunteer"
-          className={s.rightIcon}
-          dropdowns={[
-            { title: 'My Actions', path: '/volunteer/action-commitments' },
-            { title: 'My Subscriptions', path: '/volunteer/campaign-subscriptions' },
-          ]}
-        />
-
-        <ContentDropdownMenu
-          title="Organize"
-          className={s.rightIcon}
-          dropdowns={[
-            { title: 'My Campaigns', path: '/organize' },
-            { title: 'Create Campaign', path: '/organize/create-campaign' },
-          ]}
-        />
-
-      </div>
-    )
-  } else {
-    return null;
-  }
+    </div>
+  )
 }
 
 class Header extends Component {
@@ -118,16 +186,13 @@ class Header extends Component {
         }}
         iconElementRight={
           <div className={s.rightIconsContainer}>
-            <AuthenticatedIcons 
-              loggedIn={this.props.loggedIn}
-            />
 
-            <LoginButton 
-              className={s.rightIcon}
-              loggedIn={this.props.loggedIn}
-              logout={this.props.clickedLogout}
-              userObject={this.props.userObject}
-            />
+            { this.props.loggedIn ?
+              <AuthenticatedIcons />
+              :
+              <UnauthenticatedIcons />
+            }
+
           </div>
         }
         iconStyleRight={{

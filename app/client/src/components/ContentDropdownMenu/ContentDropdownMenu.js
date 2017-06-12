@@ -45,7 +45,9 @@ class ContentDropdownMenu extends Component {
           to={dropdown.path}
           useAhref={false}
           onClick={itemClicked}
-          preventDefault={false}
+          preventDefault={dropdown.external}
+          external={dropdown.external}
+          sameTab={dropdown.sameTab}
         >
           <MenuItem
             className={s.dropdownItemText}

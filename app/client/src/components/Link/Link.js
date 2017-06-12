@@ -19,6 +19,8 @@ class Link extends React.Component {
   static propTypes = {
     to: PropTypes.string.isRequired,
     useAhref: PropTypes.bool,
+    external: PropTypes.bool,
+    sameTab: PropTypes.bool,
     mailTo: PropTypes.bool,
     children: PropTypes.node,
     onClick: PropTypes.func,
@@ -46,9 +48,9 @@ class Link extends React.Component {
       event.preventDefault();
     }
 
-    if (this.props.external && !this.props.mailTo) {
+    if (this.props.external && !this.props.mailTo && !this.props.sameTab) {
       window.open(url);
-    } else if (this.props.mailTo) {
+    } else if (this.props.mailTo || (this.props.external && this.props.sameTab)) {
       window.location = url;
     } else {
       history.push(url);
