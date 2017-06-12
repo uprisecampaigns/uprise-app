@@ -47,7 +47,7 @@ function UnauthenticatedIcons(props) {
       />
 
       <ContentDropdownMenu
-        title="About Uprise"
+        title="About UpRise"
         className={s.rightIcon}
         dropdowns={[
           {
