@@ -54,3 +54,85 @@
   text-align: left;
   border: 1px solid darken($white, 20%);
 }
+
+.homeContentSection {
+  position: relative;
+  width: 100vw;
+  min-height: 20rem;
+  color: $white;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-shadow: 0 0 0.15em rgba(0, 0, 0, 0.5);
+  padding: 6rem 0 4rem 0;
+
+  > div {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: $max-content-width;
+    width: 90%;
+    z-index: 3;
+  }
+
+  .contentTitle {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .contentText {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .signupButtonContainer {
+    text-align: center;
+
+    .signupButton {
+      text-transform: uppercase;
+      background-color: darken($brick-red, 10%) !important;
+      color: $white !important;
+      padding: 0 2rem !important;
+
+      span {
+        font-size: 1.2rem !important;
+        font-weight: 300 !important;
+      }
+    }
+  }
+}
+
+.homeContentSectionDarkened:before {
+  background: rgba(0, 0, 0, 0.2);
+  content: "";
+  display: block;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.homeContentSection1 {
+  @extend .homeContentSection;
+  @extend .homeContentSectionDarkened;
+  background-image: url(img/background-image-1.jpg);
+}
+
+.homeContentSection2 {
+  @extend .homeContentSection;
+  background-color: #01707b;
+}
+
+.homeContentSection3 {
+  @extend .homeContentSection;
+  @extend .homeContentSectionDarkened;
+  background-image: url(img/background-image-2.jpg);
+}
+
+.homeContentSection4 {
+  @extend .homeContentSection;
+  background-color: $brick-red;
+}
