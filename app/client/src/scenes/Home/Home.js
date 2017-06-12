@@ -110,7 +110,7 @@ class Home extends React.Component {
               <div className={s.homeButtonContainer}>
                 <Link
                   useAhref={false}
-                  to="https://www.paypal.com/donate/?token=JXYQWnvpH8MD_6GIBbfIMD9P-d9riKOHbevkYTYS9UWOYEZjbJjLjpbEGKrAUCPtE6fbwm"
+                  to="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CAMCB5VPGDAEQ"
                   external={true}
                   sameTab={true}
                 >
