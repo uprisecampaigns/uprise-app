@@ -188,7 +188,7 @@ class Header extends Component {
           <div className={s.rightIconsContainer}>
 
             { this.props.loggedIn ?
-              <AuthenticatedIcons />
+              <AuthenticatedIcons logout={this.props.clickedLogout}/>
               :
               <UnauthenticatedIcons />
             }

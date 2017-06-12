@@ -114,7 +114,7 @@ export function attemptLogin(data) {
         // TODO: passportjs local-signup/login returns a "missing credentials"
         // message with no explicit error
         if (!json.error) {
-          history.push('/search');
+          history.push('/search/search-actions');
           dispatch(loginSuccess(json));
         } else {
           dispatch(loginFail(json.error));
@@ -218,6 +218,7 @@ export function clickedLogout() {
 export function logoutSuccess() {
   Raven.setUserContext()
   apolloClient.resetStore();
+  history.push('/');
   return { type: LOGOUT_SUCCESS };
 }
 
