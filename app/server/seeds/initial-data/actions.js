@@ -1,4 +1,4 @@
-const getSlug = require('speakingurl');
+const getValidSlug = require('models/getValidSlug');
 const vaActions = require('./actions/VA-actions-4.21.17.json');
 
 const moment = require('moment');
@@ -41,33 +41,6 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
 
   const antoniaUser = await knex.table('users').where('email', 'antonia@uprise.org').first();
 
-  const getActionSlug = async (title) => {
-    
-    let found;
-    let append = 0;
-    let slug;
-
-    do {
-      found = false;
-
-      if (append > 0) {
-        slug = getSlug(title + append, '');
-      } else {
-        slug = getSlug(title, '');
-      }
-
-      const slugQuery = await knex('actions').where('slug', slug);
-      if (slugQuery.length > 0) {
-        found = true;
-      }
-
-      append++;
-
-    } while (found)
-
-    return slug;
-  }
-
   const actionActivities = [];
 
   const actions = [];
@@ -79,7 +52,7 @@ module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) =
     action.start_time = moment(action.start_time).format(),
     action.end_time = moment(action.end_time).format(),
     action.campaign_id = campaigns.find( (campaign) => campaign.title === action.campaign_title).id;
-    action.slug = await getActionSlug(action.title);
+    action.slug = await getValidSlug(action.title);
     delete action.campaign_title;
     const result = await knex('actions').insert([action], ['id', 'title']);
     actions.push(result[0]);

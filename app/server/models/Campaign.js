@@ -3,12 +3,12 @@ import validator from 'validator';
 const uuid = require('uuid/v4');
 const url = require('url');
 const knex = require('knex');
-const getSlug = require('speakingurl');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig[process.env.NODE_ENV]);
 
 const User = require('models/User.js');
 
+const getValidSlug = require('models/getValidSlug');
 const updateProperties = require('models/updateProperties')('campaign');
 
 const config = require('config/config.js');
@@ -44,27 +44,7 @@ class Campaign {
       throw new Error('User not found');
     }
 
-    let found;
-    let append = 0;
-    let slug;
-
-    do {
-      found = false;
-
-      if (append > 0) {
-        slug = getSlug(options.title + append, '');
-      } else {
-        slug = getSlug(options.title, '');
-      }
-
-      const slugQuery = await db('campaigns').where('slug', slug);
-      if (slugQuery.length > 0) {
-        found = true;
-      }
-
-      append++;
-
-    } while (found)
+    const slug = await getValidSlug(options.title);
 
     const newCampaignData = Object.assign({}, options, { slug });
 

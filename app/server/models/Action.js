@@ -3,7 +3,6 @@ import validator from 'validator';
 const assert = require('assert');
 const url = require('url');
 const uuid = require('uuid/v4');
-const getSlug = require('speakingurl');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig[process.env.NODE_ENV]);
@@ -11,6 +10,7 @@ const db = knex(knexConfig[process.env.NODE_ENV]);
 const User = require('models/User.js');
 const Campaign = require('models/Campaign.js');
 
+const getValidSlug = require('models/getValidSlug');
 const updateProperties = require('models/updateProperties')('action');
 
 const config = require('config/config.js');
@@ -532,27 +532,7 @@ class Action {
         throw new Error('User must confirm email to create an action');
       } else if (await User.ownsObject({ user, object: campaign })) {
 
-        let found;
-        let append = 0;
-        let slug;
-
-        do {
-          found = false;
-
-          if (append > 0) {
-            slug = getSlug(options.title + append, '');
-          } else {
-            slug = getSlug(options.title, '');
-          }
-
-          const slugQuery = await db('actions').where('slug', slug);
-          if (slugQuery.length > 0) {
-            found = true;
-          }
-
-          append++;
-
-        } while (found)
+        const slug = await getValidSlug(options.title);
 
         const newActionData = Object.assign({}, options, { slug });
 
