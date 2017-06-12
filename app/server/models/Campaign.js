@@ -5,7 +5,7 @@ const url = require('url');
 const knex = require('knex');
 const getSlug = require('speakingurl');
 const knexConfig = require('config/knexfile.js');
-const db = knex(knexConfig.development);
+const db = knex(knexConfig[process.env.NODE_ENV]);
 
 const User = require('models/User.js');
 

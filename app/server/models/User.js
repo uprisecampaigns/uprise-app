@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 
 const config = require('config/config.js');
 const knexConfig = require('config/knexfile.js');
-const db = knex(knexConfig.development);
+const db = knex(knexConfig[process.env.NODE_ENV]);
 const sendEmail = require('lib/sendEmail.js');
 
 class User {

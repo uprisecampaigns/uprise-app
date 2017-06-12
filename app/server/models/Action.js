@@ -6,7 +6,7 @@ const uuid = require('uuid/v4');
 const getSlug = require('speakingurl');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
-const db = knex(knexConfig.development);
+const db = knex(knexConfig[process.env.NODE_ENV]);
 
 const User = require('models/User.js');
 const Campaign = require('models/Campaign.js');
