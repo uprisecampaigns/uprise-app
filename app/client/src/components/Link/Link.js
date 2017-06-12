@@ -28,7 +28,8 @@ class Link extends React.Component {
   };
 
   static defaultProps = {
-    preventDefault: true
+    preventDefault: true,
+    sameTab: false
   };
 
   handleClick = (event, url) => {
