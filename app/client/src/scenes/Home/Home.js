@@ -42,7 +42,7 @@ class Home extends React.Component {
           <div className={s.fullContainer}>
             <div className={s.contentTitle}>Volunteers</div>
             <div className={s.contentText}>
-              UpRise is a social network platform you can use to organize your political life: to find, sign up for and create real-world actions on behalf of candidates and issues.
+              UpRise is a social network platform you can use to organize your political life: to find, sign up for and create real-world actions.
             </div>
             <div className={s.linkContainer}>
               <Link
