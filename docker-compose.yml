@@ -45,6 +45,12 @@ services:
     volumes:
       - redis-data:/data
 
+  db-backup:
+    build: ./postgres-backup
+    links:
+      - db:postgres
+    env_file: ./postgres-backup/backup.env
+
 volumes:
   redis-data:
 
