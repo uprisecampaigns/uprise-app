@@ -4,6 +4,7 @@ services:
     image: upriseapp_web:latest
     env_file: ./app/prod.env
     command: npm run prod
+    restart: on-failure
 
   nginx:
     env_file: ./nginx/prod.env
@@ -16,7 +17,15 @@ services:
     links:
       - web:web
       - letsencrypt:letsencrypt
-    restart: always
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+
+  db:
+    restart: on-failure
 
   letsencrypt:
     image: quay.io/letsencrypt/letsencrypt:latest

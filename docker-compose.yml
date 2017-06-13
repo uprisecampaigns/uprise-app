@@ -17,6 +17,7 @@ services:
       - redis
     working_dir: /src/app
     command: npm run dev
+    restart: always
 
   nginx:
     build: nginx
@@ -36,6 +37,7 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - db-data:/var/lib/postgresql/data
+    restart: always
 
   redis:
     image: redis:latest

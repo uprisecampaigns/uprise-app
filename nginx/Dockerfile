@@ -1,5 +1,7 @@
 FROM nginx
 
+RUN apt-get update && apt-get install -y curl
+
 RUN mkdir -p /opt/docker/conf.d
 COPY entrypoint.sh /opt/docker
 COPY conf.d/uprise.conf /opt/docker/conf.d/
