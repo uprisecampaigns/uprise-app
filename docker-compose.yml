@@ -1,19 +1,19 @@
-version: '2'
+version: "3.0"
 services:
   web:
     build: ./app
     volumes:
-      - "./app/package.json:/src/app/package.json"
-      - "./.git:/src/.git"
-      - "./app/client:/src/app/client"
-      - "./app/server:/src/app/server"
+      - ./app/package.json:/src/app/package.json
+      - ./.git:/src/.git
+      - ./app/client:/src/app/client
+      - ./app/server:/src/app/server
     ports:
-      - "127.0.0.1:3030:3000"
-      - "127.0.0.1:8888:8888"
-      - "127.0.0.1:5859:5859"
-      - "127.0.0.1:5857:5857"
+      - 127.0.0.1:3030:3000
+      - 127.0.0.1:8888:8888
+      - 127.0.0.1:5859:5859
+      - 127.0.0.1:5857:5857
     links:
-      - "db:postgres"
+      - db:postgres
       - redis
     working_dir: /src/app
     command: npm run dev
@@ -22,10 +22,8 @@ services:
     build: nginx
     restart: always
     volumes:
-      - /www/public
       - ./nginx:/opt/docker
-    volumes_from:
-      - web
+      - ./app/client:/src/app/client
     links:
       - web:web
     env_file: ./nginx/dev.env
@@ -36,9 +34,18 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - TZ=America/Los_Angeles
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
   redis:
     image: redis:latest
     command: redis-server --appendonly yes
     volumes:
-      - /data
+      - redis-data:/data
+
+volumes:
+  redis-data:
+
+  db-data:
+
+  nginx-public:

@@ -1,4 +1,4 @@
-version: '2'
+version: "3.0"
 services:
   web:
     image: upriseapp_web:latest
@@ -8,11 +8,11 @@ services:
   nginx:
     env_file: ./nginx/prod.env
     ports:
-      - "80:80"
-      - "443:443"
-    volumes_from:
-      - web
-      - letsencrypt
+      - 80:80
+      - 443:443
+    volumes:
+      - ./app/client:/src/app/client
+      - letsencrypt-keys-volume:/etc/letsencrypt
     links:
       - web:web
       - letsencrypt:letsencrypt
@@ -23,11 +23,16 @@ services:
     command:  bash -c "sleep 6 && certbot certonly --standalone -d staging.uprise.me --text --agree-tos --email tech@uprise.org --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --renew-by-default --standalone-supported-challenges http-01"
     entrypoint: ""
     volumes:
-      - /etc/letsencrypt
-      - /var/lib/letsencrypt
+      - letsencrypt-keys-volume:/etc/letsencrypt
+      - letsencrypt-lib-volume:/var/lib/letsencrypt
     ports:
-      - "433"
-      - "80"
+      - 433
+      - 80
     environment:
       - TERM=xterm
       - TZ=America/Los_Angeles
+
+volumes:
+  letsencrypt-keys-volume:
+
+  letsencrypt-lib-volume:
