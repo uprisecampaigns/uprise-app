@@ -24,7 +24,7 @@ module.exports = {
   postmark: {
     serverKey: process.env.POSTMARK_SECRET_KEY,
     validRecipient: (email) => {
-      return (email.split('@').pop() === 'uprise.org'); // only send to @uprise.org email accounts for now
+      return process.env.NODE_ENV === 'production' || (email.split('@').pop() === 'uprise.org'); // only send to @uprise.org email accounts for non production
     },
     from: 'notifications@uprise.org',
     contactEmail: 'help@uprise.org'
