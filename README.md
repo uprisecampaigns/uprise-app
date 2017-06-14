@@ -136,7 +136,7 @@ aws s3 cp s3://$AWS_S3_BUCKET_NAME/$AWS_S3_PREFIX/THE_BACKUP_FILENAME_YOU_WANT_T
 
 gunzip /tmp/THE_BACKUP_FILENAME_YOU_WANT_TO_RESTORE_FROM.gzip
 
-pg_restore -d $DATABASE_NAME -U postgres -p $DATABASE_PORT -h $DATABASE_HOST --clean --schema=app /tmp/THE_BACKUP_FILENAME_YOU_WANT_TO_RESTORE_FROM
+pg_restore -d $DATABASE_NAME -U postgres -p $DATABASE_PORT -h $DATABASE_HOST --clean --if-exists --schema=app /tmp/THE_BACKUP_FILENAME_YOU_WANT_TO_RESTORE_FROM
 ```
 
 This will drop existing data and may not be necessary/appropriate. Check `pg_restore --help` for more options.
