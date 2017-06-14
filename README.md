@@ -18,7 +18,7 @@ Installation instructions for docker-compose are at https://docs.docker.com/comp
 
 ### Installing
 
-There are 5 containers delineated in the docker-compose file:
+There are 6 containers delineated in the docker-compose file:
 
  - nginx: 
    This container runs nginx which is configured to run as a web server and a reverse proxy. The environment variables for this container are inside `nginx/dev.env` and `nginx/prod.env` respectively. 
@@ -31,6 +31,9 @@ There are 5 containers delineated in the docker-compose file:
 
  - db: 
    A postgres database. The `db/Dockerfile` pulls the default postgresql image and then creates an application database and sets up postgis with zipcodes. 
+
+ - db-backup:
+   A cron job that runs a pg_dump and then uploads the output of that to an s3 bucket nightly.
 
  - web:
    This does most of the heavy lifting of the app. It contains 2 parts: the nodejs server side and the webpack compilation/build setup which create the front-end html/javascript/css which the browser will download and run. More details on the web setup are in a below section.
@@ -118,6 +121,25 @@ Technically, connections from the outside world to the docker containers are gov
 You could therefore potentially block all `INPUT` traffic except to a limited set of ports (22, 80, 443, etc) and still end up allowing unlimited access to ports within the containers. 
 This could be VERY dangerous if you, for example, misconfigure your database to listen to all interfaces, instead of just to `localhost`, which could allow access from the outside.
 You could similarly accidentally leave other vulnerable ports open.
+
+## Backup+Restore
+
+The `db-backup` service will automatically backup a dump of the app database every night at 3:30am (completely arbitrary). The AWS settings are all stored in `postgres-backup/backup.env` and will need to be set with the appropriate AWS S3 parameters.
+
+Restoring is slightly more tricky and there currently is no automated procedure because of the nature of what exactly is wrong and what needs to be fixed.
+
+An example restore code might be:
+```
+docker-compose exec db-backup /bin/bash
+
+aws s3 cp s3://$AWS_S3_BUCKET_NAME/$AWS_S3_PREFIX/THE_BACKUP_FILENAME_YOU_WANT_TO_RESTORE_FROM.gzip /tmp/
+
+gunzip /tmp/THE_BACKUP_FILENAME_YOU_WANT_TO_RESTORE_FROM.gzip
+
+pg_restore -d $DATABASE_NAME -U postgres -p $DATABASE_PORT -h $DATABASE_HOST --clean --schema=app /tmp/THE_BACKUP_FILENAME_YOU_WANT_TO_RESTORE_FROM
+```
+
+This will drop existing data and may not be necessary/appropriate. Check `pg_restore --help` for more options.
 
 ## Built With
 
