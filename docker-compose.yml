@@ -7,6 +7,11 @@ services:
       - ./.git:/src/.git
       - ./app/client:/src/app/client
       - ./app/server:/src/app/server
+      # Sync up the container time with the host time.
+      # Note: This will throw errors on Macs, which lack /etc/timezone.
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
     ports:
       - 127.0.0.1:3030:3000
       - 127.0.0.1:8888:8888
@@ -25,6 +30,10 @@ services:
     volumes:
       - ./nginx:/opt/docker
       - ./app/client:/src/app/client
+      # Sync up the container time with the host time.
+      # Note: This will throw errors on Macs, which lack /etc/timezone.
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     links:
       - web:web
     env_file: ./nginx/dev.env
@@ -34,9 +43,12 @@ services:
     build: ./postgres
     environment:
       - POSTGRES_USER=postgres
-      - TZ=America/Los_Angeles
     volumes:
       - db-data:/var/lib/postgresql/data
+      # Sync up the container time with the host time.
+      # Note: This will throw errors on Macs, which lack /etc/timezone.
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     restart: always
 
   redis:
@@ -44,12 +56,21 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - redis-data:/data
+      # Sync up the container time with the host time.
+      # Note: This will throw errors on Macs, which lack /etc/timezone.
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
   db-backup:
     build: ./postgres-backup
     links:
       - db:postgres
     env_file: ./postgres-backup/backup.env
+    volumes:
+      # Sync up the container time with the host time.
+      # Note: This will throw errors on Macs, which lack /etc/timezone.
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   redis-data:

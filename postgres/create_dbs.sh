@@ -3,10 +3,12 @@ set -e
 
 echo 'Running postgres entrypoint and creating database'
 
+timezone=$(cat /etc/timezone);
+
 # TODO: Refactor uprise username into environment variable?
 # psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
 psql --username "$POSTGRES_USER" <<-EOSQL
-    SET timezone to '$TZ';
+    SET timezone to '$timezone';
     CREATE USER uprise;
 
     CREATE SCHEMA app AUTHORIZATION uprise;
