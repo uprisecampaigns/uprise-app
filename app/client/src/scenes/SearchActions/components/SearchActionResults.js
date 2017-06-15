@@ -104,7 +104,7 @@ class SearchActionResults extends React.PureComponent {
           ) : (
 
             <Infinite
-              elementHeight={200}
+              elementHeight={140}
               useWindowAsScrollContainer
               onInfiniteLoad={handleInfiniteLoad}
               isInfiniteLoading={isInfiniteLoading}
