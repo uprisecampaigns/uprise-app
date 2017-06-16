@@ -13,6 +13,7 @@ import {
   validateWebsiteUrl,
   validateState,
   validateZipcode,
+  validateEmail,
   validatePhoneNumber
 } from 'lib/validateComponentForms';
 
@@ -46,6 +47,14 @@ class ManageCampaignInfoContainer extends Component {
         city: '',
         state: '',
         zipcode: '',
+        legalOrg: false,
+        orgWebsite: '',
+        orgName: '',
+        orgStatus: '',
+        orgContactName: '',
+        orgContactPosition: '',
+        orgContactEmail: '',
+        orgContactPhone: ''
       },
     }
 
@@ -60,6 +69,12 @@ class ManageCampaignInfoContainer extends Component {
     cityErrorText: null,
     stateErrorText: null,
     zipcodeErrorText: null,
+    orgNameErrorText: null,
+    orgWebsiteErrorText: null,
+    orgStatusErrorText: null,
+    orgContactPositionErrorText: null,
+    orgContactEmailErrorText: null,
+    orgContactPhoneErrorText: null,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -128,6 +143,20 @@ class ManageCampaignInfoContainer extends Component {
         (component) => validateWebsiteUrl(component),
         (component) => validatePhoneNumber(component),
         (component) => validateState(component),
+        (component) => {
+          if (component.state.formData.legalOrg) {
+            validateString(component, 'orgWebsite', 'orgWebsiteErrorText', 'Organization Website is required');
+            validateString(component, 'orgName', 'orgNameErrorText', 'Organization Name is required');
+            validateString(component, 'orgStatus', 'orgStatusErrorText', 'Organization Status is required');
+            validateString(component, 'orgContactName', 'orgContactNameErrorText', 'Contact Name is required');
+            validateString(component, 'orgContactPosition', 'orgContactPositionErrorText', 'Contact Position is required');
+            validateString(component, 'orgContactEmail', 'orgContactEmailErrorText', 'Contact Email is required');
+            validateString(component, 'orgContactPhone', 'orgContactPhoneErrorText', 'Contact Phone is required');
+            validateWebsiteUrl(component, 'orgWebsite', 'orgWebsiteErrorText');
+            validatePhoneNumber(component, 'orgContactPhone', 'orgContactPhoneErrorText');
+            validateEmail(component, 'orgContactEmail', 'orgContactEmailErrorText');
+          }
+        }
       ];
 
       return (

@@ -57,6 +57,14 @@ module.exports = buildSchema(`
     website_url: String
     profile_image_url: String
     profile_subheader: String
+    legal_org: Boolean
+    org_website: String
+    org_name: String
+    org_status: String
+    org_contact_name: String
+    org_contact_position: String
+    org_contact_email: String
+    org_contact_phone: String
     owner: UserResult
     tags: [String]
     issue_areas: [IssueAreaResult]
@@ -212,6 +220,15 @@ module.exports = buildSchema(`
     city: String
     state: String
     zipcode: String
+    legal_org: Boolean
+    org_website: String
+    org_name: String
+    org_status: String
+    org_contact_name: String
+    org_contact_position: String
+    org_contact_email: String
+    org_contact_phone: String
+
   }
 
   input EditCampaignInput {
@@ -234,6 +251,14 @@ module.exports = buildSchema(`
     locationState: String
     locationDistrictNumber: String
     legislativeDistrictType: String
+    legalOrg: Boolean
+    orgWebsite: String
+    orgName: String
+    orgStatus: String
+    orgContactName: String
+    orgContactPosition: String
+    orgContactEmail: String
+    orgContactPhone: String
     issueAreas: [String]
     levels: [String]
     types: [String]

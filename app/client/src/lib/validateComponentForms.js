@@ -146,21 +146,23 @@ export function validateZipcodeList(component) {
   }
 }
 
-export function validatePhoneNumber(component) {
-  if (component.state.formData.phoneNumber.trim() === '') {
+export function validatePhoneNumber(component, prop='phoneNumber', errorProp='phoneNumberErrorText') {
+  const test = component.state.formData[prop];
+
+  if (test.trim() === '') {
     component.hasErrors = true;
     component.setState( (prevState) => ({
       errors: Object.assign({}, prevState.errors, {
-        phoneNumberErrorText: 'Phone number is required'
+        [errorProp]: 'Phone number is required'
       })
     }));
-  } else if (component.state.formData.phoneNumber.match(/[^\(\d\s\)\-]/) || 
-             !isMobilePhone(component.state.formData.phoneNumber.replace(/\D/g,''), 'en-US')) {
+  } else if (test.match(/[^\(\d\s\)\-]/) ||
+             !isMobilePhone(test.replace(/\D/g,''), 'en-US')) {
 
     component.hasErrors = true;
     component.setState( (prevState) => ({
       errors: Object.assign({}, prevState.errors, {
-        phoneNumberErrorText: 'Please enter valid phone number'
+        [errorProp]: 'Please enter valid phone number'
       })
     }));
   }

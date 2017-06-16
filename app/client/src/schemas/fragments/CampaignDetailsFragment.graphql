@@ -17,6 +17,14 @@ fragment CampaignDetails on CampaignResult {
   phone_number
   website_url
   profile_image_url
+  legal_org
+  org_website
+  org_name
+  org_status
+  org_contact_name
+  org_contact_position
+  org_contact_email
+  org_contact_phone
   owner {
     id
     first_name
