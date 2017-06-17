@@ -153,10 +153,11 @@ class CampaignInfoForm extends Component {
 
                   <div>
 
-                    <p className={s.helpText}>Please provide a reference with the organization who can verify that you are authorized to represent this organization in UpRise or a link to a website showing your official role in the organization.</p>
+                    <p className={s.helpText}>Please provide a reference who can verify that you are authorized to represent this organization.</p>
+                    <p className={s.helpText}>OR</p>
+                    <p className={s.helpText}>Provide a link to a webpage showing your official role in the organization.</p>
 
                     <p className={s.helpText}>This information will remain private and will be used solely for internal verification purposes.</p>
-
 
                     <div className={s.textFieldContainer}>
                       <TextField
