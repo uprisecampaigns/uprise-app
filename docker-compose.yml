@@ -77,8 +77,6 @@ services:
       # Note: This will throw errors on Macs, which lack /etc/timezone.
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    sysctls:
-      - vm.overcommit_memory=1
 
   db-backup:
     build: ./postgres-backup
