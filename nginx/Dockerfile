@@ -1,6 +1,6 @@
 FROM nginx
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl procps
 
 RUN mkdir -p /opt/docker/conf.d
 COPY entrypoint.sh /opt/docker
