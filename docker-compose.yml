@@ -36,7 +36,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     links:
       - web:web
-    env_file: ./nginx/dev.env
     entrypoint: /opt/docker/entrypoint.sh
 
   db:
