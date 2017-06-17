@@ -14,9 +14,13 @@ services:
     volumes:
       - ./app/client:/src/app/client
       - letsencrypt-keys-volume:/etc/letsencrypt
-    links:
-      - web:web
-      - letsencrypt:letsencrypt
+    networks:
+      letsencrypt-nginx:
+        aliases:
+          - nginx
+      nginx-web:
+        aliases:
+          - nginx
     restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-f", "https://localhost"]
@@ -40,8 +44,15 @@ services:
     environment:
       - TERM=xterm
       - TZ=America/Los_Angeles
+    networks:
+      letsencrypt-nginx:
+        aliases:
+          - letsencrypt
 
 volumes:
   letsencrypt-keys-volume:
 
   letsencrypt-lib-volume:
+
+networks:
+  letsencrypt-nginx:

@@ -17,9 +17,17 @@ services:
       - 127.0.0.1:8888:8888
       - 127.0.0.1:5859:5859
       - 127.0.0.1:5857:5857
-    links:
-      - db:postgres
-      - redis
+    networks:
+      db-access:
+        aliases:
+          - web
+      redis-web:
+        aliases:
+          - web
+      nginx-web:
+        aliases:
+          - web
+
     working_dir: /src/app
     command: npm run dev
     restart: always
@@ -34,13 +42,20 @@ services:
       # Note: This will throw errors on Macs, which lack /etc/timezone.
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    links:
-      - web:web
+    networks:
+      nginx-web:
+        aliases:
+          - nginx
     entrypoint: /opt/docker/entrypoint.sh
 
   db:
     build: ./postgres
     env_file: ./postgres/db.env
+    networks:
+      db-access:
+        aliases:
+          - db
+          - postgres
     volumes:
       - db-data:/var/lib/postgresql/data
       # Sync up the container time with the host time.
@@ -52,6 +67,10 @@ services:
   redis:
     image: redis:latest
     command: redis-server --appendonly yes
+    networks:
+      redis-web:
+        aliases:
+          - redis
     volumes:
       - redis-data:/data
       # Sync up the container time with the host time.
@@ -61,8 +80,10 @@ services:
 
   db-backup:
     build: ./postgres-backup
-    links:
-      - db:postgres
+    networks:
+      db-access:
+        aliases:
+          - db-backup
     env_file: ./postgres-backup/backup.env
     volumes:
       # Sync up the container time with the host time.
@@ -74,3 +95,10 @@ volumes:
   redis-data:
 
   db-data:
+
+networks:
+  db-access:
+
+  nginx-web:
+
+  redis-web:
