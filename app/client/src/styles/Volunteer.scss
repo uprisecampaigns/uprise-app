@@ -12,8 +12,13 @@
     color: $azure;
     font-size: 1.8rem;
     line-height: 1.8rem;
-    padding: 1rem;
     padding: 0rem 1rem; 
+  }
+
+  .listSecondaryHeader {
+    color: $brick-red;
+    font-size: 1.2rem;
+    padding: 0.2rem 1rem 0.2rem 1rem;
   }
 
   .listDetailLine {

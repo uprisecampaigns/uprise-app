@@ -39,6 +39,10 @@ class ActionCommitments extends Component {
               {action.title}
             </div>
 
+            <div className={s.listSecondaryHeader}>
+              {action.campaign.title}
+            </div>
+
             {action.start_time && (
               <div className={s.listDetailLine}>
                 {timeWithZone(action.start_time, action.zipcode, 'ddd, MMM Do YYYY, h:mma z')}
