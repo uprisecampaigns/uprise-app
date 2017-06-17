@@ -1,42 +1,12 @@
 const vaCampaigns = require('./campaigns/VA-campaigns-4.18.17.json');
 const vaKeywords = require('./campaigns/VA-keywords-4.18.17.json');
 
-module.exports = async (knex, users) => {
+module.exports = async ({ knex, users, types, activities, levels, issueAreas }) => {
   // Deletes ALL existing entries
   await knex('campaigns').del();
-  await knex('types').del();
-  await knex('issue_areas').del();
-  await knex('levels').del();
   await knex('campaigns_types').del();
   await knex('campaigns_issue_areas').del();
   await knex('campaigns_levels').del();
-
-  const levels = await knex('levels').insert([
-    { title: 'Federal' },
-    { title: 'State' },
-    { title: 'County, Regional' },
-    { title: 'Local, Municipal' },
-  ], ['id']);
-
-  const issueAreas = await knex('issue_areas').insert([
-    { title: 'Progressive - All' },
-    { title: 'Government, Elections' },
-    { title: 'Energy, Environment' },
-    { title: 'Domestic Economy' },
-    { title: 'Security, International' },
-    { title: 'Science, Technology' },
-    { title: 'Civil Rights and Liberties' },
-    { title: 'Health Care' },
-    { title: 'Education' },
-    { title: 'Immigration' },
-  ], ['id']);
-
-  const types = await knex('types').insert([
-    { title: 'Candidate', description: 'Election' },
-    { title: 'Ballot Initiative', description: 'Proposition/Referendum/Amendment' },
-    { title: 'Lobbying', description: 'For or against a specific bill' },
-    { title: 'Issue Advocacy', description: 'For or against an issue in general' },
-  ], ['id']);
 
   const maxTagNum = 6;
 

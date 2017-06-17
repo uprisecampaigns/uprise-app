@@ -3,41 +3,13 @@ const vaActions = require('./actions/VA-actions-4.21.17.json');
 
 const moment = require('moment');
 
-module.exports = async (knex, { users, campaigns, levels, issueAreas, types }) => {
+module.exports = async ({ knex, users, activities, campaigns, levels, issueAreas, types }) => {
   // Deletes ALL existing entries
   await knex('actions').del();
-  await knex('activities').del();
   await knex('actions_activities').del();
   await knex('actions_types').del();
   await knex('actions_issue_areas').del();
   await knex('actions_levels').del();
-
-  const activities = await knex('activities').insert([
-    { title: 'meet', description: 'General meeting' }, // 0 
-    { title: 'phone', description: 'Calling voters' }, // 1 
-    { title: 'canvass', description: 'Door to door' }, // 2 
-    { title: 'outreach', description: 'Public outreach' }, // 3 
-    { title: 'rallies', description: 'Rallies, marches' }, // 4 
-    { title: 'visibility', description: 'Visibility, visual arts' }, // 5 
-    { title: 'neighborhood', description: 'Organize neighborhood' }, // 6
-    { title: 'issue groups', description: 'Organize issue groups' }, // 7
-    { title: 'host', description: 'Host an event' }, // 8 
-    { title: 'event', description: 'Event production' }, // 9 
-    { title: 'policy', description: 'Policy research' }, // 10 
-    { title: 'communication', description: 'Communication' }, // 11
-    { title: 'polling', description: 'Polling, analytics' }, // 12 
-    { title: 'writing', description: 'Writing, editing' }, // 13 
-    { title: 'press', description: 'Press relations' }, // 14 
-    { title: 'social', description: 'Email, social media' }, // 15 
-    { title: 'website', description: 'Website, software' }, // 16 
-    { title: 'design', description: 'Design, production' }, // 17 
-    { title: 'coordinate', description: 'Coordinate volunteers' }, // 18 
-    { title: 'office', description: 'Office admin' }, // 19 
-    { title: 'data', description: 'Data management' }, // 20 
-    { title: 'legal', description: 'Legal' }, // 21 
-    { title: 'accounting', description: 'Accounting' }, // 22
-    { title: 'finance', description: 'Fundraising' }, // 23 
-  ], ['id', 'title', 'description']);
 
   const antoniaUser = await knex.table('users').where('email', 'antonia@uprise.org').first();
 
