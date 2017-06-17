@@ -41,8 +41,7 @@ services:
 
   db:
     build: ./postgres
-    environment:
-      - POSTGRES_USER=postgres
+    env_file: ./postgres/db.env
     volumes:
       - db-data:/var/lib/postgresql/data
       # Sync up the container time with the host time.
