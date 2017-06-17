@@ -74,5 +74,3 @@ volumes:
   redis-data:
 
   db-data:
-
-  nginx-public:
