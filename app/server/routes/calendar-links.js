@@ -34,8 +34,6 @@ module.exports = async (app) => {
 
       const { action, dates, location } = await getAction(id);
 
-      console.log(action);
-
       // FROM: http://stackoverflow.com/a/21653600/1787596
       // TODO: to send directly to mobile site, use this base url
       // https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1

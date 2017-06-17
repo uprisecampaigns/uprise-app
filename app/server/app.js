@@ -31,7 +31,28 @@ app.set('view engine', 'ejs');
 // TODO: More restrictive ip list?
 app.set('trust proxy', true);
 
-app.use(logger('dev'));
+app.use(logger((tokens, req, res) => {
+  const logArray = [
+    tokens['remote-addr'](req), '-',
+    req.user && req.user.first_name + ' ' + req.user.last_name + ' - ' + req.user.email,
+    tokens.date(req, res, 'clf'),
+    tokens.method(req, res),
+    tokens.url(req, res),
+    'HTTP/:' + tokens['http-version'](req),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms',
+    tokens.referrer(req, res),
+    tokens['user-agent'](req)
+  ];
+
+  if (req.method.toLowerCase() === 'post') {
+    logArray.push('\nbody: ' + JSON.stringify(req.body));
+  }
+
+  return logArray.join(' ');
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
