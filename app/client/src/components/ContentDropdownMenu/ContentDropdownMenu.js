@@ -99,9 +99,13 @@ class ContentDropdownMenu extends Component {
           onTouchTap={this.handleOpenMenu}
         >
           <FlatButton
-            label={this.props.title}
+            label={(
+              <span>
+                {this.props.title}
+                { menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore /> }
+              </span>
+            )}
           />
-          { menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore /> }
         </div>
       </div>
     );

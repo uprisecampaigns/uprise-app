@@ -3,6 +3,10 @@
 
 .menuItemsContainer {
   display: flex;
+
+  > div {
+    margin-left: 0.5rem;
+  }
 }
 
 .accountMenuContainer {
@@ -45,6 +49,7 @@
     font-size: 1.1rem !important;
     font-weight: 500 !important;
     padding-right: 0px !important;
+    padding-left: 0px !important;
   }
 }
 
