@@ -55,6 +55,17 @@ module.exports = {
 
   },
 
+  confirmEmail: async (data, context) => {
+    const { token } = data;
+
+    try {
+      const result = await User.verifyEmail({ token });
+      return true;
+    } catch(err) {
+      return false;
+    }
+  },
+
   resendEmailVerification: async (data, context) => {
 
     if (!context.user) {

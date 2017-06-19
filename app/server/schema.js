@@ -339,5 +339,6 @@ module.exports = buildSchema(`
     sendMessage(data: SendMessageInput!): Boolean
     contact(data: ContactInput!): Boolean
     resendEmailVerification: Boolean
+    confirmEmail(token: String!): Boolean
   }
 `);

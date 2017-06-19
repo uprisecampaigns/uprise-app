@@ -51,7 +51,8 @@ class User {
     if (!tokenResult) {
       throw new Error('User email verification does not exist');
     } else if (tokenResult.used) {
-      throw new Error('Email token already used');
+      console.log('Email Verification token already used: ' + token);
+      return { token };
     }
 
     let updated = await db.table('users')
@@ -68,13 +69,9 @@ class User {
         used: true
       });
 
-    console.log(updated);
-
     assert(updated === 1);
 
-    return {
-      token: token,
-    };
+    return { token };
   }
 
   static async changePassword(userId, newPassword, oldPassword) {
@@ -210,7 +207,7 @@ class User {
       subject: 'Confirm your email address',
       templateName: 'verification-email',
       context: {
-        verifyURL: config.urls.api + '/email-verification/' + user.verificationToken
+        verifyURL: config.urls.client + '/settings/confirm-email/' + user.verificationToken
       }
     });
   }

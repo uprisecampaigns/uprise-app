@@ -18,6 +18,7 @@ export default {
     require('./account').default,
     require('./contact').default,
     require('./privacySecurity').default,
+    require('./confirmEmail').default,
 
     // /organize/
     require('./organize').default,

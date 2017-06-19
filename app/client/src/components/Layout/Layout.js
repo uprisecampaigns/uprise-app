@@ -64,7 +64,7 @@ export class Layout extends React.Component {
         <Snackbar
           open={this.props.displayNotification}
           message={this.props.notificationMessage}
-          autoHideDuration={4000}
+          autoHideDuration={0}
           onRequestClose={ (reason) => this.props.dispatch(clear()) }
         />
 

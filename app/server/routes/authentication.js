@@ -63,17 +63,6 @@ module.exports = (app, passport) => {
     return res.json('logged out');
   });
 
-  app.get('/api/email-verification/:token', async (req, res, next) => {
-    const token = req.params.token;
-
-    try {
-      const result = await User.verifyEmail({token: token});
-      res.redirect('/');
-    } catch(err) {
-      next(err);
-    }
-  });
-
   app.post('/api/reset-password', async (req, res, next) => {
     const email = req.body.email;
 
