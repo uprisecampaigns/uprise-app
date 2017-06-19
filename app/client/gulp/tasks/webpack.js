@@ -59,7 +59,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     },
     output: {
       filename: '[name]-[hash].js',
-      publicPath: '/',
+      publicPath: process.env.CLIENT_BASE_URL,
       path: path.resolve(config.dest)
     },
     devtool: env.development() ? "eval-cheap-module-source-map" : "",
