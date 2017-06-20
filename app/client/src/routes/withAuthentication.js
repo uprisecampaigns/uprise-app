@@ -11,7 +11,6 @@ export default (WrappedComponent) => {
 
     redirect = (props) => {
       if (!props.fetchingUpdate) {
-        console.log(history.location);
 
         if (history.location.pathname === '/login') {
           props.loggedIn && history.push('/search');
