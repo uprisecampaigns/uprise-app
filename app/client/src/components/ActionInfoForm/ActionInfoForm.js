@@ -198,6 +198,7 @@ class ActionInfoForm extends Component {
                     <TimePicker
                       floatingLabelText="Start Time"
                       value={data.startTime} 
+                      minutesStep={5}
                       errorText={errors.startTimeErrorText}
                       onChange={ (event, date) => { handleInputChange(event, 'startTime', date) } }
                     />
@@ -207,6 +208,7 @@ class ActionInfoForm extends Component {
                     <TimePicker
                       floatingLabelText="End Time"
                       value={data.endTime} 
+                      minutesStep={5}
                       errorText={errors.endTimeErrorText}
                       onChange={ (event, date) => { handleInputChange(event, 'endTime', date) } }
                     />

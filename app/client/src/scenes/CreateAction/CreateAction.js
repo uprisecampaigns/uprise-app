@@ -54,8 +54,8 @@ class CreateAction extends Component {
         zipcode: '',
         locationNotes: '',
         date: undefined,
-        startTime: undefined,
-        endTime: undefined
+        startTime: moment().startOf('hour').toDate(),
+        endTime: moment().startOf('hour').add(1, 'hours').toDate()
       },
       modalOpen: false,
       newAction: {

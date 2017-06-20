@@ -180,7 +180,7 @@ export function validateStartEndTimes(component) {
   }
 
   if (typeof endTime === 'undefined' || !moment(component.state.formData.endTime).isValid()) {
-    errors.endTimeErrorText = 'Please choose a end time';
+    errors.endTimeErrorText = 'Please choose an end time';
     hasError = true;
   } 
 
