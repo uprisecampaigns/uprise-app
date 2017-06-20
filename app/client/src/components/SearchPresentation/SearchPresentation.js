@@ -187,22 +187,16 @@ class SearchPresentation extends Component {
                   <Divider />
 
                   <div className={s.filterHeaderContainer}>
-                    <RaisedButton
-                      className={s.primaryButton}
-                      onTouchTap={this.handleCloseFilter}
-                      primary={true}
-                      label="Done"
-                    />
 
                     <span className={s.filterHeader}>Filter</span>
 
-                    <span
-                      className={s.closeIcon}
-                      onTouchTap={this.handleCloseFilter}
-                    >
-                      <IconButton
-                        iconClassName='material-icons'
-                      >close</IconButton>
+                    <span className={s.doneButtonContainer}>
+                      <RaisedButton
+                        className={s.primaryButton}
+                        onTouchTap={this.handleCloseFilter}
+                        primary={true}
+                        label="Done"
+                      />
                     </span>
                   </div>
 
