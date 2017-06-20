@@ -151,14 +151,38 @@ class NavDrawer extends Component {
           className={s.drawer}
           docked={false}
         >
-          <Link 
+          <Link
             to="/login"
             useAhref={false}
             onClick={this.itemClicked}
           >
-            <MenuItem 
+            <MenuItem
               className={s.navMenuItem}
               primaryText="Login"
+            />
+          </Link>
+
+          <Link
+            to="/signup"
+            useAhref={false}
+            onClick={this.itemClicked}
+          >
+            <MenuItem
+              className={s.navMenuItem}
+              primaryText="Sign Up"
+            />
+          </Link>
+
+          <Link
+            to="https://uprisecampaigns.org/about/"
+            useAhref={false}
+            sameTab={true}
+            external={true}
+            onClick={this.itemClicked}
+          >
+            <MenuItem
+              className={s.navMenuItem}
+              primaryText="Learn More"
             />
           </Link>
 
