@@ -5,8 +5,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 
-
 import s from 'styles/Search.scss';
+
 
 const textFieldStyle = {
   display: 'inline-block',
@@ -123,13 +123,15 @@ class GeographySearch extends React.PureComponent {
             />
           </div>
         )}
-        <RaisedButton
-          className={s.primaryButton}
-          onTouchTap={addItem}
-          type="submit"
-          primary={true}
-          label="Add to Search"
-        />
+        <div className={s.addToSearchButton}>
+          <RaisedButton
+            className={s.primaryButton}
+            onTouchTap={addItem}
+            type="submit"
+            primary={true}
+            label="Add to Search"
+          />
+        </div>
       </form>
     )
   }

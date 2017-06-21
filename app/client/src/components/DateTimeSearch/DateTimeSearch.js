@@ -183,12 +183,14 @@ class DateTimeSearch extends React.Component {
             </div>
           </div>
         )}
-        <RaisedButton
-          className={s.primaryButton}
-          onTouchTap={formSubmit}
-          primary={true}
-          label="Add to Search"
-        />
+        <div className={s.addToSearchButton}>
+          <RaisedButton
+            className={s.primaryButton}
+            onTouchTap={formSubmit}
+            primary={true}
+            label="Add to Search"
+          />
+        </div>
       </div>
     );
   }

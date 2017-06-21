@@ -1,9 +1,11 @@
 
 import React, { PureComponent, PropTypes } from 'react';
 import isNumeric from 'validator/lib/isNumeric';
-import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
+
+import s from 'styles/Search.scss';
 
 
 const textFieldStyle = {
@@ -74,11 +76,15 @@ class ZipcodeSearch extends React.PureComponent {
           underlineShow={false}
           onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
         />
-
-        <IconButton 
-          iconClassName='material-icons'
-          type="submit"
-        >search</IconButton>
+        <div className={s.addToSearchButton}>
+          <RaisedButton
+            className={s.primaryButton}
+            onTouchTap={addItem}
+            type="submit"
+            primary={true}
+            label="Add to Search"
+          />
+        </div>
       </form>
     )
   }
