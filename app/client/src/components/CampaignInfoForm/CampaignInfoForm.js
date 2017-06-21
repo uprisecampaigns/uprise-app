@@ -140,7 +140,7 @@ class CampaignInfoForm extends Component {
 
                 <div className={s.sectionLabel}>Official Organization</div>
 
-                <div className={s.largeToggleContainer}>
+                <div className={s.toggleContainer}>
                   <Toggle
                     label="Are you representing a legally established organization? (Corporation, Non-profit, Committee, Association, etc.)"
                     toggled={data.legalOrg}

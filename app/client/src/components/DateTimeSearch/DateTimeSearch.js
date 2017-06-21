@@ -137,7 +137,7 @@ class DateTimeSearch extends React.Component {
       <div>
 
         <Checkbox
-          label="Ongoing Roles"
+          label="Ongoing"
           checked={ongoing}
           onCheck={ (event, isChecked) => { handleInputChange('ongoing', isChecked) } }
           className={s.checkboxContainer}

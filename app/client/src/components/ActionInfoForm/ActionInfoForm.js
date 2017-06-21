@@ -183,7 +183,7 @@ class ActionInfoForm extends Component {
 
                 <div className={s.toggleContainer}>
                   <Toggle
-                    label="Ongoing Role"
+                    label="Ongoing (Role or Project)"
                     toggled={data.ongoing}
                     labelPosition="right"
                     onToggle={ (event, checked) => { handleInputChange(event, 'ongoing', checked) } }

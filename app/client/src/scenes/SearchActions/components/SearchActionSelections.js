@@ -59,7 +59,7 @@ const SelectedGeographiesContainer = connect((state) => {
 
 const renderSelectedDateLabel = (dates) => {
   if (dates.ongoing) {
-    return 'Ongoing Roles';
+    return 'Ongoing';
   } else if (dates.onDate) {
     return moment(dates.onDate).format('M/D/YYYY');
   } else if (dates.startDate && dates.endDate) {
