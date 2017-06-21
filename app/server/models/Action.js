@@ -309,7 +309,11 @@ class Action {
 
           if (search.dates) {
 
-            if (search.dates.onDate) {
+            if (search.dates.ongoing) {
+
+              qb.andWhere('ongoing', true);
+
+            } else if (search.dates.onDate) {
 
               qb.andWhere(function() {
                 this.andWhere(db.raw("date(?) >= actions.start_time::date", search.dates.onDate));

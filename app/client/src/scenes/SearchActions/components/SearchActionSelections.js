@@ -45,7 +45,7 @@ const SelectedDatesContainer = connect((state) => {
 
   const items = [];
 
-  if (dates.onDate || (dates.startDate && dates.endDate)) {
+  if (dates.ongoing || dates.onDate || (dates.startDate && dates.endDate)) {
     items.push(dates);
   } 
 
@@ -58,7 +58,9 @@ const SelectedGeographiesContainer = connect((state) => {
 })(SelectedItemsContainer);
 
 const renderSelectedDateLabel = (dates) => {
-  if (dates.onDate) {
+  if (dates.ongoing) {
+    return 'Ongoing Roles';
+  } else if (dates.onDate) {
     return moment(dates.onDate).format('M/D/YYYY');
   } else if (dates.startDate && dates.endDate) {
     return moment(dates.startDate).format('M/D/YYYY') + ' - ' + moment(dates.endDate).format('M/D/YYYY');

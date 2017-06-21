@@ -95,6 +95,7 @@ class GeographySearch extends React.PureComponent {
           label="Virtual (anywhere)"
           checked={virtual}
           onCheck={ (event, isChecked) => { handleInputChange(event, 'virtual', isChecked) } }
+          className={s.checkboxContainer}
         />
 
         {!virtual && (

@@ -113,6 +113,7 @@ module.exports = buildSchema(`
   }
 
   input DateSearchInput {
+    ongoing: Boolean
     onDate: String
     startDate: String
     endDate: String

@@ -73,6 +73,7 @@ const graphqlOptions = {
   options: (ownProps) => ({
     // Refresh every 5 min should be safe
     pollInterval: 60000 * 5,
+    fetchPolicy: 'cache-and-network',
     ...ownProps,
   })
 };
