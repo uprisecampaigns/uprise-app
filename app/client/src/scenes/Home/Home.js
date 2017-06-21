@@ -90,7 +90,7 @@ class Home extends React.Component {
               <div className={s.homeButtonContainer}>
                 <Link
                   useAhref={false}
-                  to="https://visitor.r20.constantcontact.com/manage/optin?v=001JE9EC3X285G_kaoRYfdmPxrbPdK8Ik4IArYNTm0iIH3MA1SEi58mP0Vvd-YxNqQBkj26WEtaDdwzXBQBcNia0-B8HO9tGvB0QOwviAD0KA0%3D"
+                  to="https://act.myngp.com/Forms/-8815703986835813888"
                   external={true}
                   sameTab={true}
                 >
@@ -110,13 +110,13 @@ class Home extends React.Component {
               <div className={s.homeButtonContainer}>
                 <Link
                   useAhref={false}
-                  to="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CAMCB5VPGDAEQ"
+                  to="https://act.myngp.com/Forms/-8527473610684102144"
                   external={true}
                   sameTab={true}
                 >
                   <FlatButton
                     className={s.homeButton}
-                    label="Join Today"
+                    label="Contribute Today"
                   />
                 </Link>
               </div>
