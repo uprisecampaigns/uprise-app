@@ -52,6 +52,7 @@ class ManageActionInfoContainer extends Component {
         state: '',
         zipcode: '',
         locationNotes: '',
+        ongoing: false,
         date: undefined,
         startTime: undefined,
         endTime: undefined
@@ -86,19 +87,21 @@ class ManageActionInfoContainer extends Component {
         }
       }));
 
-      // Handle date/time
-      const newDateTimes = {
-        date: moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
-        startTime: moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
-        endTime: moment(action.endTime).isValid() ? moment(action.endTime).toDate() : undefined
-      };
+      if (!action.ongoing) {
+        // Handle date/time
+        const newDateTimes = {
+          date: moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
+          startTime: moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
+          endTime: moment(action.endTime).isValid() ? moment(action.endTime).toDate() : undefined
+        };
 
-      delete action.startTime;
-      delete action.endTime;
+        delete action.startTime;
+        delete action.endTime;
 
-      this.setState( (prevState) => ({
-        formData: Object.assign({}, prevState.formData, newDateTimes)
-      }));
+        this.setState( (prevState) => ({
+          formData: Object.assign({}, prevState.formData, newDateTimes)
+        }));
+      }
 
       Object.keys(action).forEach( (k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
@@ -125,17 +128,19 @@ class ManageActionInfoContainer extends Component {
 
     const formData = Object.assign({}, data);
 
-    const startTime = moment(formData.date);
-    startTime.minutes(moment(formData.startTime).minutes());
-    startTime.hours(moment(formData.startTime).hours());
+    if (!formData.ongoing) {
+      const startTime = moment(formData.date);
+      startTime.minutes(moment(formData.startTime).minutes());
+      startTime.hours(moment(formData.startTime).hours());
 
-    const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
+      const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
 
-    const endTime = moment(startTime).add(timeDiff, 'milliseconds');
+      const endTime = moment(startTime).add(timeDiff, 'milliseconds');
 
-    formData.startTime = startTime.format();
-    formData.endTime = endTime.format();
-    delete formData.date;
+      formData.startTime = startTime.format();
+      formData.endTime = endTime.format();
+      delete formData.date;
+    }
 
     formData.id = this.props.action.id;
 
@@ -170,9 +175,9 @@ class ManageActionInfoContainer extends Component {
       const validators = [
         (component) => { validateString(component, 'title', 'titleErrorText', 'Action Name is Required') },
         (component) => { validateString(component, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required') },
-        (component) => { validateState(component) }, //TODO: error is confusing if virtual is set and state input is invalid
-        (component) => { validateZipcode(component) },
-        (component) => { validateStartEndTimes(component) },
+        (component) => { component.state.formData.virtual || validateState(component) },
+        (component) => { component.state.formData.virtual || validateZipcode(component) },
+        (component) => { component.state.formData.ongoing || validateStartEndTimes(component) },
       ];
 
       return (

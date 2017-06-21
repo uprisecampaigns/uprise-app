@@ -82,8 +82,18 @@ class SearchActionResults extends React.PureComponent {
               avatar={action.campaign.profile_image_url ? <Avatar src={action.campaign.profile_image_url} size={40}/> : undefined}
             >
               <div><Link to={'/campaign/' + action.campaign.slug} className={s.subheaderContainer}>{action.campaign.title}</Link></div>
-              { startTime && <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div> }
-              { startTime && <div>Time: {startTimeString + ' - ' + endTimeString}</div> }
+              { !action.ongoing && startTime && (
+                <div>
+                  <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div>
+                  <div>Time: {startTimeString + ' - ' + endTimeString}</div>
+                </div>
+              )}
+              { action.ongoing && (
+                <div>Ongoing Role</div>
+              )}
+              { action.virtual && (
+                <div>Virtual Action</div>
+              )}
               { (action.city && action.state) && <div>Place: {action.city}, {action.state}</div> }
             </CardHeader>
           </Card>

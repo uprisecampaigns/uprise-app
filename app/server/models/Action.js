@@ -24,7 +24,7 @@ class Action {
                db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
                db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
                'location_name', 'street_address', 'street_address2',
-               'city', 'state', 'zipcode', 'location_notes', 'virtual'])
+               'city', 'state', 'zipcode', 'location_notes', 'virtual', 'ongoing'])
       .where(...args)
       .first();
 
@@ -118,7 +118,7 @@ class Action {
                db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
                'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
                'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
-               'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual',])
+               'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing'])
       .where('action_signups.user_id', userId)
       .andWhere('actions.deleted', false)
       .innerJoin('actions', 'action_signups.action_id', 'actions.id')
@@ -140,7 +140,7 @@ class Action {
                db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
                'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
                'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
-               'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual',
+               'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing',
                'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
  
       .where('actions.deleted', false)
@@ -382,12 +382,12 @@ class Action {
 
       if (search.sortBy) {
         if (search.sortBy.name === 'campaignName') {
-          qb.orderBy('campaigns.title', (search.sortBy.descending) ? 'desc' : 'asc');
+          qb.orderBy('campaigns.title', (search.sortBy.descending) ? 'DESC' : 'ASC');
         } else if (search.sortBy.name === 'date') {
-          qb.orderBy('actions.start_time', (search.sortBy.descending) ? 'desc' : 'asc');
+          qb.orderByRaw(`actions.start_time ${search.sortBy.descending ? 'DESC' : 'ASC'} NULLS LAST`);
         }
       } else {
-        qb.orderBy('actions.start_time', 'asc');
+        qb.orderByRaw('actions.start_time ASC NULLS LAST');
       }
 
       if (search.cursor) {
@@ -404,16 +404,16 @@ class Action {
           } else if (search.sortBy.name === 'date') {
             qb.andWhere(function() {
               this.orWhere(db.raw("?::timestamptz", search.cursor.start_time), (search.sortBy.descending) ? '>' : '<', db.raw('actions.start_time'));
+              this.orWhereNull('actions.start_time');
               this.orWhere(function() {
                 this.andWhere(db.raw("?::timestamptz", search.cursor.start_time), '=', db.raw('actions.start_time'));
                 this.andWhere('actions.slug', '>', search.cursor.slug);
               });
             });
-
-
           }
         } else {
           this.orWhere(db.raw("?::timestamptz", search.cursor.start_time), '<', db.raw('actions.start_time'));
+          this.orWhereNull('actions.start_time');
           this.orWhere(function() {
             this.andWhere(db.raw("?::timestamptz", search.cursor.start_time), '=', db.raw('actions.start_time'));
             this.andWhere('actions.slug', '>', search.cursor.slug);
@@ -444,10 +444,12 @@ class Action {
       };
     });
 
+    const cursor = actionResults.length ? [...actionResults].pop() : undefined;
+
     return {
       total,
       actions: actionResults,
-      cursor: actionResults.length ? [...actionResults].pop() : undefined
+      cursor
     };
   }
 

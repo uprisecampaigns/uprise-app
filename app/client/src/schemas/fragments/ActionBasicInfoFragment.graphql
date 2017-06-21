@@ -5,6 +5,7 @@ fragment ActionBasicInfo on ActionResult {
   slug
   start_time
   end_time
+  ongoing
   virtual
   attending
   is_owner

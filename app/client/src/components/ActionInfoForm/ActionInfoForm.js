@@ -36,8 +36,8 @@ class ActionInfoForm extends Component {
   }
 
   render() {
-    const { 
-      data, refs, formSubmit, errors, saving, 
+    const {
+      data, refs, formSubmit, errors, saving,
       handleInputChange, cancel, campaignTitle, submitText
     } = this.props;
 
@@ -56,7 +56,7 @@ class ActionInfoForm extends Component {
         <div className={s.innerContainer}>
           <Paper zDepth={2}>
             <div className={s.formContainer}>
-              <form 
+              <form
                 className={s.form}
                 onSubmit={formSubmit}
               >
@@ -68,7 +68,7 @@ class ActionInfoForm extends Component {
                     disabled={true}
                   />
                 </div>
- 
+
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Action Internal Name"
@@ -177,49 +177,63 @@ class ActionInfoForm extends Component {
                   </div>
                 )}
 
-                <div>
+                <p className={s.helpText}>
+                  Will this be an ongoing role or a one-time action?
+                </p>
 
-                  <div className={s.sectionLabel}>When:</div>
-
-                  <div className={s.textFieldContainer}>
-                    <DatePicker 
-                      value={data.date} 
-                      onChange={ (event, date) => { handleInputChange(event, 'date', date) } }
-                      container="dialog" 
-                      dialogContainerStyle={dialogStyle}
-                      floatingLabelText="Date"
-                      errorText={errors.dateErrorText}
-                      formatDate={formatDate}
-                      
-                    />
-                  </div>
-
-                  <div className={s.textFieldContainer}>
-                    <TimePicker
-                      floatingLabelText="Start Time"
-                      value={data.startTime} 
-                      minutesStep={5}
-                      errorText={errors.startTimeErrorText}
-                      onChange={ (event, date) => { handleInputChange(event, 'startTime', date) } }
-                    />
-                  </div>
-
-                  <div className={s.textFieldContainer}>
-                    <TimePicker
-                      floatingLabelText="End Time"
-                      value={data.endTime} 
-                      minutesStep={5}
-                      errorText={errors.endTimeErrorText}
-                      onChange={ (event, date) => { handleInputChange(event, 'endTime', date) } }
-                    />
-                  </div>
+                <div className={s.toggleContainer}>
+                  <Toggle
+                    label="Ongoing Role"
+                    toggled={data.ongoing}
+                    labelPosition="right"
+                    onToggle={ (event, checked) => { handleInputChange(event, 'ongoing', checked) } }
+                  />
                 </div>
 
+                { data.ongoing || (
+
+                  <div>
+                    <div className={s.sectionLabel}>When:</div>
+
+                    <div className={s.textFieldContainer}>
+                      <DatePicker
+                        value={data.date}
+                        onChange={ (event, date) => { handleInputChange(event, 'date', date) } }
+                        container="dialog"
+                        dialogContainerStyle={dialogStyle}
+                        floatingLabelText="Date"
+                        errorText={errors.dateErrorText}
+                        formatDate={formatDate}
+                      />
+                    </div>
+
+                    <div className={s.textFieldContainer}>
+                      <TimePicker
+                        floatingLabelText="Start Time"
+                        value={data.startTime}
+                        minutesStep={5}
+                        errorText={errors.startTimeErrorText}
+                        onChange={ (event, date) => { handleInputChange(event, 'startTime', date) } }
+                      />
+                    </div>
+
+                    <div className={s.textFieldContainer}>
+                      <TimePicker
+                        floatingLabelText="End Time"
+                        value={data.endTime}
+                        minutesStep={5}
+                        errorText={errors.endTimeErrorText}
+                        onChange={ (event, date) => { handleInputChange(event, 'endTime', date) } }
+                      />
+                    </div>
+                  </div>
+                )}
+
                 <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={cancel} 
-                    primary={false} 
-                    label="Cancel" 
+                  <RaisedButton
+                    onTouchTap={cancel}
+                    primary={false}
+                    label="Cancel"
                   />
                 </div>
 
@@ -234,11 +248,11 @@ class ActionInfoForm extends Component {
                 ) : (
 
                   <div className={[s.organizeButton, s.button].join(' ')}>
-                    <RaisedButton 
-                      onTouchTap={formSubmit} 
-                      primary={true} 
+                    <RaisedButton
+                      onTouchTap={formSubmit}
+                      primary={true}
                       type="submit"
-                      label={submitText} 
+                      label={submitText}
                     />
                   </div>
                 )}

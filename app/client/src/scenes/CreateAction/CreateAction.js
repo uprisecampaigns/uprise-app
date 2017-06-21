@@ -53,6 +53,7 @@ class CreateAction extends Component {
         state: '',
         zipcode: '',
         locationNotes: '',
+        ongoing: false,
         date: undefined,
         startTime: undefined,
         endTime: undefined,
@@ -85,17 +86,19 @@ class CreateAction extends Component {
 
     const formData = Object.assign({}, data, { campaignId: this.props.campaignId });
 
-    const startTime = moment(formData.date);
-    startTime.minutes(moment(formData.startTime).minutes());
-    startTime.hours(moment(formData.startTime).hours());
+    if (!formData.ongoing) {
+      const startTime = moment(formData.date);
+      startTime.minutes(moment(formData.startTime).minutes());
+      startTime.hours(moment(formData.startTime).hours());
 
-    const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
+      const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
 
-    const endTime = moment(startTime).add(timeDiff, 'milliseconds');
+      const endTime = moment(startTime).add(timeDiff, 'milliseconds');
 
-    formData.startTime = startTime.format();
-    formData.endTime = endTime.format();
-    delete formData.date;
+      formData.startTime = startTime.format();
+      formData.endTime = endTime.format();
+      delete formData.date;
+    }
 
     try {
       const results = await this.props.createActionMutation({ 
@@ -143,7 +146,7 @@ class CreateAction extends Component {
         (component) => { validateString(component, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required') },
         (component) => { validateState(component) }, //TODO: error is confusing if virtual is set and state input is invalid
         (component) => { validateZipcode(component) },
-        (component) => { validateStartEndTimes(component) },
+        (component) => { component.state.formData.ongoing || validateStartEndTimes(component) },
       ];
 
       return (

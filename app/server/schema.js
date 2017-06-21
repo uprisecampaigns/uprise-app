@@ -83,6 +83,7 @@ module.exports = buildSchema(`
     end_time: String
     tags: [String]
     virtual: Boolean
+    ongoing: Boolean
     attending: Boolean
     is_owner: Boolean
     location_name: String
@@ -278,6 +279,7 @@ module.exports = buildSchema(`
     internalTitle: String!
     campaignId: String!
     virtual: Boolean
+    ongoing: Boolean
     locationName: String
     streetAddress: String
     streetAddress2: String
@@ -296,6 +298,7 @@ module.exports = buildSchema(`
     campaignId: String
     description: String
     virtual: Boolean
+    ongoing: Boolean
     locationName: String
     streetAddress: String
     streetAddress2: String
