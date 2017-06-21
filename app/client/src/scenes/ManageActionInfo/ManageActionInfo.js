@@ -87,21 +87,19 @@ class ManageActionInfoContainer extends Component {
         }
       }));
 
-      if (!action.ongoing) {
-        // Handle date/time
-        const newDateTimes = {
-          date: moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
-          startTime: moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
-          endTime: moment(action.endTime).isValid() ? moment(action.endTime).toDate() : undefined
-        };
+      // Handle date/time
+      const newDateTimes = {
+        date: action.startTime && moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
+        startTime: action.startTime && moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
+        endTime: action.endTime && moment(action.endTime).isValid() ? moment(action.endTime).toDate() : undefined
+      };
 
-        delete action.startTime;
-        delete action.endTime;
+      delete action.startTime;
+      delete action.endTime;
 
-        this.setState( (prevState) => ({
-          formData: Object.assign({}, prevState.formData, newDateTimes)
-        }));
-      }
+      this.setState( (prevState) => ({
+        formData: Object.assign({}, prevState.formData, newDateTimes)
+      }));
 
       Object.keys(action).forEach( (k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
@@ -128,7 +126,10 @@ class ManageActionInfoContainer extends Component {
 
     const formData = Object.assign({}, data);
 
-    if (!formData.ongoing) {
+    if (formData.ongoing) {
+      formData.startTime = null;
+      formData.endTime = null;
+    } else {
       const startTime = moment(formData.date);
       startTime.minutes(moment(formData.startTime).minutes());
       startTime.hours(moment(formData.startTime).hours());
@@ -139,8 +140,9 @@ class ManageActionInfoContainer extends Component {
 
       formData.startTime = startTime.format();
       formData.endTime = endTime.format();
-      delete formData.date;
     }
+
+    delete formData.date;
 
     formData.id = this.props.action.id;
 

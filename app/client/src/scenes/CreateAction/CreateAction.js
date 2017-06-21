@@ -86,7 +86,10 @@ class CreateAction extends Component {
 
     const formData = Object.assign({}, data, { campaignId: this.props.campaignId });
 
-    if (!formData.ongoing) {
+    if (formData.ongoing) {
+      formData.startTime = null;
+      formData.endTime = null;
+    } else {
       const startTime = moment(formData.date);
       startTime.minutes(moment(formData.startTime).minutes());
       startTime.hours(moment(formData.startTime).hours());
@@ -97,8 +100,8 @@ class CreateAction extends Component {
 
       formData.startTime = startTime.format();
       formData.endTime = endTime.format();
-      delete formData.date;
     }
+    delete formData.date;
 
     try {
       const results = await this.props.createActionMutation({ 
