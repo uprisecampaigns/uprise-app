@@ -46,8 +46,12 @@ app.use(logger((tokens, req, res) => {
     tokens['user-agent'](req)
   ];
 
-  if (req.method.toLowerCase() === 'post') {
-    logArray.push('\nbody: ' + JSON.stringify(req.body));
+  // Only log the body of graphql requests
+  // and never log anything that has the string password in it
+  // TODO: better long term fix for not logging sensitive info
+  if (req.method.toLowerCase() === 'post' && req.baseUrl === '/api/graphql' &&
+      !JSON.stringify(req.body).toLowerCase().includes('password')) {
+    logArray.push(' Graphql body: ' + JSON.stringify(req.body));
   }
 
   return logArray.join(' ');
