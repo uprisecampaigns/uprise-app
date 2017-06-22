@@ -15,11 +15,13 @@
 
   h3, strong {
     font-size: 1.0rem;
+    margin-bottom: 0.2rem;
     color: lighten($black, 15%);
     font-weight: 500;
   }
 
   p {
+    margin-top: 0rem;
     font-size: 0.8rem;
     color: lighten($black, 10%);
     font-weight: 400;
