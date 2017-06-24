@@ -222,14 +222,14 @@ module.exports = buildSchema(`
     city: String
     state: String
     zipcode: String
-    legal_org: Boolean
-    org_website: String
-    org_name: String
-    org_status: String
-    org_contact_name: String
-    org_contact_position: String
-    org_contact_email: String
-    org_contact_phone: String
+    legalOrg: Boolean
+    orgWebsite: String
+    orgName: String
+    orgStatus: String
+    orgContactName: String
+    orgContactPosition: String
+    orgContactEmail: String
+    orgContactPhone: String
 
   }
 
