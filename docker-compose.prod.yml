@@ -23,7 +23,7 @@ services:
           - nginx
     restart: on-failure
     healthcheck:
-      test: ["CMD", "curl", "-f", "https://localhost"]
+      test: ["CMD", "curl", "-f", "https://$NGINX_HOST"]
       interval: 1m30s
       timeout: 10s
       retries: 3
