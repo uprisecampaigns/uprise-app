@@ -58,7 +58,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 
   config.webpack = {
     entry: {
-      'index': path.resolve(config.src, 'index'),
+      'index': ['babel-polyfill', path.resolve(config.src, 'index')]
     },
     output: {
       filename: '[name]-[hash].js',
