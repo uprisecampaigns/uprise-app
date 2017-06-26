@@ -3,6 +3,11 @@ services:
   web:
     build: ./app
     env_file: ./app/dev.env
+    ports:
+      - "127.0.0.1:3030:3000"
+      - "8888:8888"
+      - "127.0.0.1:5859:5859"
+      - "127.0.0.1:5857:5857"
 
   nginx:
     ports:

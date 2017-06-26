@@ -31,7 +31,10 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     minChunks: Infinity,
   });
 
-  const bundleAnalyzerPlugin = new BundleAnalyzerPlugin();
+  const bundleAnalyzerPlugin = new BundleAnalyzerPlugin({
+    analyzerHost: process.env.BUNDLE_ANALYZER_HOST,
+    analyzerPort: process.env.BUNDLE_ANALYZER_PORT,
+  });
 
   const htmlWebpackPlugin = new HtmlWebpackPlugin({
     template: HtmlWebpackTemplate,

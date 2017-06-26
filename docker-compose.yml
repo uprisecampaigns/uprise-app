@@ -12,11 +12,6 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
 
-    ports:
-      - 127.0.0.1:3030:3000
-      - 127.0.0.1:8888:8888
-      - 127.0.0.1:5859:5859
-      - 127.0.0.1:5857:5857
     networks:
       db-access:
         aliases:
