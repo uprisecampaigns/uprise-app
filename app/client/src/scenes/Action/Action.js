@@ -283,12 +283,6 @@ class Action extends Component {
               <p>
                 May we have your permission to share your email address with the coordinator for the purpose of contacting you about this action?
               </p>
-              <p>
-                The coordinator is not allowed to add your email address to the campaign’s general email or any other lists or to share or sell your email address without your expressed consent.
-              </p>
-              <p>
-                Please notify UpRise if you believe that this policy has been violated.
-              </p>
             </Dialog>
           )}
 
