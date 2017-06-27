@@ -95,8 +95,8 @@ export default (WrappedComponent) => {
         await validator(this);
       }
 
-      const notifyError = () => {
-        this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+      const notifyError = (message) => {
+        this.props.dispatch(notify(message || 'There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
       };
 
       if (!this.hasErrors && !this.state.saving) {
@@ -110,7 +110,7 @@ export default (WrappedComponent) => {
           if (result.success) {
             this.props.dispatch(notify(result.message || 'Success'));
           } else {
-            notifyError();
+            notifyError(result.message);
           }
 
           this.props.dispatch(cleanForm());
@@ -118,7 +118,7 @@ export default (WrappedComponent) => {
 
         } catch (e) {
           console.error(e);
-          notifyError();
+          notifyError(result.message);
           this.props.dispatch(dirtyForm());
           this.setState({ saving: false });
         }

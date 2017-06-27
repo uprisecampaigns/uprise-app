@@ -11,6 +11,10 @@ import {
   validateNewPasswords,
 } from 'lib/validateComponentForms';
 
+import {
+  cleanForm
+} from 'actions/NotificationsActions';
+
 import Link from 'components/Link';
 import ChangePasswordForm from 'components/ChangePasswordForm';
 
@@ -53,9 +57,19 @@ class Security extends Component {
       newPassword: data.newPassword1
     };
     
-    this.props.dispatch(attemptChangePassword(formData, () => {
+
+    const result = await new Promise((resolve, reject) => {
+      this.props.dispatch(attemptChangePassword(formData, (result) => {
+        resolve(result);
+      }));
+    });
+
+    if (result.success) {
+      this.props.dispatch(cleanForm());
       history.push('/settings');
-    }));
+    }
+
+    return result;
   }
 
   render() {

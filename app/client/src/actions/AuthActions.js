@@ -273,7 +273,7 @@ export function changePasswordFail(error) {
   return { type: CHANGE_PASSWORD_FAIL, error };
 }
 
-export function attemptChangePassword(data, successCallback){
+export function attemptChangePassword(data, callback){
   return async (dispatch, getState) => {
 
     if (!getState().userAuthSession.fetchingAuthUpdate) {
@@ -297,17 +297,21 @@ export function attemptChangePassword(data, successCallback){
 
         if (!json.error) {
           dispatch(notify('Password changed'));
-          (typeof successCallback === 'function') && successCallback();
+          (typeof callback === 'function') && callback({
+            success: true,
+            message: 'Password Changed'
+          });
           dispatch(changePasswordSuccess(json));
         } else {
           console.error(json.error);
           throw new Error(json.error);
         }
       } catch(err) {
-        // TODO: error handler
         console.error(err);
-        console.log(err);
-        dispatch(notify('Error changing password: ' + err.message));
+        callback({
+          success: false,
+          message: 'Error changing password: ' + err.message
+        });
         dispatch(changePasswordFail(err.message));
       }
     }
