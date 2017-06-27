@@ -170,7 +170,7 @@ class CampaignInfoForm extends Component {
 
                     <div className={s.textFieldContainer}>
                       <TextField
-                        floatingLabelText="Organization Legal Name"
+                        floatingLabelText="Organization Name"
                         value={data.orgName}
                         onChange={ (event) => { handleInputChange(event, 'orgName', event.target.value) } }
                         errorText={errors.orgNameErrorText}
@@ -179,7 +179,7 @@ class CampaignInfoForm extends Component {
 
                     <div className={s.textFieldContainer}>
                       <TextField
-                        floatingLabelText="Organization Legal Status"
+                        floatingLabelText="Organization Type"
                         value={data.orgStatus}
                         onChange={ (event) => { handleInputChange(event, 'orgStatus', event.target.value) } }
                         errorText={errors.orgStatusErrorText}
