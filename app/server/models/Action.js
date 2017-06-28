@@ -183,19 +183,23 @@ class Action {
 
               search.keywords.forEach( (keyword) => {
                 
-                this.orWhere(db.raw('actions.title %> ?', keyword));
-                this.orWhere(db.raw('actions.location_name % ?', keyword));
-                this.orWhere(db.raw('actions.street_address % ?', keyword));
-                this.orWhere(db.raw('actions.street_address2 % ?', keyword));
-                this.orWhere(db.raw('actions.city % ?', keyword));
-                this.orWhere(db.raw('actions.state % ?', keyword));
-                this.orWhere(db.raw('actions.location_notes %> ?', keyword));
-                this.orWhere(db.raw('campaigns.title %> ?', keyword));
+                const stringComparator = /^#/.test(keyword) ? 'ILIKE ?' : '% ?';
+                const stringOverlapComparator = /^#/.test(keyword) ? "SIMILAR TO '%(,| )\\?' || ? || '(,| )\\?%'" : '%> ?';
+
+                this.orWhere(db.raw(`actions.title ${stringOverlapComparator}`, keyword));
+                this.orWhere(db.raw(`actions.description ${stringOverlapComparator}`, keyword));
+                this.orWhere(db.raw(`actions.location_name ${stringComparator}`, keyword));
+                this.orWhere(db.raw(`actions.street_address ${stringComparator}`, keyword));
+                this.orWhere(db.raw(`actions.street_address2 ${stringComparator}`, keyword));
+                this.orWhere(db.raw(`actions.city ${stringComparator}`, keyword));
+                this.orWhere(db.raw(`actions.state ${stringComparator}`, keyword));
+                this.orWhere(db.raw(`actions.location_notes ${stringOverlapComparator}`, keyword));
+                this.orWhere(db.raw(`campaigns.title ${stringOverlapComparator}`, keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
                   .from(tags)
-                  .whereRaw('tag % ?', keyword);
+                  .whereRaw(`tag ${stringComparator}`, keyword);
 
                 this.orWhere('actions.id', 'in', tagKeywordQuery);
 
@@ -203,11 +207,10 @@ class Action {
                   .distinct()
                   .from('activities')
                   .innerJoin('actions_activities', 'activities.id', 'actions_activities.activity_id')
-                  .whereRaw('title %> ?', keyword)
-                  .orWhereRaw('description %> ?', keyword)
+                  .whereRaw(`title ${stringOverlapComparator}`, keyword)
+                  .orWhereRaw(`description ${stringOverlapComparator}`, keyword)
 
                 this.orWhere('actions.id', 'in', activityQuery);
-
 
               });
             });

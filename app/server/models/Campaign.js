@@ -224,17 +224,20 @@ class Campaign {
             qb.andWhere(function() {
 
               search.keywords.forEach( (keyword) => {
+
+                const stringComparator = /^#/.test(keyword) ? 'ILIKE ?' : '% ?';
+                const stringOverlapComparator = /^#/.test(keyword) ? "SIMILAR TO '%(,| )\\?' || ? || '(,| )\\?%'" : '%> ?';
                 
-                this.orWhere(db.raw('title %> ?', keyword));
+                this.orWhere(db.raw(`title ${stringOverlapComparator}`, keyword));
 
-                this.orWhere(db.raw('profile_subheader %> ?', keyword));
+                this.orWhere(db.raw(`profile_subheader ${stringOverlapComparator}`, keyword));
 
-                this.orWhere(db.raw('description %> ?', keyword));
+                this.orWhere(db.raw(`description ${stringOverlapComparator}`, keyword));
 
                 const tagKeywordQuery = db.select('id')
                   .distinct()
                   .from(tags)
-                  .whereRaw('tag %> ?', keyword);
+                  .whereRaw(`tag ${stringOverlapComparator}`, keyword);
 
                 this.orWhere('id', 'in', tagKeywordQuery);
 
