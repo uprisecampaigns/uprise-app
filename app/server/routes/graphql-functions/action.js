@@ -112,9 +112,7 @@ module.exports = {
         [decamelize(k)]: options.data[k]
     })));
 
-    input.owner_id = context.user.id;
-
-    const action = await Action.edit(input);
+    const action = await Action.edit({ input, userId: context.user.id });
     return action;
   },
 

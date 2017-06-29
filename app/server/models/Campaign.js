@@ -57,10 +57,10 @@ class Campaign {
     return Object.assign({}, newCampaign, await this.details(newCampaign));
   }
 
-  static async edit(options) {
+  static async edit({ input, userId }) {
 
-    const user = await db.table('users').where('id', options.owner_id).first('id', 'superuser');
-    const campaignId = options.id;
+    const user = await db.table('users').where('id', userId).first('id', 'superuser');
+    const campaignId = input.id;
 
     if (user) {
 
@@ -68,18 +68,18 @@ class Campaign {
 
       if (await User.ownsObject({ user, object: campaign })) {
 
-        const levels = options.levels;
-        delete options.levels;
+        const levels = input.levels;
+        delete input.levels;
 
-        const types = options.types;
-        delete options.types;
+        const types = input.types;
+        delete input.types;
 
-        const issueAreas = options.issue_areas;
-        delete options.issue_areas;
+        const issueAreas = input.issue_areas;
+        delete input.issue_areas;
 
         const campaignResult = await db('campaigns')
           .where('id', campaignId)
-          .update(options, [
+          .update(input, [
             'id', 'title', 'slug', 'description', 'tags', 'owner_id'
           ]);
 

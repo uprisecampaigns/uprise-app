@@ -560,35 +560,35 @@ class Action {
     }
   }
 
-  static async edit(options) {
+  static async edit({ input, userId }) {
 
-    const user = await db.table('users').where('id', options.owner_id).first('id', 'superuser');
+    const user = await db.table('users').where('id', userId).first('id', 'superuser');
 
     if (user) {
 
-      const action = await db('actions').where('id', options.id).first();
+      const action = await db('actions').where('id', input.id).first();
 
       if (!action) {
-        throw new Error('Cannot find action with id=' + options.id);
+        throw new Error('Cannot find action with id=' + input.id);
 
       } else if (await User.ownsObject({ user, object: action })) {
 
         try {
-          const levels = options.levels;
-          delete options.levels;
+          const levels = input.levels;
+          delete input.levels;
 
-          const types = options.types;
-          delete options.types;
+          const types = input.types;
+          delete input.types;
 
-          const issueAreas = options.issue_areas;
-          delete options.issue_areas;
+          const issueAreas = input.issue_areas;
+          delete input.issue_areas;
 
-          const activities = options.activities;
-          delete options.activities;
+          const activities = input.activities;
+          delete input.activities;
 
           const actionResult = await db('actions')
-            .where('id', options.id)
-            .update(options, [
+            .where('id', input.id)
+            .update(input, [
               'id', 'title', 'internal_title', 'slug', 'description', 'tags', 'owner_id', 'campaign_id'
             ]);
 
