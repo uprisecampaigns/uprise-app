@@ -50,7 +50,9 @@ class Link extends React.Component {
     }
 
     if (this.props.external && !this.props.mailTo && !this.props.sameTab) {
-      window.open(url);
+      const newWindow = window.open();
+      newWindow.opener = null;
+      newWindow.location = url;
     } else if (this.props.mailTo || (this.props.external && this.props.sameTab)) {
       window.location = url;
     } else {
