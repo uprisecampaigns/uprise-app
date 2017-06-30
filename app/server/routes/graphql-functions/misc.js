@@ -1,5 +1,6 @@
 const S3 = require('aws-sdk/clients/s3');
 
+const User = require('models/User');
 const Campaign = require('models/Campaign');
 const Action = require('models/Action');
 const sendEmail = require('lib/sendEmail.js');
@@ -47,9 +48,8 @@ module.exports = {
         throw new Error('Campaign not found');
       }
 
-      // TODO: Replace this with more sophisticated implementation
-      //       inside of Campaign model
-      if (campaign.owner_id !== context.user.id) {
+      const ownsObject = await User.ownsObject({ userId: context.user.id, object: campaign });
+      if (!ownsObject) {
         throw new Error('User must be owner of campaign');
       }
     } else {
