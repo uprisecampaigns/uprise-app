@@ -51,6 +51,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       'CLIENT_BASE_URL': '"' + process.env.CLIENT_BASE_URL + '"',
       'AWS_S3_REGION': '"' + process.env.AWS_S3_REGION + '"',
       'AWS_S3_BUCKET_NAME': '"' + process.env.AWS_S3_BUCKET_NAME + '"',
+      'AWS_S3_ENDPOINT': '"' + process.env.AWS_S3_ENDPOINT + '"',
       'SENTRY_PUBLIC_DSN': '"' + process.env.SENTRY_PUBLIC_DSN + '"',
       'GIT_COMMIT': '"' + gitCommit + '"',
     }
