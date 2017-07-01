@@ -14,6 +14,7 @@ import {
   addSearchItem, setSearchDates, removeSearchItem
 } from 'actions/SearchActions';
 
+import ControlledListItem from 'components/ControlledListItem';
 import SearchBar from 'components/SearchBar';
 import GeographySearch from 'components/GeographySearch';
 import TogglesList from 'components/TogglesList';
@@ -88,10 +89,8 @@ class SearchActionInputs extends React.PureComponent {
     return (
       <List className={s.searchInputsList}>
 
-        <ListItem 
+        <ControlledListItem
           primaryText="Location"
-          initiallyOpen={false}
-          primaryTogglesNestedList={true}
           className={s.listItemContainer}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
@@ -128,10 +127,8 @@ class SearchActionInputs extends React.PureComponent {
 
         <Divider />
 
-        <ListItem 
+        <ControlledListItem
           primaryText="Date"
-          initiallyOpen={false}
-          primaryTogglesNestedList={true}
           className={s.listItemContainer}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.dateSearchContainer].join(' ')}>

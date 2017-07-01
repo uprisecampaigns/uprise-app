@@ -12,10 +12,10 @@ import {
   addSearchItem, setSearchDates, removeSearchItem
 } from 'actions/SearchActions';
 
+import ControlledListItem from 'components/ControlledListItem';
 import SearchBar from 'components/SearchBar';
 import ZipcodeSearch from 'components/ZipcodeSearch';
 import TogglesList from 'components/TogglesList';
-import DateTimeSearch from 'components/DateTimeSearch';
 
 import s from 'styles/Search.scss';
 
@@ -78,10 +78,8 @@ class SearchCampaignInputs extends React.PureComponent {
     return (
       <List className={s.searchInputsList}>
 
-        <ListItem 
+        <ControlledListItem
           primaryText="Location"
-          initiallyOpen={false}
-          primaryTogglesNestedList={true}
           className={s.listItemContainer}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>

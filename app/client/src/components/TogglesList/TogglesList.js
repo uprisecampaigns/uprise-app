@@ -3,7 +3,8 @@ import React, { PropTypes } from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import { ListItem } from 'material-ui/List';
 
-import s from './TogglesList.scss';
+import ControlledListItem from 'components/ControlledListItem';
+
 
 class TogglesList extends React.PureComponent {
 
@@ -31,11 +32,6 @@ class TogglesList extends React.PureComponent {
       containerClassName, className
     } = this.props;
 
-    const nestedListStyle = {
-      maxHeight: '20rem',
-      overflowY: 'scroll',
-    };
-
     const toggles = collection.map( (item, index) => {
       const selected = (selectedCollection.includes(item[keyPropName]));
       return (
@@ -56,11 +52,8 @@ class TogglesList extends React.PureComponent {
 
     return (
       <div className={className}>
-        <ListItem 
+        <ControlledListItem
           primaryText={this.props.listTitle}
-          initiallyOpen={false}
-          primaryTogglesNestedList={true}
-          nestedListStyle={nestedListStyle}
           nestedItems={toggles}
         />
       </div>

@@ -1,0 +1,9 @@
+@import '~styles/variables';
+
+.listItem {
+  font-size: 1rem !important;
+
+  svg {
+    color: $brick-red !important;
+  }
+}

@@ -9,6 +9,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Divider from 'material-ui/Divider';
 import camelCase from 'camelcase';
 
+import ControlledListItem from 'components/ControlledListItem';
 import TogglesList from 'components/TogglesList';
 import SearchBar from 'components/SearchBar';
 import SelectedItemsContainer from 'components/SelectedItemsContainer';
@@ -244,10 +245,8 @@ class ManageCampaignPreferencesContainer extends Component {
 
           <Divider />
 
-          <ListItem 
+          <ControlledListItem
             primaryText="Keywords"
-            initiallyOpen={false}
-            primaryTogglesNestedList={true}
             nestedItems={[(
               <ListItem key={0} disabled={true} className={s.keywordsContainer}>
                 <div className={s.keywordsInputContainer}>
