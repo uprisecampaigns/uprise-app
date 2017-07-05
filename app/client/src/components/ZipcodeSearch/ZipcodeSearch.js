@@ -66,7 +66,7 @@ class ZipcodeSearch extends React.PureComponent {
       <form 
         onSubmit={addItem}
       >
-        Active in areas that include zipcode:  
+        Active in zipcode:
         <TextField
           floatingLabelText="Zipcode"
           type="text"

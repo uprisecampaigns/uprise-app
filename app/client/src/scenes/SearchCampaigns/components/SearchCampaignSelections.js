@@ -66,7 +66,7 @@ const renderSelectedDateLabel = (dates) => {
 }
 
 const renderSelectedGeographyLabel = (geography) => {
-  return 'Active in zipcodes that include: ' + geography.zipcode;
+  return 'Active in: ' + geography.zipcode;
 };
 
 class SearchCampaignSelections extends React.PureComponent {
