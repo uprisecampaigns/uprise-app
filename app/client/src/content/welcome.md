@@ -14,7 +14,7 @@ can subscribe to and hear about all their actions.
 
 ### Volunteer
 
-Keep track of you volunteering commitments at [MY ACTIONS](/volunteer/action-commitments) and manage
+Keep track of your volunteering commitments at [MY ACTIONS](/volunteer/action-commitments) and manage
 your campaign subscriptions at [MY SUBSCRIPTIONS](/volunteer/campaign-subscriptions).
 
 ### 
