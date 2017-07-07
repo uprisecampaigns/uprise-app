@@ -49,6 +49,7 @@ fragment CampaignDetails on CampaignResult {
     slug
     start_time
     end_time
+    ongoing
     city
     state
     zipcode

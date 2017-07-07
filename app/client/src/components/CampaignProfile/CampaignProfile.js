@@ -41,8 +41,15 @@ class CampaignProfile extends Component {
 
       const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ? campaign.actions.map(action => {
 
-        if (action.start_time && action.end_time) {
-
+        if (action.ongoing) {
+          return (
+            <Link to={'/action/' + action.slug} key={action.id}>
+              <div className={[s.detailLine, s.actionListing].join(' ')}>
+                {action.title}{action.city && ', ' + action.city}{action.state && ', ' + action.state}
+              </div>
+            </Link>
+          );
+        } else if (action.start_time && action.end_time) {
           const startTime = moment(action.start_time);
           const endTime = moment(action.end_time);
 
