@@ -452,7 +452,9 @@ h4{
                                                               <%= action.title %>
                                                             </a>
                                                             <br/>
-                                                            <%= dates.start %> <br/>
+                                                            <% if (!action.ongoing) { %>
+                                                              <%= dates.start %> <br/>
+                                                            <% } %>
                                                           </p>
                                                           <p>
                                                             You may contact <%= user.first_name %> <%= user.last_name %> at email: 

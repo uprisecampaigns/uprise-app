@@ -5,7 +5,9 @@
 <%= campaign.title %> 
 <%= action.dashboard_url %>
 <%= action.title %>
-<%= dates.start %>
+<% if (!action.ongoing) { %>
+  <%= dates.start %> <br/>
+<% } %>
 
 
 You may contact <%= user.first_name %> <%= user.last_name %> at email: <%= user.email %> 

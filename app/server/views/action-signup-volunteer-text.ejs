@@ -6,7 +6,9 @@ You signed up for the following action:
 <%= campaign.public_url %> 
 <%= action.title %>
 <%= action.public_url %>
-<%= dates.start %>
+<% if (!action.ongoing) { %>
+  <%= dates.start %> <br/>
+<% } %>
 
 ====
 

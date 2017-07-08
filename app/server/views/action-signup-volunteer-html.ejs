@@ -454,7 +454,9 @@ h4{
                                                               <%= action.title %>
                                                             </a>
                                                             <br/>
-                                                            <%= dates.start %> <br/>
+                                                            <% if (!action.ongoing) { %>
+                                                              <%= dates.start %> <br/>
+                                                            <% } %>
                                                           </p>
                                                           <p>
                                                             <% if (action.location_name) { %>

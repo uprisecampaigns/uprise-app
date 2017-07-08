@@ -12,6 +12,11 @@ import { urls } from 'config/config'
 
 
 const getFormattedDates = ({ user, action }) => {
+
+  if (action.ongoing) {
+    return { ongoing: true };
+  }
+
   const startTime = moment(action.start_time);
   const endTime = moment(action.end_time);
 
