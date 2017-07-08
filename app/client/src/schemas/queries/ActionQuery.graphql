@@ -1,7 +1,7 @@
 #import "../fragments/ActionDetailsFragment.graphql"
 #import "../fragments/ActionBasicInfoFragment.graphql"
 
-query Action($search:ActionQueryInput) {
+query ActionQuery($search:ActionQueryInput) {
   action(search:$search){
     ...ActionBasicInfo
     ...ActionDetails
