@@ -53,6 +53,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       'AWS_S3_BUCKET_NAME': '"' + process.env.AWS_S3_BUCKET_NAME + '"',
       'AWS_S3_ENDPOINT': '"' + process.env.AWS_S3_ENDPOINT + '"',
       'SENTRY_PUBLIC_DSN': '"' + process.env.SENTRY_PUBLIC_DSN + '"',
+      'GOOGLE_UA_ID': '"' + process.env.GOOGLE_UA_ID + '"',
       'GIT_COMMIT': '"' + gitCommit + '"',
     }
   });

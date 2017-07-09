@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import history from 'lib/history';
 import apolloClient from 'store/apolloClient';
 import Raven from 'raven-js';
+import ReactGA from 'lib/react-ga';
 
 import { gitCommit } from 'config/config';
 import { notify } from 'actions/NotificationsActions';
@@ -39,6 +40,7 @@ export function clickedSignup() {
 export function signupSuccess(userObject) {
   history.push('/welcome');
   Raven.setUserContext(userObject)
+  ReactGA.set({ userId: userObject.id });
   return { type: SIGNUP_SUCCESS, userObject };
 }
 
@@ -85,7 +87,9 @@ export function clickedLogin() {
 }
 
 export function loginSuccess(userObject) {
+  ReactGA.set({ userId: userObject.id });
   Raven.setUserContext(userObject)
+
   return { type: LOGIN_SUCCESS, userObject };
 }
 
@@ -150,8 +154,10 @@ export function checkedSessionStatus(result) {
 
   if (result.isLoggedIn){
     Raven.setUserContext(result.userObject)
+    ReactGA.set({ userId: result.userObject.id });
   } else {
     Raven.setUserContext()
+    ReactGA.set({ userId: undefined });
   }
 
   return { type: CHECKED_SESSION_STATUS, result };
@@ -217,6 +223,7 @@ export function clickedLogout() {
 
 export function logoutSuccess() {
   Raven.setUserContext()
+  ReactGA.set({ userId: undefined });
   apolloClient.resetStore();
   history.push('/');
   return { type: LOGOUT_SUCCESS };

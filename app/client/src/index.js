@@ -27,6 +27,7 @@ import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
 import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import history from 'lib/history';
+import ReactGA from 'lib/react-ga';
 import routes from 'routes';
 
 import { sentryDsn } from 'config/config';
@@ -132,6 +133,9 @@ async function onLocationChange(location) {
     if (document.title != newTitle) {
       document.title = newTitle;
     }
+
+    ReactGA.set({ page: location.pathname });
+    ReactGA.pageview(location.pathname);
 
     appInstance = ReactDOM.render(
       <MuiThemeProvider>
