@@ -95,6 +95,11 @@ class ManageCampaignUploadActions extends Component {
             processData: processString,
           },
           {
+            title: 'Description',
+            slug: 'description',
+            processData: processString,
+          },
+          {
             title: 'Virtual',
             slug: 'virtual',
             processData: processBoolean,

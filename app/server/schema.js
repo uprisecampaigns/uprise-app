@@ -279,6 +279,7 @@ module.exports = buildSchema(`
     title: String!
     internalTitle: String!
     campaignId: String!
+    description: String
     virtual: Boolean
     ongoing: Boolean
     locationName: String
