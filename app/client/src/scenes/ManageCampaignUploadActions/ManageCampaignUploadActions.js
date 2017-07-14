@@ -66,21 +66,21 @@ class ManageCampaignUploadActions extends Component {
       return value.split(',').map(i => i.trim());
     }
 
+    const processRelationships = (collectionName, value) => {
+      if (typeof value !== 'string') {
+        throw new Error('Can only process strings to activities');
+      }
+
+      const slugs = value.split(',').map(i => i.trim().toLowerCase());
+
+      return slugs.map((slug) => this.props[collectionName].find(a => a.title.toLowerCase() === slug).id);
+    }
+
     if (this.props.campaign && this.props.issueAreas &&
         this.props.levels && this.props.activities &&
         this.props.types) {
 
       const { campaign, user, ...props } = this.props;
-
-      const processRelationships = (collectionName, value) => {
-        if (typeof value !== 'string') {
-          throw new Error('Can only process strings to activities');
-        }
-
-        const slugs = value.split(',').map(i => i.trim().toLowerCase());
-
-        return slugs.map((slug) => props[collectionName].find(a => a.title.toLowerCase() === slug).id);
-      }
 
       const config = {
         headers: [
@@ -198,6 +198,7 @@ class ManageCampaignUploadActions extends Component {
           });
 
           console.log(results);
+          return results;
         }
       };
 

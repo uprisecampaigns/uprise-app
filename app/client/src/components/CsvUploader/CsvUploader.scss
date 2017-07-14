@@ -1,6 +1,19 @@
 @import '~styles/variables';
 @import '~styles/buttons';
 
+.dropzoneContainer {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.dropzone {
+  cursor: pointer;
+}
+
+.instructions {
+  margin-top: 1rem;
+}
 
 .gridCell {
   width: 100%;

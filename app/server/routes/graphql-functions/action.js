@@ -109,8 +109,6 @@ module.exports = {
 
     const createdActions = [];
 
-    console.log(options.data);
-
     for (let item of options.data) {
 
       // Decamelizing property names
@@ -119,8 +117,6 @@ module.exports = {
       })));
 
       input.owner_id = context.user.id;
-
-      console.log(input);
 
       const action = await Action.create(input);
 

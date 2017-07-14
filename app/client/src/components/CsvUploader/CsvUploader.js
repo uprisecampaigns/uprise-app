@@ -21,13 +21,6 @@ class CsvUploader extends React.Component {
       csvFile: null,
       rows: null,
     };
-
-    this.measurerCache = new CellMeasurerCache({
-      defaultWidth: 150,
-      fixedWidth: true,
-      defaultHeight: 60,
-      fixedHeight: false
-    });
   }
 
   static propTypes = {
@@ -78,8 +71,14 @@ class CsvUploader extends React.Component {
           values: selectedHeaders
         });
 
-        this.setState({ rows });
+        this.measurerCache = new CellMeasurerCache({
+          defaultWidth: 150,
+          fixedWidth: true,
+          defaultHeight: 60,
+          fixedHeight: false
+        });
 
+        this.setState({ rows });
       }
     });
   }
@@ -98,31 +97,44 @@ class CsvUploader extends React.Component {
     event.preventDefault();
 
     const submissionValues = [];
-    const { config, ...props } = this.props;
+    const { config, dispatch, ...props } = this.props;
     const { rows, ...state } = this.state;
 
-    const selectedHeaders = rows.shift().values;
+    try {
+      const selectedHeaders = Array.from(rows).shift().values;
 
-    rows.filter(i => i.selected).forEach((row) => {
-      const newItem = {};
+      rows.filter(i => i.selected).forEach((row) => {
+        const newItem = {};
 
-      selectedHeaders.forEach((selection, index) => {
-        if (selection !== 'skip') {
-          const selectedHeader = config.headers.find(h => h.slug === selection);
-          if (selectedHeader === undefined) {
-            throw new Error('Can\'t find matching header');
+        selectedHeaders.forEach((selection, index) => {
+          if (selection !== 'skip') {
+            const selectedHeader = config.headers.find(h => h.slug === selection);
+            if (selectedHeader === undefined) {
+              throw new Error('Can\'t find matching header');
+            }
+
+            const value = selectedHeader.processData(row.values[index]);
+            newItem[selectedHeader.slug] = value;
           }
-
-          const value = selectedHeader.processData(row.values[index]);
-          newItem[selectedHeader.slug] = value;
-        }
+        });
+        submissionValues.push(newItem);
       });
-      submissionValues.push(newItem);
-      console.log(newItem);
-    });
-    console.log(submissionValues);
 
-    await config.onSubmit(submissionValues);
+      console.log(submissionValues);
+
+      const results = await config.onSubmit(submissionValues);
+      console.log(results);
+      dispatch(notify('Successfully imported'));
+
+      this.setState({
+        csvFile: null,
+        rows: null,
+      });
+
+    } catch (e) {
+      console.error(e);
+      dispatch(notify('There was an error importing. Please check and try again'));
+    }
   }
 
   handleSelectAll = () => {
@@ -254,9 +266,7 @@ class CsvUploader extends React.Component {
                 columnCount={rows[0].values.length}
                 columnWidth={150}
                 deferredMeasurementCache={this.measurerCache}
-                height={2000}
-                overscanColumnCount={0}
-                overscanRowCount={2}
+                height={500}
                 rowCount={rows.length}
                 rowHeight={this.measurerCache.rowHeight}
                 width={width}
@@ -275,14 +285,18 @@ class CsvUploader extends React.Component {
       );
     } else {
       return (
-        <Dropzone
-          onDrop={this.onDrop}
-          multiple={false}
-        >
-          <div className={s.instructions}>Drag and drop your csv file here, or click to select an file to upload.</div>
+        <div className={s.dropzoneContainer}>
+          <div className={s.dropzone}>
+            <Dropzone
+              onDrop={this.onDrop}
+              multiple={false}
+            >
+              <div className={s.instructions}>Drag and drop your csv file here, or click to select an file to upload.</div>
 
-          <FontIcon className="material-icons">file_upload</FontIcon>
-        </Dropzone>
+              <FontIcon className="material-icons">file_upload</FontIcon>
+            </Dropzone>
+          </div>
+        </div>
       );
     }
   }
