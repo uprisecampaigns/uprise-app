@@ -3,6 +3,7 @@ import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import FontIcon from 'material-ui/FontIcon';
+import getSlug from 'speakingurl';
 
 import CsvUploader from 'components/CsvUploader';
 import Link from 'components/Link';
@@ -73,7 +74,11 @@ class ManageCampaignUploadActions extends Component {
 
       const slugs = value.split(',').map(i => i.trim().toLowerCase());
 
-      return slugs.map((slug) => this.props[collectionName].find(a => a.title.toLowerCase() === slug).id);
+      try {
+        return slugs.map((slug) => this.props[collectionName].find(a => getSlug(a.title) === getSlug(slug)).id);
+      } catch (e) {
+        throw new Error('Can\'t find matching relationship for ' + collectionName);
+      }
     }
 
     if (this.props.campaign && this.props.issueAreas &&
