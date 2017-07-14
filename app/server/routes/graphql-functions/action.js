@@ -106,6 +106,32 @@ module.exports = {
     return action;
   },
 
+  createActions: async (options, context) => {
+
+    if (!context.user) {
+      throw new Error('User must be logged in');
+    }
+
+    const createdActions = [];
+
+    for (let item of options.data) {
+
+      // Decamelizing property names
+      const input = Object.assign(...Object.keys(item).map(k => ({
+          [decamelize(k)]: item[k]
+      })));
+
+      input.owner_id = context.user.id;
+
+      const action = await Action.create(input);
+
+      createdActions.push(action);
+    }
+
+    return createdActions;
+  },
+
+
   editAction: async (options, context) => {
 
     if (!context.user) {

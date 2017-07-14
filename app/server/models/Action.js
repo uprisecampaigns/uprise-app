@@ -543,10 +543,31 @@ class Action {
         const newActionData = Object.assign({}, options, { slug });
 
         try {
-          const actionResult = await db.table('actions').insert(newActionData, [
+          const { levels, types, issue_areas, activities, ...newInsertInput } = newActionData;
+
+          const actionResult = await db.table('actions').insert(newInsertInput, [
             'id', 'title', 'slug', 'description', 'tags', 'owner_id', 'campaign_id'
           ]);
-          return actionResult[0];
+
+          const action = actionResult[0];
+
+          if (levels && levels.length) {
+            await updateProperties(levels, 'level', action.id);
+          }
+
+          if (issue_areas && issue_areas.length) {
+            await updateProperties(issue_areas, 'issue_area', action.id);
+          }
+
+          if (types && types.length) {
+            await updateProperties(types, 'type', action.id);
+          }
+
+          if (activities && activities.length) {
+            await updateProperties(activities, 'activity', action.id);
+          }
+
+          return Object.assign({}, action, await this.details(action));
 
         } catch(e) {
           throw new Error('Cannot insert action: ' + e.message);
@@ -574,21 +595,11 @@ class Action {
       } else if (await User.ownsObject({ user, object: action })) {
 
         try {
-          const levels = input.levels;
-          delete input.levels;
-
-          const types = input.types;
-          delete input.types;
-
-          const issueAreas = input.issue_areas;
-          delete input.issue_areas;
-
-          const activities = input.activities;
-          delete input.activities;
+          const { levels, types, issue_areas, activities, ...newInput } = input;
 
           const actionResult = await db('actions')
-            .where('id', input.id)
-            .update(input, [
+            .where('id', newInput.id)
+            .update(newInput, [
               'id', 'title', 'internal_title', 'slug', 'description', 'tags', 'owner_id', 'campaign_id'
             ]);
 
@@ -598,8 +609,8 @@ class Action {
             await updateProperties(levels, 'level', action.id);
           }
 
-          if (issueAreas && issueAreas.length) {
-            await updateProperties(issueAreas, 'issue_area', action.id);
+          if (issue_areas && issue_areas.length) {
+            await updateProperties(issue_areas, 'issue_area', action.id);
           }
 
           if (types && types.length) {

@@ -279,6 +279,7 @@ module.exports = buildSchema(`
     title: String!
     internalTitle: String!
     campaignId: String!
+    description: String
     virtual: Boolean
     ongoing: Boolean
     locationName: String
@@ -290,6 +291,11 @@ module.exports = buildSchema(`
     locationNotes: String
     startTime: String
     endTime: String
+    activities: [String]
+    issueAreas: [String]
+    levels: [String]
+    types: [String]
+    tags: [String]
   }
 
   input EditActionInput {
@@ -335,6 +341,7 @@ module.exports = buildSchema(`
     deleteCampaign(data: DeleteCampaignInput): Boolean
     deleteAction(data: DeleteActionInput): Boolean
     createAction(data: CreateActionInput): ActionResult
+    createActions(data: [CreateActionInput]): [ActionResult]
     editAction(data: EditActionInput): ActionResult
     actionSignup(actionId: String!): ActionResult
     cancelActionSignup(actionId: String!): ActionResult

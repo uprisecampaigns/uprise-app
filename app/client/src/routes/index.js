@@ -35,6 +35,7 @@ export default {
     require('./manageCampaignPreferences').default,
     require('./manageCampaignLocation').default,
     require('./manageCampaignActions').default,
+    require('./manageCampaignUploadActions').default,
     require('./createAction').default,
 
     // /organize/:campaignSlug/action/:actionSlug
