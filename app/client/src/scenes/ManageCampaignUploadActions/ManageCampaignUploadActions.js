@@ -67,7 +67,7 @@ class ManageCampaignUploadActions extends Component {
       }
       const date = moment.tz(value.trim(), timezone);
       if (!date.isValid()) {
-        throw new Error('Date is not valid', date);
+        throw new Error('Date is not valid: ' + value);
       }
       return date.format();
     }

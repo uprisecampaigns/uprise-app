@@ -98,12 +98,13 @@ class CsvUploader extends React.Component {
 
     const submissionValues = [];
     const { config, dispatch, ...props } = this.props;
-    const { rows, ...state } = this.state;
+
+    const submissionRows = Array.from(this.state.rows);
 
     try {
-      const selectedHeaders = Array.from(rows).shift().values;
+      const selectedHeaders = submissionRows.shift().values;
 
-      rows.filter(i => i.selected).forEach((row) => {
+      submissionRows.filter(i => i.selected).forEach((row) => {
         const newItem = {};
 
         selectedHeaders.forEach((selection, index) => {
@@ -133,7 +134,7 @@ class CsvUploader extends React.Component {
 
     } catch (e) {
       console.error(e);
-      dispatch(notify('There was an error importing. Please check and try again'));
+      dispatch(notify('There was an error importing. Please check and try again. ' + e.message));
     }
   }
 
