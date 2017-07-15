@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import FontIcon from 'material-ui/FontIcon';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import getSlug from 'speakingurl';
 
 import CsvUploader from 'components/CsvUploader';
@@ -29,6 +31,15 @@ class ManageCampaignUploadActions extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      timezone: 'America/Los_Angeles'
+    };
+  }
+
+  handleTimezoneChange = (event, value) => {
+    event.stopPropagation();
+    event.preventDefault();
+    this.setState({ timezone: value });
   }
 
   render() {
@@ -50,10 +61,11 @@ class ManageCampaignUploadActions extends Component {
     }
 
     const processDate = (value) => {
+      const { timezone, ...state } = this.state;
       if (typeof value !== 'string') {
         throw new Error('Can only process strings to dates');
       }
-      const date = moment(value.trim());
+      const date = moment.tz(value.trim(), timezone);
       if (!date.isValid()) {
         throw new Error('Date is not valid', date);
       }
@@ -220,6 +232,18 @@ class ManageCampaignUploadActions extends Component {
           </Link>
 
           <div className={s.pageSubHeader}>Upload Actions</div>
+
+          <div className={s.timeZoneSelect}>
+            <SelectField
+              floatingLabelText="Timezone"
+              value={this.state.timezone}
+              onChange={(event, i, value) => this.handleTimezoneChange(event, value)}
+            >
+              {moment.tz.names().map((name, index) => (
+                <MenuItem key={index} value={name} primaryText={name} />
+              ))}
+            </SelectField>
+          </div>
 
           <CsvUploader 
             config={config}

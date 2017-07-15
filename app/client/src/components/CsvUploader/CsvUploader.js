@@ -252,11 +252,14 @@ class CsvUploader extends React.Component {
     if (rows) {
       return (
         <div>
-          <RaisedButton
-            onTouchTap={this.cancel}
-            primary={true}
-            label="Cancel"
-          />
+          <div className={s.cancelButton}>
+            <RaisedButton
+              onTouchTap={this.cancel}
+              primary={true}
+              label="Cancel"
+            />
+          </div>
+
 
           <AutoSizer disableHeight>
             {({ width }) => (
