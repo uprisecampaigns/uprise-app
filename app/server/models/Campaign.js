@@ -221,9 +221,9 @@ class Campaign {
               .select(db.raw('id, unnest(tags) tag'))
               .as('tags');
 
-            qb.andWhere(function() {
+            search.keywords.forEach( (keyword) => {
 
-              search.keywords.forEach( (keyword) => {
+              qb.andWhere(function() {
 
                 const stringComparator = /^#/.test(keyword) ? 'ILIKE ?' : '% ?';
                 const stringOverlapComparator = /^#/.test(keyword) ? "SIMILAR TO '%(,| )\\?' || ? || '(,| )\\?%'" : '%> ?';
