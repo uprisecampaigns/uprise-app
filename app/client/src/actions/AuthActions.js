@@ -118,7 +118,7 @@ export function attemptLogin(data) {
         // TODO: passportjs local-signup/login returns a "missing credentials"
         // message with no explicit error
         if (!json.error) {
-          history.push('/search/search-actions');
+          history.push('/welcome');
           dispatch(loginSuccess(json));
         } else {
           dispatch(loginFail(json.error));
