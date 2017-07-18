@@ -9,7 +9,6 @@
   font-weight: 400;
   align-items: center;
   justify-content: left;
-  border-bottom: 1px solid darken($white, 20%);
 
   :global .material-icons {
     margin-left: 1rem;
@@ -18,8 +17,19 @@
   }
 }
 
-.navHeader.organizeNavHeader, .navHeader.searchNavHeader, .navHeader.settingsNavHeader {
+.navHeader.organizeNavHeader,
+.navHeader.volunteerNavHeader,
+.navHeader.searchNavHeader,
+.navHeader.settingsNavHeader {
   color: $brick-red;
+}
+
+.navHeader.searchNavHeader,
+.navHeader.volunteerNavHeader,
+.navHeader.settingsNavHeader {
+  @media (min-width: $screen-sm-min) {
+    display: none;
+  }
 }
 
 .navHeader.campaignNavHeader {

@@ -69,7 +69,7 @@ class ActionCommitments extends Component {
         <div className={s.outerContainer}>
 
           <Link to={'/volunteer'}>
-            <div className={[s.navHeader, s.organizeNavHeader].join(' ')}>
+            <div className={[s.navHeader, s.volunteerNavHeader].join(' ')}>
               <FontIcon
                 className={["material-icons", s.backArrow].join(' ')}
               >arrow_back</FontIcon>
