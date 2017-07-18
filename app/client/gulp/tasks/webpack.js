@@ -69,58 +69,69 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     },
     devtool: env.development() ? "eval-cheap-module-source-map" : "",
     module: {
-      loaders: [
-      {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        include: [ 
-          path.resolve(config.publicRoot), 
-          path.resolve(config.nodeModules, 'camelcase'),
-        ],
-        query: {
-          cacheDirectory: true,
-          presets: ['es2015', 'react', 'stage-3'],
-          plugins: ['transform-runtime', 'transform-class-properties']
-        }
-      },
-      {
-        test: /\.(graphql|gql)$/,
-        exclude: /node_modules/,
-        loader: 'graphql-tag/loader'
-      }, 
-      {
-        test: /\.scss$/,
-        loader: 'style-loader!css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap'
-          // loader: 'style-loader!css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap'
-      },
-      { 
-        test: /\.css$/, 
-        loader: 'style-loader!css-loader' 
-      }, 
-      { 
-        test: /\.(png|jpg)$/, 
-        loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
-      }, 
-      {
-        test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, 
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
-      },
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, 
-        loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
-      },
-      {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, 
-        loader: 'file-loader'
-      },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, 
-        loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
-      },
-      { 
-        test: /\.md$/, 
-        loader: path.resolve(config.publicRoot, 'src', 'lib', 'markdown-loader.js') 
-      },
+      rules: [
+        {
+          enforce: 'pre',
+          test: /\.jsx?$/,
+          loader: 'eslint-loader',
+          options: {
+            fix: false
+          },
+          include: [
+            path.resolve(config.publicRoot),
+          ]
+        },
+        {
+          test: /\.jsx?$/,
+          loader: 'babel-loader',
+          include: [
+            path.resolve(config.publicRoot),
+            path.resolve(config.nodeModules, 'camelcase'),
+          ],
+          query: {
+            cacheDirectory: true,
+            presets: ['es2015', 'react', 'stage-3'],
+            plugins: ['transform-runtime', 'transform-class-properties']
+          }
+        },
+        {
+          test: /\.(graphql|gql)$/,
+          exclude: /node_modules/,
+          loader: 'graphql-tag/loader'
+        },
+        {
+          test: /\.scss$/,
+          loader: 'style-loader!css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap'
+            // loader: 'style-loader!css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap'
+        },
+        {
+          test: /\.css$/,
+          loader: 'style-loader!css-loader'
+        },
+        {
+          test: /\.(png|jpg)$/,
+          loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
+        },
+        {
+          test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+          loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+        },
+        {
+          test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+          loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
+        },
+        {
+          test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+          loader: 'file-loader'
+        },
+        {
+          test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+          loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
+        },
+        {
+          test: /\.md$/,
+          loader: path.resolve(config.publicRoot, 'src', 'lib', 'markdown-loader.js')
+        },
       ]
     },
     externals: {
@@ -135,7 +146,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 
       new webpack.optimize.UglifyJsPlugin({
         mangle: true,
-        compress: { 
+        compress: {
           // warnings: true,
           warnings: false, // Suppress uglification warnings
           dead_code: true,
