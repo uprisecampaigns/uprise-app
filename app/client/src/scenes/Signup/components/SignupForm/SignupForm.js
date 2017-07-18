@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
@@ -23,7 +23,7 @@ class SignupForm extends Component {
     formSubmit: PropTypes.func.isRequired,
     cancelSignup: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
   }
 
   render() {
@@ -34,7 +34,7 @@ class SignupForm extends Component {
         <div className={s.innerContainer}>
           <Paper zDepth={0}>
             <div className={s.formContainer}>
-              <form 
+              <form
                 className={s.form}
                 onSubmit={formSubmit}
               >
@@ -43,18 +43,18 @@ class SignupForm extends Component {
                   <TextField
                     floatingLabelText="First Name"
                     value={data.firstName}
-                    onChange={ (event) => { handleInputChange(event, 'firstName', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'firstName', event.target.value); }}
                     errorText={data.firstNameErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Last Name"
                     value={data.lastName}
-                    onChange={ (event) => { handleInputChange(event, 'lastName', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'lastName', event.target.value); }}
                     errorText={data.lastNameErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
                 <div className={s.textFieldContainer}>
@@ -62,9 +62,9 @@ class SignupForm extends Component {
                     floatingLabelText="Email"
                     type="email"
                     value={data.email}
-                    onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'email', event.target.value); }}
                     errorText={data.emailErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
                 <div className={s.textFieldContainer}>
@@ -72,9 +72,9 @@ class SignupForm extends Component {
                     floatingLabelText="Create a Password"
                     type="password"
                     value={data.password1}
-                    onChange={ (event) => { handleInputChange(event, 'password1', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'password1', event.target.value); }}
                     errorText={data.password1ErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
                 <div className={s.textFieldContainer}>
@@ -82,9 +82,9 @@ class SignupForm extends Component {
                     floatingLabelText="Confirm your Password"
                     type="password"
                     value={data.password2}
-                    onChange={ (event) => { handleInputChange(event, 'password2', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'password2', event.target.value); }}
                     errorText={data.password2ErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
                 <div className={s.textFieldContainer}>
@@ -93,23 +93,23 @@ class SignupForm extends Component {
                     value={data.zipcode}
                     pattern="[0-9]{5}"
                     type="text"
-                    onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
                     errorText={data.zipcodeErrorText}
                   />
                 </div>
                 <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={cancelSignup} 
-                    primary={false} 
-                    label="Cancel" 
+                  <RaisedButton
+                    onTouchTap={cancelSignup}
+                    primary={false}
+                    label="Cancel"
                   />
                 </div>
                 <div className={[s.button, s.secondaryButton].join(' ')}>
-                  <RaisedButton 
-                    onTouchTap={formSubmit} 
-                    primary={true} 
+                  <RaisedButton
+                    onTouchTap={formSubmit}
+                    primary
                     type="submit"
-                    label="Create Account" 
+                    label="Create Account"
                   />
                 </div>
               </form>

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -24,22 +24,22 @@ class ContactForm extends Component {
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
-    submitText: PropTypes.string.isRequired
+    submitText: PropTypes.string.isRequired,
   }
 
   render() {
-    const { 
+    const {
       data, formSubmit, errors, saving,
-      handleInputChange, cancel, submitText 
+      handleInputChange, cancel, submitText,
     } = this.props;
 
     const statesList = Object.keys(states);
 
 
     return (
-      
+
       <div className={s.formContainer}>
-        <form 
+        <form
           className={s.form}
           onSubmit={formSubmit}
         >
@@ -47,31 +47,31 @@ class ContactForm extends Component {
             <TextField
               floatingLabelText="Subject"
               value={data.subject}
-              onChange={ (event) => { handleInputChange(event, 'subject', event.target.value) } }
+              onChange={(event) => { handleInputChange(event, 'subject', event.target.value); }}
               errorText={errors.subjectErrorText}
-              fullWidth={true}
+              fullWidth
             />
           </div>
-          
+
           <div className={s.textareaContainer}>
             <TextField
               name="description"
               hintText="Compose message"
               value={data.body}
-              multiLine={true}
+              multiLine
               rows={4}
-              onChange={ (event) => { handleInputChange(event, 'body', event.target.value) } }
+              onChange={(event) => { handleInputChange(event, 'body', event.target.value); }}
               errorText={errors.bodyErrorText}
-              fullWidth={true}
+              fullWidth
               underlineShow={false}
             />
           </div>
 
           <div className={s.button}>
-            <RaisedButton 
-              onTouchTap={cancel} 
-              primary={false} 
-              label="Cancel" 
+            <RaisedButton
+              onTouchTap={cancel}
+              primary={false}
+              label="Cancel"
             />
           </div>
 
@@ -86,11 +86,11 @@ class ContactForm extends Component {
           ) : (
 
             <div className={[s.organizeButton, s.button].join(' ')}>
-              <RaisedButton 
-                onTouchTap={formSubmit} 
-                primary={true} 
+              <RaisedButton
+                onTouchTap={formSubmit}
+                primary
                 type="submit"
-                label={submitText} 
+                label={submitText}
               />
             </div>
           )}

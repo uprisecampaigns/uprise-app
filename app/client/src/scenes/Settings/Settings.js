@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 import Divider from 'material-ui/Divider';
 
@@ -14,7 +14,6 @@ import s from 'styles/Settings.scss';
 
 
 class Settings extends Component {
-
   static PropTypes = {
   }
 
@@ -23,7 +22,6 @@ class Settings extends Component {
   }
 
   render() {
-
     if (this.props.user) {
       const { user, ...props } = this.props;
 
@@ -36,45 +34,44 @@ class Settings extends Component {
 
           <List className={s.navList}>
 
-            <Divider/>
+            <Divider />
 
             <Link to={'/settings/account'}>
-              <ListItem 
+              <ListItem
                 primaryText="Account"
               />
             </Link>
 
-            <Divider/>
+            <Divider />
 
             <Link to={'/settings/privacy-security'}>
-              <ListItem 
+              <ListItem
                 primaryText="Privacy & Security"
               />
             </Link>
 
-            <Divider/>
+            <Divider />
 
             <Link to={'/settings/contact'}>
-              <ListItem 
+              <ListItem
                 primaryText="Contact"
               />
             </Link>
 
-            <Divider/>
+            <Divider />
 
           </List>
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   graphql(MeQuery, {
-    props: ({ data }) => ({ 
-      user: data.me
-    })
+    props: ({ data }) => ({
+      user: data.me,
+    }),
   }),
 )(Settings);

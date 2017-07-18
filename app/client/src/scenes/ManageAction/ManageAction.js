@@ -5,7 +5,7 @@ import { List, ListItem } from 'material-ui/List';
 import Dialog from 'material-ui/Dialog';
 import {
   Table, TableBody, TableFooter, TableHeader, TableHeaderColumn,
-  TableRow, TableRowColumn
+  TableRow, TableRowColumn,
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -24,7 +24,6 @@ import s from 'styles/Organize.scss';
 
 
 class ManageActionContainer extends Component {
-
   static PropTypes = {
     campaignSlug: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -37,20 +36,17 @@ class ManageActionContainer extends Component {
 
     this.state = {
       selected: [],
-      emptyRecipientsModalOpen: false
+      emptyRecipientsModalOpen: false,
     };
   }
 
-  isSelected = (id) => {
-    return (this.state.selected.find((row) => row.id === id) !== undefined);
-  }
+  isSelected = id => (this.state.selected.find(row => row.id === id) !== undefined)
 
   handleRowSelection = (selectedRows) => {
     if (selectedRows === 'none') {
       this.setState({ selected: [] });
     } else {
-
-      const selected = this.props.volunteers.filter( (volunteer, index) => (
+      const selected = this.props.volunteers.filter((volunteer, index) => (
         (selectedRows === 'all' || selectedRows.includes(index))
       ));
 
@@ -59,41 +55,38 @@ class ManageActionContainer extends Component {
   }
 
   composeMessage = (event) => {
-
     const { campaign, action, dispatch, ...props } = this.props;
 
     if (this.state.selected.length === 0) {
       this.setState({ emptyRecipientsModalOpen: true });
     } else {
       dispatch(setRecipients(this.state.selected));
-      history.push('/organize/' + campaign.slug + '/action/' + action.slug + '/compose');
+      history.push(`/organize/${campaign.slug}/action/${action.slug}/compose`);
     }
   }
 
   render() {
-
     if (this.props.action && this.props.campaign && this.props.volunteers) {
-
       const { action, campaign, volunteers, ...props } = this.props;
       const { emptyRecipientsModalOpen, ...state } = this.state;
 
-      const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
+      const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
 
       const modalActions = [
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ (event) => { event.preventDefault(); this.setState({emptyRecipientsModalOpen: false}); }}
-        />
+          onTouchTap={(event) => { event.preventDefault(); this.setState({ emptyRecipientsModalOpen: false }); }}
+        />,
       ];
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug + '/actions'}>
+          <Link to={`/organize/${campaign.slug}/actions`}>
             <div className={s.navHeader}>
               <FontIcon
-                className={["material-icons", s.backArrow].join(' ')}
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Actions
             </div>
@@ -103,11 +96,11 @@ class ManageActionContainer extends Component {
 
           <div className={s.pageSubHeader}>Dashboard</div>
 
-          <Link to={baseActionUrl + '/settings' }>
+          <Link to={`${baseActionUrl}/settings`}>
             <div className={s.settingsLinkContainer}>
               Settings
               <FontIcon
-                className={["material-icons"].join(' ')}
+                className={['material-icons'].join(' ')}
               >settings</FontIcon>
             </div>
           </Link>
@@ -116,21 +109,21 @@ class ManageActionContainer extends Component {
             <RaisedButton
               className={s.organizeButton}
               onTouchTap={this.composeMessage}
-              primary={true}
+              primary
               label="Compose Message"
             />
           </div>
 
           <Table
-            fixedHeader={true}
-            selectable={true}
-            multiSelectable={true}
+            fixedHeader
+            selectable
+            multiSelectable
             onRowSelection={this.handleRowSelection}
           >
             <TableHeader
-              displaySelectAll={true}
-              adjustForCheckbox={true}
-              enableSelectAll={true}
+              displaySelectAll
+              adjustForCheckbox
+              enableSelectAll
             >
               <TableRow>
                 <TableHeaderColumn>Name</TableHeaderColumn>
@@ -139,25 +132,25 @@ class ManageActionContainer extends Component {
               </TableRow>
             </TableHeader>
             <TableBody
-              displayRowCheckbox={true}
-              showRowHover={true}
+              displayRowCheckbox
+              showRowHover
               stripedRows={false}
               deselectOnClickaway={false}
             >
-              {volunteers.map( (volunteer, index) => (
-                <TableRow key={volunteer.id} selected={this.isSelected(volunteer.id)} selectable={true}>
-                  <TableRowColumn>{volunteer.first_name + ' ' + volunteer.last_name}</TableRowColumn>
+              {volunteers.map((volunteer, index) => (
+                <TableRow key={volunteer.id} selected={this.isSelected(volunteer.id)} selectable>
+                  <TableRowColumn>{`${volunteer.first_name} ${volunteer.last_name}`}</TableRowColumn>
                   <TableRowColumn>{volunteer.email}</TableRowColumn>
                   <TableRowColumn>{volunteer.phone_number}</TableRowColumn>
                 </TableRow>
-                ))}
+              ))}
             </TableBody>
           </Table>
 
           {emptyRecipientsModalOpen && (
             <Dialog
               title="No Recipients Selected"
-              modal={true}
+              modal
               actions={modalActions}
               open={emptyRecipientsModalOpen}
               actionsContainerClassName={s.modalActionsContainer}
@@ -170,48 +163,47 @@ class ManageActionContainer extends Component {
 
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   connect(),
   graphql(CampaignQuery, {
-    options: (ownProps) => ({
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.campaignId
-        }
-      }
+          id: ownProps.campaignId,
+        },
+      },
     }),
     props: ({ data }) => ({
-      campaign: data.campaign
-    })
+      campaign: data.campaign,
+    }),
   }),
   graphql(ActionQuery, {
-    options: (ownProps) => ({
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.actionId
-        }
-      }
+          id: ownProps.actionId,
+        },
+      },
     }),
     props: ({ data }) => ({
-      action: data.action
-    })
+      action: data.action,
+    }),
   }),
   graphql(SignedUpVolunteersQuery, {
-    options: (ownProps) => ({
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.actionId
-        }
-      }
+          id: ownProps.actionId,
+        },
+      },
     }),
     props: ({ data }) => ({
-      volunteers: data.signedUpVolunteers
-    })
-  })
+      volunteers: data.signedUpVolunteers,
+    }),
+  }),
 )(ManageActionContainer);

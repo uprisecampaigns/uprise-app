@@ -13,7 +13,7 @@ export default {
   action() {
     return {
       title: 'Action Commitments',
-      component: <Layout><ActionCommitmentsWithAuthentication/></Layout>,
+      component: <Layout><ActionCommitmentsWithAuthentication /></Layout>,
     };
   },
 };

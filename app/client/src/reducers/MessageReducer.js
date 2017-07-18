@@ -1,18 +1,17 @@
 import { SET_RECIPIENTS } from 'actions/MessageActions';
 
-const defaultStartState = { 
-  recipients: []
-}
+const defaultStartState = {
+  recipients: [],
+};
 
 export function updateMessages(messagesState = defaultStartState, action) {
-  switch (action.type){
-    
+  switch (action.type) {
     case SET_RECIPIENTS:
       return Object.assign({}, messagesState, {
-        recipients: action.recipients
+        recipients: action.recipients,
       });
 
-    default: 
+    default:
       return messagesState;
   }
 }

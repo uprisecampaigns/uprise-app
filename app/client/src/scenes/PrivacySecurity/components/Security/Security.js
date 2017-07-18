@@ -6,13 +6,13 @@ import history from 'lib/history';
 
 import formWrapper from 'lib/formWrapper';
 
-import { 
+import {
   validateString,
   validateNewPasswords,
 } from 'lib/validateComponentForms';
 
 import {
-  cleanForm
+  cleanForm,
 } from 'actions/NotificationsActions';
 
 import Link from 'components/Link';
@@ -26,7 +26,6 @@ import s from 'styles/Settings.scss';
 const WrappedChangePasswordForm = formWrapper(ChangePasswordForm);
 
 class Security extends Component {
-
   static PropTypes = {
   }
 
@@ -39,24 +38,23 @@ class Security extends Component {
         newPassword1: '',
         newPassword2: '',
       },
-    }
+    };
 
     this.state = Object.assign({}, initialState);
   }
 
-  defaultErrorText = { 
+  defaultErrorText = {
     oldPasswordErrorText: null,
     newPassword1ErrorText: null,
     newPassword2ErrorText: null,
   }
 
   formSubmit = async (data) => {
-      
     const formData = {
       oldPassword: data.oldPassword,
-      newPassword: data.newPassword1
+      newPassword: data.newPassword1,
     };
-    
+
 
     const result = await new Promise((resolve, reject) => {
       this.props.dispatch(attemptChangePassword(formData, (result) => {
@@ -73,15 +71,14 @@ class Security extends Component {
   }
 
   render() {
-
     const { state, formSubmit, defaultErrorText } = this;
     const { passwordBeingReset, changeError, ...props } = this.props;
     const { formData } = state;
 
     const validators = [
-      (component) => { passwordBeingReset || validateString(component, 'oldPassword', 'oldPasswordErrorText', 'Please enter your password') },
-      (component) => validateString(component, 'newPassword1', 'newPassword1ErrorText', 'Please enter a password'),
-      (component) => validateNewPasswords(component),
+      (component) => { passwordBeingReset || validateString(component, 'oldPassword', 'oldPasswordErrorText', 'Please enter your password'); },
+      component => validateString(component, 'newPassword1', 'newPassword1ErrorText', 'Please enter a password'),
+      component => validateNewPasswords(component),
     ];
 
     return (
@@ -99,12 +96,10 @@ class Security extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    changeError: state.userAuthSession.error,
-    passwordBeingReset: state.userAuthSession.userObject.passwordBeingReset || false
-  };
-}
+const mapStateToProps = state => ({
+  changeError: state.userAuthSession.error,
+  passwordBeingReset: state.userAuthSession.userObject.passwordBeingReset || false,
+});
 
 export default compose(
   connect(mapStateToProps),

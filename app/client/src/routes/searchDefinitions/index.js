@@ -12,7 +12,7 @@ export default {
 
   async action() {
     const data = await new Promise((resolve) => {
-      require.ensure([], require => {
+      require.ensure([], (require) => {
         resolve(require('content/search-definitions.md'));
       }, 'search-definitions');
     });

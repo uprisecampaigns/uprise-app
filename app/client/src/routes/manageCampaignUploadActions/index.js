@@ -10,9 +10,9 @@ const ManageCampaignUploadActionsWithAuthentication = withAuthentication(ManageC
 
 export default organizeCampaignPaths({
   path: '/organize/:slug/upload-actions',
-  component: (campaign) => (
+  component: campaign => (
     <Layout>
-      <ManageCampaignUploadActionsWithAuthentication campaignSlug={campaign.slug}/>
+      <ManageCampaignUploadActionsWithAuthentication campaignSlug={campaign.slug} />
     </Layout>
-  )
+  ),
 });

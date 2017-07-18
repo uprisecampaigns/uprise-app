@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import Infinite from 'react-infinite';
 import moment from 'moment';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
 import CircularProgress from 'material-ui/CircularProgress';
+
 const isEqual = require('lodash.isequal');
 
 import timeWithZone from 'lib/timeWithZone';
@@ -15,10 +16,8 @@ import s from 'styles/Search.scss';
 
 
 class SearchActionResults extends React.PureComponent {
-
   constructor(props) {
     super(props);
-
   }
 
   static propTypes = {
@@ -28,7 +27,7 @@ class SearchActionResults extends React.PureComponent {
     graphqlLoading: PropTypes.bool.isRequired,
     allItemsLoaded: PropTypes.bool.isRequired,
     isInfiniteLoading: PropTypes.bool.isRequired,
-    handleInfiniteLoad: PropTypes.func.isRequired
+    handleInfiniteLoad: PropTypes.func.isRequired,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -38,33 +37,24 @@ class SearchActionResults extends React.PureComponent {
             !isEqual(this.props.sortBy, nextProps.sortBy));
   }
 
-  elementInfiniteLoad = () => {
-    return (
-      <div className={s.loadingContainer}>
-        <CircularProgress
-          size={60}
-          thickness={5}
-        />
-      </div>
-    );
-  }
+  elementInfiniteLoad = () => (
+    <div className={s.loadingContainer}>
+      <CircularProgress
+        size={60}
+        thickness={5}
+      />
+    </div>
+  )
 
   render() {
     const { sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, ...props } = this.props;
 
-    const actions = props.actions ? Array.from(props.actions).sort(itemsSort(sortBy)).map( (action, index) => {
+    const actions = props.actions ? Array.from(props.actions).sort(itemsSort(sortBy)).map((action, index) => {
+      const tags = action.tags ? action.tags.map((tag, index) => <span key={index}>{tag}{(index === action.tags.length - 1) ? '' : ', '}</span>) : [];
 
-      const tags = action.tags ? action.tags.map( (tag, index) => {
-        return <span key={index}>{tag}{(index === action.tags.length - 1) ? '' : ', '}</span>;
-      }) : [];
+      const activities = action.activities ? action.activities.map((activity, index) => <span key={index}>{activity.title}{(index === action.activities.length - 1) ? '' : ', '}</span>) : [];
 
-      const activities = action.activities ? action.activities.map( (activity, index) => {
-        return <span key={index}>{activity.title}{(index === action.activities.length - 1) ? '' : ', '}</span>;
-      }) : [];
-
-      const issues = action.issue_areas ? action.issue_areas.map( (issue, index) => {
-        return <span key={index}>{issue.title}{(index === action.issue_areas.length - 1) ? '' : ', '}</span>;
-      }) : [];
+      const issues = action.issue_areas ? action.issue_areas.map((issue, index) => <span key={index}>{issue.title}{(index === action.issue_areas.length - 1) ? '' : ', '}</span>) : [];
 
       // TODO: better datetime parsing (not relying on native Date) and checking for missing values
       const startTime = moment(action.start_time);
@@ -74,18 +64,18 @@ class SearchActionResults extends React.PureComponent {
       const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
       return (
-        <Link key={index} to={'/action/' + action.slug}>
+        <Link key={index} to={`/action/${action.slug}`}>
           <Card className={s.card}>
             <CardHeader
               title={action.title}
               className={s.resultsHeader}
-              avatar={action.campaign.profile_image_url ? <Avatar src={action.campaign.profile_image_url} size={40}/> : undefined}
+              avatar={action.campaign.profile_image_url ? <Avatar src={action.campaign.profile_image_url} size={40} /> : undefined}
             >
-              <div><Link to={'/campaign/' + action.campaign.slug} className={s.subheaderContainer}>{action.campaign.title}</Link></div>
+              <div><Link to={`/campaign/${action.campaign.slug}`} className={s.subheaderContainer}>{action.campaign.title}</Link></div>
               { !action.ongoing && startTime && (
                 <div>
                   <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div>
-                  <div>Time: {startTimeString + ' - ' + endTimeString}</div>
+                  <div>Time: {`${startTimeString} - ${endTimeString}`}</div>
                 </div>
               )}
               { action.ongoing && (

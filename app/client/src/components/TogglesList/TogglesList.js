@@ -7,7 +7,6 @@ import ControlledListItem from 'components/ControlledListItem';
 
 
 class TogglesList extends React.PureComponent {
-
   constructor(props) {
     super(props);
   }
@@ -25,20 +24,19 @@ class TogglesList extends React.PureComponent {
   }
 
   render() {
-
-    const { 
-      collectionName, displayPropName, keyPropName, 
+    const {
+      collectionName, displayPropName, keyPropName,
       collection, selectedCollection, handleToggle,
-      containerClassName, className
+      containerClassName, className,
     } = this.props;
 
-    const toggles = collection.map( (item, index) => {
+    const toggles = collection.map((item, index) => {
       const selected = (selectedCollection.includes(item[keyPropName]));
       return (
-        <ListItem 
+        <ListItem
           leftCheckbox={
-            <Checkbox 
-              onCheck={ (event, on) => { handleToggle(collectionName, on, item[keyPropName]) }}
+            <Checkbox
+              onCheck={(event, on) => { handleToggle(collectionName, on, item[keyPropName]); }}
               checked={selected}
             />
           }

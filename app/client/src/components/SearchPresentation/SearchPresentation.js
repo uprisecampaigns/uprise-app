@@ -21,7 +21,7 @@ class SearchPresentation extends Component {
       filterPopoverAnchorEl: null,
       sortOpen: false,
       sortPopoverAnchorEl: null,
-    }
+    };
 
     this.searchBarInputElements = [];
   }
@@ -37,7 +37,7 @@ class SearchPresentation extends Component {
   };
 
   addSelectedItem = (collectionName, value) => {
-    this.searchBarInputElements.forEach( (element) => element.blur());
+    this.searchBarInputElements.forEach(element => element.blur());
     this.props.addSelectedItem(collectionName, value);
   }
 
@@ -47,15 +47,15 @@ class SearchPresentation extends Component {
   }
 
   handleOpenSort = (event) => {
-    this.searchBarInputElements.forEach( (element) => element.blur());
+    this.searchBarInputElements.forEach(element => element.blur());
     event.preventDefault();
 
     this.setState(Object.assign({},
       this.state,
       {
         sortOpen: true,
-        sortPopoverAnchorEl: event.currentTarget
-      }
+        sortPopoverAnchorEl: event.currentTarget,
+      },
     ));
   }
 
@@ -63,36 +63,35 @@ class SearchPresentation extends Component {
     typeof event.preventDefault === 'function' && event.preventDefault();
     this.setState(Object.assign({},
       this.state,
-      { sortOpen: false }
+      { sortOpen: false },
     ));
   }
 
   handleOpenFilter = (event) => {
-    this.searchBarInputElements.forEach( (element) => element.blur());
+    this.searchBarInputElements.forEach(element => element.blur());
     event.preventDefault();
 
-    this.setState((prevState) => (Object.assign({},
+    this.setState(prevState => (Object.assign({},
       prevState,
       {
         filterOpen: !prevState.filterOpen,
-        filterPopoverAnchorEl: event.currentTarget
-      }
+        filterPopoverAnchorEl: event.currentTarget,
+      },
     )));
   }
 
   handleCloseFilter = (event) => {
     typeof event.preventDefault === 'function' && event.preventDefault();
-    this.setState((prevState) => (Object.assign({},
+    this.setState(prevState => (Object.assign({},
       prevState,
-      { filterOpen: false }
+      { filterOpen: false },
     )));
   }
 
   render() {
-
-    const { 
+    const {
       searchSortWrapper, resultsCount, searchSortItems,
-      searchSelections, searchInputs, searchResults, ...props 
+      searchSelections, searchInputs, searchResults, ...props
     } = this.props;
 
     const ConnectedSearchSort = searchSortWrapper(SearchSort);
@@ -147,15 +146,15 @@ class SearchPresentation extends Component {
               >
                 <span>Sort by</span>
                 <IconButton
-                  iconClassName='material-icons'
+                  iconClassName="material-icons"
                 >sort</IconButton>
 
                 <Popover
                   open={this.state.sortOpen}
                   anchorEl={this.state.sortPopoverAnchorEl}
                   onRequestClose={this.handleCloseSort}
-                  anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                  targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                  anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                  targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                   className={s.popover}
                 >
                   <ConnectedSearchSort
@@ -171,7 +170,7 @@ class SearchPresentation extends Component {
               >
                 <span>Filter</span>
                 <IconButton
-                  iconClassName='material-icons'
+                  iconClassName="material-icons"
                 >filter_list</IconButton>
               </div>
             </div>
@@ -194,7 +193,7 @@ class SearchPresentation extends Component {
                       <RaisedButton
                         className={s.primaryButton}
                         onTouchTap={this.handleCloseFilter}
-                        primary={true}
+                        primary
                         label="Done"
                       />
                     </span>

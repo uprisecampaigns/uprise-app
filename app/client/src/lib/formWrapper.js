@@ -7,14 +7,13 @@ import states from 'lib/states-list';
 import {
   notify,
   dirtyForm,
-  cleanForm
+  cleanForm,
 } from 'actions/NotificationsActions';
 
 
 const statesList = Object.keys(states);
 
 export default (WrappedComponent) => {
-
   class FormWrapper extends React.Component {
     constructor(props) {
       super(props);
@@ -22,7 +21,7 @@ export default (WrappedComponent) => {
       this.state = {
         formData: props.initialState,
         errors: props.initialErrors,
-        refs: {}
+        refs: {},
       };
     }
 
@@ -30,16 +29,15 @@ export default (WrappedComponent) => {
       initialState: PropTypes.object.isRequired,
       initialErrors: PropTypes.object.isRequired,
       submit: PropTypes.func.isRequired,
-      validators: PropTypes.array.isRequired
+      validators: PropTypes.array.isRequired,
     }
 
     componentWillReceiveProps(nextProps) {
       if (nextProps.initialState && !this.state.saving) {
-
         this.setState({
-          formData: Object.assign({}, nextProps.initialState)
+          formData: Object.assign({}, nextProps.initialState),
         });
-      } 
+      }
     }
 
     resetErrorText = () => {
@@ -58,29 +56,28 @@ export default (WrappedComponent) => {
       if (type === 'state' || type === 'locationState') {
         valid = false;
 
-        statesList.forEach( (state) => {
+        statesList.forEach((state) => {
           if (state.toLowerCase().includes(value.toLowerCase())) {
             valid = true;
           }
         });
         value = value.toUpperCase();
-        
+
         // Hack for AutoComplete
         if (!valid) {
           // TODO: `stateInput` should probably be some sort of parameter/variable
           this.state.refs.stateInput.setState({ searchText: this.state.formData[type] });
         }
-      } 
+      }
 
       if (valid) {
-
         this.props.dispatch(dirtyForm());
 
-        this.setState( (prevState) => ({
+        this.setState(prevState => ({
           formData: Object.assign({},
             prevState.formData,
-            { [type]: value }
-          )
+            { [type]: value },
+          ),
         }));
       }
     }
@@ -91,7 +88,7 @@ export default (WrappedComponent) => {
       this.hasErrors = false;
       this.resetErrorText();
 
-      for (let validator of this.props.validators) {
+      for (const validator of this.props.validators) {
         await validator(this);
       }
 
@@ -100,9 +97,7 @@ export default (WrappedComponent) => {
       };
 
       if (!this.hasErrors && !this.state.saving) {
-
         try {
-
           this.setState({ saving: true });
 
           const result = await this.props.submit(this.state.formData);
@@ -115,7 +110,6 @@ export default (WrappedComponent) => {
 
           this.props.dispatch(cleanForm());
           this.setState({ saving: false });
-
         } catch (e) {
           console.error(e);
           notifyError(result.message);
@@ -130,7 +124,7 @@ export default (WrappedComponent) => {
       const { formData, saving, errors, refs, ...state } = this.state;
 
       return (
-        <WrappedComponent 
+        <WrappedComponent
           data={formData}
           saving={saving}
           cancel={cancel}
@@ -138,11 +132,11 @@ export default (WrappedComponent) => {
           refs={refs}
           formSubmit={formSubmit}
           handleInputChange={handleInputChange}
-          {...this.props} 
+          {...this.props}
         />
       );
     }
   }
   return connect()(FormWrapper);
-}
+};
 

@@ -12,9 +12,9 @@ const ManageCampaignProfileEditWithAuthentication = withAuthentication(ManageCam
 
 export default organizeCampaignPaths({
   path: '/organize/:slug/profile/edit',
-  component: (campaign) => (
+  component: campaign => (
     <Layout>
-      <ManageCampaignProfileEditWithAuthentication campaignSlug={campaign.slug}/>
+      <ManageCampaignProfileEditWithAuthentication campaignSlug={campaign.slug} />
     </Layout>
-  )
+  ),
 });

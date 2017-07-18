@@ -1,6 +1,5 @@
 
 export default function base64ToBlob(data) {
-
   const u = data.split(',')[1];
   const binary = atob(u);
   const array = [];

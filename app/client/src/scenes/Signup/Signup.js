@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { withApollo } from 'react-apollo';
 
 import { attemptSignup } from 'actions/AuthActions';
@@ -14,9 +14,8 @@ import Terms from './components/Terms';
 
 
 class SignupFormContainer extends Component {
-
   static PropTypes = {
-    termsContent: PropTypes.object.isRequired
+    termsContent: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -42,18 +41,16 @@ class SignupFormContainer extends Component {
   }
 
   validateString = (prop, errorProp, errorMsg) => {
-    if (typeof this.state[prop] !== 'string' || 
+    if (typeof this.state[prop] !== 'string' ||
         this.state[prop].trim() === '') {
-
-      this.setState({ 
-        [errorProp]: errorMsg 
+      this.setState({
+        [errorProp]: errorMsg,
       });
 
       this.hasErrors = true;
-
     } else {
-      this.setState({ 
-        [errorProp]: null 
+      this.setState({
+        [errorProp]: null,
       });
     }
   }
@@ -68,7 +65,7 @@ class SignupFormContainer extends Component {
     if (typeof this.state.zipcode === 'string' &&
         this.state.zipcode.length !== 5) {
       this.setState({
-        zipcodeErrorText: 'Zipcode must be 5 digits long'
+        zipcodeErrorText: 'Zipcode must be 5 digits long',
       });
 
       this.hasErrors = true;
@@ -84,9 +81,8 @@ class SignupFormContainer extends Component {
 
     if (typeof this.state.email === 'string' &&
         !isEmail(this.state.email)) {
-
       this.setState({
-        emailErrorText: 'Please enter a valid email'
+        emailErrorText: 'Please enter a valid email',
       });
       this.hasErrors = true;
     }
@@ -111,10 +107,9 @@ class SignupFormContainer extends Component {
 
   handleInputChange = (event, type, value) => {
     if (!(typeof type === 'string' && type === 'zipcode' && (value.length > 5 || !isNumeric(value)))) {
-
       this.setState(Object.assign({},
         this.state,
-        { [type]: value }
+        { [type]: value },
       ));
     }
   }
@@ -133,11 +128,10 @@ class SignupFormContainer extends Component {
 
     if (!this.hasErrors) {
       try {
-
         const response = await this.props.client.query({
           query: EmailAvailableQuery,
           variables: {
-            email: this.state.email
+            email: this.state.email,
           },
           fetchPolicy: 'network-only',
         });
@@ -145,16 +139,15 @@ class SignupFormContainer extends Component {
 
         if (response.data.emailAvailable) {
           this.setState({
-            page: 1
+            page: 1,
           });
         } else {
           this.setState({
-            emailErrorText: 'Email already taken'
+            emailErrorText: 'Email already taken',
           });
         }
-
-      } catch(err) {
-        //TODO: error handling?!?!
+      } catch (err) {
+        // TODO: error handling?!?!
         console.error(err);
       }
     }
@@ -178,7 +171,7 @@ class SignupFormContainer extends Component {
   render() {
     if (this.state.page === 0) {
       return (
-        <SignupForm 
+        <SignupForm
           handleInputChange={this.handleInputChange}
           cancelSignup={this.cancelSignup}
           formSubmit={this.formSubmit}
@@ -189,7 +182,7 @@ class SignupFormContainer extends Component {
       return (
         <Terms
           agreeToTerms={this.agreeToTerms}
-          cancel={(event) => this.setState({page:0})}
+          cancel={event => this.setState({ page: 0 })}
           content={this.props.termsContent}
         />
       );
@@ -199,12 +192,10 @@ class SignupFormContainer extends Component {
 
 const SignupFormContainerWithApollo = withApollo(SignupFormContainer);
 
-const mapStateToProps = (state) => {
-  return {
-    signupError: state.userAuthSession.error,
-    loggedIn: state.userAuthSession.isLoggedIn,
-  };
-}
+const mapStateToProps = state => ({
+  signupError: state.userAuthSession.error,
+  loggedIn: state.userAuthSession.isLoggedIn,
+});
 
 
 export default connect(mapStateToProps)(SignupFormContainerWithApollo);

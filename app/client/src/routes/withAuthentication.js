@@ -1,9 +1,8 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import history from 'lib/history';
 
 export default (WrappedComponent) => {
-
   class WithAuthentication extends React.Component {
     constructor(props) {
       super(props);
@@ -11,13 +10,10 @@ export default (WrappedComponent) => {
 
     redirect = (props) => {
       if (!props.fetchingUpdate) {
-
         if (history.location.pathname === '/login') {
           props.loggedIn && history.push('/search');
-        } else {
-          if (!props.loggedIn) {
-            history.push('/');
-          }
+        } else if (!props.loggedIn) {
+          history.push('/');
         }
       }
     }
@@ -37,13 +33,11 @@ export default (WrappedComponent) => {
     }
   }
 
-  const mapStateToProps = (state) => {
-    return {
-      loggedIn: state.userAuthSession.isLoggedIn,
-      fetchingUpdate: state.userAuthSession.fetchingAuthUpdate
-    };
-  }
+  const mapStateToProps = state => ({
+    loggedIn: state.userAuthSession.isLoggedIn,
+    fetchingUpdate: state.userAuthSession.fetchingAuthUpdate,
+  });
 
   return connect(mapStateToProps)(WithAuthentication);
-}
+};
 

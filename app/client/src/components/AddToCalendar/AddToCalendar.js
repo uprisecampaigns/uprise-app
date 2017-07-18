@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import Link from 'components/Link';
 
-import { urls } from 'config/config'
+import { urls } from 'config/config';
 
 import s from './AddToCalendar.scss';
 
@@ -16,10 +16,10 @@ class AddToCalendar extends React.Component {
     super(props);
 
     this.state = {
-      open: false
+      open: false,
     };
   }
- 
+
   static propTypes = {
     event: PropTypes.object.isRequired,
     children: PropTypes.node,
@@ -43,8 +43,8 @@ class AddToCalendar extends React.Component {
   render() {
     const { event, children, ...props } = this.props;
 
-    const icalUrl = urls.api + '/calendar-links/ics/' + event.id;
-    const googleUrl = urls.api + '/calendar-links/google/' + event.id;
+    const icalUrl = `${urls.api}/calendar-links/ics/${event.id}`;
+    const googleUrl = `${urls.api}/calendar-links/google/${event.id}`;
 
     return (
       <div
@@ -61,23 +61,23 @@ class AddToCalendar extends React.Component {
           open={this.state.open}
           anchorEl={this.state.anchorEl}
           onRequestClose={this.handleRequestClose}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
           <Menu
             className={s.menu}
           >
             <Link
               to={icalUrl}
-              useAhref={true}
-              external={true}
+              useAhref
+              external
             >
-              <MenuItem primaryText="iCal"/>
+              <MenuItem primaryText="iCal" />
             </Link>
             <Link
               to={googleUrl}
-              useAhref={true}
-              external={true}
+              useAhref
+              external
             >
               <MenuItem primaryText="Google Calendar" />
             </Link>

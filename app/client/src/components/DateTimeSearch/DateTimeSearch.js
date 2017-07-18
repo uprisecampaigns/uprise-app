@@ -12,7 +12,6 @@ import s from 'styles/Search.scss';
 
 
 class DateTimeSearch extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -33,10 +32,9 @@ class DateTimeSearch extends React.Component {
   };
 
   handleInputChange = (prop, value) => {
-
     this.setState(Object.assign({}, this.state, {
       startDateError: '',
-      endDateError: ''
+      endDateError: '',
     }));
 
     if (prop === 'ongoing') {
@@ -46,31 +44,30 @@ class DateTimeSearch extends React.Component {
           ongoing: value,
           onDate: null,
           startDate: null,
-          endDate: null
-        }
-      ))
+          endDate: null,
+        },
+      ));
     } else if (prop === 'onDate') {
       this.setState(Object.assign({},
         this.state,
         {
           onDate: value,
           startDate: null,
-          endDate: null
-        }
+          endDate: null,
+        },
       ));
     } else {
       this.setState(Object.assign({},
         this.state,
         {
           [prop]: value,
-          onDate: null
-        }
+          onDate: null,
+        },
       ));
     }
   }
 
   formSubmit = () => {
-
     const { ongoing, onDate, startDate, endDate, ...state } = this.state;
     const { setDates } = this.props;
 
@@ -78,20 +75,19 @@ class DateTimeSearch extends React.Component {
       setDates({ ongoing });
     } else if (onDate) {
       setDates({
-        onDate: moment(onDate).format()
+        onDate: moment(onDate).format(),
       });
     } else {
-
       if (!startDate) {
         this.setState(Object.assign({}, this.state, {
-          startDateError: 'Specify start date'
+          startDateError: 'Specify start date',
         }));
         return;
       }
 
       if (!endDate) {
         this.setState(Object.assign({}, this.state, {
-          endDateError: 'Specify end date'
+          endDateError: 'Specify end date',
         }));
         return;
       }
@@ -102,20 +98,18 @@ class DateTimeSearch extends React.Component {
       });
     }
 
-    this.setState((prevState) => (Object.assign({},
+    this.setState(prevState => (Object.assign({},
       prevState,
       {
         ongoing: false,
         onDate: null,
         startDate: null,
         endDate: null,
-      }
+      },
     )));
   }
 
-  formatDate = (date) => {
-    return moment(date).format('M/D/YYYY');
-  }
+  formatDate = date => moment(date).format('M/D/YYYY')
 
   render() {
     const { ongoing, onDate, startDate, endDate } = this.state;
@@ -130,8 +124,8 @@ class DateTimeSearch extends React.Component {
     ];
 
     const dialogStyle = {
-      zIndex: '3200'
-    }
+      zIndex: '3200',
+    };
 
     return (
       <div>
@@ -139,7 +133,7 @@ class DateTimeSearch extends React.Component {
         <Checkbox
           label="Ongoing"
           checked={ongoing}
-          onCheck={ (event, isChecked) => { handleInputChange('ongoing', isChecked) } }
+          onCheck={(event, isChecked) => { handleInputChange('ongoing', isChecked); }}
           className={s.checkboxContainer}
         />
 
@@ -149,36 +143,36 @@ class DateTimeSearch extends React.Component {
               On date:
               <DatePicker
                 value={onDate}
-                onChange={ (event, date) => { handleInputChange('onDate', date) }}
+                onChange={(event, date) => { handleInputChange('onDate', date); }}
                 container="dialog"
                 dialogContainerStyle={dialogStyle}
                 hintText="On Date"
                 formatDate={formatDate}
-                autoOk={true}
+                autoOk
               />
             </div>
             <div>
               On or between
               <DatePicker
                 value={startDate}
-                onChange={ (event, date) => { handleInputChange('startDate', date) }}
+                onChange={(event, date) => { handleInputChange('startDate', date); }}
                 errorText={this.state.startDateError}
                 container="dialog"
                 dialogContainerStyle={dialogStyle}
                 hintText="Start Date"
                 formatDate={formatDate}
-                autoOk={true}
+                autoOk
               />
               and
               <DatePicker
                 value={endDate}
-                onChange={ (event, date) => { handleInputChange('endDate', date) }}
+                onChange={(event, date) => { handleInputChange('endDate', date); }}
                 errorText={this.state.endDateError}
                 container="dialog"
                 dialogContainerStyle={dialogStyle}
                 hintText="End Date"
                 formatDate={formatDate}
-                autoOk={true}
+                autoOk
               />
             </div>
           </div>
@@ -187,7 +181,7 @@ class DateTimeSearch extends React.Component {
           <RaisedButton
             className={s.primaryButton}
             onTouchTap={formSubmit}
-            primary={true}
+            primary
             label="Add to Search"
           />
         </div>

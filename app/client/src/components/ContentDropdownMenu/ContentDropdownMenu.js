@@ -6,8 +6,8 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
-import NavigationExpandMore  from 'material-ui/svg-icons/navigation/expand-more';
-import NavigationExpandLess  from 'material-ui/svg-icons/navigation/expand-less';
+import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
+import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 
 import history from 'lib/history';
 
@@ -20,7 +20,7 @@ class ContentDropdownMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuOpen: false
+      menuOpen: false,
     };
   }
 
@@ -30,14 +30,13 @@ class ContentDropdownMenu extends Component {
   }
 
   renderDropdown = (dropdown, index) => {
-
     const itemClicked = (event) => {
       typeof dropdown.action === 'function' && dropdown.action(event);
 
       this.setState({
-        menuOpen: false
+        menuOpen: false,
       });
-    }
+    };
 
     return (
       <div key={index}>
@@ -55,7 +54,7 @@ class ContentDropdownMenu extends Component {
             primaryText={dropdown.title}
           />
         </Link>
-        {(index < this.props.dropdowns.length - 1) && <Divider/>}
+        {(index < this.props.dropdowns.length - 1) && <Divider />}
       </div>
     );
   }
@@ -65,18 +64,17 @@ class ContentDropdownMenu extends Component {
 
     this.setState({
       menuOpen: true,
-      popoverAnchorEl: event.currentTarget
+      popoverAnchorEl: event.currentTarget,
     });
   }
 
   handleCloseMenu = (reason) => {
-    this.setState((prevState) => (Object.assign({}, prevState, {
+    this.setState(prevState => (Object.assign({}, prevState, {
       menuOpen: false,
     })));
   }
 
   render() {
-
     const { menuOpen, popoverAnchorEl, ...state } = this.state;
     const dropdownItems = this.props.dropdowns.map(this.renderDropdown);
 
@@ -86,8 +84,8 @@ class ContentDropdownMenu extends Component {
           open={menuOpen}
           anchorEl={popoverAnchorEl}
           onRequestClose={this.handleCloseMenu}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
           className={s.dropdownItemsContainer}
         >
           <Menu className={s.dropdownMenu}>

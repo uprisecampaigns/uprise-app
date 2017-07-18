@@ -8,13 +8,13 @@ import Link from 'components/Link';
 
 import history from 'lib/history';
 import formWrapper from 'lib/formWrapper';
-import { 
+import {
   validateString,
   validateWebsiteUrl,
   validateZipcode,
   validateState,
   validateEmail,
-  validatePhoneNumber
+  validatePhoneNumber,
 } from 'lib/validateComponentForms';
 
 import { notify } from 'actions/NotificationsActions';
@@ -32,9 +32,8 @@ import s from 'styles/Organize.scss';
 const WrappedCampaignInfoForm = formWrapper(CampaignInfoForm);
 
 class CreateCampaignContainer extends Component {
-
   static PropTypes = {
-    createCampaignMutation: PropTypes.func.isRequired
+    createCampaignMutation: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -58,30 +57,29 @@ class CreateCampaignContainer extends Component {
         orgContactName: '',
         orgContactPosition: '',
         orgContactEmail: '',
-        orgContactPhone: ''
+        orgContactPhone: '',
       },
       modalOpen: false,
       newCampaign: {
         title: '',
-        slug: ''
-      }
+        slug: '',
+      },
     };
 
     this.state = Object.assign({}, initialState);
-
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.user) {
       this.setState({
         formData: Object.assign({}, this.state.formData, {
-          email: nextProps.user.email
-        })
+          email: nextProps.user.email,
+        }),
       });
     }
   }
 
-  defaultErrorText = { 
+  defaultErrorText = {
     titleErrorText: null,
     streetAddressErrorText: null,
     websiteUrlErrorText: null,
@@ -98,20 +96,19 @@ class CreateCampaignContainer extends Component {
   }
 
   formSubmit = async (data) => {
-
     try {
       const formData = Object.assign({}, data);
 
       const addCampaign = (prev, { mutationResult }) => {
         const newCampaign = mutationResult.data.createCampaign;
         return Object.assign({}, prev, {
-          campaigns: prev.campaigns.concat(newCampaign)
-        })
+          campaigns: prev.campaigns.concat(newCampaign),
+        });
       };
 
-      const results = await this.props.createCampaignMutation({ 
+      const results = await this.props.createCampaignMutation({
         variables: {
-          data: formData
+          data: formData,
         },
         // TODO: decide between refetch and update
         refetchQueries: ['CampaignsQuery', 'MyCampaignsQuery'],
@@ -123,7 +120,7 @@ class CreateCampaignContainer extends Component {
 
       this.setState({
         modalOpen: true,
-        newCampaign: results.data.createCampaign
+        newCampaign: results.data.createCampaign,
       });
 
       return { success: true, message: 'Campaign Added' };
@@ -133,15 +130,13 @@ class CreateCampaignContainer extends Component {
   }
 
   resendEmailVerification = async (data) => {
-
     const { dispatch, resendEmailVerification, ...props } = this.props;
     try {
-
       const results = await resendEmailVerification();
 
       if (results) {
         dispatch(notify('Email resent'));
-        history.push('/organize')
+        history.push('/organize');
       } else {
         dispatch(notify('Error resending email'));
       }
@@ -151,7 +146,6 @@ class CreateCampaignContainer extends Component {
   }
 
   render() {
-
     const { formSubmit, defaultErrorText, resendEmailVerification } = this;
     const { user, ...props } = this.props;
     const { newCampaign, modalOpen, formData, ...state } = this.state;
@@ -159,18 +153,18 @@ class CreateCampaignContainer extends Component {
     const modalActions = [
       <RaisedButton
         label="Set Preferences"
-        primary={true}
+        primary
         className={s.primaryButton}
-        onTouchTap={ (event) => { event.preventDefault(); history.push('/organize/' + newCampaign.slug + '/preferences') }}
-      />
+        onTouchTap={(event) => { event.preventDefault(); history.push(`/organize/${newCampaign.slug}/preferences`); }}
+      />,
     ];
 
     const validators = [
-      (component) => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
-      (component) => validateZipcode(component),
-      (component) => validateWebsiteUrl(component),
-      (component) => validatePhoneNumber(component),
-      (component) => validateState(component),
+      component => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+      component => validateZipcode(component),
+      component => validateWebsiteUrl(component),
+      component => validatePhoneNumber(component),
+      component => validateState(component),
       (component) => {
         if (component.state.formData.legalOrg) {
           validateString(component, 'orgWebsite', 'orgWebsiteErrorText', 'Organization Website is required');
@@ -180,7 +174,7 @@ class CreateCampaignContainer extends Component {
           validatePhoneNumber(component, 'orgContactPhone', 'orgContactPhoneErrorText');
           validateEmail(component, 'orgContactEmail', 'orgContactEmailErrorText');
         }
-      }
+      },
     ];
 
     return (
@@ -202,7 +196,7 @@ class CreateCampaignContainer extends Component {
             {modalOpen && (
               <Dialog
                 title="Campaign Created"
-                modal={true}
+                modal
                 actions={modalActions}
                 open={modalOpen}
                 actionsContainerClassName={s.modalActionsContainer}
@@ -222,22 +216,22 @@ class CreateCampaignContainer extends Component {
         ) : (
           <Dialog
             title="Confirm Email Address to Proceed"
-            modal={true}
+            modal
             actionsContainerClassName={s.modalActionsContainer}
             actions={[
               <RaisedButton
                 label="Resend"
-                primary={true}
+                primary
                 className={s.primaryButton}
-                onTouchTap={ (event) => { event.preventDefault(); resendEmailVerification(); }}
+                onTouchTap={(event) => { event.preventDefault(); resendEmailVerification(); }}
               />,
               <RaisedButton
                 label="Ok"
                 primary={false}
                 className={s.secondaryButton}
-                onTouchTap={ (event) => { event.preventDefault(); history.push('/organize') }}
+                onTouchTap={(event) => { event.preventDefault(); history.push('/organize'); }}
               />]}
-            open={true}
+            open
           >
             <p>
               Please check your inbox for an email verification message. Please check your spam folder. If you don't see it, you can have it resent.
@@ -253,18 +247,18 @@ const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     user: !data.loading && data.me ? data.me : {
       email: '',
-      email_confirmed: true
-    }, 
-    data
+      email_confirmed: true,
+    },
+    data,
   }),
-  options: (ownProps) => ({
+  options: ownProps => ({
     fetchPolicy: 'cache-and-network',
-  })
+  }),
 });
 
 export default compose(
   connect(),
-  withMeQuery, 
+  withMeQuery,
   graphql(CreateCampaignMutation, { name: 'createCampaignMutation' }),
-  graphql(ResendEmailVerificationMutation, { name: 'resendEmailVerification' })
+  graphql(ResendEmailVerificationMutation, { name: 'resendEmailVerification' }),
 )(CreateCampaignContainer);

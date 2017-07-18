@@ -30,7 +30,7 @@ class ResetPasswordForm extends Component {
         <div className={s.innerContainer}>
           <Paper zDepth={0}>
             <div className={s.formContainer}>
-              <form 
+              <form
                 className={s.form}
                 onSubmit={formSubmit}
               >
@@ -40,23 +40,23 @@ class ResetPasswordForm extends Component {
                     type="email"
                     value={data.email}
                     errorText={data.emailErrorText || resetError}
-                    fullWidth={true}
-                    onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
+                    fullWidth
+                    onChange={(event) => { handleInputChange(event, 'email', event.target.value); }}
                   />
                 </div>
                 <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={cancelReset} 
-                    primary={false} 
-                    label="Cancel" 
+                  <RaisedButton
+                    onTouchTap={cancelReset}
+                    primary={false}
+                    label="Cancel"
                   />
                 </div>
                 <div className={[s.button, s.secondaryButton].join(' ')}>
-                  <RaisedButton 
-                    onTouchTap={formSubmit} 
+                  <RaisedButton
+                    onTouchTap={formSubmit}
                     type="submit"
-                    primary={true} 
-                    label="Reset" 
+                    primary
+                    label="Reset"
                   />
                 </div>
               </form>

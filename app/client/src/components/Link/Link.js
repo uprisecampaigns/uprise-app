@@ -24,12 +24,12 @@ class Link extends React.Component {
     mailTo: PropTypes.bool,
     children: PropTypes.node,
     onClick: PropTypes.func,
-    preventDefault: PropTypes.bool
+    preventDefault: PropTypes.bool,
   };
 
   static defaultProps = {
     preventDefault: true,
-    sameTab: false
+    sameTab: false,
   };
 
   handleClick = (event, url) => {
@@ -67,7 +67,7 @@ class Link extends React.Component {
 
     function addHttp(url) {
       if (url && !/^(f|ht)tps?:\/\//i.test(url)) {
-        url = "http://" + url;
+        url = `http://${url}`;
       }
       return url;
     }
@@ -76,28 +76,27 @@ class Link extends React.Component {
 
     if (useAhref) {
       return (
-        <a 
-          href={url} 
-          {...props} 
-          onTouchTap={(e) => this.handleClick(e, url)} 
-          onClick={(e) => this.handleClick(e, url)} 
+        <a
+          href={url}
+          {...props}
+          onTouchTap={e => this.handleClick(e, url)}
+          onClick={e => this.handleClick(e, url)}
           className={[className].concat([s.link]).join(' ')}
         >
           {children}
         </a>
       );
-    } else {
-      return (
-        <span 
-          {...props} 
-          onTouchTap={(e) => this.handleClick(e, url)} 
-          onClick={(e) => this.handleClick(e, url)} 
-          className={[className].concat([s.link]).join(' ')}
-        >
-          {children}
-        </span>
-      );
     }
+    return (
+      <span
+        {...props}
+        onTouchTap={e => this.handleClick(e, url)}
+        onClick={e => this.handleClick(e, url)}
+        className={[className].concat([s.link]).join(' ')}
+      >
+        {children}
+      </span>
+    );
   }
 }
 

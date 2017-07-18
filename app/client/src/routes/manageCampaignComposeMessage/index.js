@@ -10,9 +10,9 @@ const ManageCampaignComposeMessageWithAuthentication = withAuthentication(Manage
 
 export default organizeCampaignPaths({
   path: '/organize/:slug/compose',
-  component: (campaign) => (
+  component: campaign => (
     <Layout>
-      <ManageCampaignComposeMessageWithAuthentication campaignId={campaign.id}/>
+      <ManageCampaignComposeMessageWithAuthentication campaignId={campaign.id} />
     </Layout>
-  )
+  ),
 });

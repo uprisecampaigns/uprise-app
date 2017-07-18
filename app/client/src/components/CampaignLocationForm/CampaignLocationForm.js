@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import moment from 'moment';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
@@ -34,20 +34,18 @@ class CampaignLocationForm extends Component {
   }
 
   render() {
-    const { 
-      data, refs, formSubmit, errors, saving, 
-      handleInputChange, cancel, campaignTitle, submitText
+    const {
+      data, refs, formSubmit, errors, saving,
+      handleInputChange, cancel, campaignTitle, submitText,
     } = this.props;
 
     const statesList = Object.keys(states);
 
-    const formatDate = (date) => {
-      return moment(date).format('M/D/YYYY');
-    }
+    const formatDate = date => moment(date).format('M/D/YYYY');
 
     const dialogStyle = {
-      zIndex: '3200'
-    }
+      zIndex: '3200',
+    };
 
     return (
       <div className={s.outerContainer}>
@@ -57,7 +55,7 @@ class CampaignLocationForm extends Component {
 
               <p className={s.helpText}>Define the geographic area in which you will be operating, so volunteers can find you.</p>
 
-              <form 
+              <form
                 className={s.form}
                 onSubmit={formSubmit}
               >
@@ -65,7 +63,7 @@ class CampaignLocationForm extends Component {
                   <SelectField
                     floatingLabelText="Campaign Location Type"
                     value={data.locationType}
-                    onChange={ (event, index, value) => { handleInputChange(event, 'locationType', value) } }
+                    onChange={(event, index, value) => { handleInputChange(event, 'locationType', value); }}
                   >
                     <MenuItem value={null} primaryText="" />
                     <MenuItem value="multi-state" primaryText="Multi-state" />
@@ -79,9 +77,9 @@ class CampaignLocationForm extends Component {
 
                     <div className={s.sectionLabel}>Multi-state</div>
 
-                    <p className={s.helpText}> 
-                      Contact us at 
-                      <Link to="mailto:help@uprise.org" mailTo={true} useAhref={true} external={true}>help@uprise.org</Link> 
+                    <p className={s.helpText}>
+                      Contact us at
+                      <Link to="mailto:help@uprise.org" mailTo useAhref external>help@uprise.org</Link>
                       about setting up your area.
                     </p>
                   </div>
@@ -97,8 +95,8 @@ class CampaignLocationForm extends Component {
                         floatingLabelText="State"
                         searchText={data.locationState}
                         dataSource={statesList}
-                        onUpdateInput={ (text) => { handleInputChange(undefined, 'locationState', text) } }
-                        ref={ (input) => { refs.stateInput = input } }
+                        onUpdateInput={(text) => { handleInputChange(undefined, 'locationState', text); }}
+                        ref={(input) => { refs.stateInput = input; }}
                         errorText={errors.stateErrorText}
                       />
                     </div>
@@ -114,7 +112,7 @@ class CampaignLocationForm extends Component {
                       <SelectField
                         floatingLabelText="Legislative District Type"
                         value={data.legislativeDistrictType}
-                        onChange={ (event, index, value) => { handleInputChange(event, 'legislativeDistrictType', value) } }
+                        onChange={(event, index, value) => { handleInputChange(event, 'legislativeDistrictType', value); }}
                       >
                         <MenuItem value={null} primaryText="" />
                         <MenuItem value="us-congress" primaryText="US Congress" />
@@ -128,20 +126,20 @@ class CampaignLocationForm extends Component {
                         floatingLabelText="State"
                         searchText={data.locationState}
                         dataSource={statesList}
-                        onUpdateInput={ (text) => { handleInputChange(undefined, 'locationState', text) } }
-                        ref={ (input) => { refs.stateInput = input } }
+                        onUpdateInput={(text) => { handleInputChange(undefined, 'locationState', text); }}
+                        ref={(input) => { refs.stateInput = input; }}
                         errorText={errors.stateErrorText}
                       />
                     </div>
- 
+
                     <div className={s.textFieldContainer}>
                       <TextField
                         floatingLabelText="District Number"
                         value={data.locationDistrictNumber}
                         type="number"
-                        onChange={ (event) => { handleInputChange(event, 'locationDistrictNumber', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'locationDistrictNumber', event.target.value); }}
                         errorText={errors.locationDistrictNumberErrorText}
-                        fullWidth={true}
+                        fullWidth
                       />
                     </div>
 
@@ -150,10 +148,10 @@ class CampaignLocationForm extends Component {
 
                 <div className={s.sectionLabel}>Zip Code List</div>
 
-                <p className={s.helpText}> 
+                <p className={s.helpText}>
                   IMPORTANT: Please insert a list of all of the zip codes in which you will be
                   seeking volunteers for local in-person volunteering activities. Contact us at
-                  <Link to="mailto:help@uprise.org" useAhref={true} external={true}>help@uprise.org</Link> if you 
+                  <Link to="mailto:help@uprise.org" useAhref external>help@uprise.org</Link> if you
                   need assistance
                 </p>
 
@@ -162,18 +160,18 @@ class CampaignLocationForm extends Component {
                     name="zipcodeList"
                     floatingLabelText="List of zipcodes, separated by commas"
                     value={data.zipcodeList}
-                    multiLine={true}
-                    onChange={ (event) => { handleInputChange(event, 'zipcodeList', event.target.value) } }
+                    multiLine
+                    onChange={(event) => { handleInputChange(event, 'zipcodeList', event.target.value); }}
                     errorText={errors.zipcodeListErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
 
                 <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={cancel} 
-                    primary={false} 
-                    label="Cancel" 
+                  <RaisedButton
+                    onTouchTap={cancel}
+                    primary={false}
+                    label="Cancel"
                   />
                 </div>
 
@@ -188,11 +186,11 @@ class CampaignLocationForm extends Component {
                 ) : (
 
                   <div className={s.organizeButton}>
-                    <RaisedButton 
-                      onTouchTap={formSubmit} 
-                      primary={true} 
+                    <RaisedButton
+                      onTouchTap={formSubmit}
+                      primary
                       type="submit"
-                      label={submitText} 
+                      label={submitText}
                     />
                   </div>
                 )}

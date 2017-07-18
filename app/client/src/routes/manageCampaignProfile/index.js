@@ -12,9 +12,9 @@ const ManageCampaignProfileWithAuthentication = withAuthentication(ManageCampaig
 
 export default organizeCampaignPaths({
   path: '/organize/:slug/profile',
-  component: (campaign) => (
+  component: campaign => (
     <Layout>
-      <ManageCampaignProfileWithAuthentication campaignSlug={campaign.slug}/>
+      <ManageCampaignProfileWithAuthentication campaignSlug={campaign.slug} />
     </Layout>
-  )
+  ),
 });

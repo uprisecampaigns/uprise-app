@@ -12,7 +12,7 @@ export default organizeActionPaths({
   path: '/organize/:campaignSlug/action/:actionSlug/preferences',
   component: (campaign, action) => (
     <Layout>
-      <ManageActionPreferencesWithAuthentication actionId={action.id} campaignId={campaign.id}/>
+      <ManageActionPreferencesWithAuthentication actionId={action.id} campaignId={campaign.id} />
     </Layout>
-  )
+  ),
 });

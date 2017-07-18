@@ -1,6 +1,6 @@
 
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import LinearProgress from 'material-ui/LinearProgress';
 import Dialog from 'material-ui/Dialog';
@@ -11,7 +11,7 @@ import NavDrawerContainer from './components/NavDrawerContainer';
 
 import s from 'styles/Layout.scss';
 
-import { 
+import {
   clear,
   cancelNavFromDirtyForm,
   confirmNavFromDirtyForm,
@@ -29,15 +29,15 @@ export class Layout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      drawerOpen: false
-    }
+      drawerOpen: false,
+    };
   }
 
-  handleDrawerToggle = () => this.setState({drawerOpen: !this.state.drawerOpen});
+  handleDrawerToggle = () => this.setState({ drawerOpen: !this.state.drawerOpen });
 
   handleDrawerRequestChange = (open, reason) => {
     this.setState({
-      drawerOpen: open
+      drawerOpen: open,
     });
   }
 
@@ -45,15 +45,15 @@ export class Layout extends React.Component {
     return (
       <div>
 
-        { this.props.pageLoading && 
+        { this.props.pageLoading &&
           <div className={s.pageLoadingContainer}>
             <LinearProgress mode="indeterminate" />
           </div>
         }
 
-        <HeaderContainer handleDrawerToggle={this.handleDrawerToggle}/>
+        <HeaderContainer handleDrawerToggle={this.handleDrawerToggle} />
 
-        <NavDrawerContainer 
+        <NavDrawerContainer
           open={this.state.drawerOpen}
           handleToggle={this.handleDrawerToggle}
           onRequestChange={this.handleDrawerRequestChange}
@@ -65,27 +65,27 @@ export class Layout extends React.Component {
           open={this.props.displayNotification}
           message={this.props.notificationMessage}
           autoHideDuration={0}
-          onRequestClose={ (reason) => this.props.dispatch(clear()) }
+          onRequestClose={reason => this.props.dispatch(clear())}
         />
 
         <Dialog
           title="Are you sure?"
-          modal={true}
+          modal
           actionsContainerClassName={s.modalActionsContainer}
           actions={[
             <RaisedButton
               label="Leave"
               primary={false}
               className={s.secondaryButton}
-              onTouchTap={ (event) => { event.preventDefault(); this.props.dispatch(confirmNavFromDirtyForm()) }}
+              onTouchTap={(event) => { event.preventDefault(); this.props.dispatch(confirmNavFromDirtyForm()); }}
             />,
             <RaisedButton
               label="Keep Editing"
-              primary={true}
+              primary
               className={s.primaryButton}
-              onTouchTap={ (event) => { event.preventDefault(); this.props.dispatch(cancelNavFromDirtyForm()) }}
+              onTouchTap={(event) => { event.preventDefault(); this.props.dispatch(cancelNavFromDirtyForm()); }}
             />,
-            ]}
+          ]}
           open={this.props.displayFormNavWarning}
         >
           <p>
@@ -97,9 +97,9 @@ export class Layout extends React.Component {
   }
 }
 
-export default connect((state) => ({ 
+export default connect(state => ({
   pageLoading: state.notifications.pageLoading,
   notificationMessage: state.notifications.message,
   displayFormNavWarning: state.notifications.displayFormNavWarning,
-  displayNotification: state.notifications.display
-}))(Layout)
+  displayNotification: state.notifications.display,
+}))(Layout);

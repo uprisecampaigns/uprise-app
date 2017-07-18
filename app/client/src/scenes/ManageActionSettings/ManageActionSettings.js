@@ -23,7 +23,6 @@ import s from 'styles/Organize.scss';
 
 
 class ManageActionSettings extends Component {
-
   static PropTypes = {
     deleteActionMutation: PropTypes.func.isRequired,
     actionId: PropTypes.string.isRequired,
@@ -36,13 +35,13 @@ class ManageActionSettings extends Component {
     super(props);
 
     this.state = {
-      deleteModalOpen: false
-    }
+      deleteModalOpen: false,
+    };
   }
 
   handleDelete = () => {
     this.setState({
-      deleteModalOpen: true
+      deleteModalOpen: true,
     });
   }
 
@@ -52,36 +51,34 @@ class ManageActionSettings extends Component {
     const { actionId, campaignId, campaign, action, ...props } = this.props;
 
     if (!this.deleting) {
-
       try {
-
         this.deleting = true;
 
-        const results = await props.deleteActionMutation({ 
+        const results = await props.deleteActionMutation({
           variables: {
             data: {
-              id: action.id
-            }
+              id: action.id,
+            },
           },
           refetchQueries: [{
             query: SearchActionsQuery,
             variables: {
-              search: { campaignIds: [campaignId] }
-            }
+              search: { campaignIds: [campaignId] },
+            },
           },
           {
             query: ActionQuery,
             variables: {
-              search: { id: actionId }
-            }
-          }]
+              search: { id: actionId },
+            },
+          }],
         });
 
         this.deleting = false;
 
         if (results.data.deleteAction) {
           this.props.dispatch(notify('Action deleted'));
-          history.push('/organize/' + campaign.slug + '/actions');
+          history.push(`/organize/${campaign.slug}/actions`);
         } else {
           console.error(results);
           this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
@@ -95,7 +92,6 @@ class ManageActionSettings extends Component {
   }
 
   render() {
-
     if (this.props.campaign && this.props.action) {
       const { campaign, action, ...props } = this.props;
 
@@ -103,25 +99,25 @@ class ManageActionSettings extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ (event) => { event.preventDefault(); this.setState({ deleteModalOpen: false })} }
+          onTouchTap={(event) => { event.preventDefault(); this.setState({ deleteModalOpen: false }); }}
         />,
         <RaisedButton
           label="I'm sure"
-          primary={true}
+          primary
           onTouchTap={this.confirmDelete}
           className={s.primaryButton}
         />,
       ];
 
-      const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
+      const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
 
       return (
         <div className={s.outerContainer}>
 
           <Link to={baseActionUrl}>
             <div className={s.navHeader}>
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Dashboard
             </div>
@@ -133,31 +129,31 @@ class ManageActionSettings extends Component {
 
             <Divider />
 
-            <Link to={baseActionUrl + '/info' }>
-              <ListItem 
+            <Link to={`${baseActionUrl}/info`}>
+              <ListItem
                 primaryText="Info"
               />
             </Link>
 
             <Divider />
 
-            <Link to={baseActionUrl + '/profile' }>
-              <ListItem 
+            <Link to={`${baseActionUrl}/profile`}>
+              <ListItem
                 primaryText="Profile"
               />
             </Link>
 
             <Divider />
 
-            <Link to={baseActionUrl + '/preferences' }>
-              <ListItem 
+            <Link to={`${baseActionUrl}/preferences`}>
+              <ListItem
                 primaryText="Preferences"
               />
             </Link>
 
             <Divider />
 
-            <ListItem 
+            <ListItem
               primaryText="Delete"
               onTouchTap={this.handleDelete}
             />
@@ -169,7 +165,7 @@ class ManageActionSettings extends Component {
           {this.state.deleteModalOpen && (
             <Dialog
               title="Are You Sure?"
-              modal={true}
+              modal
               actions={modalActions}
               actionsContainerClassName={s.modalActionsContainer}
               open={this.state.deleteModalOpen}
@@ -182,38 +178,37 @@ class ManageActionSettings extends Component {
 
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   connect(),
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.campaignId
-        }
-      }
+          id: ownProps.campaignId,
+        },
+      },
     }),
-    props: ({ data }) => ({ 
-      campaign: data.campaign
-    })
+    props: ({ data }) => ({
+      campaign: data.campaign,
+    }),
   }),
   graphql(ActionQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.actionId
-        }
+          id: ownProps.actionId,
+        },
       },
       fetchPolicy: 'cache-and-network',
     }),
-    props: ({ data }) => ({ 
-      action: data.action
-    })
+    props: ({ data }) => ({
+      action: data.action,
+    }),
   }),
-  graphql(DeleteActionMutation, { name: 'deleteActionMutation' })
+  graphql(DeleteActionMutation, { name: 'deleteActionMutation' }),
 )(ManageActionSettings);

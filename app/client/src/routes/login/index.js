@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import Layout from 'components/Layout';
 import Login from 'scenes/Login';
 
@@ -16,7 +16,7 @@ export default {
   async action(context) {
     return {
       title: 'Login',
-      component: <Layout><LoginWithAuthentication/></Layout>,
+      component: <Layout><LoginWithAuthentication /></Layout>,
     };
   },
 };

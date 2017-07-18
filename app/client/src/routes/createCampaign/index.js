@@ -13,7 +13,7 @@ export default {
   action() {
     return {
       title: 'View Calendar',
-      component: <Layout><CreateCampaignWithAuthentication/></Layout>,
+      component: <Layout><CreateCampaignWithAuthentication /></Layout>,
     };
   },
 

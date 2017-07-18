@@ -20,13 +20,12 @@ class Organize extends Component {
   };
 
   render() {
-
-    const campaignList = this.props.myCampaigns ? this.props.myCampaigns.map( (campaign) => (
+    const campaignList = this.props.myCampaigns ? this.props.myCampaigns.map(campaign => (
 
       <div key={campaign.id}>
-        
-        <Link to={'/organize/' + campaign.slug} key={campaign.id}>
-          <ListItem 
+
+        <Link to={`/organize/${campaign.slug}`} key={campaign.id}>
+          <ListItem
             primaryText={campaign.title}
           />
         </Link>
@@ -34,10 +33,10 @@ class Organize extends Component {
         <Divider />
 
       </div>
-      
+
     )) : [];
 
-        
+
     return (
       <div className={s.outerContainer}>
 
@@ -48,8 +47,8 @@ class Organize extends Component {
         <Link to={'/organize/create-campaign'}>
           <div className={s.organizeButton}>
             <RaisedButton
-              primary={true} 
-              label="Create Campaign" 
+              primary
+              label="Create Campaign"
             />
           </div>
         </Link>
@@ -59,7 +58,7 @@ class Organize extends Component {
           <Divider />
 
           { campaignList }
-         
+
         </List>
       </div>
     );
@@ -69,12 +68,12 @@ class Organize extends Component {
 const OrganizeWithData = graphql(MyCampaignsQuery, {
   props: ({ data }) => ({
     myCampaigns: data.myCampaigns,
-    graphqlLoading: data.loading
+    graphqlLoading: data.loading,
   }),
   options: {
     fetchPolicy: 'cache-and-network',
-    pollInterval: 60000
-  }
+    pollInterval: 60000,
+  },
 })(Organize);
 
 export default OrganizeWithData;

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
@@ -24,14 +24,13 @@ class CsvUploader extends React.Component {
   }
 
   static propTypes = {
-    config: PropTypes.object.isRequired
+    config: PropTypes.object.isRequired,
   };
 
   componentWillReceiveProps(nextProps) {
   }
 
   onDrop = async (acceptedFiles, rejectedFiles) => {
-
     const { dispatch, ...props } = this.props;
 
     if (!acceptedFiles.length) {
@@ -55,11 +54,11 @@ class CsvUploader extends React.Component {
       complete: (results, file) => {
         console.log(results);
         const rows = Array.from(results.data).map((row) => {
-          const values = Array.from(row)
+          const values = Array.from(row);
           values.unshift('SELECT_BOX_PLACEHOLDER');
           return {
             selected: true,
-            values
+            values,
           };
         });
 
@@ -68,18 +67,18 @@ class CsvUploader extends React.Component {
 
         rows.unshift({
           selected: true,
-          values: selectedHeaders
+          values: selectedHeaders,
         });
 
         this.measurerCache = new CellMeasurerCache({
           defaultWidth: 150,
           fixedWidth: true,
           defaultHeight: 60,
-          fixedHeight: false
+          fixedHeight: false,
         });
 
         this.setState({ rows });
-      }
+      },
     });
   }
 
@@ -131,10 +130,9 @@ class CsvUploader extends React.Component {
         csvFile: null,
         rows: null,
       });
-
     } catch (e) {
       console.error(e);
-      dispatch(notify('There was an error importing. Please check and try again. ' + e.message));
+      dispatch(notify(`There was an error importing. Please check and try again. ${e.message}`));
     }
   }
 
@@ -147,7 +145,7 @@ class CsvUploader extends React.Component {
     }
 
     this.setState({
-      rows: newRows
+      rows: newRows,
     });
   }
 
@@ -156,7 +154,7 @@ class CsvUploader extends React.Component {
     newRows[index].selected = !newRows[index].selected;
 
     this.setState({
-      rows: newRows
+      rows: newRows,
     });
   }
 
@@ -178,7 +176,7 @@ class CsvUploader extends React.Component {
     newRows[0] = newHeaders;
 
     this.setState({
-      rows: newRows
+      rows: newRows,
     });
   }
 
@@ -237,13 +235,13 @@ class CsvUploader extends React.Component {
           }}
           className={s.gridCell}
         >
-          <div style={{margin: '10px'}}>
+          <div style={{ margin: '10px' }}>
             {(rowIndex === 0) ? headerRow : bodyRow}
 
           </div>
         </div>
       </CellMeasurer>
-    )
+    );
   }
 
   render() {
@@ -256,7 +254,7 @@ class CsvUploader extends React.Component {
           <div className={s.cancelButton}>
             <RaisedButton
               onTouchTap={this.cancel}
-              primary={true}
+              primary
               label="Cancel"
             />
           </div>
@@ -282,35 +280,32 @@ class CsvUploader extends React.Component {
 
           <RaisedButton
             onTouchTap={this.submit}
-            primary={true}
+            primary
             label="Submit"
           />
         </div>
       );
-    } else {
-      return (
-        <div className={s.dropzoneContainer}>
-          <div className={s.dropzone}>
-            <Dropzone
-              onDrop={this.onDrop}
-              multiple={false}
-            >
-              <div className={s.instructions}>Drag and drop your csv file here, or click to select an file to upload.</div>
-
-              <FontIcon className="material-icons">file_upload</FontIcon>
-            </Dropzone>
-          </div>
-        </div>
-      );
     }
+    return (
+      <div className={s.dropzoneContainer}>
+        <div className={s.dropzone}>
+          <Dropzone
+            onDrop={this.onDrop}
+            multiple={false}
+          >
+            <div className={s.instructions}>Drag and drop your csv file here, or click to select an file to upload.</div>
+
+            <FontIcon className="material-icons">file_upload</FontIcon>
+          </Dropzone>
+        </div>
+      </div>
+    );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    uploading: state.uploads.uploading,
-    error: state.uploads.error,
-  };
-}
+const mapStateToProps = state => ({
+  uploading: state.uploads.uploading,
+  error: state.uploads.error,
+});
 
 export default connect(mapStateToProps)(CsvUploader);

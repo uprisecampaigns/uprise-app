@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import moment from 'moment-timezone';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -22,13 +22,11 @@ class CampaignProfile extends Component {
     campaign: PropTypes.object.isRequired,
     subscribe: PropTypes.func.isRequired,
     cancelSubscription: PropTypes.func.isRequired,
-    saving: PropTypes.bool.isRequired
+    saving: PropTypes.bool.isRequired,
   }
 
   render() {
-
     if (this.props.campaign) {
-
       const { campaign, saving, subscribe, cancelSubscription, ...props } = this.props;
 
       const keywords = (Array.isArray(campaign.tags) && campaign.tags.length > 0) ? (
@@ -39,13 +37,12 @@ class CampaignProfile extends Component {
         <div className={s.detailLine}>{campaign.issue_areas.map(issue => issue.title).join(', ')}</div>
       ) : '';
 
-      const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ? campaign.actions.map(action => {
-
+      const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ? campaign.actions.map((action) => {
         if (action.ongoing) {
           return (
-            <Link to={'/action/' + action.slug} key={action.id}>
+            <Link to={`/action/${action.slug}`} key={action.id}>
               <div className={[s.detailLine, s.actionListing].join(' ')}>
-                {action.title}{action.city && ', ' + action.city}{action.state && ', ' + action.state}
+                {action.title}{action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
               </div>
             </Link>
           );
@@ -57,13 +54,13 @@ class CampaignProfile extends Component {
           const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
           return (
-            <Link to={'/action/' + action.slug} key={action.id}>
+            <Link to={`/action/${action.slug}`} key={action.id}>
               <div className={[s.detailLine, s.actionListing].join(' ')}>
-                {action.title}, {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}{action.city && ', ' + action.city}{action.state && ', ' + action.state}
+                {action.title}, {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}{action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
               </div>
             </Link>
           );
-        } else return null;
+        } return null;
       }) : '';
 
 
@@ -75,9 +72,9 @@ class CampaignProfile extends Component {
               <div className={s.titleContainer}>{campaign.title}</div>
               { campaign.is_owner && (
                 <div className={s.settingsIcon}>
-                  <Link to={'/organize/' + campaign.slug}>
+                  <Link to={`/organize/${campaign.slug}`}>
                     <FontIcon
-                      className={["material-icons"].join(' ')}
+                      className={['material-icons'].join(' ')}
                     >settings</FontIcon>
                   </Link>
                 </div>
@@ -86,7 +83,7 @@ class CampaignProfile extends Component {
 
             { campaign.profile_image_url && (
               <div className={s.profileImageContainer}>
-                <img src={campaign.profile_image_url} className={s.profileImage}/>
+                <img src={campaign.profile_image_url} className={s.profileImage} />
               </div>
             )}
 
@@ -98,7 +95,7 @@ class CampaignProfile extends Component {
 
             { campaign.website_url && (
               <div className={s.websiteUrlContainer}>
-                <Link to={campaign.website_url} external={true} useAhref={true}>
+                <Link to={campaign.website_url} external useAhref>
                   {campaign.website_url}
                 </Link>
               </div>
@@ -117,13 +114,13 @@ class CampaignProfile extends Component {
                   {campaign.subscribed ? (
                     <RaisedButton
                       onTouchTap={cancelSubscription}
-                      primary={true}
+                      primary
                       label="Cancel Subscription"
                     />
                   ) : (
                     <RaisedButton
                       onTouchTap={subscribe}
-                      primary={true}
+                      primary
                       label="Subscribe"
                     />
                   )}
@@ -137,8 +134,8 @@ class CampaignProfile extends Component {
 
             { campaign.owner && (
               <div className={s.contactContainer}>
-                Contact Coordinator:  
-                <Link to={'mailto:' + campaign.owner.email} external={true} mailTo={true} useAhref={true}>
+                Contact Coordinator:
+                <Link to={`mailto:${campaign.owner.email}`} external mailTo useAhref>
                   {campaign.owner.first_name} {campaign.owner.last_name}
                 </Link>
               </div>
@@ -174,9 +171,8 @@ class CampaignProfile extends Component {
           </div>
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 

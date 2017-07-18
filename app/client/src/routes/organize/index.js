@@ -13,7 +13,7 @@ export default {
   action() {
     return {
       title: 'Organize',
-      component: <Layout><OrganizeWithAuthentication/></Layout>,
+      component: <Layout><OrganizeWithAuthentication /></Layout>,
     };
   },
 

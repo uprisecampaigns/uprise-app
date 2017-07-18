@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -24,13 +24,13 @@ class AccountForm extends Component {
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
-    submitText: PropTypes.string.isRequired
+    submitText: PropTypes.string.isRequired,
   }
 
   render() {
-    const { 
+    const {
       data, formSubmit, errors, saving,
-      handleInputChange, cancel, submitText 
+      handleInputChange, cancel, submitText,
     } = this.props;
 
     const statesList = Object.keys(states);
@@ -41,7 +41,7 @@ class AccountForm extends Component {
         <div className={s.innerContainer}>
           <Paper zDepth={2}>
             <div className={s.formContainer}>
-              <form 
+              <form
                 className={s.form}
                 onSubmit={formSubmit}
               >
@@ -49,38 +49,38 @@ class AccountForm extends Component {
                   <TextField
                     floatingLabelText="First"
                     value={data.firstName}
-                    onChange={ (event) => { handleInputChange(event, 'firstName', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'firstName', event.target.value); }}
                     errorText={errors.firstNameErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Last"
                     value={data.lastName}
-                    onChange={ (event) => { handleInputChange(event, 'lastName', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'lastName', event.target.value); }}
                     errorText={errors.lastNameErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
- 
+
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Phone Number"
                     value={data.phoneNumber}
-                    onChange={ (event) => { handleInputChange(event, 'phoneNumber', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'phoneNumber', event.target.value); }}
                     errorText={errors.phoneNumberErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
- 
+
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Zipcode"
                     value={data.zipcode}
-                    onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
                     errorText={errors.zipcodeErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
 
@@ -88,18 +88,18 @@ class AccountForm extends Component {
                   <TextField
                     floatingLabelText="Email"
                     value={data.email}
-                    onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'email', event.target.value); }}
                     errorText={errors.emailErrorText}
-                    fullWidth={true}
+                    fullWidth
                     type="email"
                   />
                 </div>
 
                 <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={cancel} 
-                    primary={false} 
-                    label="Cancel" 
+                  <RaisedButton
+                    onTouchTap={cancel}
+                    primary={false}
+                    label="Cancel"
                   />
                 </div>
 
@@ -114,11 +114,11 @@ class AccountForm extends Component {
                 ) : (
 
                   <div className={[s.organizeButton, s.button].join(' ')}>
-                    <RaisedButton 
-                      onTouchTap={formSubmit} 
-                      primary={true} 
+                    <RaisedButton
+                      onTouchTap={formSubmit}
+                      primary
                       type="submit"
-                      label={submitText} 
+                      label={submitText}
                     />
                   </div>
                 )}

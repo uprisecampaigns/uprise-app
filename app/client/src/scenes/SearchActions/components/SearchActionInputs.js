@@ -1,6 +1,6 @@
 
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
@@ -10,8 +10,8 @@ import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
 import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
 import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
-import { 
-  addSearchItem, setSearchDates, removeSearchItem
+import {
+  addSearchItem, setSearchDates, removeSearchItem,
 } from 'actions/SearchActions';
 
 import ControlledListItem from 'components/ControlledListItem';
@@ -23,35 +23,33 @@ import DateTimeSearch from 'components/DateTimeSearch';
 import s from 'styles/Search.scss';
 
 
-const graphqlOptions = (collection) => {
-  return {
-    props: ({ data }) => ({
-      collection: !data.loading && data[collection] ? data[collection] : []
-    })
-  };
-};
+const graphqlOptions = collection => ({
+  props: ({ data }) => ({
+    collection: !data.loading && data[collection] ? data[collection] : [],
+  }),
+});
 
 const ActivitiesTogglesList = compose(
   graphql(ActivitiesQuery, graphqlOptions('activities')),
-  connect((state) => ({ selectedCollection: state.actionsSearch.activities }))
+  connect(state => ({ selectedCollection: state.actionsSearch.activities })),
 )(TogglesList);
 
 const TypesTogglesList = compose(
   graphql(TypesQuery, graphqlOptions('types')),
-  connect((state) => ({ selectedCollection: state.actionsSearch.types }))
+  connect(state => ({ selectedCollection: state.actionsSearch.types })),
 )(TogglesList);
 
 const LevelsTogglesList = compose(
   graphql(LevelsQuery, graphqlOptions('levels')),
-  connect((state) => ({ selectedCollection: state.actionsSearch.levels }))
+  connect(state => ({ selectedCollection: state.actionsSearch.levels })),
 )(TogglesList);
 
 const IssueAreasTogglesList = compose(
   graphql(IssueAreasQuery, graphqlOptions('issueAreas')),
-  connect((state) => ({ selectedCollection: state.actionsSearch.issueAreas }))
+  connect(state => ({ selectedCollection: state.actionsSearch.issueAreas })),
 )(TogglesList);
 
-const ConnectedDateTimeSearch = connect((state) => ({ selectedTimes: state.actionsSearch.times }))(DateTimeSearch);
+const ConnectedDateTimeSearch = connect(state => ({ selectedTimes: state.actionsSearch.times }))(DateTimeSearch);
 
 class SearchActionInputs extends React.PureComponent {
   constructor(props) {
@@ -79,8 +77,7 @@ class SearchActionInputs extends React.PureComponent {
   }
 
   render() {
-
-    const { 
+    const {
       handleToggle,
       addSelectedItem,
       setDates,
@@ -94,7 +91,7 @@ class SearchActionInputs extends React.PureComponent {
           className={s.listItemContainer}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
-              <GeographySearch 
+              <GeographySearch
                 addItem={addSelectedItem}
               />
             </div>
@@ -103,21 +100,21 @@ class SearchActionInputs extends React.PureComponent {
 
         <Divider />
 
-        <ActivitiesTogglesList 
+        <ActivitiesTogglesList
           listTitle="Activities"
-          collectionName="activities" 
+          collectionName="activities"
           displayPropName="description"
           keyPropName="title"
           handleToggle={handleToggle}
           className={s.listItemContainer}
           containerClassName={s.listItem}
         />
-        
+
         <Divider />
 
-        <IssueAreasTogglesList 
+        <IssueAreasTogglesList
           listTitle="Issue Areas"
-          collectionName="issueAreas" 
+          collectionName="issueAreas"
           displayPropName="title"
           keyPropName="title"
           handleToggle={handleToggle}
@@ -132,7 +129,7 @@ class SearchActionInputs extends React.PureComponent {
           className={s.listItemContainer}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.dateSearchContainer].join(' ')}>
-              <ConnectedDateTimeSearch 
+              <ConnectedDateTimeSearch
                 setDates={setDates}
                 handleToggle={handleToggle}
               />
@@ -142,9 +139,9 @@ class SearchActionInputs extends React.PureComponent {
 
         <Divider />
 
-        <TypesTogglesList 
+        <TypesTogglesList
           listTitle="Campaign Types"
-          collectionName="types" 
+          collectionName="types"
           displayPropName="title"
           keyPropName="title"
           handleToggle={handleToggle}
@@ -154,9 +151,9 @@ class SearchActionInputs extends React.PureComponent {
 
         <Divider />
 
-        <LevelsTogglesList 
+        <LevelsTogglesList
           listTitle="Campaign Level"
-          collectionName="levels" 
+          collectionName="levels"
           displayPropName="title"
           keyPropName="title"
           handleToggle={handleToggle}
@@ -166,6 +163,6 @@ class SearchActionInputs extends React.PureComponent {
       </List>
     );
   }
-};
+}
 
 export default connect()(SearchActionInputs);

@@ -13,7 +13,7 @@ export default {
   action() {
     return {
       title: 'Account',
-      component: <Layout><AccountWithAuthentication/></Layout>,
+      component: <Layout><AccountWithAuthentication /></Layout>,
     };
   },
 };

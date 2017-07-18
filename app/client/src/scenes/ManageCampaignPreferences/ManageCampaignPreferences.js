@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import { connect } from 'react-redux'
-import {Tabs, Tab} from 'material-ui/Tabs';
+import { connect } from 'react-redux';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress';
 import Divider from 'material-ui/Divider';
 import camelCase from 'camelcase';
@@ -25,22 +25,20 @@ import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
 
 import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql';
 
-import { 
+import {
   notify,
   dirtyForm,
-  cleanForm
+  cleanForm,
 } from 'actions/NotificationsActions';
 
 import s from 'styles/Organize.scss';
 
 
-const graphqlOptions = (collection) => {
-  return {
-    props: ({ data }) => ({
-      collection: !data.loading && data[collection] ? data[collection] : []
-    })
-  };
-};
+const graphqlOptions = collection => ({
+  props: ({ data }) => ({
+    collection: !data.loading && data[collection] ? data[collection] : [],
+  }),
+});
 
 const IssueAreasTogglesList = compose(
   graphql(IssueAreasQuery, graphqlOptions('issueAreas')),
@@ -55,9 +53,8 @@ const TypesTogglesList = compose(
 )(TogglesList);
 
 class ManageCampaignPreferencesContainer extends Component {
-
   static PropTypes = {
-    campaignSlug: PropTypes.string.isRequired
+    campaignSlug: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -70,28 +67,27 @@ class ManageCampaignPreferencesContainer extends Component {
         issueAreas: [],
         levels: [],
         types: [],
-        tags: []
+        tags: [],
       },
-      saving: false
+      saving: false,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.campaign) {
-
       // Just camel-casing property keys and checking for null/undefined
       const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => ({
-          [camelCase(k)]: nextProps.campaign[k] || ''
+        [camelCase(k)]: nextProps.campaign[k] || '',
       })));
 
-      Object.keys(campaign).forEach( (k) => {
+      Object.keys(campaign).forEach((k) => {
         if (!Object.keys(this.state.campaign).includes(camelCase(k))) {
           delete campaign[k];
         }
       });
 
-      this.setState( (prevState) => ({
-        campaign: Object.assign({}, prevState.campaign, campaign)
+      this.setState(prevState => ({
+        campaign: Object.assign({}, prevState.campaign, campaign),
       }));
     }
   }
@@ -103,21 +99,20 @@ class ManageCampaignPreferencesContainer extends Component {
     this.setState({ saving: true });
 
     try {
-
-      const selectedIssueAreas = this.state.campaign.issueAreas.map( (issueArea) => ( issueArea.id ));
-      const selectedLevels = this.state.campaign.levels.map( (level) => ( level.id ));
-      const selectedTypes = this.state.campaign.types.map( (level) => ( level.id ));
+      const selectedIssueAreas = this.state.campaign.issueAreas.map(issueArea => (issueArea.id));
+      const selectedLevels = this.state.campaign.levels.map(level => (level.id));
+      const selectedTypes = this.state.campaign.types.map(level => (level.id));
       const selectedTags = this.state.campaign.tags;
 
-      const results = await this.props.editCampaignMutation({ 
+      const results = await this.props.editCampaignMutation({
         variables: {
           data: {
             id: this.props.campaign.id,
             issueAreas: selectedIssueAreas,
             levels: selectedLevels,
             types: selectedTypes,
-            tags: selectedTags
-          }
+            tags: selectedTags,
+          },
         },
         // TODO: decide between refetch and update
         refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
@@ -128,7 +123,6 @@ class ManageCampaignPreferencesContainer extends Component {
       this.props.dispatch(notify('Changes Saved'));
 
       this.setState({ saving: false });
-
     } catch (e) {
       console.error(e);
       this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
@@ -142,45 +136,41 @@ class ManageCampaignPreferencesContainer extends Component {
     if (on) {
       newCollection = oldCollection.concat({ id });
     } else {
-      newCollection = oldCollection.filter( (item) => item.id !== id );
+      newCollection = oldCollection.filter(item => item.id !== id);
     }
 
     const newCampaign = Object.assign({}, this.state.campaign, { [collectionName]: newCollection });
 
     this.props.dispatch(dirtyForm());
 
-    this.setState( (prevState) => ({
-      campaign: Object.assign({}, prevState.campaign, newCampaign)
+    this.setState(prevState => ({
+      campaign: Object.assign({}, prevState.campaign, newCampaign),
     }));
   }
 
   addKeyword = (collectionName, tag) => {
     const tags = Array.from(this.state.campaign.tags);
 
-    if (( typeof tag === 'string' &&
+    if ((typeof tag === 'string' &&
           tag.trim() !== '' &&
           !tags.find(item => item.toLowerCase() === tag.toLowerCase()))) {
-
       tags.push(tag);
     }
 
     this.props.dispatch(dirtyForm());
 
-    this.setState( (prevState) => ({
-      campaign: Object.assign({}, prevState.campaign, { tags })
+    this.setState(prevState => ({
+      campaign: Object.assign({}, prevState.campaign, { tags }),
     }));
   }
 
   removeKeyword = (collectionName, tagToRemove) => {
-
     this.props.dispatch(dirtyForm());
 
-    this.setState( (prevState) => ({
-      campaign: Object.assign({}, prevState.campaign, { 
-        tags: prevState.campaign.tags.filter( (tag) => {
-          return tag.toLowerCase() !== tagToRemove.toLowerCase();
-        })
-      })
+    this.setState(prevState => ({
+      campaign: Object.assign({}, prevState.campaign, {
+        tags: prevState.campaign.tags.filter(tag => tag.toLowerCase() !== tagToRemove.toLowerCase()),
+      }),
     }));
   }
 
@@ -189,18 +179,18 @@ class ManageCampaignPreferencesContainer extends Component {
     const { user, ...props } = this.props;
     const { campaign, saving } = this.state;
 
-    const selectedIssueAreas = campaign.issueAreas.map( (issueArea) => issueArea.id );
-    const selectedLevels = campaign.levels.map( (level) => level.id );
-    const selectedTypes = campaign.types.map( (type) => type.id );
+    const selectedIssueAreas = campaign.issueAreas.map(issueArea => issueArea.id);
+    const selectedLevels = campaign.levels.map(level => level.id);
+    const selectedTypes = campaign.types.map(type => type.id);
     const selectedTags = campaign.tags;
 
     return (
       <div className={s.outerContainer}>
 
-        <Link to={'/organize/' + campaign.slug + '/settings'}>
+        <Link to={`/organize/${campaign.slug}/settings`}>
           <div className={s.navHeader}>
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
+            <FontIcon
+              className={['material-icons', s.backArrow].join(' ')}
             >arrow_back</FontIcon>
             Settings
           </div>
@@ -209,12 +199,12 @@ class ManageCampaignPreferencesContainer extends Component {
         <div className={s.pageSubHeader}>Preferences</div>
 
         <List className={s.navList}>
-          
+
           <Divider />
 
-          <IssueAreasTogglesList 
+          <IssueAreasTogglesList
             listTitle="Issue Areas"
-            collectionName="issueAreas" 
+            collectionName="issueAreas"
             displayPropName="title"
             keyPropName="id"
             handleToggle={handleToggle}
@@ -223,9 +213,9 @@ class ManageCampaignPreferencesContainer extends Component {
 
           <Divider />
 
-          <LevelsTogglesList 
+          <LevelsTogglesList
             listTitle="Campaign Levels"
-            collectionName="levels" 
+            collectionName="levels"
             displayPropName="title"
             keyPropName="id"
             handleToggle={handleToggle}
@@ -234,9 +224,9 @@ class ManageCampaignPreferencesContainer extends Component {
 
           <Divider />
 
-          <TypesTogglesList 
+          <TypesTogglesList
             listTitle="Campaign Types"
-            collectionName="types" 
+            collectionName="types"
             displayPropName="title"
             keyPropName="id"
             handleToggle={handleToggle}
@@ -248,7 +238,7 @@ class ManageCampaignPreferencesContainer extends Component {
           <ControlledListItem
             primaryText="Keywords"
             nestedItems={[(
-              <ListItem key={0} disabled={true} className={s.keywordsContainer}>
+              <ListItem key={0} disabled className={s.keywordsContainer}>
                 <div className={s.keywordsInputContainer}>
                   <SearchBar
                     collectionName="tags"
@@ -282,10 +272,10 @@ class ManageCampaignPreferencesContainer extends Component {
 
           <div className={[s.organizeButton, s.saveButton].join(' ')}>
             <RaisedButton
-              onTouchTap={saveChanges} 
-              primary={true} 
+              onTouchTap={saveChanges}
+              primary
               type="submit"
-              label="Save Changes" 
+              label="Save Changes"
             />
           </div>
         )}
@@ -298,27 +288,27 @@ const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     user: !data.loading && data.me ? data.me : {
       email: '',
-    }, 
-  })
+    },
+  }),
 });
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: (ownProps) => ({ 
+  options: ownProps => ({
     variables: {
       search: {
-        slug: ownProps.campaignSlug
-      }
+        slug: ownProps.campaignSlug,
+      },
     },
     fetchPolicy: 'cache-and-network',
   }),
-  props: ({ data }) => ({ 
-    campaign: data.campaign
-  })
+  props: ({ data }) => ({
+    campaign: data.campaign,
+  }),
 });
 
 export default compose(
   connect(),
   withMeQuery,
   withCampaignQuery,
-  graphql(EditCampaignMutation, { name: 'editCampaignMutation' })
+  graphql(EditCampaignMutation, { name: 'editCampaignMutation' }),
 )(ManageCampaignPreferencesContainer);

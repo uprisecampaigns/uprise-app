@@ -10,7 +10,7 @@ export default {
   action(context) {
     return {
       title: 'Forgot Password',
-      component: <Layout><ForgotPassword/></Layout>,
+      component: <Layout><ForgotPassword /></Layout>,
     };
   },
 };

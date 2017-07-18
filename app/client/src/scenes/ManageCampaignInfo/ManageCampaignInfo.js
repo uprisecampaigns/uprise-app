@@ -8,13 +8,13 @@ import CampaignInfoForm from 'components/CampaignInfoForm';
 import Link from 'components/Link';
 
 import formWrapper from 'lib/formWrapper';
-import { 
+import {
   validateString,
   validateWebsiteUrl,
   validateState,
   validateZipcode,
   validateEmail,
-  validatePhoneNumber
+  validatePhoneNumber,
 } from 'lib/validateComponentForms';
 
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
@@ -28,9 +28,8 @@ import s from 'styles/Organize.scss';
 const WrappedCampaignInfoForm = formWrapper(CampaignInfoForm);
 
 class ManageCampaignInfoContainer extends Component {
-
   static PropTypes = {
-    campaignSlug: PropTypes.string.isRequired
+    campaignSlug: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -54,14 +53,14 @@ class ManageCampaignInfoContainer extends Component {
         orgContactName: '',
         orgContactPosition: '',
         orgContactEmail: '',
-        orgContactPhone: ''
+        orgContactPhone: '',
       },
-    }
+    };
 
     this.state = Object.assign({}, initialState);
   }
 
-  defaultErrorText = { 
+  defaultErrorText = {
     titleErrorText: null,
     streetAddressErrorText: null,
     websiteUrlErrorText: null,
@@ -79,34 +78,32 @@ class ManageCampaignInfoContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.campaign && !nextProps.graphqlLoading) {
-
       // Just camel-casing property keys and checking for null/undefined
-      const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => {
+      const campaign = Object.assign(...Object.keys(nextProps.campaign).map((k) => {
         if (nextProps.campaign[k] !== null) {
           return { [camelCase(k)]: nextProps.campaign[k] };
         }
       }));
 
-      Object.keys(campaign).forEach( (k) => {
+      Object.keys(campaign).forEach((k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
           delete campaign[k];
         }
       });
 
-      this.setState( (prevState) => ({
-        formData: Object.assign({}, prevState.formData, campaign)
+      this.setState(prevState => ({
+        formData: Object.assign({}, prevState.formData, campaign),
       }));
     }
   }
 
   formSubmit = async (data) => {
-      
     // A little hackish to avoid an annoying rerender with previous form data
     // If I could figure out how to avoid keeping state here
     // w/ the componentWillReceiveProps/apollo/graphql then
     // I might not need this
     this.setState({
-      formData: Object.assign({}, data)
+      formData: Object.assign({}, data),
     });
 
     const formData = Object.assign({}, data);
@@ -114,10 +111,9 @@ class ManageCampaignInfoContainer extends Component {
     formData.id = this.props.campaign.id;
 
     try {
-
-      const results = await this.props.editCampaignMutation({ 
+      const results = await this.props.editCampaignMutation({
         variables: {
-          data: formData
+          data: formData,
         },
         // TODO: decide between refetch and update
         refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
@@ -131,18 +127,17 @@ class ManageCampaignInfoContainer extends Component {
   }
 
   render() {
-
     if (this.props.campaign) {
       const { state, formSubmit, defaultErrorText } = this;
       const { campaign, user, ...props } = this.props;
       const { formData } = state;
 
       const validators = [
-        (component) => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
-        (component) => validateZipcode(component),
-        (component) => validateWebsiteUrl(component),
-        (component) => validatePhoneNumber(component),
-        (component) => validateState(component),
+        component => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+        component => validateZipcode(component),
+        component => validateWebsiteUrl(component),
+        component => validatePhoneNumber(component),
+        component => validateState(component),
         (component) => {
           if (component.state.formData.legalOrg) {
             validateString(component, 'orgWebsite', 'orgWebsiteErrorText', 'Organization Website is required');
@@ -152,16 +147,16 @@ class ManageCampaignInfoContainer extends Component {
             validatePhoneNumber(component, 'orgContactPhone', 'orgContactPhoneErrorText');
             validateEmail(component, 'orgContactEmail', 'orgContactEmailErrorText');
           }
-        }
+        },
       ];
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug + '/settings'}>
+          <Link to={`/organize/${campaign.slug}/settings`}>
             <div className={s.navHeader}>
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Settings
             </div>
@@ -177,12 +172,11 @@ class ManageCampaignInfoContainer extends Component {
             submitText="Save Changes"
             user={user}
           />
-          
+
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
@@ -190,28 +184,28 @@ const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     user: !data.loading && data.me ? data.me : {
       email: '',
-    }, 
-  })
+    },
+  }),
 });
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: (ownProps) => ({ 
+  options: ownProps => ({
     variables: {
       search: {
-        slug: ownProps.campaignSlug
-      }
+        slug: ownProps.campaignSlug,
+      },
     },
     fetchPolicy: 'cache-and-network',
   }),
-  props: ({ data }) => ({ 
+  props: ({ data }) => ({
     campaign: data.campaign,
-    graphqlLoading: data.loading
-  })
+    graphqlLoading: data.loading,
+  }),
 });
 
 export default compose(
   connect(),
   withMeQuery,
   withCampaignQuery,
-  graphql(EditCampaignMutation, { name: 'editCampaignMutation' })
+  graphql(EditCampaignMutation, { name: 'editCampaignMutation' }),
 )(ManageCampaignInfoContainer);

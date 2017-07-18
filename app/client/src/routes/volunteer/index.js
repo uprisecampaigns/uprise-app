@@ -13,7 +13,7 @@ export default {
   action() {
     return {
       title: 'Volunteer',
-      component: <Layout><VolunteerWithAuthentication/></Layout>,
+      component: <Layout><VolunteerWithAuthentication /></Layout>,
     };
   },
 };

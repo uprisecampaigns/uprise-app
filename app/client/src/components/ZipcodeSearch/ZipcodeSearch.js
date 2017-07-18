@@ -15,12 +15,11 @@ const textFieldStyle = {
 };
 
 class ZipcodeSearch extends React.PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {
       zipcode: '',
-    }
+    };
   }
 
   static propTypes = {
@@ -28,22 +27,18 @@ class ZipcodeSearch extends React.PureComponent {
   }
 
   handleInputChange = (event, type, value) => {
-
     if (typeof type === 'string' && type === 'zipcode') {
-
       // TODO: more canonical zipcode validation (across all site)
       if (isNumeric(value) && value.length < 6) {
-
         this.setState(Object.assign({},
           this.state,
-          { [type]: value }
+          { [type]: value },
         ));
       }
-    } 
+    }
   }
 
   addItem = (event) => {
-
     const { zipcode } = this.state;
 
     if (typeof event === 'object' && typeof event.preventDefault === 'function') {
@@ -53,17 +48,16 @@ class ZipcodeSearch extends React.PureComponent {
     this.props.addItem('geographies', { zipcode });
 
     this.setState(Object.assign({},
-      this.state, { zipcode: '' }
+      this.state, { zipcode: '' },
     ));
   }
 
   render() {
-
     const { zipcode, ...state } = this.state;
     const { addItem, handleInputChange } = this;
 
     return (
-      <form 
+      <form
         onSubmit={addItem}
       >
         Active in zipcode:
@@ -74,19 +68,19 @@ class ZipcodeSearch extends React.PureComponent {
           value={zipcode}
           style={textFieldStyle}
           underlineShow={false}
-          onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+          onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
         />
         <div className={s.addToSearchButton}>
           <RaisedButton
             className={s.primaryButton}
             onTouchTap={addItem}
             type="submit"
-            primary={true}
+            primary
             label="Add to Search"
           />
         </div>
       </form>
-    )
+    );
   }
 }
 

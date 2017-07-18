@@ -18,8 +18,8 @@ export default {
       const result = await context.apolloClient.query({
         query: ActionQuery,
         variables: {
-          search: { slug }
-        }
+          search: { slug },
+        },
       });
 
       if (result.data.action) {
@@ -27,20 +27,19 @@ export default {
           title: result.data.action.title,
           component: (
             <Layout>
-              <ActionWithAuthentication actionSlug={slug} actionId={result.data.action.id}/>
+              <ActionWithAuthentication actionSlug={slug} actionId={result.data.action.id} />
             </Layout>
           ),
         };
-      } else {
-        return {
-          redirect: '/search/search-actions'
-        }
       }
+      return {
+        redirect: '/search/search-actions',
+      };
     } catch (e) {
       console.error(e);
       return {
-        redirect: '/search/search-actions'
-      }
+        redirect: '/search/search-actions',
+      };
     }
   },
 };

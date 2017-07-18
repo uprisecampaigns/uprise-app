@@ -13,16 +13,16 @@ import s from './Header.scss';
 
 const iconButtonStyle = {
   fontSize: '3rem',
-}
+};
 
 function UnauthenticatedIcons(props) {
   return (
     <div className={s.menuItemsContainer}>
 
-      <div 
+      <div
         className={s.headerButton}
       >
-        <Link useAhref={false} to='/login'>
+        <Link useAhref={false} to="/login">
           <FlatButton label="LOGIN" />
         </Link>
       </div>
@@ -42,7 +42,7 @@ function UnauthenticatedIcons(props) {
             path: 'http://uprisecampaigns.org/home/campaigns',
             external: true,
             sameTab: true,
-          }
+          },
         ]}
       />
 
@@ -142,7 +142,7 @@ function AuthenticatedIcons(props) {
       />
 
     </div>
-  )
+  );
 }
 
 class Header extends Component {
@@ -161,20 +161,20 @@ class Header extends Component {
     return (
       <AppBar
         iconElementLeft={
-          <div 
+          <div
             className={s.menuIconContainer}
           >
-            <IconButton 
+            <IconButton
               iconStyle={iconButtonStyle}
-              iconClassName='material-icons'
+              iconClassName="material-icons"
               onTouchTap={this.props.handleDrawerToggle}
             >menu</IconButton>
           </div>
         }
         title={
-          <Link useAhref={false} preventDefault={false} to='/'>
+          <Link useAhref={false} preventDefault={false} to="/">
             <div className={s.logoContainer}>
-              <img 
+              <img
                 src={upriseLogo}
                 className={s.logoImage}
               />
@@ -182,13 +182,13 @@ class Header extends Component {
           </Link>
         }
         titleStyle={{
-          height: 'auto'
+          height: 'auto',
         }}
         iconElementRight={
           <div className={s.rightIconsContainer}>
 
             { this.props.loggedIn ?
-              <AuthenticatedIcons logout={this.props.clickedLogout}/>
+              <AuthenticatedIcons logout={this.props.clickedLogout} />
               :
               <UnauthenticatedIcons />
             }
@@ -198,11 +198,11 @@ class Header extends Component {
         iconStyleRight={{
           marginTop: '0px',
           display: 'flex',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
         className={s.appBar}
         style={{
-          'backgroundColor': 'rgb(255, 255, 255)'
+          backgroundColor: 'rgb(255, 255, 255)',
         }}
       />
     );

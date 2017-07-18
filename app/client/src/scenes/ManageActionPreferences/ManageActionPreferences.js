@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import { connect } from 'react-redux'
-import {Tabs, Tab} from 'material-ui/Tabs';
+import { connect } from 'react-redux';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress';
 import Divider from 'material-ui/Divider';
 import camelCase from 'camelcase';
@@ -26,22 +26,20 @@ import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import EditActionMutation from 'schemas/mutations/EditActionMutation.graphql';
 
-import { 
+import {
   notify,
   dirtyForm,
-  cleanForm
+  cleanForm,
 } from 'actions/NotificationsActions';
 
 import s from 'styles/Organize.scss';
 
 
-const graphqlOptions = (collection) => {
-  return {
-    props: ({ data }) => ({
-      collection: !data.loading && data[collection] ? data[collection] : []
-    })
-  };
-};
+const graphqlOptions = collection => ({
+  props: ({ data }) => ({
+    collection: !data.loading && data[collection] ? data[collection] : [],
+  }),
+});
 
 const ActivitiesTogglesList = compose(
   graphql(ActivitiesQuery, graphqlOptions('activities')),
@@ -60,10 +58,9 @@ const TypesTogglesList = compose(
 )(TogglesList);
 
 class ManageActionPreferencesContainer extends Component {
-
   static PropTypes = {
     actionId: PropTypes.string.isRequired,
-    action: PropTypes.object
+    action: PropTypes.object,
   }
 
   constructor(props) {
@@ -77,28 +74,27 @@ class ManageActionPreferencesContainer extends Component {
         issueAreas: [],
         levels: [],
         types: [],
-        tags: []
+        tags: [],
       },
-      saving: false
+      saving: false,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.action) {
-
       // Just camel-casing property keys and checking for null/undefined
       const action = Object.assign(...Object.keys(nextProps.action).map(k => ({
-          [camelCase(k)]: nextProps.action[k] || ''
+        [camelCase(k)]: nextProps.action[k] || '',
       })));
 
-      Object.keys(action).forEach( (k) => {
+      Object.keys(action).forEach((k) => {
         if (!Object.keys(this.state.action).includes(camelCase(k))) {
           delete action[k];
         }
       });
 
-      this.setState( (prevState) => ({
-        action: Object.assign({}, prevState.action, action)
+      this.setState(prevState => ({
+        action: Object.assign({}, prevState.action, action),
       }));
     }
   }
@@ -110,14 +106,13 @@ class ManageActionPreferencesContainer extends Component {
     this.setState({ saving: true });
 
     try {
-
-      const selectedActivities = this.state.action.activities.map( (activity) => ( activity.id ));
-      const selectedIssueAreas = this.state.action.issueAreas.map( (issueArea) => ( issueArea.id ));
-      const selectedLevels = this.state.action.levels.map( (level) => ( level.id ));
-      const selectedTypes = this.state.action.types.map( (level) => ( level.id ));
+      const selectedActivities = this.state.action.activities.map(activity => (activity.id));
+      const selectedIssueAreas = this.state.action.issueAreas.map(issueArea => (issueArea.id));
+      const selectedLevels = this.state.action.levels.map(level => (level.id));
+      const selectedTypes = this.state.action.types.map(level => (level.id));
       const selectedTags = this.state.action.tags;
 
-      const results = await this.props.editActionMutation({ 
+      const results = await this.props.editActionMutation({
         variables: {
           data: {
             id: this.props.action.id,
@@ -125,8 +120,8 @@ class ManageActionPreferencesContainer extends Component {
             issueAreas: selectedIssueAreas,
             levels: selectedLevels,
             types: selectedTypes,
-            tags: selectedTags
-          }
+            tags: selectedTags,
+          },
         },
         // TODO: decide between refetch and update
         refetchQueries: ['ActionQuery', 'SearchActionsQuery'],
@@ -137,7 +132,6 @@ class ManageActionPreferencesContainer extends Component {
       this.props.dispatch(notify('Changes Saved'));
 
       this.setState({ saving: false });
-
     } catch (e) {
       console.error(e);
       this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
@@ -152,68 +146,64 @@ class ManageActionPreferencesContainer extends Component {
     if (on) {
       newCollection = oldCollection.concat({ id });
     } else {
-      newCollection = oldCollection.filter( (item) => item.id !== id );
+      newCollection = oldCollection.filter(item => item.id !== id);
     }
 
     const newAction = Object.assign({}, this.state.action, { [collectionName]: newCollection });
 
     this.props.dispatch(dirtyForm());
 
-    this.setState( (prevState) => ({
-      action: Object.assign({}, prevState.action, newAction)
+    this.setState(prevState => ({
+      action: Object.assign({}, prevState.action, newAction),
     }));
   }
 
   addKeyword = (collectionName, tag) => {
     const tags = Array.from(this.state.action.tags);
 
-    if (( typeof tag === 'string' &&
+    if ((typeof tag === 'string' &&
           tag.trim() !== '' &&
           !tags.find(item => item.toLowerCase() === tag.toLowerCase()))) {
-
       tags.push(tag);
     }
 
     this.props.dispatch(dirtyForm());
 
-    this.setState( (prevState) => ({
-      action: Object.assign({}, prevState.action, { tags })
+    this.setState(prevState => ({
+      action: Object.assign({}, prevState.action, { tags }),
     }));
   }
 
   removeKeyword = (collectionName, tagToRemove) => {
     this.props.dispatch(dirtyForm());
-    this.setState( (prevState) => ({
-      action: Object.assign({}, prevState.action, { 
-        tags: prevState.action.tags.filter( (tag) => {
-          return tag.toLowerCase() !== tagToRemove.toLowerCase();
-        })
-      })
+    this.setState(prevState => ({
+      action: Object.assign({}, prevState.action, {
+        tags: prevState.action.tags.filter(tag => tag.toLowerCase() !== tagToRemove.toLowerCase()),
+      }),
     }));
   }
 
   render() {
-
     if (this.state.action && this.props.campaign) {
       const { saveChanges, handleToggle, addKeyword, removeKeyword } = this;
       const { campaign, ...props } = this.props;
       const { action, saving } = this.state;
 
-      const selectedActivities = action.activities ? action.activities.map( (activity) => activity.id ) : [];
-      const selectedIssueAreas = action.issueAreas ? action.issueAreas.map( (issueArea) => issueArea.id ): [];
-      const selectedLevels = action.levels ? action.levels.map( (level) => level.id ) : [];
-      const selectedTypes = action.types ? action.types.map( (type) => type.id ) : [];
+      const selectedActivities = action.activities ? action.activities.map(activity => activity.id) : [];
+      const selectedIssueAreas = action.issueAreas ? action.issueAreas.map(issueArea => issueArea.id) : [];
+      const selectedLevels = action.levels ? action.levels.map(level => level.id) : [];
+      const selectedTypes = action.types ? action.types.map(type => type.id) : [];
       const selectedTags = action.tags;
 
-      const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
+      const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
 
       return (
         <div className={s.outerContainer}>
-          
-          <Link to={baseActionUrl + '/settings'}>
+
+          <Link to={`${baseActionUrl}/settings`}>
             <div className={s.navHeader}>
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Settings
             </div>
@@ -222,12 +212,12 @@ class ManageActionPreferencesContainer extends Component {
           <div className={s.pageSubHeader}>Preferences</div>
 
           <List className={s.navList}>
-            
+
             <Divider />
 
-            <IssueAreasTogglesList 
+            <IssueAreasTogglesList
               listTitle="Issue Areas"
-              collectionName="issueAreas" 
+              collectionName="issueAreas"
               displayPropName="title"
               keyPropName="id"
               handleToggle={handleToggle}
@@ -236,9 +226,9 @@ class ManageActionPreferencesContainer extends Component {
 
             <Divider />
 
-            <LevelsTogglesList 
+            <LevelsTogglesList
               listTitle="Campaign Levels"
-              collectionName="levels" 
+              collectionName="levels"
               displayPropName="title"
               keyPropName="id"
               handleToggle={handleToggle}
@@ -247,9 +237,9 @@ class ManageActionPreferencesContainer extends Component {
 
             <Divider />
 
-            <TypesTogglesList 
+            <TypesTogglesList
               listTitle="Campaign Types"
-              collectionName="types" 
+              collectionName="types"
               displayPropName="title"
               keyPropName="id"
               handleToggle={handleToggle}
@@ -258,9 +248,9 @@ class ManageActionPreferencesContainer extends Component {
 
             <Divider />
 
-            <ActivitiesTogglesList 
+            <ActivitiesTogglesList
               listTitle="Activities"
-              collectionName="activities" 
+              collectionName="activities"
               displayPropName="description"
               keyPropName="id"
               handleToggle={handleToggle}
@@ -272,7 +262,7 @@ class ManageActionPreferencesContainer extends Component {
             <ControlledListItem
               primaryText="Keywords"
               nestedItems={[(
-                <ListItem key={0} disabled={true} className={s.keywordsContainer}>
+                <ListItem key={0} disabled className={s.keywordsContainer}>
                   <div className={s.keywordsInputContainer}>
                     <SearchBar
                       collectionName="tags"
@@ -305,52 +295,51 @@ class ManageActionPreferencesContainer extends Component {
           ) : (
 
             <div className={[s.organizeButton, s.saveButton].join(' ')}>
-              <RaisedButton 
-                onTouchTap={saveChanges} 
-                primary={true} 
+              <RaisedButton
+                onTouchTap={saveChanges}
+                primary
                 type="submit"
-                label="Save Changes" 
+                label="Save Changes"
               />
             </div>
           )}
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 const withActionQuery = graphql(ActionQuery, {
-  options: (ownProps) => ({ 
+  options: ownProps => ({
     variables: {
       search: {
-        id: ownProps.actionId
-      }
+        id: ownProps.actionId,
+      },
     },
     fetchPolicy: 'cache-and-network',
   }),
-  props: ({ data }) => ({ 
-    action: data.action
-  })
+  props: ({ data }) => ({
+    action: data.action,
+  }),
 });
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: (ownProps) => ({ 
+  options: ownProps => ({
     variables: {
       search: {
-        id: ownProps.campaignId
-      }
-    }
+        id: ownProps.campaignId,
+      },
+    },
   }),
-  props: ({ data }) => ({ 
-    campaign: data.campaign
-  })
+  props: ({ data }) => ({
+    campaign: data.campaign,
+  }),
 });
 
 export default compose(
   connect(),
   withActionQuery,
   withCampaignQuery,
-  graphql(EditActionMutation, { name: 'editActionMutation' })
+  graphql(EditActionMutation, { name: 'editActionMutation' }),
 )(ManageActionPreferencesContainer);

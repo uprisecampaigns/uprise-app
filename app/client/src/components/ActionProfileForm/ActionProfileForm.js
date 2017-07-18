@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import moment from 'moment';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -19,17 +19,16 @@ class ActionProfileForm extends Component {
 
   static propTypes = {
     data: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired, 
+    errors: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
-    uploading: PropTypes.bool.isRequired
+    uploading: PropTypes.bool.isRequired,
   }
 
   render() {
-
     const { data, formSubmit, errors,
-            handleInputChange, saving, uploading, ...props } = this.props;
+      handleInputChange, saving, uploading, ...props } = this.props;
 
     return (
       <div className={s.outerContainer}>
@@ -40,9 +39,9 @@ class ActionProfileForm extends Component {
               value={data.title}
               className={s.textField}
               hintText="Action Public Title"
-              onChange={ (event) => { handleInputChange(event, 'title', event.target.value) } }
+              onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
               errorText={errors.titleErrorText}
-              fullWidth={true}
+              fullWidth
               underlineShow={false}
             />
           </div>
@@ -52,16 +51,16 @@ class ActionProfileForm extends Component {
               name="description"
               hintText="Write a short description here. This will show up in the search results. You do not need to include the name of the action, or issues, keywords, etc. as they will all appear automatically"
               value={data.description}
-              multiLine={true}
+              multiLine
               rows={4}
-              onChange={ (event) => { handleInputChange(event, 'description', event.target.value) } }
+              onChange={(event) => { handleInputChange(event, 'description', event.target.value); }}
               errorText={errors.descriptionErrorText}
-              fullWidth={true}
+              fullWidth
               underlineShow={false}
             />
           </div>
 
-          { ( saving || uploading ) ? (
+          { (saving || uploading) ? (
 
             <div className={s.savingThrobberContainer}>
               <CircularProgress
@@ -72,11 +71,11 @@ class ActionProfileForm extends Component {
           ) : (
 
             <div className={[s.organizeButton, s.saveButton].join(' ')}>
-              <RaisedButton 
-                onTouchTap={formSubmit} 
-                primary={true} 
+              <RaisedButton
+                onTouchTap={formSubmit}
+                primary
                 type="submit"
-                label="Save Changes" 
+                label="Save Changes"
               />
             </div>
           )}
@@ -84,14 +83,11 @@ class ActionProfileForm extends Component {
         </div>
       </div>
     );
-;
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    uploading: state.uploads.uploading,
-  };
-}
+const mapStateToProps = state => ({
+  uploading: state.uploads.uploading,
+});
 
 export default connect(mapStateToProps)(ActionProfileForm);

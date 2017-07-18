@@ -13,12 +13,11 @@ import s from 'styles/Organize.scss';
 
 
 class ManageActionProfile extends Component {
-
   static PropTypes = {
     campaignId: PropTypes.object.isRequired,
     actionId: PropTypes.object.isRequired,
     campaign: PropTypes.object,
-    action: PropTypes.object
+    action: PropTypes.object,
   }
 
   constructor(props) {
@@ -26,19 +25,18 @@ class ManageActionProfile extends Component {
   }
 
   render() {
-
     if (this.props.campaign && this.props.action) {
       const { campaign, action, ...props } = this.props;
 
-      const baseActionUrl = '/organize/' + campaign.slug + '/action/' + action.slug;
+      const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={baseActionUrl + '/settings/'}>
+          <Link to={`${baseActionUrl}/settings/`}>
             <div className={s.navHeader}>
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Settings
             </div>
@@ -50,16 +48,16 @@ class ManageActionProfile extends Component {
 
             <Divider />
 
-            <Link to={'/action/' + action.slug}>
-              <ListItem 
+            <Link to={`/action/${action.slug}`}>
+              <ListItem
                 primaryText="View"
               />
             </Link>
 
             <Divider />
 
-            <Link to={baseActionUrl + '/profile/edit' }>
-              <ListItem 
+            <Link to={`${baseActionUrl}/profile/edit`}>
+              <ListItem
                 primaryText="Edit"
               />
             </Link>
@@ -69,37 +67,36 @@ class ManageActionProfile extends Component {
           </List>
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.campaignId
-        }
-      }
+          id: ownProps.campaignId,
+        },
+      },
     }),
-    props: ({ data }) => ({ 
+    props: ({ data }) => ({
       campaign: data.campaign,
-    })
+    }),
   }),
   graphql(ActionQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.actionId
-        }
+          id: ownProps.actionId,
+        },
       },
       fetchPolicy: 'cache-and-network',
     }),
-    props: ({ data }) => ({ 
+    props: ({ data }) => ({
       action: data.action,
-      graphqlLoading: data.loading
-    })
+      graphqlLoading: data.loading,
+    }),
   }),
 )(ManageActionProfile);

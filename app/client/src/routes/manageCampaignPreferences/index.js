@@ -10,9 +10,9 @@ const ManageCampaignPreferencesWithAuthentication = withAuthentication(ManageCam
 
 export default organizeCampaignPaths({
   path: '/organize/:slug/preferences',
-  component: (campaign) => (
+  component: campaign => (
     <Layout>
-      <ManageCampaignPreferencesWithAuthentication campaignSlug={campaign.slug}/>
+      <ManageCampaignPreferencesWithAuthentication campaignSlug={campaign.slug} />
     </Layout>
-  )
+  ),
 });

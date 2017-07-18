@@ -11,7 +11,7 @@ function createFilteredReducer(reducerFunction, reducerPredicate) {
     const isInitializationCall = state === undefined;
     const shouldRunWrappedReducer = reducerPredicate(action) || isInitializationCall;
     return shouldRunWrappedReducer ? reducerFunction(state, action) : state;
-  }
+  };
 }
 
 const appReducer = combineReducers({
@@ -30,7 +30,7 @@ const rootReducer = (state, action) => {
   }
 
   return appReducer(state, action);
-}
+};
 
 export default rootReducer;
 

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import moment from 'moment';
 
@@ -15,7 +15,7 @@ import CancelCampaignSubscriptionMutation from 'schemas/mutations/CancelCampaign
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
 import {
-  notify
+  notify,
 } from 'actions/NotificationsActions';
 
 import s from 'styles/Profile.scss';
@@ -27,14 +27,14 @@ class Campaign extends Component {
 
     this.state = {
       saving: false,
-      modalOpen: false
-    }
+      modalOpen: false,
+    };
   }
 
   static propTypes = {
     campaign: PropTypes.object,
     campaignId: PropTypes.string.isRequired,
-    campaignSlug: PropTypes.string.isRequired
+    campaignSlug: PropTypes.string.isRequired,
   };
 
   subscribe = () => {
@@ -42,12 +42,11 @@ class Campaign extends Component {
   }
 
   confirmSubscription = async () => {
-
     this.setState({ saving: true, modalOpen: false });
     try {
       const results = await this.props.subscribe({
         variables: {
-          campaignId: this.props.campaign.id
+          campaignId: this.props.campaign.id,
         },
         // TODO: decide between refetch and update
         refetchQueries: ['CampaignSubscriptionsQuery', 'SubscribersQuery', 'CampaignQuery'],
@@ -63,12 +62,11 @@ class Campaign extends Component {
   }
 
   cancelSubscription = async () => {
-
     this.setState({ saving: true });
     try {
       const results = await this.props.cancelSubscription({
         variables: {
-          campaignId: this.props.campaign.id
+          campaignId: this.props.campaign.id,
         },
         // TODO: decide between refetch and update
         refetchQueries: ['CampaignSubscriptionsQuery', 'SubscribersQuery', 'CampaignQuery'],
@@ -84,9 +82,7 @@ class Campaign extends Component {
   }
 
   render() {
-
-    if (this.props.campaign) { 
-
+    if (this.props.campaign) {
       const { campaign, ...props } = this.props;
       const { modalOpen, ...state } = this.state;
 
@@ -94,14 +90,14 @@ class Campaign extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ (event) => { event.preventDefault(); this.setState({modalOpen: false}); }}
+          onTouchTap={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
         />,
         <RaisedButton
           label="Confirm"
-          primary={true}
-          onTouchTap={ (event) => { event.preventDefault(); this.confirmSubscription() }}
+          primary
+          onTouchTap={(event) => { event.preventDefault(); this.confirmSubscription(); }}
           className={s.primaryButton}
-        />
+        />,
       ];
 
       return (
@@ -115,11 +111,11 @@ class Campaign extends Component {
 
           <Dialog
             title="Permission to Share?"
-            modal={true}
+            modal
             actions={modalActions}
             actionsContainerClassName={s.modalActionsContainer}
             open={modalOpen}
-            autoScrollBodyContent={true}
+            autoScrollBodyContent
           >
             <p>
               May we have your permission to share your email address with the coordinator for the purpose of contacting you about volunteering for this campaign?
@@ -128,24 +124,23 @@ class Campaign extends Component {
         </div>
 
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: (ownProps) => ({ 
+  options: ownProps => ({
     variables: {
       search: {
-        slug: ownProps.campaignSlug
-      }
+        slug: ownProps.campaignSlug,
+      },
     },
     fetchPolicy: 'cache-and-network',
   }),
-  props: ({ data }) => ({ 
-    campaign: data.campaign
-  })
+  props: ({ data }) => ({
+    campaign: data.campaign,
+  }),
 });
 
 export default compose(

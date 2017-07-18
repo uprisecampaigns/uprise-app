@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import FontIcon from 'material-ui/FontIcon';
@@ -8,7 +8,7 @@ import TextField from 'material-ui/TextField';
 
 import { notify } from 'actions/NotificationsActions';
 
-import { 
+import {
   validateString,
 } from 'lib/validateComponentForms';
 
@@ -33,12 +33,12 @@ class ComposeMessage extends React.Component {
 
     this.state = Object.assign({}, initialState);
   }
- 
+
   static propTypes = {
     fromEmail: PropTypes.string.isRequired,
     detailLines: PropTypes.array.isRequired,
     recipients: PropTypes.array.isRequired,
-    sendMessage: PropTypes.func.isRequired
+    sendMessage: PropTypes.func.isRequired,
   };
 
   clickedSend = (event) => {
@@ -48,7 +48,7 @@ class ComposeMessage extends React.Component {
     validateString(this, 'body', 'bodyErrorText', 'Please enter some content');
 
     if (!this.hasErrors) {
-      this.setState({modalOpen: true});
+      this.setState({ modalOpen: true });
     }
   };
 
@@ -59,15 +59,15 @@ class ComposeMessage extends React.Component {
 
     this.props.sendMessage({ subject, body });
 
-    this.setState({modalOpen: false});
+    this.setState({ modalOpen: false });
   }
 
   handleInputChange = (event, type, value) => {
-    this.setState( (prevState) => ({
+    this.setState(prevState => ({
       formData: Object.assign({},
         prevState.formData,
-        { [type]: value }
-      )
+        { [type]: value },
+      ),
     }));
   }
 
@@ -80,14 +80,14 @@ class ComposeMessage extends React.Component {
       <RaisedButton
         label="Cancel"
         primary={false}
-        onTouchTap={ (event) => { event.preventDefault(); this.setState({modalOpen: false}) }}
+        onTouchTap={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
       />,
       <RaisedButton
         label="Confirm"
-        primary={true}
+        primary
         onTouchTap={this.confirmSend}
         className={s.primaryButton}
-      />
+      />,
     ];
 
     return (
@@ -100,42 +100,42 @@ class ComposeMessage extends React.Component {
             Recipients: {recipients.map(r => r.email).join(', ')}
           </div>
 
-          <TextField 
+          <TextField
             className={s.subjectContainer}
             hintText="Subject"
             underlineShow={false}
             value={formData.subject}
-            onChange={ (event) => { handleInputChange(event, 'subject', event.target.value) } }
+            onChange={(event) => { handleInputChange(event, 'subject', event.target.value); }}
             errorText={errors.subjectErrorText}
-            multiLine={true}
+            multiLine
             rows={1}
             fullWidth={false}
           />
         </div>
         <div className={s.innerContainer}>
 
-          { detailLines.map( (detailLine, index) => (
+          { detailLines.map((detailLine, index) => (
             <div className={s.detailLine} key={index}>
               {detailLine}
             </div>
           ))}
 
-          <TextField 
+          <TextField
             className={s.contentContainer}
             underlineShow={false}
             hintText="Content (text only)"
             value={formData.body}
-            onChange={ (event) => { handleInputChange(event, 'body', event.target.value) } }
+            onChange={(event) => { handleInputChange(event, 'body', event.target.value); }}
             errorText={errors.bodyErrorText}
-            fullWidth={true}
-            multiLine={true}
+            fullWidth
+            multiLine
             rows={4}
           />
 
           <div className={s.sendButtonContainer}>
             <RaisedButton
               onTouchTap={this.clickedSend}
-              primary={true}
+              primary
               label="Send"
             />
           </div>
@@ -143,13 +143,13 @@ class ComposeMessage extends React.Component {
 
         <Dialog
           title="Are You Sure?"
-          modal={true}
+          modal
           actions={modalActions}
           actionsContainerClassName={s.modalActionsContainer}
           open={modalOpen}
         >
           <p>
-            Are you sure you want to send this email? 
+            Are you sure you want to send this email?
           </p>
           <p>
             Please double check that subject, recipients, and content are all correct.

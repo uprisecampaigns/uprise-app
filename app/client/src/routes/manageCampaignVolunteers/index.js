@@ -10,9 +10,9 @@ const ManageCampaignVolunteersWithAuthentication = withAuthentication(ManageCamp
 
 export default organizeCampaignPaths({
   path: '/organize/:slug/volunteers',
-  component: (campaign) => (
+  component: campaign => (
     <Layout>
-      <ManageCampaignVolunteersWithAuthentication campaignId={campaign.id}/>
+      <ManageCampaignVolunteersWithAuthentication campaignId={campaign.id} />
     </Layout>
-  )
+  ),
 });

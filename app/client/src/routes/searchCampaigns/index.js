@@ -2,8 +2,8 @@ import React from 'react';
 import SearchCampaigns from 'scenes/SearchCampaigns';
 import Layout from 'components/Layout';
 
-import { 
-  sortBy
+import {
+  sortBy,
 } from 'actions/SearchActions';
 
 import withAuthentication from 'routes/withAuthentication';
@@ -15,12 +15,11 @@ export default {
   path: '/search/search-campaigns',
 
   action(context) {
-
     context.store.dispatch(sortBy('campaign', 'title'));
 
     return {
       title: 'Search Campaigns',
-      component: <Layout><SearchCampaignsWithAuthentication/></Layout>,
+      component: <Layout><SearchCampaignsWithAuthentication /></Layout>,
     };
   },
 

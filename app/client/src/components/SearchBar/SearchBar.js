@@ -8,12 +8,11 @@ import s from './SearchBar.scss';
 
 
 class SearchBar extends React.PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {
-      value: ''
-    }
+      value: '',
+    };
   }
 
   static propTypes = {
@@ -22,18 +21,17 @@ class SearchBar extends React.PureComponent {
     addItem: PropTypes.func.isRequired,
     inputLabel: PropTypes.string.isRequired,
     inputRef: PropTypes.func.isRequired,
-    iconName: PropTypes.string
+    iconName: PropTypes.string,
   }
 
   handleInputChange = (value) => {
     this.setState(Object.assign({},
       this.state,
-      { value }
+      { value },
     ));
   }
 
   addItem = (event) => {
-
     if (typeof event === 'object' && typeof event.preventDefault === 'function') {
       event.preventDefault();
     }
@@ -42,12 +40,11 @@ class SearchBar extends React.PureComponent {
 
     this.setState(Object.assign({},
       this.state,
-      { value: '' }
+      { value: '' },
     ));
   }
 
   render() {
-
     const { collectionToSearch, inputLabel, iconName, inputRef, ...props } = this.props;
 
     const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
@@ -57,9 +54,9 @@ class SearchBar extends React.PureComponent {
         className="searchBarInput"
         underlineShow={false}
         onUpdateInput={this.handleInputChange}
-        onNewRequest={(item) => this.addItem()} 
+        onNewRequest={item => this.addItem()}
         dataSource={collectionToSearch}
-        openOnFocus={true}
+        openOnFocus
         filter={(searchText, item) => searchText !== '' && item.toLowerCase().includes(searchText.toLowerCase())}
         ref={inputRef}
       />
@@ -69,7 +66,7 @@ class SearchBar extends React.PureComponent {
         underlineShow={false}
         className="searchBarInput"
         value={this.state.value}
-        onChange={ (event) => { this.handleInputChange(event.target.value) } }
+        onChange={(event) => { this.handleInputChange(event.target.value); }}
         ref={inputRef}
       />
     );
@@ -78,14 +75,14 @@ class SearchBar extends React.PureComponent {
       <div className={s.searchBarContainer}>
         <form onSubmit={this.addItem}>
           {input}
-          <IconButton 
-            iconClassName='material-icons'
+          <IconButton
+            iconClassName="material-icons"
             type="submit"
-            onTouchTap={this.addItem} 
-          >{iconName || "search"}</IconButton>
+            onTouchTap={this.addItem}
+          >{iconName || 'search'}</IconButton>
         </form>
       </div>
-    )
+    );
   }
 }
 

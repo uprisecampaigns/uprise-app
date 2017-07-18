@@ -31,9 +31,9 @@ class LoginForm extends Component {
           <div className={s.signupButton}>
             <Link
               useAhref={false}
-              to='/signup'
+              to="/signup"
             >
-              <RaisedButton secondary={true} label="Sign Up" />
+              <RaisedButton secondary label="Sign Up" />
             </Link>
           </div>
 
@@ -55,7 +55,7 @@ class LoginForm extends Component {
                     value={data.email}
                     type="email"
                     errorText={data.emailErrorText || loginError}
-                    onChange={ (event) => { handleInputChange(event, 'email', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'email', event.target.value); }}
                   />
                 </div>
                 <div className={[s.textFieldContainer, s.centered].join(' ')}>
@@ -63,7 +63,7 @@ class LoginForm extends Component {
                     floatingLabelText="Password"
                     value={data.password}
                     errorText={data.passwordErrorText}
-                    onChange={ (event) => { handleInputChange(event, 'password', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'password', event.target.value); }}
                     type="password"
                   />
                 </div>
@@ -72,15 +72,15 @@ class LoginForm extends Component {
                     className={s.secondaryButton}
                     onTouchTap={formSubmit}
                     type="submit"
-                    primary={true}
+                    primary
                     label="Go"
                   />
                 </div>
               </form>
             </div>
             <Link
-              useAhref={true}
-              to='/forgot-password'
+              useAhref
+              to="/forgot-password"
               className={s.forgotPassword}
             >
               Forgot Password

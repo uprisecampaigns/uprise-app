@@ -10,9 +10,8 @@ import s from 'styles/Settings.scss';
 
 
 class PrivacySecurity extends Component {
-
   static PropTypes = {
-    privacyContent: PropTypes.object.isRequired
+    privacyContent: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -20,7 +19,6 @@ class PrivacySecurity extends Component {
   }
 
   render() {
-
     const { privacyContent, ...props } = this.props;
 
     return (
@@ -28,8 +26,8 @@ class PrivacySecurity extends Component {
 
         <Link to={'/settings'}>
           <div className={[s.navHeader, s.settingsNavHeader].join(' ')}>
-            <FontIcon 
-              className={["material-icons", s.backArrow].join(' ')}
+            <FontIcon
+              className={['material-icons', s.backArrow].join(' ')}
             >arrow_back</FontIcon>
             Settings
           </div>
@@ -45,7 +43,7 @@ class PrivacySecurity extends Component {
 
           <div className={s.sectionHeader}>Privacy Policy</div>
 
-          <Privacy content={privacyContent}/>
+          <Privacy content={privacyContent} />
         </div>
       </div>
     );

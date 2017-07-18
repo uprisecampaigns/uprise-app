@@ -13,7 +13,7 @@ export default {
   action() {
     return {
       title: 'My Subscriptions',
-      component: <Layout><CampaignSubscriptionsWithAuthentication/></Layout>,
+      component: <Layout><CampaignSubscriptionsWithAuthentication /></Layout>,
     };
   },
 };

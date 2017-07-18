@@ -13,47 +13,28 @@ export const ATTEMPT_NAV_FROM_DIRTY_FORM = 'ATTEMPT_NAV_FROM_DIRTY_FORM';
 export const CONFIRM_NAV_FROM_DIRTY_FORM = 'CONFIRM_NAV_FROM_DIRTY_FORM';
 export const CANCEL_NAV_FROM_DIRTY_FORM = 'CANCEL_NAV_FROM_DIRTY_FORM';
 
-export const notify = (value) => {
-  return { type: NOTIFY, value };
-};
+export const notify = value => ({ type: NOTIFY, value });
 
-export const clear = () => {
-  return { type: CLEAR };
-};
+export const clear = () => ({ type: CLEAR });
 
-export const startPageLoad = () => {
-  return { type: START_PAGE_LOAD };
-};
+export const startPageLoad = () => ({ type: START_PAGE_LOAD });
 
-export const endPageLoad = () => {
-  return { type: END_PAGE_LOAD };
-};
+export const endPageLoad = () => ({ type: END_PAGE_LOAD });
 
-export const dirtyForm = () => {
-  return { type: FORM_DIRTIED };
-};
+export const dirtyForm = () => ({ type: FORM_DIRTIED });
 
-export const cleanForm = () => {
-  return { type: FORM_CLEANED };
-};
+export const cleanForm = () => ({ type: FORM_CLEANED });
 
-export const cancelNavFromDirtyForm = () => {
-  return { type: CANCEL_NAV_FROM_DIRTY_FORM };
-};
+export const cancelNavFromDirtyForm = () => ({ type: CANCEL_NAV_FROM_DIRTY_FORM });
 
-export const attemptNavFromDirtyForm = (nextUrl) => {
-  return { type: ATTEMPT_NAV_FROM_DIRTY_FORM, nextUrl };
-};
+export const attemptNavFromDirtyForm = nextUrl => ({ type: ATTEMPT_NAV_FROM_DIRTY_FORM, nextUrl });
 
-export const confirmNavFromDirtyForm = () => {
-  return async (dispatch, getState) => {
+export const confirmNavFromDirtyForm = () => async (dispatch, getState) => {
+  const nextUrl = getState().notifications.nextUrl;
 
-    const nextUrl = getState().notifications.nextUrl;
+  dispatch(cleanForm());
 
-    dispatch(cleanForm());
+  history.push(nextUrl);
 
-    history.push(nextUrl);
-
-    return { type: CONFIRM_NAV_FROM_DIRTY_FORM };
-  }
+  return { type: CONFIRM_NAV_FROM_DIRTY_FORM };
 };

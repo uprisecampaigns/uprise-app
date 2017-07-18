@@ -8,7 +8,6 @@ import s from 'styles/Volunteer.scss';
 
 
 class Volunteer extends Component {
-
   static PropTypes = {
   }
 
@@ -17,7 +16,6 @@ class Volunteer extends Component {
   }
 
   render() {
-
     return (
       <div className={s.outerContainer}>
 
@@ -27,23 +25,23 @@ class Volunteer extends Component {
 
         <List className={s.navList}>
 
-          <Divider/>
+          <Divider />
 
           <Link to={'/volunteer/action-commitments'}>
-            <ListItem 
+            <ListItem
               primaryText="My Actions"
             />
           </Link>
 
-          <Divider/>
+          <Divider />
 
           <Link to={'/volunteer/campaign-subscriptions'}>
-            <ListItem 
+            <ListItem
               primaryText="My Subscriptions"
             />
           </Link>
 
-          <Divider/>
+          <Divider />
 
         </List>
       </div>

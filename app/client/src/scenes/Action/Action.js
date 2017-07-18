@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import moment from 'moment-timezone';
 import Dialog from 'material-ui/Dialog';
@@ -14,7 +14,7 @@ import Link from 'components/Link';
 import AddToCalendar from 'components/AddToCalendar';
 
 import {
-  notify
+  notify,
 } from 'actions/NotificationsActions';
 
 import ActionQuery from 'schemas/queries/ActionQuery.graphql';
@@ -31,14 +31,14 @@ class Action extends Component {
 
     this.state = {
       saving: false,
-      modalOpen: false
-    }
+      modalOpen: false,
+    };
   }
 
   static propTypes = {
     actionId: PropTypes.string.isRequired,
     actionSlug: PropTypes.string.isRequired,
-    action: PropTypes.object
+    action: PropTypes.object,
   };
 
   signup = () => {
@@ -46,12 +46,11 @@ class Action extends Component {
   }
 
   confirmSignup = async () => {
-
     this.setState({ saving: true, modalOpen: false });
     try {
       const results = await this.props.signup({
         variables: {
-          actionId: this.props.action.id
+          actionId: this.props.action.id,
         },
         // TODO: decide between refetch and update
         refetchQueries: ['ActionCommitmentsQuery', 'SignedUpVolunteersQuery', 'ActionQuery'],
@@ -67,12 +66,11 @@ class Action extends Component {
   }
 
   cancelSignup = async () => {
-
     this.setState({ saving: true });
     try {
       const results = await this.props.cancelSignup({
         variables: {
-          actionId: this.props.action.id
+          actionId: this.props.action.id,
         },
         // TODO: decide between refetch and update
         refetchQueries: ['ActionCommitmentsQuery', 'SignedUpVolunteersQuery', 'ActionQuery'],
@@ -85,25 +83,19 @@ class Action extends Component {
       this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
       this.setState({ saving: false });
     }
-
   }
 
   render() {
     if (this.props.action) {
-
       const { action, ...props } = this.props;
       const { modalOpen, ...state } = this.state;
       const { signup, confirmSignup, cancelSignup } = this;
-  
+
       const issueAreas = (Array.isArray(action.issue_areas) && action.issue_areas.length) ?
-        action.issue_areas.map( (issue, index) => {
-          return <div key={index} className={s.detailLine}>{issue.title}</div>;
-        }) : [];
+        action.issue_areas.map((issue, index) => <div key={index} className={s.detailLine}>{issue.title}</div>) : [];
 
       const activities = (Array.isArray(action.activities) && action.activities.length) ?
-        action.activities.map( (activity, index) => {
-          return <div key={index} className={s.detailLine}>{activity.description}</div>;
-        }) : [];
+        action.activities.map((activity, index) => <div key={index} className={s.detailLine}>{activity.description}</div>) : [];
 
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.detailLine}>{action.tags.join(', ')}</div>
@@ -119,14 +111,14 @@ class Action extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ (event) => { event.preventDefault(); this.setState({modalOpen: false}); }}
+          onTouchTap={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
         />,
         <RaisedButton
           label="Confirm"
-          primary={true}
-          onTouchTap={ (event) => { event.preventDefault(); confirmSignup() }}
+          primary
+          onTouchTap={(event) => { event.preventDefault(); confirmSignup(); }}
           className={s.primaryButton}
-        />
+        />,
       ];
 
       return (
@@ -137,16 +129,16 @@ class Action extends Component {
               <div className={s.titleContainer}>{action.title}</div>
               { action.is_owner && (
                 <div className={s.settingsIcon}>
-                  <Link to={'/organize/' + action.campaign.slug + '/action/' + action.slug}>
+                  <Link to={`/organize/${action.campaign.slug}/action/${action.slug}`}>
                     <FontIcon
-                      className={["material-icons"].join(' ')}
+                      className={['material-icons'].join(' ')}
                     >settings</FontIcon>
                   </Link>
                 </div>
               )}
             </div>
 
-            <Link to={'/campaign/' + action.campaign.slug}>
+            <Link to={`/campaign/${action.campaign.slug}`}>
               <div className={s.campaignHeader}>{action.campaign.title}</div>
             </Link>
 
@@ -157,7 +149,7 @@ class Action extends Component {
               </div>
             )}
 
-            { (action.city && action.state) && 
+            { (action.city && action.state) &&
               <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
             }
 
@@ -177,21 +169,21 @@ class Action extends Component {
                       <AddToCalendar className={s.calendarLinkContainer} event={action}>
                         <FlatButton
                           label="Add to Calendar"
-                          secondary={true}
+                          secondary
                           icon={<FontIcon className="material-icons">add_circle_outline</FontIcon>}
                         />
                       </AddToCalendar>
 
                       <RaisedButton
                         onTouchTap={cancelSignup}
-                        primary={true}
+                        primary
                         label="Cancel attendance"
                       />
                     </div>
                   ) : (
                     <RaisedButton
                       onTouchTap={signup}
-                      primary={true}
+                      primary
                       className={s.primaryButton}
                       label="Sign up now"
                     />
@@ -207,7 +199,7 @@ class Action extends Component {
             { action.owner && (
               <div className={s.contactContainer}>
                 Contact Coordinator: {action.owner.first_name} {action.owner.last_name}
-                <Link to={'mailto:' + action.owner.email} mailTo={true} external={true} useAhref={true}>
+                <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>
                   {action.owner.email}
                 </Link>
               </div>
@@ -218,15 +210,15 @@ class Action extends Component {
                 <div className={s.header}>
                   Location Details
                 </div>
-                {action.location_name && 
+                {action.location_name &&
                   <div className={s.detailLine}>{action.location_name}</div>
                 }
 
-                {action.street_address && 
+                {action.street_address &&
                   <div className={s.detailLine}>{action.street_address}</div>
                 }
 
-                {action.street_address2 && 
+                {action.street_address2 &&
                   <div className={s.detailLine}>{action.street_address2}</div>
                 }
 
@@ -236,7 +228,7 @@ class Action extends Component {
                   </div>
                 )}
 
-                {action.location_notes && 
+                {action.location_notes &&
                   <div className={s.detailLine}>{action.location_notes}</div>
                 }
               </div>
@@ -260,7 +252,7 @@ class Action extends Component {
               </div>
             )}
 
-            {keywords && ( 
+            {keywords && (
               <div className={s.keywordsContainer}>
                 <div className={s.header}>
                   Keywords:
@@ -274,11 +266,11 @@ class Action extends Component {
           {modalOpen && (
             <Dialog
               title="Permission to Share?"
-              modal={true}
+              modal
               actions={modalActions}
               actionsContainerClassName={s.modalActionsContainer}
               open={modalOpen}
-              autoScrollBodyContent={true}
+              autoScrollBodyContent
             >
               <p>
                 May we have your permission to share your email address with the coordinator for the purpose of contacting you about this action?
@@ -288,24 +280,23 @@ class Action extends Component {
 
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 const withActionQuery = graphql(ActionQuery, {
-  options: (ownProps) => ({
+  options: ownProps => ({
     variables: {
       search: {
-        slug: ownProps.actionSlug
-      }
+        slug: ownProps.actionSlug,
+      },
     },
     fetchPolicy: 'cache-and-network',
   }),
   props: ({ data }) => ({
-    action: data.action
-  })
+    action: data.action,
+  }),
 });
 
 export default compose(

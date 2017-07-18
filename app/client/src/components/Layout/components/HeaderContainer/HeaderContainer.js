@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { attemptLogout } from 'actions/AuthActions';
 import { graphql, compose } from 'react-apollo';
 
@@ -36,16 +36,14 @@ const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     userObject: !data.loading && data.me ? data.me : {
       email: '',
-    }
+    },
   }),
-  skip: (ownProps) => !ownProps.loggedIn,
+  skip: ownProps => !ownProps.loggedIn,
 });
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.userAuthSession.isLoggedIn,
-  };
-}
+const mapStateToProps = state => ({
+  loggedIn: state.userAuthSession.isLoggedIn,
+});
 
 export default compose(
   connect(mapStateToProps),

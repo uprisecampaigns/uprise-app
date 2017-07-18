@@ -46,10 +46,10 @@ class Home extends React.Component {
             </div>
             <div className={s.linkContainer}>
               <Link
-                useAhref={true}
+                useAhref
                 to="uprisecampaigns.org/home/volunteers"
-                external={true}
-                sameTab={true}
+                external
+                sameTab
               >
                 Learn More
               </Link>
@@ -67,10 +67,10 @@ class Home extends React.Component {
             </div>
             <div className={s.linkContainer}>
               <Link
-                useAhref={true}
+                useAhref
                 to="uprisecampaigns.org/home/campaigns"
-                external={true}
-                sameTab={true}
+                external
+                sameTab
               >
                 Learn More
               </Link>
@@ -91,8 +91,8 @@ class Home extends React.Component {
                 <Link
                   useAhref={false}
                   to="https://act.myngp.com/Forms/-8815703986835813888"
-                  external={true}
-                  sameTab={true}
+                  external
+                  sameTab
                 >
                   <FlatButton
                     className={s.homeButton}
@@ -111,8 +111,8 @@ class Home extends React.Component {
                 <Link
                   useAhref={false}
                   to="https://act.myngp.com/Forms/-8527473610684102144"
-                  external={true}
-                  sameTab={true}
+                  external
+                  sameTab
                 >
                   <FlatButton
                     className={s.homeButton}

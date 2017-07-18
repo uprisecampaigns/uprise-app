@@ -13,7 +13,7 @@ export default {
   action() {
     return {
       title: 'Settings',
-      component: <Layout><SettingsWithAuthentication/></Layout>,
+      component: <Layout><SettingsWithAuthentication /></Layout>,
     };
   },
 };

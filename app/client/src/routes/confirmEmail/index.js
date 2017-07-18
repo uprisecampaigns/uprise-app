@@ -6,7 +6,7 @@ import Home from 'scenes/Home';
 import ConfirmEmailMutation from 'schemas/mutations/ConfirmEmailMutation.graphql';
 
 import {
-  notify
+  notify,
 } from 'actions/NotificationsActions';
 
 
@@ -19,7 +19,7 @@ export default {
       const { token } = context.params;
       const result = await context.apolloClient.mutate({
         mutation: ConfirmEmailMutation,
-        variables: { token }
+        variables: { token },
       });
 
       console.log(result);
@@ -28,14 +28,13 @@ export default {
       } else {
         context.store.dispatch(notify('There was an error confirming your email. Please try again.'));
       }
-
     } catch (e) {
       console.error(e);
       context.store.dispatch(notify('There was an error confirming your email. Please try again.'));
     }
 
     return {
-      redirect: '/'
-    }
+      redirect: '/',
+    };
   },
 };

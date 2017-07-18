@@ -8,11 +8,11 @@ const SearchWithAuthentication = withAuthentication(Search);
 
 export default {
   path: '/search',
-  
+
   action() {
     return {
       title: 'Search',
-      component: <Layout><SearchWithAuthentication/></Layout>,
+      component: <Layout><SearchWithAuthentication /></Layout>,
     };
   },
 };

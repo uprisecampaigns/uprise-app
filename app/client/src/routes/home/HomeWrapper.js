@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 import Home from 'scenes/Home';
 import Page from 'components/Page';
@@ -11,26 +11,22 @@ class HomeWrapper extends React.Component {
   }
 
   render() {
-
     const { fetchingUpdate, loggedIn, ...props } = this.props;
 
     if (!fetchingUpdate && loggedIn) {
       return (
         <Page {...props} />
       );
-    } else {
-      return (
-        <Home {...props} />
-      );
     }
+    return (
+      <Home {...props} />
+    );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.userAuthSession.isLoggedIn,
-    fetchingUpdate: state.userAuthSession.fetchingAuthUpdate
-  };
-}
+const mapStateToProps = state => ({
+  loggedIn: state.userAuthSession.isLoggedIn,
+  fetchingUpdate: state.userAuthSession.fetchingAuthUpdate,
+});
 
 export default connect(mapStateToProps)(HomeWrapper);

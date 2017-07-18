@@ -11,11 +11,11 @@ const ManageCampaignWithAuthentication = withAuthentication(ManageCampaign);
 
 const path = organizeCampaignPaths({
   path: '/organize/:slug',
-  component: (campaign) => (
+  component: campaign => (
     <Layout>
-      <ManageCampaignWithAuthentication campaignSlug={campaign.slug}/>
+      <ManageCampaignWithAuthentication campaignSlug={campaign.slug} />
     </Layout>
-  )
+  ),
 });
 
 export default path;

@@ -1,6 +1,6 @@
 
 import React, { Component, PropTypes } from 'react';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import ArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward';
 import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward';
 
@@ -21,36 +21,35 @@ class SearchSort extends React.PureComponent {
   };
 
   render() {
-
     const { onSelect, items, selected, descending } = this.props;
 
-    const sortItems = items.map( (item, index) => {
+    const sortItems = items.map((item, index) => {
       const isSelected = item.prop === selected;
-      const arrow = (descending ? <ArrowDownward/> : <ArrowUpward/>);
+      const arrow = (descending ? <ArrowDownward /> : <ArrowUpward />);
 
       return isSelected ? (
-        <ListItem 
+        <ListItem
           key={item.prop}
           primaryText={item.label}
           className={s.sortSelected}
           rightIcon={arrow}
-          onTouchTap={ (event) => onSelect(item.prop, event) }
+          onTouchTap={event => onSelect(item.prop, event)}
         />
       ) : (
-        <ListItem 
+        <ListItem
           key={item.prop}
           primaryText={item.label}
-          onTouchTap={ (event) => onSelect(item.prop, event) }
+          onTouchTap={event => onSelect(item.prop, event)}
         />
       );
     });
 
     return (
       <List>
-        {sortItems} 
+        {sortItems}
       </List>
     );
   }
-};
+}
 
 export default SearchSort;

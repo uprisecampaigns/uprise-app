@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 import Divider from 'material-ui/Divider';
 
@@ -14,9 +14,8 @@ import s from 'styles/Organize.scss';
 
 
 class ManageCampaignContainer extends Component {
-
   static PropTypes = {
-    campaignSlug: PropTypes.string.isRequired
+    campaignSlug: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -24,7 +23,6 @@ class ManageCampaignContainer extends Component {
   }
 
   render() {
-
     if (this.props.campaign) {
       const { campaign, ...props } = this.props;
 
@@ -33,8 +31,8 @@ class ManageCampaignContainer extends Component {
 
           <Link to={'/organize'}>
             <div className={[s.navHeader, s.organizeNavHeader].join(' ')}>
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Organize
             </div>
@@ -44,52 +42,51 @@ class ManageCampaignContainer extends Component {
 
           <List className={s.navList}>
 
-            <Divider/>
+            <Divider />
 
-            <Link to={'/organize/' + campaign.slug + '/actions'}>
-              <ListItem 
+            <Link to={`/organize/${campaign.slug}/actions`}>
+              <ListItem
                 primaryText="Campaign Actions"
               />
             </Link>
 
-            <Divider/>
+            <Divider />
 
-            <Link to={'/organize/' + campaign.slug + '/volunteers'}>
-              <ListItem 
+            <Link to={`/organize/${campaign.slug}/volunteers`}>
+              <ListItem
                 primaryText="Volunteers"
               />
             </Link>
 
-            <Divider/>
+            <Divider />
 
-            <Link to={'/organize/' + campaign.slug + '/settings'}>
-              <ListItem 
+            <Link to={`/organize/${campaign.slug}/settings`}>
+              <ListItem
                 primaryText="Settings"
               />
             </Link>
 
-            <Divider/>
+            <Divider />
 
           </List>
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          slug: ownProps.campaignSlug
-        }
-      }
+          slug: ownProps.campaignSlug,
+        },
+      },
     }),
-    props: ({ data }) => ({ 
-      campaign: data.campaign
-    })
+    props: ({ data }) => ({
+      campaign: data.campaign,
+    }),
   }),
 )(ManageCampaignContainer);

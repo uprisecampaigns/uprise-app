@@ -8,7 +8,6 @@ import s from 'styles/Search.scss';
 
 
 class Search extends Component {
-
   static PropTypes = {
   }
 
@@ -17,7 +16,6 @@ class Search extends Component {
   }
 
   render() {
-
     return (
       <div className={s.outerContainer}>
 
@@ -27,23 +25,23 @@ class Search extends Component {
 
         <List className={s.navList}>
 
-          <Divider/>
+          <Divider />
 
           <Link to={'/search/search-actions'}>
-            <ListItem 
+            <ListItem
               primaryText="Actions"
             />
           </Link>
 
-          <Divider/>
+          <Divider />
 
           <Link to={'/search/search-campaigns'}>
-            <ListItem 
+            <ListItem
               primaryText="Campaigns"
             />
           </Link>
 
-          <Divider/>
+          <Divider />
 
         </List>
       </div>

@@ -8,23 +8,15 @@ export const UNSET_DATES = 'UNSET_DATES';
 
 export const SORT_BY = 'SORT_BY';
 
-export const addSearchItem = (searchType, collectionName, value) => {
-  return { type: ADD_SEARCH_ITEM, searchType, collection: collectionName, value };
-};
+export const addSearchItem = (searchType, collectionName, value) => ({ type: ADD_SEARCH_ITEM, searchType, collection: collectionName, value });
 
-export const removeSearchItem = (searchType, collectionName, value) => {
-  return { type: REMOVE_SEARCH_ITEM, searchType, collection: collectionName, value };
-};
+export const removeSearchItem = (searchType, collectionName, value) => ({ type: REMOVE_SEARCH_ITEM, searchType, collection: collectionName, value });
 
 export const setSearchDates = (searchType, dates) => {
   unsetSearchDates(searchType);
   return { type: SET_DATES, searchType, dates };
 };
 
-export const unsetSearchDates = (searchType) => {
-  return { type: UNSET_DATES, searchType };
-};
+export const unsetSearchDates = searchType => ({ type: UNSET_DATES, searchType });
 
-export const sortBy = (searchType, selection) => {
-  return { type: SORT_BY, searchType, selection };
-};
+export const sortBy = (searchType, selection) => ({ type: SORT_BY, searchType, selection });

@@ -19,11 +19,10 @@ import SendMessageMutation from 'schemas/mutations/SendMessageMutation.graphql';
 import { notify } from 'actions/NotificationsActions';
 
 class ManageCampaignComposeMessage extends Component {
-
   static PropTypes = {
     campaignId: PropTypes.string.isRequired,
     campaign: PropTypes.object,
-    sendMessage: PropTypes.func.isRequired
+    sendMessage: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -31,18 +30,15 @@ class ManageCampaignComposeMessage extends Component {
   }
 
   sendMessage = async ({ subject, body }) => {
-
     const { userObject, recipients, sendMessage, ...props } = this.props;
 
-    body = 'From: ' + userObject.first_name + ' ' + userObject.last_name + 
-      '\nPlease reply to: ' + userObject.email + 
-      '\n' + this.props.campaign.title + 
-      '\n\n' + body;
+    body = `From: ${userObject.first_name} ${userObject.last_name
+    }\nPlease reply to: ${userObject.email
+    }\n${this.props.campaign.title
+    }\n\n${body}`;
 
     if (!this.sending) {
-
       try {
-
         this.sending = true;
 
         const results = await sendMessage({
@@ -51,18 +47,17 @@ class ManageCampaignComposeMessage extends Component {
               replyToEmail: userObject.email,
               recipientEmails: recipients.map(r => r.email),
               subject,
-              body
-            }
+              body,
+            },
           },
         });
 
         this.sending = false;
         this.props.dispatch(notify('Message Sent'));
 
-        setTimeout( () => {
+        setTimeout(() => {
           history.goBack();
         }, 500);
-
       } catch (e) {
         console.error(e);
         this.sending = false;
@@ -72,26 +67,24 @@ class ManageCampaignComposeMessage extends Component {
   }
 
   render() {
-
     if (this.props.campaign && this.props.recipients && this.props.userObject) {
-
       const { campaign, userObject, recipients, ...props } = this.props;
 
-      const baseUrl = '/organize/' + campaign.slug;
+      const baseUrl = `/organize/${campaign.slug}`;
 
       const detailLines = [
-        'From: ' + userObject.first_name + ' ' + userObject.last_name,
-        'Please reply to: ' + userObject.email,
+        `From: ${userObject.first_name} ${userObject.last_name}`,
+        `Please reply to: ${userObject.email}`,
         campaign.title,
       ];
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={baseUrl + '/volunteers'}>
+          <Link to={`${baseUrl}/volunteers`}>
             <div className={s.navHeader}>
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Volunteers
             </div>
@@ -99,7 +92,7 @@ class ManageCampaignComposeMessage extends Component {
 
           <div className={s.pageSubHeader}>Compose Message</div>
 
-          <ComposeMessage 
+          <ComposeMessage
             fromEmail={userObject.email}
             detailLines={detailLines}
             recipients={recipients}
@@ -108,36 +101,33 @@ class ManageCampaignComposeMessage extends Component {
 
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    recipients: state.messages.recipients,
-  };
-}
+const mapStateToProps = state => ({
+  recipients: state.messages.recipients,
+});
 
 export default compose(
   connect(mapStateToProps),
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.campaignId
-        }
-      }
+          id: ownProps.campaignId,
+        },
+      },
     }),
-    props: ({ data }) => ({ 
-      campaign: data.campaign
-    })
+    props: ({ data }) => ({
+      campaign: data.campaign,
+    }),
   }),
   graphql(MeQuery, {
     props: ({ data }) => ({
-      userObject: data.me
+      userObject: data.me,
     }),
   }),
-  graphql(SendMessageMutation, { name: 'sendMessage' })
+  graphql(SendMessageMutation, { name: 'sendMessage' }),
 )(ManageCampaignComposeMessage);

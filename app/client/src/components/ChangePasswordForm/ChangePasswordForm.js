@@ -9,8 +9,8 @@ import Link from 'components/Link';
 
 import s from 'styles/Form.scss';
 
-function OldPassword({show, data, errors, handleInputChange, error}) {
-  if(show) {
+function OldPassword({ show, data, errors, handleInputChange, error }) {
+  if (show) {
     return (
       <div className={s.textFieldContainer}>
         <TextField
@@ -18,24 +18,22 @@ function OldPassword({show, data, errors, handleInputChange, error}) {
           value={data.oldPassword}
           errorText={errors.oldPasswordErrorText || error}
           type="password"
-          onChange={ (event) => { handleInputChange(event, 'oldPassword', event.target.value) } }
-          fullWidth={true}
+          onChange={(event) => { handleInputChange(event, 'oldPassword', event.target.value); }}
+          fullWidth
         />
       </div>
     );
-  } else {
-    return null;
   }
+  return null;
 }
 
-function ChangePasswordForm({data, errors, handleInputChange, formSubmit, passwordBeingReset, cancel, error}) {
-
+function ChangePasswordForm({ data, errors, handleInputChange, formSubmit, passwordBeingReset, cancel, error }) {
   return (
-    <form 
+    <form
       className={s.form}
       onSubmit={formSubmit}
     >
-      <OldPassword 
+      <OldPassword
         show={!passwordBeingReset}
         data={data}
         errors={errors}
@@ -48,8 +46,8 @@ function ChangePasswordForm({data, errors, handleInputChange, formSubmit, passwo
           value={data.newPassword1}
           errorText={errors.newPassword1ErrorText}
           type="password"
-          onChange={ (event) => { handleInputChange(event, 'newPassword1', event.target.value) } }
-          fullWidth={true}
+          onChange={(event) => { handleInputChange(event, 'newPassword1', event.target.value); }}
+          fullWidth
         />
       </div>
       <div className={s.textFieldContainer}>
@@ -58,16 +56,16 @@ function ChangePasswordForm({data, errors, handleInputChange, formSubmit, passwo
           value={data.newPassword2}
           errorText={errors.newPassword2ErrorText}
           type="password"
-          onChange={ (event) => { handleInputChange(event, 'newPassword2', event.target.value) } }
-          fullWidth={true}
+          onChange={(event) => { handleInputChange(event, 'newPassword2', event.target.value); }}
+          fullWidth
         />
       </div>
       <div className={s.primaryButton}>
-        <RaisedButton 
-          onTouchTap={formSubmit} 
+        <RaisedButton
+          onTouchTap={formSubmit}
           type="submit"
-          primary={true} 
-          label="Save Changes" 
+          primary
+          label="Save Changes"
         />
       </div>
     </form>
@@ -81,7 +79,7 @@ ChangePasswordForm.propTypes = {
   passwordBeingReset: PropTypes.bool.isRequired,
   cancel: PropTypes.func.isRequired,
   error: PropTypes.string,
-}
+};
 
 
 export default ChangePasswordForm;

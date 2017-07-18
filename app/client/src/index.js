@@ -18,7 +18,7 @@ import { checkSessionStatus } from 'actions/AuthActions';
 import {
   startPageLoad,
   endPageLoad,
-  attemptNavFromDirtyForm
+  attemptNavFromDirtyForm,
 } from 'actions/NotificationsActions';
 
 import TypesQuery from 'schemas/queries/TypesQuery.graphql';
@@ -57,8 +57,7 @@ if (window.history && 'scrollRestoration' in window.history) {
 const context = {
 };
 
-let onRenderComplete = function initialRenderComplete(route, location) {
-
+const onRenderComplete = function initialRenderComplete(route, location) {
   store.dispatch(endPageLoad());
 
   let scrollX = 0;
@@ -83,13 +82,11 @@ let onRenderComplete = function initialRenderComplete(route, location) {
   window.setTimeout(() => {
     window.scrollTo(scrollX, scrollY);
   }, 10);
-}
+};
 
 // Re-render the app when window.location changes
 async function onLocationChange(location) {
-
   try {
-
     // TODO: Not only does this seem to occasionally get stuck, it also just reeks of code smell
     const fetchingSessionStatus = store.getState().userAuthSession.fetchingAuthUpdate;
     if (!fetchingSessionStatus) {
@@ -115,8 +112,8 @@ async function onLocationChange(location) {
     const route = await UniversalRouter.resolve(routes, {
       path: location.pathname,
       query: queryString.parse(location.search),
-      apolloClient: apolloClient,
-      store: store // be wary of using the store in routing considering async updates
+      apolloClient,
+      store, // be wary of using the store in routing considering async updates
     });
 
     // Prevent multiple page renders during the routing process
@@ -147,11 +144,10 @@ async function onLocationChange(location) {
       () => onRenderComplete(route, location),
     );
   } catch (error) {
-
     Raven.captureException(error, {
       extra: {
         state: store.getState(),
-      }
+      },
     });
 
     window.console && console.error && console.error(error);
@@ -189,7 +185,7 @@ history.listen(onLocationChange);
 onLocationChange(currentLocation);
 
 // We can prefetch these basic queries because they're integral to UI performance
-apolloClient.query({query: ActivitiesQuery});
-apolloClient.query({query: IssueAreasQuery});
-apolloClient.query({query: LevelsQuery});
-apolloClient.query({query: TypesQuery});
+apolloClient.query({ query: ActivitiesQuery });
+apolloClient.query({ query: IssueAreasQuery });
+apolloClient.query({ query: LevelsQuery });
+apolloClient.query({ query: TypesQuery });

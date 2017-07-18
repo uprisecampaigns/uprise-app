@@ -5,7 +5,7 @@ import { List, ListItem } from 'material-ui/List';
 import Dialog from 'material-ui/Dialog';
 import {
   Table, TableBody, TableFooter, TableHeader, TableHeaderColumn,
-  TableRow, TableRowColumn
+  TableRow, TableRowColumn,
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -23,7 +23,6 @@ import s from 'styles/Organize.scss';
 
 
 class ManageCampaignVolunteers extends Component {
-
   static PropTypes = {
     campaignSlug: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -35,20 +34,17 @@ class ManageCampaignVolunteers extends Component {
 
     this.state = {
       selected: [],
-      emptyRecipientsModalOpen: false
+      emptyRecipientsModalOpen: false,
     };
   }
 
-  isSelected = (id) => {
-    return (this.state.selected.find((row) => row.id === id) !== undefined);
-  }
+  isSelected = id => (this.state.selected.find(row => row.id === id) !== undefined)
 
   handleRowSelection = (selectedRows) => {
     if (selectedRows === 'none') {
       this.setState({ selected: [] });
     } else {
-
-      const selected = this.props.subscribers.filter( (volunteer, index) => (
+      const selected = this.props.subscribers.filter((volunteer, index) => (
         (selectedRows === 'all' || selectedRows.includes(index))
       ));
 
@@ -57,42 +53,39 @@ class ManageCampaignVolunteers extends Component {
   }
 
   composeMessage = (event) => {
-
     const { campaign, dispatch, ...props } = this.props;
 
     if (this.state.selected.length === 0) {
       this.setState({ emptyRecipientsModalOpen: true });
     } else {
       dispatch(setRecipients(this.state.selected));
-      history.push('/organize/' + campaign.slug + '/compose');
+      history.push(`/organize/${campaign.slug}/compose`);
     }
   }
 
   render() {
-
     if (this.props.campaign && this.props.subscribers) {
-
       const { campaign, subscribers, ...props } = this.props;
       const { emptyRecipientsModalOpen, ...state } = this.state;
 
-      const baseUrl = '/organize/' + campaign.slug;
+      const baseUrl = `/organize/${campaign.slug}`;
 
       const modalActions = [
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ (event) => { event.preventDefault(); this.setState({emptyRecipientsModalOpen: false}); }}
-        />
+          onTouchTap={(event) => { event.preventDefault(); this.setState({ emptyRecipientsModalOpen: false }); }}
+        />,
       ];
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug}>
+          <Link to={`/organize/${campaign.slug}`}>
             <div className={[s.navHeader, s.campaignNavHeader].join(' ')}>
 
               <FontIcon
-                className={["material-icons", s.backArrow].join(' ')}
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
 
               {campaign.title}
@@ -105,21 +98,21 @@ class ManageCampaignVolunteers extends Component {
             <RaisedButton
               className={s.organizeButton}
               onTouchTap={this.composeMessage}
-              primary={true}
+              primary
               label="Compose Message"
             />
           </div>
 
           <Table
-            fixedHeader={true}
-            selectable={true}
-            multiSelectable={true}
+            fixedHeader
+            selectable
+            multiSelectable
             onRowSelection={this.handleRowSelection}
           >
             <TableHeader
-              displaySelectAll={true}
-              adjustForCheckbox={true}
-              enableSelectAll={true}
+              displaySelectAll
+              adjustForCheckbox
+              enableSelectAll
             >
               <TableRow>
                 <TableHeaderColumn>Name</TableHeaderColumn>
@@ -128,25 +121,25 @@ class ManageCampaignVolunteers extends Component {
               </TableRow>
             </TableHeader>
             <TableBody
-              displayRowCheckbox={true}
-              showRowHover={true}
+              displayRowCheckbox
+              showRowHover
               stripedRows={false}
               deselectOnClickaway={false}
             >
-              {subscribers.map( (subscriber, index) => (
-                <TableRow key={subscriber.id} selected={this.isSelected(subscriber.id)} selectable={true}>
-                  <TableRowColumn>{subscriber.first_name + ' ' + subscriber.last_name}</TableRowColumn>
+              {subscribers.map((subscriber, index) => (
+                <TableRow key={subscriber.id} selected={this.isSelected(subscriber.id)} selectable>
+                  <TableRowColumn>{`${subscriber.first_name} ${subscriber.last_name}`}</TableRowColumn>
                   <TableRowColumn>{subscriber.email}</TableRowColumn>
                   <TableRowColumn>{subscriber.phone_number}</TableRowColumn>
                 </TableRow>
-                ))}
+              ))}
             </TableBody>
           </Table>
 
           {emptyRecipientsModalOpen && (
             <Dialog
               title="No Recipients Selected"
-              modal={true}
+              modal
               actions={modalActions}
               open={emptyRecipientsModalOpen}
               actionsContainerClassName={s.modalActionsContainer}
@@ -159,37 +152,36 @@ class ManageCampaignVolunteers extends Component {
 
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   connect(),
   graphql(CampaignQuery, {
-    options: (ownProps) => ({
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.campaignId
-        }
-      }
+          id: ownProps.campaignId,
+        },
+      },
     }),
     props: ({ data }) => ({
-      campaign: data.campaign
-    })
+      campaign: data.campaign,
+    }),
   }),
   graphql(SubscribedUsersQuery, {
-    options: (ownProps) => ({
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.campaignId
-        }
+          id: ownProps.campaignId,
+        },
       },
       fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({
-      subscribers: data.subscribedUsers
-    })
-  })
+      subscribers: data.subscribedUsers,
+    }),
+  }),
 )(ManageCampaignVolunteers);

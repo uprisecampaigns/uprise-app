@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Toggle from 'material-ui/Toggle';
@@ -28,13 +28,13 @@ class CampaignInfoForm extends Component {
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
-    submitText: PropTypes.string.isRequired
+    submitText: PropTypes.string.isRequired,
   }
 
   render() {
-    const { 
+    const {
       data, user, refs, formSubmit, errors, saving,
-      handleInputChange, cancel, submitText 
+      handleInputChange, cancel, submitText,
     } = this.props;
 
     const statesList = Object.keys(states);
@@ -45,7 +45,7 @@ class CampaignInfoForm extends Component {
         <div className={s.innerContainer}>
           <Paper zDepth={2}>
             <div className={s.formContainer}>
-              <form 
+              <form
                 className={s.form}
                 onSubmit={formSubmit}
               >
@@ -53,18 +53,18 @@ class CampaignInfoForm extends Component {
                   <TextField
                     floatingLabelText="Campaign Name"
                     value={data.title}
-                    onChange={ (event) => { handleInputChange(event, 'title', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
                     errorText={errors.titleErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Website"
                     value={data.websiteUrl}
-                    onChange={ (event) => { handleInputChange(event, 'websiteUrl', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'websiteUrl', event.target.value); }}
                     errorText={errors.websiteUrlErrorText}
-                    fullWidth={true}
+                    fullWidth
                     type="url"
                   />
                 </div>
@@ -72,9 +72,9 @@ class CampaignInfoForm extends Component {
                   <TextField
                     floatingLabelText="Phone"
                     value={data.phoneNumber}
-                    onChange={ (event) => { handleInputChange(event, 'phoneNumber', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'phoneNumber', event.target.value); }}
                     errorText={errors.phoneNumberErrorText}
-                    fullWidth={true}
+                    fullWidth
                     type="tel"
                     pattern="[0-9]{10}"
                   />
@@ -83,17 +83,17 @@ class CampaignInfoForm extends Component {
                   <TextField
                     floatingLabelText="Street Address"
                     value={data.streetAddress}
-                    onChange={ (event) => { handleInputChange(event, 'streetAddress', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'streetAddress', event.target.value); }}
                     errorText={errors.streetAddressErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Street Address 2"
                     value={data.streetAddress2}
-                    onChange={ (event) => { handleInputChange(event, 'streetAddress2', event.target.value) } }
-                    fullWidth={true}
+                    onChange={(event) => { handleInputChange(event, 'streetAddress2', event.target.value); }}
+                    fullWidth
                   />
                 </div>
 
@@ -101,9 +101,9 @@ class CampaignInfoForm extends Component {
                   <TextField
                     floatingLabelText="City"
                     value={data.city}
-                    onChange={ (event) => { handleInputChange(event, 'city', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'city', event.target.value); }}
                     errorText={errors.cityErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
                 <div className={s.textFieldContainer}>
@@ -111,10 +111,10 @@ class CampaignInfoForm extends Component {
                     floatingLabelText="State"
                     searchText={data.state}
                     dataSource={statesList}
-                    onUpdateInput={ (text) => { handleInputChange(undefined, 'state', text) } }
-                    ref={ (input) => { refs.stateInput = input } }
+                    onUpdateInput={(text) => { handleInputChange(undefined, 'state', text); }}
+                    ref={(input) => { refs.stateInput = input; }}
                     errorText={errors.stateErrorText}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
 
@@ -124,7 +124,7 @@ class CampaignInfoForm extends Component {
                     value={data.zipcode}
                     type="text"
                     pattern="[0-9]{5}"
-                    onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
                     errorText={errors.zipcodeErrorText}
                   />
                 </div>
@@ -132,9 +132,9 @@ class CampaignInfoForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Email"
-                    disabled={true}
+                    disabled
                     value={data.email}
-                    fullWidth={true}
+                    fullWidth
                   />
                 </div>
 
@@ -145,7 +145,7 @@ class CampaignInfoForm extends Component {
                     label="Are you representing a legally established organization? (Corporation, Non-profit, Committee, Association, etc.)"
                     toggled={data.legalOrg}
                     labelPosition="left"
-                    onToggle={ (event, checked) => { handleInputChange(event, 'legalOrg', checked) } }
+                    onToggle={(event, checked) => { handleInputChange(event, 'legalOrg', checked); }}
                   />
                 </div>
 
@@ -163,7 +163,7 @@ class CampaignInfoForm extends Component {
                       <TextField
                         floatingLabelText="Web page"
                         value={data.orgWebsite}
-                        onChange={ (event) => { handleInputChange(event, 'orgWebsite', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'orgWebsite', event.target.value); }}
                         errorText={errors.orgWebsiteErrorText}
                       />
                     </div>
@@ -172,7 +172,7 @@ class CampaignInfoForm extends Component {
                       <TextField
                         floatingLabelText="Organization Name"
                         value={data.orgName}
-                        onChange={ (event) => { handleInputChange(event, 'orgName', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'orgName', event.target.value); }}
                         errorText={errors.orgNameErrorText}
                       />
                     </div>
@@ -181,7 +181,7 @@ class CampaignInfoForm extends Component {
                       <TextField
                         floatingLabelText="Organization Type"
                         value={data.orgStatus}
-                        onChange={ (event) => { handleInputChange(event, 'orgStatus', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'orgStatus', event.target.value); }}
                         errorText={errors.orgStatusErrorText}
                       />
                     </div>
@@ -190,7 +190,7 @@ class CampaignInfoForm extends Component {
                       <TextField
                         floatingLabelText="Contact Name"
                         value={data.orgContactName}
-                        onChange={ (event) => { handleInputChange(event, 'orgContactName', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'orgContactName', event.target.value); }}
                         errorText={errors.orgContactNameErrorText}
                       />
                     </div>
@@ -199,7 +199,7 @@ class CampaignInfoForm extends Component {
                       <TextField
                         floatingLabelText="Contact Position"
                         value={data.orgContactPosition}
-                        onChange={ (event) => { handleInputChange(event, 'orgContactPosition', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'orgContactPosition', event.target.value); }}
                         errorText={errors.orgContactPositionErrorText}
                       />
                     </div>
@@ -208,7 +208,7 @@ class CampaignInfoForm extends Component {
                       <TextField
                         floatingLabelText="Contact Email"
                         value={data.orgContactEmail}
-                        onChange={ (event) => { handleInputChange(event, 'orgContactEmail', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'orgContactEmail', event.target.value); }}
                         errorText={errors.orgContactEmailErrorText}
                       />
                     </div>
@@ -217,7 +217,7 @@ class CampaignInfoForm extends Component {
                       <TextField
                         floatingLabelText="Contact Phone"
                         value={data.orgContactPhone}
-                        onChange={ (event) => { handleInputChange(event, 'orgContactPhone', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'orgContactPhone', event.target.value); }}
                         errorText={errors.orgContactPhoneErrorText}
                       />
                     </div>
@@ -226,10 +226,10 @@ class CampaignInfoForm extends Component {
                 )}
 
                 <div className={s.button}>
-                  <RaisedButton 
-                    onTouchTap={cancel} 
-                    primary={false} 
-                    label="Cancel" 
+                  <RaisedButton
+                    onTouchTap={cancel}
+                    primary={false}
+                    label="Cancel"
                   />
                 </div>
 
@@ -244,11 +244,11 @@ class CampaignInfoForm extends Component {
                 ) : (
 
                   <div className={[s.organizeButton, s.button].join(' ')}>
-                    <RaisedButton 
-                      onTouchTap={formSubmit} 
-                      primary={true} 
+                    <RaisedButton
+                      onTouchTap={formSubmit}
+                      primary
                       type="submit"
-                      label={submitText} 
+                      label={submitText}
                     />
                   </div>
                 )}

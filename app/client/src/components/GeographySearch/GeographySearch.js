@@ -15,14 +15,13 @@ const textFieldStyle = {
 };
 
 class GeographySearch extends React.PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {
       distance: '10',
       zipcode: '',
-      virtual: false
-    }
+      virtual: false,
+    };
   }
 
   static propTypes = {
@@ -30,27 +29,22 @@ class GeographySearch extends React.PureComponent {
   }
 
   handleInputChange = (event, type, value) => {
-
     let valid = false;
     if (typeof type === 'string') {
-      
-      if ((type === 'zipcode' && value.length < 6 && (isNumeric(value) || value === '')) || 
+      if ((type === 'zipcode' && value.length < 6 && (isNumeric(value) || value === '')) ||
           (type === 'distance' && ((isNumeric(value) && parseInt(value, 10) > 0) || value === '')) ||
           (type === 'virtual' && typeof value === 'boolean')) {
-
         valid = true;
       }
-
     }
 
-    valid && this.setState((prevState) => (Object.assign({},
+    valid && this.setState(prevState => (Object.assign({},
       prevState,
-      { [type]: value }
+      { [type]: value },
     )));
   }
 
   addItem = (event) => {
-
     const { distance, zipcode, virtual } = this.state;
 
     if (typeof event === 'object' && typeof event.preventDefault === 'function') {
@@ -58,50 +52,48 @@ class GeographySearch extends React.PureComponent {
     }
 
     const searchItem = this.state.virtual ? {
-      virtual
+      virtual,
     } : {
       distance,
-      zipcode
+      zipcode,
     };
 
     if (searchItem.virtual ||
-        (isNumeric(searchItem.distance) && isNumeric(searchItem.zipcode) && 
+        (isNumeric(searchItem.distance) && isNumeric(searchItem.zipcode) &&
          parseInt(searchItem.distance, 10) > 0 && searchItem.zipcode.length === 5)) {
-
       this.props.addItem('geographies', searchItem);
 
-      this.setState((prevState) => (Object.assign({},
+      this.setState(prevState => (Object.assign({},
         prevState,
         {
           distance: '10',
           zipcode: '',
-          virtual: false
-        }
+          virtual: false,
+        },
       )));
     }
   }
 
   render() {
-
     const { distance, zipcode, virtual, ...state } = this.state;
     const { addItem, handleInputChange } = this;
 
     return (
-      <form 
+      <form
         onSubmit={addItem}
       >
 
         <Checkbox
           label="Virtual (anywhere)"
           checked={virtual}
-          onCheck={ (event, isChecked) => { handleInputChange(event, 'virtual', isChecked) } }
+          onCheck={(event, isChecked) => { handleInputChange(event, 'virtual', isChecked); }}
           className={s.checkboxContainer}
         />
 
         {!virtual && (
           <div>
 
-            Within 
+            Within
             <TextField
               floatingLabelText="miles"
               type="number"
@@ -109,9 +101,9 @@ class GeographySearch extends React.PureComponent {
               value={distance}
               style={textFieldStyle}
               underlineShow={false}
-              onChange={ (event) => { handleInputChange(event, 'distance', event.target.value) } }
+              onChange={(event) => { handleInputChange(event, 'distance', event.target.value); }}
             />
-            of 
+            of
             <TextField
               floatingLabelText="Zipcode"
               type="text"
@@ -119,7 +111,7 @@ class GeographySearch extends React.PureComponent {
               value={zipcode}
               style={textFieldStyle}
               underlineShow={false}
-              onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+              onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
             />
           </div>
         )}
@@ -128,12 +120,12 @@ class GeographySearch extends React.PureComponent {
             className={s.primaryButton}
             onTouchTap={addItem}
             type="submit"
-            primary={true}
+            primary
             label="Add to Search"
           />
         </div>
       </form>
-    )
+    );
   }
 }
 

@@ -13,7 +13,7 @@ export default {
   action() {
     return {
       title: 'Search Actions',
-      component: <Layout><SearchActionsWithAuthentication/></Layout>,
+      component: <Layout><SearchActionsWithAuthentication /></Layout>,
     };
   },
 };

@@ -3,7 +3,7 @@ import { compose, graphql } from 'react-apollo';
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
 import history from 'lib/history';
@@ -18,11 +18,10 @@ import s from 'styles/Organize.scss';
 
 
 class ManageCampaignActionsContainer extends Component {
-
   static PropTypes = {
     campaign: PropTypes.object.isRequired,
     actions: PropTypes.array.isRequired,
-    campaignSlug: PropTypes.string.isRequired
+    campaignSlug: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -30,12 +29,11 @@ class ManageCampaignActionsContainer extends Component {
   }
 
   render() {
-
     if (this.props.campaign && this.props.actions) {
       const { campaign, actions, ...props } = this.props;
 
-      const actionsList = actions.map( (action) => (
-        <Link key={action.id} to={'/organize/' + campaign.slug + '/action/' + action.slug}>
+      const actionsList = actions.map(action => (
+        <Link key={action.id} to={`/organize/${campaign.slug}/action/${action.slug}`}>
           <ListItem>
 
             <div className={s.actionListTitle}>
@@ -61,11 +59,11 @@ class ManageCampaignActionsContainer extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug}>
+          <Link to={`/organize/${campaign.slug}`}>
             <div className={[s.navHeader, s.campaignNavHeader].join(' ')}>
 
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
 
               {campaign.title}
@@ -74,12 +72,12 @@ class ManageCampaignActionsContainer extends Component {
 
           <div className={s.pageSubHeader}>Actions</div>
 
-          <Link to={'/organize/' + campaign.slug + '/create-action'}>
+          <Link to={`/organize/${campaign.slug}/create-action`}>
             <div className={s.organizeButton}>
               <RaisedButton
-                primary={true} 
+                primary
                 type="submit"
-                label="Create Action" 
+                label="Create Action"
               />
             </div>
           </Link>
@@ -91,41 +89,40 @@ class ManageCampaignActionsContainer extends Component {
           </List>
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          id: ownProps.campaignId
-        }
-      }
+          id: ownProps.campaignId,
+        },
+      },
     }),
-    props: ({ data }) => ({ 
-      campaign: data.campaign
-    })
+    props: ({ data }) => ({
+      campaign: data.campaign,
+    }),
   }),
 
   graphql(SearchActionsQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
           campaignIds: [ownProps.campaignId],
           // This prevents paging - we just want them all at once
           // TODO: better implementation
-          limit: 1000
-        }
+          limit: 1000,
+        },
       },
       fetchPolicy: 'cache-and-network',
     }),
-    props: ({ data }) => ({ 
-      actions: data.actions ? data.actions.actions : []
-    })
+    props: ({ data }) => ({
+      actions: data.actions ? data.actions.actions : [],
+    }),
   }),
 
 )(ManageCampaignActionsContainer);

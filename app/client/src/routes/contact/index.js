@@ -13,7 +13,7 @@ export default {
   action() {
     return {
       title: 'Contact',
-      component: <Layout><ContactWithAuthentication/></Layout>,
+      component: <Layout><ContactWithAuthentication /></Layout>,
     };
   },
 };

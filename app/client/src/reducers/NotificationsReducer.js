@@ -14,22 +14,21 @@ const defaultStartState = {
   pageLoading: false,
   formStateClean: true,
   displayFormNavWarning: false,
-  nextUrl: undefined
+  nextUrl: undefined,
 };
 
 export function updateNotifications(notificationsState = defaultStartState, action) {
-  switch (action.type){
-
+  switch (action.type) {
     case NOTIFY:
       return Object.assign({}, notificationsState, {
         display: true,
-        message: action.value
+        message: action.value,
       });
 
     case CLEAR:
       return Object.assign({}, notificationsState, {
         display: false,
-        message: ''
+        message: '',
       });
 
     case START_PAGE_LOAD:
@@ -57,7 +56,7 @@ export function updateNotifications(notificationsState = defaultStartState, acti
     case ATTEMPT_NAV_FROM_DIRTY_FORM:
       return Object.assign({}, notificationsState, {
         nextUrl: action.nextUrl,
-        displayFormNavWarning: true
+        displayFormNavWarning: true,
       });
 
     case CANCEL_NAV_FROM_DIRTY_FORM:
@@ -70,10 +69,10 @@ export function updateNotifications(notificationsState = defaultStartState, acti
       return Object.assign({}, notificationsState, {
         formStateClean: true,
         nextUrl: undefined,
-        displayFormNavWarning: false
+        displayFormNavWarning: false,
       });
 
     default:
       return notificationsState;
   }
-};
+}

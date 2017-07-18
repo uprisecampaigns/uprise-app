@@ -18,8 +18,8 @@ export default {
       const result = await context.apolloClient.query({
         query: CampaignQuery,
         variables: {
-          search: { slug }
-        }
+          search: { slug },
+        },
       });
 
       if (result.data.campaign) {
@@ -27,20 +27,19 @@ export default {
           title: result.data.campaign.title,
           component: (
             <Layout>
-              <CampaignWithAuthentication campaignSlug={slug} campaignId={result.data.campaign.id}/>
+              <CampaignWithAuthentication campaignSlug={slug} campaignId={result.data.campaign.id} />
             </Layout>
           ),
         };
-      } else {
-        return {
-          redirect: '/search/search-campaigns'
-        }
       }
+      return {
+        redirect: '/search/search-campaigns',
+      };
     } catch (e) {
       console.error(e);
       return {
-        redirect: '/search/search-campaigns'
-      }
+        redirect: '/search/search-campaigns',
+      };
     }
   },
 };

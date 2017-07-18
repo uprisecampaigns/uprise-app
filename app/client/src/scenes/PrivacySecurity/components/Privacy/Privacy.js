@@ -7,7 +7,6 @@ import s from 'styles/Page.scss';
 
 class Privacy extends Component {
   render() {
-
     const { title, html } = this.props.content;
 
     return (

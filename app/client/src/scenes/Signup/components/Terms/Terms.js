@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -32,15 +32,15 @@ class Terms extends Component {
         </div>
         <div className={formStyle.outerContainer}>
           <div className={formStyle.innerContainer}>
-            <RaisedButton 
-              onTouchTap={cancel} 
-              label="Cancel" 
+            <RaisedButton
+              onTouchTap={cancel}
+              label="Cancel"
               className={formStyle.button}
             />
-            <RaisedButton 
-              onTouchTap={agreeToTerms} 
-              primary={true} 
-              label="I Agree" 
+            <RaisedButton
+              onTouchTap={agreeToTerms}
+              primary
+              label="I Agree"
               className={[formStyle.secondaryButton, formStyle.button].join(' ')}
             />
           </div>

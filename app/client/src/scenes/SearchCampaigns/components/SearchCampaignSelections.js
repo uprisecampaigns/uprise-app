@@ -1,73 +1,54 @@
 
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import moment from 'moment';
 
 import SelectedItemsContainer from 'components/SelectedItemsContainer';
 
-import { 
-  removeSearchItem, unsetSearchDates
+import {
+  removeSearchItem, unsetSearchDates,
 } from 'actions/SearchActions';
 
 import s from 'styles/Search.scss';
 
 
-const SelectedKeywordsContainer = connect((state) => { 
-  return { items: state.campaignsSearch.keywords };
-})(SelectedItemsContainer);
+const SelectedKeywordsContainer = connect(state => ({ items: state.campaignsSearch.keywords }))(SelectedItemsContainer);
 
-const SelectedActivitiesContainer = connect((state) => { 
-  return { items: state.campaignsSearch.activities };
-})(SelectedItemsContainer);
+const SelectedActivitiesContainer = connect(state => ({ items: state.campaignsSearch.activities }))(SelectedItemsContainer);
 
-const SelectedCampaignNamesContainer = connect((state) => { 
-  return { items: state.campaignsSearch.campaignNames };
-})(SelectedItemsContainer);
+const SelectedCampaignNamesContainer = connect(state => ({ items: state.campaignsSearch.campaignNames }))(SelectedItemsContainer);
 
-const SelectedTypesContainer = connect((state) => { 
-  return { items: state.campaignsSearch.types };
-})(SelectedItemsContainer);
+const SelectedTypesContainer = connect(state => ({ items: state.campaignsSearch.types }))(SelectedItemsContainer);
 
-const SelectedLevelsContainer = connect((state) => { 
-  return { items: state.campaignsSearch.levels };
-})(SelectedItemsContainer);
+const SelectedLevelsContainer = connect(state => ({ items: state.campaignsSearch.levels }))(SelectedItemsContainer);
 
-const SelectedIssueAreasContainer = connect((state) => { 
-  return { items: state.campaignsSearch.issueAreas };
-})(SelectedItemsContainer);
+const SelectedIssueAreasContainer = connect(state => ({ items: state.campaignsSearch.issueAreas }))(SelectedItemsContainer);
 
-const SelectedTimesContainer = connect((state) => { 
-  return { items: state.campaignsSearch.times };
-})(SelectedItemsContainer);
+const SelectedTimesContainer = connect(state => ({ items: state.campaignsSearch.times }))(SelectedItemsContainer);
 
-const SelectedDatesContainer = connect((state) => { 
+const SelectedDatesContainer = connect((state) => {
   const dates = state.campaignsSearch.dates;
 
   const items = [];
 
   if (dates.onDate || (dates.startDate && dates.endDate)) {
     items.push(dates);
-  } 
+  }
 
   return { items };
-
 })(SelectedItemsContainer);
 
-const SelectedGeographiesContainer = connect((state) => { 
-  return { items: state.campaignsSearch.geographies };
-})(SelectedItemsContainer);
+const SelectedGeographiesContainer = connect(state => ({ items: state.campaignsSearch.geographies }))(SelectedItemsContainer);
 
 const renderSelectedDateLabel = (dates) => {
   if (dates.onDate) {
     return moment(dates.onDate).format('M/D/YYYY');
   } else if (dates.startDate && dates.endDate) {
-    return moment(dates.startDate).format('M/D/YYYY') + ' - ' + moment(dates.endDate).format('M/D/YYYY');
+    return `${moment(dates.startDate).format('M/D/YYYY')} - ${moment(dates.endDate).format('M/D/YYYY')}`;
   }
-}
-
-const renderSelectedGeographyLabel = (geography) => {
-  return 'Active in: ' + geography.zipcode;
 };
+
+const renderSelectedGeographyLabel = geography => `Active in: ${geography.zipcode}`;
 
 class SearchCampaignSelections extends React.PureComponent {
   constructor(props) {
@@ -86,8 +67,7 @@ class SearchCampaignSelections extends React.PureComponent {
   }
 
   render() {
-
-    const { 
+    const {
       removeSelectedItem,
       unsetDates,
     } = this;
@@ -137,4 +117,4 @@ class SearchCampaignSelections extends React.PureComponent {
   }
 }
 
-export default connect()(SearchCampaignSelections); 
+export default connect()(SearchCampaignSelections);

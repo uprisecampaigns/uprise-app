@@ -17,7 +17,6 @@ import s from 'styles/Volunteer.scss';
 
 
 class ActionCommitments extends Component {
-
   static PropTypes = {
     actionCommitments: PropTypes.array.isRequired,
   }
@@ -27,12 +26,11 @@ class ActionCommitments extends Component {
   }
 
   render() {
-
     if (this.props.actionCommitments) {
       const { actionCommitments, ...props } = this.props;
 
-      const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map( (action) => (
-        <Link key={action.id} to={'/action/' + action.slug}>
+      const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map(action => (
+        <Link key={action.id} to={`/action/${action.slug}`}>
           <ListItem>
 
             <div className={s.listTitle}>
@@ -57,7 +55,7 @@ class ActionCommitments extends Component {
 
             {(action.owner) && (
               <div className={s.listDetailLine}>
-                Coordinator: {action.owner.first_name} {action.owner.last_name} <Link to={"mailto:" + action.owner.email} mailTo={true} external={true} useAhref={true}>{action.owner.email}</Link>
+                Coordinator: {action.owner.first_name} {action.owner.last_name} <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>{action.owner.email}</Link>
               </div>
             )}
 
@@ -71,7 +69,7 @@ class ActionCommitments extends Component {
           <Link to={'/volunteer'}>
             <div className={[s.navHeader, s.volunteerNavHeader].join(' ')}>
               <FontIcon
-                className={["material-icons", s.backArrow].join(' ')}
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Volunteer
             </div>
@@ -86,16 +84,15 @@ class ActionCommitments extends Component {
           </List>
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   graphql(ActionCommitmentsQuery, {
-    props: ({ data }) => ({ 
-      actionCommitments: data.actionCommitments
-    })
+    props: ({ data }) => ({
+      actionCommitments: data.actionCommitments,
+    }),
   }),
 )(ActionCommitments);

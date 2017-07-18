@@ -12,14 +12,14 @@ export default {
 
   async action() {
     const privacyContent = await new Promise((resolve) => {
-      require.ensure([], require => {
+      require.ensure([], (require) => {
         resolve(require('content/privacy.md'));
       }, 'privacy');
     });
 
     return {
       title: 'Privacy and Security',
-      component: <Layout><PrivacySecurityWithAuthentication privacyContent={privacyContent}/></Layout>,
+      component: <Layout><PrivacySecurityWithAuthentication privacyContent={privacyContent} /></Layout>,
     };
   },
 };

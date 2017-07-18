@@ -9,9 +9,9 @@ const CreateActionWithAuthentication = withAuthentication(CreateAction);
 
 export default organizeCampaignPaths({
   path: '/organize/:slug/create-action',
-  component: (campaign) => (
+  component: campaign => (
     <Layout>
-      <CreateActionWithAuthentication campaignId={campaign.id}/>
+      <CreateActionWithAuthentication campaignId={campaign.id} />
     </Layout>
-  )
+  ),
 });

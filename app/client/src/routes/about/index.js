@@ -8,7 +8,7 @@ export default {
 
   async action() {
     const data = await new Promise((resolve) => {
-      require.ensure([], require => {
+      require.ensure([], (require) => {
         resolve(require('./about.md'));
       }, 'about');
     });

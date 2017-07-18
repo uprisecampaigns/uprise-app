@@ -10,11 +10,10 @@ import Link from 'components/Link';
 import s from './NavDrawer.scss';
 
 
-function UserMenuItem (props) {
-
+function UserMenuItem(props) {
   const iconButtonStyle = {
-    fontSize: '3rem'
-  }
+    fontSize: '3rem',
+  };
 
   const { itemClicked, user } = props;
 
@@ -22,7 +21,7 @@ function UserMenuItem (props) {
     <div className={s.userContainer}>
 
       <div className={s.userIconContainer}>
-        <IconButton 
+        <IconButton
           iconStyle={iconButtonStyle}
           iconClassName={[s.materialIcons, 'material-icons'].join(' ')}
           className={s.userIcon}
@@ -54,7 +53,7 @@ class NavDrawer extends Component {
     onRequestChange: PropTypes.func.isRequired,
     userObject: PropTypes.object,
     loggedIn: PropTypes.bool.isRequired,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
   }
 
   itemClicked = (event) => {
@@ -76,27 +75,26 @@ class NavDrawer extends Component {
 
   bottomMenuItems = [
     // { path: '/account/help', title: 'Help' },
-    { path: '#', title: 'Logout', action: this.props.logout }
+    { path: '#', title: 'Logout', action: this.props.logout },
   ]
 
   renderNavItems = (item, index) => {
-
     const itemClicked = (event) => {
       if (typeof item.action === 'function') {
         item.action(event);
       }
 
       this.itemClicked(event);
-    }
+    };
 
     return (
       <div key={index}>
-        <Link 
+        <Link
           to={item.path}
           useAhref={false}
           onClick={itemClicked}
         >
-          <MenuItem 
+          <MenuItem
             className={s.navMenuItem}
             primaryText={item.title}
           />
@@ -120,16 +118,16 @@ class NavDrawer extends Component {
         >
           <MenuItem
             primaryText={
-              <UserMenuItem 
+              <UserMenuItem
                 itemClicked={this.itemClicked}
-                user={this.props.userObject} 
+                user={this.props.userObject}
               />
             }
             className={s.userMenuItem}
           />
 
           {navItems}
-{/*
+          {/*
           <Divider className={s.divider}/>
 
           <Subheader className={s.subheader}>Account</Subheader>
@@ -143,52 +141,51 @@ class NavDrawer extends Component {
 
         </Drawer>
       );
-    } else {
-      return (
-        <Drawer
-          open={this.props.open}
-          onRequestChange={this.props.onRequestChange}
-          className={s.drawer}
-          docked={false}
-        >
-          <Link
-            to="/login"
-            useAhref={false}
-            onClick={this.itemClicked}
-          >
-            <MenuItem
-              className={s.navMenuItem}
-              primaryText="Login"
-            />
-          </Link>
-
-          <Link
-            to="/signup"
-            useAhref={false}
-            onClick={this.itemClicked}
-          >
-            <MenuItem
-              className={s.navMenuItem}
-              primaryText="Sign Up"
-            />
-          </Link>
-
-          <Link
-            to="https://uprisecampaigns.org/about/"
-            useAhref={false}
-            sameTab={true}
-            external={true}
-            onClick={this.itemClicked}
-          >
-            <MenuItem
-              className={s.navMenuItem}
-              primaryText="Learn More"
-            />
-          </Link>
-
-        </Drawer>
-      );
     }
+    return (
+      <Drawer
+        open={this.props.open}
+        onRequestChange={this.props.onRequestChange}
+        className={s.drawer}
+        docked={false}
+      >
+        <Link
+          to="/login"
+          useAhref={false}
+          onClick={this.itemClicked}
+        >
+          <MenuItem
+            className={s.navMenuItem}
+            primaryText="Login"
+          />
+        </Link>
+
+        <Link
+          to="/signup"
+          useAhref={false}
+          onClick={this.itemClicked}
+        >
+          <MenuItem
+            className={s.navMenuItem}
+            primaryText="Sign Up"
+          />
+        </Link>
+
+        <Link
+          to="https://uprisecampaigns.org/about/"
+          useAhref={false}
+          sameTab
+          external
+          onClick={this.itemClicked}
+        >
+          <MenuItem
+            className={s.navMenuItem}
+            primaryText="Learn More"
+          />
+        </Link>
+
+      </Drawer>
+    );
   }
 }
 

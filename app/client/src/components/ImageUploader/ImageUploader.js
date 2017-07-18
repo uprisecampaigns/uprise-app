@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -35,13 +35,13 @@ class ImageUploader extends React.Component {
       },
     };
   }
- 
+
   static propTypes = {
     imageSrc: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     imageUploadOptions: PropTypes.object.isRequired,
     imageHeight: PropTypes.number,
-    imageWidth: PropTypes.number
+    imageWidth: PropTypes.number,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -51,7 +51,6 @@ class ImageUploader extends React.Component {
   }
 
   onDrop = (acceptedFiles, rejectedFiles) => {
-
     const { dispatch, ...props } = this.props;
 
     const file = acceptedFiles[0];
@@ -60,7 +59,7 @@ class ImageUploader extends React.Component {
     } else if (!file.type.match('image.*')) {
       dispatch(notify('File must be an image'));
     } else {
-      //TODO:
+      // TODO:
       // - handle accepted vs rejected files!!
       const fileReader = new FileReader();
 
@@ -117,7 +116,7 @@ class ImageUploader extends React.Component {
           width: cropWidth,
           height: cropHeight,
           maxWidth: this.props.imageWidth,
-          maxHeight: this.props.imageHeight
+          maxHeight: this.props.imageHeight,
         });
 
         destWidth = scaledCrop.width;
@@ -139,25 +138,22 @@ class ImageUploader extends React.Component {
           onSuccess: (src) => {
             this.setState({ uploading: false });
             this.props.onChange(src);
-          }
+          },
         }));
 
         this.setState({
           editImageSrc: null,
         });
-      }
+      };
 
       if (HTMLCanvasElement.prototype.toBlob) {
-
-        //TODO: Is `revokeObjectURL` important??
-        canvas.toBlob( (blob) => {
+        // TODO: Is `revokeObjectURL` important??
+        canvas.toBlob((blob) => {
           uploadBlob(blob);
           const url = URL.createObjectURL(blob);
           this.props.onChange(url);
         });
-
       } else {
-
         const url = canvas.toDataURL('image/jpeg');
         this.props.onChange(url);
 
@@ -214,7 +210,7 @@ class ImageUploader extends React.Component {
                   <RaisedButton
                     className={s.primaryButton}
                     onTouchTap={this.acceptImageCrop}
-                    primary={true}
+                    primary
                     label="Accept"
                   />
                 </div>
@@ -233,9 +229,9 @@ class ImageUploader extends React.Component {
                   className={[s.removeImageButton, 'material-icons'].join(' ')}
                   onTouchTap={this.removeImage}
                 >delete</FontIcon>
-                <img src={imageSrc}/>
+                <img src={imageSrc} />
               </div>
-            ): (
+            ) : (
               <div className={s.instructions}>Drag and drop your image here, or click to select an image to upload.</div>
             )}
 
@@ -248,11 +244,9 @@ class ImageUploader extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    uploading: state.uploads.uploading,
-    error: state.uploads.error,
-  };
-}
+const mapStateToProps = state => ({
+  uploading: state.uploads.uploading,
+  error: state.uploads.error,
+});
 
 export default connect(mapStateToProps)(ImageUploader);

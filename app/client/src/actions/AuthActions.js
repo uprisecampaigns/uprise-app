@@ -34,12 +34,12 @@ export const LOGOUT_FAIL = 'LOGOUT_FAIL';
 
 
 export function clickedSignup() {
-  return { type: CLICKED_SIGNUP }
+  return { type: CLICKED_SIGNUP };
 }
 
 export function signupSuccess(userObject) {
   history.push('/welcome');
-  Raven.setUserContext(userObject)
+  Raven.setUserContext(userObject);
   ReactGA.set({ userId: userObject.id });
   return { type: SIGNUP_SUCCESS, userObject };
 }
@@ -59,7 +59,7 @@ export function attemptSignup(data) {
           credentials: 'include',
           body: JSON.stringify(data),
           headers: {
-            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            Accept: 'application/json, application/xml, text/plain, text/html, *.*',
             'Content-Type': 'application/json',
           },
         });
@@ -73,13 +73,12 @@ export function attemptSignup(data) {
         } else {
           dispatch(signupFail(json.error));
         }
-
-      } catch(err) {
+      } catch (err) {
         console.log(err);
         dispatch(signupFail(err));
       }
     }
-  }
+  };
 }
 
 export function clickedLogin() {
@@ -88,7 +87,7 @@ export function clickedLogin() {
 
 export function loginSuccess(userObject) {
   ReactGA.set({ userId: userObject.id });
-  Raven.setUserContext(userObject)
+  Raven.setUserContext(userObject);
 
   return { type: LOGIN_SUCCESS, userObject };
 }
@@ -108,7 +107,7 @@ export function attemptLogin(data) {
           credentials: 'include',
           body: JSON.stringify(data),
           headers: {
-            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            Accept: 'application/json, application/xml, text/plain, text/html, *.*',
             'Content-Type': 'application/json',
           },
         });
@@ -123,13 +122,12 @@ export function attemptLogin(data) {
         } else {
           dispatch(loginFail(json.error));
         }
-
-      } catch(err) {
+      } catch (err) {
         console.log(err);
         dispatch(loginFail(err));
       }
     }
-  }
+  };
 }
 
 export function startedSessionCheck() {
@@ -137,26 +135,24 @@ export function startedSessionCheck() {
 }
 
 export function checkedSessionStatus(result) {
-
   // If the hash of the server commit has changed,
   // hard reload the page to get new code
   // TODO: more elegant solution 
   if (typeof result.gitCommit === 'string' &&
       result.gitCommit.trim() !== gitCommit.trim()) {
-
     window.setTimeout(() => {
       window.location.reload(true);
     }, 100);
     Raven.captureMessage('git commit rev does not match clients', {
-      extra: { result, gitCommit }
+      extra: { result, gitCommit },
     });
   }
 
-  if (result.isLoggedIn){
-    Raven.setUserContext(result.userObject)
+  if (result.isLoggedIn) {
+    Raven.setUserContext(result.userObject);
     ReactGA.set({ userId: result.userObject.id });
   } else {
-    Raven.setUserContext()
+    Raven.setUserContext();
     ReactGA.set({ userId: undefined });
   }
 
@@ -169,21 +165,18 @@ export function sessionCheckFail(error) {
 
 export function checkSessionStatus() {
   return async (dispatch, getState) => {
-
     if (!getState().userAuthSession.fetchingAuthUpdate) {
-
       dispatch(startedSessionCheck());
 
       let response;
 
       try {
-
         response = await fetch('/api/checkSession', {
           method: 'POST',
           credentials: 'include',
           body: JSON.stringify({}),
           headers: {
-            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            Accept: 'application/json, application/xml, text/plain, text/html, *.*',
             'Content-Type': 'application/json',
           },
         });
@@ -191,7 +184,7 @@ export function checkSessionStatus() {
         if (response.status >= 400) {
           throw new Error('Bad response from server.');
         }
-      } catch(err) {
+      } catch (err) {
         // TODO: error handler
         console.error(err);
         dispatch(sessionCheckFail(err.message || err));
@@ -200,7 +193,7 @@ export function checkSessionStatus() {
       let json;
       try {
         json = await response.json();
-      } catch(err) {
+      } catch (err) {
         // TODO: error handler
         console.error(err);
         dispatch(sessionCheckFail(err.message || err));
@@ -214,7 +207,7 @@ export function checkSessionStatus() {
         dispatch(sessionCheckFail(json.error));
       }
     }
-  }
+  };
 }
 
 export function clickedLogout() {
@@ -222,7 +215,7 @@ export function clickedLogout() {
 }
 
 export function logoutSuccess() {
-  Raven.setUserContext()
+  Raven.setUserContext();
   ReactGA.set({ userId: undefined });
   apolloClient.resetStore();
   history.push('/');
@@ -233,9 +226,8 @@ export function logoutFail() {
   return { type: LOGOUT_FAIL, error };
 }
 
-export function attemptLogout(){
+export function attemptLogout() {
   return async (dispatch, getState) => {
-
     if (!getState().userAuthSession.fetchingAuthUpdate) {
       try {
         dispatch(clickedLogout());
@@ -245,7 +237,7 @@ export function attemptLogout(){
           credentials: 'include',
           body: JSON.stringify({}),
           headers: {
-            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            Accept: 'application/json, application/xml, text/plain, text/html, *.*',
             'Content-Type': 'application/json',
           },
         });
@@ -259,13 +251,13 @@ export function attemptLogout(){
           console.error(json.error);
           dispatch(logoutFail(json.error));
         }
-      } catch(err) {
+      } catch (err) {
         // TODO: error handler
         console.error(err);
         dispatch(logoutFail(err));
       }
     }
-  }
+  };
 }
 
 export function clickedChangePassword() {
@@ -280,9 +272,8 @@ export function changePasswordFail(error) {
   return { type: CHANGE_PASSWORD_FAIL, error };
 }
 
-export function attemptChangePassword(data, callback){
+export function attemptChangePassword(data, callback) {
   return async (dispatch, getState) => {
-
     if (!getState().userAuthSession.fetchingAuthUpdate) {
       try {
         dispatch(clickedChangePassword());
@@ -292,10 +283,10 @@ export function attemptChangePassword(data, callback){
           credentials: 'include',
           body: JSON.stringify({
             oldPassword: data.oldPassword,
-            newPassword: data.newPassword
+            newPassword: data.newPassword,
           }),
           headers: {
-            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            Accept: 'application/json, application/xml, text/plain, text/html, *.*',
             'Content-Type': 'application/json',
           },
         });
@@ -306,23 +297,23 @@ export function attemptChangePassword(data, callback){
           dispatch(notify('Password changed'));
           (typeof callback === 'function') && callback({
             success: true,
-            message: 'Password Changed'
+            message: 'Password Changed',
           });
           dispatch(changePasswordSuccess(json));
         } else {
           console.error(json.error);
           throw new Error(json.error);
         }
-      } catch(err) {
+      } catch (err) {
         console.error(err);
         callback({
           success: false,
-          message: 'Error changing password: ' + err.message
+          message: `Error changing password: ${err.message}`,
         });
         dispatch(changePasswordFail(err.message));
       }
     }
-  }
+  };
 }
 export function clickedResetPassword() {
   return { type: CLICKED_RESET_PASSWORD };
@@ -336,9 +327,8 @@ export function resetPasswordFail(error) {
   return { type: RESET_PASSWORD_FAIL, error };
 }
 
-export function attemptResetPassword(data){
+export function attemptResetPassword(data) {
   return async (dispatch, getState) => {
-
     if (!getState().userAuthSession.fetchingAuthUpdate) {
       try {
         dispatch(clickedResetPassword());
@@ -347,10 +337,10 @@ export function attemptResetPassword(data){
           method: 'POST',
           credentials: 'include',
           body: JSON.stringify({
-            email: data.email
+            email: data.email,
           }),
           headers: {
-            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            Accept: 'application/json, application/xml, text/plain, text/html, *.*',
             'Content-Type': 'application/json',
           },
         });
@@ -365,11 +355,11 @@ export function attemptResetPassword(data){
           console.error(json.error);
           dispatch(resetPasswordFail(json.error));
         }
-      } catch(err) {
+      } catch (err) {
         // TODO: error handler
         console.error(err);
         dispatch(resetPasswordFail(err));
       }
     }
-  }
+  };
 }

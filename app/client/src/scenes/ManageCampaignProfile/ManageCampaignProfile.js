@@ -14,7 +14,6 @@ import s from 'styles/Organize.scss';
 
 
 class ManageCampaignProfileContainer extends Component {
-
   static PropTypes = {
     campaignSlug: PropTypes.object.isRequired,
   }
@@ -24,19 +23,17 @@ class ManageCampaignProfileContainer extends Component {
   }
 
   render() {
-
     if (this.props.campaign) {
-
       const { campaign, ...props } = this.props;
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug}>
+          <Link to={`/organize/${campaign.slug}`}>
             <div className={[s.navHeader, s.campaignNavHeader].join(' ')}>
 
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
 
               {campaign.title}
@@ -49,16 +46,16 @@ class ManageCampaignProfileContainer extends Component {
 
             <Divider />
 
-            <Link to={'/campaign/' + campaign.slug}>
-              <ListItem 
+            <Link to={`/campaign/${campaign.slug}`}>
+              <ListItem
                 primaryText="View"
               />
             </Link>
 
             <Divider />
 
-            <Link to={'/organize/' + campaign.slug + '/profile/edit'}>
-              <ListItem 
+            <Link to={`/organize/${campaign.slug}/profile/edit`}>
+              <ListItem
                 primaryText="Edit"
               />
             </Link>
@@ -69,24 +66,23 @@ class ManageCampaignProfileContainer extends Component {
 
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          slug: ownProps.campaignSlug
-        }
+          slug: ownProps.campaignSlug,
+        },
       },
       fetchPolicy: 'cache-and-network',
     }),
-    props: ({ data }) => ({ 
+    props: ({ data }) => ({
       campaign: data.campaign,
-    })
+    }),
   }),
 )(ManageCampaignProfileContainer);

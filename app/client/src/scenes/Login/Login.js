@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import isEmail from 'validator/lib/isEmail';
 
 import { attemptLogin } from 'actions/AuthActions';
@@ -20,28 +20,26 @@ class LoginFormContainer extends Component {
     emailErrorText: null,
     passwordErrorText: null,
   }
- 
+
   handleInputChange = (event, type, value) => {
     this.setState(Object.assign({},
       this.state,
-      { [type]: value }
+      { [type]: value },
     ));
   }
 
   // TODO: this is used in SignupForm as well - DRY it out
   validateString = (prop, errorProp, errorMsg) => {
-    if (typeof this.state[prop] !== 'string' || 
+    if (typeof this.state[prop] !== 'string' ||
         this.state[prop].trim() === '') {
-
-      this.setState({ 
-        [errorProp]: errorMsg 
+      this.setState({
+        [errorProp]: errorMsg,
       });
 
       this.hasErrors = true;
-
     } else {
-      this.setState({ 
-        [errorProp]: null 
+      this.setState({
+        [errorProp]: null,
       });
     }
   }
@@ -55,9 +53,8 @@ class LoginFormContainer extends Component {
 
     if (typeof this.state.email === 'string' &&
         !isEmail(this.state.email)) {
-
       this.setState({
-        emailErrorText: 'Please enter a valid email'
+        emailErrorText: 'Please enter a valid email',
       });
       this.hasErrors = true;
     }
@@ -88,18 +85,16 @@ class LoginFormContainer extends Component {
         formSubmit={this.formSubmit}
         loginError={this.props.loginError}
         message={this.props.message}
-      /> 
+      />
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.userAuthSession.isLoggedIn,
-    loginError: state.userAuthSession.error,
-    message: state.userAuthSession.message
-  };
-}
+const mapStateToProps = state => ({
+  loggedIn: state.userAuthSession.isLoggedIn,
+  loginError: state.userAuthSession.error,
+  message: state.userAuthSession.message,
+});
 
 
 export default connect(mapStateToProps)(LoginFormContainer);

@@ -12,7 +12,7 @@ export default organizeActionPaths({
   path: '/organize/:campaignSlug/action/:actionSlug/compose',
   component: (campaign, action) => (
     <Layout>
-      <ManageActionComposeMessageWithAuthentication actionId={action.id} campaignId={campaign.id}/>
+      <ManageActionComposeMessageWithAuthentication actionId={action.id} campaignId={campaign.id} />
     </Layout>
-  )
+  ),
 });

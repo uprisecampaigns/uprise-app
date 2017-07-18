@@ -11,110 +11,107 @@ import EmailAvailableQuery from 'schemas/queries/EmailAvailableQuery.graphql';
 import states from 'lib/states-list';
 
 
-//TODO: I hate this entire validation system. It should be refactored into a 
+// TODO: I hate this entire validation system. It should be refactored into a 
 //      Higher order component or something sensible/fancy like that
 //      In the meantime, it could at least not be so rigid in the propnames, etc.
 const statesList = Object.keys(states);
 
 export function validateString(component, prop, errorProp, errorMsg) {
-  if (typeof component.state.formData[prop] !== 'string' || 
+  if (typeof component.state.formData[prop] !== 'string' ||
       component.state.formData[prop].trim() === '') {
-
-    component.setState( (prevState) => ({ 
+    component.setState(prevState => ({
       errors: Object.assign({}, prevState.errors, {
-        [errorProp]: errorMsg 
-      })
+        [errorProp]: errorMsg,
+      }),
     }));
 
     component.hasErrors = true;
-
   } else {
-    component.setState( (prevState) => ({ 
+    component.setState(prevState => ({
       errors: Object.assign({}, prevState.errors, {
-        [errorProp]: null 
-      })
+        [errorProp]: null,
+      }),
     }));
   }
 }
 
-export function validateWebsiteUrl(component, prop='websiteUrl', errorProp='websiteUrlErrorText') {
+export function validateWebsiteUrl(component, prop = 'websiteUrl', errorProp = 'websiteUrlErrorText') {
   if (component.state.formData[prop].trim() !== '' && !isURL(component.state.formData[prop])) {
     component.hasErrors = true;
-    component.setState( (prevState) => ({
+    component.setState(prevState => ({
       errors: Object.assign({}, prevState.errors, {
-        [errorProp]: 'Please enter valid website url'
-      })
+        [errorProp]: 'Please enter valid website url',
+      }),
     }));
   }
 }
 
-export function validateState(component, prop='state', errorProp='stateErrorText') {
+export function validateState(component, prop = 'state', errorProp = 'stateErrorText') {
   if (component.state.formData[prop].trim() !== '' && !statesList.includes(component.state.formData[prop])) {
     component.hasErrors = true;
-    component.setState( (prevState) => ({
+    component.setState(prevState => ({
       errors: Object.assign({}, prevState.errors, {
-        [errorProp]: 'Please enter valid state'
-      })
+        [errorProp]: 'Please enter valid state',
+      }),
     }));
   }
 }
 
-export function validateEmail(component, prop='email', errorProp='emailErrorText') {
+export function validateEmail(component, prop = 'email', errorProp = 'emailErrorText') {
   const test = component.state.formData[prop];
 
   if (typeof test === 'string' && test.trim() !== '') {
     if (!isEmail(test)) {
       component.hasErrors = true;
-      component.setState( (prevState) => ({
+      component.setState(prevState => ({
         errors: Object.assign({}, prevState.errors, {
-          [errorProp]: 'Please enter valid email'
-        })
+          [errorProp]: 'Please enter valid email',
+        }),
       }));
     }
   }
 }
 
-export async function validateEmailAvailable(component, previousEmail, prop='email', errorProp='emailErrorText') {
+export async function validateEmailAvailable(component, previousEmail, prop = 'email', errorProp = 'emailErrorText') {
   const test = component.state.formData[prop];
 
   if (typeof test === 'string' && test.trim() !== '' && previousEmail !== test) {
-
     const response = await apolloClient.query({
       query: EmailAvailableQuery,
-        variables: {
-          email: test
-        },
-        fetchPolicy: 'network-only',
-      });
+      variables: {
+        email: test,
+      },
+      fetchPolicy: 'network-only',
+    });
 
     if (!response.data.emailAvailable) {
       component.hasErrors = true;
-      component.setState( (prevState) => ({
+      component.setState(prevState => ({
         errors: Object.assign({}, prevState.errors, {
-          [errorProp]: 'That email is already taken'
-        })
+          [errorProp]: 'That email is already taken',
+        }),
       }));
     }
   }
 }
 
-export function validateZipcode(component, prop='zipcode', errorProp='zipcodeErrorText') {
+export function validateZipcode(component, prop = 'zipcode', errorProp = 'zipcodeErrorText') {
   const test = component.state.formData[prop];
 
   if (typeof test === 'string' && test.trim() !== '') {
     if (!isNumeric(test)) {
       component.hasErrors = true;
-      component.setState( (prevState) => ({
+      component.setState(prevState => ({
         errors: Object.assign({}, prevState.errors, {
-          [errorProp]: 'Zipcodes should be numbers'
-        })
+          [errorProp]: 'Zipcodes should be numbers',
+        }),
       }));
     } else if (test.length !== 5) {
       component.hasErrors = true;
-      component.setState( (prevState) => ({
+      component.setState(prevState => ({
         errors: Object.assign({}, prevState.errors, {
-          [errorProp]: 'Zipcodes should be 5 digits long'
-        })
+          [errorProp]: 'Zipcodes should be 5 digits long',
+        }),
       }));
     }
   }
@@ -126,44 +123,43 @@ export function validateZipcodeList(component) {
   if (typeof formData.zipcodeList === 'string' && formData.zipcodeList.trim() !== '') {
     const zipcodeList = formData.zipcodeList.split(',').map(zip => zip.trim());
 
-    zipcodeList.forEach( (zipcode) => {
+    zipcodeList.forEach((zipcode) => {
       if (!isNumeric(zipcode)) {
         component.hasErrors = true;
-        component.setState( (prevState) => ({
+        component.setState(prevState => ({
           errors: Object.assign({}, prevState.errors, {
-            zipcodeListErrorText: 'All zipcodes should be numbers'
-          })
+            zipcodeListErrorText: 'All zipcodes should be numbers',
+          }),
         }));
       } else if (zipcode.length !== 5) {
         component.hasErrors = true;
-        component.setState( (prevState) => ({
+        component.setState(prevState => ({
           errors: Object.assign({}, prevState.errors, {
-            zipcodeListErrorText: 'All zipcodes should be 5 digits long'
-          })
+            zipcodeListErrorText: 'All zipcodes should be 5 digits long',
+          }),
         }));
       }
     });
   }
 }
 
-export function validatePhoneNumber(component, prop='phoneNumber', errorProp='phoneNumberErrorText') {
+export function validatePhoneNumber(component, prop = 'phoneNumber', errorProp = 'phoneNumberErrorText') {
   const test = component.state.formData[prop];
 
   if (test.trim() === '') {
     component.hasErrors = true;
-    component.setState( (prevState) => ({
+    component.setState(prevState => ({
       errors: Object.assign({}, prevState.errors, {
-        [errorProp]: 'Phone number is required'
-      })
+        [errorProp]: 'Phone number is required',
+      }),
     }));
   } else if (test.match(/[^\(\d\s\)\-]/) ||
-             !isMobilePhone(test.replace(/\D/g,''), 'en-US')) {
-
+             !isMobilePhone(test.replace(/\D/g, ''), 'en-US')) {
     component.hasErrors = true;
-    component.setState( (prevState) => ({
+    component.setState(prevState => ({
       errors: Object.assign({}, prevState.errors, {
-        [errorProp]: 'Please enter valid phone number'
-      })
+        [errorProp]: 'Please enter valid phone number',
+      }),
     }));
   }
 }
@@ -182,36 +178,36 @@ export function validateStartEndTimes(component) {
   if (typeof endTime === 'undefined' || !moment(component.state.formData.endTime).isValid()) {
     errors.endTimeErrorText = 'Please choose an end time';
     hasError = true;
-  } 
+  }
 
   if (typeof date === 'undefined' || !moment(component.state.formData.date).isValid()) {
     errors.dateErrorText = 'Please choose a date';
     hasError = true;
-  } 
+  }
 
   if (!hasError && !moment(component.state.formData.endTime).isAfter(moment(component.state.formData.startTime))) {
-    errors.endTimeErrorText = 'Please choose end time after start time'
+    errors.endTimeErrorText = 'Please choose end time after start time';
     hasError = true;
   }
 
   if (hasError) {
-    component.setState( (prevState) => ({
-      errors: Object.assign({}, prevState.errors, errors)
+    component.setState(prevState => ({
+      errors: Object.assign({}, prevState.errors, errors),
     }));
 
     component.hasErrors = true;
   }
 }
 
-export function validateNewPasswords(component, password1='newPassword1', password2='newPassword2', errorProp1='newPassword1ErrorText', errorProp2='newPassword2ErrorText') {
+export function validateNewPasswords(component, password1 = 'newPassword1', password2 = 'newPassword2', errorProp1 = 'newPassword1ErrorText', errorProp2 = 'newPassword2ErrorText') {
   const { formData } = component.state;
 
   if (formData[password1] !== formData[password2]) {
-    component.setState( (prevState) => ({
+    component.setState(prevState => ({
       errors: Object.assign({}, prevState.errors, {
         [errorProp1]: 'Passwords must match',
         [errorProp2]: 'Passwords must match',
-      })
+      }),
     }));
     component.hasErrors = true;
   }

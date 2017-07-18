@@ -5,26 +5,24 @@ import Chip from 'material-ui/Chip';
 import s from './SelectedItemsContainer.scss';
 
 const SelectedItemsContainer = (props) => {
-
   const { collectionName, items, removeItem } = props;
-  
-  const selectedItemsContainer = items.map( (item, index) => {
 
+  const selectedItemsContainer = items.map((item, index) => {
     const renderedLabel = (typeof props.renderLabel === 'function') ? props.renderLabel(item) : item;
 
     const handleClicked = (event) => {
-      event.stopPropagation(); 
-      event.preventDefault(); 
+      event.stopPropagation();
+      event.preventDefault();
       removeItem(collectionName, item);
     };
 
     return (
-      <div 
+      <div
         className={s.searchChip}
         key={index}
         onTouchTap={handleClicked}
       >
-        <Chip 
+        <Chip
           onRequestDelete={handleClicked}
         >
           {renderedLabel}
@@ -40,13 +38,13 @@ const SelectedItemsContainer = (props) => {
       </div>
     </div>
   ) : null;
-}
+};
 
 SelectedItemsContainer.PropTypes = {
   collectionName: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
   removeItem: PropTypes.func.isRequired,
   renderLabel: PropTypes.func,
-}
+};
 
 export default SelectedItemsContainer;

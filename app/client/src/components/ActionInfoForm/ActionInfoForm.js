@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
@@ -38,18 +38,16 @@ class ActionInfoForm extends Component {
   render() {
     const {
       data, refs, formSubmit, errors, saving,
-      handleInputChange, cancel, campaignTitle, submitText
+      handleInputChange, cancel, campaignTitle, submitText,
     } = this.props;
 
     const statesList = Object.keys(states);
 
-    const formatDate = (date) => {
-      return moment(date).format('M/D/YYYY');
-    }
+    const formatDate = date => moment(date).format('M/D/YYYY');
 
     const dialogStyle = {
-      zIndex: '3200'
-    }
+      zIndex: '3200',
+    };
 
     return (
       <div className={s.outerContainer}>
@@ -63,18 +61,18 @@ class ActionInfoForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Campaign"
-                    fullWidth={true}
+                    fullWidth
                     value={campaignTitle}
-                    disabled={true}
+                    disabled
                   />
                 </div>
 
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Action Internal Name"
-                    fullWidth={true}
+                    fullWidth
                     value={data.internalTitle}
-                    onChange={ (event) => { handleInputChange(event, 'internalTitle', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'internalTitle', event.target.value); }}
                     errorText={errors.internalTitleErrorText}
                   />
                 </div>
@@ -82,9 +80,9 @@ class ActionInfoForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Action Public Name"
-                    fullWidth={true}
+                    fullWidth
                     value={data.title}
-                    onChange={ (event) => { handleInputChange(event, 'title', event.target.value) } }
+                    onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
                     errorText={errors.titleErrorText}
                   />
                 </div>
@@ -98,7 +96,7 @@ class ActionInfoForm extends Component {
                     label="Virtual Action"
                     toggled={data.virtual}
                     labelPosition="right"
-                    onToggle={ (event, checked) => { handleInputChange(event, 'virtual', checked) } }
+                    onToggle={(event, checked) => { handleInputChange(event, 'virtual', checked); }}
                   />
                 </div>
 
@@ -112,7 +110,7 @@ class ActionInfoForm extends Component {
                       <TextField
                         floatingLabelText="Place Name"
                         value={data.locationName}
-                        onChange={ (event) => { handleInputChange(event, 'locationName', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'locationName', event.target.value); }}
                         errorText={errors.locationNameErrorText}
                       />
                     </div>
@@ -121,7 +119,7 @@ class ActionInfoForm extends Component {
                       <TextField
                         floatingLabelText="Street Address"
                         value={data.streetAddress}
-                        onChange={ (event) => { handleInputChange(event, 'streetAddress', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'streetAddress', event.target.value); }}
                         errorText={errors.streetAddressErrorText}
                       />
                     </div>
@@ -130,7 +128,7 @@ class ActionInfoForm extends Component {
                       <TextField
                         floatingLabelText="Street Address 2"
                         value={data.streetAddress2}
-                        onChange={ (event) => { handleInputChange(event, 'streetAddress2', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'streetAddress2', event.target.value); }}
                       />
                     </div>
 
@@ -138,7 +136,7 @@ class ActionInfoForm extends Component {
                       <TextField
                         floatingLabelText="City"
                         value={data.city}
-                        onChange={ (event) => { handleInputChange(event, 'city', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'city', event.target.value); }}
                         errorText={errors.cityErrorText}
                       />
                     </div>
@@ -148,8 +146,8 @@ class ActionInfoForm extends Component {
                         floatingLabelText="State"
                         searchText={data.state}
                         dataSource={statesList}
-                        onUpdateInput={ (text) => { handleInputChange(undefined, 'state', text) } }
-                        ref={ (input) => { refs.stateInput = input } }
+                        onUpdateInput={(text) => { handleInputChange(undefined, 'state', text); }}
+                        ref={(input) => { refs.stateInput = input; }}
                         errorText={errors.stateErrorText}
                       />
                     </div>
@@ -160,7 +158,7 @@ class ActionInfoForm extends Component {
                         type="text"
                         pattern="[0-9]{5}"
                         value={data.zipcode}
-                        onChange={ (event) => { handleInputChange(event, 'zipcode', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
                         errorText={errors.zipcodeErrorText}
                       />
                     </div>
@@ -168,9 +166,9 @@ class ActionInfoForm extends Component {
                     <div className={s.textFieldContainer}>
                       <TextField
                         floatingLabelText="Location Notes"
-                        fullWidth={true}
+                        fullWidth
                         value={data.locationNotes}
-                        onChange={ (event) => { handleInputChange(event, 'locationNotes', event.target.value) } }
+                        onChange={(event) => { handleInputChange(event, 'locationNotes', event.target.value); }}
                         errorText={errors.locationNotesErrorText}
                       />
                     </div>
@@ -186,7 +184,7 @@ class ActionInfoForm extends Component {
                     label="Ongoing (Role or Project)"
                     toggled={data.ongoing}
                     labelPosition="right"
-                    onToggle={ (event, checked) => { handleInputChange(event, 'ongoing', checked) } }
+                    onToggle={(event, checked) => { handleInputChange(event, 'ongoing', checked); }}
                   />
                 </div>
 
@@ -198,7 +196,7 @@ class ActionInfoForm extends Component {
                     <div className={s.textFieldContainer}>
                       <DatePicker
                         value={data.date}
-                        onChange={ (event, date) => { handleInputChange(event, 'date', date) } }
+                        onChange={(event, date) => { handleInputChange(event, 'date', date); }}
                         container="dialog"
                         dialogContainerStyle={dialogStyle}
                         floatingLabelText="Date"
@@ -213,7 +211,7 @@ class ActionInfoForm extends Component {
                         value={data.startTime}
                         minutesStep={5}
                         errorText={errors.startTimeErrorText}
-                        onChange={ (event, date) => { handleInputChange(event, 'startTime', date) } }
+                        onChange={(event, date) => { handleInputChange(event, 'startTime', date); }}
                       />
                     </div>
 
@@ -223,7 +221,7 @@ class ActionInfoForm extends Component {
                         value={data.endTime}
                         minutesStep={5}
                         errorText={errors.endTimeErrorText}
-                        onChange={ (event, date) => { handleInputChange(event, 'endTime', date) } }
+                        onChange={(event, date) => { handleInputChange(event, 'endTime', date); }}
                       />
                     </div>
                   </div>
@@ -250,7 +248,7 @@ class ActionInfoForm extends Component {
                   <div className={[s.organizeButton, s.button].join(' ')}>
                     <RaisedButton
                       onTouchTap={formSubmit}
-                      primary={true}
+                      primary
                       type="submit"
                       label={submitText}
                     />

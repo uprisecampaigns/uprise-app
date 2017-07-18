@@ -12,7 +12,7 @@ export default organizeActionPaths({
   path: '/organize/:campaignSlug/action/:actionSlug/profile/edit',
   component: (campaign, action) => (
     <Layout>
-      <ManageActionProfileEditWithAuthentication actionId={action.id} campaignId={campaign.id}/>
+      <ManageActionProfileEditWithAuthentication actionId={action.id} campaignId={campaign.id} />
     </Layout>
-  )
+  ),
 });

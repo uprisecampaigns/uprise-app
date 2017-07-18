@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import uniqWith from 'lodash.uniqwith';
 import FontIcon from 'material-ui/FontIcon';
@@ -14,7 +14,7 @@ import SearchActionInputs from './components/SearchActionInputs';
 import SearchActionSelections from './components/SearchActionSelections';
 
 import {
-  addSearchItem, sortBy
+  addSearchItem, sortBy,
 } from 'actions/SearchActions';
 
 import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
@@ -35,9 +35,7 @@ const graphqlOptions = {
       isInfiniteLoading: false,
       allItemsLoaded,
       handleInfiniteLoad: () => {
-
         if (!allItemsLoaded) {
-
           return data.fetchMore({
             query: SearchActionsQuery,
             variables: {
@@ -46,9 +44,9 @@ const graphqlOptions = {
                   start_time: result.cursor.start_time,
                   id: result.cursor.id,
                   slug: result.cursor.slug,
-                  campaign_name: result.cursor.campaign.title
-                }
-              })
+                  campaign_name: result.cursor.campaign.title,
+                },
+              }),
             },
             updateQuery: (previousResult, { fetchMoreResult }) => {
               const previousActions = previousResult.actions.actions;
@@ -61,24 +59,24 @@ const graphqlOptions = {
                   cursor: fetchMoreResult.actions.cursor,
                   total: fetchMoreResult.actions.total,
                   actions: mergedActions,
-                  __typename: fetchMoreResult.__typename
-                }
+                  __typename: fetchMoreResult.__typename,
+                },
               };
             },
           });
         }
-      }
-    }
+      },
+    };
   },
-  options: (ownProps) => ({
+  options: ownProps => ({
     // Refresh every 5 min should be safe
     pollInterval: 60000 * 5,
     fetchPolicy: 'cache-and-network',
     ...ownProps,
-  })
+  }),
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   search: {
     keywords: state.actionsSearch.keywords,
     types: state.actionsSearch.types,
@@ -89,9 +87,9 @@ const mapStateToProps = (state) => ({
     dates: state.actionsSearch.dates,
     times: state.actionsSearch.times,
     geographies: state.actionsSearch.geographies,
-    sortBy: state.actionsSearch.sortBy
+    sortBy: state.actionsSearch.sortBy,
   },
-  sortBy: state.actionsSearch.sortBy
+  sortBy: state.actionsSearch.sortBy,
 });
 
 const ResultsCountWithData = compose(
@@ -104,7 +102,7 @@ const SearchActionResultsWithData = compose(
   graphql(SearchActionsQuery, graphqlOptions),
 )(SearchActionResults);
 
-const searchSortWrapper = connect( (state) => ({
+const searchSortWrapper = connect(state => ({
   selected: state.actionsSearch.sortBy.name,
   descending: state.actionsSearch.sortBy.descending,
 }));
@@ -131,14 +129,13 @@ class SearchActions extends Component {
   }
 
   render() {
-
     return (
       <div className={s.outerContainer}>
 
         <Link to="/search">
           <div className={[s.navHeader, s.searchNavHeader].join(' ')}>
             <FontIcon
-              className={["material-icons", s.backArrow].join(' ')}
+              className={['material-icons', s.backArrow].join(' ')}
             >arrow_back</FontIcon>
             Search
           </div>
@@ -151,12 +148,12 @@ class SearchActions extends Component {
         <SearchPresentation
           addSelectedItem={this.addSelectedItem}
           sortSelect={this.sortSelect}
-          resultsCount={<ResultsCountWithData/>}
+          resultsCount={<ResultsCountWithData />}
           searchSortWrapper={searchSortWrapper}
           searchSortItems={searchSortItems}
-          searchSelections={<SearchActionSelections/>}
-          searchInputs={<SearchActionInputs/>}
-          searchResults={<SearchActionResultsWithData/>}
+          searchSelections={<SearchActionSelections />}
+          searchInputs={<SearchActionInputs />}
+          searchResults={<SearchActionResultsWithData />}
         />
 
       </div>

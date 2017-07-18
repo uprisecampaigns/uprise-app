@@ -23,16 +23,15 @@ import s from 'styles/Organize.scss';
 
 
 class ManageCampaignUploadActions extends Component {
-
   static PropTypes = {
     createActionsMutation: PropTypes.func.isRequired,
-    campaignSlug: PropTypes.string.isRequired
+    campaignSlug: PropTypes.string.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      timezone: 'America/Los_Angeles'
+      timezone: 'America/Los_Angeles',
     };
   }
 
@@ -43,8 +42,7 @@ class ManageCampaignUploadActions extends Component {
   }
 
   render() {
-
-    const processString = (string) => string.trim();
+    const processString = string => string.trim();
     const processBoolean = (value) => {
       if (typeof value !== 'string') {
         throw new Error('Can only process strings to boolean');
@@ -58,7 +56,7 @@ class ManageCampaignUploadActions extends Component {
         return true;
       }
       return false;
-    }
+    };
 
     const processDate = (value) => {
       const { timezone, ...state } = this.state;
@@ -67,17 +65,17 @@ class ManageCampaignUploadActions extends Component {
       }
       const date = moment.tz(value.trim(), timezone);
       if (!date.isValid()) {
-        throw new Error('Date is not valid: ' + value);
+        throw new Error(`Date is not valid: ${value}`);
       }
       return date.format();
-    }
+    };
 
     const processTags = (value) => {
       if (typeof value !== 'string') {
         throw new Error('Can only process strings to tags');
       }
       return value.split(',').map(i => i.trim());
-    }
+    };
 
     const processRelationships = (collectionName, value) => {
       if (typeof value !== 'string') {
@@ -87,16 +85,15 @@ class ManageCampaignUploadActions extends Component {
       const slugs = value.split(',').map(i => i.trim().toLowerCase());
 
       try {
-        return slugs.map((slug) => this.props[collectionName].find(a => getSlug(a.title) === getSlug(slug)).id);
+        return slugs.map(slug => this.props[collectionName].find(a => getSlug(a.title) === getSlug(slug)).id);
       } catch (e) {
-        throw new Error('Can\'t find matching relationship for ' + collectionName);
+        throw new Error(`Can't find matching relationship for ${collectionName}`);
       }
-    }
+    };
 
     if (this.props.campaign && this.props.issueAreas &&
         this.props.levels && this.props.activities &&
         this.props.types) {
-
       const { campaign, user, ...props } = this.props;
 
       const config = {
@@ -179,53 +176,51 @@ class ManageCampaignUploadActions extends Component {
           {
             title: 'Activities',
             slug: 'activities',
-            processData: (values) => processRelationships('activities', values),
+            processData: values => processRelationships('activities', values),
           },
           {
             title: 'Campaign Types',
             slug: 'types',
-            processData: (values) => processRelationships('types', values),
+            processData: values => processRelationships('types', values),
           },
           {
             title: 'Campaign Levels',
             slug: 'levels',
-            processData: (values) => processRelationships('levels', values),
+            processData: values => processRelationships('levels', values),
           },
           {
             title: 'Issue Areas',
             slug: 'issueAreas',
-            processData: (values) => processRelationships('issueAreas', values),
+            processData: values => processRelationships('issueAreas', values),
           },
         ],
         onSubmit: async (data) => {
           console.log(data);
-          const newActions = data.map((action) => {
-            return {
-              campaignId: campaign.id,
-              ...action
-            };
-          });
+          const newActions = data.map(action => ({
+            campaignId: campaign.id,
+            ...action,
+          }));
 
           console.log(newActions);
           const results = await this.props.createActionsMutation({
             variables: {
-              data: newActions
+              data: newActions,
             },
-            refetchQueries: ['SearchActionsQuery', 'CampaignQuery']
+            refetchQueries: ['SearchActionsQuery', 'CampaignQuery'],
           });
 
           console.log(results);
           return results;
-        }
+        },
       };
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug + '/settings'}>
+          <Link to={`/organize/${campaign.slug}/settings`}>
             <div className={s.navHeader}>
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Settings
             </div>
@@ -245,25 +240,22 @@ class ManageCampaignUploadActions extends Component {
             </SelectField>
           </div>
 
-          <CsvUploader 
+          <CsvUploader
             config={config}
           />
-          
+
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
-const graphqlOptions = (collection) => {
-  return {
-    props: ({ data }) => ({
-      [collection]: !data.loading && data[collection] ? data[collection] : []
-    })
-  };
-};
+const graphqlOptions = collection => ({
+  props: ({ data }) => ({
+    [collection]: !data.loading && data[collection] ? data[collection] : [],
+  }),
+});
 
 const withActivitiesQuery = graphql(ActivitiesQuery, graphqlOptions('activities'));
 const withTypesQuery = graphql(TypesQuery, graphqlOptions('types'));
@@ -274,23 +266,23 @@ const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
     user: !data.loading && data.me ? data.me : {
       email: '',
-    }, 
-  })
+    },
+  }),
 });
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: (ownProps) => ({ 
+  options: ownProps => ({
     variables: {
       search: {
-        slug: ownProps.campaignSlug
-      }
+        slug: ownProps.campaignSlug,
+      },
     },
     fetchPolicy: 'cache-and-network',
   }),
-  props: ({ data }) => ({ 
+  props: ({ data }) => ({
     campaign: data.campaign,
-    graphqlLoading: data.loading
-  })
+    graphqlLoading: data.loading,
+  }),
 });
 
 export default compose(
@@ -301,5 +293,5 @@ export default compose(
   withTypesQuery,
   withLevelsQuery,
   withIssueAreasQuery,
-  graphql(CreateActionsMutation, { name: 'createActionsMutation' })
+  graphql(CreateActionsMutation, { name: 'createActionsMutation' }),
 )(ManageCampaignUploadActions);

@@ -6,5 +6,5 @@ import createBrowserHistory from 'history/createBrowserHistory';
 export default createBrowserHistory({
   getUserConfirmation(message, callback) {
     // NOOP
-  }
+  },
 });

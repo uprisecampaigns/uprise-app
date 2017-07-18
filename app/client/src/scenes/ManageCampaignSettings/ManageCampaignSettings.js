@@ -18,22 +18,21 @@ import s from 'styles/Organize.scss';
 
 
 class ManageCampaignSettingsContainer extends Component {
-
   static PropTypes = {
-    campaign: PropTypes.object.isRequired
+    campaign: PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      deleteModalOpen: false
-    }
+      deleteModalOpen: false,
+    };
   }
 
   handleDelete = () => {
     this.setState({
-      deleteModalOpen: true
+      deleteModalOpen: true,
     });
   }
 
@@ -41,11 +40,11 @@ class ManageCampaignSettingsContainer extends Component {
     event.preventDefault();
 
     try {
-      const results = await this.props.deleteCampaignMutation({ 
+      const results = await this.props.deleteCampaignMutation({
         variables: {
           data: {
-            id: this.props.campaign.id
-          }
+            id: this.props.campaign.id,
+          },
         },
         refetchQueries: ['CampaignsQuery', 'MyCampaignsQuery'],
       });
@@ -62,7 +61,6 @@ class ManageCampaignSettingsContainer extends Component {
   }
 
   render() {
-
     if (this.props.campaign) {
       const { campaign, ...props } = this.props;
 
@@ -70,11 +68,11 @@ class ManageCampaignSettingsContainer extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={ (event) => { event.preventDefault(); this.setState({ deleteModalOpen: false })} }
+          onTouchTap={(event) => { event.preventDefault(); this.setState({ deleteModalOpen: false }); }}
         />,
         <RaisedButton
           label="I'm sure"
-          primary={true}
+          primary
           onTouchTap={this.confirmDelete}
           className={s.primaryButton}
         />,
@@ -83,11 +81,11 @@ class ManageCampaignSettingsContainer extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug}>
+          <Link to={`/organize/${campaign.slug}`}>
             <div className={[s.navHeader, s.campaignNavHeader].join(' ')}>
 
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
 
               {campaign.title}
@@ -100,39 +98,39 @@ class ManageCampaignSettingsContainer extends Component {
 
             <Divider />
 
-            <Link to={'/organize/' + campaign.slug + '/info'}>
-              <ListItem 
+            <Link to={`/organize/${campaign.slug}/info`}>
+              <ListItem
                 primaryText="Info"
               />
             </Link>
 
             <Divider />
 
-            <Link to={'/organize/' + campaign.slug + '/preferences'}>
-              <ListItem 
+            <Link to={`/organize/${campaign.slug}/preferences`}>
+              <ListItem
                 primaryText="Preferences"
               />
             </Link>
 
             <Divider />
 
-            <Link to={'/organize/' + campaign.slug + '/location'}>
-              <ListItem 
+            <Link to={`/organize/${campaign.slug}/location`}>
+              <ListItem
                 primaryText="Location"
               />
             </Link>
 
             <Divider />
 
-            <Link to={'/organize/' + campaign.slug + '/profile'}>
-              <ListItem 
+            <Link to={`/organize/${campaign.slug}/profile`}>
+              <ListItem
                 primaryText="Profile"
               />
             </Link>
 
             <Divider />
 
-            <ListItem 
+            <ListItem
               primaryText="Delete"
               onTouchTap={this.handleDelete}
             />
@@ -144,7 +142,7 @@ class ManageCampaignSettingsContainer extends Component {
           {this.state.deleteModalOpen && (
             <Dialog
               title="Are You Sure?"
-              modal={true}
+              modal
               actions={modalActions}
               actionsContainerClassName={s.modalActionsContainer}
               open={this.state.deleteModalOpen}
@@ -157,25 +155,24 @@ class ManageCampaignSettingsContainer extends Component {
 
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          slug: ownProps.campaignSlug
-        }
+          slug: ownProps.campaignSlug,
+        },
       },
       fetchPolicy: 'cache-and-network',
     }),
-    props: ({ data }) => ({ 
-      campaign: data.campaign
-    })
+    props: ({ data }) => ({
+      campaign: data.campaign,
+    }),
   }),
-  graphql(DeleteCampaignMutation, { name: 'deleteCampaignMutation' })
+  graphql(DeleteCampaignMutation, { name: 'deleteCampaignMutation' }),
 )(ManageCampaignSettingsContainer);

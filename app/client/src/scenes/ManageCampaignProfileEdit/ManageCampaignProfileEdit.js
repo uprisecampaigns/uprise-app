@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import camelCase from 'camelcase';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -9,7 +9,7 @@ import Link from 'components/Link';
 
 import formWrapper from 'lib/formWrapper';
 
-import { 
+import {
   validateString,
   validateWebsiteUrl,
 } from 'lib/validateComponentForms';
@@ -24,7 +24,6 @@ import s from 'styles/Organize.scss';
 const WrappedCampaignProfileForm = formWrapper(CampaignProfileForm);
 
 class ManageCampaignProfileEdit extends Component {
-
   static PropTypes = {
     campaignSlug: PropTypes.object.isRequired,
   }
@@ -40,12 +39,12 @@ class ManageCampaignProfileEdit extends Component {
         description: '',
         profileImageUrl: '',
       },
-    }
+    };
 
     this.state = Object.assign({}, initialState);
   }
 
-  defaultErrorText = { 
+  defaultErrorText = {
     titleErrorText: null,
     websiteUrlErrorText: null,
     descriptionErrorText: null,
@@ -53,34 +52,32 @@ class ManageCampaignProfileEdit extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.campaign && !nextProps.graphqlLoading) {
-
       // Just camel-casing property keys and checking for null/undefined
-      const campaign = Object.assign(...Object.keys(nextProps.campaign).map(k => {
+      const campaign = Object.assign(...Object.keys(nextProps.campaign).map((k) => {
         if (nextProps.campaign[k] !== null) {
           return { [camelCase(k)]: nextProps.campaign[k] };
         }
       }));
 
-      Object.keys(campaign).forEach( (k) => {
+      Object.keys(campaign).forEach((k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
           delete campaign[k];
         }
       });
 
-      this.setState( (prevState) => ({
-        formData: Object.assign({}, prevState.formData, campaign)
+      this.setState(prevState => ({
+        formData: Object.assign({}, prevState.formData, campaign),
       }));
-    } 
+    }
   }
 
   formSubmit = async (data) => {
-
     // A little hackish to avoid an annoying rerender with previous form data
     // If I could figure out how to avoid keeping state here
     // w/ the componentWillReceiveProps/apollo/graphql then
     // I might not need this
     this.setState({
-      formData: Object.assign({}, data)
+      formData: Object.assign({}, data),
     });
 
     const formData = Object.assign({}, data);
@@ -88,10 +85,9 @@ class ManageCampaignProfileEdit extends Component {
     formData.id = this.props.campaign.id;
 
     try {
-
-      const results = await this.props.editCampaignMutation({ 
+      const results = await this.props.editCampaignMutation({
         variables: {
-          data: formData
+          data: formData,
         },
         // TODO: decide between refetch and update
         refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
@@ -105,25 +101,23 @@ class ManageCampaignProfileEdit extends Component {
   }
 
   render() {
-
     if (this.props.campaign) {
-
       const { campaign, ...props } = this.props;
       const { formData, errors, ...state } = this.state;
       const { formSubmit, defaultErrorText } = this;
 
       const validators = [
-        (component) => { validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required') },
-        (component) => { validateWebsiteUrl(component) },
+        (component) => { validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'); },
+        (component) => { validateWebsiteUrl(component); },
       ];
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize/' + campaign.slug + '/settings'}>
+          <Link to={`/organize/${campaign.slug}/settings`}>
             <div className={s.navHeader}>
-              <FontIcon 
-                className={["material-icons", s.backArrow].join(' ')}
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Settings
             </div>
@@ -139,30 +133,29 @@ class ManageCampaignProfileEdit extends Component {
             campaignId={campaign.id}
             submitText="Save Changes"
           />
-          
+
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   connect(),
   graphql(CampaignQuery, {
-    options: (ownProps) => ({ 
+    options: ownProps => ({
       variables: {
         search: {
-          slug: ownProps.campaignSlug
-        }
+          slug: ownProps.campaignSlug,
+        },
       },
       fetchPolicy: 'cache-and-network',
     }),
-    props: ({ data }) => ({ 
+    props: ({ data }) => ({
       campaign: data.campaign,
-      graphqlLoading: data.loading
-    })
+      graphqlLoading: data.loading,
+    }),
   }),
   graphql(EditCampaignMutation, { name: 'editCampaignMutation' }),
 )(ManageCampaignProfileEdit);

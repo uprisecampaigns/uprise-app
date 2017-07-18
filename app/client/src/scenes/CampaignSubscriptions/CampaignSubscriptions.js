@@ -3,7 +3,7 @@ import { compose, graphql } from 'react-apollo';
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
 import timeWithZone from 'lib/timeWithZone';
@@ -16,7 +16,6 @@ import s from 'styles/Volunteer.scss';
 
 
 class CampaignSubscriptions extends Component {
-
   static PropTypes = {
     campaignSubscriptions: PropTypes.array.isRequired,
   }
@@ -26,12 +25,11 @@ class CampaignSubscriptions extends Component {
   }
 
   render() {
-
     if (this.props.campaignSubscriptions) {
       const { campaignSubscriptions, ...props } = this.props;
 
-      const campaignsList = campaignSubscriptions.map( (campaign) => (
-        <Link key={campaign.id} to={'/campaign/' + campaign.slug}>
+      const campaignsList = campaignSubscriptions.map(campaign => (
+        <Link key={campaign.id} to={`/campaign/${campaign.slug}`}>
           <ListItem>
 
             <div className={s.listTitle}>
@@ -46,7 +44,7 @@ class CampaignSubscriptions extends Component {
 
             {(campaign.owner) && (
               <div className={s.listDetailLine}>
-                Coordinator: {campaign.owner.first_name} {campaign.owner.last_name} <Link to={"mailto:" + campaign.owner.email} mailTo={true} external={true} useAhref={true}>{campaign.owner.email}</Link>
+                Coordinator: {campaign.owner.first_name} {campaign.owner.last_name} <Link to={`mailto:${campaign.owner.email}`} mailTo external useAhref>{campaign.owner.email}</Link>
               </div>
             )}
 
@@ -60,7 +58,7 @@ class CampaignSubscriptions extends Component {
           <Link to={'/volunteer'}>
             <div className={[s.navHeader, s.volunteerNavHeader].join(' ')}>
               <FontIcon
-                className={["material-icons", s.backArrow].join(' ')}
+                className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
               Volunteer
             </div>
@@ -76,16 +74,15 @@ class CampaignSubscriptions extends Component {
           </List>
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 
 export default compose(
   graphql(CampaignSubscriptionsQuery, {
-    props: ({ data }) => ({ 
-      campaignSubscriptions: data.campaignSubscriptions
-    })
+    props: ({ data }) => ({
+      campaignSubscriptions: data.campaignSubscriptions,
+    }),
   }),
 )(CampaignSubscriptions);
