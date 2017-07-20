@@ -1,4 +1,3 @@
-
 import React, { PureComponent, PropTypes } from 'react';
 import isNumeric from 'validator/lib/isNumeric';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -14,7 +13,11 @@ const textFieldStyle = {
   padding: '0 1rem',
 };
 
-class GeographySearch extends React.PureComponent {
+class GeographySearch extends PureComponent {
+  static propTypes = {
+    addItem: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,10 +25,6 @@ class GeographySearch extends React.PureComponent {
       zipcode: '',
       virtual: false,
     };
-  }
-
-  static propTypes = {
-    addItem: PropTypes.func.isRequired,
   }
 
   handleInputChange = (event, type, value) => {
@@ -75,7 +74,7 @@ class GeographySearch extends React.PureComponent {
   }
 
   render() {
-    const { distance, zipcode, virtual, ...state } = this.state;
+    const { distance, zipcode, virtual } = this.state;
     const { addItem, handleInputChange } = this;
 
     return (

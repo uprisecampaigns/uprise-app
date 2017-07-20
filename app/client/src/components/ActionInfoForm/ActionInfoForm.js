@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
@@ -10,19 +9,12 @@ import CircularProgress from 'material-ui/CircularProgress';
 import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Link from 'components/Link';
-
-import history from 'lib/history';
 import states from 'lib/states-list';
 
 import s from 'styles/Form.scss';
 
 
 class ActionInfoForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
     data: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -30,9 +22,13 @@ class ActionInfoForm extends Component {
     formSubmit: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    handleInputChange: PropTypes.func.isRequired,
     submitText: PropTypes.string.isRequired,
+    campaignTitle: PropTypes.string.isRequired,
     saving: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    saving: false,
   }
 
   render() {

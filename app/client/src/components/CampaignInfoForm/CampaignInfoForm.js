@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Toggle from 'material-ui/Toggle';
@@ -7,33 +6,45 @@ import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import Link from 'components/Link';
-
-import history from 'lib/history';
 import states from 'lib/states-list';
 
 import s from 'styles/Form.scss';
 
 
 class CampaignInfoForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
     data: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
     refs: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
     submitText: PropTypes.string.isRequired,
+    errors: PropTypes.shape({
+      titleErrorText: PropTypes.string.isRequired,
+      websiteUrlErrorText: PropTypes.string.isRequired,
+      phoneNumberErrorText: PropTypes.string.isRequired,
+      streetAddressErrorText: PropTypes.string.isRequired,
+      cityErrorText: PropTypes.string.isRequired,
+      stateErrorText: PropTypes.string.isRequired,
+      zipcodeErrorText: PropTypes.string.isRequired,
+      orgWebsiteErrorText: PropTypes.string.isRequired,
+      orgNameErrorText: PropTypes.string.isRequired,
+      orgContactNameErrorText: PropTypes.string.isRequired,
+      orgContactPhoneErrorText: PropTypes.string.isRequired,
+      orgContactPositionErrorText: PropTypes.string.isRequired,
+      orgContactEmailErrorText: PropTypes.string.isRequired,
+      orgStatusErrorText: PropTypes.string.isRequired,
+    }).isRequired,
+  }
+
+  static defaultProps = {
+    saving: false,
   }
 
   render() {
     const {
-      data, user, refs, formSubmit, errors, saving,
+      data, refs, formSubmit, errors, saving,
       handleInputChange, cancel, submitText,
     } = this.props;
 
@@ -153,11 +164,17 @@ class CampaignInfoForm extends Component {
 
                   <div>
 
-                    <p className={s.helpText}>Please provide a reference who can verify that you are authorized to represent this organization.</p>
+                    <p className={s.helpText}>
+                      Please provide a reference who can verify that you are authorized to represent this organization.
+                    </p>
                     <p className={s.helpText}>OR</p>
-                    <p className={s.helpText}>Provide a link to a webpage showing your official role in the organization.</p>
+                    <p className={s.helpText}>
+                      Provide a link to a webpage showing your official role in the organization.
+                    </p>
 
-                    <p className={s.helpText}>This information will remain private and will be used solely for internal verification purposes.</p>
+                    <p className={s.helpText}>
+                      This information will remain private and will be used solely for internal verification purposes.
+                    </p>
 
                     <div className={s.textFieldContainer}>
                       <TextField

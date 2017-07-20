@@ -2,8 +2,6 @@
 import React, { Component, PropTypes } from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import Divider from 'material-ui/Divider';
-import Subheader from 'material-ui/Subheader';
 import IconButton from 'material-ui/IconButton';
 
 import Link from 'components/Link';
@@ -42,18 +40,30 @@ function UserMenuItem(props) {
   );
 }
 
-class NavDrawer extends Component {
-  constructor(props) {
-    super(props);
-  }
+UserMenuItem.propTypes = {
+  itemClicked: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+  }).isRequired,
+};
 
+class NavDrawer extends Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
-    handleToggle: PropTypes.func.isRequired,
     onRequestChange: PropTypes.func.isRequired,
-    userObject: PropTypes.object,
+    userObject: PropTypes.shape({
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+      email: PropTypes.string,
+    }),
     loggedIn: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    userObject: null,
   }
 
   itemClicked = (event) => {
@@ -65,12 +75,6 @@ class NavDrawer extends Component {
     { path: '/volunteer', title: 'Volunteer' },
     { path: '/organize', title: 'Organize' },
     { path: '/settings', title: 'Settings' },
-  ]
-
-  accountMenuItems = [
-    // { path: '/account/profile', title: 'Profile' },
-    // { path: '/account/preferences', title: 'Preferences' },
-    // { path: '/account/settings', title: 'Settings' },
   ]
 
   bottomMenuItems = [
@@ -105,7 +109,6 @@ class NavDrawer extends Component {
 
   render() {
     const navItems = this.menuItems.map(this.renderNavItems);
-    const accountNavItems = this.accountMenuItems.map(this.renderNavItems);
     const bottomNavItems = this.bottomMenuItems.map(this.renderNavItems);
 
     if (this.props.loggedIn) {
@@ -127,14 +130,7 @@ class NavDrawer extends Component {
           />
 
           {navItems}
-          {/*
-          <Divider className={s.divider}/>
 
-          <Subheader className={s.subheader}>Account</Subheader>
-
-          {accountNavItems}
-
-*/}
           <div className={s.bottomNavContainer}>
             {bottomNavItems}
           </div>

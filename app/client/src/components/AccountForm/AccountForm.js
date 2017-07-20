@@ -1,23 +1,13 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React, { PureComponent, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import Link from 'components/Link';
-
-import history from 'lib/history';
-import states from 'lib/states-list';
-
 import s from 'styles/Form.scss';
 
 
-class AccountForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class AccountForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
@@ -25,6 +15,11 @@ class AccountForm extends Component {
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
     submitText: PropTypes.string.isRequired,
+    errors: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    saving: false,
   }
 
   render() {
@@ -32,9 +27,6 @@ class AccountForm extends Component {
       data, formSubmit, errors, saving,
       handleInputChange, cancel, submitText,
     } = this.props;
-
-    const statesList = Object.keys(states);
-
 
     return (
       <div className={s.outerContainer}>

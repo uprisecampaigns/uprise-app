@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Popover from 'material-ui/Popover';
-import IconMenu from 'material-ui/IconMenu';
-import { List, ListItem } from 'material-ui/List';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -9,14 +7,22 @@ import Divider from 'material-ui/Divider';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 
-import history from 'lib/history';
-
 import Link from 'components/Link';
 
 import s from './ContentDropdownMenu.scss';
 
 
 class ContentDropdownMenu extends Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    dropdowns: PropTypes.arrayOf(PropTypes.shape({
+      action: PropTypes.func,
+      path: PropTypes.string,
+      external: PropTypes.bool,
+      sameTab: PropTypes.bool,
+    })).isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,9 +30,19 @@ class ContentDropdownMenu extends Component {
     };
   }
 
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    dropdowns: PropTypes.array.isRequired,
+  handleOpenMenu = (event) => {
+    event.preventDefault();
+
+    this.setState({
+      menuOpen: true,
+      popoverAnchorEl: event.currentTarget,
+    });
+  }
+
+  handleCloseMenu = () => {
+    this.setState(prevState => (Object.assign({}, prevState, {
+      menuOpen: false,
+    })));
   }
 
   renderDropdown = (dropdown, index) => {
@@ -59,23 +75,8 @@ class ContentDropdownMenu extends Component {
     );
   }
 
-  handleOpenMenu = (event) => {
-    event.preventDefault();
-
-    this.setState({
-      menuOpen: true,
-      popoverAnchorEl: event.currentTarget,
-    });
-  }
-
-  handleCloseMenu = (reason) => {
-    this.setState(prevState => (Object.assign({}, prevState, {
-      menuOpen: false,
-    })));
-  }
-
   render() {
-    const { menuOpen, popoverAnchorEl, ...state } = this.state;
+    const { menuOpen, popoverAnchorEl } = this.state;
     const dropdownItems = this.props.dropdowns.map(this.renderDropdown);
 
     return (

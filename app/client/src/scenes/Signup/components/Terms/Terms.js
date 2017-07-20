@@ -1,17 +1,11 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
+import React, { PureComponent, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import formStyle from 'styles/Form.scss';
 import pageStyle from 'styles/Page.scss';
 
 
-class Terms extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class Terms extends PureComponent {
   static propTypes = {
     agreeToTerms: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
@@ -19,7 +13,7 @@ class Terms extends Component {
   }
 
   render() {
-    const { data, agreeToTerms, cancel, content, ...props } = this.props;
+    const { agreeToTerms, cancel, content } = this.props;
     const { title, html } = content;
 
     return (

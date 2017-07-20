@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -18,7 +18,26 @@ import { base64ToBlob } from 'lib/base64ToBlob';
 import s from 'styles/ImageUploader.scss';
 
 
-class ImageUploader extends React.Component {
+class ImageUploader extends Component {
+  static propTypes = {
+    imageSrc: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    imageUploadOptions: PropTypes.shape({
+      collectionName: PropTypes.string,
+      collectionId: PropTypes.string,
+      filePath: PropTypes.string,
+    }).isRequired,
+    imageHeight: PropTypes.number,
+    imageWidth: PropTypes.number,
+    dispatch: PropTypes.func.isRequired,
+  };
+
+  // Default to doing no scaling
+  static defaultProps = {
+    imageHeight: null,
+    imageWidth: null,
+  }
+
   constructor(props) {
     super(props);
 
@@ -36,14 +55,6 @@ class ImageUploader extends React.Component {
     };
   }
 
-  static propTypes = {
-    imageSrc: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    imageUploadOptions: PropTypes.object.isRequired,
-    imageHeight: PropTypes.number,
-    imageWidth: PropTypes.number,
-  };
-
   componentWillReceiveProps(nextProps) {
     if (typeof nextProps.imageSrc !== 'undefined') {
       this.setState({ imageSrc: nextProps.imageSrc });
@@ -51,10 +62,10 @@ class ImageUploader extends React.Component {
   }
 
   onDrop = (acceptedFiles, rejectedFiles) => {
-    const { dispatch, ...props } = this.props;
+    const { dispatch } = this.props;
 
     const file = acceptedFiles[0];
-    if (!acceptedFiles.length) {
+    if (!acceptedFiles.length || rejectedFiles.length) {
       dispatch(notify('There was an error with your file. Please check that it is a valid image and try again'));
     } else if (!file.type.match('image.*')) {
       dispatch(notify('File must be an image'));
@@ -75,7 +86,7 @@ class ImageUploader extends React.Component {
     }
   }
 
-  imageCropChange = (crop, pixelCrop) => {
+  imageCropChange = (crop) => {
     const newCrop = Object.assign({}, crop, { aspect: 1 });
     this.setState({ imageCrop: newCrop });
   }
@@ -176,8 +187,7 @@ class ImageUploader extends React.Component {
   }
 
   render() {
-    const { ...props } = this.props;
-    const { imageSrc, editImageSrc, imageCrop, uploading, ...state } = this.state;
+    const { imageSrc, editImageSrc, imageCrop, uploading } = this.state;
 
     return (
 
@@ -229,10 +239,12 @@ class ImageUploader extends React.Component {
                   className={[s.removeImageButton, 'material-icons'].join(' ')}
                   onTouchTap={this.removeImage}
                 >delete</FontIcon>
-                <img src={imageSrc} />
+                <img alt="Uploaded" src={imageSrc} />
               </div>
             ) : (
-              <div className={s.instructions}>Drag and drop your image here, or click to select an image to upload.</div>
+              <div className={s.instructions}>
+                Drag and drop your image here, or click to select an image to upload.
+              </div>
             )}
 
             <FontIcon className={[s.addImageButton, 'material-icons'].join(' ')}>add_a_photo</FontIcon>

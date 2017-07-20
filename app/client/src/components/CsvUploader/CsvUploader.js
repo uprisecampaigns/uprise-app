@@ -5,7 +5,6 @@ import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FontIcon from 'material-ui/FontIcon';
-import CircularProgress from 'material-ui/CircularProgress';
 import Dropzone from 'react-dropzone';
 import Parser from 'papaparse';
 import { CellMeasurer, CellMeasurerCache, Grid, AutoSizer } from 'react-virtualized';
@@ -15,6 +14,10 @@ import { notify } from 'actions/NotificationsActions';
 import s from './CsvUploader.scss';
 
 class CsvUploader extends React.Component {
+  static propTypes = {
+    config: PropTypes.object.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,15 +26,11 @@ class CsvUploader extends React.Component {
     };
   }
 
-  static propTypes = {
-    config: PropTypes.object.isRequired,
-  };
-
   componentWillReceiveProps(nextProps) {
   }
 
   onDrop = async (acceptedFiles, rejectedFiles) => {
-    const { dispatch, ...props } = this.props;
+    const { dispatch } = this.props;
 
     if (!acceptedFiles.length) {
       dispatch(notify('There was an error with your file. Please check and try again'));
@@ -39,6 +38,7 @@ class CsvUploader extends React.Component {
     }
 
     const csvFile = acceptedFiles[0];
+    // eslint-disable-next-line no-console
     console.log(csvFile);
 
     if (!csvFile.type.match('text/csv')) {
@@ -52,6 +52,7 @@ class CsvUploader extends React.Component {
         console.error(err);
       },
       complete: (results, file) => {
+        // eslint-disable-next-line no-console
         console.log(results);
         const rows = Array.from(results.data).map((row) => {
           const values = Array.from(row);
@@ -96,7 +97,7 @@ class CsvUploader extends React.Component {
     event.preventDefault();
 
     const submissionValues = [];
-    const { config, dispatch, ...props } = this.props;
+    const { config, dispatch } = this.props;
 
     const submissionRows = Array.from(this.state.rows);
 
@@ -120,9 +121,12 @@ class CsvUploader extends React.Component {
         submissionValues.push(newItem);
       });
 
+      // eslint-disable-next-line no-console
       console.log(submissionValues);
 
       const results = await config.onSubmit(submissionValues);
+
+      // eslint-disable-next-line no-console
       console.log(results);
       dispatch(notify('Successfully imported'));
 
@@ -139,9 +143,9 @@ class CsvUploader extends React.Component {
   handleSelectAll = () => {
     const newRows = Array.from(this.state.rows);
     if (this.state.rows.every((i => i.selected))) {
-      newRows.forEach((row, index) => newRows[index].selected = false);
+      newRows.forEach((row, index) => { newRows[index].selected = false; });
     } else {
-      newRows.forEach((row, index) => newRows[index].selected = true);
+      newRows.forEach((row, index) => { newRows[index].selected = true; });
     }
 
     this.setState({
@@ -181,7 +185,7 @@ class CsvUploader extends React.Component {
   }
 
   cellRenderer = ({ columnIndex, key, parent, rowIndex, style }) => {
-    const { config, ...props } = this.props;
+    const { config } = this.props;
 
     const availableHeaders = Array.from(config.headers);
     availableHeaders.unshift({
@@ -245,8 +249,7 @@ class CsvUploader extends React.Component {
   }
 
   render() {
-    const { config, ...props } = this.props;
-    const { rows, ...state } = this.state;
+    const { rows } = this.state;
 
     if (rows) {
       return (
@@ -293,7 +296,9 @@ class CsvUploader extends React.Component {
             onDrop={this.onDrop}
             multiple={false}
           >
-            <div className={s.instructions}>Drag and drop your csv file here, or click to select an file to upload.</div>
+            <div className={s.instructions}>
+              Drag and drop your csv file here, or click to select an file to upload.
+            </div>
 
             <FontIcon className="material-icons">file_upload</FontIcon>
           </Dropzone>

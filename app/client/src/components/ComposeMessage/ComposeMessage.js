@@ -2,11 +2,8 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
-import FontIcon from 'material-ui/FontIcon';
-import CircularProgress from 'material-ui/CircularProgress';
 import TextField from 'material-ui/TextField';
 
-import { notify } from 'actions/NotificationsActions';
 
 import {
   validateString,
@@ -16,6 +13,15 @@ import s from 'styles/ComposeMessage.scss';
 
 
 class ComposeMessage extends React.Component {
+  static propTypes = {
+    fromEmail: PropTypes.string.isRequired,
+    detailLines: PropTypes.arrayOf(PropTypes.string).isRequired,
+    recipients: PropTypes.arrayOf(PropTypes.shape({
+      email: PropTypes.string
+    })).isRequired,
+    sendMessage: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
 
@@ -33,13 +39,6 @@ class ComposeMessage extends React.Component {
 
     this.state = Object.assign({}, initialState);
   }
-
-  static propTypes = {
-    fromEmail: PropTypes.string.isRequired,
-    detailLines: PropTypes.array.isRequired,
-    recipients: PropTypes.array.isRequired,
-    sendMessage: PropTypes.func.isRequired,
-  };
 
   clickedSend = (event) => {
     this.hasErrors = false;
@@ -72,8 +71,8 @@ class ComposeMessage extends React.Component {
   }
 
   render() {
-    const { recipients, detailLines, fromEmail, ...props } = this.props;
-    const { modalOpen, formData, errors, ...state } = this.state;
+    const { recipients, detailLines, fromEmail } = this.props;
+    const { modalOpen, formData, errors } = this.state;
     const { handleInputChange } = this;
 
     const modalActions = [
@@ -115,7 +114,7 @@ class ComposeMessage extends React.Component {
         <div className={s.innerContainer}>
 
           { detailLines.map((detailLine, index) => (
-            <div className={s.detailLine} key={index}>
+            <div className={s.detailLine} key={JSON.stringify(detailLine)}>
               {detailLine}
             </div>
           ))}

@@ -1,18 +1,16 @@
-
-import React, { Component, PropTypes } from 'react';
-
-const isEqual = require('lodash.isequal');
+import React, { PureComponent, PropTypes } from 'react';
 
 
-class ResultsCount extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
+class ResultsCount extends PureComponent {
   static propTypes = {
     items: PropTypes.array,
-    totals: PropTypes.number,
+    total: PropTypes.number,
     graphqlLoading: PropTypes.bool.isRequired,
+  }
+
+  static defaultProps = {
+    items: [],
+    total: 0,
   }
 
   shouldComponentUpdate(nextProps) {

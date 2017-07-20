@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import moment from 'moment';
 
 import Link from 'components/Link';
 
@@ -12,6 +11,15 @@ import s from './AddToCalendar.scss';
 
 
 class AddToCalendar extends React.Component {
+  static propTypes = {
+    event: PropTypes.object.isRequired,
+    children: PropTypes.node,
+  }
+
+  static defaultProps = {
+    children: null,
+  }
+
   constructor(props) {
     super(props);
 
@@ -20,11 +28,6 @@ class AddToCalendar extends React.Component {
     };
   }
 
-  static propTypes = {
-    event: PropTypes.object.isRequired,
-    children: PropTypes.node,
-  };
-
   handleTouchTap = (event) => {
     event.preventDefault();
 
@@ -32,13 +35,13 @@ class AddToCalendar extends React.Component {
       open: true,
       anchorEl: event.currentTarget,
     });
-  };
+  }
 
   handleRequestClose = () => {
     this.setState({
       open: false,
     });
-  };
+  }
 
   render() {
     const { event, children, ...props } = this.props;

@@ -1,23 +1,18 @@
-
-import React, { PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import { ListItem } from 'material-ui/List';
 
 import ControlledListItem from 'components/ControlledListItem';
 
 
-class TogglesList extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
+class TogglesList extends PureComponent {
   static propTypes = {
     listTitle: PropTypes.string.isRequired,
     collectionName: PropTypes.string.isRequired,
     keyPropName: PropTypes.string.isRequired,
     displayPropName: PropTypes.string.isRequired,
-    collection: PropTypes.array.isRequired,
-    selectedCollection: PropTypes.array.isRequired,
+    collection: PropTypes.arrayOf(PropTypes.object).isRequired,
+    selectedCollection: PropTypes.arrayOf(PropTypes.object).isRequired,
     handleToggle: PropTypes.func.isRequired,
     containerClassName: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,

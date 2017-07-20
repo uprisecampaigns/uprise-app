@@ -1,18 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import Popover from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import SearchBar from 'components/SearchBar';
 import SearchSort from 'components/SearchSort';
-import Link from 'components/Link';
 
 import s from 'styles/Search.scss';
 
 
 class SearchPresentation extends Component {
+  static propTypes = {
+    sortSelect: PropTypes.func.isRequired,
+    resultsCount: PropTypes.node.isRequired,
+    searchSortWrapper: PropTypes.func.isRequired,
+    addSelectedItem: PropTypes.func.isRequired,
+    searchSortItems: PropTypes.arrayOf(PropTypes.object).isRequired,
+    searchSelections: PropTypes.node.isRequired,
+    searchInputs: PropTypes.node.isRequired,
+    searchResults: PropTypes.node.isRequired,
+  }
+
   constructor(props) {
     super(props);
 
@@ -25,16 +34,6 @@ class SearchPresentation extends Component {
 
     this.searchBarInputElements = [];
   }
-
-  static propTypes = {
-    sortSelect: PropTypes.func.isRequired,
-    resultsCount: PropTypes.node.isRequired,
-    searchSortWrapper: PropTypes.func.isRequired,
-    searchSortItems: PropTypes.array.isRequired,
-    searchSelections: PropTypes.node.isRequired,
-    searchInputs: PropTypes.node.isRequired,
-    searchResults: PropTypes.node.isRequired,
-  };
 
   addSelectedItem = (collectionName, value) => {
     this.searchBarInputElements.forEach(element => element.blur());
@@ -91,7 +90,7 @@ class SearchPresentation extends Component {
   render() {
     const {
       searchSortWrapper, resultsCount, searchSortItems,
-      searchSelections, searchInputs, searchResults, ...props
+      searchSelections, searchInputs, searchResults
     } = this.props;
 
     const ConnectedSearchSort = searchSortWrapper(SearchSort);
@@ -104,7 +103,7 @@ class SearchPresentation extends Component {
               collectionName="keywords"
               inputLabel="keyword search"
               addItem={this.addSelectedItem}
-              inputRef={el => this.searchBarInputElements[0] = el}
+              inputRef={(el) => { this.searchBarInputElements[0] = el; }}
             />
           </div>
         </div>
@@ -129,7 +128,7 @@ class SearchPresentation extends Component {
                   collectionName="keywords"
                   inputLabel="keyword search"
                   addItem={this.addSelectedItem}
-                  inputRef={el => this.searchBarInputElements[0] = el}
+                  inputRef={(el) => { this.searchBarInputElements[0] = el; }}
                 />
               </div>
             </div>

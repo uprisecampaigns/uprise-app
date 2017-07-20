@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { compose, graphql } from 'react-apollo';
+import { compose } from 'react-apollo';
 
 import history from 'lib/history';
 
@@ -15,12 +15,9 @@ import {
   cleanForm,
 } from 'actions/NotificationsActions';
 
-import Link from 'components/Link';
 import ChangePasswordForm from 'components/ChangePasswordForm';
 
 import { attemptChangePassword } from 'actions/AuthActions';
-
-import s from 'styles/Settings.scss';
 
 
 const WrappedChangePasswordForm = formWrapper(ChangePasswordForm);
@@ -57,8 +54,8 @@ class Security extends Component {
 
 
     const result = await new Promise((resolve, reject) => {
-      this.props.dispatch(attemptChangePassword(formData, (result) => {
-        resolve(result);
+      this.props.dispatch(attemptChangePassword(formData, (r) => {
+        resolve(r);
       }));
     });
 
@@ -72,7 +69,7 @@ class Security extends Component {
 
   render() {
     const { state, formSubmit, defaultErrorText } = this;
-    const { passwordBeingReset, changeError, ...props } = this.props;
+    const { passwordBeingReset, changeError } = this.props;
     const { formData } = state;
 
     const validators = [

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { ListItem } from 'material-ui/List';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
@@ -6,7 +6,11 @@ import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 
 import s from './ControlledListItem.scss';
 
-class ControlledListItem extends React.PureComponent {
+class ControlledListItem extends PureComponent {
+  static propTypes = {
+    className: PropTypes.string.isRequired,
+  }
+
   constructor(props) {
     super(props);
 
@@ -32,7 +36,10 @@ class ControlledListItem extends React.PureComponent {
       <ListItem
         open={open}
         className={[className].concat([s.listItem]).join(' ')}
-        rightToggle={open ? <NavigationExpandLess onTouchTap={handleTouchTap} /> : <NavigationExpandMore onTouchTap={handleTouchTap} />}
+        rightToggle={open ?
+          <NavigationExpandLess onTouchTap={handleTouchTap} /> :
+          <NavigationExpandMore onTouchTap={handleTouchTap} />
+        }
         onTouchTap={handleTouchTap}
         {...props}
       />

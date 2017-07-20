@@ -1,10 +1,9 @@
-
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import Chip from 'material-ui/Chip';
 
 import s from './SelectedItemsContainer.scss';
 
-const SelectedItemsContainer = (props) => {
+function SelectedItemsContainer(props) {
   const { collectionName, items, removeItem } = props;
 
   const selectedItemsContainer = items.map((item, index) => {
@@ -19,7 +18,7 @@ const SelectedItemsContainer = (props) => {
     return (
       <div
         className={s.searchChip}
-        key={index}
+        key={JSON.stringify(item)}
         onTouchTap={handleClicked}
       >
         <Chip
@@ -38,13 +37,17 @@ const SelectedItemsContainer = (props) => {
       </div>
     </div>
   ) : null;
-};
+}
 
-SelectedItemsContainer.PropTypes = {
+SelectedItemsContainer.propTypes = {
   collectionName: PropTypes.string.isRequired,
-  items: PropTypes.array.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
   removeItem: PropTypes.func.isRequired,
   renderLabel: PropTypes.func,
+};
+
+SelectedItemsContainer.defaultProps = {
+  renderLabel: undefined,
 };
 
 export default SelectedItemsContainer;

@@ -1,9 +1,7 @@
-
 import React, { PureComponent, PropTypes } from 'react';
 import isNumeric from 'validator/lib/isNumeric';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Checkbox from 'material-ui/Checkbox';
 
 import s from 'styles/Search.scss';
 
@@ -14,16 +12,16 @@ const textFieldStyle = {
   padding: '0 1rem',
 };
 
-class ZipcodeSearch extends React.PureComponent {
+class ZipcodeSearch extends PureComponent {
+  static propTypes = {
+    addItem: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       zipcode: '',
     };
-  }
-
-  static propTypes = {
-    addItem: PropTypes.func.isRequired,
   }
 
   handleInputChange = (event, type, value) => {
@@ -53,7 +51,7 @@ class ZipcodeSearch extends React.PureComponent {
   }
 
   render() {
-    const { zipcode, ...state } = this.state;
+    const { zipcode } = this.state;
     const { addItem, handleInputChange } = this;
 
     return (

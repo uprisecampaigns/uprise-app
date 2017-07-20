@@ -3,12 +3,12 @@ import history from 'lib/history';
 
 import s from 'styles/Link.scss';
 
-function isLeftClickEvent(event) {
-  return isTouchTap(event) || event.button === 0;
-}
-
 function isTouchTap(event) {
   return (typeof event.nativeEvent === 'object' && event.type === 'touchend');
+}
+
+function isLeftClickEvent(event) {
+  return isTouchTap(event) || event.button === 0;
 }
 
 function isModifiedEvent(event) {
@@ -18,6 +18,7 @@ function isModifiedEvent(event) {
 class Link extends React.Component {
   static propTypes = {
     to: PropTypes.string.isRequired,
+    className: PropTypes.string,
     useAhref: PropTypes.bool,
     external: PropTypes.bool,
     sameTab: PropTypes.bool,
@@ -28,8 +29,13 @@ class Link extends React.Component {
   };
 
   static defaultProps = {
+    className: '',
     preventDefault: true,
     sameTab: false,
+    useAhref: false,
+    external: false,
+    children: null,
+    onClick: undefined,
   };
 
   handleClick = (event, url) => {
@@ -61,15 +67,16 @@ class Link extends React.Component {
   };
 
   render() {
-    const { to, children, external, mailTo, useAhref, preventDefault, className, ...props } = this.props;
+    const { to, children, external, mailTo, useAhref, className, ...props } = this.props;
 
     // If link is external and not mailTo no 'http' is included at beginning, add it
 
     function addHttp(url) {
+      let newUrl = url;
       if (url && !/^(f|ht)tps?:\/\//i.test(url)) {
-        url = `http://${url}`;
+        newUrl = `http://${url}`;
       }
-      return url;
+      return newUrl;
     }
 
     const url = (external && !mailTo) ? addHttp(to) : to;

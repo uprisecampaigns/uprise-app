@@ -1,8 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 
 import Link from 'components/Link';
 import ContentDropdownMenu from 'components/ContentDropdownMenu';
@@ -145,68 +144,66 @@ function AuthenticatedIcons(props) {
   );
 }
 
-class Header extends Component {
-  constructor(props) {
-    super(props);
-  }
+AuthenticatedIcons.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
 
-  static propTypes = {
-    userObject: PropTypes.object,
-    loggedIn: PropTypes.bool.isRequired,
-    clickedLogout: PropTypes.func.isRequired,
-    handleDrawerToggle: PropTypes.func.isRequired,
-  }
-
-  render() {
-    return (
-      <AppBar
-        iconElementLeft={
-          <div
-            className={s.menuIconContainer}
-          >
-            <IconButton
-              iconStyle={iconButtonStyle}
-              iconClassName="material-icons"
-              onTouchTap={this.props.handleDrawerToggle}
-            >menu</IconButton>
+function Header(props) {
+  return (
+    <AppBar
+      iconElementLeft={
+        <div
+          className={s.menuIconContainer}
+        >
+          <IconButton
+            iconStyle={iconButtonStyle}
+            iconClassName="material-icons"
+            onTouchTap={props.handleDrawerToggle}
+          >menu</IconButton>
+        </div>
+      }
+      title={
+        <Link useAhref={false} preventDefault={false} to="/">
+          <div className={s.logoContainer}>
+            <img
+              alt="UpRise Campaigns Logo"
+              src={upriseLogo}
+              className={s.logoImage}
+            />
           </div>
-        }
-        title={
-          <Link useAhref={false} preventDefault={false} to="/">
-            <div className={s.logoContainer}>
-              <img
-                src={upriseLogo}
-                className={s.logoImage}
-              />
-            </div>
-          </Link>
-        }
-        titleStyle={{
-          height: 'auto',
-        }}
-        iconElementRight={
-          <div className={s.rightIconsContainer}>
+        </Link>
+      }
+      titleStyle={{
+        height: 'auto',
+      }}
+      iconElementRight={
+        <div className={s.rightIconsContainer}>
 
-            { this.props.loggedIn ?
-              <AuthenticatedIcons logout={this.props.clickedLogout} />
-              :
-              <UnauthenticatedIcons />
-            }
+          { props.loggedIn ?
+            <AuthenticatedIcons logout={props.clickedLogout} />
+            :
+            <UnauthenticatedIcons />
+          }
 
-          </div>
-        }
-        iconStyleRight={{
-          marginTop: '0px',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-        className={s.appBar}
-        style={{
-          backgroundColor: 'rgb(255, 255, 255)',
-        }}
-      />
-    );
-  }
+        </div>
+      }
+      iconStyleRight={{
+        marginTop: '0px',
+        display: 'flex',
+        alignItems: 'center',
+      }}
+      className={s.appBar}
+      style={{
+        backgroundColor: 'rgb(255, 255, 255)',
+      }}
+    />
+  );
 }
+
+Header.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  clickedLogout: PropTypes.func.isRequired,
+  handleDrawerToggle: PropTypes.func.isRequired,
+};
 
 export default Header;

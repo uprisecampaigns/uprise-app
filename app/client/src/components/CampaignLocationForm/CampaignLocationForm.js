@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import moment from 'moment';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import SelectField from 'material-ui/SelectField';
@@ -11,17 +9,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import Link from 'components/Link';
 
-import history from 'lib/history';
 import states from 'lib/states-list';
 
 import s from 'styles/Form.scss';
 
 
 class CampaignLocationForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
     data: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -33,19 +26,17 @@ class CampaignLocationForm extends Component {
     saving: PropTypes.bool,
   }
 
+  static defaultProps = {
+    saving: false,
+  }
+
   render() {
     const {
       data, refs, formSubmit, errors, saving,
-      handleInputChange, cancel, campaignTitle, submitText,
+      handleInputChange, cancel, submitText,
     } = this.props;
 
     const statesList = Object.keys(states);
-
-    const formatDate = date => moment(date).format('M/D/YYYY');
-
-    const dialogStyle = {
-      zIndex: '3200',
-    };
 
     return (
       <div className={s.outerContainer}>

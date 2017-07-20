@@ -1,29 +1,23 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React, { PureComponent, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-
-import Link from 'components/Link';
-
-import { attemptSignup } from 'actions/AuthActions';
 
 import s from 'styles/Form.scss';
 
 
-class SignupForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class SignupForm extends PureComponent {
   static propTypes = {
     formSubmit: PropTypes.func.isRequired,
     cancelSignup: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
+    signupError: PropTypes.string
+  }
+
+  static defaultProps = {
+    signupError: undefined
   }
 
   render() {

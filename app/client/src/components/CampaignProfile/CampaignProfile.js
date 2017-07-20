@@ -1,7 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React, { PureComponent, PropTypes } from 'react';
 import moment from 'moment-timezone';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
@@ -13,11 +11,7 @@ import Link from 'components/Link';
 import s from 'styles/Profile.scss';
 
 
-class CampaignProfile extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class CampaignProfile extends PureComponent {
   static propTypes = {
     campaign: PropTypes.object.isRequired,
     subscribe: PropTypes.func.isRequired,
@@ -27,7 +21,7 @@ class CampaignProfile extends Component {
 
   render() {
     if (this.props.campaign) {
-      const { campaign, saving, subscribe, cancelSubscription, ...props } = this.props;
+      const { campaign, saving, subscribe, cancelSubscription } = this.props;
 
       const keywords = (Array.isArray(campaign.tags) && campaign.tags.length > 0) ? (
         <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
@@ -37,31 +31,32 @@ class CampaignProfile extends Component {
         <div className={s.detailLine}>{campaign.issue_areas.map(issue => issue.title).join(', ')}</div>
       ) : '';
 
-      const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ? campaign.actions.map((action) => {
-        if (action.ongoing) {
-          return (
-            <Link to={`/action/${action.slug}`} key={action.id}>
-              <div className={[s.detailLine, s.actionListing].join(' ')}>
-                {action.title}{action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
-              </div>
-            </Link>
-          );
-        } else if (action.start_time && action.end_time) {
-          const startTime = moment(action.start_time);
-          const endTime = moment(action.end_time);
+      const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ?
+        campaign.actions.map((action) => {
+          if (action.ongoing) {
+            return (
+              <Link to={`/action/${action.slug}`} key={action.id}>
+                <div className={[s.detailLine, s.actionListing].join(' ')}>
+                  {action.title}{action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
+                </div>
+              </Link>
+            );
+          } else if (action.start_time && action.end_time) {
+            const startTime = moment(action.start_time);
+            const endTime = moment(action.end_time);
 
-          const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
-          const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
+            const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
+            const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
-          return (
-            <Link to={`/action/${action.slug}`} key={action.id}>
-              <div className={[s.detailLine, s.actionListing].join(' ')}>
-                {action.title}, {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}{action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
-              </div>
-            </Link>
-          );
-        } return null;
-      }) : '';
+            return (
+              <Link to={`/action/${action.slug}`} key={action.id}>
+                <div className={[s.detailLine, s.actionListing].join(' ')}>
+                  {action.title}, {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}{action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
+                </div>
+              </Link>
+            );
+          } return null;
+        }) : '';
 
 
       return (
@@ -83,7 +78,7 @@ class CampaignProfile extends Component {
 
             { campaign.profile_image_url && (
               <div className={s.profileImageContainer}>
-                <img src={campaign.profile_image_url} className={s.profileImage} />
+                <img alt={`${campaign.title} Profile`} src={campaign.profile_image_url} className={s.profileImage} />
               </div>
             )}
 

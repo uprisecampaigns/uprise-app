@@ -1,4 +1,3 @@
-
 import React, { PureComponent, PropTypes } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import TextField from 'material-ui/TextField';
@@ -7,21 +6,26 @@ import IconButton from 'material-ui/IconButton';
 import s from './SearchBar.scss';
 
 
-class SearchBar extends React.PureComponent {
+class SearchBar extends PureComponent {
+  static propTypes = {
+    collectionName: PropTypes.string.isRequired,
+    collectionToSearch: PropTypes.arrayOf(PropTypes.string),
+    addItem: PropTypes.func.isRequired,
+    inputLabel: PropTypes.string.isRequired,
+    inputRef: PropTypes.func.isRequired,
+    iconName: PropTypes.string,
+  }
+
+  static defaultProps = {
+    collectionToSearch: undefined,
+    iconName: undefined,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       value: '',
     };
-  }
-
-  static propTypes = {
-    collectionName: PropTypes.string.isRequired,
-    collectionToSearch: PropTypes.array,
-    addItem: PropTypes.func.isRequired,
-    inputLabel: PropTypes.string.isRequired,
-    inputRef: PropTypes.func.isRequired,
-    iconName: PropTypes.string,
   }
 
   handleInputChange = (value) => {
@@ -45,7 +49,7 @@ class SearchBar extends React.PureComponent {
   }
 
   render() {
-    const { collectionToSearch, inputLabel, iconName, inputRef, ...props } = this.props;
+    const { collectionToSearch, inputLabel, iconName, inputRef } = this.props;
 
     const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
       <AutoComplete

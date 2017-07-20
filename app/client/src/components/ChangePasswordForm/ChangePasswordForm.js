@@ -1,13 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import Divider from 'material-ui/Divider';
-
-import Link from 'components/Link';
 
 import s from 'styles/Form.scss';
+
 
 function OldPassword({ show, data, errors, handleInputChange, error }) {
   if (show) {
@@ -27,7 +23,24 @@ function OldPassword({ show, data, errors, handleInputChange, error }) {
   return null;
 }
 
-function ChangePasswordForm({ data, errors, handleInputChange, formSubmit, passwordBeingReset, cancel, error }) {
+OldPassword.propTypes = {
+  show: PropTypes.bool.isRequired,
+  data: PropTypes.shape({
+    oldPassword: PropTypes.string,
+  }).isRequired,
+  errors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
+};
+
+OldPassword.defaultProps = {
+  error: null,
+};
+
+function ChangePasswordForm({
+  data, errors, handleInputChange, formSubmit,
+  passwordBeingReset, cancel, error,
+}) {
   return (
     <form
       className={s.form}
@@ -73,12 +86,21 @@ function ChangePasswordForm({ data, errors, handleInputChange, formSubmit, passw
 }
 
 ChangePasswordForm.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.shape({
+    newPassword1: PropTypes.string,
+    newPassword2: PropTypes.string,
+    oldPassword: PropTypes.string,
+  }).isRequired,
   formSubmit: PropTypes.func.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleInputChange: PropTypes.func.isRequired,
   passwordBeingReset: PropTypes.bool.isRequired,
   cancel: PropTypes.func.isRequired,
   error: PropTypes.string,
+};
+
+ChangePasswordForm.defaultProps = {
+  error: null,
 };
 
 

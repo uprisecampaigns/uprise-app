@@ -1,11 +1,14 @@
-import React, { Component, PropTypes } from 'react';
-
-import Link from 'components/Link';
+import React, { PureComponent, PropTypes } from 'react';
 
 import s from 'styles/Page.scss';
 
 
-class Privacy extends Component {
+class Privacy extends PureComponent {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    html: PropTypes.string.isRequired,
+  }
+
   render() {
     const { title, html } = this.props.content;
 

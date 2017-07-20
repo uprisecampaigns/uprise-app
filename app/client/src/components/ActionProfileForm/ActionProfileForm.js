@@ -1,22 +1,14 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
-
-import ImageUploader from 'components/ImageUploader';
-import Link from 'components/Link';
 
 import s from 'styles/Organize.scss';
 import f from 'styles/Form.scss';
 
 
-class ActionProfileForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class ActionProfileForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -26,9 +18,13 @@ class ActionProfileForm extends Component {
     uploading: PropTypes.bool.isRequired,
   }
 
+  static defaultProps = {
+    saving: false
+  }
+
   render() {
     const { data, formSubmit, errors,
-      handleInputChange, saving, uploading, ...props } = this.props;
+      handleInputChange, saving, uploading } = this.props;
 
     return (
       <div className={s.outerContainer}>

@@ -1,21 +1,15 @@
-
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { List, ListItem } from 'material-ui/List';
 import ArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward';
 import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward';
 
-
 import s from 'styles/Search.scss';
 
 
-class SearchSort extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
+class SearchSort extends PureComponent {
   static propTypes = {
     onSelect: PropTypes.func.isRequired,
-    items: PropTypes.array.isRequired,
+    items: PropTypes.arrayOf(PropTypes.node).isRequired,
     selected: PropTypes.string.isRequired,
     descending: PropTypes.bool.isRequired,
   };
