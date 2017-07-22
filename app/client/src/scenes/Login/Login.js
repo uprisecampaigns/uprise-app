@@ -8,18 +8,28 @@ import LoginForm from './components/LoginForm';
 
 
 class LoginFormContainer extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    loginError: PropTypes.string,
+    message: PropTypes.string,
+  }
+
+  static defaultProps = {
+    message: undefined,
+    loginError: undefined,
+  }
+
   constructor(props) {
     super(props);
+    this.state = {
+      email: '',
+      password: '',
+      emailErrorText: null,
+      passwordErrorText: null,
+    };
   }
 
   hasErrors = false
-
-  state = {
-    email: '',
-    password: '',
-    emailErrorText: null,
-    passwordErrorText: null,
-  }
 
   handleInputChange = (event, type, value) => {
     this.setState(Object.assign({},
@@ -61,13 +71,11 @@ class LoginFormContainer extends Component {
   }
 
   formSubmit = (event) => {
-    console.log(event);
     event.preventDefault();
     this.hasErrors = false;
 
     this.validateEmail();
     this.validateString('password', 'passwordErrorText', 'Password is Required');
-    console.log(this.state);
 
     if (!this.hasErrors) {
       this.props.dispatch(attemptLogin({

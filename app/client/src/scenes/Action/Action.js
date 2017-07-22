@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import moment from 'moment-timezone';
 import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
-import FlatButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import timeWithZone from 'lib/timeWithZone';
@@ -26,6 +26,17 @@ import s from 'styles/Profile.scss';
 
 
 class Action extends Component {
+  static propTypes = {
+    action: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    actionSlug: PropTypes.string.isRequired,
+  };
+
+  static defaultProps = {
+    action: undefined,
+  }
+
   constructor(props) {
     super(props);
 
@@ -35,12 +46,6 @@ class Action extends Component {
     };
   }
 
-  static propTypes = {
-    actionId: PropTypes.string.isRequired,
-    actionSlug: PropTypes.string.isRequired,
-    action: PropTypes.object,
-  };
-
   signup = () => {
     this.setState({ modalOpen: true });
   }
@@ -48,7 +53,7 @@ class Action extends Component {
   confirmSignup = async () => {
     this.setState({ saving: true, modalOpen: false });
     try {
-      const results = await this.props.signup({
+      await this.props.signup({
         variables: {
           actionId: this.props.action.id,
         },
@@ -68,7 +73,7 @@ class Action extends Component {
   cancelSignup = async () => {
     this.setState({ saving: true });
     try {
-      const results = await this.props.cancelSignup({
+      await this.props.cancelSignup({
         variables: {
           actionId: this.props.action.id,
         },
@@ -87,15 +92,17 @@ class Action extends Component {
 
   render() {
     if (this.props.action) {
-      const { action, ...props } = this.props;
-      const { modalOpen, ...state } = this.state;
+      const { action } = this.props;
+      const { modalOpen } = this.state;
       const { signup, confirmSignup, cancelSignup } = this;
 
       const issueAreas = (Array.isArray(action.issue_areas) && action.issue_areas.length) ?
-        action.issue_areas.map((issue, index) => <div key={index} className={s.detailLine}>{issue.title}</div>) : [];
+        action.issue_areas.map((issue, index) => <div key={JSON.stringify(issue)} className={s.detailLine}>{issue.title}</div>) :
+        [];
 
       const activities = (Array.isArray(action.activities) && action.activities.length) ?
-        action.activities.map((activity, index) => <div key={index} className={s.detailLine}>{activity.description}</div>) : [];
+        action.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.detailLine}>{activity.description}</div>) :
+        [];
 
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.detailLine}>{action.tags.join(', ')}</div>

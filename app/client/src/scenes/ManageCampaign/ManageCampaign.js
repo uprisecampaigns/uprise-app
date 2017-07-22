@@ -4,8 +4,6 @@ import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 import Divider from 'material-ui/Divider';
 
-import history from 'lib/history';
-
 import Link from 'components/Link';
 
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
@@ -14,17 +12,19 @@ import s from 'styles/Organize.scss';
 
 
 class ManageCampaignContainer extends Component {
-  static PropTypes = {
+  static propTypes = {
+    campaign: PropTypes.object,
+    // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
   }
 
-  constructor(props) {
-    super(props);
+  static defaultProps = {
+    campaign: undefined,
   }
 
   render() {
     if (this.props.campaign) {
-      const { campaign, ...props } = this.props;
+      const { campaign } = this.props;
 
       return (
         <div className={s.outerContainer}>

@@ -1,11 +1,15 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import history from 'lib/history';
 
 export default (WrappedComponent) => {
   class WithAuthentication extends React.Component {
-    constructor(props) {
-      super(props);
+    componentWillMount = () => {
+      this.redirect(this.props);
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+      this.redirect(nextProps);
     }
 
     redirect = (props) => {
@@ -16,14 +20,6 @@ export default (WrappedComponent) => {
           history.push('/');
         }
       }
-    }
-
-    componentWillMount = () => {
-      this.redirect(this.props);
-    }
-
-    componentWillReceiveProps = (nextProps) => {
-      this.redirect(nextProps);
     }
 
     render() {

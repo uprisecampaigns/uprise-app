@@ -1,13 +1,9 @@
-
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import LinearProgress from 'material-ui/LinearProgress';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
-
-import HeaderContainer from './components/HeaderContainer';
-import NavDrawerContainer from './components/NavDrawerContainer';
 
 import s from 'styles/Layout.scss';
 
@@ -17,13 +13,18 @@ import {
   confirmNavFromDirtyForm,
 } from 'actions/NotificationsActions';
 
+import HeaderContainer from './components/HeaderContainer';
+import NavDrawerContainer from './components/NavDrawerContainer';
 
-export class Layout extends React.Component {
+
+export class Layout extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     notificationMessage: PropTypes.string.isRequired,
     displayNotification: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
+    displayFormNavWarning: PropTypes.bool.isRequired,
+    pageLoading: PropTypes.bool.isRequired,
   };
 
   constructor(props) {

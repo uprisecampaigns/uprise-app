@@ -2,8 +2,6 @@ import React from 'react';
 import ManageCampaignProfile from 'scenes/ManageCampaignProfile';
 import Layout from 'components/Layout';
 
-import history from 'lib/history';
-
 import withAuthentication from 'routes/withAuthentication';
 import organizeCampaignPaths from 'routes/organizeCampaignPaths';
 

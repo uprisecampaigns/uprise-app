@@ -1,12 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
-import Dialog from 'material-ui/Dialog';
 import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
-import history from 'lib/history';
 import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
@@ -17,20 +14,17 @@ import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
 import s from 'styles/Organize.scss';
 
 
-class ManageCampaignActionsContainer extends Component {
-  static PropTypes = {
+class ManageCampaignActionsContainer extends PureComponent {
+  static propTypes = {
     campaign: PropTypes.object.isRequired,
-    actions: PropTypes.array.isRequired,
+    actions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   render() {
     if (this.props.campaign && this.props.actions) {
-      const { campaign, actions, ...props } = this.props;
+      const { campaign, actions } = this.props;
 
       const actionsList = actions.map(action => (
         <Link key={action.id} to={`/organize/${campaign.slug}/action/${action.slug}`}>

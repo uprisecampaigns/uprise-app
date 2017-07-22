@@ -1,5 +1,3 @@
-import history from 'lib/history';
-
 export const ADD_SEARCH_ITEM = 'ADD_SEARCH_ITEM';
 export const REMOVE_SEARCH_ITEM = 'REMOVE_SEARCH_ITEM';
 
@@ -12,11 +10,11 @@ export const addSearchItem = (searchType, collectionName, value) => ({ type: ADD
 
 export const removeSearchItem = (searchType, collectionName, value) => ({ type: REMOVE_SEARCH_ITEM, searchType, collection: collectionName, value });
 
+export const unsetSearchDates = searchType => ({ type: UNSET_DATES, searchType });
+
 export const setSearchDates = (searchType, dates) => {
   unsetSearchDates(searchType);
   return { type: SET_DATES, searchType, dates };
 };
-
-export const unsetSearchDates = searchType => ({ type: UNSET_DATES, searchType });
 
 export const sortBy = (searchType, selection) => ({ type: SORT_BY, searchType, selection });

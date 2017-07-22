@@ -1,10 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import camelCase from 'camelcase';
-import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
-
-import history from 'lib/history';
 
 import formWrapper from 'lib/formWrapper';
 
@@ -29,7 +26,14 @@ import s from 'styles/Settings.scss';
 const WrappedAccountForm = formWrapper(AccountForm);
 
 class Account extends Component {
-  static PropTypes = {
+  static propTypes = {
+    graphqlLoading: PropTypes.bool.isRequired,
+    user: PropTypes.object,
+    editAccountMutation: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    user: undefined,
   }
 
   constructor(props) {
@@ -48,14 +52,6 @@ class Account extends Component {
     this.state = Object.assign({}, initialState);
   }
 
-  defaultErrorText = {
-    firstNameErrorText: null,
-    lastNameErrorText: null,
-    zipcodeErrorText: null,
-    phoneNumberErrorText: null,
-    emailErrorText: null,
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.user && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
@@ -63,6 +59,7 @@ class Account extends Component {
         if (nextProps.user[k] !== null) {
           return { [camelCase(k)]: nextProps.user[k] };
         }
+        return undefined;
       }));
 
       Object.keys(user).forEach((k) => {
@@ -77,6 +74,13 @@ class Account extends Component {
     }
   }
 
+  defaultErrorText = {
+    firstNameErrorText: null,
+    lastNameErrorText: null,
+    zipcodeErrorText: null,
+    phoneNumberErrorText: null,
+    emailErrorText: null,
+  }
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender with previous form data
     // If I could figure out how to avoid keeping state here
@@ -91,7 +95,7 @@ class Account extends Component {
     formData.id = this.props.user.id;
 
     try {
-      const results = await this.props.editAccountMutation({
+      await this.props.editAccountMutation({
         variables: {
           data: formData,
         },
@@ -108,7 +112,7 @@ class Account extends Component {
   render() {
     if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
-      const { user, ...props } = this.props;
+      const { user } = this.props;
       const { formData } = state;
 
       const validators = [

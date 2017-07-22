@@ -1,7 +1,7 @@
+import React, { PureComponent, PropTypes } from 'react';
 
-import React, { PropTypes } from 'react';
 
-class NotFound extends React.Component {
+class NotFound extends PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
   };

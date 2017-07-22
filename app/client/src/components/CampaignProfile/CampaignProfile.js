@@ -48,10 +48,12 @@ class CampaignProfile extends PureComponent {
             const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
             const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
+            // eslint-disable max-len
             return (
               <Link to={`/action/${action.slug}`} key={action.id}>
                 <div className={[s.detailLine, s.actionListing].join(' ')}>
-                  {action.title}, {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}{action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
+                  {action.title}, {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}
+                  {action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
                 </div>
               </Link>
             );

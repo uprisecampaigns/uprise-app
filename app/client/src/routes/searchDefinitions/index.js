@@ -2,9 +2,6 @@ import React from 'react';
 import Page from 'components/Page';
 import Layout from 'components/Layout';
 
-import withAuthentication from 'routes/withAuthentication';
-
-const PageWithAuthentication = withAuthentication(Page);
 
 export default {
 

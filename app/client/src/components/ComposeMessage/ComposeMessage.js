@@ -17,9 +17,9 @@ class ComposeMessage extends React.Component {
     fromEmail: PropTypes.string.isRequired,
     detailLines: PropTypes.arrayOf(PropTypes.string).isRequired,
     recipients: PropTypes.arrayOf(PropTypes.shape({
-      email: PropTypes.string
+      email: PropTypes.string,
     })).isRequired,
-    sendMessage: PropTypes.func.isRequired,
+    handleSend: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -56,7 +56,7 @@ class ComposeMessage extends React.Component {
 
     const { body, subject } = this.state.formData;
 
-    this.props.sendMessage({ subject, body });
+    this.props.handleSend({ subject, body });
 
     this.setState({ modalOpen: false });
   }

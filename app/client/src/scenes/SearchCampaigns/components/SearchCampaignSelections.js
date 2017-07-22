@@ -1,5 +1,5 @@
 
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -43,19 +43,15 @@ const SelectedGeographiesContainer = connect(state => ({ items: state.campaignsS
 const renderSelectedDateLabel = (dates) => {
   if (dates.onDate) {
     return moment(dates.onDate).format('M/D/YYYY');
-  } else if (dates.startDate && dates.endDate) {
-    return `${moment(dates.startDate).format('M/D/YYYY')} - ${moment(dates.endDate).format('M/D/YYYY')}`;
   }
+  return `${moment(dates.startDate).format('M/D/YYYY')} - ${moment(dates.endDate).format('M/D/YYYY')}`;
 };
 
 const renderSelectedGeographyLabel = geography => `Active in: ${geography.zipcode}`;
 
-class SearchCampaignSelections extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
+class SearchCampaignSelections extends PureComponent {
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
   };
 
   removeSelectedItem = (collectionName, value) => {

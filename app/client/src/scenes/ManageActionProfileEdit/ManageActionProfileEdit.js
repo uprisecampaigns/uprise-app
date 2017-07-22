@@ -24,11 +24,20 @@ import s from 'styles/Organize.scss';
 const WrappedActionProfileForm = formWrapper(ActionProfileForm);
 
 class ManageActionProfileEdit extends Component {
-  static PropTypes = {
-    campaignId: PropTypes.object.isRequired,
-    actionId: PropTypes.object.isRequired,
+  static propTypes = {
+    graphqlLoading: PropTypes.bool.isRequired,
+    editActionMutation: PropTypes.func.isRequired,
     campaign: PropTypes.object,
     action: PropTypes.object,
+    // eslint-disable-next-line react/no-unused-prop-types
+    campaignId: PropTypes.object.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    actionId: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    campaign: undefined,
+    action: undefined,
   }
 
   constructor(props) {
@@ -44,11 +53,6 @@ class ManageActionProfileEdit extends Component {
     this.state = Object.assign({}, initialState);
   }
 
-  defaultErrorText = {
-    titleErrorText: null,
-    descriptionErrorText: null,
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.action && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
@@ -56,6 +60,7 @@ class ManageActionProfileEdit extends Component {
         if (nextProps.action[k] !== null) {
           return { [camelCase(k)]: nextProps.action[k] };
         }
+        return undefined;
       }));
 
       Object.keys(action).forEach((k) => {
@@ -68,6 +73,11 @@ class ManageActionProfileEdit extends Component {
         formData: Object.assign({}, prevState.formData, action),
       }));
     }
+  }
+
+  defaultErrorText = {
+    titleErrorText: null,
+    descriptionErrorText: null,
   }
 
   formSubmit = async (data) => {
@@ -84,7 +94,7 @@ class ManageActionProfileEdit extends Component {
     formData.id = this.props.action.id;
 
     try {
-      const results = await this.props.editActionMutation({
+      await this.props.editActionMutation({
         variables: {
           data: formData,
         },
@@ -101,8 +111,8 @@ class ManageActionProfileEdit extends Component {
 
   render() {
     if (this.props.campaign && this.props.action) {
-      const { campaign, action, ...props } = this.props;
-      const { formData, errors, ...state } = this.state;
+      const { campaign, action } = this.props;
+      const { formData } = this.state;
       const { formSubmit, defaultErrorText } = this;
 
       const validators = [

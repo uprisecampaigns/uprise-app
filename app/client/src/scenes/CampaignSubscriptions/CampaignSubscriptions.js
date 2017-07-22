@@ -1,12 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import moment from 'moment';
-import RaisedButton from 'material-ui/RaisedButton';
-import Dialog from 'material-ui/Dialog';
 import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
-
-import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
 
@@ -15,18 +10,14 @@ import CampaignSubscriptionsQuery from 'schemas/queries/CampaignSubscriptionsQue
 import s from 'styles/Volunteer.scss';
 
 
-class CampaignSubscriptions extends Component {
-  static PropTypes = {
-    campaignSubscriptions: PropTypes.array.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
+class CampaignSubscriptions extends PureComponent {
+  static propTypes = {
+    campaignSubscriptions: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   render() {
     if (this.props.campaignSubscriptions) {
-      const { campaignSubscriptions, ...props } = this.props;
+      const { campaignSubscriptions } = this.props;
 
       const campaignsList = campaignSubscriptions.map(campaign => (
         <Link key={campaign.id} to={`/campaign/${campaign.slug}`}>
@@ -44,7 +35,10 @@ class CampaignSubscriptions extends Component {
 
             {(campaign.owner) && (
               <div className={s.listDetailLine}>
-                Coordinator: {campaign.owner.first_name} {campaign.owner.last_name} <Link to={`mailto:${campaign.owner.email}`} mailTo external useAhref>{campaign.owner.email}</Link>
+                Coordinator: {campaign.owner.first_name} {campaign.owner.last_name}&nbsp;
+                <Link to={`mailto:${campaign.owner.email}`} mailTo external useAhref>
+                  {campaign.owner.email}
+                </Link>
               </div>
             )}
 

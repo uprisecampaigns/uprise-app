@@ -14,7 +14,6 @@ import {
   validateString,
   validateState,
   validateZipcode,
-  validatePhoneNumber,
   validateStartEndTimes,
 } from 'lib/validateComponentForms';
 
@@ -29,11 +28,20 @@ import s from 'styles/Organize.scss';
 const WrappedActionInfoForm = formWrapper(ActionInfoForm);
 
 class ManageActionInfoContainer extends Component {
-  static PropTypes = {
-    campaignId: PropTypes.string.isRequired,
-    actionId: PropTypes.string.isRequired,
+  static propTypes = {
     campaign: PropTypes.object,
     action: PropTypes.object,
+    graphqlLoading: PropTypes.bool.isRequired,
+    editActionMutation: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    campaignId: PropTypes.string.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    actionId: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    action: undefined,
+    campaign: undefined,
   }
 
   constructor(props) {
@@ -61,21 +69,6 @@ class ManageActionInfoContainer extends Component {
     this.state = Object.assign({}, initialState);
   }
 
-  defaultErrorText = {
-    titleErrorText: null,
-    streetAddressErrorText: null,
-    locationNameErrorText: null,
-    locationNotesErrorText: null,
-    websiteUrlErrorText: null,
-    phoneNumberErrorText: null,
-    cityErrorText: null,
-    stateErrorText: null,
-    zipcodeErrorText: null,
-    dateErrorText: null,
-    startTimeErrorText: null,
-    endTimeErrorText: null,
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.action && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null
@@ -83,6 +76,7 @@ class ManageActionInfoContainer extends Component {
         if (nextProps.action[k] !== null) {
           return { [camelCase(k)]: nextProps.action[k] };
         }
+        return undefined;
       }));
 
       // Handle date/time
@@ -109,6 +103,21 @@ class ManageActionInfoContainer extends Component {
         formData: Object.assign({}, prevState.formData, action),
       }));
     }
+  }
+
+  defaultErrorText = {
+    titleErrorText: null,
+    streetAddressErrorText: null,
+    locationNameErrorText: null,
+    locationNotesErrorText: null,
+    websiteUrlErrorText: null,
+    phoneNumberErrorText: null,
+    cityErrorText: null,
+    stateErrorText: null,
+    zipcodeErrorText: null,
+    dateErrorText: null,
+    startTimeErrorText: null,
+    endTimeErrorText: null,
   }
 
   formSubmit = async (data) => {
@@ -143,7 +152,7 @@ class ManageActionInfoContainer extends Component {
     formData.id = this.props.action.id;
 
     try {
-      const results = await this.props.editActionMutation({
+      await this.props.editActionMutation({
         variables: {
           data: formData,
         },
@@ -161,7 +170,7 @@ class ManageActionInfoContainer extends Component {
   render() {
     if (this.props.action && this.props.campaign) {
       const { formSubmit, defaultErrorText } = this;
-      const { action, campaign, ...props } = this.props;
+      const { action, campaign } = this.props;
       const { formData } = this.state;
 
       const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;

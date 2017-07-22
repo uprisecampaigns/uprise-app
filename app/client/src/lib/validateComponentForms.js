@@ -14,6 +14,9 @@ import states from 'lib/states-list';
 // TODO: I hate this entire validation system. It should be refactored into a 
 //      Higher order component or something sensible/fancy like that
 //      In the meantime, it could at least not be so rigid in the propnames, etc.
+
+/* eslint-disable no-param-reassign */
+
 const statesList = Object.keys(states);
 
 export function validateString(component, prop, errorProp, errorMsg) {
@@ -153,7 +156,7 @@ export function validatePhoneNumber(component, prop = 'phoneNumber', errorProp =
         [errorProp]: 'Phone number is required',
       }),
     }));
-  } else if (test.match(/[^\(\d\s\)\-]/) ||
+  } else if (test.match(/[^(\d\s)-]/) ||
              !isMobilePhone(test.replace(/\D/g, ''), 'en-US')) {
     component.hasErrors = true;
     component.setState(prevState => ({
@@ -165,27 +168,27 @@ export function validatePhoneNumber(component, prop = 'phoneNumber', errorProp =
 }
 
 export function validateStartEndTimes(component) {
-  const { date, startTime, endTime, ...formData } = component.state.formData;
+  const { date, startTime, endTime } = component.state.formData;
 
   const errors = {};
   let hasError = false;
 
-  if (typeof startTime === 'undefined' || !moment(component.state.formData.startTime).isValid()) {
+  if (typeof startTime === 'undefined' || !moment(startTime).isValid()) {
     errors.startTimeErrorText = 'Please choose a start time';
     hasError = true;
   }
 
-  if (typeof endTime === 'undefined' || !moment(component.state.formData.endTime).isValid()) {
+  if (typeof endTime === 'undefined' || !moment(endTime).isValid()) {
     errors.endTimeErrorText = 'Please choose an end time';
     hasError = true;
   }
 
-  if (typeof date === 'undefined' || !moment(component.state.formData.date).isValid()) {
+  if (typeof date === 'undefined' || !moment(date).isValid()) {
     errors.dateErrorText = 'Please choose a date';
     hasError = true;
   }
 
-  if (!hasError && !moment(component.state.formData.endTime).isAfter(moment(component.state.formData.startTime))) {
+  if (!hasError && !moment(endTime).isAfter(moment(startTime))) {
     errors.endTimeErrorText = 'Please choose end time after start time';
     hasError = true;
   }
@@ -199,7 +202,13 @@ export function validateStartEndTimes(component) {
   }
 }
 
-export function validateNewPasswords(component, password1 = 'newPassword1', password2 = 'newPassword2', errorProp1 = 'newPassword1ErrorText', errorProp2 = 'newPassword2ErrorText') {
+export function validateNewPasswords(
+  component,
+  password1 = 'newPassword1',
+  password2 = 'newPassword2',
+  errorProp1 = 'newPassword1ErrorText',
+  errorProp2 = 'newPassword2ErrorText',
+) {
   const { formData } = component.state;
 
   if (formData[password1] !== formData[password2]) {

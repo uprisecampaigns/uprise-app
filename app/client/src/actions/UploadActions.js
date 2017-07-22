@@ -12,6 +12,18 @@ export const START_UPLOAD = 'START_UPLOAD';
 export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const UPLOAD_FAIL = 'UPLOAD_FAIL';
 
+export function uploadFail(error) {
+  return { type: UPLOAD_FAIL, error };
+}
+
+export function uploadSuccess(url) {
+  return { type: UPLOAD_SUCCESS, url };
+}
+
+export function startedUpload() {
+  return { type: START_UPLOAD };
+}
+
 export function attemptUpload({ onSuccess, filePath, collectionName, collectionId, contentType, blob }) {
   return async (dispatch, getState) => {
     if (getState().uploads.uploading) {
@@ -72,16 +84,3 @@ export function attemptUpload({ onSuccess, filePath, collectionName, collectionI
     }
   };
 }
-
-export function startedUpload() {
-  return { type: START_UPLOAD };
-}
-
-export function uploadSuccess(url) {
-  return { type: UPLOAD_SUCCESS, url };
-}
-
-export function uploadFail(error) {
-  return { type: UPLOAD_FAIL, error };
-}
-

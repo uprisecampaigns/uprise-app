@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+
 import { START_UPLOAD, UPLOAD_FAIL, UPLOAD_SUCCESS } from 'actions/UploadActions';
 
 const defaultStartState = {
@@ -9,24 +11,28 @@ const defaultStartState = {
 
 export function updateUploads(uploadsState = defaultStartState, action) {
   switch (action.type) {
-    case START_UPLOAD:
+    case START_UPLOAD: {
       return Object.assign({}, uploadsState, {
         uploading: true,
       });
+    }
 
-    case UPLOAD_FAIL:
+    case UPLOAD_FAIL: {
       return Object.assign({}, uploadsState, {
         uploading: false,
         error: action.error,
       });
+    }
 
-    case UPLOAD_SUCCESS:
+    case UPLOAD_SUCCESS: {
       return Object.assign({}, uploadsState, {
         uploading: false,
         uploadedUrls: uploadsState.uploadedUrls.concat(action.url),
       });
+    }
 
-    default:
+    default: {
       return uploadsState;
+    }
   }
 }

@@ -8,14 +8,13 @@ import MeQuery from 'schemas/queries/MeQuery.graphql';
 import NavDrawer from './components/NavDrawer';
 
 class NavDrawerContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
     open: PropTypes.bool.isRequired,
     handleToggle: PropTypes.func.isRequired,
     onRequestChange: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
+    userObject: PropTypes.object.isRequired,
   };
 
   clickedLogout = (event) => {

@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import Infinite from 'react-infinite';
 import moment from 'moment';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import isEqual from 'lodash.isequal';
+import { Card, CardHeader } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
 import CircularProgress from 'material-ui/CircularProgress';
 
-const isEqual = require('lodash.isequal');
 
 import timeWithZone from 'lib/timeWithZone';
 import itemsSort from 'lib/itemsSort';
@@ -15,14 +15,10 @@ import Link from 'components/Link';
 import s from 'styles/Search.scss';
 
 
-class SearchActionResults extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
+class SearchActionResults extends PureComponent {
   static propTypes = {
-    actions: PropTypes.array,
-    items: PropTypes.array,
+    actions: PropTypes.arrayOf(PropTypes.object),
+    cursor: PropTypes.object,
     sortBy: PropTypes.object.isRequired,
     graphqlLoading: PropTypes.bool.isRequired,
     allItemsLoaded: PropTypes.bool.isRequired,
@@ -30,10 +26,15 @@ class SearchActionResults extends React.PureComponent {
     handleInfiniteLoad: PropTypes.func.isRequired,
   }
 
+  static defaultProps = {
+    actions: undefined,
+    cursor: undefined,
+  }
+
   shouldComponentUpdate(nextProps) {
-    return (((!nextProps.graphqlLoading && this.props.graphqlLoading) ||
-            (!isEqual(this.props.cursor, nextProps.cursor))) &&
-            typeof nextProps.actions === 'object' ||
+    return ((((!nextProps.graphqlLoading && this.props.graphqlLoading) ||
+             (!isEqual(this.props.cursor, nextProps.cursor))) &&
+             typeof nextProps.actions === 'object') ||
             !isEqual(this.props.sortBy, nextProps.sortBy));
   }
 
@@ -49,13 +50,7 @@ class SearchActionResults extends React.PureComponent {
   render() {
     const { sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, ...props } = this.props;
 
-    const actions = props.actions ? Array.from(props.actions).sort(itemsSort(sortBy)).map((action, index) => {
-      const tags = action.tags ? action.tags.map((tag, index) => <span key={index}>{tag}{(index === action.tags.length - 1) ? '' : ', '}</span>) : [];
-
-      const activities = action.activities ? action.activities.map((activity, index) => <span key={index}>{activity.title}{(index === action.activities.length - 1) ? '' : ', '}</span>) : [];
-
-      const issues = action.issue_areas ? action.issue_areas.map((issue, index) => <span key={index}>{issue.title}{(index === action.issue_areas.length - 1) ? '' : ', '}</span>) : [];
-
+    const actions = props.actions ? Array.from(props.actions).sort(itemsSort(sortBy)).map((action, actionIndex) => {
       // TODO: better datetime parsing (not relying on native Date) and checking for missing values
       const startTime = moment(action.start_time);
       const endTime = moment(action.end_time);
@@ -64,7 +59,7 @@ class SearchActionResults extends React.PureComponent {
       const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
       return (
-        <Link key={index} to={`/action/${action.slug}`}>
+        <Link key={JSON.stringify(action)} to={`/action/${action.slug}`}>
           <Card className={s.card}>
             <CardHeader
               title={action.title}

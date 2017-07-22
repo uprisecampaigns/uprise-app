@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import moment from 'moment';
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import CampaignProfile from 'components/CampaignProfile';
-import Link from 'components/Link';
 
 import CampaignSubscriptionMutation from 'schemas/mutations/CampaignSubscriptionMutation.graphql';
 import CancelCampaignSubscriptionMutation from 'schemas/mutations/CancelCampaignSubscriptionMutation.graphql';
@@ -22,6 +20,17 @@ import s from 'styles/Profile.scss';
 
 
 class Campaign extends Component {
+  static propTypes = {
+    campaign: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    campaignSlug: PropTypes.string.isRequired,
+  };
+
+  static defaultProps = {
+    campaign: undefined,
+  }
+
   constructor(props) {
     super(props);
 
@@ -31,12 +40,6 @@ class Campaign extends Component {
     };
   }
 
-  static propTypes = {
-    campaign: PropTypes.object,
-    campaignId: PropTypes.string.isRequired,
-    campaignSlug: PropTypes.string.isRequired,
-  };
-
   subscribe = () => {
     this.setState({ modalOpen: true });
   }
@@ -44,7 +47,7 @@ class Campaign extends Component {
   confirmSubscription = async () => {
     this.setState({ saving: true, modalOpen: false });
     try {
-      const results = await this.props.subscribe({
+      await this.props.subscribe({
         variables: {
           campaignId: this.props.campaign.id,
         },
@@ -64,7 +67,7 @@ class Campaign extends Component {
   cancelSubscription = async () => {
     this.setState({ saving: true });
     try {
-      const results = await this.props.cancelSubscription({
+      await this.props.cancelSubscription({
         variables: {
           campaignId: this.props.campaign.id,
         },
@@ -83,8 +86,8 @@ class Campaign extends Component {
 
   render() {
     if (this.props.campaign) {
-      const { campaign, ...props } = this.props;
-      const { modalOpen, ...state } = this.state;
+      const { campaign } = this.props;
+      const { modalOpen } = this.state;
 
       const modalActions = [
         <RaisedButton
@@ -118,7 +121,8 @@ class Campaign extends Component {
             autoScrollBodyContent
           >
             <p>
-              May we have your permission to share your email address with the coordinator for the purpose of contacting you about volunteering for this campaign?
+              May we have your permission to share your email address with the coordinator
+              for the purpose of contacting you about volunteering for this campaign?
             </p>
           </Dialog>
         </div>

@@ -28,8 +28,17 @@ import s from 'styles/Organize.scss';
 const WrappedCampaignInfoForm = formWrapper(CampaignInfoForm);
 
 class ManageCampaignInfoContainer extends Component {
-  static PropTypes = {
+  static propTypes = {
+    campaign: PropTypes.object,
+    user: PropTypes.object.isRequired,
+    editCampaignMutation: PropTypes.func.isRequired,
+    graphqlLoading: PropTypes.bool.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    campaign: undefined,
   }
 
   constructor(props) {
@@ -60,6 +69,28 @@ class ManageCampaignInfoContainer extends Component {
     this.state = Object.assign({}, initialState);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.campaign && !nextProps.graphqlLoading) {
+      // Just camel-casing property keys and checking for null/undefined
+      const campaign = Object.assign(...Object.keys(nextProps.campaign).map((k) => {
+        if (nextProps.campaign[k] !== null) {
+          return { [camelCase(k)]: nextProps.campaign[k] };
+        }
+        return undefined;
+      }));
+
+      Object.keys(campaign).forEach((k) => {
+        if (!Object.keys(this.state.formData).includes(camelCase(k))) {
+          delete campaign[k];
+        }
+      });
+
+      this.setState(prevState => ({
+        formData: Object.assign({}, prevState.formData, campaign),
+      }));
+    }
+  }
+
   defaultErrorText = {
     titleErrorText: null,
     streetAddressErrorText: null,
@@ -76,27 +107,6 @@ class ManageCampaignInfoContainer extends Component {
     orgContactPhoneErrorText: null,
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.campaign && !nextProps.graphqlLoading) {
-      // Just camel-casing property keys and checking for null/undefined
-      const campaign = Object.assign(...Object.keys(nextProps.campaign).map((k) => {
-        if (nextProps.campaign[k] !== null) {
-          return { [camelCase(k)]: nextProps.campaign[k] };
-        }
-      }));
-
-      Object.keys(campaign).forEach((k) => {
-        if (!Object.keys(this.state.formData).includes(camelCase(k))) {
-          delete campaign[k];
-        }
-      });
-
-      this.setState(prevState => ({
-        formData: Object.assign({}, prevState.formData, campaign),
-      }));
-    }
-  }
-
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender with previous form data
     // If I could figure out how to avoid keeping state here
@@ -111,7 +121,7 @@ class ManageCampaignInfoContainer extends Component {
     formData.id = this.props.campaign.id;
 
     try {
-      const results = await this.props.editCampaignMutation({
+      await this.props.editCampaignMutation({
         variables: {
           data: formData,
         },
@@ -129,7 +139,7 @@ class ManageCampaignInfoContainer extends Component {
   render() {
     if (this.props.campaign) {
       const { state, formSubmit, defaultErrorText } = this;
-      const { campaign, user, ...props } = this.props;
+      const { campaign, user } = this.props;
       const { formData } = state;
 
       const validators = [

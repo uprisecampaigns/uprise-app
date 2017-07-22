@@ -74,7 +74,7 @@ export function attemptSignup(data) {
           dispatch(signupFail(json.error));
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
         dispatch(signupFail(err));
       }
     }
@@ -123,7 +123,7 @@ export function attemptLogin(data) {
           dispatch(loginFail(json.error));
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
         dispatch(loginFail(err));
       }
     }
@@ -222,7 +222,7 @@ export function logoutSuccess() {
   return { type: LOGOUT_SUCCESS };
 }
 
-export function logoutFail() {
+export function logoutFail(error) {
   return { type: LOGOUT_FAIL, error };
 }
 

@@ -8,16 +8,25 @@ import { attemptResetPassword } from 'actions/AuthActions';
 import ResetPasswordForm from './components/ResetPasswordForm';
 
 class ForgotPassword extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    resetError: PropTypes.string,
+  }
+
+  static defaultProps = {
+    resetError: undefined,
+  }
+
   constructor(props) {
     super(props);
+
+    this.state = {
+      email: '',
+      emailErrorText: null,
+    };
   }
 
   hasErrors = false
-
-  state = {
-    email: '',
-    emailErrorText: null,
-  }
 
   handleInputChange = (event, type, value) => {
     this.setState(Object.assign({},
@@ -60,12 +69,10 @@ class ForgotPassword extends Component {
   }
 
   formSubmit = (event) => {
-    console.log(event);
     event.preventDefault();
     this.hasErrors = false;
 
     this.validateEmail();
-    console.log(this.state);
 
     if (!this.hasErrors) {
       this.props.dispatch(attemptResetPassword({

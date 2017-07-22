@@ -24,8 +24,16 @@ import s from 'styles/Organize.scss';
 const WrappedCampaignProfileForm = formWrapper(CampaignProfileForm);
 
 class ManageCampaignProfileEdit extends Component {
-  static PropTypes = {
-    campaignSlug: PropTypes.object.isRequired,
+  static propTypes = {
+    campaign: PropTypes.object,
+    editCampaignMutation: PropTypes.func.isRequired,
+    graphqlLoading: PropTypes.bool.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    campaignSlug: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    campaign: undefined,
   }
 
   constructor(props) {
@@ -44,12 +52,6 @@ class ManageCampaignProfileEdit extends Component {
     this.state = Object.assign({}, initialState);
   }
 
-  defaultErrorText = {
-    titleErrorText: null,
-    websiteUrlErrorText: null,
-    descriptionErrorText: null,
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.campaign && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
@@ -57,6 +59,7 @@ class ManageCampaignProfileEdit extends Component {
         if (nextProps.campaign[k] !== null) {
           return { [camelCase(k)]: nextProps.campaign[k] };
         }
+        return undefined;
       }));
 
       Object.keys(campaign).forEach((k) => {
@@ -69,6 +72,12 @@ class ManageCampaignProfileEdit extends Component {
         formData: Object.assign({}, prevState.formData, campaign),
       }));
     }
+  }
+
+  defaultErrorText = {
+    titleErrorText: null,
+    websiteUrlErrorText: null,
+    descriptionErrorText: null,
   }
 
   formSubmit = async (data) => {
@@ -85,7 +94,7 @@ class ManageCampaignProfileEdit extends Component {
     formData.id = this.props.campaign.id;
 
     try {
-      const results = await this.props.editCampaignMutation({
+      await this.props.editCampaignMutation({
         variables: {
           data: formData,
         },
@@ -102,8 +111,8 @@ class ManageCampaignProfileEdit extends Component {
 
   render() {
     if (this.props.campaign) {
-      const { campaign, ...props } = this.props;
-      const { formData, errors, ...state } = this.state;
+      const { campaign } = this.props;
+      const { formData } = this.state;
       const { formSubmit, defaultErrorText } = this;
 
       const validators = [

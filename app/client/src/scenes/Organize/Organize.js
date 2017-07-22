@@ -1,5 +1,4 @@
-
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -12,12 +11,14 @@ import MyCampaignsQuery from 'schemas/queries/MyCampaignsQuery.graphql';
 import s from 'styles/Organize.scss';
 
 
-const baseUrl = '/organize';
-
-class Organize extends Component {
+class Organize extends PureComponent {
   static propTypes = {
-    myCampaigns: PropTypes.array,
+    myCampaigns: PropTypes.arrayOf(PropTypes.object),
   };
+
+  static defaultProps = {
+    myCampaigns: undefined,
+  }
 
   render() {
     const campaignList = this.props.myCampaigns ? this.props.myCampaigns.map(campaign => (

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import { Tabs, Tab } from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 import { List, ListItem } from 'material-ui/List';
@@ -15,10 +14,7 @@ import SearchBar from 'components/SearchBar';
 import SelectedItemsContainer from 'components/SelectedItemsContainer';
 import Link from 'components/Link';
 
-import history from 'lib/history';
-
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
-import MeQuery from 'schemas/queries/MeQuery.graphql';
 import TypesQuery from 'schemas/queries/TypesQuery.graphql';
 import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
 import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
@@ -53,8 +49,15 @@ const TypesTogglesList = compose(
 )(TogglesList);
 
 class ManageCampaignPreferencesContainer extends Component {
-  static PropTypes = {
+  static propTypes = {
+    campaign: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    campaign: undefined,
   }
 
   constructor(props) {
@@ -104,7 +107,7 @@ class ManageCampaignPreferencesContainer extends Component {
       const selectedTypes = this.state.campaign.types.map(level => (level.id));
       const selectedTags = this.state.campaign.tags;
 
-      const results = await this.props.editCampaignMutation({
+      await this.props.editCampaignMutation({
         variables: {
           data: {
             id: this.props.campaign.id,
@@ -176,7 +179,6 @@ class ManageCampaignPreferencesContainer extends Component {
 
   render() {
     const { saveChanges, handleToggle, addKeyword, removeKeyword } = this;
-    const { user, ...props } = this.props;
     const { campaign, saving } = this.state;
 
     const selectedIssueAreas = campaign.issueAreas.map(issueArea => issueArea.id);
@@ -284,14 +286,6 @@ class ManageCampaignPreferencesContainer extends Component {
   }
 }
 
-const withMeQuery = graphql(MeQuery, {
-  props: ({ data }) => ({
-    user: !data.loading && data.me ? data.me : {
-      email: '',
-    },
-  }),
-});
-
 const withCampaignQuery = graphql(CampaignQuery, {
   options: ownProps => ({
     variables: {
@@ -308,7 +302,6 @@ const withCampaignQuery = graphql(CampaignQuery, {
 
 export default compose(
   connect(),
-  withMeQuery,
   withCampaignQuery,
   graphql(EditCampaignMutation, { name: 'editCampaignMutation' }),
 )(ManageCampaignPreferencesContainer);

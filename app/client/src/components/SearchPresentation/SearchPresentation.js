@@ -90,7 +90,7 @@ class SearchPresentation extends Component {
   render() {
     const {
       searchSortWrapper, resultsCount, searchSortItems,
-      searchSelections, searchInputs, searchResults
+      searchSelections, searchInputs, searchResults,
     } = this.props;
 
     const ConnectedSearchSort = searchSortWrapper(SearchSort);

@@ -44,9 +44,5 @@ export default ({ path, component }) => ({
         redirect: '/organize',
       };
     }
-
-    return {
-      redirect: '/organize',
-    };
   },
 });

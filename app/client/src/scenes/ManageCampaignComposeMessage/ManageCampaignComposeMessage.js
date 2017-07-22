@@ -19,41 +19,46 @@ import SendMessageMutation from 'schemas/mutations/SendMessageMutation.graphql';
 import { notify } from 'actions/NotificationsActions';
 
 class ManageCampaignComposeMessage extends Component {
-  static PropTypes = {
-    campaignId: PropTypes.string.isRequired,
+  static propTypes = {
     campaign: PropTypes.object,
+    userObject: PropTypes.object,
     sendMessage: PropTypes.func.isRequired,
+    recipients: PropTypes.arrayOf(PropTypes.object).isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    campaignId: PropTypes.string.isRequired,
   }
 
-  constructor(props) {
-    super(props);
+  static defaultProps = {
+    campaign: undefined,
+    userObject: undefined,
   }
 
-  sendMessage = async ({ subject, body }) => {
-    const { userObject, recipients, sendMessage, ...props } = this.props;
+  handleSend = async ({ subject, body }) => {
+    const { userObject, recipients, sendMessage, campaign, dispatch } = this.props;
 
-    body = `From: ${userObject.first_name} ${userObject.last_name
-    }\nPlease reply to: ${userObject.email
-    }\n${this.props.campaign.title
-    }\n\n${body}`;
+    const fullBody = `From: ${userObject.first_name} ${userObject.last_name}\n
+      Please reply to: ${userObject.email}\n
+      ${campaign.title}\n\n
+      ${body}
+    `;
 
     if (!this.sending) {
       try {
         this.sending = true;
 
-        const results = await sendMessage({
+        await sendMessage({
           variables: {
             data: {
               replyToEmail: userObject.email,
               recipientEmails: recipients.map(r => r.email),
               subject,
-              body,
+              body: fullBody,
             },
           },
         });
 
         this.sending = false;
-        this.props.dispatch(notify('Message Sent'));
+        dispatch(notify('Message Sent'));
 
         setTimeout(() => {
           history.goBack();
@@ -61,14 +66,14 @@ class ManageCampaignComposeMessage extends Component {
       } catch (e) {
         console.error(e);
         this.sending = false;
-        this.props.dispatch(notify('There was an error sending your message.'));
+        dispatch(notify('There was an error sending your message.'));
       }
     }
   }
 
   render() {
     if (this.props.campaign && this.props.recipients && this.props.userObject) {
-      const { campaign, userObject, recipients, ...props } = this.props;
+      const { campaign, userObject, recipients } = this.props;
 
       const baseUrl = `/organize/${campaign.slug}`;
 
@@ -96,7 +101,7 @@ class ManageCampaignComposeMessage extends Component {
             fromEmail={userObject.email}
             detailLines={detailLines}
             recipients={recipients}
-            sendMessage={this.sendMessage}
+            handleSend={this.handleSend}
           />
 
         </div>

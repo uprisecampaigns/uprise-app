@@ -24,7 +24,7 @@ class ContactForm extends Component {
   render() {
     const {
       data, formSubmit, errors, saving,
-      handleInputChange, cancel, submitText
+      handleInputChange, cancel, submitText,
     } = this.props;
 
     return (

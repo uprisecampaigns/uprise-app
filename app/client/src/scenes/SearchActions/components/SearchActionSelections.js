@@ -1,5 +1,5 @@
 
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -45,21 +45,17 @@ const renderSelectedDateLabel = (dates) => {
     return 'Ongoing';
   } else if (dates.onDate) {
     return moment(dates.onDate).format('M/D/YYYY');
-  } else if (dates.startDate && dates.endDate) {
-    return `${moment(dates.startDate).format('M/D/YYYY')} - ${moment(dates.endDate).format('M/D/YYYY')}`;
   }
+  return `${moment(dates.startDate).format('M/D/YYYY')} - ${moment(dates.endDate).format('M/D/YYYY')}`;
 };
 
 const renderSelectedGeographyLabel = geography => ((typeof geography.virtual === 'boolean' && geography.virtual) ?
   'Virtual' :
   `Within ${geography.distance} miles of ${geography.zipcode}`);
 
-class SearchActionSelections extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
+class SearchActionSelections extends PureComponent {
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
   };
 
   removeSelectedItem = (collectionName, value) => {

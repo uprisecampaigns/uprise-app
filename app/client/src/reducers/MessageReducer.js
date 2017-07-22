@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+
 import { SET_RECIPIENTS } from 'actions/MessageActions';
 
 const defaultStartState = {
@@ -6,12 +8,14 @@ const defaultStartState = {
 
 export function updateMessages(messagesState = defaultStartState, action) {
   switch (action.type) {
-    case SET_RECIPIENTS:
+    case SET_RECIPIENTS: {
       return Object.assign({}, messagesState, {
         recipients: action.recipients,
       });
+    }
 
-    default:
+    default: {
       return messagesState;
+    }
   }
 }

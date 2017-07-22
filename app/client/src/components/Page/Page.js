@@ -1,13 +1,16 @@
-
-import React, { PropTypes } from 'react';
+/* eslint-disable react/no-danger */
+import React, { PureComponent, PropTypes } from 'react';
 import s from 'styles/Page.scss';
 
-class Page extends React.Component {
+class Page extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
     html: PropTypes.string.isRequired,
   };
 
+  static defaultProps = {
+    title: undefined,
+  }
 
   render() {
     const { title, html } = this.props;

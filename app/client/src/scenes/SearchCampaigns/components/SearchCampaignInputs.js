@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { List, ListItem } from 'material-ui/List';
+import { List } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 
 import TypesQuery from 'schemas/queries/TypesQuery.graphql';
@@ -9,11 +9,10 @@ import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
 import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
 
 import {
-  addSearchItem, setSearchDates, removeSearchItem,
+  addSearchItem, removeSearchItem,
 } from 'actions/SearchActions';
 
 import ControlledListItem from 'components/ControlledListItem';
-import SearchBar from 'components/SearchBar';
 import ZipcodeSearch from 'components/ZipcodeSearch';
 import TogglesList from 'components/TogglesList';
 
@@ -41,13 +40,14 @@ const IssueAreasTogglesList = compose(
   connect(state => ({ selectedCollection: state.campaignsSearch.issueAreas })),
 )(TogglesList);
 
-class SearchCampaignInputs extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
+class SearchCampaignInputs extends PureComponent {
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
   };
+
+  addSelectedItem = (collectionName, value) => {
+    this.props.dispatch(addSearchItem('campaign', collectionName, value));
+  }
 
   handleToggle = (collectionName, on, value) => {
     if (on) {
@@ -56,20 +56,10 @@ class SearchCampaignInputs extends React.PureComponent {
       this.props.dispatch(removeSearchItem('campaign', collectionName, value));
     }
   }
-
-  addSelectedItem = (collectionName, value) => {
-    this.props.dispatch(addSearchItem('campaign', collectionName, value));
-  }
-
-  setDates = (dates) => {
-    this.props.dispatch(setSearchDates('campaign', dates));
-  }
-
   render() {
     const {
       handleToggle,
       addSelectedItem,
-      setDates,
     } = this;
 
     return (

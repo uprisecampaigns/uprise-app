@@ -36,6 +36,7 @@ class Link extends React.Component {
     external: false,
     children: null,
     onClick: undefined,
+    mailTo: undefined,
   };
 
   handleClick = (event, url) => {
@@ -100,6 +101,7 @@ class Link extends React.Component {
         onTouchTap={e => this.handleClick(e, url)}
         onClick={e => this.handleClick(e, url)}
         className={[className].concat([s.link]).join(' ')}
+        role="link"
       >
         {children}
       </span>

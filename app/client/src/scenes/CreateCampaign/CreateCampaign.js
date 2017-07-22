@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 
-import Link from 'components/Link';
-
 import history from 'lib/history';
 import formWrapper from 'lib/formWrapper';
 import {
@@ -32,7 +30,8 @@ import s from 'styles/Organize.scss';
 const WrappedCampaignInfoForm = formWrapper(CampaignInfoForm);
 
 class CreateCampaignContainer extends Component {
-  static PropTypes = {
+  static propTypes = {
+    user: PropTypes.object.isRequired,
     createCampaignMutation: PropTypes.func.isRequired,
   }
 
@@ -99,6 +98,7 @@ class CreateCampaignContainer extends Component {
     try {
       const formData = Object.assign({}, data);
 
+      // eslint-disable-next-line no-unused-vars
       const addCampaign = (prev, { mutationResult }) => {
         const newCampaign = mutationResult.data.createCampaign;
         return Object.assign({}, prev, {
@@ -130,7 +130,7 @@ class CreateCampaignContainer extends Component {
   }
 
   resendEmailVerification = async (data) => {
-    const { dispatch, resendEmailVerification, ...props } = this.props;
+    const { dispatch, resendEmailVerification } = this.props;
     try {
       const results = await resendEmailVerification();
 
@@ -147,8 +147,8 @@ class CreateCampaignContainer extends Component {
 
   render() {
     const { formSubmit, defaultErrorText, resendEmailVerification } = this;
-    const { user, ...props } = this.props;
-    const { newCampaign, modalOpen, formData, ...state } = this.state;
+    const { user } = this.props;
+    const { newCampaign, modalOpen, formData } = this.state;
 
     const modalActions = [
       <RaisedButton
@@ -202,13 +202,13 @@ class CreateCampaignContainer extends Component {
                 actionsContainerClassName={s.modalActionsContainer}
               >
                 <p>
-                  Congratulations, you have created the campaign '{newCampaign.title}'.
+                  Congratulations, you have created the campaign &apos;{newCampaign.title}&apos;.
                 </p>
                 <p>
-                  You can find and edit your campaign's public profile at {window.location.origin}/campaign/{newCampaign.slug}
+                  You can find and edit your campaign&apos;s public profile at {window.location.origin}/campaign/{newCampaign.slug}
                 </p>
                 <p>
-                  Please set your campaign's preferences so volunteers are able to search for you effectively.
+                  Please set your campaign&apos;s preferences so volunteers are able to search for you effectively.
                 </p>
               </Dialog>
             )}
@@ -234,7 +234,9 @@ class CreateCampaignContainer extends Component {
             open
           >
             <p>
-              Please check your inbox for an email verification message. Please check your spam folder. If you don't see it, you can have it resent.
+              Please check your inbox for an email verification message.
+              Please check your spam folder.
+              If you don&apos;t see it, you can have it resent.
             </p>
           </Dialog>
         )}

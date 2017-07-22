@@ -15,6 +15,14 @@ const statesList = Object.keys(states);
 
 export default (WrappedComponent) => {
   class FormWrapper extends React.Component {
+    static propTypes = {
+      initialState: PropTypes.object.isRequired,
+      initialErrors: PropTypes.object.isRequired,
+      submit: PropTypes.func.isRequired,
+      dispatch: PropTypes.func.isRequired,
+      validators: PropTypes.arrayOf(PropTypes.func).isRequired,
+    }
+
     constructor(props) {
       super(props);
 
@@ -23,13 +31,6 @@ export default (WrappedComponent) => {
         errors: props.initialErrors,
         refs: {},
       };
-    }
-
-    static PropTypes = {
-      initialState: PropTypes.object.isRequired,
-      initialErrors: PropTypes.object.isRequired,
-      submit: PropTypes.func.isRequired,
-      validators: PropTypes.array.isRequired,
     }
 
     componentWillReceiveProps(nextProps) {
@@ -52,6 +53,7 @@ export default (WrappedComponent) => {
 
     handleInputChange = (event, type, value) => {
       let valid = true;
+      let newValue = value;
 
       if (type === 'state' || type === 'locationState') {
         valid = false;
@@ -61,7 +63,7 @@ export default (WrappedComponent) => {
             valid = true;
           }
         });
-        value = value.toUpperCase();
+        newValue = value.toUpperCase();
 
         // Hack for AutoComplete
         if (!valid) {
@@ -76,7 +78,7 @@ export default (WrappedComponent) => {
         this.setState(prevState => ({
           formData: Object.assign({},
             prevState.formData,
-            { [type]: value },
+            { [type]: newValue },
           ),
         }));
       }
@@ -88,12 +90,12 @@ export default (WrappedComponent) => {
       this.hasErrors = false;
       this.resetErrorText();
 
-      for (const validator of this.props.validators) {
-        await validator(this);
-      }
+      await Promise.all(this.props.validators);
 
       const notifyError = (message) => {
-        this.props.dispatch(notify(message || 'There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+        this.props.dispatch(notify(message ||
+          'There was an error with your request. Please reload the page or contact help@uprise.org for support.',
+        ));
       };
 
       if (!this.hasErrors && !this.state.saving) {
@@ -112,7 +114,7 @@ export default (WrappedComponent) => {
           this.setState({ saving: false });
         } catch (e) {
           console.error(e);
-          notifyError(result.message);
+          notifyError(e.message);
           this.props.dispatch(dirtyForm());
           this.setState({ saving: false });
         }
@@ -121,7 +123,7 @@ export default (WrappedComponent) => {
 
     render() {
       const { cancel, handleInputChange, formSubmit } = this;
-      const { formData, saving, errors, refs, ...state } = this.state;
+      const { formData, saving, errors, refs } = this.state;
 
       return (
         <WrappedComponent

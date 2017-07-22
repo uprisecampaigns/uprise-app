@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { PureComponent, PropTypes } from 'react';
 
 import s from 'styles/Page.scss';
@@ -5,8 +6,10 @@ import s from 'styles/Page.scss';
 
 class Privacy extends PureComponent {
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    html: PropTypes.string.isRequired,
+    content: PropTypes.shape({
+      title: PropTypes.string,
+      html: PropTypes.string,
+    }).isRequired,
   }
 
   render() {

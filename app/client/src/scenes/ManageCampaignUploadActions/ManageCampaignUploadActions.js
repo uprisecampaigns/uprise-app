@@ -11,7 +11,6 @@ import CsvUploader from 'components/CsvUploader';
 import Link from 'components/Link';
 
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
-import MeQuery from 'schemas/queries/MeQuery.graphql';
 import TypesQuery from 'schemas/queries/TypesQuery.graphql';
 import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
 import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
@@ -23,9 +22,23 @@ import s from 'styles/Organize.scss';
 
 
 class ManageCampaignUploadActions extends Component {
-  static PropTypes = {
+  static propTypes = {
     createActionsMutation: PropTypes.func.isRequired,
+    campaign: PropTypes.object,
+    activities: PropTypes.arrayOf(PropTypes.object),
+    issueAreas: PropTypes.arrayOf(PropTypes.object),
+    levels: PropTypes.arrayOf(PropTypes.object),
+    types: PropTypes.arrayOf(PropTypes.object),
+    // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    campaign: undefined,
+    activities: undefined,
+    types: undefined,
+    issueAreas: undefined,
+    levels: undefined,
   }
 
   constructor(props) {
@@ -59,7 +72,7 @@ class ManageCampaignUploadActions extends Component {
     };
 
     const processDate = (value) => {
-      const { timezone, ...state } = this.state;
+      const { timezone } = this.state;
       if (typeof value !== 'string') {
         throw new Error('Can only process strings to dates');
       }
@@ -94,7 +107,7 @@ class ManageCampaignUploadActions extends Component {
     if (this.props.campaign && this.props.issueAreas &&
         this.props.levels && this.props.activities &&
         this.props.types) {
-      const { campaign, user, ...props } = this.props;
+      const { campaign } = this.props;
 
       const config = {
         headers: [
@@ -195,13 +208,11 @@ class ManageCampaignUploadActions extends Component {
           },
         ],
         onSubmit: async (data) => {
-          console.log(data);
           const newActions = data.map(action => ({
             campaignId: campaign.id,
             ...action,
           }));
 
-          console.log(newActions);
           const results = await this.props.createActionsMutation({
             variables: {
               data: newActions,
@@ -209,7 +220,6 @@ class ManageCampaignUploadActions extends Component {
             refetchQueries: ['SearchActionsQuery', 'CampaignQuery'],
           });
 
-          console.log(results);
           return results;
         },
       };
@@ -235,7 +245,7 @@ class ManageCampaignUploadActions extends Component {
               onChange={(event, i, value) => this.handleTimezoneChange(event, value)}
             >
               {moment.tz.names().map((name, index) => (
-                <MenuItem key={index} value={name} primaryText={name} />
+                <MenuItem key={name} value={name} primaryText={name} />
               ))}
             </SelectField>
           </div>
@@ -262,14 +272,6 @@ const withTypesQuery = graphql(TypesQuery, graphqlOptions('types'));
 const withLevelsQuery = graphql(LevelsQuery, graphqlOptions('levels'));
 const withIssueAreasQuery = graphql(IssueAreasQuery, graphqlOptions('issueAreas'));
 
-const withMeQuery = graphql(MeQuery, {
-  props: ({ data }) => ({
-    user: !data.loading && data.me ? data.me : {
-      email: '',
-    },
-  }),
-});
-
 const withCampaignQuery = graphql(CampaignQuery, {
   options: ownProps => ({
     variables: {
@@ -287,7 +289,6 @@ const withCampaignQuery = graphql(CampaignQuery, {
 
 export default compose(
   connect(),
-  withMeQuery,
   withCampaignQuery,
   withActivitiesQuery,
   withTypesQuery,

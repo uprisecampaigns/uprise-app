@@ -1,77 +1,51 @@
-import React, { Component, PropTypes } from 'react';
-import { compose, graphql } from 'react-apollo';
+import React from 'react';
 import { List, ListItem } from 'material-ui/List';
-import FontIcon from 'material-ui/FontIcon';
 import Divider from 'material-ui/Divider';
 
-import history from 'lib/history';
-
 import Link from 'components/Link';
-
-import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import s from 'styles/Settings.scss';
 
 
-class Settings extends Component {
-  static PropTypes = {
-  }
+function Settings(props) {
+  return (
+    <div className={s.outerContainer}>
 
-  constructor(props) {
-    super(props);
-  }
+      <div className={s.pageHeader}>
+        Settings
+      </div>
 
-  render() {
-    if (this.props.user) {
-      const { user, ...props } = this.props;
+      <List className={s.navList}>
 
-      return (
-        <div className={s.outerContainer}>
+        <Divider />
 
-          <div className={s.pageHeader}>
-            Settings
-          </div>
+        <Link to={'/settings/account'}>
+          <ListItem
+            primaryText="Account"
+          />
+        </Link>
 
-          <List className={s.navList}>
+        <Divider />
 
-            <Divider />
+        <Link to={'/settings/privacy-security'}>
+          <ListItem
+            primaryText="Privacy & Security"
+          />
+        </Link>
 
-            <Link to={'/settings/account'}>
-              <ListItem
-                primaryText="Account"
-              />
-            </Link>
+        <Divider />
 
-            <Divider />
+        <Link to={'/settings/contact'}>
+          <ListItem
+            primaryText="Contact"
+          />
+        </Link>
 
-            <Link to={'/settings/privacy-security'}>
-              <ListItem
-                primaryText="Privacy & Security"
-              />
-            </Link>
+        <Divider />
 
-            <Divider />
-
-            <Link to={'/settings/contact'}>
-              <ListItem
-                primaryText="Contact"
-              />
-            </Link>
-
-            <Divider />
-
-          </List>
-        </div>
-      );
-    }
-    return null;
-  }
+      </List>
+    </div>
+  );
 }
 
-export default compose(
-  graphql(MeQuery, {
-    props: ({ data }) => ({
-      user: data.me,
-    }),
-  }),
-)(Settings);
+export default Settings;

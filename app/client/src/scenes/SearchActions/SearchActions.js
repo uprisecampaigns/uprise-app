@@ -9,10 +9,6 @@ import Link from 'components/Link';
 
 import SearchPresentation from 'components/SearchPresentation';
 
-import SearchActionResults from './components/SearchActionResults';
-import SearchActionInputs from './components/SearchActionInputs';
-import SearchActionSelections from './components/SearchActionSelections';
-
 import {
   addSearchItem, sortBy,
 } from 'actions/SearchActions';
@@ -20,6 +16,10 @@ import {
 import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
 
 import s from 'styles/Search.scss';
+
+import SearchActionResults from './components/SearchActionResults';
+import SearchActionInputs from './components/SearchActionInputs';
+import SearchActionSelections from './components/SearchActionSelections';
 
 const graphqlOptions = {
   props: ({ data }) => {
@@ -59,12 +59,14 @@ const graphqlOptions = {
                   cursor: fetchMoreResult.actions.cursor,
                   total: fetchMoreResult.actions.total,
                   actions: mergedActions,
+                  // eslint-disable-next-line no-underscore-dangle
                   __typename: fetchMoreResult.__typename,
                 },
               };
             },
           });
         }
+        return undefined;
       },
     };
   },
@@ -113,11 +115,8 @@ const searchSortItems = [
 ];
 
 class SearchActions extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
   };
 
   addSelectedItem = (collectionName, value) => {

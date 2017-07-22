@@ -1,16 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 
 import ResultsCount from 'components/ResultsCount';
 import Link from 'components/Link';
 import SearchPresentation from 'components/SearchPresentation';
-
-import SearchCampaignResults from './components/SearchCampaignResults';
-import SearchCampaignInputs from './components/SearchCampaignInputs';
-import SearchCampaignSelections from './components/SearchCampaignSelections';
 
 import {
   addSearchItem, sortBy,
@@ -19,6 +14,11 @@ import {
 import CampaignsQuery from 'schemas/queries/CampaignsQuery.graphql';
 
 import s from 'styles/Search.scss';
+
+import SearchCampaignResults from './components/SearchCampaignResults';
+import SearchCampaignInputs from './components/SearchCampaignInputs';
+import SearchCampaignSelections from './components/SearchCampaignSelections';
+
 
 const graphqlOptions = collection => ({
   props: ({ data }) => ({
@@ -67,11 +67,8 @@ const searchSortItems = [
 
 
 class SearchCampaigns extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
   };
 
   addSelectedItem = (collectionName, value) => {

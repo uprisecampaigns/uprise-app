@@ -18,7 +18,7 @@ import s from 'styles/Organize.scss';
 
 
 class ManageCampaignSettingsContainer extends Component {
-  static PropTypes = {
+  static propTypes = {
     campaign: PropTypes.object.isRequired,
   }
 
@@ -62,7 +62,7 @@ class ManageCampaignSettingsContainer extends Component {
 
   render() {
     if (this.props.campaign) {
-      const { campaign, ...props } = this.props;
+      const { campaign } = this.props;
 
       const modalActions = [
         <RaisedButton

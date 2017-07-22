@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
 
+// eslint-disable-next-line import/extensions
 import UniversalRouter from 'universal-router';
 import queryString from 'query-string';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -42,6 +43,7 @@ const store = configureStore();
 
 injectTapEventPlugin();
 
+// eslint-disable-next-line no-unused-vars
 let appInstance;
 let currentLocation = history.location;
 
@@ -127,7 +129,7 @@ async function onLocationChange(location) {
     }
 
     const newTitle = route.title;
-    if (document.title != newTitle) {
+    if (document.title !== newTitle) {
       document.title = newTitle;
     }
 
@@ -177,6 +179,7 @@ history.block((location, action) => {
     // This just needs to return a string in order to tell the history API to block
     return 'unsaved changes';
   }
+  return undefined;
 });
 
 // Handle client-side navigation by using HTML5 History API

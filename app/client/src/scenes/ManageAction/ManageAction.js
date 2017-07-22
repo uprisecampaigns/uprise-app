@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
-import { List, ListItem } from 'material-ui/List';
 import Dialog from 'material-ui/Dialog';
 import {
-  Table, TableBody, TableFooter, TableHeader, TableHeaderColumn,
+  Table, TableBody, TableHeader, TableHeaderColumn,
   TableRow, TableRowColumn,
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -24,11 +23,19 @@ import s from 'styles/Organize.scss';
 
 
 class ManageActionContainer extends Component {
-  static PropTypes = {
-    campaignSlug: PropTypes.string.isRequired,
+  static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    volunteers: PropTypes.arrayOf(PropTypes.object),
     campaign: PropTypes.object,
     action: PropTypes.object,
+    // eslint-disable-next-line react/no-unused-prop-types
+    campaignSlug: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    campaign: undefined,
+    action: undefined,
+    volunteers: undefined,
   }
 
   constructor(props) {
@@ -55,7 +62,7 @@ class ManageActionContainer extends Component {
   }
 
   composeMessage = (event) => {
-    const { campaign, action, dispatch, ...props } = this.props;
+    const { campaign, action, dispatch } = this.props;
 
     if (this.state.selected.length === 0) {
       this.setState({ emptyRecipientsModalOpen: true });
@@ -67,8 +74,8 @@ class ManageActionContainer extends Component {
 
   render() {
     if (this.props.action && this.props.campaign && this.props.volunteers) {
-      const { action, campaign, volunteers, ...props } = this.props;
-      const { emptyRecipientsModalOpen, ...state } = this.state;
+      const { action, campaign, volunteers } = this.props;
+      const { emptyRecipientsModalOpen } = this.state;
 
       const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
 

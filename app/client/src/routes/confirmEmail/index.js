@@ -1,8 +1,3 @@
-import React from 'react';
-import Campaign from 'scenes/Campaign';
-import Layout from 'components/Layout';
-import Home from 'scenes/Home';
-
 import ConfirmEmailMutation from 'schemas/mutations/ConfirmEmailMutation.graphql';
 
 import {
@@ -22,7 +17,6 @@ export default {
         variables: { token },
       });
 
-      console.log(result);
       if (result.data.confirmEmail) {
         context.store.dispatch(notify('Email successfully confirmed'));
       } else {

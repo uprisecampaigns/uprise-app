@@ -1,25 +1,21 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import FontIcon from 'material-ui/FontIcon';
 
 import Link from 'components/Link';
 
+import s from 'styles/Settings.scss';
+
 import Security from './components/Security';
 import Privacy from './components/Privacy';
 
-import s from 'styles/Settings.scss';
 
-
-class PrivacySecurity extends Component {
-  static PropTypes = {
+class PrivacySecurity extends PureComponent {
+  static propTypes = {
     privacyContent: PropTypes.object.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    const { privacyContent, ...props } = this.props;
+    const { privacyContent } = this.props;
 
     return (
       <div className={s.outerContainer}>

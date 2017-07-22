@@ -1,8 +1,8 @@
 
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { List, ListItem } from 'material-ui/List';
+import { List } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 
 import TypesQuery from 'schemas/queries/TypesQuery.graphql';
@@ -15,7 +15,6 @@ import {
 } from 'actions/SearchActions';
 
 import ControlledListItem from 'components/ControlledListItem';
-import SearchBar from 'components/SearchBar';
 import GeographySearch from 'components/GeographySearch';
 import TogglesList from 'components/TogglesList';
 import DateTimeSearch from 'components/DateTimeSearch';
@@ -51,14 +50,14 @@ const IssueAreasTogglesList = compose(
 
 const ConnectedDateTimeSearch = connect(state => ({ selectedTimes: state.actionsSearch.times }))(DateTimeSearch);
 
-class SearchActionInputs extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
+class SearchActionInputs extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
   };
+
+  setDates = (dates) => {
+    this.props.dispatch(setSearchDates('action', dates));
+  }
 
   handleToggle = (collectionName, on, value) => {
     if (on) {
@@ -70,10 +69,6 @@ class SearchActionInputs extends React.PureComponent {
 
   addSelectedItem = (collectionName, value) => {
     this.props.dispatch(addSearchItem('action', collectionName, value));
-  }
-
-  setDates = (dates) => {
-    this.props.dispatch(setSearchDates('action', dates));
   }
 
   render() {

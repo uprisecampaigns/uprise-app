@@ -1,7 +1,6 @@
 import React from 'react';
 import ManageAction from 'scenes/ManageAction';
 import Layout from 'components/Layout';
-import { graphql, compose } from 'react-apollo';
 
 import withAuthentication from 'routes/withAuthentication';
 import organizeActionPaths from 'routes/organizeActionPaths';

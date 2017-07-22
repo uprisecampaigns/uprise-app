@@ -23,7 +23,15 @@ import { attemptChangePassword } from 'actions/AuthActions';
 const WrappedChangePasswordForm = formWrapper(ChangePasswordForm);
 
 class Security extends Component {
-  static PropTypes = {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    passwordBeingReset: PropTypes.bool,
+    changeError: PropTypes.string,
+  }
+
+  static defaultProps = {
+    changeError: undefined,
+    passwordBeingReset: false,
   }
 
   constructor(props) {

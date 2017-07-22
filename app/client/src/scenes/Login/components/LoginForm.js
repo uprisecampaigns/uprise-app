@@ -1,25 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import Divider from 'material-ui/Divider';
 
 import Link from 'components/Link';
 
 import s from 'styles/Form.scss';
 
 class LoginForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
     data: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     loginError: PropTypes.string,
     message: PropTypes.string,
+  }
+
+  static defaultProps = {
+    loginError: undefined,
+    message: undefined,
   }
 
   render() {

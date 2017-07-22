@@ -1,8 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import moment from 'moment';
-import RaisedButton from 'material-ui/RaisedButton';
-import Dialog from 'material-ui/Dialog';
 import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -16,18 +13,14 @@ import ActionCommitmentsQuery from 'schemas/queries/ActionCommitmentsQuery.graph
 import s from 'styles/Volunteer.scss';
 
 
-class ActionCommitments extends Component {
-  static PropTypes = {
-    actionCommitments: PropTypes.array.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
+class ActionCommitments extends PureComponent {
+  static propTypes = {
+    actionCommitments: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   render() {
     if (this.props.actionCommitments) {
-      const { actionCommitments, ...props } = this.props;
+      const { actionCommitments } = this.props;
 
       const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map(action => (
         <Link key={action.id} to={`/action/${action.slug}`}>
@@ -55,7 +48,10 @@ class ActionCommitments extends Component {
 
             {(action.owner) && (
               <div className={s.listDetailLine}>
-                Coordinator: {action.owner.first_name} {action.owner.last_name} <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>{action.owner.email}</Link>
+                Coordinator: {action.owner.first_name} {action.owner.last_name}&nbsp;
+                <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>
+                  {action.owner.email}
+                </Link>
               </div>
             )}
 
@@ -78,9 +74,7 @@ class ActionCommitments extends Component {
           <div className={s.pageSubHeader}>My Actions</div>
 
           <List>
-
-            { actionsList }
-
+            {actionsList}
           </List>
         </div>
       );

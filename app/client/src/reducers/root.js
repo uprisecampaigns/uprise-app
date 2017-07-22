@@ -25,11 +25,12 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
+  let newState = { ...state };
   if (action.type === 'LOGOUT_SUCCESS') {
-    state = undefined;
+    newState = undefined;
   }
 
-  return appReducer(state, action);
+  return appReducer(newState, action);
 };
 
 export default rootReducer;

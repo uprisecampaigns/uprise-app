@@ -13,20 +13,23 @@ import s from 'styles/Organize.scss';
 
 
 class ManageActionProfile extends Component {
-  static PropTypes = {
-    campaignId: PropTypes.object.isRequired,
-    actionId: PropTypes.object.isRequired,
+  static propTypes = {
     campaign: PropTypes.object,
     action: PropTypes.object,
+    // eslint-disable-next-line react/no-unused-prop-types
+    campaignId: PropTypes.object.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    actionId: PropTypes.object.isRequired,
   }
 
-  constructor(props) {
-    super(props);
+  static defaultProps = {
+    campaign: undefined,
+    action: undefined,
   }
 
   render() {
     if (this.props.campaign && this.props.action) {
-      const { campaign, action, ...props } = this.props;
+      const { campaign, action } = this.props;
 
       const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
 

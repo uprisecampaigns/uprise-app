@@ -23,12 +23,19 @@ import s from 'styles/Organize.scss';
 
 
 class ManageActionSettings extends Component {
-  static PropTypes = {
-    deleteActionMutation: PropTypes.func.isRequired,
-    actionId: PropTypes.string.isRequired,
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
     campaignId: PropTypes.string.isRequired,
     campaign: PropTypes.object,
     action: PropTypes.object,
+    // eslint-disable-next-line react/no-unused-prop-types
+    actionId: PropTypes.string.isRequired,
+    deleteActionMutation: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    campaign: undefined,
+    action: undefined,
   }
 
   constructor(props) {
@@ -48,13 +55,16 @@ class ManageActionSettings extends Component {
   confirmDelete = async (event) => {
     event.preventDefault();
 
-    const { actionId, campaignId, campaign, action, ...props } = this.props;
+    const {
+      actionId, campaignId, campaign, action,
+      deleteActionMutation, dispatch,
+    } = this.props;
 
     if (!this.deleting) {
       try {
         this.deleting = true;
 
-        const results = await props.deleteActionMutation({
+        const results = await deleteActionMutation({
           variables: {
             data: {
               id: action.id,
@@ -77,23 +87,23 @@ class ManageActionSettings extends Component {
         this.deleting = false;
 
         if (results.data.deleteAction) {
-          this.props.dispatch(notify('Action deleted'));
+          dispatch(notify('Action deleted'));
           history.push(`/organize/${campaign.slug}/actions`);
         } else {
           console.error(results);
-          this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+          dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
         }
       } catch (e) {
         console.error(e);
         this.deleting = false;
-        this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+        dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
       }
     }
   }
 
   render() {
     if (this.props.campaign && this.props.action) {
-      const { campaign, action, ...props } = this.props;
+      const { campaign, action } = this.props;
 
       const modalActions = [
         <RaisedButton

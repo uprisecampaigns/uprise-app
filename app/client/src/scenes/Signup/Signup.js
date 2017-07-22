@@ -14,31 +14,33 @@ import Terms from './components/Terms';
 
 
 class SignupFormContainer extends Component {
-  static PropTypes = {
+  static propTypes = {
     termsContent: PropTypes.object.isRequired,
+    client: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      page: 0,
+      firstName: '',
+      lastName: '',
+      email: '',
+      password1: '',
+      password2: '',
+      zipcode: '',
+      firstNameErrorText: null,
+      lastNameErrorText: null,
+      emailErrorText: null,
+      password1ErrorText: null,
+      password2ErrorText: null,
+      zipcodeErrorText: null,
+    };
   }
 
   hasErrors = false
-
-  state = {
-    page: 0,
-    firstName: '',
-    lastName: '',
-    email: '',
-    password1: '',
-    password2: '',
-    zipcode: '',
-    firstNameErrorText: null,
-    lastNameErrorText: null,
-    emailErrorText: null,
-    password1ErrorText: null,
-    password2ErrorText: null,
-    zipcodeErrorText: null,
-  }
 
   validateString = (prop, errorProp, errorMsg) => {
     if (typeof this.state[prop] !== 'string' ||
@@ -169,16 +171,7 @@ class SignupFormContainer extends Component {
   }
 
   render() {
-    if (this.state.page === 0) {
-      return (
-        <SignupForm
-          handleInputChange={this.handleInputChange}
-          cancelSignup={this.cancelSignup}
-          formSubmit={this.formSubmit}
-          data={this.state}
-        />
-      );
-    } else if (this.state.page === 1) {
+    if (this.state.page === 1) {
       return (
         <Terms
           agreeToTerms={this.agreeToTerms}
@@ -187,6 +180,15 @@ class SignupFormContainer extends Component {
         />
       );
     }
+
+    return (
+      <SignupForm
+        handleInputChange={this.handleInputChange}
+        cancelSignup={this.cancelSignup}
+        formSubmit={this.formSubmit}
+        data={this.state}
+      />
+    );
   }
 }
 

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import { Tabs, Tab } from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 import { List, ListItem } from 'material-ui/List';
@@ -14,8 +13,6 @@ import TogglesList from 'components/TogglesList';
 import SearchBar from 'components/SearchBar';
 import SelectedItemsContainer from 'components/SelectedItemsContainer';
 import Link from 'components/Link';
-
-import history from 'lib/history';
 
 import ActionQuery from 'schemas/queries/ActionQuery.graphql';
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
@@ -58,9 +55,17 @@ const TypesTogglesList = compose(
 )(TogglesList);
 
 class ManageActionPreferencesContainer extends Component {
-  static PropTypes = {
-    actionId: PropTypes.string.isRequired,
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
     action: PropTypes.object,
+    campaign: PropTypes.object,
+    // eslint-disable-next-line react/no-unused-prop-types
+    actionId: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    action: undefined,
+    campaign: undefined,
   }
 
   constructor(props) {
@@ -112,7 +117,7 @@ class ManageActionPreferencesContainer extends Component {
       const selectedTypes = this.state.action.types.map(level => (level.id));
       const selectedTags = this.state.action.tags;
 
-      const results = await this.props.editActionMutation({
+      await this.props.editActionMutation({
         variables: {
           data: {
             id: this.props.action.id,
@@ -186,7 +191,7 @@ class ManageActionPreferencesContainer extends Component {
   render() {
     if (this.state.action && this.props.campaign) {
       const { saveChanges, handleToggle, addKeyword, removeKeyword } = this;
-      const { campaign, ...props } = this.props;
+      const { campaign } = this.props;
       const { action, saving } = this.state;
 
       const selectedActivities = action.activities ? action.activities.map(activity => activity.id) : [];

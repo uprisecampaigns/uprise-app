@@ -12,10 +12,8 @@ import history from 'lib/history';
 import formWrapper from 'lib/formWrapper';
 import {
   validateString,
-  validateWebsiteUrl,
   validateState,
   validateZipcode,
-  validatePhoneNumber,
   validateStartEndTimes,
 } from 'lib/validateComponentForms';
 
@@ -31,10 +29,15 @@ import s from 'styles/Organize.scss';
 const WrappedActionInfoForm = formWrapper(ActionInfoForm);
 
 class CreateAction extends Component {
-  static PropTypes = {
+  static propTypes = {
     createActionMutation: PropTypes.func.isRequired,
-    campaignId: PropTypes.string.isRequired,
     campaign: PropTypes.object,
+    // eslint-disable-next-line react/no-unused-prop-types
+    campaignId: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    campaign: undefined,
   }
 
   constructor(props) {
@@ -119,16 +122,16 @@ class CreateAction extends Component {
       });
       return { success: true, message: 'Action Created' };
     } catch (e) {
-      return { success: false, message: e.message };
       console.error(e);
+      return { success: false, message: e.message };
     }
   }
 
   render() {
     if (this.props.campaign) {
       const { defaultErrorText, formSubmit } = this;
-      const { campaign, ...props } = this.props;
-      const { newAction, modalOpen, formData, ...state } = this.state;
+      const { campaign } = this.props;
+      const { newAction, modalOpen, formData } = this.state;
 
       const modalActions = [
         <RaisedButton
@@ -179,13 +182,13 @@ class CreateAction extends Component {
               open={modalOpen}
             >
               <p>
-                Congratulations, you have created the action '{newAction.title}'.
+                Congratulations, you have created the action &apos;{newAction.title}&apos;.
               </p>
               <p>
-                You can find and edit your action's public profile at {window.location.origin}/action/{newAction.slug}
+                You can find and edit your action&apos;s public profile at {window.location.origin}/action/{newAction.slug}
               </p>
               <p>
-                Please set your campaign's preferences so volunteers are able to search for you effectively.
+                Please set your campaign&apos;s preferences so volunteers are able to search for you effectively.
               </p>
             </Dialog>
           )}

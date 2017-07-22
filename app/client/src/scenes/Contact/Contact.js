@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
-import camelCase from 'camelcase';
-import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
 import history from 'lib/history';
@@ -25,7 +23,9 @@ import s from 'styles/Settings.scss';
 const WrappedContactForm = formWrapper(ContactForm);
 
 class Contact extends Component {
-  static PropTypes = {
+  static propTypes = {
+    contactMutation: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -50,7 +50,7 @@ class Contact extends Component {
     const formData = Object.assign({}, data);
 
     try {
-      const results = await this.props.contactMutation({
+      await this.props.contactMutation({
         variables: {
           data: formData,
         },
@@ -70,7 +70,7 @@ class Contact extends Component {
   render() {
     if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
-      const { user, ...props } = this.props;
+      const { user } = this.props;
       const { formData } = state;
 
       const validators = [

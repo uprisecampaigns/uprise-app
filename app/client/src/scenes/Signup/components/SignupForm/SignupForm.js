@@ -2,7 +2,6 @@ import React, { PureComponent, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
-import MenuItem from 'material-ui/MenuItem';
 
 import s from 'styles/Form.scss';
 
@@ -13,11 +12,11 @@ class SignupForm extends PureComponent {
     cancelSignup: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
-    signupError: PropTypes.string
+    signupError: PropTypes.string,
   }
 
   static defaultProps = {
-    signupError: undefined
+    signupError: undefined,
   }
 
   render() {

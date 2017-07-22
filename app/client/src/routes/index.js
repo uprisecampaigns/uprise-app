@@ -1,7 +1,8 @@
+/* eslint-disable global-require */
+
 export default {
 
   path: '/',
-
 
   // Routes are evaluated in order
   children: [

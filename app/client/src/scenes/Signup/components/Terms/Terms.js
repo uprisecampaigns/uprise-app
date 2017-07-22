@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { PureComponent, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 

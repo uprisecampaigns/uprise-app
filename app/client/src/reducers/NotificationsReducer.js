@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 
 import {
   NOTIFY, CLEAR,
@@ -6,7 +7,7 @@ import {
   ATTEMPT_NAV_FROM_DIRTY_FORM,
   CONFIRM_NAV_FROM_DIRTY_FORM,
   CANCEL_NAV_FROM_DIRTY_FORM,
-} from 'actions/NotificationsActions.js';
+} from 'actions/NotificationsActions';
 
 const defaultStartState = {
   display: false,

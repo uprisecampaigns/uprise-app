@@ -3,6 +3,7 @@ import React, { PureComponent, PropTypes } from 'react';
 
 class ResultsCount extends PureComponent {
   static propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     items: PropTypes.array,
     total: PropTypes.number,
     graphqlLoading: PropTypes.bool.isRequired,

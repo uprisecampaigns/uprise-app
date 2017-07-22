@@ -1,26 +1,22 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import Divider from 'material-ui/Divider';
-
-import Link from 'components/Link';
 
 import s from 'styles/Form.scss';
 
 
-class ResetPasswordForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class ResetPasswordForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     cancelReset: PropTypes.func.isRequired,
     resetError: PropTypes.string,
+  }
+
+  static defaultProps = {
+    resetError: undefined,
   }
 
   render() {
