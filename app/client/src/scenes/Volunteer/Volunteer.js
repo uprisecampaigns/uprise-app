@@ -12,7 +12,7 @@ function Volunteer(props) {
     <div className={s.outerContainer}>
 
       <div className={s.pageHeader}>
-        Volunteer
+        Manage
       </div>
 
       <List className={s.navList}>

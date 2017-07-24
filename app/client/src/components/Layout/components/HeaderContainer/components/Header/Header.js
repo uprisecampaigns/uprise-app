@@ -113,7 +113,7 @@ function AuthenticatedIcons(props) {
       />
 
       <ContentDropdownMenu
-        title="Volunteer"
+        title="Manage"
         className={s.rightIcon}
         dropdowns={[
           { title: 'My Actions', path: '/volunteer/action-commitments' },
