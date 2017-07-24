@@ -61,11 +61,16 @@ class CampaignSubscriptions extends PureComponent {
 
           <div className={s.pageSubHeader}>My Subscriptions</div>
 
-          <List>
-
-            { campaignsList }
-
-          </List>
+          {campaignsList.length === 0 ? (
+            <div className={s.searchPrompt}>
+              You have no current campaign subscriptions. You can search for campaigns&nbsp;
+              <Link to="/search/search-campaigns" useAhref={true}>here</Link>.
+            </div>
+          ) : (
+            <List>
+              {campaignsList}
+            </List>
+          )}
         </div>
       );
     }

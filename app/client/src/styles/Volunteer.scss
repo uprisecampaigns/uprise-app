@@ -26,4 +26,11 @@
     font-size: 1rem;
     padding: 0.2rem 1rem 0.2rem 1rem;
   }
+
+  .searchPrompt {
+    margin: 0 auto;
+    font-size: 1rem;
+    padding: 0rem 1.5rem 3rem 1.5rem;
+    max-width: $max-content-width;
+  }
 }

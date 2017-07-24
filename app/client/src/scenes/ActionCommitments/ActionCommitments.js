@@ -73,9 +73,16 @@ class ActionCommitments extends PureComponent {
 
           <div className={s.pageSubHeader}>My Actions</div>
 
-          <List>
-            {actionsList}
-          </List>
+          {actionsList.length === 0 ? (
+            <div className={s.searchPrompt}>
+              You have no current volunteering commitments. You can search for opportunities&nbsp;
+              <Link to="/search/search-actions" useAhref={true}>here</Link>.
+            </div>
+          ) : (
+            <List>
+              {actionsList}
+            </List>
+          )}
         </div>
       );
     }
