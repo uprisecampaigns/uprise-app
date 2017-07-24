@@ -64,7 +64,7 @@ class CampaignSubscriptions extends PureComponent {
           {campaignsList.length === 0 ? (
             <div className={s.searchPrompt}>
               You have no current campaign subscriptions. You can search for campaigns&nbsp;
-              <Link to="/search/search-campaigns" useAhref={true}>here</Link>.
+              <Link to="/search/search-campaigns" useAhref>here</Link>.
             </div>
           ) : (
             <List>

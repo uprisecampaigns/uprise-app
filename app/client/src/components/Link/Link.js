@@ -102,6 +102,7 @@ class Link extends React.Component {
         onClick={e => this.handleClick(e, url)}
         className={[className].concat([s.link]).join(' ')}
         role="link"
+        tabIndex="0"
       >
         {children}
       </span>
