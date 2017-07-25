@@ -43,14 +43,26 @@ class Action {
     return actions;
   }
 
-  static async delete(deleteOptions, ownerId) {
+  static async delete({ input, userId }) {
 
-    const options = Object.assign({}, deleteOptions, {
-      owner_id: ownerId
-    });
+    const user = await db.table('users').where('id', userId).first('id', 'superuser');
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const action = await Action.findOne(input);
+
+    if (!action) {
+      throw new Error('Action not found');
+    }
+
+    if (! await User.ownsObject({ userId, object: action })) {
+      throw new Error('User must own action');
+    }
 
     const result = await db('actions')
-      .where(options)
+      .where('id', action.id)
       .update({ deleted: true });
 
     return result === 1;

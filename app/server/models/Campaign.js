@@ -107,13 +107,26 @@ class Campaign {
     }
   }
 
-  static async delete(deleteOptions, ownerId) {
-    const options = Object.assign({}, deleteOptions, {
-      owner_id: ownerId
-    });
+  static async delete({ input, userId }) {
+
+    const user = await db.table('users').where('id', userId).first('id', 'superuser');
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const campaign = await Campaign.findOne(input);
+
+    if (!campaign) {
+      throw new Error('Campaign not found');
+    }
+
+    if (! await User.ownsObject({ userId, object: campaign })) {
+      throw new Error('User must own campaign');
+    }
 
     const result = await db('campaigns')
-      .where(options)
+      .where('id', campaign.id)
       .update({ deleted: true });
 
     return result === 1;

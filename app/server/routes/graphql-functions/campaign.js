@@ -118,13 +118,7 @@ module.exports = {
       throw new Error('User must be logged in');
     }
 
-    const campaign = await Campaign.findOne(options.data);
-
-    if (!User.ownsObject({ user: context.user, object: campaign })) {
-      throw new Error('User must own campaign');
-    }
-
-    const result = await Campaign.delete(options.data, context.user.id);
+    const result = await Campaign.delete({ input: options.data, userId: context.user.id });
 
     return result;
   },

@@ -78,13 +78,7 @@ module.exports = {
       throw new Error('User must be logged in');
     }
 
-    const action = await Action.findOne(options.data);
-
-    if (!await User.ownsObject({ user: context.user, object: action })) {
-      throw new Error('User must own action');
-    }
-
-    const result = await Action.delete(options.data, context.user.id);
+    const result = await Action.delete({ input: options.data, userId: context.user.id });
 
     return result;
   },
