@@ -5,6 +5,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
 
 import timeWithZone from 'lib/timeWithZone';
+import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
 
@@ -32,7 +33,7 @@ class CampaignProfile extends PureComponent {
       ) : '';
 
       const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ?
-        campaign.actions.map((action) => {
+        Array.from(campaign.actions).sort(itemsSort({ name: 'date', descending: false })).map((action) => {
           if (action.ongoing) {
             return (
               <Link to={`/action/${action.slug}`} key={action.id}>
