@@ -135,10 +135,10 @@ class CreateAction extends Component {
 
       const modalActions = [
         <RaisedButton
-          label="Set Preferences"
+          label="Manage Action"
           primary
           className={s.primaryButton}
-          onTouchTap={(event) => { event.preventDefault(); history.push(`/organize/${campaign.slug}/action/${newAction.slug}/preferences`); }}
+          onTouchTap={(event) => { event.preventDefault(); history.push(`/organize/${campaign.slug}/action/${newAction.slug}`); }}
         />,
       ];
 
@@ -185,10 +185,10 @@ class CreateAction extends Component {
                 Congratulations, you have created the action &apos;{newAction.title}&apos;.
               </p>
               <p>
-                You can find and edit your action&apos;s public profile at {window.location.origin}/action/{newAction.slug}
+                You can find your action&apos;s public profile at {window.location.origin}/action/{newAction.slug}
               </p>
               <p>
-                Please set your campaign&apos;s preferences so volunteers are able to search for you effectively.
+                You can manage your action here:
               </p>
             </Dialog>
           )}

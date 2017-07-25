@@ -152,10 +152,10 @@ class CreateCampaignContainer extends Component {
 
     const modalActions = [
       <RaisedButton
-        label="Set Preferences"
+        label="Manage Campaign"
         primary
         className={s.primaryButton}
-        onTouchTap={(event) => { event.preventDefault(); history.push(`/organize/${newCampaign.slug}/preferences`); }}
+        onTouchTap={(event) => { event.preventDefault(); history.push(`/organize/${newCampaign.slug}`); }}
       />,
     ];
 
@@ -205,10 +205,10 @@ class CreateCampaignContainer extends Component {
                   Congratulations, you have created the campaign &apos;{newCampaign.title}&apos;.
                 </p>
                 <p>
-                  You can find and edit your campaign&apos;s public profile at {window.location.origin}/campaign/{newCampaign.slug}
+                  You can find your campaign&apos;s public profile at {window.location.origin}/campaign/{newCampaign.slug}
                 </p>
                 <p>
-                  Please set your campaign&apos;s preferences so volunteers are able to search for you effectively.
+                  You can manage your campaign here:
                 </p>
               </Dialog>
             )}
