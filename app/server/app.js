@@ -57,7 +57,7 @@ app.use(logger((tokens, req, res) => {
   return logArray.join(' ');
 }));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '1mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
