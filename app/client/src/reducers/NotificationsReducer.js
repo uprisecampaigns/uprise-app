@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 import {
+  PROMPT_LOGIN,
   NOTIFY, CLEAR,
   START_PAGE_LOAD, END_PAGE_LOAD,
   FORM_CLEANED, FORM_DIRTIED,
@@ -10,6 +11,7 @@ import {
 } from 'actions/NotificationsActions';
 
 const defaultStartState = {
+  displayLoginModal: false,
   display: false,
   message: '',
   pageLoading: false,
@@ -20,6 +22,11 @@ const defaultStartState = {
 
 export function updateNotifications(notificationsState = defaultStartState, action) {
   switch (action.type) {
+    case PROMPT_LOGIN:
+      return Object.assign({}, notificationsState, {
+        displayLoginModal: true,
+      });
+
     case NOTIFY:
       return Object.assign({}, notificationsState, {
         display: true,
