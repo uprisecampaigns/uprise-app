@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "node /src/app/client/bin/start.js & node --inspect=5859 /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
+    "dev": "node /src/app/client/bin/start.js & node --inspect=0.0.0.0:5859 /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
     "prod": "node /src/app/client/bin/start.js & node /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
     "test": "cd client && ../node_modules/mocha/bin/mocha --require ignore-styles --require config/test.js './src/**/*.spec.js'",
     "test:watch": "cd client && ../node_modules/mocha/bin/mocha --require ignore-styles --require config/test.js --watch './src/**/*.spec.js'",

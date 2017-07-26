@@ -12,7 +12,7 @@ gulp.task('nodemon', () => {
 
   let exec;
   if (process.env.NODE_DEBUG) {
-    exec = path.resolve(config.appRoot, 'node_modules', 'babel-cli', 'bin', 'babel-node.js') + ' --inspect=5857 ';
+    exec = path.resolve(config.appRoot, 'node_modules', 'babel-cli', 'bin', 'babel-node.js') + ' --inspect=0.0.0.0:5857 ';
   } else {
     exec = path.resolve(config.appRoot, 'node_modules', 'babel-cli', 'bin', 'babel-node.js');
   }
