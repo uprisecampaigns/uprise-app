@@ -323,24 +323,22 @@ class Action {
           }
 
           if (search.dates) {
-
             if (search.dates.ongoing) {
-
               qb.andWhere('ongoing', true);
+            }
 
-            } else if (search.dates.onDate) {
+            if (search.dates.onDate) {
+              qb.andWhere(db.raw("(?::timestamptz, ?::timestamptz + interval '1 day') OVERLAPS (actions.start_time, actions.end_time)", [
+                search.dates.onDate, search.dates.onDate
+              ]));
+            }
 
-              qb.andWhere(function() {
-                this.andWhere(db.raw("date(?) >= actions.start_time::date", search.dates.onDate));
-                this.andWhere(db.raw("date(?) <= actions.end_time::date", search.dates.onDate));
-              }); 
+            if (search.dates.startDate) {
+              qb.andWhere(db.raw("?::timestamptz <= actions.start_time", search.dates.startDate));
+            }
 
-            } else if (search.dates.startDate && search.dates.endDate) {
-              // OVERLAPS is exclusive at the endDate, so add a day to simulate inclusion
-              qb.andWhere(db.raw("(date(?), date(?) + interval '1 day') OVERLAPS (actions.start_time::date, actions.end_time::date)", [
-                search.dates.startDate,
-                search.dates.endDate
-              ])); 
+            if (search.dates.endDate) {
+              qb.andWhere(db.raw("?::timestamptz + interval '1 day' >= actions.end_time", search.dates.endDate));
             }
           }
 
