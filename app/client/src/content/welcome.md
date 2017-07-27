@@ -23,17 +23,6 @@ your campaign subscriptions at [MY SUBSCRIPTIONS](/volunteer/campaign-subscripti
 
 Manage all your campaigns at [MY CAMPAIGNS](/organize) and make new ones at [CREATE CAMPAIGN](/organize/create-campaign).
 
-Inside each CAMPAIGN, you will find a menu for creating and managing
-CAMPAIGN ACTIONS, managing and contacting your VOLUNTEERS and editing
-your campaign SETTINGS, which include account information, search
-preferences and location, and where you can view or edit your campaign
-profile.
-
-Each ACTION has a DASHBOARD, where you can view and contact the people
-who signed up and open your SETTINGS menu, which includes basic
-information and search preferences, and where you can view and edit your
-action profile.
-
 ### 
 
 ### Settings
