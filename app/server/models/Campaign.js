@@ -364,7 +364,8 @@ class Campaign {
       .select(['id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing',
                db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
                db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time')])
-      .where('campaign_id', campaign.id);
+      .where('campaign_id', campaign.id)
+      .andWhere('deleted', false);
 
     [ details.owner, details.issue_areas, details.levels,
       details.types, details.actions ] = await Promise.all([
