@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import uniqWith from 'lodash.uniqwith';
+import moment from 'moment-timezone';
 import FontIcon from 'material-ui/FontIcon';
 
 import ResultsCount from 'components/ResultsCount';
@@ -39,16 +40,17 @@ const graphqlOptions = {
           return data.fetchMore({
             query: SearchActionsQuery,
             variables: {
-              search: Object.assign({}, data.variables.search, {
+              search: {
+                ...data.variables.search,
                 cursor: {
                   start_time: result.cursor.start_time,
                   id: result.cursor.id,
                   slug: result.cursor.slug,
                   campaign_name: result.cursor.campaign.title,
                 },
-              }),
+              },
             },
-            updateQuery: (previousResult, { fetchMoreResult }) => {
+            updateQuery: (previousResult, { fetchMoreResult, queryVariables }) => {
               const previousActions = previousResult.actions.actions;
               const newActions = fetchMoreResult.actions.actions;
 
@@ -74,25 +76,35 @@ const graphqlOptions = {
     // Refresh every 5 min should be safe
     pollInterval: 60000 * 5,
     fetchPolicy: 'cache-and-network',
-    ...ownProps,
+    variables: {
+      search: ownProps.search,
+      sortBy: ownProps.sortBy,
+    },
   }),
 };
 
-const mapStateToProps = state => ({
-  search: {
-    keywords: state.actionsSearch.keywords,
-    types: state.actionsSearch.types,
-    activities: state.actionsSearch.activities,
-    campaignNames: state.actionsSearch.campaignNames,
-    issueAreas: state.actionsSearch.issueAreas,
-    levels: state.actionsSearch.levels,
-    dates: state.actionsSearch.dates,
-    times: state.actionsSearch.times,
-    geographies: state.actionsSearch.geographies,
-    sortBy: state.actionsSearch.sortBy,
-  },
-  sortBy: state.actionsSearch.sortBy,
-});
+const mapStateToProps = (state) => {
+  const aSearch = state.actionsSearch;
+
+  const hasDateSearch = Object.keys(aSearch.dates).length > 0;
+  const searchDates = hasDateSearch ? aSearch.dates : { startDate: moment().startOf('day').format() };
+
+  return {
+    search: {
+      keywords: aSearch.keywords,
+      types: aSearch.types,
+      activities: aSearch.activities,
+      campaignNames: aSearch.campaignNames,
+      issueAreas: aSearch.issueAreas,
+      levels: aSearch.levels,
+      dates: searchDates,
+      times: aSearch.times,
+      geographies: aSearch.geographies,
+      sortBy: aSearch.sortBy,
+    },
+    sortBy: aSearch.sortBy,
+  };
+};
 
 const ResultsCountWithData = compose(
   connect(mapStateToProps),
