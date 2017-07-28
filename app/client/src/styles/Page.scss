@@ -8,22 +8,22 @@
   }
 
   h2 {
-    font-size: 1.2rem;
-    color: $brick-red;
+    font-size: 1.6rem;
+    color: $fire-red;
     font-weight: 500;
   }
 
   h3, strong {
-    font-size: 1.0rem;
+    font-size: 1.4rem;
     margin-bottom: 0.2rem;
-    color: lighten($black, 15%);
+    color: darken($azure, 5%);
     font-weight: 500;
   }
 
   p {
     margin-top: 0rem;
-    font-size: 0.8rem;
-    color: lighten($black, 10%);
+    font-size: 1rem;
+    color: lighten($black, 30%);
     font-weight: 400;
   }
 
