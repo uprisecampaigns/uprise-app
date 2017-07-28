@@ -34,3 +34,19 @@ at [PRIVACY & SECURITY](/settings/privacy-security). You can also [CONTACT US](/
 
 Everything above is just Phase One. We have a lot more planned for you!
 -----------------------------------------------------------------------
+
+### Volunteer search and skills matching
+
+### Rich volunteer profiles with lifetime accumulation of reward points
+
+### Quality control, skills certifications and two-way rating
+
+### Volunteer community self-organizing tools
+
+### Campaign management dashboard, analytics
+
+### More outreach and project management tools
+
+### Marketplace for other campaign vendors with API integration
+
+### Best practices forums and training
