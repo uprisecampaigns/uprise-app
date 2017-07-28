@@ -556,7 +556,9 @@ class Action {
         const newActionData = Object.assign({}, options, { slug });
 
         try {
-          const { levels, types, issue_areas, activities, ...newInsertInput } = newActionData;
+          const { levels, types, issue_areas, activities, ...newActionInput } = newActionData;
+
+          const newInsertInput = (user.superuser === true) ? { ...newActionInput, owner_id: campaign.owner_id } : newActionInput;
 
           const actionResult = await db.table('actions').insert(newInsertInput, [
             'id', 'title', 'slug', 'description', 'tags', 'owner_id', 'campaign_id'
