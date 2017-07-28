@@ -26,49 +26,52 @@ class CampaignProfile extends PureComponent {
 
       const keywords = (Array.isArray(campaign.tags) && campaign.tags.length > 0) ? (
         <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
-      ) : '';
+      ) : null;
 
       const issues = (Array.isArray(campaign.issue_areas) && campaign.issue_areas.length > 0) ? (
         <div className={s.detailLine}>{campaign.issue_areas.map(issue => issue.title).join(', ')}</div>
-      ) : '';
+      ) : null;
 
       const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ?
-        Array.from(campaign.actions).sort(itemsSort({ name: 'date', descending: false })).map((action) => {
-          if (action.ongoing) {
-            return (
-              <Link to={`/action/${action.slug}`} key={action.id}>
-                <div className={[s.detailLine, s.actionListing].join(' ')}>
-                  <div>
-                    {action.title}
+        Array.from(campaign.actions)
+          .filter(a => (moment(a.end_time).isAfter(moment()) || a.ongoing))
+          .sort(itemsSort({ name: 'date', descending: false }))
+          .map((action) => {
+            if (action.ongoing) {
+              return (
+                <Link to={`/action/${action.slug}`} key={action.id}>
+                  <div className={[s.detailLine, s.actionListing].join(' ')}>
+                    <div>
+                      {action.title}
+                    </div>
+                    <div>
+                      {action.city}{action.state && `, ${action.state}`}
+                    </div>
                   </div>
-                  <div>
-                    {action.city}{action.state && `, ${action.state}`}
-                  </div>
-                </div>
-              </Link>
-            );
-          } else if (action.start_time && action.end_time) {
-            const startTime = moment(action.start_time);
-            const endTime = moment(action.end_time);
+                </Link>
+              );
+            } else if (action.start_time && action.end_time) {
+              const startTime = moment(action.start_time);
+              const endTime = moment(action.end_time);
 
-            const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
-            const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
+              const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
+              const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
-            return (
-              <Link to={`/action/${action.slug}`} key={action.id}>
-                <div className={[s.detailLine, s.actionListing].join(' ')}>
-                  <div>
-                    {action.title}
+              return (
+                <Link to={`/action/${action.slug}`} key={action.id}>
+                  <div className={[s.detailLine, s.actionListing].join(' ')}>
+                    <div>
+                      {action.title}
+                    </div>
+                    <div>
+                      {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}
+                      {action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
+                    </div>
                   </div>
-                  <div>
-                    {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}
-                    {action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
-                  </div>
-                </div>
-              </Link>
-            );
-          } return null;
-        }) : '';
+                </Link>
+              );
+            } return null;
+          }) : [];
 
 
       return (
@@ -148,7 +151,7 @@ class CampaignProfile extends PureComponent {
               </div>
             )}
 
-            {actions && (
+            { (actions.length > 0) && (
               <div className={s.actionsContainer}>
                 <div className={s.header}>
                   Upcoming Actions:
@@ -157,7 +160,7 @@ class CampaignProfile extends PureComponent {
               </div>
             )}
 
-            {issues && (
+            { issues && (
               <div className={s.issuesContainer}>
                 <div className={s.header}>
                   Issues:
@@ -166,7 +169,7 @@ class CampaignProfile extends PureComponent {
               </div>
             )}
 
-            {keywords && (
+            { keywords && (
               <div className={s.keywordsContainer}>
                 <div className={s.header}>
                   Keywords:
