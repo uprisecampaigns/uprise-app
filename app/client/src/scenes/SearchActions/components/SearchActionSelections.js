@@ -18,12 +18,6 @@ const SelectedActivitiesContainer = connect(state => ({ items: state.actionsSear
 
 const SelectedCampaignNamesContainer = connect(state => ({ items: state.actionsSearch.campaignNames }))(SelectedItemsContainer);
 
-const SelectedTypesContainer = connect(state => ({ items: state.actionsSearch.types }))(SelectedItemsContainer);
-
-const SelectedLevelsContainer = connect(state => ({ items: state.actionsSearch.levels }))(SelectedItemsContainer);
-
-const SelectedIssueAreasContainer = connect(state => ({ items: state.actionsSearch.issueAreas }))(SelectedItemsContainer);
-
 const SelectedTimesContainer = connect(state => ({ items: state.actionsSearch.times }))(SelectedItemsContainer);
 
 const SelectedDatesContainer = connect((state) => {
@@ -84,18 +78,6 @@ class SearchActionSelections extends PureComponent {
         />
         <SelectedCampaignNamesContainer
           collectionName="campaignNames"
-          removeItem={removeSelectedItem}
-        />
-        <SelectedTypesContainer
-          collectionName="types"
-          removeItem={removeSelectedItem}
-        />
-        <SelectedLevelsContainer
-          collectionName="levels"
-          removeItem={removeSelectedItem}
-        />
-        <SelectedIssueAreasContainer
-          collectionName="issueAreas"
           removeItem={removeSelectedItem}
         />
         <SelectedDatesContainer

@@ -19,9 +19,6 @@ describe('(Reducer) SearchReducer', () => {
     expect(isEqual(updateSearch(undefined, {}), {
       keywords: [], 
       activities: [], 
-      types: [], 
-      levels: [], 
-      issueAreas: [], 
       campaignNames: [], 
       dates: {}, 
       times: [], 
@@ -45,9 +42,6 @@ describe('(Reducer) SearchReducer', () => {
         {
           keywords: ['a new keyword'], 
           activities: [], 
-          types: [], 
-          levels: [], 
-          issueAreas: [], 
           campaignNames: [], 
           dates: {}, 
           times: [], 
@@ -76,9 +70,6 @@ describe('(Reducer) SearchReducer', () => {
         {
           keywords: [], 
           activities: [], 
-          types: [], 
-          levels: [], 
-          issueAreas: [], 
           campaignNames: [], 
           dates: {}, 
           times: [], 

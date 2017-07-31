@@ -31,18 +31,6 @@ fragment CampaignDetails on CampaignResult {
     last_name
     email
   }
-  issue_areas {
-    id
-    title
-  }
-  levels {
-    id
-    title
-  }
-  types {
-    id
-    title
-  }
   actions {
     id
     title

@@ -94,11 +94,8 @@ const mapStateToProps = (state) => {
   return {
     search: {
       keywords: aSearch.keywords,
-      types: aSearch.types,
       activities: aSearch.activities,
       campaignNames: aSearch.campaignNames,
-      issueAreas: aSearch.issueAreas,
-      levels: aSearch.levels,
       dates: searchDates,
       times: aSearch.times,
       geographies: aSearch.geographies,

@@ -11,9 +11,6 @@ import CsvUploader from 'components/CsvUploader';
 import Link from 'components/Link';
 
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
-import TypesQuery from 'schemas/queries/TypesQuery.graphql';
-import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
-import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
 import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import CreateActionsMutation from 'schemas/mutations/CreateActionsMutation.graphql';
@@ -26,9 +23,6 @@ class ManageCampaignUploadActions extends Component {
     createActionsMutation: PropTypes.func.isRequired,
     campaign: PropTypes.object,
     activities: PropTypes.arrayOf(PropTypes.object),
-    issueAreas: PropTypes.arrayOf(PropTypes.object),
-    levels: PropTypes.arrayOf(PropTypes.object),
-    types: PropTypes.arrayOf(PropTypes.object),
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
   }
@@ -36,9 +30,6 @@ class ManageCampaignUploadActions extends Component {
   static defaultProps = {
     campaign: undefined,
     activities: undefined,
-    types: undefined,
-    issueAreas: undefined,
-    levels: undefined,
   }
 
   constructor(props) {
@@ -104,9 +95,7 @@ class ManageCampaignUploadActions extends Component {
       }
     };
 
-    if (this.props.campaign && this.props.issueAreas &&
-        this.props.levels && this.props.activities &&
-        this.props.types) {
+    if (this.props.campaign && this.props.activities) {
       const { campaign } = this.props;
 
       const config = {
@@ -191,21 +180,6 @@ class ManageCampaignUploadActions extends Component {
             slug: 'activities',
             processData: values => processRelationships('activities', values),
           },
-          {
-            title: 'Campaign Types',
-            slug: 'types',
-            processData: values => processRelationships('types', values),
-          },
-          {
-            title: 'Campaign Levels',
-            slug: 'levels',
-            processData: values => processRelationships('levels', values),
-          },
-          {
-            title: 'Issue Areas',
-            slug: 'issueAreas',
-            processData: values => processRelationships('issueAreas', values),
-          },
         ],
         onSubmit: async (data) => {
           const newActions = data.map(action => ({
@@ -268,9 +242,6 @@ const graphqlOptions = collection => ({
 });
 
 const withActivitiesQuery = graphql(ActivitiesQuery, graphqlOptions('activities'));
-const withTypesQuery = graphql(TypesQuery, graphqlOptions('types'));
-const withLevelsQuery = graphql(LevelsQuery, graphqlOptions('levels'));
-const withIssueAreasQuery = graphql(IssueAreasQuery, graphqlOptions('issueAreas'));
 
 const withCampaignQuery = graphql(CampaignQuery, {
   options: ownProps => ({
@@ -291,8 +262,5 @@ export default compose(
   connect(),
   withCampaignQuery,
   withActivitiesQuery,
-  withTypesQuery,
-  withLevelsQuery,
-  withIssueAreasQuery,
   graphql(CreateActionsMutation, { name: 'createActionsMutation' }),
 )(ManageCampaignUploadActions);

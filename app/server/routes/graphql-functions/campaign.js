@@ -62,22 +62,6 @@ module.exports = {
     return campaignSubscriptions;
   },
 
-
-  types: async (data, context) => {
-    const types = await Campaign.listTypes(data.search);
-    return types;
-  },
-
-  levels: async (data, context) => {
-    const levels = await Campaign.listLevels(data.search);
-    return levels;
-  },
-
-  issueAreas: async (data, context) => {
-    const issueAreas = await Campaign.listIssueAreas(data.search);
-    return issueAreas;
-  },
-
   createCampaign: async (options, context) => {
 
     if (!context.user) {

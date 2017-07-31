@@ -22,9 +22,6 @@ import {
   attemptNavFromDirtyForm,
 } from 'actions/NotificationsActions';
 
-import TypesQuery from 'schemas/queries/TypesQuery.graphql';
-import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
-import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
 import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import history from 'lib/history';
@@ -189,6 +186,3 @@ onLocationChange(currentLocation);
 
 // We can prefetch these basic queries because they're integral to UI performance
 apolloClient.query({ query: ActivitiesQuery });
-apolloClient.query({ query: IssueAreasQuery });
-apolloClient.query({ query: LevelsQuery });
-apolloClient.query({ query: TypesQuery });

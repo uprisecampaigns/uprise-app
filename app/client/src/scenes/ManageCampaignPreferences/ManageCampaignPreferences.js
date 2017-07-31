@@ -9,7 +9,6 @@ import Divider from 'material-ui/Divider';
 import camelCase from 'camelcase';
 
 import ControlledListItem from 'components/ControlledListItem';
-import TogglesList from 'components/TogglesList';
 import SearchBar from 'components/SearchBar';
 import SelectedItemsContainer from 'components/SelectedItemsContainer';
 import Link from 'components/Link';
@@ -26,12 +25,6 @@ import {
 
 import s from 'styles/Organize.scss';
 
-
-const graphqlOptions = collection => ({
-  props: ({ data }) => ({
-    collection: !data.loading && data[collection] ? data[collection] : [],
-  }),
-});
 
 class ManageCampaignPreferencesContainer extends Component {
   static propTypes = {
@@ -108,25 +101,6 @@ class ManageCampaignPreferencesContainer extends Component {
     }
   }
 
-  handleToggle = (collectionName, on, id) => {
-    const oldCollection = Array.from(this.state.campaign[collectionName]);
-    let newCollection;
-
-    if (on) {
-      newCollection = oldCollection.concat({ id });
-    } else {
-      newCollection = oldCollection.filter(item => item.id !== id);
-    }
-
-    const newCampaign = Object.assign({}, this.state.campaign, { [collectionName]: newCollection });
-
-    this.props.dispatch(dirtyForm());
-
-    this.setState(prevState => ({
-      campaign: Object.assign({}, prevState.campaign, newCampaign),
-    }));
-  }
-
   addKeyword = (collectionName, tag) => {
     const tags = Array.from(this.state.campaign.tags);
 
@@ -154,7 +128,7 @@ class ManageCampaignPreferencesContainer extends Component {
   }
 
   render() {
-    const { saveChanges, handleToggle, addKeyword, removeKeyword } = this;
+    const { saveChanges, addKeyword, removeKeyword } = this;
     const { campaign, saving } = this.state;
 
     const selectedTags = campaign.tags;

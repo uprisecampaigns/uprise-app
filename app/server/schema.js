@@ -20,22 +20,6 @@ module.exports = buildSchema(`
     description: String
   }
 
-  type TypeResult {
-    id: String!
-    title: String!
-    description: String
-  }
-
-  type LevelResult {
-    id: String!
-    title: String!
-  }
-
-  type IssueAreaResult {
-    id: String!
-    title: String!
-  }
-
   type CampaignResult {
     id: String!
     title: String
@@ -67,9 +51,6 @@ module.exports = buildSchema(`
     org_contact_phone: String
     owner: UserResult
     tags: [String]
-    issue_areas: [IssueAreaResult]
-    levels: [LevelResult]
-    types: [TypeResult]
     actions: [ActionResult]
   }
 
@@ -95,9 +76,6 @@ module.exports = buildSchema(`
     location_notes: String
     public_url: String
     activities: [ActivityResult]
-    issue_areas: [IssueAreaResult]
-    levels: [LevelResult]
-    types: [TypeResult]
     owner: UserResult
     campaign: CampaignResult
   }
@@ -129,9 +107,6 @@ module.exports = buildSchema(`
     id: [String]
     title: [String]
     keywords: [String]
-    types: [String]
-    levels: [String]
-    issueAreas: [String]
     geographies: [GeographySearchInput]
   }
 
@@ -147,9 +122,6 @@ module.exports = buildSchema(`
     activities: [String]
     campaignIds: [String]
     campaignNames: [String]
-    types: [String]
-    levels: [String]
-    issueAreas: [String]
     dates: DateSearchInput
     times: [String]
     geographies: [GeographySearchInput]
@@ -193,9 +165,6 @@ module.exports = buildSchema(`
     myCampaigns: [CampaignResult]
     campaign(search: CampaignQueryInput): CampaignResult
     activities: [ActivityResult]
-    types: [TypeResult]
-    levels: [LevelResult]
-    issueAreas: [IssueAreaResult]
     me: UserResult
     emailAvailable(email: String): Boolean
     fileUploadSignature(input: FileToUpload!): FileUploadSignatureResult
@@ -261,9 +230,6 @@ module.exports = buildSchema(`
     orgContactPosition: String
     orgContactEmail: String
     orgContactPhone: String
-    issueAreas: [String]
-    levels: [String]
-    types: [String]
     tags: [String]
   }
 
@@ -292,9 +258,6 @@ module.exports = buildSchema(`
     startTime: String
     endTime: String
     activities: [String]
-    issueAreas: [String]
-    levels: [String]
-    types: [String]
     tags: [String]
   }
 
@@ -316,9 +279,6 @@ module.exports = buildSchema(`
     startTime: String
     endTime: String
     activities: [String]
-    issueAreas: [String]
-    levels: [String]
-    types: [String]
     tags: [String]
   }
 

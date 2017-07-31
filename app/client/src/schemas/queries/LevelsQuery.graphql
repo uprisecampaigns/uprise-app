@@ -1,6 +1,0 @@
-query LevelsQuery {
-  levels {
-    id
-    title
-  }
-}

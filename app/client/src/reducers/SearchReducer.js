@@ -13,9 +13,6 @@ import {
 export const defaultStartState = {
   keywords: [],
   activities: [],
-  types: [],
-  levels: [],
-  issueAreas: [],
   campaignNames: [],
   dates: {},
   times: [],

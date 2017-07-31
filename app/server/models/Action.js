@@ -259,69 +259,6 @@ class Action {
             });
           }
 
-          if (search.types) {
-            qb.andWhere(function() {
-
-              const types = db('types')
-                .select('id', 'title', 'description')
-                .as('types');
-
-              search.types.forEach( (type) => {
-
-                const typeQuery = db.select('action_id')
-                  .distinct()
-                  .from('types')
-                  .innerJoin('actions_types', 'types.id', 'actions_types.type_id')
-                  .where('title', type);
-
-                this.orWhere('actions.id', 'in', typeQuery);
-
-              });
-            });
-          }
-
-          if (search.levels) {
-            qb.andWhere(function() {
-
-              const levels = db('levels')
-                .select('id', 'title')
-                .as('levels');
-
-              search.levels.forEach( (level) => {
-
-                const levelQuery = db.select('action_id')
-                  .distinct()
-                  .from('levels')
-                  .innerJoin('actions_levels', 'levels.id', 'actions_levels.level_id')
-                  .where('title', level);
-
-                this.orWhere('actions.id', 'in', levelQuery);
-
-              });
-            });
-          }
-
-          if (search.issueAreas) {
-            qb.andWhere(function() {
-
-              const issueAreas = db('issue_areas')
-                .select('id', 'title')
-                .as('issue_areas');
-
-              search.issueAreas.forEach( (issueArea) => {
-
-                const issueAreaQuery = db.select('action_id')
-                  .distinct()
-                  .from('issue_areas')
-                  .innerJoin('actions_issue_areas', 'issue_areas.id', 'actions_issue_areas.issue_area_id')
-                  .where('title', issueArea);
-
-                this.orWhere('actions.id', 'in', issueAreaQuery);
-
-              });
-            });
-          }
-
           if (search.dates) {
             if (search.dates.ongoing) {
               qb.andWhere('ongoing', true);
@@ -478,29 +415,11 @@ class Action {
       .where('actions_activities.action_id', action.id)
       .select('activities.id as id', 'activities.title as title', 'activities.description as description');
 
-    const issuesQuery = db('issue_areas')
-      .innerJoin('actions_issue_areas', 'actions_issue_areas.issue_area_id', 'issue_areas.id')
-      .where('actions_issue_areas.action_id', action.id)
-      .select('issue_areas.id as id', 'issue_areas.title as title');
 
-    const levelsQuery = db('levels')
-      .innerJoin('actions_levels', 'actions_levels.level_id', 'levels.id')
-      .where('actions_levels.action_id', action.id)
-      .select('levels.id as id', 'levels.title as title');
-
-    const typesQuery = db('types')
-      .innerJoin('actions_types', 'actions_types.type_id', 'types.id')
-      .where('actions_types.action_id', action.id)
-      .select('types.id as id', 'types.title as title');
-
-    [ details.campaign, details.owner, details.activities,
-      details.issue_areas, details.levels, details.types ] = await Promise.all([
+    [ details.campaign, details.owner, details.activities ] = await Promise.all([
       Campaign.findOne('id', action.campaign_id),
       User.findOne('id', action.owner_id),
       activitiesQuery,
-      issuesQuery,
-      levelsQuery,
-      typesQuery,
     ]);
 
     details.public_url = url.resolve(config.urls.client, 'action/' + action.slug);
@@ -556,7 +475,7 @@ class Action {
         const newActionData = Object.assign({}, options, { slug });
 
         try {
-          const { levels, types, issue_areas, activities, ...newActionInput } = newActionData;
+          const { activities, ...newActionInput } = newActionData;
 
           const newInsertInput = (user.superuser === true) ? { ...newActionInput, owner_id: campaign.owner_id } : newActionInput;
 
@@ -565,18 +484,6 @@ class Action {
           ]);
 
           const action = actionResult[0];
-
-          if (levels && levels.length) {
-            await updateProperties(levels, 'level', action.id);
-          }
-
-          if (issue_areas && issue_areas.length) {
-            await updateProperties(issue_areas, 'issue_area', action.id);
-          }
-
-          if (types && types.length) {
-            await updateProperties(types, 'type', action.id);
-          }
 
           if (activities && activities.length) {
             await updateProperties(activities, 'activity', action.id);
@@ -610,7 +517,7 @@ class Action {
       } else if (await User.ownsObject({ user, object: action })) {
 
         try {
-          const { levels, types, issue_areas, activities, ...newInput } = input;
+          const { activities, ...newInput } = input;
 
           const actionResult = await db('actions')
             .where('id', newInput.id)
@@ -619,18 +526,6 @@ class Action {
             ]);
 
           const action = actionResult[0];
-
-          if (levels && levels.length) {
-            await updateProperties(levels, 'level', action.id);
-          }
-
-          if (issue_areas && issue_areas.length) {
-            await updateProperties(issue_areas, 'issue_area', action.id);
-          }
-
-          if (types && types.length) {
-            await updateProperties(types, 'type', action.id);
-          }
 
           if (activities && activities.length) {
             await updateProperties(activities, 'activity', action.id);

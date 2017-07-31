@@ -1,7 +1,0 @@
-query TypesQuery {
-  types {
-    id
-    title
-    description
-  }
-}
