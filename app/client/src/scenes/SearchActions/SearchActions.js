@@ -87,7 +87,9 @@ const mapStateToProps = (state) => {
   const aSearch = state.actionsSearch;
 
   const hasDateSearch = Object.keys(aSearch.dates).length > 0;
-  const searchDates = hasDateSearch ? aSearch.dates : { startDate: moment().startOf('day').format() };
+
+  // TODO: this will reset the infinite scroll if the time rolls over to the next hour
+  const searchDates = hasDateSearch ? aSearch.dates : { startDate: moment().startOf('hour').format() };
 
   return {
     search: {
