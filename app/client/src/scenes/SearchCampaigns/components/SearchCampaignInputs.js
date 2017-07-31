@@ -4,10 +4,6 @@ import { graphql, compose } from 'react-apollo';
 import { List } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 
-import TypesQuery from 'schemas/queries/TypesQuery.graphql';
-import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
-import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
-
 import {
   addSearchItem, removeSearchItem,
 } from 'actions/SearchActions';
@@ -24,21 +20,6 @@ const graphqlOptions = collection => ({
     collection: !data.loading && data[collection] ? data[collection] : [],
   }),
 });
-
-const TypesTogglesList = compose(
-  graphql(TypesQuery, graphqlOptions('types')),
-  connect(state => ({ selectedCollection: state.campaignsSearch.types })),
-)(TogglesList);
-
-const LevelsTogglesList = compose(
-  graphql(LevelsQuery, graphqlOptions('levels')),
-  connect(state => ({ selectedCollection: state.campaignsSearch.levels })),
-)(TogglesList);
-
-const IssueAreasTogglesList = compose(
-  graphql(IssueAreasQuery, graphqlOptions('issueAreas')),
-  connect(state => ({ selectedCollection: state.campaignsSearch.issueAreas })),
-)(TogglesList);
 
 class SearchCampaignInputs extends PureComponent {
   static propTypes = {
@@ -75,42 +56,6 @@ class SearchCampaignInputs extends PureComponent {
               />
             </div>
           )]}
-        />
-
-        <Divider />
-
-        <IssueAreasTogglesList
-          listTitle="Issue Areas"
-          collectionName="issueAreas"
-          displayPropName="title"
-          keyPropName="title"
-          handleToggle={handleToggle}
-          className={s.listItemContainer}
-          containerClassName={s.listItem}
-        />
-
-        <Divider />
-
-        <TypesTogglesList
-          listTitle="Campaign Types"
-          collectionName="types"
-          displayPropName="title"
-          keyPropName="title"
-          handleToggle={handleToggle}
-          className={s.listItemContainer}
-          containerClassName={s.listItem}
-        />
-
-        <Divider />
-
-        <LevelsTogglesList
-          listTitle="Campaign Level"
-          collectionName="levels"
-          displayPropName="title"
-          keyPropName="title"
-          handleToggle={handleToggle}
-          className={s.listItemContainer}
-          containerClassName={s.listItem}
         />
 
       </List>

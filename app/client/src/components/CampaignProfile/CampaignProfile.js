@@ -28,10 +28,6 @@ class CampaignProfile extends PureComponent {
         <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
       ) : null;
 
-      const issues = (Array.isArray(campaign.issue_areas) && campaign.issue_areas.length > 0) ? (
-        <div className={s.detailLine}>{campaign.issue_areas.map(issue => issue.title).join(', ')}</div>
-      ) : null;
-
       const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ?
         Array.from(campaign.actions)
           .filter(a => (moment(a.end_time).isAfter(moment()) || a.ongoing))
@@ -157,15 +153,6 @@ class CampaignProfile extends PureComponent {
                   Upcoming Actions:
                 </div>
                 <div>{actions}</div>
-              </div>
-            )}
-
-            { issues && (
-              <div className={s.issuesContainer}>
-                <div className={s.header}>
-                  Issues:
-                </div>
-                <div>{issues}</div>
               </div>
             )}
 

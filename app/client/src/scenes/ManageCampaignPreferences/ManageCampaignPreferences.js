@@ -15,9 +15,6 @@ import SelectedItemsContainer from 'components/SelectedItemsContainer';
 import Link from 'components/Link';
 
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
-import TypesQuery from 'schemas/queries/TypesQuery.graphql';
-import LevelsQuery from 'schemas/queries/LevelsQuery.graphql';
-import IssueAreasQuery from 'schemas/queries/IssueAreasQuery.graphql';
 
 import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql';
 
@@ -35,18 +32,6 @@ const graphqlOptions = collection => ({
     collection: !data.loading && data[collection] ? data[collection] : [],
   }),
 });
-
-const IssueAreasTogglesList = compose(
-  graphql(IssueAreasQuery, graphqlOptions('issueAreas')),
-)(TogglesList);
-
-const LevelsTogglesList = compose(
-  graphql(LevelsQuery, graphqlOptions('levels')),
-)(TogglesList);
-
-const TypesTogglesList = compose(
-  graphql(TypesQuery, graphqlOptions('types')),
-)(TogglesList);
 
 class ManageCampaignPreferencesContainer extends Component {
   static propTypes = {
@@ -67,9 +52,6 @@ class ManageCampaignPreferencesContainer extends Component {
       campaign: {
         title: '',
         slug: '',
-        issueAreas: [],
-        levels: [],
-        types: [],
         tags: [],
       },
       saving: false,
@@ -102,18 +84,12 @@ class ManageCampaignPreferencesContainer extends Component {
     this.setState({ saving: true });
 
     try {
-      const selectedIssueAreas = this.state.campaign.issueAreas.map(issueArea => (issueArea.id));
-      const selectedLevels = this.state.campaign.levels.map(level => (level.id));
-      const selectedTypes = this.state.campaign.types.map(level => (level.id));
       const selectedTags = this.state.campaign.tags;
 
       await this.props.editCampaignMutation({
         variables: {
           data: {
             id: this.props.campaign.id,
-            issueAreas: selectedIssueAreas,
-            levels: selectedLevels,
-            types: selectedTypes,
             tags: selectedTags,
           },
         },
@@ -181,9 +157,6 @@ class ManageCampaignPreferencesContainer extends Component {
     const { saveChanges, handleToggle, addKeyword, removeKeyword } = this;
     const { campaign, saving } = this.state;
 
-    const selectedIssueAreas = campaign.issueAreas.map(issueArea => issueArea.id);
-    const selectedLevels = campaign.levels.map(level => level.id);
-    const selectedTypes = campaign.types.map(type => type.id);
     const selectedTags = campaign.tags;
 
     return (
@@ -201,39 +174,6 @@ class ManageCampaignPreferencesContainer extends Component {
         <div className={s.pageSubHeader}>Preferences</div>
 
         <List className={s.navList}>
-
-          <Divider />
-
-          <IssueAreasTogglesList
-            listTitle="Issue Areas"
-            collectionName="issueAreas"
-            displayPropName="title"
-            keyPropName="id"
-            handleToggle={handleToggle}
-            selectedCollection={selectedIssueAreas}
-          />
-
-          <Divider />
-
-          <LevelsTogglesList
-            listTitle="Campaign Levels"
-            collectionName="levels"
-            displayPropName="title"
-            keyPropName="id"
-            handleToggle={handleToggle}
-            selectedCollection={selectedLevels}
-          />
-
-          <Divider />
-
-          <TypesTogglesList
-            listTitle="Campaign Types"
-            collectionName="types"
-            displayPropName="title"
-            keyPropName="id"
-            handleToggle={handleToggle}
-            selectedCollection={selectedTypes}
-          />
 
           <Divider />
 
