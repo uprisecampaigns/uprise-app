@@ -96,17 +96,13 @@ class Action extends Component {
       const { modalOpen } = this.state;
       const { signup, confirmSignup, cancelSignup } = this;
 
-      const issueAreas = (Array.isArray(action.issue_areas) && action.issue_areas.length) ?
-        action.issue_areas.map((issue, index) => <div key={JSON.stringify(issue)} className={s.detailLine}>{issue.title}</div>) :
-        [];
-
       const activities = (Array.isArray(action.activities) && action.activities.length) ?
         action.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.detailLine}>{activity.description}</div>) :
         [];
 
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.detailLine}>{action.tags.join(', ')}</div>
-      ) : '';
+      ) : null;
 
       const startTime = moment(action.start_time);
       const endTime = moment(action.end_time);
@@ -241,16 +237,7 @@ class Action extends Component {
               </div>
             )}
 
-            {issueAreas.length > 0 && (
-              <div className={s.issueAreasContainer}>
-                <div className={s.header}>
-                  Issue Areas:
-                </div>
-                <div>{issueAreas}</div>
-              </div>
-            )}
-
-            {activities.length > 0 && (
+            { activities.length > 0 && (
               <div className={s.activitiesContainer}>
                 <div className={s.header}>
                   Activities and Skills Needed:
@@ -259,7 +246,7 @@ class Action extends Component {
               </div>
             )}
 
-            {keywords && (
+            { keywords && (
               <div className={s.keywordsContainer}>
                 <div className={s.header}>
                   Keywords:
