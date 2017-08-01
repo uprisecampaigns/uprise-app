@@ -1,0 +1,9 @@
+fragment UserDetails on UserResult {
+  id
+  first_name
+  last_name
+  email
+  zipcode
+  phone_number
+  email_confirmed
+}

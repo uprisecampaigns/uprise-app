@@ -1,11 +1,7 @@
+#import "../fragments/UserDetailsFragment.graphql"
+
 query MeQuery {
   me {
-    id
-    first_name
-    last_name
-    email
-    zipcode
-    phone_number
-    email_confirmed
+    ...UserDetails
   }
 }
