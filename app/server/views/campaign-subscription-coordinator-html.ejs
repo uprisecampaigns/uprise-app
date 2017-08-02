@@ -457,6 +457,7 @@ h4{
                                                             <a target="_blank" style="color: #336699; font-weight: normal; text-decoration: underline;" href="mailto:<%= user.email %>">
                                                               <%= user.email %> 
                                                             </a>
+                                                            <% if (user.phone_number) { %> or phone: <%= user.phone_number %> <% } %>
                                                           </p>
 
                                                         </td>
