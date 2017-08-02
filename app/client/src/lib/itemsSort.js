@@ -3,9 +3,9 @@ import moment from 'moment-timezone';
 export default function itemsSort(sortBy) {
   return function compare(a, b) {
     if (sortBy.name === 'date') {
-      // When sorting by date, ongoing roles always go last
+      // When sorting by date, ongoing roles always go first
       if (a.ongoing || b.ongoing) {
-        return a.ongoing ? 1 : -1;
+        return a.ongoing ? -1 : 1;
       }
       if (sortBy.descending) {
         return moment(a.start_time).isBefore(moment(b.start_time)) ? 1 : -1;

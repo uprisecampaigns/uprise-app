@@ -3,6 +3,7 @@ import validator from 'validator';
 const assert = require('assert');
 const url = require('url');
 const uuid = require('uuid/v4');
+const moment = require('moment-timezone');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig[process.env.NODE_ENV]);
@@ -260,23 +261,25 @@ class Action {
           }
 
           if (search.dates) {
-            if (search.dates.ongoing) {
-              qb.andWhere('ongoing', true);
-            }
+            qb.andWhere(function() {
+              if (search.dates.onDate) {
+                this.andWhere(db.raw("(?::timestamptz, ?::timestamptz + interval '1 day') OVERLAPS (actions.start_time, actions.end_time)", [
+                  search.dates.onDate, search.dates.onDate
+                ]));
+              }
 
-            if (search.dates.onDate) {
-              qb.andWhere(db.raw("(?::timestamptz, ?::timestamptz + interval '1 day') OVERLAPS (actions.start_time, actions.end_time)", [
-                search.dates.onDate, search.dates.onDate
-              ]));
-            }
+              if (search.dates.startDate) {
+                this.andWhere(db.raw("?::timestamptz <= actions.start_time", search.dates.startDate));
+              }
 
-            if (search.dates.startDate) {
-              qb.andWhere(db.raw("?::timestamptz <= actions.start_time", search.dates.startDate));
-            }
+              if (search.dates.endDate) {
+                this.andWhere(db.raw("?::timestamptz + interval '1 day' >= actions.end_time", search.dates.endDate));
+              }
 
-            if (search.dates.endDate) {
-              qb.andWhere(db.raw("?::timestamptz + interval '1 day' >= actions.end_time", search.dates.endDate));
-            }
+              if (search.dates.ongoing) {
+                this.orWhere('ongoing', true);
+              }
+            });
           }
 
           // TODO: Clean this up
@@ -332,16 +335,21 @@ class Action {
         }
       });
 
+    const dateTimeSearch = (queryObj) => {
+
+
+    };
+
     const searchPageQuery = searchQuery.clone().modify( (qb) => {
 
       if (search.sortBy) {
         if (search.sortBy.name === 'campaignName') {
           qb.orderBy('campaigns.title', (search.sortBy.descending) ? 'DESC' : 'ASC');
         } else if (search.sortBy.name === 'date') {
-          qb.orderByRaw(`actions.start_time ${search.sortBy.descending ? 'DESC' : 'ASC'} NULLS LAST`);
+          qb.orderByRaw(`actions.start_time ${search.sortBy.descending ? 'DESC' : 'ASC'} NULLS FIRST`);
         }
       } else {
-        qb.orderByRaw('actions.start_time ASC NULLS LAST');
+        qb.orderByRaw('actions.start_time ASC NULLS FIRST');
       }
 
       if (search.cursor) {
@@ -357,21 +365,35 @@ class Action {
 
           } else if (search.sortBy.name === 'date') {
             qb.andWhere(function() {
-              this.orWhere(db.raw("?::timestamptz", search.cursor.start_time), (search.sortBy.descending) ? '>' : '<', db.raw('actions.start_time'));
-              this.orWhereNull('actions.start_time');
-              this.orWhere(function() {
-                this.andWhere(db.raw("?::timestamptz", search.cursor.start_time), '=', db.raw('actions.start_time'));
-                this.andWhere('actions.slug', '>', search.cursor.slug);
-              });
+              if (typeof search.cursor.start_type !== undefined && moment(search.cursor.start_time).isValid()) {
+                this.orWhere(db.raw("?::timestamptz", search.cursor.start_time), (search.sortBy.descending) ? '>' : '<', db.raw('actions.start_time'));
+                this.orWhere(function() {
+                  this.andWhere(db.raw("?::timestamptz", search.cursor.start_time), '=', db.raw('actions.start_time'));
+                  this.andWhere('actions.slug', '>', search.cursor.slug);
+                });
+              } else {
+                this.orWhere(function() {
+                  this.whereNull('actions.start_time');
+                  this.andWhere('actions.slug', '>', search.cursor.slug);
+                });
+                this.orWhereNotNull('actions.start_time');
+              }
             });
           }
         } else {
-          this.orWhere(db.raw("?::timestamptz", search.cursor.start_time), '<', db.raw('actions.start_time'));
-          this.orWhereNull('actions.start_time');
-          this.orWhere(function() {
-            this.andWhere(db.raw("?::timestamptz", search.cursor.start_time), '=', db.raw('actions.start_time'));
-            this.andWhere('actions.slug', '>', search.cursor.slug);
-          });
+          if (typeof search.cursor.start_type !== undefined && moment(search.cursor.start_time).isValid()) {
+            this.orWhere(db.raw("?::timestamptz", search.cursor.start_time), '<', db.raw('actions.start_time'));
+            this.orWhere(function() {
+              this.andWhere(db.raw("?::timestamptz", search.cursor.start_time), '=', db.raw('actions.start_time'));
+              this.andWhere('actions.slug', '>', search.cursor.slug);
+            });
+          } else {
+            this.orWhere(function() {
+              this.whereNull('actions.start_time');
+              this.andWhere('actions.slug', '>', search.cursor.slug);
+            });
+            this.orWhereNotNull('actions.start_time');
+          }
         }
       }
 
