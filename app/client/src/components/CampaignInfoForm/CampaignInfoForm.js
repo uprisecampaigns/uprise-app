@@ -4,7 +4,13 @@ import Paper from 'material-ui/Paper';
 import Toggle from 'material-ui/Toggle';
 import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
+
+import Link from 'components/Link';
+import SearchBar from 'components/SearchBar';
+import SelectedItemsContainer from 'components/SelectedItemsContainer';
 
 import states from 'lib/states-list';
 
@@ -18,6 +24,8 @@ class CampaignInfoForm extends Component {
     formSubmit: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
+    addItem: PropTypes.func.isRequired,
+    removeItem: PropTypes.func.isRequired,
     saving: PropTypes.bool,
     submitText: PropTypes.string.isRequired,
     errors: PropTypes.shape({
@@ -45,7 +53,8 @@ class CampaignInfoForm extends Component {
   render() {
     const {
       data, refs, formSubmit, errors, saving,
-      handleInputChange, cancel, submitText,
+      handleInputChange, addItem, removeItem,
+      cancel, submitText,
     } = this.props;
 
     const statesList = Object.keys(states);
@@ -241,6 +250,137 @@ class CampaignInfoForm extends Component {
 
                   </div>
                 )}
+
+                <div className={s.sectionLabel}>Keywords</div>
+
+                <div className={s.keywordsContainer}>
+                  <SearchBar
+                    collectionName="tags"
+                    inputLabel="Keyword"
+                    addItem={addItem}
+                    iconName="add"
+                    className={s.keywordsInputContainer}
+                  />
+
+                  <SelectedItemsContainer
+                    collectionName="tags"
+                    removeItem={removeItem}
+                    items={data.tags}
+                    className={s.selectedKeywordsContainer}
+                  />
+                </div>
+
+                <div className={s.sectionLabel}>Location</div>
+
+                <p className={s.helpText}>Define the geographic area in which you will be operating, so volunteers can find you.</p>
+
+                <div className={s.textFieldContainer}>
+                  <SelectField
+                    floatingLabelText="Campaign Location Type"
+                    value={data.locationType}
+                    onChange={(event, index, value) => { handleInputChange(event, 'locationType', value); }}
+                  >
+                    <MenuItem value={null} primaryText="" />
+                    <MenuItem value="multi-state" primaryText="Multi-state" />
+                    <MenuItem value="statewide" primaryText="Statewide" />
+                    <MenuItem value="legislative-district" primaryText="Legislative District" />
+                  </SelectField>
+                </div>
+
+                { data.locationType === 'multi-state' && (
+                  <div>
+
+                    <div className={s.sectionLabel}>Multi-state</div>
+
+                    <p className={s.helpText}>
+                      Contact us at
+                      <Link to="mailto:help@uprise.org" mailTo useAhref external>help@uprise.org</Link>
+                      about setting up your area.
+                    </p>
+                  </div>
+                )}
+
+                { data.locationType === 'statewide' && (
+                  <div>
+
+                    <div className={s.sectionLabel}>Statewide</div>
+
+                    <div className={s.textFieldContainer}>
+                      <AutoComplete
+                        floatingLabelText="State"
+                        searchText={data.locationState}
+                        dataSource={statesList}
+                        onUpdateInput={(text) => { handleInputChange(undefined, 'locationState', text); }}
+                        ref={(input) => { refs.stateInput = input; }}
+                        errorText={errors.locationStateErrorText}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                { data.locationType === 'legislative-district' && (
+                  <div>
+
+                    <div className={s.sectionLabel}>Legislative District</div>
+
+                    <div className={s.textFieldContainer}>
+                      <SelectField
+                        floatingLabelText="Legislative District Type"
+                        value={data.legislativeDistrictType}
+                        onChange={(event, index, value) => { handleInputChange(event, 'legislativeDistrictType', value); }}
+                      >
+                        <MenuItem value={null} primaryText="" />
+                        <MenuItem value="us-congress" primaryText="US Congress" />
+                        <MenuItem value="state-senate" primaryText="State Senate" />
+                        <MenuItem value="state-house" primaryText="State House" />
+                      </SelectField>
+                    </div>
+
+                    <div className={s.textFieldContainer}>
+                      <AutoComplete
+                        floatingLabelText="State"
+                        searchText={data.locationState}
+                        dataSource={statesList}
+                        onUpdateInput={(text) => { handleInputChange(undefined, 'locationState', text); }}
+                        ref={(input) => { refs.stateInput = input; }}
+                        errorText={errors.locationStateErrorText}
+                      />
+                    </div>
+
+                    <div className={s.textFieldContainer}>
+                      <TextField
+                        floatingLabelText="District Number"
+                        value={data.locationDistrictNumber}
+                        type="number"
+                        onChange={(event) => { handleInputChange(event, 'locationDistrictNumber', event.target.value); }}
+                        errorText={errors.locationDistrictNumberErrorText}
+                        fullWidth
+                      />
+                    </div>
+
+                  </div>
+                )}
+
+                <div className={s.sectionLabel}>Zip Code List</div>
+
+                <p className={s.helpText}>
+                  IMPORTANT: Please insert a list of all of the zip codes in which you will be
+                  seeking volunteers for local in-person volunteering activities. Contact us at
+                  <Link to="mailto:help@uprise.org" useAhref external>help@uprise.org</Link> if you
+                  need assistance
+                </p>
+
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    name="zipcodeList"
+                    floatingLabelText="List of zipcodes, separated by commas"
+                    value={data.zipcodeList}
+                    multiLine
+                    onChange={(event) => { handleInputChange(event, 'zipcodeList', event.target.value); }}
+                    errorText={errors.zipcodeListErrorText}
+                    fullWidth
+                  />
+                </div>
 
                 <div className={s.button}>
                   <RaisedButton

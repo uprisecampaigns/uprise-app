@@ -114,3 +114,16 @@
   color: darken($azure, 20%);
   margin-top: 5rem;
 }
+
+.keywordsContainer {
+
+  .keywordsInputContainer {
+    margin-top: 0.5rem;
+    padding: 0px !important;
+  }
+
+  .selectedKeywordsContainer {
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+}

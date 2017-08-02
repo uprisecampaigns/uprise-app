@@ -1,6 +1,0 @@
-{
-  "name": "ManageCampaignProfile",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./ManageCampaignProfile.js"
-}

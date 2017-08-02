@@ -10,6 +10,7 @@ import {
   validateString,
   validateWebsiteUrl,
   validateZipcode,
+  validateZipcodeList,
   validateState,
   validateEmail,
   validatePhoneNumber,
@@ -57,6 +58,12 @@ class CreateCampaignContainer extends Component {
         orgContactPosition: '',
         orgContactEmail: '',
         orgContactPhone: '',
+        tags: [],
+        zipcodeList: '',
+        locationType: null,
+        legislativeDistrictType: null,
+        locationDistrictNumber: '',
+        locationState: '',
       },
       modalOpen: false,
       newCampaign: {
@@ -92,6 +99,8 @@ class CreateCampaignContainer extends Component {
     orgContactPositionErrorText: null,
     orgContactEmailErrorText: null,
     orgContactPhoneErrorText: null,
+    zipcodeListErrorText: null,
+    locationDistrictNumberErrorText: null,
   }
 
   formSubmit = async (data) => {
@@ -175,6 +184,8 @@ class CreateCampaignContainer extends Component {
           validateEmail(component, 'orgContactEmail', 'orgContactEmailErrorText');
         }
       },
+      (component) => { validateState(component, 'locationState', 'locationStateErrorText'); },
+      validateZipcodeList,
     ];
 
     return (

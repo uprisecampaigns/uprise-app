@@ -84,6 +84,33 @@ export default (WrappedComponent) => {
       }
     }
 
+
+    addItem = (collectionName, tag) => {
+      const tags = Array.from(this.state.formData.tags);
+
+      if ((typeof tag === 'string' &&
+            tag.trim() !== '' &&
+            !tags.find(item => item.toLowerCase() === tag.toLowerCase()))) {
+        tags.push(tag);
+      }
+
+      this.props.dispatch(dirtyForm());
+
+      this.setState(prevState => ({
+        formData: Object.assign({}, prevState.formData, { tags }),
+      }));
+    }
+
+    removeItem = (collectionName, tagToRemove) => {
+      this.props.dispatch(dirtyForm());
+
+      this.setState(prevState => ({
+        formData: Object.assign({}, prevState.formData, {
+          tags: prevState.formData.tags.filter(tag => tag.toLowerCase() !== tagToRemove.toLowerCase()),
+        }),
+      }));
+    }
+
     formSubmit = async (event) => {
       (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
 
@@ -124,7 +151,7 @@ export default (WrappedComponent) => {
     }
 
     render() {
-      const { cancel, handleInputChange, formSubmit } = this;
+      const { cancel, handleInputChange, addItem, removeItem, formSubmit } = this;
       const { formData, saving, errors, refs } = this.state;
 
       return (
@@ -136,6 +163,8 @@ export default (WrappedComponent) => {
           refs={refs}
           formSubmit={formSubmit}
           handleInputChange={handleInputChange}
+          addItem={addItem}
+          removeItem={removeItem}
           {...this.props}
         />
       );

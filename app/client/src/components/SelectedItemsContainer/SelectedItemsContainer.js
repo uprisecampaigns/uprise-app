@@ -4,7 +4,7 @@ import Chip from 'material-ui/Chip';
 import s from './SelectedItemsContainer.scss';
 
 function SelectedItemsContainer(props) {
-  const { collectionName, items, removeItem } = props;
+  const { collectionName, items, removeItem, className } = props;
 
   const selectedItemsContainer = items.map((item, index) => {
     const renderedLabel = (typeof props.renderLabel === 'function') ? props.renderLabel(item) : item;
@@ -31,7 +31,7 @@ function SelectedItemsContainer(props) {
   });
 
   return items.length ? (
-    <div className={s.searchByContainer}>
+    <div className={[s.searchByContainer, className].join(' ')}>
       <div className={s.searchChips}>
         {selectedItemsContainer}
       </div>
@@ -44,10 +44,12 @@ SelectedItemsContainer.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   removeItem: PropTypes.func.isRequired,
   renderLabel: PropTypes.func,
+  className: PropTypes.string,
 };
 
 SelectedItemsContainer.defaultProps = {
   renderLabel: undefined,
+  className: '',
 };
 
 export default SelectedItemsContainer;

@@ -9,6 +9,7 @@ import s from './SearchBar.scss';
 class SearchBar extends PureComponent {
   static propTypes = {
     collectionName: PropTypes.string.isRequired,
+    className: PropTypes.string,
     collectionToSearch: PropTypes.arrayOf(PropTypes.string),
     addItem: PropTypes.func.isRequired,
     inputLabel: PropTypes.string.isRequired,
@@ -19,6 +20,7 @@ class SearchBar extends PureComponent {
   static defaultProps = {
     collectionToSearch: undefined,
     iconName: undefined,
+    className: '',
   }
 
   constructor(props) {
@@ -40,6 +42,10 @@ class SearchBar extends PureComponent {
       event.preventDefault();
     }
 
+    if (typeof event === 'object' && typeof event.stopPropagation === 'function') {
+      event.stopPropagation();
+    }
+
     this.props.addItem(this.props.collectionName, this.state.value);
 
     this.setState(Object.assign({},
@@ -49,7 +55,7 @@ class SearchBar extends PureComponent {
   }
 
   render() {
-    const { collectionToSearch, inputLabel, iconName, inputRef } = this.props;
+    const { collectionToSearch, inputLabel, iconName, inputRef, className } = this.props;
 
     const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
       <AutoComplete
@@ -76,7 +82,7 @@ class SearchBar extends PureComponent {
     );
 
     return (
-      <div className={s.searchBarContainer}>
+      <div className={[s.searchBarContainer, className].join(' ')}>
         <form onSubmit={this.addItem}>
           {input}
           <IconButton
