@@ -90,7 +90,9 @@ export default (WrappedComponent) => {
       this.hasErrors = false;
       this.resetErrorText();
 
-      await Promise.all(this.props.validators);
+      for (const validator of this.props.validators) {
+        await validator(this);
+      }
 
       const notifyError = (message) => {
         this.props.dispatch(notify(message ||
