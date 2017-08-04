@@ -72,19 +72,24 @@ class CampaignProfile extends PureComponent {
 
       return (
         <div className={s.outerContainer}>
+
+          { campaign.is_owner && (
+
+            <Link to={`/organize/${campaign.slug}`}>
+              <div className={s.navHeader}>
+                <FontIcon
+                  className={['material-icons', s.backArrow].join(' ')}
+                >arrow_back</FontIcon>
+                {campaign.title}
+              </div>
+            </Link>
+
+          )}
+
           <div className={s.innerContainer}>
 
             <div className={s.profileHeaderContainer}>
               <div className={s.titleContainer}>{campaign.title}</div>
-              { campaign.is_owner && (
-                <div className={s.settingsIcon}>
-                  <Link to={`/organize/${campaign.slug}`}>
-                    <FontIcon
-                      className={['material-icons'].join(' ')}
-                    >settings</FontIcon>
-                  </Link>
-                </div>
-              )}
             </div>
 
             { campaign.profile_image_url && (
