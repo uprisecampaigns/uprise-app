@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import FontIcon from 'material-ui/FontIcon';
 import camelCase from 'camelcase';
 
-import CampaignInfoForm from 'components/CampaignInfoForm';
+import CampaignSettingsForm from 'components/CampaignSettingsForm';
 import Link from 'components/Link';
 
 import formWrapper from 'lib/formWrapper';
@@ -26,7 +26,7 @@ import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql
 import s from 'styles/Organize.scss';
 
 
-const WrappedCampaignInfoForm = formWrapper(CampaignInfoForm);
+const WrappedCampaignSettingsForm = formWrapper(CampaignSettingsForm);
 
 class ManageCampaignInfoContainer extends Component {
   static propTypes = {
@@ -185,7 +185,7 @@ class ManageCampaignInfoContainer extends Component {
 
           <div className={s.pageSubHeader}>Settings</div>
 
-          <WrappedCampaignInfoForm
+          <WrappedCampaignSettingsForm
             initialState={formData}
             initialErrors={defaultErrorText}
             validators={validators}

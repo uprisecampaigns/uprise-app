@@ -191,15 +191,6 @@ module.exports = buildSchema(`
     city: String
     state: String
     zipcode: String
-    legalOrg: Boolean
-    orgWebsite: String
-    orgName: String
-    orgStatus: String
-    orgContactName: String
-    orgContactPosition: String
-    orgContactEmail: String
-    orgContactPhone: String
-
   }
 
   input EditCampaignInput {

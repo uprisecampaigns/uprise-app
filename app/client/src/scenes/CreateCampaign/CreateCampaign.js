@@ -10,7 +10,6 @@ import {
   validateString,
   validateWebsiteUrl,
   validateZipcode,
-  validateZipcodeList,
   validateState,
   validateEmail,
   validatePhoneNumber,
@@ -23,12 +22,12 @@ import MeQuery from 'schemas/queries/MeQuery.graphql';
 import CreateCampaignMutation from 'schemas/mutations/CreateCampaignMutation.graphql';
 import ResendEmailVerificationMutation from 'schemas/mutations/ResendEmailVerificationMutation.graphql';
 
-import CampaignInfoForm from 'components/CampaignInfoForm';
+import CreateCampaignForm from 'components/CreateCampaignForm';
 
 import s from 'styles/Organize.scss';
 
 
-const WrappedCampaignInfoForm = formWrapper(CampaignInfoForm);
+const WrappedCreateCampaignForm = formWrapper(CreateCampaignForm);
 
 class CreateCampaignContainer extends Component {
   static propTypes = {
@@ -50,20 +49,6 @@ class CreateCampaignContainer extends Component {
         city: '',
         state: '',
         zipcode: '',
-        legalOrg: false,
-        orgWebsite: '',
-        orgName: '',
-        orgStatus: '',
-        orgContactName: '',
-        orgContactPosition: '',
-        orgContactEmail: '',
-        orgContactPhone: '',
-        tags: [],
-        zipcodeList: '',
-        locationType: null,
-        legislativeDistrictType: null,
-        locationDistrictNumber: '',
-        locationState: '',
       },
       modalOpen: false,
       newCampaign: {
@@ -93,14 +78,6 @@ class CreateCampaignContainer extends Component {
     cityErrorText: null,
     stateErrorText: null,
     zipcodeErrorText: null,
-    orgNameErrorText: null,
-    orgWebsiteErrorText: null,
-    orgStatusErrorText: null,
-    orgContactPositionErrorText: null,
-    orgContactEmailErrorText: null,
-    orgContactPhoneErrorText: null,
-    zipcodeListErrorText: null,
-    locationDistrictNumberErrorText: null,
   }
 
   formSubmit = async (data) => {
@@ -184,8 +161,6 @@ class CreateCampaignContainer extends Component {
           validateEmail(component, 'orgContactEmail', 'orgContactEmailErrorText');
         }
       },
-      (component) => { validateState(component, 'locationState', 'locationStateErrorText'); },
-      validateZipcodeList,
     ];
 
     return (
@@ -195,7 +170,7 @@ class CreateCampaignContainer extends Component {
 
         { user.email_confirmed ? (
           <div>
-            <WrappedCampaignInfoForm
+            <WrappedCreateCampaignForm
               initialState={formData}
               initialErrors={defaultErrorText}
               validators={validators}

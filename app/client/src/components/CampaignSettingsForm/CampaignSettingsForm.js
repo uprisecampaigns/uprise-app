@@ -17,7 +17,7 @@ import states from 'lib/states-list';
 import s from 'styles/Form.scss';
 
 
-class CampaignInfoForm extends Component {
+class CampaignSettingsForm extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     refs: PropTypes.object.isRequired,
@@ -421,4 +421,4 @@ class CampaignInfoForm extends Component {
   }
 }
 
-export default CampaignInfoForm;
+export default CampaignSettingsForm;
