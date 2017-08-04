@@ -164,8 +164,9 @@
     }
 
     .subheaderContainer {
-      color: lighten($azure, 20%);
-      font-size: 1rem;
+      color: $fire-red;
+      font-size: 1.2rem;
+      font-weight: 500;
       white-space: normal !important;
       display: inline-block;
       margin-top: 0rem;
