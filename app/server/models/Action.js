@@ -455,6 +455,7 @@ class Action {
     const searchQuery = db('activities')
       .select('*')
       .where('deleted', false)
+      .orderBy('description')
       .modify( (qb) => {
 
         if (search) {
