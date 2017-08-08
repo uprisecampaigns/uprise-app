@@ -21,12 +21,12 @@ import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
 import CreateActionMutation from 'schemas/mutations/CreateActionMutation.graphql';
 
-import ActionInfoForm from 'components/ActionInfoForm';
+import ActionSettingsForm from 'components/ActionSettingsForm';
 
 import s from 'styles/Organize.scss';
 
 
-const WrappedActionInfoForm = formWrapper(ActionInfoForm);
+const WrappedActionSettingsForm = formWrapper(ActionSettingsForm);
 
 class CreateAction extends Component {
   static propTypes = {
@@ -164,7 +164,7 @@ class CreateAction extends Component {
 
           <div className={s.pageSubHeader}>Create Action</div>
 
-          <WrappedActionInfoForm
+          <WrappedActionSettingsForm
             initialState={formData}
             initialErrors={defaultErrorText}
             validators={validators}

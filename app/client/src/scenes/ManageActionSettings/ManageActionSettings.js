@@ -1,190 +1,214 @@
 import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import { List, ListItem } from 'material-ui/List';
-import RaisedButton from 'material-ui/RaisedButton';
-import Dialog from 'material-ui/Dialog';
+import moment from 'moment';
 import FontIcon from 'material-ui/FontIcon';
-import Divider from 'material-ui/Divider';
+import camelCase from 'camelcase';
 
-import history from 'lib/history';
-
+import ActionSettingsForm from 'components/ActionSettingsForm';
 import Link from 'components/Link';
 
-import ActionQuery from 'schemas/queries/ActionQuery.graphql';
+import formWrapper from 'lib/formWrapper';
+
+import {
+  validateString,
+  validateState,
+  validateZipcode,
+  validateStartEndTimes,
+} from 'lib/validateComponentForms';
+
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
-import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
+import ActionQuery from 'schemas/queries/ActionQuery.graphql';
 
-import DeleteActionMutation from 'schemas/mutations/DeleteActionMutation.graphql';
-
-import { notify } from 'actions/NotificationsActions';
+import EditActionMutation from 'schemas/mutations/EditActionMutation.graphql';
 
 import s from 'styles/Organize.scss';
 
 
+const WrappedActionSettingsForm = formWrapper(ActionSettingsForm);
+
 class ManageActionSettings extends Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    campaignId: PropTypes.string.isRequired,
     campaign: PropTypes.object,
     action: PropTypes.object,
+    graphqlLoading: PropTypes.bool.isRequired,
+    editActionMutation: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    campaignId: PropTypes.string.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     actionId: PropTypes.string.isRequired,
-    deleteActionMutation: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    campaign: undefined,
     action: undefined,
+    campaign: undefined,
   }
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      deleteModalOpen: false,
+    const initialState = {
+      formData: {
+        title: '',
+        internalTitle: '',
+        virtual: false,
+        locationName: '',
+        streetAddress: '',
+        streetAddress2: '',
+        city: '',
+        state: '',
+        zipcode: '',
+        locationNotes: '',
+        ongoing: false,
+        date: undefined,
+        startTime: undefined,
+        endTime: undefined,
+        activities: [],
+        tags: [],
+      },
     };
+
+    this.state = Object.assign({}, initialState);
   }
 
-  handleDelete = () => {
-    this.setState({
-      deleteModalOpen: true,
-    });
-  }
-
-  confirmDelete = async (event) => {
-    event.preventDefault();
-
-    const {
-      actionId, campaignId, campaign, action,
-      deleteActionMutation, dispatch,
-    } = this.props;
-
-    if (!this.deleting) {
-      try {
-        this.deleting = true;
-
-        const results = await deleteActionMutation({
-          variables: {
-            data: {
-              id: action.id,
-            },
-          },
-          refetchQueries: [{
-            query: SearchActionsQuery,
-            variables: {
-              search: { campaignIds: [campaignId] },
-            },
-          },
-          {
-            query: ActionQuery,
-            variables: {
-              search: { id: actionId },
-            },
-          }],
-        });
-
-        this.deleting = false;
-
-        if (results.data.deleteAction) {
-          dispatch(notify('Action deleted'));
-          history.push(`/organize/${campaign.slug}/actions`);
-        } else {
-          console.error(results);
-          dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.action && !nextProps.graphqlLoading) {
+      // Just camel-casing property keys and checking for null
+      const action = Object.assign(...Object.keys(nextProps.action).map((k) => {
+        if (nextProps.action[k] !== null) {
+          return { [camelCase(k)]: nextProps.action[k] };
         }
-      } catch (e) {
-        console.error(e);
-        this.deleting = false;
-        dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
-      }
+        return undefined;
+      }));
+
+      // Handle date/time
+      const newDateTimes = {
+        date: action.startTime && moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
+        startTime: action.startTime && moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
+        endTime: action.endTime && moment(action.endTime).isValid() ? moment(action.endTime).toDate() : undefined,
+      };
+
+      delete action.startTime;
+      delete action.endTime;
+
+      this.setState(prevState => ({
+        formData: Object.assign({}, prevState.formData, newDateTimes),
+      }));
+
+      Object.keys(action).forEach((k) => {
+        if (!Object.keys(this.state.formData).includes(camelCase(k))) {
+          delete action[k];
+        }
+      });
+
+      this.setState(prevState => ({
+        formData: Object.assign({}, prevState.formData, action),
+      }));
+    }
+  }
+
+  defaultErrorText = {
+    titleErrorText: null,
+    streetAddressErrorText: null,
+    locationNameErrorText: null,
+    locationNotesErrorText: null,
+    websiteUrlErrorText: null,
+    phoneNumberErrorText: null,
+    cityErrorText: null,
+    stateErrorText: null,
+    zipcodeErrorText: null,
+    dateErrorText: null,
+    startTimeErrorText: null,
+    endTimeErrorText: null,
+  }
+
+  formSubmit = async (data) => {
+    // A little hackish to avoid an annoying rerender with previous form data
+    // If I could figure out how to avoid keeping state here
+    // w/ the componentWillReceiveProps/apollo/graphql then
+    // I might not need this
+    this.setState({
+      formData: Object.assign({}, data),
+    });
+
+    const formData = Object.assign({}, data);
+
+    if (formData.ongoing) {
+      formData.startTime = null;
+      formData.endTime = null;
+    } else {
+      const startTime = moment(formData.date);
+      startTime.minutes(moment(formData.startTime).minutes());
+      startTime.hours(moment(formData.startTime).hours());
+
+      const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
+
+      const endTime = moment(startTime).add(timeDiff, 'milliseconds');
+
+      formData.startTime = startTime.format();
+      formData.endTime = endTime.format();
+    }
+
+    delete formData.date;
+
+    formData.activities = formData.activities.map(activity => (activity.id));
+
+    formData.id = this.props.action.id;
+
+    try {
+      await this.props.editActionMutation({
+        variables: {
+          data: formData,
+        },
+        // TODO: decide between refetch and update
+        refetchQueries: ['ActionQuery', 'SearchActionsQuery'],
+      });
+
+      return { success: true, message: 'Changes Saved' };
+    } catch (e) {
+      console.error(e);
+      return { success: false, message: e.message };
     }
   }
 
   render() {
-    if (this.props.campaign && this.props.action) {
-      const { campaign, action } = this.props;
-
-      const modalActions = [
-        <RaisedButton
-          label="Cancel"
-          primary={false}
-          onTouchTap={(event) => { event.preventDefault(); this.setState({ deleteModalOpen: false }); }}
-        />,
-        <RaisedButton
-          label="I'm sure"
-          primary
-          onTouchTap={this.confirmDelete}
-          className={s.primaryButton}
-        />,
-      ];
+    if (this.props.action && this.props.campaign) {
+      const { formSubmit, defaultErrorText } = this;
+      const { action, campaign } = this.props;
+      const { formData } = this.state;
 
       const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
+
+      const validators = [
+        (component) => { validateString(component, 'title', 'titleErrorText', 'Action Name is Required'); },
+        (component) => { validateString(component, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required'); },
+        (component) => { component.state.formData.virtual || validateState(component); },
+        (component) => { component.state.formData.virtual || validateZipcode(component); },
+        (component) => { component.state.formData.ongoing || validateStartEndTimes(component); },
+      ];
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to={baseActionUrl}>
+          <Link to={`${baseActionUrl}`}>
             <div className={s.navHeader}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
-              Dashboard
+              {action.title}
             </div>
           </Link>
 
           <div className={s.pageSubHeader}>Settings</div>
 
-          <List className={s.navList}>
-
-            <Divider />
-
-            <Link to={`${baseActionUrl}/info`}>
-              <ListItem
-                primaryText="Info"
-              />
-            </Link>
-
-            <Divider />
-
-            <Link to={`${baseActionUrl}/profile`}>
-              <ListItem
-                primaryText="Profile"
-              />
-            </Link>
-
-            <Divider />
-
-            <Link to={`${baseActionUrl}/preferences`}>
-              <ListItem
-                primaryText="Preferences"
-              />
-            </Link>
-
-            <Divider />
-
-            <ListItem
-              primaryText="Delete"
-              onTouchTap={this.handleDelete}
-            />
-
-            <Divider />
-
-          </List>
-
-          {this.state.deleteModalOpen && (
-            <Dialog
-              title="Are You Sure?"
-              modal
-              actions={modalActions}
-              actionsContainerClassName={s.modalActionsContainer}
-              open={this.state.deleteModalOpen}
-            >
-              <p>
-                Are you sure you want to delete this action?
-              </p>
-            </Dialog>
-          )}
+          <WrappedActionSettingsForm
+            initialState={formData}
+            initialErrors={defaultErrorText}
+            validators={validators}
+            submit={formSubmit}
+            campaignTitle={campaign.title}
+            submitText="Save Changes"
+          />
 
         </div>
       );
@@ -193,32 +217,37 @@ class ManageActionSettings extends Component {
   }
 }
 
+const withActionQuery = graphql(ActionQuery, {
+  options: ownProps => ({
+    variables: {
+      search: {
+        id: ownProps.actionId,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  }),
+  props: ({ data }) => ({
+    action: data.action,
+  }),
+});
+
+const withCampaignQuery = graphql(CampaignQuery, {
+  options: ownProps => ({
+    variables: {
+      search: {
+        id: ownProps.campaignId,
+      },
+    },
+  }),
+  props: ({ data }) => ({
+    campaign: data.campaign,
+    graphqlLoading: data.loading,
+  }),
+});
+
 export default compose(
   connect(),
-  graphql(CampaignQuery, {
-    options: ownProps => ({
-      variables: {
-        search: {
-          id: ownProps.campaignId,
-        },
-      },
-    }),
-    props: ({ data }) => ({
-      campaign: data.campaign,
-    }),
-  }),
-  graphql(ActionQuery, {
-    options: ownProps => ({
-      variables: {
-        search: {
-          id: ownProps.actionId,
-        },
-      },
-      fetchPolicy: 'cache-and-network',
-    }),
-    props: ({ data }) => ({
-      action: data.action,
-    }),
-  }),
-  graphql(DeleteActionMutation, { name: 'deleteActionMutation' }),
+  withActionQuery,
+  withCampaignQuery,
+  graphql(EditActionMutation, { name: 'editActionMutation' }),
 )(ManageActionSettings);

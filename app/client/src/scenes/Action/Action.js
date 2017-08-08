@@ -126,19 +126,22 @@ class Action extends Component {
 
       return (
         <div className={s.outerContainer}>
+
+          { action.is_owner && (
+            <Link to={`/organize/${action.campaign.slug}/action/${action.slug}`}>
+              <div className={s.navHeader}>
+                <FontIcon
+                  className={['material-icons', s.backArrow].join(' ')}
+                >arrow_back</FontIcon>
+                {action.title}
+              </div>
+            </Link>
+          )}
+
           <div className={s.innerContainer}>
 
             <div className={s.profileHeaderContainer}>
               <div className={s.titleContainer}>{action.title}</div>
-              { action.is_owner && (
-                <div className={s.settingsIcon}>
-                  <Link to={`/organize/${action.campaign.slug}/action/${action.slug}`}>
-                    <FontIcon
-                      className={['material-icons'].join(' ')}
-                    >settings</FontIcon>
-                  </Link>
-                </div>
-              )}
             </div>
 
             <Link to={`/campaign/${action.campaign.slug}`}>

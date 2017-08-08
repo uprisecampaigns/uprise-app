@@ -13,28 +13,20 @@ import {
 
 import ControlledListItem from 'components/ControlledListItem';
 import GeographySearch from 'components/GeographySearch';
-import TogglesList from 'components/TogglesList';
 import DateTimeSearch from 'components/DateTimeSearch';
+
+import togglesList from 'lib/togglesList';
 
 import s from 'styles/Search.scss';
 
-
-const graphqlOptions = collection => ({
-  props: ({ data }) => ({
-    collection: !data.loading && data[collection] ? data[collection] : [],
-  }),
-});
-
-const ActivitiesTogglesList = compose(
-  graphql(ActivitiesQuery, graphqlOptions('activities')),
-  connect(state => ({ selectedCollection: state.actionsSearch.activities })),
-)(TogglesList);
 
 const ConnectedDateTimeSearch = connect(state => ({ selectedTimes: state.actionsSearch.times }))(DateTimeSearch);
 
 class SearchActionInputs extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    selectedCollection: PropTypes.string.isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
   setDates = (dates) => {
@@ -60,6 +52,16 @@ class SearchActionInputs extends PureComponent {
       setDates,
     } = this;
 
+    const activitiesTogglesList = togglesList({
+      collection: this.props.activities,
+      selectedCollection: this.props.selectedCollection,
+      collectionName: 'activities',
+      keyPropName: 'title',
+      displayPropName: 'description',
+      containerClassName: s.listItem,
+      handleToggle,
+    });
+
     return (
       <List className={s.searchInputsList}>
 
@@ -77,15 +79,12 @@ class SearchActionInputs extends PureComponent {
 
         <Divider />
 
-        <ActivitiesTogglesList
-          listTitle="Activities"
-          collectionName="activities"
-          displayPropName="description"
-          keyPropName="title"
-          handleToggle={handleToggle}
-          className={s.listItemContainer}
-          containerClassName={s.listItem}
-        />
+        <div className={s.listItemContainer}>
+          <ControlledListItem
+            primaryText="Activities"
+            nestedItems={activitiesTogglesList}
+          />
+        </div>
 
         <Divider />
 
@@ -108,4 +107,11 @@ class SearchActionInputs extends PureComponent {
   }
 }
 
-export default connect()(SearchActionInputs);
+export default compose(
+  graphql(ActivitiesQuery, {
+    props: ({ data }) => ({
+      activities: !data.loading && data.activities ? data.activities : [],
+    }),
+  }),
+  connect(state => ({ selectedCollection: state.actionsSearch.activities })),
+)(SearchActionInputs);

@@ -9,13 +9,18 @@ import s from './ControlledListItem.scss';
 class ControlledListItem extends PureComponent {
   static propTypes = {
     className: PropTypes.string.isRequired,
+    initiallyOpen: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    initiallyOpen: false,
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      open: false,
+      open: props.initiallyOpen,
     };
   }
 

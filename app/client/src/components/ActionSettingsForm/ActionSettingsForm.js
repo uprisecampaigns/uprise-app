@@ -14,7 +14,7 @@ import states from 'lib/states-list';
 import s from 'styles/Form.scss';
 
 
-class ActionInfoForm extends Component {
+class ActionSettingsForm extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -33,8 +33,8 @@ class ActionInfoForm extends Component {
 
   render() {
     const {
-      data, refs, formSubmit, errors, saving,
-      handleInputChange, cancel, campaignTitle, submitText,
+      data, refs, formSubmit, errors, saving, handleInputChange,
+      cancel, campaignTitle, submitText,
     } = this.props;
 
     const statesList = Object.keys(states);
@@ -260,4 +260,4 @@ class ActionInfoForm extends Component {
   }
 }
 
-export default ActionInfoForm;
+export default ActionSettingsForm;

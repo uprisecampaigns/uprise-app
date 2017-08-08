@@ -84,6 +84,22 @@ export default (WrappedComponent) => {
       }
     }
 
+    handleToggle = (collectionName, on, id) => {
+      const oldCollection = Array.from(this.state.formData[collectionName]);
+      let newCollection;
+
+      if (on) {
+        newCollection = oldCollection.concat({ id });
+      } else {
+        newCollection = oldCollection.filter(item => item.id !== id);
+      }
+
+      this.props.dispatch(dirtyForm());
+
+      this.setState(prevState => ({
+        formData: Object.assign({}, prevState.formData, { [collectionName]: newCollection }),
+      }));
+    }
 
     addItem = (collectionName, tag) => {
       const tags = Array.from(this.state.formData.tags);
@@ -151,7 +167,11 @@ export default (WrappedComponent) => {
     }
 
     render() {
-      const { cancel, handleInputChange, addItem, removeItem, formSubmit } = this;
+      const {
+        cancel, handleInputChange, addItem, removeItem,
+        handleToggle, formSubmit,
+      } = this;
+
       const { formData, saving, errors, refs } = this.state;
 
       return (
@@ -165,6 +185,7 @@ export default (WrappedComponent) => {
           handleInputChange={handleInputChange}
           addItem={addItem}
           removeItem={removeItem}
+          handleToggle={handleToggle}
           {...this.props}
         />
       );

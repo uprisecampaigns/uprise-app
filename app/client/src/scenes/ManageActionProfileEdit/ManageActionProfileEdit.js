@@ -13,6 +13,7 @@ import {
   validateString,
 } from 'lib/validateComponentForms';
 
+import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 import ActionQuery from 'schemas/queries/ActionQuery.graphql';
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
@@ -29,6 +30,7 @@ class ManageActionProfileEdit extends Component {
     editActionMutation: PropTypes.func.isRequired,
     campaign: PropTypes.object,
     action: PropTypes.object,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignId: PropTypes.object.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
@@ -47,6 +49,8 @@ class ManageActionProfileEdit extends Component {
       formData: {
         title: '',
         description: '',
+        tags: [],
+        activities: [],
       },
     };
 
@@ -93,6 +97,8 @@ class ManageActionProfileEdit extends Component {
 
     formData.id = this.props.action.id;
 
+    formData.activities = formData.activities.map(activity => (activity.id));
+
     try {
       await this.props.editActionMutation({
         variables: {
@@ -111,7 +117,7 @@ class ManageActionProfileEdit extends Component {
 
   render() {
     if (this.props.campaign && this.props.action) {
-      const { campaign, action } = this.props;
+      const { campaign, action, activities } = this.props;
       const { formData } = this.state;
       const { formSubmit, defaultErrorText } = this;
 
@@ -124,18 +130,19 @@ class ManageActionProfileEdit extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={`${baseActionUrl}/settings`}>
+          <Link to={`${baseActionUrl}`}>
             <div className={s.navHeader}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
-              Settings
+              {action.title}
             </div>
           </Link>
 
           <div className={s.pageSubHeader}>Profile</div>
 
           <WrappedActionProfileForm
+            activities={activities}
             initialState={formData}
             initialErrors={defaultErrorText}
             validators={validators}
@@ -176,6 +183,11 @@ export default compose(
     props: ({ data }) => ({
       action: data.action,
       graphqlLoading: data.loading,
+    }),
+  }),
+  graphql(ActivitiesQuery, {
+    props: ({ data }) => ({
+      activities: !data.loading && data.activities ? data.activities : [],
     }),
   }),
   graphql(EditActionMutation, { name: 'editActionMutation' }),

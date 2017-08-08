@@ -4,6 +4,11 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import SearchBar from 'components/SearchBar';
+import SelectedItemsContainer from 'components/SelectedItemsContainer';
+
+import togglesList from 'lib/togglesList';
+
 import s from 'styles/Organize.scss';
 import f from 'styles/Form.scss';
 
@@ -14,8 +19,12 @@ class ActionProfileForm extends PureComponent {
     errors: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
+    handleToggle: PropTypes.func.isRequired,
+    addItem: PropTypes.func.isRequired,
+    removeItem: PropTypes.func.isRequired,
     saving: PropTypes.bool,
     uploading: PropTypes.bool.isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   static defaultProps = {
@@ -23,8 +32,21 @@ class ActionProfileForm extends PureComponent {
   }
 
   render() {
-    const { data, formSubmit, errors,
-      handleInputChange, saving, uploading } = this.props;
+    const {
+      data, formSubmit, errors, activities,
+      handleToggle, addItem, removeItem,
+      handleInputChange, saving, uploading,
+    } = this.props;
+
+    const activitiesTogglesList = togglesList({
+      collection: activities,
+      selectedCollection: data.activities.map(a => a.id),
+      collectionName: 'activities',
+      keyPropName: 'id',
+      displayPropName: 'description',
+      containerClassName: s.listItem, // TODO: right className?
+      handleToggle,
+    });
 
     return (
       <div className={s.outerContainer}>
@@ -57,6 +79,29 @@ class ActionProfileForm extends PureComponent {
               underlineShow={false}
             />
           </div>
+
+          <div className={f.sectionLabel}>Keywords</div>
+
+          <div className={f.keywordsContainer}>
+            <SearchBar
+              collectionName="tags"
+              inputLabel="Keyword"
+              addItem={addItem}
+              iconName="add"
+              className={s.keywordsInputContainer}
+            />
+
+            <SelectedItemsContainer
+              collectionName="tags"
+              removeItem={removeItem}
+              items={data.tags}
+              className={s.selectedKeywordsContainer}
+            />
+          </div>
+
+          <div className={f.sectionLabel}>Activities</div>
+
+          { activitiesTogglesList }
 
           { (saving || uploading) ? (
 

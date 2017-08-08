@@ -12,4 +12,9 @@ fragment ActionDetails on ActionResult {
     last_name
     email
   }
+  campaign {
+    id
+    title
+    slug
+  }
 }

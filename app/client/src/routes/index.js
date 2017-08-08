@@ -38,10 +38,8 @@ export default {
     // /organize/:campaignSlug/action/:actionSlug
     require('./manageAction').default,
     require('./manageActionSettings').default,
-    require('./manageActionInfo').default,
-    require('./manageActionProfile').default,
+    require('./manageActionVolunteers').default,
     require('./manageActionProfileEdit').default,
-    require('./manageActionPreferences').default,
     require('./manageActionComposeMessage').default,
 
     // /search/
