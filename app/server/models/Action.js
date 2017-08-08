@@ -157,6 +157,7 @@ class Action {
                'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
  
       .where('actions.deleted', false)
+      .andWhere('campaigns.deleted', false)
       .innerJoin('campaigns', 'actions.campaign_id', 'campaigns.id')
       .modify( (qb) => {
 

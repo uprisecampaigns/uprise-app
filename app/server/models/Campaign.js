@@ -104,11 +104,15 @@ class Campaign {
       throw new Error('User must own campaign');
     }
 
-    const result = await db('campaigns')
+    const campaignsResult = await db('campaigns')
       .where('id', campaign.id)
       .update({ deleted: true });
 
-    return result === 1;
+    const actionsResult = await db('actions')
+      .where('campaign_id', campaign.id)
+      .update({ deleted: true });
+
+    return campaignsResult === 1;
   }
 
   static async subscribed({ userId, campaignId }) {
