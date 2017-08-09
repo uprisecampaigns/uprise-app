@@ -75,7 +75,7 @@ export function validateEmail(component, prop = 'email', errorProp = 'emailError
   }
 }
 
-export async function validateEmailAvailable(component, previousEmail, prop = 'email', errorProp = 'emailErrorText') {
+export async function validateEmailAvailable(component, previousEmail = '', prop = 'email', errorProp = 'emailErrorText') {
   const test = component.state.formData[prop];
 
   if (typeof test === 'string' && test.trim() !== '' && previousEmail !== test) {
@@ -149,15 +149,9 @@ export function validateZipcodeList(component) {
 export function validatePhoneNumber(component, prop = 'phoneNumber', errorProp = 'phoneNumberErrorText') {
   const test = component.state.formData[prop];
 
-  if (test.trim() === '') {
-    component.hasErrors = true;
-    component.setState(prevState => ({
-      errors: Object.assign({}, prevState.errors, {
-        [errorProp]: 'Phone number is required',
-      }),
-    }));
-  } else if (test.match(/[^(\d\s)-]/) ||
-             !isMobilePhone(test.replace(/\D/g, ''), 'en-US')) {
+  if (test !== '' &&
+      (test.match(/[^(\d\s)-]/) ||
+      (!isMobilePhone(test.replace(/\D/g, ''), 'en-US')))) {
     component.hasErrors = true;
     component.setState(prevState => ({
       errors: Object.assign({}, prevState.errors, {
@@ -202,7 +196,7 @@ export function validateStartEndTimes(component) {
   }
 }
 
-export function validateNewPasswords(
+export function validatePasswords(
   component,
   password1 = 'newPassword1',
   password2 = 'newPassword2',

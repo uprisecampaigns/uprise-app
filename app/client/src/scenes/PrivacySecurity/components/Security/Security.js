@@ -8,7 +8,7 @@ import formWrapper from 'lib/formWrapper';
 
 import {
   validateString,
-  validateNewPasswords,
+  validatePasswords,
 } from 'lib/validateComponentForms';
 
 import {
@@ -83,7 +83,7 @@ class Security extends Component {
     const validators = [
       (component) => { passwordBeingReset || validateString(component, 'oldPassword', 'oldPasswordErrorText', 'Please enter your password'); },
       component => validateString(component, 'newPassword1', 'newPassword1ErrorText', 'Please enter a password'),
-      component => validateNewPasswords(component),
+      component => validatePasswords(component),
     ];
 
     return (

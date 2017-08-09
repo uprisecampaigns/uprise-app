@@ -147,6 +147,7 @@ class CreateCampaignContainer extends Component {
 
     const validators = [
       component => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+      component => validateString(component, 'phoneNumber', 'phoneNumberErrorText', 'Phone Number is Required'),
       component => validateZipcode(component),
       component => validateWebsiteUrl(component),
       component => validatePhoneNumber(component),

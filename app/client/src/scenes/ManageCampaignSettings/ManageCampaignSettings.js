@@ -153,6 +153,7 @@ class ManageCampaignInfoContainer extends Component {
 
       const validators = [
         component => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+        component => validateString(component, 'phoneNumber', 'phoneNumberErrorText', 'Phone Number is Required'),
         component => validateZipcode(component),
         component => validateWebsiteUrl(component),
         component => validatePhoneNumber(component),
@@ -163,6 +164,7 @@ class ManageCampaignInfoContainer extends Component {
             validateString(component, 'orgName', 'orgNameErrorText', 'Organization Name is required');
             validateString(component, 'orgStatus', 'orgStatusErrorText', 'Organization Status is required');
             validateWebsiteUrl(component, 'orgWebsite', 'orgWebsiteErrorText');
+            validateString(component, 'orgContactPhone', 'orgContactPhoneErrorText', 'Phone Number is Required');
             validatePhoneNumber(component, 'orgContactPhone', 'orgContactPhoneErrorText');
             validateEmail(component, 'orgContactEmail', 'orgContactEmailErrorText');
           }

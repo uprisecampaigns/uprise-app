@@ -5,19 +5,28 @@ import { withApollo } from 'react-apollo';
 import { attemptSignup } from 'actions/AuthActions';
 import isEmail from 'validator/lib/isEmail';
 import isNumeric from 'validator/lib/isNumeric';
-import history from 'lib/history';
 
-import EmailAvailableQuery from 'schemas/queries/EmailAvailableQuery.graphql';
+import formWrapper from 'lib/formWrapper';
+
+import {
+  validateString,
+  validateZipcode,
+  validateEmail,
+  validateEmailAvailable,
+  validatePhoneNumber,
+  validatePasswords,
+} from 'lib/validateComponentForms';
 
 import SignupForm from './components/SignupForm';
 import Terms from './components/Terms';
 
+const WrappedSignupForm = formWrapper(SignupForm);
 
-class SignupFormContainer extends Component {
+class Signup extends Component {
   static propTypes = {
     termsContent: PropTypes.object.isRequired,
-    client: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    signupError: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -25,22 +34,25 @@ class SignupFormContainer extends Component {
 
     this.state = {
       page: 0,
-      firstName: '',
-      lastName: '',
-      email: '',
-      password1: '',
-      password2: '',
-      zipcode: '',
-      firstNameErrorText: null,
-      lastNameErrorText: null,
-      emailErrorText: null,
-      password1ErrorText: null,
-      password2ErrorText: null,
-      zipcodeErrorText: null,
+      formData: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password1: '',
+        password2: '',
+        phoneNumber: '',
+        zipcode: '',
+      },
     };
   }
 
-  hasErrors = false
+  defaultErrorText = {
+    firstNameErrorText: null,
+    lastNameErrorText: null,
+    zipcodeErrorText: null,
+    phoneNumberErrorText: null,
+    emailErrorText: null,
+  }
 
   validateString = (prop, errorProp, errorMsg) => {
     if (typeof this.state[prop] !== 'string' ||
@@ -116,61 +128,39 @@ class SignupFormContainer extends Component {
     }
   }
 
-  formSubmit = async (event) => {
-    event.preventDefault();
+  formSubmit = async (data) => {
+    this.setState({
+      formData: Object.assign({}, data),
+      page: 1,
+    });
 
-    this.hasErrors = false;
-
-    this.validateString('firstName', 'firstNameErrorText', 'First Name is Required');
-    this.validateString('lastName', 'lastNameErrorText', 'Last Name is Required');
-    this.validateZipcode();
-    this.validateEmail();
-
-    this.validatePasswords();
-
-    if (!this.hasErrors) {
-      try {
-        const response = await this.props.client.query({
-          query: EmailAvailableQuery,
-          variables: {
-            email: this.state.email,
-          },
-          fetchPolicy: 'network-only',
-        });
-
-
-        if (response.data.emailAvailable) {
-          this.setState({
-            page: 1,
-          });
-        } else {
-          this.setState({
-            emailErrorText: 'Email already taken',
-          });
-        }
-      } catch (err) {
-        // TODO: error handling?!?!
-        console.error(err);
-      }
-    }
+    return { success: true, message: 'Please read and agree to terms' };
   }
 
   agreeToTerms = (event) => {
     this.props.dispatch(attemptSignup({
-      email: this.state.email,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      zipcode: this.state.zipcode,
-      password: this.state.password1,
+      email: this.state.formData.email,
+      firstName: this.state.formData.firstName,
+      lastName: this.state.formData.lastName,
+      zipcode: this.state.formData.zipcode,
+      phoneNumber: this.state.formData.phoneNumber,
+      password: this.state.formData.password1,
     }));
   }
 
-  cancelSignup = (event) => {
-    event.preventDefault();
-    history.goBack();
-  }
-
   render() {
+    const validators = [
+      component => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
+      component => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
+      component => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
+      component => validateString(component, 'password1', 'password1ErrorText', 'Please enter a password'),
+      component => validateZipcode(component),
+      component => validateEmail(component),
+      component => validateEmailAvailable(component),
+      component => validatePhoneNumber(component),
+      component => validatePasswords(component, 'password1', 'password2', 'password1ErrorText', 'password2ErrorText'),
+    ];
+
     if (this.state.page === 1) {
       return (
         <Terms
@@ -182,17 +172,18 @@ class SignupFormContainer extends Component {
     }
 
     return (
-      <SignupForm
-        handleInputChange={this.handleInputChange}
-        cancelSignup={this.cancelSignup}
-        formSubmit={this.formSubmit}
-        data={this.state}
+      <WrappedSignupForm
+        initialState={this.state.formData}
+        initialErrors={this.defaultErrorText}
+        validators={validators}
+        submit={this.formSubmit}
+        signupError={this.props.signupError}
       />
     );
   }
 }
 
-const SignupFormContainerWithApollo = withApollo(SignupFormContainer);
+const SignupWithApollo = withApollo(Signup);
 
 const mapStateToProps = state => ({
   signupError: state.userAuthSession.error,
@@ -200,4 +191,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps)(SignupFormContainerWithApollo);
+export default connect(mapStateToProps)(SignupWithApollo);

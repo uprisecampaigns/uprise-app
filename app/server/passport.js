@@ -46,6 +46,9 @@ module.exports = (passport) => {
       // find a user whose email is the same as the forms email
       // we are checking to see if the user trying to login already exists
 
+      if (email.trim() === '') {
+        return done(null, false, { error: 'Email is required' });
+      }
       try {
         const rows = await db.select().from('users').where('email', email);
 
@@ -55,16 +58,15 @@ module.exports = (passport) => {
           const salt = bcrypt.genSaltSync(10);
           const passwordHash = bcrypt.hashSync(password, salt);
 
-          const zipcode = req.body.zipcode;
-          const firstName = req.body.firstName;
-          const lastName = req.body.lastName;
+          const { zipcode, firstName, lastName, phoneNumber } = req.body;
 
           const userInfo = {
             email: email,
             zipcode: zipcode,
             password_hash: passwordHash,
             first_name: firstName,
-            last_name: lastName
+            last_name: lastName,
+            phone_number: phoneNumber,
           };
 
           const user = await User.create(userInfo);

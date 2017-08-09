@@ -8,19 +8,22 @@ import s from 'styles/Form.scss';
 
 class SignupForm extends PureComponent {
   static propTypes = {
-    formSubmit: PropTypes.func.isRequired,
-    cancelSignup: PropTypes.func.isRequired,
-    handleInputChange: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
+    formSubmit: PropTypes.func.isRequired,
+    cancel: PropTypes.func.isRequired,
+    handleInputChange: PropTypes.func.isRequired,
+    errors: PropTypes.object.isRequired,
     signupError: PropTypes.string,
   }
 
   static defaultProps = {
-    signupError: undefined,
+    signupError: '',
   }
 
   render() {
-    const { data, formSubmit, handleInputChange, cancelSignup } = this.props;
+    const {
+      data, formSubmit, errors,
+      handleInputChange, cancel } = this.props;
 
     return (
       <div className={s.outerContainer}>
@@ -37,7 +40,7 @@ class SignupForm extends PureComponent {
                     floatingLabelText="First Name"
                     value={data.firstName}
                     onChange={(event) => { handleInputChange(event, 'firstName', event.target.value); }}
-                    errorText={data.firstNameErrorText}
+                    errorText={errors.firstNameErrorText}
                     fullWidth
                   />
                 </div>
@@ -46,7 +49,7 @@ class SignupForm extends PureComponent {
                     floatingLabelText="Last Name"
                     value={data.lastName}
                     onChange={(event) => { handleInputChange(event, 'lastName', event.target.value); }}
-                    errorText={data.lastNameErrorText}
+                    errorText={errors.lastNameErrorText}
                     fullWidth
                   />
                 </div>
@@ -56,7 +59,16 @@ class SignupForm extends PureComponent {
                     type="email"
                     value={data.email}
                     onChange={(event) => { handleInputChange(event, 'email', event.target.value); }}
-                    errorText={data.emailErrorText}
+                    errorText={errors.emailErrorText}
+                    fullWidth
+                  />
+                </div>
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Phone Number (optional)"
+                    value={data.phoneNumber}
+                    onChange={(event) => { handleInputChange(event, 'phoneNumber', event.target.value); }}
+                    errorText={errors.phoneNumberErrorText}
                     fullWidth
                   />
                 </div>
@@ -66,7 +78,7 @@ class SignupForm extends PureComponent {
                     type="password"
                     value={data.password1}
                     onChange={(event) => { handleInputChange(event, 'password1', event.target.value); }}
-                    errorText={data.password1ErrorText}
+                    errorText={errors.password1ErrorText}
                     fullWidth
                   />
                 </div>
@@ -76,7 +88,7 @@ class SignupForm extends PureComponent {
                     type="password"
                     value={data.password2}
                     onChange={(event) => { handleInputChange(event, 'password2', event.target.value); }}
-                    errorText={data.password2ErrorText}
+                    errorText={errors.password2ErrorText}
                     fullWidth
                   />
                 </div>
@@ -87,12 +99,12 @@ class SignupForm extends PureComponent {
                     pattern="[0-9]{5}"
                     type="text"
                     onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
-                    errorText={data.zipcodeErrorText}
+                    errorText={errors.zipcodeErrorText}
                   />
                 </div>
                 <div className={s.button}>
                   <RaisedButton
-                    onTouchTap={cancelSignup}
+                    onTouchTap={cancel}
                     primary={false}
                     label="Cancel"
                   />
