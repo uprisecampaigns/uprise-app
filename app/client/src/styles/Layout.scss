@@ -120,6 +120,17 @@ textarea {
   padding: 0.2em 0;
 }
 
+
+/*
+ * Snackbar style
+ */
+.snackbar > div {
+  line-height: 1.2rem;
+  max-width: inherit !important;
+  height: inherit !important;
+  text-align: center;
+}
+
 /*
  * Print styles
  * Inlined to avoid the additional HTTP request:

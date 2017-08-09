@@ -63,6 +63,7 @@ export class Layout extends Component {
         {this.props.children}
 
         <Snackbar
+          className={s.snackbar}
           open={this.props.displayNotification}
           message={this.props.notificationMessage}
           autoHideDuration={0}
