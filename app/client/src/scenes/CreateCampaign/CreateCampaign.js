@@ -157,6 +157,7 @@ class CreateCampaignContainer extends Component {
           validateString(component, 'orgWebsite', 'orgWebsiteErrorText', 'Organization Website is required');
           validateString(component, 'orgName', 'orgNameErrorText', 'Organization Name is required');
           validateString(component, 'orgStatus', 'orgStatusErrorText', 'Organization Status is required');
+          validateString(component, 'orgContactPhone', 'orgContactPhoneErrorText', 'Phone Number is Required');
           validateWebsiteUrl(component, 'orgWebsite', 'orgWebsiteErrorText');
           validatePhoneNumber(component, 'orgContactPhone', 'orgContactPhoneErrorText');
           validateEmail(component, 'orgContactEmail', 'orgContactEmailErrorText');
