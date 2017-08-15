@@ -5,7 +5,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Login from 'scenes/Login';
+import Login from 'components/Login';
 
 import s from 'styles/Layout.scss';
 

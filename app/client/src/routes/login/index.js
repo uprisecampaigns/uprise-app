@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Layout from 'components/Layout';
-import Login from 'scenes/Login';
+import Login from 'components/Login';
 
 import withAuthentication from 'routes/withAuthentication';
 
