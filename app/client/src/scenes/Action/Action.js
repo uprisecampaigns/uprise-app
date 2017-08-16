@@ -270,7 +270,7 @@ class Action extends Component {
               autoScrollBodyContent
             >
               <p>
-                May we have your permission to share your email address  and phone number 
+                May we have your permission to share your email address  and phone number
                 with the coordinator for the purpose of contacting you about this action?
               </p>
             </Dialog>

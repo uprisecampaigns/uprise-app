@@ -2,9 +2,6 @@ import React from 'react';
 import CreateCampaign from 'scenes/CreateCampaign';
 import Layout from 'components/Layout';
 
-import withAuthentication from 'routes/withAuthentication';
-
-const CreateCampaignWithAuthentication = withAuthentication(CreateCampaign);
 
 export default {
 
@@ -13,7 +10,7 @@ export default {
   action() {
     return {
       title: 'Create Campaign',
-      component: <Layout><CreateCampaignWithAuthentication /></Layout>,
+      component: <Layout><CreateCampaign /></Layout>,
     };
   },
 

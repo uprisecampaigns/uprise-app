@@ -17,7 +17,6 @@ const defaultStartState = {
   pageLoading: false,
   formStateClean: true,
   displayFormNavWarning: false,
-  nextUrl: undefined,
 };
 
 export function updateNotifications(notificationsState = defaultStartState, action) {

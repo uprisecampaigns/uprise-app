@@ -5,7 +5,9 @@ import LinearProgress from 'material-ui/LinearProgress';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Login from 'components/Login';
+import withAuthentication from 'lib/withAuthentication';
+
+import LoginModalPrompt from 'components/LoginModalPrompt';
 
 import s from 'styles/Layout.scss';
 
@@ -23,7 +25,6 @@ export class Layout extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     notificationMessage: PropTypes.string.isRequired,
-    displayLoginModal: PropTypes.bool.isRequired,
     displayNotification: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
     displayFormNavWarning: PropTypes.bool.isRequired,
@@ -73,17 +74,7 @@ export class Layout extends Component {
           onRequestClose={reason => this.props.dispatch(clear())}
         />
 
-        <Dialog
-          title="Please sign up or log in to view this content"
-          modal
-          actionsContainerClassName={s.modalActionsContainer}
-          open={this.props.displayLoginModal}
-        >
-          <p>
-            For the privacy of our users, please register or log in to view this content.
-          </p>
-          <Login />
-        </Dialog>
+        <LoginModalPrompt />
 
         <Dialog
           title="Are you sure?"
@@ -120,4 +111,4 @@ export default connect(state => ({
   notificationMessage: state.notifications.message,
   displayFormNavWarning: state.notifications.displayFormNavWarning,
   displayNotification: state.notifications.display,
-}))(Layout);
+}))(withAuthentication(Layout));

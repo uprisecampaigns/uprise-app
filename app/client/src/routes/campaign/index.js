@@ -2,11 +2,8 @@ import React from 'react';
 import Campaign from 'scenes/Campaign';
 import Layout from 'components/Layout';
 
-import withAuthentication from 'routes/withAuthentication';
-
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
-const CampaignWithAuthentication = withAuthentication(Campaign);
 
 export default {
 
@@ -27,7 +24,7 @@ export default {
           title: result.data.campaign.title,
           component: (
             <Layout>
-              <CampaignWithAuthentication campaignSlug={slug} campaignId={result.data.campaign.id} />
+              <Campaign campaignSlug={slug} campaignId={result.data.campaign.id} />
             </Layout>
           ),
         };

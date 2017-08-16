@@ -44,7 +44,6 @@
 
 .signupButton {
   @extend .secondaryButton;
-  margin: 10px 10px 30px 10px;
   font-size: 2rem;
 
   button {
@@ -125,5 +124,15 @@
   .selectedKeywordsContainer {
     margin-top: 0.5rem;
     width: 100%;
+  }
+}
+
+.loginContainer {
+  padding-top: 1rem;
+  text-align: center;
+
+  > p {
+    font-size: 1.5rem;
+    color: $fire-red;
   }
 }

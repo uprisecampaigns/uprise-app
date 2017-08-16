@@ -2,19 +2,31 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import isEmail from 'validator/lib/isEmail';
 
+import RaisedButton from 'material-ui/RaisedButton';
+
 import { attemptLogin } from 'actions/AuthActions';
+
+import history from 'lib/history';
+
+import Link from 'components/Link';
 
 import LoginForm from './components/LoginForm';
 
+import s from 'styles/Form.scss';
 
-class LoginFormContainer extends Component {
+class Login extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     loginError: PropTypes.string,
     message: PropTypes.string,
+    handleSignupClick: PropTypes.func,
   }
 
   static defaultProps = {
+    handleSignupClick: (event) => {
+      (typeof event.preventDefault === 'function') && event.preventDefault();
+      history.push('/signup');
+    },
     message: undefined,
     loginError: undefined,
   }
@@ -87,13 +99,31 @@ class LoginFormContainer extends Component {
 
   render() {
     return (
-      <LoginForm
-        data={this.state}
-        handleInputChange={this.handleInputChange}
-        formSubmit={this.formSubmit}
-        loginError={this.props.loginError}
-        message={this.props.message}
-      />
+      <div className={s.loginContainer}>
+        <div className={s.signupButton}>
+          <RaisedButton
+            secondary
+            label="Sign Up"
+            onTouchTap={this.props.handleSignupClick}
+          />
+        </div>
+
+        <LoginForm
+          data={this.state}
+          handleInputChange={this.handleInputChange}
+          formSubmit={this.formSubmit}
+          loginError={this.props.loginError}
+          message={this.props.message}
+        />
+
+        <Link
+          useAhref
+          to="/forgot-password"
+          className={s.forgotPassword}
+        >
+          Forgot Password
+        </Link>
+      </div>
     );
   }
 }
@@ -105,4 +135,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps)(LoginFormContainer);
+export default connect(mapStateToProps)(Login);

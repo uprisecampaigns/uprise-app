@@ -83,7 +83,7 @@ class ForgotPassword extends Component {
 
   cancelReset = (event) => {
     event.preventDefault();
-    history.goBack();
+    history.push('/login');
   }
 
   render() {
