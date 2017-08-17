@@ -8,6 +8,10 @@
   justify-content: center;
   margin-top: 1rem;
   margin-bottom: 5rem;
+
+  @media (max-width: $screen-sm-min) {
+    margin: 0rem 0rem 1rem 0rem;
+  }
 }
 
 .innerContainer {
@@ -19,7 +23,11 @@
 }
 
 .formContainer {
-  padding: 10px 50px 20px 50px;
+  padding: 1rem 4rem 1.5rem 3rem;
+
+  @media (max-width: $screen-sm-min) {
+    padding: 0px 1rem;
+  }
 }
 
 .form {
@@ -111,7 +119,11 @@
 .loginHeader {
   font-size: 1.8rem;
   color: darken($azure, 20%);
-  margin-top: 5rem;
+  margin-top: 3rem;
+
+  @media (max-width: $screen-sm-min) {
+    margin-top: 1rem;
+  }
 }
 
 .keywordsContainer {
@@ -131,8 +143,17 @@
   padding-top: 1rem;
   text-align: center;
 
+  @media (max-width: $screen-sm-min) {
+    padding-top: 0.5rem;
+  }
+
   > p {
     font-size: 1.5rem;
     color: $fire-red;
+
+    @media (max-width: $screen-sm-min) {
+      font-size: 1rem;
+      margin: 0px;
+    }
   }
 }

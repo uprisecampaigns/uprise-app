@@ -47,6 +47,7 @@ class LoginModalPrompt extends Component {
         modal
         actionsContainerClassName={layoutStyles.modalActionsContainer}
         open={this.props.displayLoginModal}
+        autoScrollBodyContent
       >
         { this.state.currentPage === 'login' ? (
           <div className={formStyles.loginContainer}>
