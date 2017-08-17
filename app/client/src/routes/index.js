@@ -35,7 +35,7 @@ export default {
     require('./manageCampaignUploadActions').default,
     require('./createAction').default,
 
-    // /organize/:campaignSlug/action/:actionSlug
+    // /organize/:campaignSlug/opportunity/:actionSlug
     require('./manageAction').default,
     require('./manageActionSettings').default,
     require('./manageActionVolunteers').default,
@@ -47,12 +47,12 @@ export default {
     require('./searchActions').default,
     require('./searchCampaigns').default,
 
-    // /actions
+    // /opportunities
     require('./volunteer').default,
     require('./actionCommitments').default,
     require('./campaignSubscriptions').default,
 
-    // /action/
+    // /opportunity/
     require('./action').default,
 
     // /campaign/

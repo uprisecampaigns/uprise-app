@@ -210,7 +210,7 @@ class ManageCampaignUploadActions extends Component {
             </div>
           </Link>
 
-          <div className={s.pageSubHeader}>Upload Actions</div>
+          <div className={s.pageSubHeader}>Upload Opportunities</div>
 
           <div className={s.timeZoneSelect}>
             <SelectField

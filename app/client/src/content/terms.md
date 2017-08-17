@@ -17,7 +17,7 @@ The Service allows you to search and sign up for volunteering activities and cam
 
 ### Limitations on Use of Participant and Subscriber Email Addresses
 
-As a user of the Service, you will gain access to the email addresses of users who have signed up for one of your volunteer actions or subscribed to your campaign. The participant or subscriber will have granted you LIMITED rights to use this address for the purpose of communicating about volunteer activities. You may not add this email address to your campaign email lists for any other purpose, including fundraising, without the users’ expressed permission. You may ask the user to sign up for additional email by providing links to sign up forms in your communications. Violations of these terms will result in your loss of access to UpRise Services.
+As a user of the Service, you will gain access to the email addresses of users who have signed up for one of your volunteer opportunities or subscribed to your campaign. The participant or subscriber will have granted you LIMITED rights to use this address for the purpose of communicating about volunteer activities. You may not add this email address to your campaign email lists for any other purpose, including fundraising, without the users’ expressed permission. You may ask the user to sign up for additional email by providing links to sign up forms in your communications. Violations of these terms will result in your loss of access to UpRise Services.
 
 ### Registration; Rules for User Conduct and Use of the Service
 

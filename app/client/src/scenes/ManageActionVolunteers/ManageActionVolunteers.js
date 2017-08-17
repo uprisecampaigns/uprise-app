@@ -68,7 +68,7 @@ class ManageActionVolunteers extends Component {
       this.setState({ emptyRecipientsModalOpen: true });
     } else {
       dispatch(setRecipients(this.state.selected));
-      history.push(`/organize/${campaign.slug}/action/${action.slug}/compose`);
+      history.push(`/organize/${campaign.slug}/opportunity/${action.slug}/compose`);
     }
   }
 
@@ -77,7 +77,7 @@ class ManageActionVolunteers extends Component {
       const { action, campaign, volunteers } = this.props;
       const { emptyRecipientsModalOpen } = this.state;
 
-      const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
+      const baseActionUrl = `/organize/${campaign.slug}/opportunity/${action.slug}`;
 
       const modalActions = [
         <RaisedButton

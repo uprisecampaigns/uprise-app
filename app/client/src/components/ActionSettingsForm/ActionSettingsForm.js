@@ -65,7 +65,7 @@ class ActionSettingsForm extends Component {
 
                 <div className={s.textFieldContainer}>
                   <TextField
-                    floatingLabelText="Action Internal Name"
+                    floatingLabelText="Opportunity Internal Name"
                     fullWidth
                     value={data.internalTitle}
                     onChange={(event) => { handleInputChange(event, 'internalTitle', event.target.value); }}
@@ -75,7 +75,7 @@ class ActionSettingsForm extends Component {
 
                 <div className={s.textFieldContainer}>
                   <TextField
-                    floatingLabelText="Action Public Name"
+                    floatingLabelText="Opportunity Public Name"
                     fullWidth
                     value={data.title}
                     onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
@@ -84,12 +84,12 @@ class ActionSettingsForm extends Component {
                 </div>
 
                 <p className={s.helpText}>
-                  Please create separate listings for virtual and in-person actions.
+                  Please create separate listings for virtual and in-person opportunities.
                 </p>
 
                 <div className={s.toggleContainer}>
                   <Toggle
-                    label="Virtual Action"
+                    label="Virtual Opportunity"
                     toggled={data.virtual}
                     labelPosition="right"
                     onToggle={(event, checked) => { handleInputChange(event, 'virtual', checked); }}
@@ -172,7 +172,7 @@ class ActionSettingsForm extends Component {
                 )}
 
                 <p className={s.helpText}>
-                  Will this be an ongoing role or a one-time action?
+                  Will this be an ongoing role or a one-time opportunity?
                 </p>
 
                 <div className={s.toggleContainer}>

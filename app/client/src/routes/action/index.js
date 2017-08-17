@@ -10,7 +10,7 @@ const ActionWithAuthentication = withAuthentication(Action);
 
 export default {
 
-  path: '/action/:slug',
+  path: '/opportunity/:slug',
 
   async action(context) {
     try {
@@ -33,12 +33,12 @@ export default {
         };
       }
       return {
-        redirect: '/search/search-actions',
+        redirect: '/search/search-opportunities',
       };
     } catch (e) {
       console.error(e);
       return {
-        redirect: '/search/search-actions',
+        redirect: '/search/search-opportunities',
       };
     }
   },

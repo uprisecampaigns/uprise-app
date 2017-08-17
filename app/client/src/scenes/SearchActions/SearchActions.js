@@ -152,7 +152,7 @@ class SearchActions extends Component {
         </Link>
 
         <div className={s.titleContainer}>
-          Search Actions
+          Search Opportunities
         </div>
 
         <SearchPresentation

@@ -5,7 +5,7 @@ title: Definitions
 Search Terms
 -------------------------------------------
 
-### Actions in UpRise
+### Opportunities in UpRise
 
 All different types of volunteer opportunities, including events, projects and roles.
 
@@ -15,17 +15,17 @@ group or organization in the real world or on a social media platform
 (such as Facebook or MeetUp Groups), but can also be organized entirely
 within the UpRise Platform.
 
-### Ongoing Action
-Any action that has no set beginning and end, such as taking on a role
-in a campaign or working on a project. Different from recurring actions
-which are actions which take place in a specific time slot but are
+### Ongoing Opportunities
+Any opportunity that has no set beginning and end, such as taking on a role
+in a campaign or working on a project. Different from recurring opportunities
+which are opportunities which take place in a specific time slot but are
 repeated on multiple days.
 
 Location
 -------------------------------------------
 
-### Virtual Action
-Any action that can be done from a remote location, such as online
+### Virtual Opportunity
+Any opportunity that can be done from a remote location, such as online
 research, writing and design.
 
 ### Campaign Active Area
@@ -36,7 +36,7 @@ campaigns that are not on your ballot, but are on the ballot for some
 people in your zip code.
 
 ### Activities
-The different tasks you do at a volunteer action, such as make calls,
+The different tasks you do at a volunteer opportunity, such as make calls,
 plan events, or anything requiring a specific skill.
 
 ### Accounting

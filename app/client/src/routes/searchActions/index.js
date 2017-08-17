@@ -8,11 +8,11 @@ const SearchActionsWithAuthentication = withAuthentication(SearchActions);
 
 export default {
 
-  path: '/search/search-actions',
+  path: '/search/search-opportunities',
 
   action() {
     return {
-      title: 'Search Actions',
+      title: 'Search Opportunities',
       component: <Layout><SearchActionsWithAuthentication /></Layout>,
     };
   },

@@ -75,7 +75,7 @@ class ManageActionComposeMessage extends Component {
     if (this.props.campaign && this.props.action && this.props.recipients && this.props.userObject) {
       const { campaign, action, userObject, recipients } = this.props;
 
-      const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
+      const baseActionUrl = `/organize/${campaign.slug}/opportunity/${action.slug}`;
 
       const detailLines = [
         `From: ${userObject.first_name} ${userObject.last_name}`,

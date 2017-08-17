@@ -445,8 +445,8 @@ class Action {
       activitiesQuery,
     ]);
 
-    details.public_url = url.resolve(config.urls.client, 'action/' + action.slug);
-    details.dashboard_url = url.resolve(config.urls.client, 'organize/' + details.campaign.slug + '/action/' + action.slug);
+    details.public_url = url.resolve(config.urls.client, 'opportunity/' + action.slug);
+    details.dashboard_url = url.resolve(config.urls.client, 'organize/' + details.campaign.slug + '/opportunity/' + action.slug);
 
     return details;
   }

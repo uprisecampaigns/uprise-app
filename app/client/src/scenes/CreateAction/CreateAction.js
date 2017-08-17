@@ -120,7 +120,7 @@ class CreateAction extends Component {
         modalOpen: true,
         newAction: results.data.createAction,
       });
-      return { success: true, message: 'Action Created' };
+      return { success: true, message: 'Opportunity Created' };
     } catch (e) {
       console.error(e);
       return { success: false, message: e.message };
@@ -135,15 +135,15 @@ class CreateAction extends Component {
 
       const modalActions = [
         <RaisedButton
-          label="Manage Action"
+          label="Manage Opportunity"
           primary
           className={s.primaryButton}
-          onTouchTap={(event) => { event.preventDefault(); history.push(`/organize/${campaign.slug}/action/${newAction.slug}`); }}
+          onTouchTap={(event) => { event.preventDefault(); history.push(`/organize/${campaign.slug}/opportunity/${newAction.slug}`); }}
         />,
       ];
 
       const validators = [
-        (component) => { validateString(component, 'title', 'titleErrorText', 'Action Name is Required'); },
+        (component) => { validateString(component, 'title', 'titleErrorText', 'Opportunity Name is Required'); },
         (component) => { validateString(component, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required'); },
         (component) => { validateState(component); }, // TODO: error is confusing if virtual is set and state input is invalid
         (component) => { validateZipcode(component); },
@@ -153,16 +153,16 @@ class CreateAction extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={`/organize/${campaign.slug}/actions`}>
+          <Link to={`/organize/${campaign.slug}/opportunities`}>
             <div className={s.navHeader}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
-              Actions
+              Opportunities
             </div>
           </Link>
 
-          <div className={s.pageSubHeader}>Create Action</div>
+          <div className={s.pageSubHeader}>Create Opportunity</div>
 
           <WrappedActionSettingsForm
             initialState={formData}
@@ -175,20 +175,20 @@ class CreateAction extends Component {
 
           {modalOpen && (
             <Dialog
-              title="Action Created"
+              title="Opportunity Created"
               modal
               actions={modalActions}
               actionsContainerClassName={s.modalActionsContainer}
               open={modalOpen}
             >
               <p>
-                Congratulations, you have created the action &apos;{newAction.title}&apos;.
+                Congratulations, you have created the opportunity &apos;{newAction.title}&apos;.
               </p>
               <p>
-                You can find your action&apos;s public profile at {window.location.origin}/action/{newAction.slug}
+                You can find your opportunity&apos;s public profile at {window.location.origin}/opportunity/{newAction.slug}
               </p>
               <p>
-                You can manage your action here:
+                You can manage your opportunity here:
               </p>
             </Dialog>
           )}

@@ -19,9 +19,9 @@ function Search(props) {
 
         <Divider />
 
-        <Link to={'/search/search-actions'}>
+        <Link to={'/search/search-opportunities'}>
           <ListItem
-            primaryText="Actions"
+            primaryText="Opportunities"
           />
         </Link>
 

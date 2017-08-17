@@ -122,10 +122,10 @@ class ManageActionProfileEdit extends Component {
       const { formSubmit, defaultErrorText } = this;
 
       const validators = [
-        (component) => { validateString(component, 'title', 'titleErrorText', 'Action Name is Required'); },
+        (component) => { validateString(component, 'title', 'titleErrorText', 'Opportunity Name is Required'); },
       ];
 
-      const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
+      const baseActionUrl = `/organize/${campaign.slug}/opportunity/${action.slug}`;
 
       return (
         <div className={s.outerContainer}>

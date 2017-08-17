@@ -9,7 +9,7 @@ import organizeActionPaths from 'routes/organizeActionPaths';
 const ManageActionComposeMessageWithAuthentication = withAuthentication(ManageActionComposeMessage);
 
 export default organizeActionPaths({
-  path: '/organize/:campaignSlug/action/:actionSlug/compose',
+  path: '/organize/:campaignSlug/opportunity/:actionSlug/compose',
   component: (campaign, action) => (
     <Layout>
       <ManageActionComposeMessageWithAuthentication actionId={action.id} campaignId={campaign.id} />

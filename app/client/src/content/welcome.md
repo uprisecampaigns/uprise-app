@@ -7,14 +7,14 @@ Here’s what you will find in our main menu:
 
 ### Search
 
-Find and sign up for volunteer [ACTIONS](/search/search-actions), or find [CAMPAIGNS](/search/search-campaigns) that you
-can subscribe to and hear about all their actions.
+Find and sign up for volunteer [OPPORTUNITIES](/search/search-opportunities), or find [CAMPAIGNS](/search/search-campaigns) that you
+can subscribe to and hear about all their opportunities.
 
 ###
 
 ### Manage
 
-Keep track of your volunteering commitments at [MY ACTIONS](/volunteer/action-commitments) and manage
+Keep track of your volunteering commitments at [MY OPPORTUNITIES](/volunteer/opportunity-commitments) and manage
 your campaign subscriptions at [MY SUBSCRIPTIONS](/volunteer/campaign-subscriptions).
 
 ###

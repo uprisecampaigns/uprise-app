@@ -177,10 +177,10 @@ class ManageActionSettings extends Component {
       const { action, campaign } = this.props;
       const { formData } = this.state;
 
-      const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
+      const baseActionUrl = `/organize/${campaign.slug}/opportunity/${action.slug}`;
 
       const validators = [
-        (component) => { validateString(component, 'title', 'titleErrorText', 'Action Name is Required'); },
+        (component) => { validateString(component, 'title', 'titleErrorText', 'Opportunity Name is Required'); },
         (component) => { validateString(component, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required'); },
         (component) => { component.state.formData.virtual || validateState(component); },
         (component) => { component.state.formData.virtual || validateZipcode(component); },

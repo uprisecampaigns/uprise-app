@@ -87,8 +87,8 @@ class ManageAction extends Component {
         this.deleting = false;
 
         if (results.data.deleteAction) {
-          dispatch(notify('Action deleted'));
-          history.push(`/organize/${campaign.slug}/actions`);
+          dispatch(notify('Opportunity deleted'));
+          history.push(`/organize/${campaign.slug}/opportunities`);
         } else {
           console.error(results);
           dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
@@ -119,7 +119,7 @@ class ManageAction extends Component {
         />,
       ];
 
-      const baseActionUrl = `/organize/${campaign.slug}/action/${action.slug}`;
+      const baseActionUrl = `/organize/${campaign.slug}/opportunity/${action.slug}`;
 
       return (
         <div className={s.outerContainer}>
@@ -155,7 +155,7 @@ class ManageAction extends Component {
 
             <Divider />
 
-            <Link to={`/action/${action.slug}`}>
+            <Link to={`/opportunity/${action.slug}`}>
               <ListItem
                 primaryText="View Profile"
               />
@@ -189,7 +189,7 @@ class ManageAction extends Component {
               open={this.state.deleteModalOpen}
             >
               <p>
-                Are you sure you want to delete this action?
+                Are you sure you want to delete this opportunity?
               </p>
             </Dialog>
           )}

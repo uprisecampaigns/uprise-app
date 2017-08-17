@@ -107,7 +107,7 @@ function AuthenticatedIcons(props) {
         title="Search"
         className={s.rightIcon}
         dropdowns={[
-          { title: 'Actions', path: '/search/search-actions' },
+          { title: 'Opportunities', path: '/search/search-opportunities' },
           { title: 'Campaigns', path: '/search/search-campaigns' },
         ]}
       />
@@ -116,7 +116,7 @@ function AuthenticatedIcons(props) {
         title="Manage"
         className={s.rightIcon}
         dropdowns={[
-          { title: 'My Actions', path: '/volunteer/action-commitments' },
+          { title: 'My Opportunities', path: '/volunteer/opportunity-commitments' },
           { title: 'My Subscriptions', path: '/volunteer/campaign-subscriptions' },
         ]}
       />

@@ -56,7 +56,7 @@ class ActionProfileForm extends PureComponent {
             <TextField
               value={data.title}
               className={s.textField}
-              hintText="Action Public Title"
+              hintText="Opportunity Public Title"
               onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
               errorText={errors.titleErrorText}
               fullWidth
@@ -69,7 +69,7 @@ class ActionProfileForm extends PureComponent {
               name="description"
               hintText={`Write a short description here. 
                 This will show up in the search results. 
-                You do not need to include the name of the action, or issues, keywords, etc. as they will all appear automatically`}
+                You do not need to include the name of the opportunity, or issues, keywords, etc. as they will all appear automatically`}
               value={data.description}
               multiLine
               rows={4}

@@ -9,7 +9,7 @@ import organizeCampaignPaths from 'routes/organizeCampaignPaths';
 const ManageCampaignUploadActionsWithAuthentication = withAuthentication(ManageCampaignUploadActions);
 
 export default organizeCampaignPaths({
-  path: '/organize/:slug/upload-actions',
+  path: '/organize/:slug/upload-opportunities',
   component: campaign => (
     <Layout>
       <ManageCampaignUploadActionsWithAuthentication campaignSlug={campaign.slug} />

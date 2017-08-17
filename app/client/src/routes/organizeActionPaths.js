@@ -38,7 +38,7 @@ export default ({ path, component }) => ({
     } catch (e) {
       console.error(e);
       return {
-        redirect: `/organize/${context.params.campaignSlug}/actions`,
+        redirect: `/organize/${context.params.campaignSlug}/opportunities`,
       };
     }
 
@@ -58,7 +58,7 @@ export default ({ path, component }) => ({
     }
 
     return {
-      redirect: `/organize/${context.params.campaignSlug}/actions`,
+      redirect: `/organize/${context.params.campaignSlug}/opportunities`,
     };
   },
 });

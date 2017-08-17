@@ -19,9 +19,9 @@ function Volunteer(props) {
 
         <Divider />
 
-        <Link to={'/volunteer/action-commitments'}>
+        <Link to={'/volunteer/opportunity-commitments'}>
           <ListItem
-            primaryText="My Actions"
+            primaryText="My Opportunities"
           />
         </Link>
 

@@ -9,7 +9,7 @@ import organizeCampaignPaths from 'routes/organizeCampaignPaths';
 const ManageCampaignActionsWithAuthentication = withAuthentication(ManageCampaignActions);
 
 export default organizeCampaignPaths({
-  path: '/organize/:slug/actions',
+  path: '/organize/:slug/opportunities',
   component: campaign => (
     <Layout>
       <ManageCampaignActionsWithAuthentication campaignId={campaign.id} />

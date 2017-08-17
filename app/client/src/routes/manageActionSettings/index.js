@@ -9,7 +9,7 @@ import organizeActionPaths from 'routes/organizeActionPaths';
 const ManageActionSettingsWithAuthentication = withAuthentication(ManageActionSettings);
 
 export default organizeActionPaths({
-  path: '/organize/:campaignSlug/action/:actionSlug/settings',
+  path: '/organize/:campaignSlug/opportunity/:actionSlug/settings',
   component: (campaign, action) => (
     <Layout>
       <ManageActionSettingsWithAuthentication actionId={action.id} campaignId={campaign.id} />

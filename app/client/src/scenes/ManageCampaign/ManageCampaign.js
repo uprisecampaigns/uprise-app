@@ -102,9 +102,9 @@ class ManageCampaignContainer extends Component {
 
             <Divider />
 
-            <Link to={`/organize/${campaign.slug}/actions`}>
+            <Link to={`/organize/${campaign.slug}/opportunities`}>
               <ListItem
-                primaryText="Campaign Actions"
+                primaryText="Campaign Opportunities"
               />
             </Link>
 

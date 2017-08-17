@@ -8,11 +8,11 @@ const ActionCommitmentsWithAuthentication = withAuthentication(ActionCommitments
 
 export default {
 
-  path: '/volunteer/action-commitments',
+  path: '/volunteer/opportunity-commitments',
 
   action() {
     return {
-      title: 'Action Commitments',
+      title: 'Opportunity Commitments',
       component: <Layout><ActionCommitmentsWithAuthentication /></Layout>,
     };
   },

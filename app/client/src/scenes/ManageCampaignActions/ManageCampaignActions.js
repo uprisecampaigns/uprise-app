@@ -27,7 +27,7 @@ class ManageCampaignActionsContainer extends PureComponent {
       const { campaign, actions } = this.props;
 
       const actionsList = actions.map(action => (
-        <Link key={action.id} to={`/organize/${campaign.slug}/action/${action.slug}`}>
+        <Link key={action.id} to={`/organize/${campaign.slug}/opportunity/${action.slug}`}>
           <ListItem>
 
             <div className={s.actionListTitle}>
@@ -64,14 +64,14 @@ class ManageCampaignActionsContainer extends PureComponent {
             </div>
           </Link>
 
-          <div className={s.pageSubHeader}>Actions</div>
+          <div className={s.pageSubHeader}>Opportunities</div>
 
           <Link to={`/organize/${campaign.slug}/create-action`}>
             <div className={s.organizeButton}>
               <RaisedButton
                 primary
                 type="submit"
-                label="Create Action"
+                label="Create Opportunity"
               />
             </div>
           </Link>

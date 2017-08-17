@@ -59,7 +59,7 @@ class SearchActionResults extends PureComponent {
       const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
       return (
-        <Link key={JSON.stringify(action)} to={`/action/${action.slug}`}>
+        <Link key={JSON.stringify(action)} to={`/opportunity/${action.slug}`}>
           <Card className={s.card}>
             <CardHeader
               title={action.title}

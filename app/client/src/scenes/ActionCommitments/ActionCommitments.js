@@ -23,7 +23,7 @@ class ActionCommitments extends PureComponent {
       const { actionCommitments } = this.props;
 
       const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map(action => (
-        <Link key={action.id} to={`/action/${action.slug}`}>
+        <Link key={action.id} to={`/opportunity/${action.slug}`}>
           <ListItem>
 
             <div className={s.listTitle}>
@@ -71,12 +71,12 @@ class ActionCommitments extends PureComponent {
             </div>
           </Link>
 
-          <div className={s.pageSubHeader}>My Actions</div>
+          <div className={s.pageSubHeader}>My Opportunities</div>
 
           {actionsList.length === 0 ? (
             <div className={s.searchPrompt}>
               You have no current volunteering commitments. You can search for opportunities&nbsp;
-              <Link to="/search/search-actions" useAhref>here</Link>.
+              <Link to="/search/search-opportunities" useAhref>here</Link>.
             </div>
           ) : (
             <List>

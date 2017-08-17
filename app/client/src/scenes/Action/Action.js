@@ -128,7 +128,7 @@ class Action extends Component {
         <div className={s.outerContainer}>
 
           { action.is_owner && (
-            <Link to={`/organize/${action.campaign.slug}/action/${action.slug}`}>
+            <Link to={`/organize/${action.campaign.slug}/opportunity/${action.slug}`}>
               <div className={s.navHeader}>
                 <FontIcon
                   className={['material-icons', s.backArrow].join(' ')}
@@ -271,7 +271,7 @@ class Action extends Component {
             >
               <p>
                 May we have your permission to share your email address  and phone number 
-                with the coordinator for the purpose of contacting you about this action?
+                with the coordinator for the purpose of contacting you about this opportunity?
               </p>
             </Dialog>
           )}

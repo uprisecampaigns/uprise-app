@@ -9,7 +9,7 @@ import organizeActionPaths from 'routes/organizeActionPaths';
 const ManageActionProfileEditWithAuthentication = withAuthentication(ManageActionProfileEdit);
 
 export default organizeActionPaths({
-  path: '/organize/:campaignSlug/action/:actionSlug/profile/edit',
+  path: '/organize/:campaignSlug/opportunity/:actionSlug/profile/edit',
   component: (campaign, action) => (
     <Layout>
       <ManageActionProfileEditWithAuthentication actionId={action.id} campaignId={campaign.id} />

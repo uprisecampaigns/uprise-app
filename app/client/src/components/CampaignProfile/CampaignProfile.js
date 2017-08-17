@@ -35,7 +35,7 @@ class CampaignProfile extends PureComponent {
           .map((action) => {
             if (action.ongoing) {
               return (
-                <Link to={`/action/${action.slug}`} key={action.id}>
+                <Link to={`/opportunity/${action.slug}`} key={action.id}>
                   <div className={[s.detailLine, s.actionListing].join(' ')}>
                     <div>
                       {action.title}
@@ -54,7 +54,7 @@ class CampaignProfile extends PureComponent {
               const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
               return (
-                <Link to={`/action/${action.slug}`} key={action.id}>
+                <Link to={`/opportunity/${action.slug}`} key={action.id}>
                   <div className={[s.detailLine, s.actionListing].join(' ')}>
                     <div>
                       {action.title}
@@ -155,7 +155,7 @@ class CampaignProfile extends PureComponent {
             { (actions.length > 0) && (
               <div className={s.actionsContainer}>
                 <div className={s.header}>
-                  Upcoming Actions:
+                  Upcoming Opportunities:
                 </div>
                 <div>{actions}</div>
               </div>
