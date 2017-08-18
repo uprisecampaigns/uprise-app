@@ -21,7 +21,7 @@ function Volunteer(props) {
 
         <Link to={'/volunteer/opportunity-commitments'}>
           <ListItem
-            primaryText="My Opportunities"
+            primaryText="My Commitments"
           />
         </Link>
 

@@ -71,7 +71,7 @@ class ActionCommitments extends PureComponent {
             </div>
           </Link>
 
-          <div className={s.pageSubHeader}>My Opportunities</div>
+          <div className={s.pageSubHeader}>My Commitments</div>
 
           {actionsList.length === 0 ? (
             <div className={s.searchPrompt}>

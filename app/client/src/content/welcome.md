@@ -14,7 +14,7 @@ can subscribe to and hear about all their opportunities.
 
 ### Manage
 
-Keep track of your volunteering commitments at [MY OPPORTUNITIES](/volunteer/opportunity-commitments) and manage
+Keep track of your volunteering commitments at [MY COMMITMENTS](/volunteer/opportunity-commitments) and manage
 your campaign subscriptions at [MY SUBSCRIPTIONS](/volunteer/campaign-subscriptions).
 
 ###

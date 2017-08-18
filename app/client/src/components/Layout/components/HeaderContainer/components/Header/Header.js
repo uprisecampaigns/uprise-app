@@ -116,7 +116,7 @@ function AuthenticatedIcons(props) {
         title="Manage"
         className={s.rightIcon}
         dropdowns={[
-          { title: 'My Opportunities', path: '/volunteer/opportunity-commitments' },
+          { title: 'My Commitments', path: '/volunteer/opportunity-commitments' },
           { title: 'My Subscriptions', path: '/volunteer/campaign-subscriptions' },
         ]}
       />
