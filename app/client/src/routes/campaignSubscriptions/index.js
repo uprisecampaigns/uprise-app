@@ -2,9 +2,6 @@ import React from 'react';
 import CampaignSubscriptions from 'scenes/CampaignSubscriptions';
 import Layout from 'components/Layout';
 
-import withAuthentication from 'routes/withAuthentication';
-
-const CampaignSubscriptionsWithAuthentication = withAuthentication(CampaignSubscriptions);
 
 export default {
 
@@ -13,7 +10,7 @@ export default {
   action() {
     return {
       title: 'My Subscriptions',
-      component: <Layout><CampaignSubscriptionsWithAuthentication /></Layout>,
+      component: <Layout><CampaignSubscriptions /></Layout>,
     };
   },
 };

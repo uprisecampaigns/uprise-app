@@ -1,0 +1,6 @@
+{
+  "name": "LoginModalPrompt",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LoginModalPrompt.js"
+}

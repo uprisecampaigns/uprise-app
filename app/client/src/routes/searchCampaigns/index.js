@@ -6,9 +6,6 @@ import {
   sortBy,
 } from 'actions/SearchActions';
 
-import withAuthentication from 'routes/withAuthentication';
-
-const SearchCampaignsWithAuthentication = withAuthentication(SearchCampaigns);
 
 export default {
 
@@ -19,7 +16,7 @@ export default {
 
     return {
       title: 'Search Campaigns',
-      component: <Layout><SearchCampaignsWithAuthentication /></Layout>,
+      component: <Layout><SearchCampaigns /></Layout>,
     };
   },
 

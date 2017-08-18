@@ -2,9 +2,6 @@ import React from 'react';
 import Contact from 'scenes/Contact';
 import Layout from 'components/Layout';
 
-import withAuthentication from 'routes/withAuthentication';
-
-const ContactWithAuthentication = withAuthentication(Contact);
 
 export default {
 
@@ -13,7 +10,7 @@ export default {
   action() {
     return {
       title: 'Contact',
-      component: <Layout><ContactWithAuthentication /></Layout>,
+      component: <Layout><Contact /></Layout>,
     };
   },
 };

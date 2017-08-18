@@ -1,11 +1,6 @@
-
 import React from 'react';
 import Layout from 'components/Layout';
-import Login from 'scenes/Login';
-
-import withAuthentication from 'routes/withAuthentication';
-
-const LoginWithAuthentication = withAuthentication(Login);
+import Login from 'components/Login';
 
 
 export default {
@@ -15,7 +10,7 @@ export default {
   async action(context) {
     return {
       title: 'Login',
-      component: <Layout><LoginWithAuthentication /></Layout>,
+      component: <Layout><Login /></Layout>,
     };
   },
 };

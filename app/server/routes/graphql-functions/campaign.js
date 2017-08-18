@@ -8,11 +8,12 @@ module.exports = {
 
   campaign: async (data, context) => {
 
-    if (!context.user) {
-      throw new Error('User must be logged in');
-    }
-
     const campaign = await Campaign.findOne(data.search);
+
+    if (!context.user) {
+      const { id, title, slug } = campaign;
+      return { id, title, slug };
+    }
 
     // TODO: This is repeated in a bunch of places and should be DRYed
     campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id });
@@ -25,7 +26,7 @@ module.exports = {
   campaigns: async (data, context) => {
 
     if (!context.user) {
-      throw new Error('User must be logged in');
+      return [];
     }
 
     const campaigns = await Campaign.search(data.search);

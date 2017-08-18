@@ -3,9 +3,8 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Link from 'components/Link';
-
 import s from 'styles/Form.scss';
+
 
 class LoginForm extends Component {
   static propTypes = {
@@ -26,15 +25,6 @@ class LoginForm extends Component {
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
-
-          <div className={s.signupButton}>
-            <Link
-              useAhref={false}
-              to="/signup"
-            >
-              <RaisedButton secondary label="Sign Up" />
-            </Link>
-          </div>
 
           <Paper zDepth={0}>
             <div className={s.loginHeader}>Log In</div>
@@ -77,13 +67,6 @@ class LoginForm extends Component {
                 </div>
               </form>
             </div>
-            <Link
-              useAhref
-              to="/forgot-password"
-              className={s.forgotPassword}
-            >
-              Forgot Password
-            </Link>
           </Paper>
 
         </div>

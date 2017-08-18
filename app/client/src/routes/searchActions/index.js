@@ -2,9 +2,6 @@ import React from 'react';
 import SearchActions from 'scenes/SearchActions';
 import Layout from 'components/Layout';
 
-import withAuthentication from 'routes/withAuthentication';
-
-const SearchActionsWithAuthentication = withAuthentication(SearchActions);
 
 export default {
 
@@ -13,7 +10,7 @@ export default {
   action() {
     return {
       title: 'Search Opportunities',
-      component: <Layout><SearchActionsWithAuthentication /></Layout>,
+      component: <Layout><SearchActions /></Layout>,
     };
   },
 };

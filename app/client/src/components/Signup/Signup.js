@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { withApollo } from 'react-apollo';
 
+import history from 'lib/history';
 import { attemptSignup } from 'actions/AuthActions';
 import isEmail from 'validator/lib/isEmail';
 import isNumeric from 'validator/lib/isNumeric';
@@ -27,6 +28,14 @@ class Signup extends Component {
     termsContent: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     signupError: PropTypes.string.isRequired,
+    handleCancel: PropTypes.func,
+  }
+
+  static defaultProps = {
+    handleCancel: (event) => {
+      (typeof event.preventDefault === 'function') && event.preventDefault();
+      history.push('/login');
+    },
   }
 
   constructor(props) {
@@ -178,6 +187,7 @@ class Signup extends Component {
         validators={validators}
         submit={this.formSubmit}
         signupError={this.props.signupError}
+        cancel={this.props.handleCancel}
       />
     );
   }

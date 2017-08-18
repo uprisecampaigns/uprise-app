@@ -5,7 +5,7 @@ import Raven from 'raven-js';
 import ReactGA from 'lib/react-ga';
 
 import { gitCommit } from 'config/config';
-import { notify } from 'actions/NotificationsActions';
+import { notify, hideLoginPrompt } from 'actions/NotificationsActions';
 
 
 export const CLICKED_SIGNUP = 'CLICKED_SIGNUP';
@@ -41,6 +41,7 @@ export function signupSuccess(userObject) {
   history.push('/welcome');
   Raven.setUserContext(userObject);
   ReactGA.set({ userId: userObject.id });
+  apolloClient.resetStore();
   return { type: SIGNUP_SUCCESS, userObject };
 }
 
@@ -69,6 +70,7 @@ export function attemptSignup(data) {
         // TODO: passportjs local-signup/login returns a "missing credentials"
         // message with no explicit error
         if (!json.error) {
+          dispatch(hideLoginPrompt());
           dispatch(signupSuccess(json));
         } else {
           dispatch(signupFail(json.error));
@@ -88,6 +90,7 @@ export function clickedLogin() {
 export function loginSuccess(userObject) {
   ReactGA.set({ userId: userObject.id });
   Raven.setUserContext(userObject);
+  apolloClient.resetStore();
 
   return { type: LOGIN_SUCCESS, userObject };
 }
@@ -117,7 +120,7 @@ export function attemptLogin(data) {
         // TODO: passportjs local-signup/login returns a "missing credentials"
         // message with no explicit error
         if (!json.error) {
-          history.push('/welcome');
+          dispatch(hideLoginPrompt());
           dispatch(loginSuccess(json));
         } else {
           dispatch(loginFail(json.error));

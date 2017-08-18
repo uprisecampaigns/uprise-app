@@ -1,5 +1,8 @@
 import history from 'lib/history';
 
+export const PROMPT_LOGIN = 'PROMPT_LOGIN';
+export const HIDE_LOGIN_PROMPT = 'HIDE_LOGIN_PROMPT';
+
 export const NOTIFY = 'NOTIFY';
 export const CLEAR = 'CLEAR';
 
@@ -28,6 +31,10 @@ export const cleanForm = () => ({ type: FORM_CLEANED });
 export const cancelNavFromDirtyForm = () => ({ type: CANCEL_NAV_FROM_DIRTY_FORM });
 
 export const attemptNavFromDirtyForm = nextUrl => ({ type: ATTEMPT_NAV_FROM_DIRTY_FORM, nextUrl });
+
+export const promptLogin = () => ({ type: PROMPT_LOGIN });
+
+export const hideLoginPrompt = () => ({ type: HIDE_LOGIN_PROMPT });
 
 export const confirmNavFromDirtyForm = () => async (dispatch, getState) => {
   const nextUrl = getState().notifications.nextUrl;

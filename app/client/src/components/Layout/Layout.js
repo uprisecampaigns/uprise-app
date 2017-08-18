@@ -5,6 +5,10 @@ import LinearProgress from 'material-ui/LinearProgress';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import withAuthentication from 'lib/withAuthentication';
+
+import LoginModalPrompt from 'components/LoginModalPrompt';
+
 import s from 'styles/Layout.scss';
 
 import {
@@ -70,6 +74,8 @@ export class Layout extends Component {
           onRequestClose={reason => this.props.dispatch(clear())}
         />
 
+        <LoginModalPrompt />
+
         <Dialog
           title="Are you sure?"
           modal
@@ -100,8 +106,9 @@ export class Layout extends Component {
 }
 
 export default connect(state => ({
+  displayLoginModal: state.notifications.displayLoginModal,
   pageLoading: state.notifications.pageLoading,
   notificationMessage: state.notifications.message,
   displayFormNavWarning: state.notifications.displayFormNavWarning,
   displayNotification: state.notifications.display,
-}))(Layout);
+}))(withAuthentication(Layout));

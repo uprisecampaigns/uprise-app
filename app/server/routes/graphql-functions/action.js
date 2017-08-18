@@ -33,11 +33,22 @@ module.exports = {
 
   action: async (data, context) => {
 
+    const action = await Action.findOne(data.search);
+
     if (!context.user) {
-      throw new Error('User must be logged in');
+      const { id, title, slug, campaign } = action;
+      return {
+        id,
+        title,
+        slug,
+        campaign: {
+          id: campaign.id,
+          slug: campaign.slug,
+          title: campaign.title
+        }
+      };
     }
 
-    const action = await Action.findOne(data.search);
     // TODO: This is repeated in a bunch of places and should be DRYed
     action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
 
@@ -49,7 +60,10 @@ module.exports = {
   actions: async (data, context) => {
 
     if (!context.user) {
-      throw new Error('User must be logged in');
+      return {
+        total: 0,
+        actions: [],
+      };
     }
 
     const actions = await Action.search(data.search);
