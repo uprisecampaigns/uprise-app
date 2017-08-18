@@ -1,19 +1,22 @@
 import React from 'react';
+import SearchActions from 'scenes/SearchActions';
 import Layout from 'components/Layout';
-import NotFound from './NotFound';
 
-const title = 'Page Not Found';
+import {
+  addSearchItem,
+} from 'actions/SearchActions';
 
 export default {
 
   path: '*',
 
-  action() {
+  action(context) {
+    const tag = context.path.replace(/\//, '');
+    context.store.dispatch(addSearchItem('action', 'keywords', tag));
+
     return {
-      title,
-      component: <Layout><NotFound title={title} /></Layout>,
-      status: 404,
+      title: `${tag} Opportunities`,
+      component: <Layout><SearchActions /></Layout>,
     };
   },
-
 };
