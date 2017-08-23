@@ -55,6 +55,7 @@
     "raven-js": "^3.15.0",
     "react-apollo": "^1.0.0-rc.2",
     "redis": "^2.6.5",
+    "rss": "^1.2.2",
     "serve-favicon": "~2.3.2",
     "speakingurl": "^13.0.0",
     "uuid": "^3.0.1",

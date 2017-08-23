@@ -18,6 +18,10 @@ class Campaign {
   static async findOne(...args) {
     const campaign = await db.table('campaigns').where(...args).first();
 
+    if (!campaign) {
+      throw new Error('Campaign not found');
+    }
+
     Object.assign(campaign, await this.details(campaign));
     return campaign;
   }
@@ -263,20 +267,22 @@ class Campaign {
     return results;
   }
 
-  static async details(campaign) {
+  static async details(campaign, quick = false) {
     const details = {};
 
-    const actionsQuery = db('actions')
-      .select(['id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing',
-               db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
-               db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time')])
-      .where('campaign_id', campaign.id)
-      .andWhere('deleted', false);
+    if (!quick) {
+      const actionsQuery = db('actions')
+        .select(['id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing', 'campaign_id', 'owner_id',
+                 db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
+                 db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time')])
+        .where('campaign_id', campaign.id)
+        .andWhere('deleted', false);
 
-    [ details.owner, details.actions ] = await Promise.all([
-      User.findOne('id', campaign.owner_id),
-      actionsQuery
-    ]);
+      [ details.owner, details.actions ] = await Promise.all([
+        User.findOne('id', campaign.owner_id),
+        actionsQuery
+      ]);
+    }
 
     details.public_url = url.resolve(config.urls.client, 'campaign/' + campaign.slug);
     details.dashboard_url = url.resolve(config.urls.client, 'organize/' + campaign.slug);

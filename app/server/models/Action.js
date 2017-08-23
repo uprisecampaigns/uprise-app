@@ -430,23 +430,26 @@ class Action {
     };
   }
 
-  static async details(action) {
+  static async details(action, quick = false) {
     const details = {};
 
-    const activitiesQuery = db('activities')
-      .innerJoin('actions_activities', 'actions_activities.activity_id', 'activities.id')
-      .where('actions_activities.action_id', action.id)
-      .select('activities.id as id', 'activities.title as title', 'activities.description as description');
+    if (!quick) {
+      const activitiesQuery = db('activities')
+        .innerJoin('actions_activities', 'actions_activities.activity_id', 'activities.id')
+        .where('actions_activities.action_id', action.id)
+        .select('activities.id as id', 'activities.title as title', 'activities.description as description');
 
 
-    [ details.campaign, details.owner, details.activities ] = await Promise.all([
-      Campaign.findOne('id', action.campaign_id),
-      User.findOne('id', action.owner_id),
-      activitiesQuery,
-    ]);
+      [ details.campaign, details.owner, details.activities ] = await Promise.all([
+        Campaign.findOne('id', action.campaign_id),
+        User.findOne('id', action.owner_id),
+        activitiesQuery,
+      ]);
+
+      details.dashboard_url = url.resolve(config.urls.client, 'organize/' + details.campaign.slug + '/opportunity/' + action.slug);
+    }
 
     details.public_url = url.resolve(config.urls.client, 'opportunity/' + action.slug);
-    details.dashboard_url = url.resolve(config.urls.client, 'organize/' + details.campaign.slug + '/opportunity/' + action.slug);
 
     return details;
   }

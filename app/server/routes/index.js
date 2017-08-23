@@ -8,6 +8,8 @@ module.exports = (app, passport) => {
 
   require('./graphql.js')(app);
 
+  require('./rss.js')(app);
+
   require('./calendar-links.js')(app);
 
   // set other routes
