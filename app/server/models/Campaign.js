@@ -272,9 +272,12 @@ class Campaign {
 
     if (!quick) {
       const actionsQuery = db('actions')
-        .select(['id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing', 'campaign_id', 'owner_id',
+        .select(['id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing', 'campaign_id', 'owner_id', 'description',
                  db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
-                 db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time')])
+                 db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
+                 'location_name', 'street_address', 'street_address2',
+                 'city', 'state', 'zipcode', 'location_notes', 'virtual', 'ongoing',
+                 ])
         .where('campaign_id', campaign.id)
         .andWhere('deleted', false);
 

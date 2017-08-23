@@ -1,31 +1,27 @@
 const moment = require('moment');
 const RSS = require('rss');
+const ejs = require('ejs');
 
 const config = require('config/config.js');
 
 const Campaign = require('models/Campaign.js');
 const Action = require('models/Action.js');
 
-const getAction = async (id) => {
+const getContext = (action) => {
 
-  const action = await Action.findOne('id', id);
+  const useTodaysDate = action.ongoing || !moment(action.start_time).isValid();
+  const dateToUse = useTodaysDate ? moment() : moment(action.start_time);
+  const pubDate = dateToUse.toISOString();
+  const prettyDate = dateToUse.format('dddd, MMMM Do YYYY, h:mm a');
+  const hasLocation = action.city || action.state;
 
-  const startTime = moment(action.start_time);
-  const endTime = moment(action.end_time);
-
-  const dates = { startTime, endTime }
-
-  const location = `${ action.location_name || '' } 
-    ${ action.street_address1 || '' } 
-    ${ action.street_address2 || '' } 
-    ${ action.city || '' }, ${ action.state || '' } ${ action.zipcode || '' } 
-     
-    ${ action.location_notes || '' } 
-  `;
-
-  return { action, dates, location };
+  return {
+    action,
+    prettyDate,
+    hasLocation,
+    pubDate,
+  };
 }
-
 
 module.exports = async (app) => {
 
@@ -40,7 +36,7 @@ module.exports = async (app) => {
         description: campaign.description,
         feed_url: `${config.urls.api}/api/rss/campaign/${slug}`,
         site_url: campaign.public_url,
-        pubDate: moment().format(),
+        pubDate: moment().toISOString(),
       });
 
       const actions = campaign.actions.filter(action => {
@@ -49,11 +45,23 @@ module.exports = async (app) => {
 
       await Promise.all(actions.map( async (action) => {
         Object.assign(action, await Action.details(action, true));
+        action.campaign_title = campaign.title;
 
-        feed.item({
-          title: action.title,
-          description: action.description,
-          url: action.public_url,
+        const context = getContext(action);
+
+        ejs.renderFile(config.paths.base + '/views/action-description-rss.ejs', context, function (err, textBody) {
+          if (err) {
+            throw new Error(err);
+          } else {
+            feed.item({
+              title: action.title,
+              author: campaign.title,
+              guid: action.id,
+              description: textBody,
+              url: action.public_url,
+              pubDate: context.pubDate,
+            });
+          }
         });
       }));
 
@@ -87,13 +95,25 @@ module.exports = async (app) => {
       });
 
       await Promise.all(actions.map( async (action) => {
-        Object.assign(action, await Action.details(action, true));
+        Object.assign(action, await Action.details(action, false));
 
-        feed.item({
-          title: action.title,
-          description: action.description,
-          url: action.public_url,
+        const context = getContext(action);
+
+        ejs.renderFile(config.paths.base + '/views/action-description-rss.ejs', context, function (err, textBody) {
+          if (err) {
+            throw new Error(err);
+          } else {
+            feed.item({
+              title: action.title,
+              author: action.campaign_title,
+              guid: action.id,
+              description: textBody,
+              url: action.public_url,
+              pubDate: context.pubDate,
+            });
+          }
         });
+
       }));
 
       return res.send(feed.xml());
