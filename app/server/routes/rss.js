@@ -31,11 +31,13 @@ module.exports = async (app) => {
       const slug = req.params.slug;
       const campaign = await Campaign.findOne({ slug });
 
+      console.log(campaign.profile_image_url);
       const feed = new RSS({
         title: `${campaign.title} upcoming volunteer opportunities`,
         description: campaign.description,
         feed_url: `${config.urls.api}/api/rss/campaign/${slug}`,
         site_url: campaign.public_url,
+        image_url: campaign.profile_image_url,
         pubDate: moment().toISOString(),
       });
 
@@ -87,10 +89,12 @@ module.exports = async (app) => {
       const actions = actionSearch.actions;
 
       const feed = new RSS({
-        title: `UpRise volunteer opportunities`,
+        title: `UpRise Volunteer Opportunities`,
         description: `Opportunities matching keyword: ${search}`,
         feed_url: `${config.urls.api}/api/rss/${search}`,
         site_url: `${config.urls.client}/${search}`,
+        // TODO: Replace this with a relative link to an image we are hosting!
+        image_url: 'https://upriseweb.files.wordpress.com/2017/06/cropped-headerlogowspace.png',
         pubDate: moment().format(),
       });
 
@@ -104,7 +108,7 @@ module.exports = async (app) => {
             throw new Error(err);
           } else {
             feed.item({
-              title: action.title,
+              title: `${action.campaign_title} - ${action.title}`,
               author: action.campaign_title,
               guid: action.id,
               description: textBody,
