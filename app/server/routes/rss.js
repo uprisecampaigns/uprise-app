@@ -43,7 +43,11 @@ module.exports = async (app) => {
         pubDate: moment().format(),
       });
 
-      await Promise.all(campaign.actions.map( async (action) => {
+      const actions = campaign.actions.filter(action => {
+        return moment(action.end_time).isAfter(moment()) || action.ongoing
+      });
+
+      await Promise.all(actions.map( async (action) => {
         Object.assign(action, await Action.details(action, true));
 
         feed.item({
@@ -64,7 +68,14 @@ module.exports = async (app) => {
 
     try {
       const search = req.params.search;
-      const actionSearch = await Action.search({ keywords: [search] });
+      const actionSearch = await Action.search({
+        keywords: [search],
+        dates: {
+          startDate: moment().format(),
+          ongoing: true,
+        },
+      });
+
       const actions = actionSearch.actions;
 
       const feed = new RSS({
