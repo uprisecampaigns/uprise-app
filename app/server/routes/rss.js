@@ -71,7 +71,7 @@ module.exports = async (app) => {
         title: `UpRise volunteer opportunities`,
         description: `Opportunities matching keyword: ${search}`,
         feed_url: `${config.urls.api}/api/rss/${search}`,
-        site_url: `${config.urls.client_url}/${search}`,
+        site_url: `${config.urls.client}/${search}`,
         pubDate: moment().format(),
       });
 
