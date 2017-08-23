@@ -26,6 +26,14 @@ function UnauthenticatedIcons(props) {
         </Link>
       </div>
 
+      <div
+        className={s.headerButton}
+      >
+        <Link useAhref={false} external to="uprisecampaigns.org/donate">
+          <FlatButton label="Donate" />
+        </Link>
+      </div>
+
       <ContentDropdownMenu
         title="Home"
         className={s.rightIcon}
