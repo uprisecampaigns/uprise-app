@@ -23,6 +23,8 @@ class Campaign extends Component {
   static propTypes = {
     campaign: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    subscribe: PropTypes.func.isRequired,
+    cancelSubscription: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
   };

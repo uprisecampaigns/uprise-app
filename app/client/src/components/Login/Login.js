@@ -10,9 +10,10 @@ import history from 'lib/history';
 
 import Link from 'components/Link';
 
+import s from 'styles/Form.scss';
+
 import LoginForm from './components/LoginForm';
 
-import s from 'styles/Form.scss';
 
 class Login extends Component {
   static propTypes = {
