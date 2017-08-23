@@ -20,6 +20,7 @@ import s from 'styles/Organize.scss';
 class ManageCampaignContainer extends Component {
   static propTypes = {
     campaign: PropTypes.object,
+    deleteCampaignMutation: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
   }
