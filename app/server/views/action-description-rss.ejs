@@ -1,19 +1,10 @@
-
-<div><b>Campaign:</b> <%= action.campaign_title %></div><br/>
-
-<% if (!action.ongoing) { %>
-<div><b>Date:</b> <%= prettyDate %></div><br/>
-<% } %>
-
 <% if (hasLocation) { %>
 <div>
-  <b>Location:</b><br/>
-  <% if (action.location_name) { %><%= action.location_name %> <br/> <% } %>
-  <% if (action.street_address) { %><%= action.street_address %> <br/> <% } %>
-  <% if (action.street_address2) { %><%= action.street_address2 %> <br/> <% } %>
-  <%= (action.city && action.city + ', ') %><%= (action.state && action.state + ' ') %><%= action.zipcode %>
+  <%= (action.city && action.city + ', ') %><%= (action.state && action.state) %>
 </div>
 <br/>
 <% } %>
 
-<div><%= action.description %></div>
+<% if (!action.ongoing) { %>
+<div><%= prettyDate %></div><br/>
+<% } %>
