@@ -66,7 +66,7 @@ class ManageCampaignActionsContainer extends PureComponent {
 
           <div className={s.pageSubHeader}>Opportunities</div>
 
-          <Link to={`/organize/${campaign.slug}/create-action`}>
+          <Link to={`/organize/${campaign.slug}/create-opportunity`}>
             <div className={s.organizeButton}>
               <RaisedButton
                 primary
