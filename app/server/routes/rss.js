@@ -1,4 +1,5 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
+const zipcodeToTimezone = require('zipcode-to-timezone');
 const RSS = require('rss');
 const ejs = require('ejs');
 
@@ -9,17 +10,20 @@ const Action = require('models/Action.js');
 
 const getContext = (action) => {
 
-  const useTodaysDate = action.ongoing || !moment(action.start_time).isValid();
-  const dateToUse = useTodaysDate ? moment() : moment(action.start_time);
-  const pubDate = dateToUse.toISOString();
-  const prettyDate = dateToUse.format('dddd, MMMM Do YYYY, h:mm a');
+  const timezone = (action.zipcode && zipcodeToTimezone.lookup(action.zipcode)) ? zipcodeToTimezone.lookup(action.zipcode) : 'America/New_York';
+
+  const hasDate = !action.ongoing || moment(action.start_time).isValid();
+  const date = moment(action.start_time).tz(timezone);
+  const prettyDate = hasDate ? date.format('dddd, MMMM Do YYYY, h:mma z') : undefined;
+
   const hasLocation = action.city || action.state;
 
   return {
     action,
+    date,
     prettyDate,
     hasLocation,
-    pubDate,
+    hasDate,
   };
 }
 
@@ -31,14 +35,13 @@ module.exports = async (app) => {
       const slug = req.params.slug;
       const campaign = await Campaign.findOne({ slug });
 
-      console.log(campaign.profile_image_url);
       const feed = new RSS({
         title: `${campaign.title} upcoming volunteer opportunities`,
         description: campaign.description,
         feed_url: `${config.urls.api}/api/rss/campaign/${slug}`,
         site_url: campaign.public_url,
         image_url: campaign.profile_image_url,
-        pubDate: moment().toISOString(),
+        pubDate: moment().toDate(),
       });
 
       const actions = campaign.actions.filter(action => {
@@ -61,7 +64,7 @@ module.exports = async (app) => {
               guid: action.id,
               description: textBody,
               url: action.public_url,
-              pubDate: context.pubDate,
+              date: context.hasDate && context.date.toDate(),
             });
           }
         });
@@ -95,7 +98,7 @@ module.exports = async (app) => {
         site_url: `${config.urls.client}/${search}`,
         // TODO: Replace this with a relative link to an image we are hosting!
         image_url: 'https://upriseweb.files.wordpress.com/2017/06/cropped-headerlogowspace.png',
-        pubDate: moment().format(),
+        pubDate: moment().toDate(),
       });
 
       await Promise.all(actions.map( async (action) => {
@@ -113,7 +116,7 @@ module.exports = async (app) => {
               guid: action.id,
               description: textBody,
               url: action.public_url,
-              pubDate: context.pubDate,
+              date: context.hasDate && context.date.toDate(),
             });
           }
         });
