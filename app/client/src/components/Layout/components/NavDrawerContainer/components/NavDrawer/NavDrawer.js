@@ -180,6 +180,17 @@ class NavDrawer extends Component {
           />
         </Link>
 
+        <Link
+          to="uprisecampaigns.org/donate"
+          useAhref={false}
+          onClick={this.itemClicked}
+          external
+        >
+          <MenuItem
+            className={s.navMenuItem}
+            primaryText="Donate"
+          />
+        </Link>
       </Drawer>
     );
   }
