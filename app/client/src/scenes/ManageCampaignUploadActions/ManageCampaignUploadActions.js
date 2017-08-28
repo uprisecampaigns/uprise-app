@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import moment from 'moment-timezone';
+import didYouMean from 'didyoumean';
 import FontIcon from 'material-ui/FontIcon';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -17,6 +18,8 @@ import CreateActionsMutation from 'schemas/mutations/CreateActionsMutation.graph
 
 import s from 'styles/Organize.scss';
 
+
+didYouMean.returnWinningObject = true;
 
 class ManageCampaignUploadActions extends Component {
   static propTypes = {
@@ -86,12 +89,19 @@ class ManageCampaignUploadActions extends Component {
         throw new Error('Can only process strings to activities');
       }
 
-      const slugs = value.split(',').map(i => i.trim().toLowerCase());
+      const slugs = value.split(',')
+        .map(i => i.trim().toLowerCase())
+        .filter(i => i !== '');
 
       try {
-        return slugs.map(slug => this.props[collectionName].find(a => getSlug(a.title) === getSlug(slug)).id);
+        return slugs.map((slug) => {
+          const found = this.props[collectionName].find(a => getSlug(a.title) === getSlug(slug));
+          const result = found || didYouMean(slug, this.props[collectionName], 'title');
+
+          return result.id;
+        });
       } catch (e) {
-        throw new Error(`Can't find matching relationship for ${collectionName}`);
+        throw new Error(`Can't find matching relationship '${value}' for '${collectionName}': ${e.message}`);
       }
     };
 
