@@ -35,37 +35,15 @@ module.exports = {
 
     const action = await Action.findOne(data.search);
 
-    if (!context.user) {
-      const { id, title, slug, campaign } = action;
-      return {
-        id,
-        title,
-        slug,
-        campaign: {
-          id: campaign.id,
-          slug: campaign.slug,
-          title: campaign.title
-        }
-      };
-    }
-
     // TODO: This is repeated in a bunch of places and should be DRYed
-    action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
+    action.attending = (context.user) ? await Action.attending({ actionId: action.id, userId: context.user.id }) : false;
 
-    action.is_owner = await User.ownsObject({ user: context.user, object: action });
+    action.is_owner = (context.user ) ? await User.ownsObject({ user: context.user, object: action }) : false;
 
     return action;
   },
 
   actions: async (data, context) => {
-
-    if (!context.user) {
-      return {
-        total: 0,
-        actions: [],
-      };
-    }
-
     const actions = await Action.search(data.search);
     return actions;
   },

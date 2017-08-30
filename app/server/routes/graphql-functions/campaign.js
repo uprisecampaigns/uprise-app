@@ -10,25 +10,15 @@ module.exports = {
 
     const campaign = await Campaign.findOne(data.search);
 
-    if (!context.user) {
-      const { id, title, slug } = campaign;
-      return { id, title, slug };
-    }
-
     // TODO: This is repeated in a bunch of places and should be DRYed
-    campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id });
+    campaign.subscribed = (context.user) ? await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id }) : false;
 
-    campaign.is_owner = User.ownsObject({ user: context.user, object: campaign });
+    campaign.is_owner = (context.user) ? User.ownsObject({ user: context.user, object: campaign }) : false;
 
     return campaign;
   },
 
   campaigns: async (data, context) => {
-
-    if (!context.user) {
-      return [];
-    }
-
     const campaigns = await Campaign.search(data.search);
     return campaigns;
   },

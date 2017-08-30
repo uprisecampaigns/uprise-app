@@ -168,6 +168,17 @@ class NavDrawer extends Component {
         </Link>
 
         <Link
+          to="/search"
+          useAhref={false}
+          onClick={this.itemClicked}
+        >
+          <MenuItem
+            className={s.navMenuItem}
+            primaryText="Search"
+          />
+        </Link>
+
+        <Link
           to="https://uprisecampaigns.org/about/"
           useAhref={false}
           sameTab

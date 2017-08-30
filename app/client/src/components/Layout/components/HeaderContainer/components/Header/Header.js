@@ -26,6 +26,15 @@ function UnauthenticatedIcons(props) {
         </Link>
       </div>
 
+      <ContentDropdownMenu
+        title="Search"
+        className={s.rightIcon}
+        dropdowns={[
+          { title: 'Opportunities', path: '/search/search-opportunities' },
+          { title: 'Campaigns', path: '/search/search-campaigns' },
+        ]}
+      />
+
       <div
         className={s.headerButton}
       >
@@ -33,25 +42,6 @@ function UnauthenticatedIcons(props) {
           <FlatButton label="Donate" />
         </Link>
       </div>
-
-      <ContentDropdownMenu
-        title="Home"
-        className={s.rightIcon}
-        dropdowns={[
-          {
-            title: 'Volunteers',
-            path: 'http://uprisecampaigns.org/home/volunteers',
-            external: true,
-            sameTab: true,
-          },
-          {
-            title: 'Campaigns',
-            path: 'http://uprisecampaigns.org/home/campaigns',
-            external: true,
-            sameTab: true,
-          },
-        ]}
-      />
 
       <ContentDropdownMenu
         title="About UpRise"

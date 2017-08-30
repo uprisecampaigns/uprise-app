@@ -24,6 +24,7 @@ class Campaign extends Component {
     campaign: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     subscribe: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
     cancelSubscription: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
@@ -88,7 +89,7 @@ class Campaign extends Component {
 
   render() {
     if (this.props.campaign) {
-      const { campaign } = this.props;
+      const { campaign, loggedIn } = this.props;
       const { modalOpen } = this.state;
 
       const modalActions = [
@@ -111,6 +112,7 @@ class Campaign extends Component {
             subscribe={this.subscribe}
             cancelSubscription={this.cancelSubscription}
             campaign={campaign}
+            loggedIn={loggedIn}
             saving={this.state.saving}
           />
 
@@ -149,8 +151,12 @@ const withCampaignQuery = graphql(CampaignQuery, {
   }),
 });
 
+const mapStateToProps = state => ({
+  loggedIn: state.userAuthSession.isLoggedIn,
+});
+
 export default compose(
-  connect(),
+  connect(mapStateToProps),
   withCampaignQuery,
   graphql(CampaignSubscriptionMutation, { name: 'subscribe' }),
   graphql(CancelCampaignSubscriptionMutation, { name: 'cancelSubscription' }),

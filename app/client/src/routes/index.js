@@ -47,7 +47,7 @@ export default {
     require('./searchActions').default,
     require('./searchCampaigns').default,
 
-    // /opportunities
+    // /volunteer/
     require('./volunteer').default,
     require('./actionCommitments').default,
     require('./campaignSubscriptions').default,

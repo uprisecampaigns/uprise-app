@@ -16,13 +16,14 @@ class CampaignProfile extends PureComponent {
   static propTypes = {
     campaign: PropTypes.object.isRequired,
     subscribe: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
     cancelSubscription: PropTypes.func.isRequired,
     saving: PropTypes.bool.isRequired,
   }
 
   render() {
     if (this.props.campaign) {
-      const { campaign, saving, subscribe, cancelSubscription } = this.props;
+      const { campaign, loggedIn, saving, subscribe, cancelSubscription } = this.props;
 
       const keywords = (Array.isArray(campaign.tags) && campaign.tags.length > 0) ? (
         <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
@@ -112,32 +113,34 @@ class CampaignProfile extends PureComponent {
               </div>
             )}
 
-            <div className={s.subscribedContainer}>
-              {saving ? (
-                <div className={s.savingThrobberContainer}>
-                  <CircularProgress
-                    size={100}
-                    thickness={5}
-                  />
-                </div>
-              ) : (
-                <div>
-                  {campaign.subscribed ? (
-                    <RaisedButton
-                      onTouchTap={cancelSubscription}
-                      primary
-                      label="Cancel Subscription"
+            { loggedIn ? (
+              <div className={s.subscribedContainer}>
+                {saving ? (
+                  <div className={s.savingThrobberContainer}>
+                    <CircularProgress
+                      size={100}
+                      thickness={5}
                     />
-                  ) : (
-                    <RaisedButton
-                      onTouchTap={subscribe}
-                      primary
-                      label="Subscribe"
-                    />
-                  )}
-                </div>
-              )}
-            </div>
+                  </div>
+                ) : (
+                  <div>
+                    {campaign.subscribed ? (
+                      <RaisedButton
+                        onTouchTap={cancelSubscription}
+                        primary
+                        label="Cancel Subscription"
+                      />
+                    ) : (
+                      <RaisedButton
+                        onTouchTap={subscribe}
+                        primary
+                        label="Subscribe"
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : null }
 
             { (typeof campaign.description === 'string' && campaign.description.trim() !== '') &&
               <div className={s.descriptionContainer}>{campaign.description}</div>

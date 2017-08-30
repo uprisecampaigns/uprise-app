@@ -23,39 +23,39 @@ export default (WrappedComponent) => {
 
     redirect = (props) => {
       if (!props.fetchingUpdate) {
-        if (props.loggedIn) {
-          props.dispatch(hideLoginPrompt());
-        }
-
         // TODO: Handle confirm email case?
-        switch (history.location.pathname) {
-          case '/login':
+        switch (history.location.pathname.split('/')[1]) { // only consider root path
+          case 'login': {
             if (props.loggedIn) {
               history.push('/search');
             } else {
               props.dispatch(hideLoginPrompt());
             }
             break;
+          }
 
-          case '/signup':
+          case 'signup': {
             if (props.loggedIn) {
               history.push('/welcome');
             } else {
               props.dispatch(hideLoginPrompt());
             }
             break;
+          }
 
-          case '/':
-          case '/forgot-password':
-          case '/terms-and-conditions':
-            props.dispatch(hideLoginPrompt());
-            break;
-
-          default:
+          case 'organize':
+          case 'volunteer':
+          case 'settings': {
             if (!props.loggedIn) {
               props.dispatch(promptLogin(history.location.pathname));
             }
             break;
+          }
+
+          default: {
+            props.dispatch(hideLoginPrompt());
+            break;
+          }
         }
       }
     }

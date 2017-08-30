@@ -31,6 +31,7 @@ class Action extends Component {
     dispatch: PropTypes.func.isRequired,
     signup: PropTypes.func.isRequired,
     cancelSignup: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     actionSlug: PropTypes.string.isRequired,
   };
@@ -94,7 +95,7 @@ class Action extends Component {
 
   render() {
     if (this.props.action) {
-      const { action } = this.props;
+      const { action, loggedIn } = this.props;
       const { modalOpen } = this.state;
       const { signup, confirmSignup, cancelSignup } = this;
 
@@ -161,44 +162,46 @@ class Action extends Component {
               <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
             }
 
-            <div className={s.attendingContainer}>
-              {this.state.saving ? (
-                <div className={s.savingThrobberContainer}>
-                  <CircularProgress
-                    size={100}
-                    thickness={5}
-                  />
-                </div>
-              ) : (
-                <div>
-                  {action.attending ? (
-                    <div>
-
-                      <AddToCalendar className={s.calendarLinkContainer} event={action}>
-                        <FlatButton
-                          label="Add to Calendar"
-                          secondary
-                          icon={<FontIcon className="material-icons">add_circle_outline</FontIcon>}
-                        />
-                      </AddToCalendar>
-
-                      <RaisedButton
-                        onTouchTap={cancelSignup}
-                        primary
-                        label="Cancel attendance"
-                      />
-                    </div>
-                  ) : (
-                    <RaisedButton
-                      onTouchTap={signup}
-                      primary
-                      className={s.primaryButton}
-                      label="Sign up now"
+            { loggedIn ? (
+              <div className={s.attendingContainer}>
+                {this.state.saving ? (
+                  <div className={s.savingThrobberContainer}>
+                    <CircularProgress
+                      size={100}
+                      thickness={5}
                     />
-                  )}
-                </div>
-              )}
-            </div>
+                  </div>
+                ) : (
+                  <div>
+                    {action.attending ? (
+                      <div>
+
+                        <AddToCalendar className={s.calendarLinkContainer} event={action}>
+                          <FlatButton
+                            label="Add to Calendar"
+                            secondary
+                            icon={<FontIcon className="material-icons">add_circle_outline</FontIcon>}
+                          />
+                        </AddToCalendar>
+
+                        <RaisedButton
+                          onTouchTap={cancelSignup}
+                          primary
+                          label="Cancel attendance"
+                        />
+                      </div>
+                    ) : (
+                      <RaisedButton
+                        onTouchTap={signup}
+                        primary
+                        className={s.primaryButton}
+                        label="Sign up now"
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : null }
 
             { (typeof action.description === 'string' && action.description.trim() !== '') &&
               <div className={s.descriptionContainer}>{action.description}</div>
@@ -299,8 +302,12 @@ const withActionQuery = graphql(ActionQuery, {
   }),
 });
 
+const mapStateToProps = state => ({
+  loggedIn: state.userAuthSession.isLoggedIn,
+});
+
 export default compose(
-  connect(),
+  connect(mapStateToProps),
   withActionQuery,
   graphql(ActionSignupMutation, { name: 'signup' }),
   graphql(CancelActionSignupMutation, { name: 'cancelSignup' }),
