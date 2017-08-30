@@ -1,6 +1,27 @@
-// Update with your config settings.
+
+const similarityThreshold = process.env.DATABASE_SIMILARITY_THRESHOLD;
+const wordSimilarityThreshold = process.env.DATABASE_WORD_SIMILARITY_THRESHOLD;
+const tagSimilarityThreshold = process.env.DATABASE_TAG_SIMILARITY_THRESHOLD;
+
+const afterCreate = (connection, callback) => {
+  connection.query('SET timezone to \'' + process.env.TZ + '\';', (err) => {
+    if (err) {
+      callback(err, connection);
+    } else {
+      // For some reason you have to call the similarity() function
+      // first before you can set pg_trgm.similarity_threshold
+      connection.query(`select similarity('a', 'a'); SET pg_trgm.similarity_threshold='${similarityThreshold}'; SET pg_trgm.word_similarity_threshold='${similarityThreshold}'`, (err) => {
+        callback(err, connection);
+      });
+    }
+  });
+};
 
 module.exports = {
+
+  similarityThreshold,
+  wordSimilarityThreshold,
+  tagSimilarityThreshold,
 
   development: {
     client: 'pg',
@@ -16,11 +37,7 @@ module.exports = {
       tableName: 'migrations',
     },
     pool: {
-      afterCreate: (connection, callback) => {
-        connection.query('SET timezone to \'' + process.env.TZ + '\'', (err) => {
-          callback(err, connection);
-        });
-      }
+      afterCreate,
     }
   },
 
@@ -38,11 +55,7 @@ module.exports = {
       tableName: 'migrations',
     },
     pool: {
-      afterCreate: (connection, callback) => {
-        connection.query('SET timezone to \'' + process.env.TZ + '\'', (err) => {
-          callback(err, connection);
-        });
-      },
+      afterCreate,
       min: 2,
       max: 10,
     },
@@ -62,11 +75,7 @@ module.exports = {
       tableName: 'migrations',
     },
     pool: {
-      afterCreate: (connection, callback) => {
-        connection.query('SET timezone to \'' + process.env.TZ + '\'', (err) => {
-          callback(err, connection);
-        });
-      },
+      afterCreate,
       min: 2,
       max: 10,
     },

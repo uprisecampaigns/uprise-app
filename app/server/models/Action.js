@@ -197,8 +197,14 @@ class Action {
 
               qb.andWhere(function() {
 
-                const stringComparator = /^#/.test(keyword) ? 'ILIKE ?' : '% ?';
-                const stringOverlapComparator = /^#/.test(keyword) ? "SIMILAR TO '%(,| )\\?' || ? || '(,| )\\?%'" : '%> ?';
+                const strictStringComparator = 'ILIKE ?';
+                const looseStringComparator = '% ?';
+
+                const strictStringOverlapComparator = "SIMILAR TO '%(,| )\\?' || ? || '(,| )\\?%'";
+                const looseStringOverlapComparator = '%> ?';
+
+                const stringComparator = /^#/.test(keyword) ? strictStringComparator : looseStringComparator;
+                const stringOverlapComparator = /^#/.test(keyword) ? strictStringOverlapComparator : looseStringOverlapComparator;
 
                 this.orWhere(db.raw(`actions.title ${stringOverlapComparator}`, keyword));
                 this.orWhere(db.raw(`actions.description ${stringOverlapComparator}`, keyword));
@@ -213,7 +219,7 @@ class Action {
                 const tagKeywordQuery = db.select('id')
                   .distinct()
                   .from(tags)
-                  .whereRaw(`tag ${stringComparator}`, keyword);
+                  .whereRaw(`similarity(tag, ?) > ${knexConfig.tagSimilarityThreshold}`, keyword);
 
                 this.orWhere('actions.id', 'in', tagKeywordQuery);
 
