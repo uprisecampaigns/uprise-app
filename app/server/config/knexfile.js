@@ -10,7 +10,7 @@ module.exports = {
       password: process.env.DATABASE_PASSWORD,
       port: process.env.DATABASE_PORT,
       database: process.env.DATABASE_NAME,
-      timezone: 'America/Los_Angeles',
+      timezone: process.env.TZ,
     },
     migrations: {
       tableName: 'migrations',
@@ -32,7 +32,7 @@ module.exports = {
       password: process.env.DATABASE_PASSWORD,
       port: process.env.DATABASE_PORT,
       database: process.env.DATABASE_NAME,
-      timezone: 'America/Los_Angeles',
+      timezone: process.env.TZ,
     },
     migrations: {
       tableName: 'migrations',
@@ -56,7 +56,7 @@ module.exports = {
       password: process.env.DATABASE_PASSWORD,
       port: process.env.DATABASE_PORT,
       database: process.env.DATABASE_NAME,
-      timezone: 'America/Los_Angeles',
+      timezone: process.env.TZ,
     },
     migrations: {
       tableName: 'migrations',
