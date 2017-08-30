@@ -3,6 +3,7 @@
 import isEqual from 'lodash.isequal';
 
 import {
+  CLEAR_SEARCH,
   ADD_SEARCH_ITEM,
   REMOVE_SEARCH_ITEM,
   SET_DATES,
@@ -78,6 +79,10 @@ export function updateSearch(searchState = defaultStartState, action) {
       sortBy.descending = (state.sortBy.name === action.selection) ? !state.sortBy.descending : false;
 
       return Object.assign({}, searchState, { sortBy });
+    }
+
+    case CLEAR_SEARCH: {
+      return defaultStartState;
     }
 
     default: {

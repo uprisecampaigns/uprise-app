@@ -3,7 +3,7 @@ import SearchActions from 'scenes/SearchActions';
 import Layout from 'components/Layout';
 
 import {
-  addSearchItem,
+  addSearchItem, clearSearch,
 } from 'actions/SearchActions';
 
 export default {
@@ -12,6 +12,7 @@ export default {
 
   action(context) {
     const tag = context.path.replace(/\//, '');
+    context.store.dispatch(clearSearch('action'));
     context.store.dispatch(addSearchItem('action', 'keywords', tag));
 
     return {

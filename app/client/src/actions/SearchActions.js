@@ -1,3 +1,5 @@
+export const CLEAR_SEARCH = 'CLEAR_SEARCH';
+
 export const ADD_SEARCH_ITEM = 'ADD_SEARCH_ITEM';
 export const REMOVE_SEARCH_ITEM = 'REMOVE_SEARCH_ITEM';
 
@@ -5,6 +7,8 @@ export const SET_DATES = 'SET_DATES';
 export const UNSET_DATES = 'UNSET_DATES';
 
 export const SORT_BY = 'SORT_BY';
+
+export const clearSearch = searchType => ({ type: CLEAR_SEARCH, searchType });
 
 export const addSearchItem = (searchType, collectionName, value) => ({ type: ADD_SEARCH_ITEM, searchType, collection: collectionName, value });
 
