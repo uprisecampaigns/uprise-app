@@ -105,9 +105,11 @@ export class Layout extends Component {
   }
 }
 
-export default connect(state => ({
-  pageLoading: state.notifications.pageLoading,
-  notificationMessage: state.notifications.message,
-  displayFormNavWarning: state.notifications.displayFormNavWarning,
-  displayNotification: state.notifications.display,
-}))(withAuthentication(Layout));
+export default withAuthentication(
+  connect(state => ({
+    pageLoading: state.notifications.pageLoading,
+    notificationMessage: state.notifications.message,
+    displayFormNavWarning: state.notifications.displayFormNavWarning,
+    displayNotification: state.notifications.display,
+  }))(Layout),
+);

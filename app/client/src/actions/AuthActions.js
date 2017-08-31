@@ -38,7 +38,6 @@ export function clickedSignup() {
 }
 
 export function signupSuccess(userObject) {
-  history.push('/welcome');
   Raven.setUserContext(userObject);
   ReactGA.set({ userId: userObject.id });
   apolloClient.resetStore();

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
+import IconButton from 'material-ui/IconButton';
 
 import Login from 'components/Login';
 import Signup from 'components/Signup';
@@ -36,7 +37,8 @@ class LoginModalPrompt extends Component {
     });
   }
 
-  closeModal = () => {
+  closeModal = (event) => {
+    (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
     this.props.dispatch(hideLoginPrompt());
   }
 
@@ -54,12 +56,20 @@ class LoginModalPrompt extends Component {
 
     return (
       <Dialog
-        modal={!this.props.loginModal.exitable}
+        modal
         onRequestClose={this.closeModal}
         actionsContainerClassName={layoutStyles.modalActionsContainer}
         open={this.props.loginModal.display}
         autoScrollBodyContent
       >
+
+        { this.props.loginModal.exitable && (
+          <IconButton
+            onTouchTap={this.closeModal}
+            iconClassName="material-icons"
+          >close</IconButton>
+        )}
+
         { this.state.currentPage === 'login' ? (
           <div className={formStyles.loginContainer}>
             <p>
