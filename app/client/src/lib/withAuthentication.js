@@ -47,7 +47,7 @@ export default (WrappedComponent) => {
           case 'volunteer':
           case 'settings': {
             if (!props.loggedIn) {
-              props.dispatch(promptLogin(history.location.pathname));
+              props.dispatch(promptLogin());
             }
             break;
           }

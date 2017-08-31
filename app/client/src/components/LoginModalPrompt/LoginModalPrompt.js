@@ -8,13 +8,19 @@ import Signup from 'components/Signup';
 import layoutStyles from 'styles/Layout.scss';
 import formStyles from 'styles/Form.scss';
 
+import {
+  hideLoginPrompt,
+} from 'actions/NotificationsActions';
+
 
 class LoginModalPrompt extends Component {
   static propTypes = {
-    displayLoginModal: PropTypes.bool.isRequired,
-  }
-
-  static defaultProps = {
+    loginModal: PropTypes.shape({
+      display: PropTypes.bool,
+      title: PropTypes.string,
+      exitable: PropTypes.bool,
+    }).isRequired,
+    dispatch: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -28,6 +34,10 @@ class LoginModalPrompt extends Component {
         termsContent: require('content/terms.md'),
       });
     });
+  }
+
+  closeModal = () => {
+    this.props.dispatch(hideLoginPrompt());
   }
 
   render() {
@@ -44,15 +54,16 @@ class LoginModalPrompt extends Component {
 
     return (
       <Dialog
-        modal
+        modal={!this.props.loginModal.exitable}
+        onRequestClose={this.closeModal}
         actionsContainerClassName={layoutStyles.modalActionsContainer}
-        open={this.props.displayLoginModal}
+        open={this.props.loginModal.display}
         autoScrollBodyContent
       >
         { this.state.currentPage === 'login' ? (
           <div className={formStyles.loginContainer}>
             <p>
-              Please sign up or log in to view this content.
+              { this.props.loginModal.title }
             </p>
             <Login
               handleSignupClick={handleSignupClick}
@@ -71,5 +82,5 @@ class LoginModalPrompt extends Component {
 
 
 export default connect(state => ({
-  displayLoginModal: state.notifications.displayLoginModal,
+  loginModal: state.notifications.loginModal,
 }))(LoginModalPrompt);

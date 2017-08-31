@@ -106,7 +106,6 @@ export class Layout extends Component {
 }
 
 export default connect(state => ({
-  displayLoginModal: state.notifications.displayLoginModal,
   pageLoading: state.notifications.pageLoading,
   notificationMessage: state.notifications.message,
   displayFormNavWarning: state.notifications.displayFormNavWarning,

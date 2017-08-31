@@ -32,7 +32,7 @@ export const cancelNavFromDirtyForm = () => ({ type: CANCEL_NAV_FROM_DIRTY_FORM 
 
 export const attemptNavFromDirtyForm = nextUrl => ({ type: ATTEMPT_NAV_FROM_DIRTY_FORM, nextUrl });
 
-export const promptLogin = () => ({ type: PROMPT_LOGIN });
+export const promptLogin = ({ title, exitable } = {}) => ({ type: PROMPT_LOGIN, title, exitable });
 
 export const hideLoginPrompt = () => ({ type: HIDE_LOGIN_PROMPT });
 

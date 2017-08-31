@@ -11,7 +11,11 @@ import {
 } from 'actions/NotificationsActions';
 
 const defaultStartState = {
-  displayLoginModal: false,
+  loginModal: {
+    display: false,
+    title: 'Please sign up or log in to view this content.',
+    exitable: false,
+  },
   display: false,
   message: '',
   pageLoading: false,
@@ -23,12 +27,16 @@ export function updateNotifications(notificationsState = defaultStartState, acti
   switch (action.type) {
     case PROMPT_LOGIN:
       return Object.assign({}, notificationsState, {
-        displayLoginModal: true,
+        loginModal: {
+          display: true,
+          title: (typeof action.title === 'string') ? action.title : notificationsState.loginModal.title,
+          exitable: (typeof action.exitable === 'boolean') ? action.exitable : notificationsState.loginModal.exitable,
+        },
       });
 
     case HIDE_LOGIN_PROMPT:
       return Object.assign({}, notificationsState, {
-        displayLoginModal: false,
+        loginModal: defaultStartState.loginModal,
       });
 
     case NOTIFY:

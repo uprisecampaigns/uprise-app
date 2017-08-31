@@ -13,7 +13,7 @@ import CancelCampaignSubscriptionMutation from 'schemas/mutations/CancelCampaign
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
 import {
-  notify,
+  promptLogin, notify,
 } from 'actions/NotificationsActions';
 
 import s from 'styles/Profile.scss';
@@ -44,7 +44,11 @@ class Campaign extends Component {
   }
 
   subscribe = () => {
-    this.setState({ modalOpen: true });
+    if (this.props.loggedIn) {
+      this.setState({ modalOpen: true });
+    } else {
+      this.props.dispatch(promptLogin({ exitable: true, title: 'Please login to subscribe to this campaign.' }));
+    }
   }
 
   confirmSubscription = async () => {

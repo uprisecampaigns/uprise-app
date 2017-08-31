@@ -14,7 +14,7 @@ import Link from 'components/Link';
 import AddToCalendar from 'components/AddToCalendar';
 
 import {
-  notify,
+  promptLogin, notify,
 } from 'actions/NotificationsActions';
 
 import ActionQuery from 'schemas/queries/ActionQuery.graphql';
@@ -50,7 +50,11 @@ class Action extends Component {
   }
 
   signup = () => {
-    this.setState({ modalOpen: true });
+    if (this.props.loggedIn) {
+      this.setState({ modalOpen: true });
+    } else {
+      this.props.dispatch(promptLogin({ exitable: true, title: 'Please login to sign up for this action.' }));
+    }
   }
 
   confirmSignup = async () => {
@@ -95,7 +99,7 @@ class Action extends Component {
 
   render() {
     if (this.props.action) {
-      const { action, loggedIn } = this.props;
+      const { action } = this.props;
       const { modalOpen } = this.state;
       const { signup, confirmSignup, cancelSignup } = this;
 
@@ -162,46 +166,44 @@ class Action extends Component {
               <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
             }
 
-            { loggedIn ? (
-              <div className={s.attendingContainer}>
-                {this.state.saving ? (
-                  <div className={s.savingThrobberContainer}>
-                    <CircularProgress
-                      size={100}
-                      thickness={5}
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    {action.attending ? (
-                      <div>
+            <div className={s.attendingContainer}>
+              {this.state.saving ? (
+                <div className={s.savingThrobberContainer}>
+                  <CircularProgress
+                    size={100}
+                    thickness={5}
+                  />
+                </div>
+              ) : (
+                <div>
+                  {action.attending ? (
+                    <div>
 
-                        <AddToCalendar className={s.calendarLinkContainer} event={action}>
-                          <FlatButton
-                            label="Add to Calendar"
-                            secondary
-                            icon={<FontIcon className="material-icons">add_circle_outline</FontIcon>}
-                          />
-                        </AddToCalendar>
-
-                        <RaisedButton
-                          onTouchTap={cancelSignup}
-                          primary
-                          label="Cancel attendance"
+                      <AddToCalendar className={s.calendarLinkContainer} event={action}>
+                        <FlatButton
+                          label="Add to Calendar"
+                          secondary
+                          icon={<FontIcon className="material-icons">add_circle_outline</FontIcon>}
                         />
-                      </div>
-                    ) : (
+                      </AddToCalendar>
+
                       <RaisedButton
-                        onTouchTap={signup}
+                        onTouchTap={cancelSignup}
                         primary
-                        className={s.primaryButton}
-                        label="Sign up now"
+                        label="Cancel attendance"
                       />
-                    )}
-                  </div>
-                )}
-              </div>
-            ) : null }
+                    </div>
+                  ) : (
+                    <RaisedButton
+                      onTouchTap={signup}
+                      primary
+                      className={s.primaryButton}
+                      label="Sign up now"
+                    />
+                  )}
+                </div>
+              )}
+            </div>
 
             { (typeof action.description === 'string' && action.description.trim() !== '') &&
               <div className={s.descriptionContainer}>{action.description}</div>
