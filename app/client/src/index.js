@@ -15,6 +15,11 @@ import App from 'components/App';
 import configureStore from 'store/configureStore';
 import apolloClient from 'store/apolloClient';
 
+import {
+  defaultCampaignStartState,
+  defaultActionStartState,
+} from 'reducers/SearchReducer';
+
 import { checkSessionStatus } from 'actions/AuthActions';
 import {
   startPageLoad,
@@ -36,7 +41,10 @@ Raven.config(sentryDsn).install();
 
 const container = document.getElementById('app');
 
-const store = configureStore();
+const store = configureStore({
+  actionsSearch: defaultActionStartState,
+  campaignsSearch: defaultCampaignStartState,
+});
 
 injectTapEventPlugin();
 

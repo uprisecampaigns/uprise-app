@@ -68,6 +68,7 @@ class SearchCampaigns extends Component {
     dispatch: PropTypes.func.isRequired,
   };
 
+
   addSelectedItem = (collectionName, value) => {
     this.props.dispatch(addSearchItem('campaign', collectionName, value));
   }

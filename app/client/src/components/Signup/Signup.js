@@ -4,7 +4,6 @@ import { withApollo } from 'react-apollo';
 
 import history from 'lib/history';
 import { attemptSignup } from 'actions/AuthActions';
-import isEmail from 'validator/lib/isEmail';
 import isNumeric from 'validator/lib/isNumeric';
 
 import formWrapper from 'lib/formWrapper';

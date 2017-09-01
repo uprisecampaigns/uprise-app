@@ -8,7 +8,7 @@ import { updateMessages } from './MessageReducer';
 
 function createFilteredReducer(reducerFunction, reducerPredicate) {
   return (state, action) => {
-    const isInitializationCall = state === undefined;
+    const isInitializationCall = (state === undefined) || (action.type === '@@redux/INIT');
     const shouldRunWrappedReducer = reducerPredicate(action) || isInitializationCall;
     return shouldRunWrappedReducer ? reducerFunction(state, action) : state;
   };

@@ -24,6 +24,16 @@ export const defaultStartState = {
   },
 };
 
+export const defaultCampaignStartState = {
+  ...defaultStartState,
+  sortBy: {
+    name: 'title',
+    descending: false,
+  },
+};
+
+export const defaultActionStartState = { ...defaultStartState };
+
 export function updateSearch(searchState = defaultStartState, action) {
   switch (action.type) {
     case ADD_SEARCH_ITEM: {
@@ -76,7 +86,11 @@ export function updateSearch(searchState = defaultStartState, action) {
         name: action.selection,
       };
 
-      sortBy.descending = (state.sortBy.name === action.selection) ? !state.sortBy.descending : false;
+      if (typeof action.descending === 'boolean') {
+        sortBy.descending = action.descending;
+      } else {
+        sortBy.descending = (state.sortBy.name === action.selection) ? !state.sortBy.descending : false;
+      }
 
       return Object.assign({}, searchState, { sortBy });
     }

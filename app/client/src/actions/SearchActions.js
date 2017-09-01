@@ -21,4 +21,4 @@ export const setSearchDates = (searchType, dates) => {
   return { type: SET_DATES, searchType, dates };
 };
 
-export const sortBy = (searchType, selection) => ({ type: SORT_BY, searchType, selection });
+export const sortBy = (searchType, selection, descending = undefined) => ({ type: SORT_BY, searchType, selection, descending });
