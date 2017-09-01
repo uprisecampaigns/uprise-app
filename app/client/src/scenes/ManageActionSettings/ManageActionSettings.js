@@ -190,7 +190,7 @@ class ManageActionSettings extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={`${baseActionUrl}`}>
+          <Link to={baseActionUrl}>
             <div className={s.navHeader}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
