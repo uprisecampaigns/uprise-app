@@ -33,6 +33,7 @@ class ManageCampaignInfoContainer extends Component {
     campaign: PropTypes.object,
     user: PropTypes.object.isRequired,
     editCampaignMutation: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
     graphqlLoading: PropTypes.bool.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
@@ -76,7 +77,15 @@ class ManageCampaignInfoContainer extends Component {
     this.state = Object.assign({}, initialState);
   }
 
+  componentWillMount() {
+    this.handleCampaignProps(this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
+    this.handleCampaignProps(nextProps);
+  }
+
+  handleCampaignProps = (nextProps) => {
     if (nextProps.campaign && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
       const campaign = Object.assign(...Object.keys(nextProps.campaign).map((k) => {

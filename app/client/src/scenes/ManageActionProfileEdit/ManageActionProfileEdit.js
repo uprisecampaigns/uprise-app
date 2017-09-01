@@ -26,15 +26,16 @@ const WrappedActionProfileForm = formWrapper(ActionProfileForm);
 
 class ManageActionProfileEdit extends Component {
   static propTypes = {
-    graphqlLoading: PropTypes.bool.isRequired,
     editActionMutation: PropTypes.func.isRequired,
     campaign: PropTypes.object,
     action: PropTypes.object,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
-    campaignId: PropTypes.object.isRequired,
+    graphqlLoading: PropTypes.bool.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
-    actionId: PropTypes.object.isRequired,
+    campaignId: PropTypes.string.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    actionId: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -57,7 +58,15 @@ class ManageActionProfileEdit extends Component {
     this.state = Object.assign({}, initialState);
   }
 
+  componentWillMount() {
+    this.handleActionProps(this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
+    this.handleActionProps(nextProps);
+  }
+
+  handleActionProps = (nextProps) => {
     if (nextProps.action && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
       const action = Object.assign(...Object.keys(nextProps.action).map((k) => {

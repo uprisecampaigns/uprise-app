@@ -27,6 +27,7 @@ class ManageCampaignLocation extends Component {
   static propTypes = {
     campaign: PropTypes.object,
     editCampaignMutation: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
     graphqlLoading: PropTypes.bool.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
@@ -42,7 +43,15 @@ class ManageCampaignLocation extends Component {
     this.state = Object.assign({}, this.initialState);
   }
 
+  componentWillMount() {
+    this.handleCampaignProps(this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
+    this.handleCampaignProps(nextProps);
+  }
+
+  handleCampaignProps = (nextProps) => {
     if (nextProps.campaign && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
       const campaign = Object.assign(...Object.keys(nextProps.campaign).map((k) => {

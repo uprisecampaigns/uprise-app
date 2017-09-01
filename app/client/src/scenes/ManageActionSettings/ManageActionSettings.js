@@ -31,8 +31,9 @@ class ManageActionSettings extends Component {
   static propTypes = {
     campaign: PropTypes.object,
     action: PropTypes.object,
-    graphqlLoading: PropTypes.bool.isRequired,
     editActionMutation: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    graphqlLoading: PropTypes.bool.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignId: PropTypes.string.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
@@ -71,7 +72,15 @@ class ManageActionSettings extends Component {
     this.state = Object.assign({}, initialState);
   }
 
+  componentWillMount() {
+    this.handleActionProps(this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
+    this.handleActionProps(nextProps);
+  }
+
+  handleActionProps = (nextProps) => {
     if (nextProps.action && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null
       const action = Object.assign(...Object.keys(nextProps.action).map((k) => {

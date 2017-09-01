@@ -27,9 +27,10 @@ const WrappedAccountForm = formWrapper(AccountForm);
 
 class Account extends Component {
   static propTypes = {
-    graphqlLoading: PropTypes.bool.isRequired,
     user: PropTypes.object,
     editAccountMutation: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    graphqlLoading: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
@@ -52,7 +53,15 @@ class Account extends Component {
     this.state = Object.assign({}, initialState);
   }
 
+  componentWillMount() {
+    this.handleUserProps(this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
+    this.handleUserProps(nextProps);
+  }
+
+  handleUserProps = (nextProps) => {
     if (nextProps.user && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
       const user = Object.assign(...Object.keys(nextProps.user).map((k) => {
