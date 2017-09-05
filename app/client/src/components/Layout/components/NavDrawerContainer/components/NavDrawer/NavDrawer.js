@@ -71,9 +71,8 @@ class NavDrawer extends Component {
   }
 
   menuItems = [
-    { path: '/search', title: 'Search' },
-    { path: '/volunteer', title: 'Manage' },
-    { path: '/organize', title: 'Organize' },
+    { path: '/volunteer', title: 'My Profile' },
+    { path: '/organize', title: 'Manage Opportunities' },
     { path: '/settings', title: 'Settings' },
   ]
 
@@ -164,17 +163,6 @@ class NavDrawer extends Component {
           <MenuItem
             className={s.navMenuItem}
             primaryText="Sign Up"
-          />
-        </Link>
-
-        <Link
-          to="/search"
-          useAhref={false}
-          onClick={this.itemClicked}
-        >
-          <MenuItem
-            className={s.navMenuItem}
-            primaryText="Search"
           />
         </Link>
 

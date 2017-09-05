@@ -1,22 +1,16 @@
 import React, { Component, PropTypes } from 'react';
-import Popover from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import SearchBar from 'components/SearchBar';
-import SearchSort from 'components/SearchSort';
 
 import s from 'styles/Search.scss';
 
 
 class SearchPresentation extends Component {
   static propTypes = {
-    sortSelect: PropTypes.func.isRequired,
-    resultsCount: PropTypes.node.isRequired,
-    searchSortWrapper: PropTypes.func.isRequired,
     addSelectedItem: PropTypes.func.isRequired,
-    searchSortItems: PropTypes.arrayOf(PropTypes.object).isRequired,
     searchSelections: PropTypes.node.isRequired,
     searchInputs: PropTypes.node.isRequired,
     searchResults: PropTypes.node.isRequired,
@@ -27,9 +21,6 @@ class SearchPresentation extends Component {
 
     this.state = {
       filterOpen: false,
-      filterPopoverAnchorEl: null,
-      sortOpen: false,
-      sortPopoverAnchorEl: null,
     };
 
     this.searchBarInputElements = [];
@@ -40,32 +31,6 @@ class SearchPresentation extends Component {
     this.props.addSelectedItem(collectionName, value);
   }
 
-  sortSelect = (value, event) => {
-    this.handleCloseSort(event);
-    this.props.sortSelect(value);
-  }
-
-  handleOpenSort = (event) => {
-    this.searchBarInputElements.forEach(element => element.blur());
-    event.preventDefault();
-
-    this.setState(Object.assign({},
-      this.state,
-      {
-        sortOpen: true,
-        sortPopoverAnchorEl: event.currentTarget,
-      },
-    ));
-  }
-
-  handleCloseSort = (event) => {
-    typeof event.preventDefault === 'function' && event.preventDefault();
-    this.setState(Object.assign({},
-      this.state,
-      { sortOpen: false },
-    ));
-  }
-
   handleOpenFilter = (event) => {
     this.searchBarInputElements.forEach(element => element.blur());
     event.preventDefault();
@@ -74,7 +39,6 @@ class SearchPresentation extends Component {
       prevState,
       {
         filterOpen: !prevState.filterOpen,
-        filterPopoverAnchorEl: event.currentTarget,
       },
     )));
   }
@@ -89,11 +53,8 @@ class SearchPresentation extends Component {
 
   render() {
     const {
-      searchSortWrapper, resultsCount, searchSortItems,
       searchSelections, searchInputs, searchResults,
     } = this.props;
-
-    const ConnectedSearchSort = searchSortWrapper(SearchSort);
 
     return (
       <div className={s.searchContentContainer}>
@@ -105,6 +66,16 @@ class SearchPresentation extends Component {
               addItem={this.addSelectedItem}
               inputRef={(el) => { this.searchBarInputElements[0] = el; }}
             />
+          </div>
+
+          <div
+            className={s.filterContainer}
+            onTouchTap={this.handleOpenFilter}
+          >
+            <span>Filter</span>
+            <IconButton
+              iconClassName="material-icons"
+            >filter_list</IconButton>
           </div>
         </div>
         <div className={s.filterResultsOuterContainer}>
@@ -120,7 +91,7 @@ class SearchPresentation extends Component {
 
           </div>
 
-          <div className={s.countSortFilterResultsContainer}>
+          <div className={s.selectionsResultsContainer}>
 
             <div className={s.desktopSearchBarContainer}>
               <div className={s.searchBarContainer}>
@@ -131,47 +102,7 @@ class SearchPresentation extends Component {
                   inputRef={(el) => { this.searchBarInputElements[0] = el; }}
                 />
               </div>
-            </div>
 
-            <div className={s.countSortFilterContainer}>
-
-              <div className={s.countContainer}>
-                {resultsCount}
-              </div>
-
-              <div
-                onTouchTap={this.handleOpenSort}
-                className={s.sortContainer}
-              >
-                <span>Sort by</span>
-                <IconButton
-                  iconClassName="material-icons"
-                >sort</IconButton>
-
-                <Popover
-                  open={this.state.sortOpen}
-                  anchorEl={this.state.sortPopoverAnchorEl}
-                  onRequestClose={this.handleCloseSort}
-                  anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                  targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                  className={s.popover}
-                >
-                  <ConnectedSearchSort
-                    onSelect={this.sortSelect}
-                    items={searchSortItems}
-                  />
-                </Popover>
-              </div>
-
-              <div
-                className={s.filterContainer}
-                onTouchTap={this.handleOpenFilter}
-              >
-                <span>Filter</span>
-                <IconButton
-                  iconClassName="material-icons"
-                >filter_list</IconButton>
-              </div>
             </div>
 
             <div className={s.selectionsContainer}>

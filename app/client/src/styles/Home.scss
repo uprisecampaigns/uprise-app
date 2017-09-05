@@ -1,0 +1,27 @@
+@import '~styles/variables';
+@import '~styles/nav';
+@import '~styles/buttons';
+
+.outerContainer {
+  width: 100%;
+
+  .tabs {
+    
+    > div {
+      background: none !important;
+    }
+  }
+
+  .tab {
+    color: $brick-red !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    font-size: 1.3rem !important;
+    padding: 0.5rem 0rem !important;
+  }
+
+  .activeTab {
+    @extend .tab;
+    color: $black !important;
+  }
+}

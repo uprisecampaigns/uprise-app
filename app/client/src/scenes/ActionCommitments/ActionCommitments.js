@@ -67,7 +67,7 @@ class ActionCommitments extends PureComponent {
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
               >arrow_back</FontIcon>
-              Manage
+              My Profile
             </div>
           </Link>
 

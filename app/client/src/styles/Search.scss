@@ -23,61 +23,35 @@
 
   .mobileSearchBarContainer {
 
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
     margin-top: 1rem;
+
     @media (min-width: $screen-sm-min) {
       display: none;
     }
+
+    .searchBarContainer {
+      flex: 4;
+    }
+
+    .filterContainer {
+      font-weight: 400;
+      display: block;
+      padding: 0 1rem;
+
+      >button {
+        top: 0.5rem;
+      }
+    }
   }
 
-  .countSortFilterResultsContainer {
+  .selectionsResultsContainer {
     flex: 2;
     @media (min-width: $screen-sm-min) {
       border: 1px solid darken($white, 9%);
       border-top: none;
-    }
-  }
-
-  .countSortFilterContainer {
-    display: flex;
-    align-items: baseline;
-    font-size: 1rem;
-    text-align: center;
-    padding-bottom: .5rem;
-
-    .countContainer {
-      color: $brick-red;
-      width: 30%;
-      font-size: 1rem;
-
-      >span {
-        padding: 0 0 0 1rem;
-      }
-    }
-
-    .sortContainer {
-      width: 35%;
-      font-weight: 400;
-
-      @media (min-width: $screen-sm-min) {
-        width: 70%;
-      }
-
-      >button {
-        top: 0.5rem;
-      }
-    }
-
-    .filterContainer {
-      width: 35%;
-      font-weight: 400;
-      display: block;
-      @media (min-width: $screen-sm-min) {
-        display: none;
-      }
-
-      >button {
-        top: 0.5rem;
-      }
     }
   }
 

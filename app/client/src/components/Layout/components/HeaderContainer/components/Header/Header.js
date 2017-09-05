@@ -26,15 +26,6 @@ function UnauthenticatedIcons(props) {
         </Link>
       </div>
 
-      <ContentDropdownMenu
-        title="Search"
-        className={s.rightIcon}
-        dropdowns={[
-          { title: 'Opportunities', path: '/search/search-opportunities' },
-          { title: 'Campaigns', path: '/search/search-campaigns' },
-        ]}
-      />
-
       <div
         className={s.headerButton}
       >
@@ -102,16 +93,7 @@ function AuthenticatedIcons(props) {
     <div className={s.menuItemsContainer}>
 
       <ContentDropdownMenu
-        title="Search"
-        className={s.rightIcon}
-        dropdowns={[
-          { title: 'Opportunities', path: '/search/search-opportunities' },
-          { title: 'Campaigns', path: '/search/search-campaigns' },
-        ]}
-      />
-
-      <ContentDropdownMenu
-        title="Manage"
+        title="Profile"
         className={s.rightIcon}
         dropdowns={[
           { title: 'My Commitments', path: '/volunteer/opportunity-commitments' },

@@ -42,11 +42,6 @@ export default {
     require('./manageActionProfileEdit').default,
     require('./manageActionComposeMessage').default,
 
-    // /search/
-    require('./search').default,
-    require('./searchActions').default,
-    require('./searchCampaigns').default,
-
     // /volunteer/
     require('./volunteer').default,
     require('./actionCommitments').default,

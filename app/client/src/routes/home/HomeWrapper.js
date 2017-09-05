@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import LoggedOutHome from 'scenes/LoggedOutHome';
 import Home from 'scenes/Home';
-import Page from 'components/Page';
 
 
 function HomeWrapper(props) {
   const { fetchingUpdate, loggedIn } = props;
 
-  if (!fetchingUpdate && loggedIn) {
+  if (!fetchingUpdate && !loggedIn) {
     return (
-      <Page {...props} />
+      <LoggedOutHome {...props} />
     );
   }
   return (
