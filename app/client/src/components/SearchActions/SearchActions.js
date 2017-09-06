@@ -90,6 +90,7 @@ const mapStateToProps = (state) => {
   return {
     search: {
       keywords: aSearch.keywords,
+      tags: aSearch.tags,
       activities: aSearch.activities,
       campaignNames: aSearch.campaignNames,
       dates: searchDates,

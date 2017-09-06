@@ -11,12 +11,11 @@ import {
 
 import s from 'styles/Search.scss';
 
+const SelectedTagsContainer = connect(state => ({ items: state.actionsSearch.tags }))(SelectedItemsContainer);
 
 const SelectedKeywordsContainer = connect(state => ({ items: state.actionsSearch.keywords }))(SelectedItemsContainer);
 
 const SelectedActivitiesContainer = connect(state => ({ items: state.actionsSearch.activities }))(SelectedItemsContainer);
-
-const SelectedCampaignNamesContainer = connect(state => ({ items: state.actionsSearch.campaignNames }))(SelectedItemsContainer);
 
 const SelectedTimesContainer = connect(state => ({ items: state.actionsSearch.times }))(SelectedItemsContainer);
 
@@ -68,16 +67,16 @@ class SearchActionSelections extends PureComponent {
 
     return (
       <div className={s.selectedInputs}>
+        <SelectedTagsContainer
+          collectionName="tags"
+          removeItem={removeSelectedItem}
+        />
         <SelectedKeywordsContainer
           collectionName="keywords"
           removeItem={removeSelectedItem}
         />
         <SelectedActivitiesContainer
           collectionName="activities"
-          removeItem={removeSelectedItem}
-        />
-        <SelectedCampaignNamesContainer
-          collectionName="campaignNames"
           removeItem={removeSelectedItem}
         />
         <SelectedDatesContainer

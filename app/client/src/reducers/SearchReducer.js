@@ -13,6 +13,7 @@ import {
 
 export const defaultStartState = {
   keywords: [],
+  tags: [],
   activities: [],
   campaignNames: [],
   dates: {},
