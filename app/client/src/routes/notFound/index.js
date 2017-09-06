@@ -13,7 +13,7 @@ export default {
   action(context) {
     const tag = context.path.replace(/\//, '');
     context.store.dispatch(clearSearch('action'));
-    context.store.dispatch(addSearchItem('action', 'keywords', tag));
+    context.store.dispatch(addSearchItem('action', 'tags', tag));
 
     return {
       title: `${tag} Opportunities`,

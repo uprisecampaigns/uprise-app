@@ -187,6 +187,27 @@ class Action {
             });
           }            
 
+          if (search.tags) {
+
+            const tags = db('actions')
+              .select(db.raw('id, unnest(tags) tag'))
+              .as('tags');
+
+            search.tags.forEach( (tag) => {
+
+              qb.andWhere(function() {
+
+                const tagQuery = db.select('id')
+                  .distinct()
+                  .from(tags)
+                  .whereRaw(`tag ILIKE ?`, tag);
+
+                this.where('actions.id', 'in', tagQuery);
+
+              });
+            });
+          }
+
           if (search.keywords) {
 
             const tags = db('actions')

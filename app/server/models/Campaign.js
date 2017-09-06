@@ -215,6 +215,27 @@ class Campaign {
             qb.andWhere('owner_id', search.ownerId);
           }
 
+          if (search.tags) {
+
+            const tags = db('campaigns')
+              .select(db.raw('id, unnest(tags) tag'))
+              .as('tags');
+
+            search.tags.forEach( (tag) => {
+
+              qb.andWhere(function() {
+
+                const tagQuery = db.select('id')
+                  .distinct()
+                  .from(tags)
+                  .whereRaw(`tag ILIKE ?`, tag);
+
+                this.where('campaigns.id', 'in', tagQuery);
+
+              });
+            });
+          }
+
           if (search.keywords) {
 
             const tags = db('campaigns')

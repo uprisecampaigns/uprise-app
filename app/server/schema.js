@@ -107,6 +107,7 @@ module.exports = buildSchema(`
     id: [String]
     title: [String]
     keywords: [String]
+    tags: [String]
     geographies: [GeographySearchInput]
   }
 
@@ -119,6 +120,7 @@ module.exports = buildSchema(`
     ids: [String]
     slugs: [String]
     keywords: [String]
+    tags: [String]
     activities: [String]
     campaignIds: [String]
     campaignNames: [String]
