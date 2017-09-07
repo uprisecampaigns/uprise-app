@@ -176,16 +176,18 @@ class Action extends Component {
                 </div>
               ) : (
                 <div>
-                  {action.attending ? (
+                  { action.attending ? (
                     <div>
 
-                      <AddToCalendar className={s.calendarLinkContainer} event={action}>
-                        <FlatButton
-                          label="Add to Calendar"
-                          secondary
-                          icon={<FontIcon className="material-icons">add_circle_outline</FontIcon>}
-                        />
-                      </AddToCalendar>
+                      { !action.ongoing && (startTime.isValid() && endTime.isValid()) && (
+                        <AddToCalendar className={s.calendarLinkContainer} event={action}>
+                          <FlatButton
+                            label="Add to Calendar"
+                            secondary
+                            icon={<FontIcon className="material-icons">add_circle_outline</FontIcon>}
+                          />
+                        </AddToCalendar>
+                      )}
 
                       <RaisedButton
                         onTouchTap={cancelSignup}
