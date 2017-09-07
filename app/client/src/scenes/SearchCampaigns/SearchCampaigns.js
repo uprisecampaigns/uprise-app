@@ -38,7 +38,7 @@ const mapStateToProps = state => ({
   // TODO: something fancy to just pass along campaignsSearch?
   search: {
     keywords: state.campaignsSearch.keywords,
-    tags: state.campaignsSearch.keywords,
+    tags: state.campaignsSearch.tags,
     geographies: state.campaignsSearch.geographies,
   },
   sortBy: state.campaignsSearch.sortBy,
