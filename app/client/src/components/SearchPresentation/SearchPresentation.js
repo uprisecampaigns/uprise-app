@@ -58,8 +58,8 @@ class SearchPresentation extends Component {
 
     return (
       <div className={s.searchContentContainer}>
-        <div className={s.mobileSearchBarContainer}>
-          <div className={s.searchBarContainer}>
+        <div className={s.searchBarContainer}>
+          <div className={s.searchBar}>
             <SearchBar
               collectionName="keywords"
               inputLabel="keyword search"
@@ -80,30 +80,7 @@ class SearchPresentation extends Component {
         </div>
         <div className={s.filterResultsOuterContainer}>
 
-          <div className={s.desktopSearchOptionsContainer}>
-            <div className={s.desktopFilterHeader}>Filter</div>
-
-            <Divider />
-
-            {searchInputs}
-
-            <Divider />
-
-          </div>
-
           <div className={s.selectionsResultsContainer}>
-
-            <div className={s.desktopSearchBarContainer}>
-              <div className={s.searchBarContainer}>
-                <SearchBar
-                  collectionName="keywords"
-                  inputLabel="keyword search"
-                  addItem={this.addSelectedItem}
-                  inputRef={(el) => { this.searchBarInputElements[0] = el; }}
-                />
-              </div>
-
-            </div>
 
             <div className={s.selectionsContainer}>
               {searchSelections}
@@ -138,7 +115,7 @@ class SearchPresentation extends Component {
               </div>
             )}
 
-            { !this.state.filterOpen && (
+            { (true || !this.state.filterOpen) && (
               <div className={s.resultsContainer}>
                 {searchResults}
               </div>

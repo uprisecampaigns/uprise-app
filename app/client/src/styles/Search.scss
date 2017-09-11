@@ -5,34 +5,18 @@
 .outerContainer {
   width: 100%;
 
-  .searchBarContainer {
-  }
-
   .searchContentContainer {
-    border-top: 1px solid darken($white, 9%);
+    border: 1px solid darken($white, 9%);
   }
 
-  .desktopSearchBarContainer {
-    display: none;
-
-    @media (min-width: $screen-sm-min) {
-      margin-top: 2rem;
-      display: block;
-    }
-  }
-
-  .mobileSearchBarContainer {
+  .searchBarContainer {
 
     display: flex;
     justify-content: space-around;
     align-items: baseline;
-    margin-top: 1rem;
+    margin: 1rem 0rem;
 
-    @media (min-width: $screen-sm-min) {
-      display: none;
-    }
-
-    .searchBarContainer {
+    .searchBar {
       flex: 4;
     }
 
@@ -57,7 +41,10 @@
 
   .filterOptionsContainer {
 
-    margin-bottom: 2rem;
+    position: absolute;
+    width: 100%;
+    background-color: $white;
+    z-index: 2;
 
     .filterHeaderContainer {
       text-align: center;
@@ -85,34 +72,10 @@
     }
   }
 
-  .desktopSearchOptionsContainer {
-    display: none;
-    @media (min-width: $screen-sm-min) {
-      display: block;
-      flex: 1;
-    }
-
-    .desktopFilterHeader {
-      text-align: center;
-      font-size: 1.5rem;
-      color: darken($azure, 20%);
-      margin: 1rem;
-      font-weight: 500;
-    }
-
-    .searchBarContainer > div:first-of-type {
-      padding: 0px;
-      margin: 1rem;
-    }
-  }
-
   .resultsContainer {
 
     width: 100%;
     overflow-x: hidden;
-
-    @media (min-width: $screen-sm-min) {
-    }
 
     .card {
       box-shadow: none !important;

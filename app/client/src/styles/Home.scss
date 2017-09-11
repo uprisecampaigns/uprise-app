@@ -6,6 +6,8 @@
   width: 100%;
 
   .tabs {
+    width: 70%;
+    max-width: 600px;
     
     > div {
       background: none !important;
@@ -17,11 +19,30 @@
     font-weight: 500 !important;
     text-transform: none !important;
     font-size: 1.3rem !important;
-    padding: 0.5rem 0rem !important;
+    padding: 1rem 0rem 0.1rem 0rem !important;
   }
 
   .activeTab {
     @extend .tab;
     color: $black !important;
+  }
+
+  .searchContainer {
+
+    @media (min-width: $screen-md-min) {
+      background-color: darken($white, 5%);
+    }
+
+    > div {
+      background-color: $white;
+      min-height: 100vh;
+      position: relative;
+
+      @media (min-width: $screen-md-min) {
+        top: 1rem;
+        max-width: 900px;
+        margin: 0rem auto;
+      }
+    }
   }
 }
