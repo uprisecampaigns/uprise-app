@@ -204,6 +204,14 @@ class Action {
 
                 this.where('actions.id', 'in', tagQuery);
 
+
+                const activityQuery = db.select('action_id')
+                  .distinct()
+                  .from('activities')
+                  .innerJoin('actions_activities', 'activities.id', 'actions_activities.activity_id')
+                  .whereRaw(`title ILIKE ?`, tag);
+
+                this.orWhere('actions.id', 'in', activityQuery);
               });
             });
           }
