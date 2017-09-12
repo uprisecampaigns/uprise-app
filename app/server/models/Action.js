@@ -163,6 +163,14 @@ class Action {
 
         if (search) {
 
+          const tags = db('actions')
+            .select(db.raw('id, unnest(tags) tag'))
+            .as('tags');
+
+          const campaignTags = db('campaigns')
+            .select(db.raw('id, unnest(tags) tag'))
+            .as('campaign_tags');
+
           if (search.ids) {
             qb.andWhere(function() {
               search.ids.forEach( (id) => {
@@ -188,11 +196,6 @@ class Action {
           }            
 
           if (search.tags) {
-
-            const tags = db('actions')
-              .select(db.raw('id, unnest(tags) tag'))
-              .as('tags');
-
             search.tags.forEach( (tag) => {
 
               qb.andWhere(function() {
@@ -204,6 +207,12 @@ class Action {
 
                 this.where('actions.id', 'in', tagQuery);
 
+                const campaignTagQuery = db.select('id')
+                  .distinct()
+                  .from(campaignTags)
+                  .whereRaw(`tag ILIKE ?`, tag);
+
+                this.orWhere('campaign_id', 'in', campaignTagQuery);
 
                 const activityQuery = db.select('action_id')
                   .distinct()
@@ -217,10 +226,6 @@ class Action {
           }
 
           if (search.keywords) {
-
-            const tags = db('actions')
-              .select(db.raw('id, unnest(tags) tag'))
-              .as('tags');
 
             search.keywords.forEach( (keyword) => {
 
@@ -251,6 +256,13 @@ class Action {
                   .whereRaw(`similarity(tag, ?) > ${knexConfig.tagSimilarityThreshold}`, keyword);
 
                 this.orWhere('actions.id', 'in', tagKeywordQuery);
+
+                const campaignTagQuery = db.select('id')
+                  .distinct()
+                  .from(campaignTags)
+                  .whereRaw(`similarity(tag, ?) > ${knexConfig.tagSimilarityThreshold}`, keyword);
+
+                this.orWhere('campaign_id', 'in', campaignTagQuery);
 
                 const activityQuery = db.select('action_id')
                   .distinct()
