@@ -87,31 +87,34 @@ class SearchPresentation extends Component {
             </div>
 
             { this.state.filterOpen && (
-              <div className={s.filterOptionsContainer}>
-                <div>
+              <div>
+                <div className={s.filterOverlay} />
+                <div className={s.filterOptionsContainer}>
+                  <div>
 
-                  <Divider />
+                    <Divider />
 
-                  <div className={s.filterHeaderContainer}>
+                    <div className={s.filterHeaderContainer}>
 
-                    <span className={s.filterHeader}>Filter</span>
+                      <span className={s.filterHeader}>Filter</span>
 
-                    <span className={s.doneButtonContainer}>
-                      <RaisedButton
-                        className={s.primaryButton}
-                        onTouchTap={this.handleCloseFilter}
-                        primary
-                        label="Done"
-                      />
-                    </span>
+                      <span className={s.doneButtonContainer}>
+                        <RaisedButton
+                          className={s.primaryButton}
+                          onTouchTap={this.handleCloseFilter}
+                          primary
+                          label="Done"
+                        />
+                      </span>
+                    </div>
+
+                    <Divider />
+
+                    {searchInputs}
+
                   </div>
-
                   <Divider />
-
-                  {searchInputs}
-
                 </div>
-                <Divider />
               </div>
             )}
 
