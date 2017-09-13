@@ -4,12 +4,12 @@ import Home from 'scenes/Home';
 
 
 export default {
-  path: '/search',
+  path: '/search/search-opportunities',
 
   action() {
     return {
-      title: 'Search',
-      component: <Layout><Home /></Layout>,
+      title: 'Search Opportunities',
+      component: <Layout><Home startTab={0} /></Layout>,
     };
   },
 };

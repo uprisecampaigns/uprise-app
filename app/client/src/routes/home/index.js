@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import Home from 'scenes/Home';
+import HomeWrapper from './HomeWrapper';
 
 
 export default {
@@ -10,7 +10,7 @@ export default {
   async action(context) {
     return {
       title: 'UpRise App Home',
-      component: <Layout><Home /></Layout>,
+      component: <Layout><HomeWrapper /></Layout>,
     };
   },
 

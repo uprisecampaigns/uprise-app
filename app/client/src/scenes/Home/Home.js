@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
 
@@ -9,10 +9,18 @@ import s from 'styles/Home.scss';
 
 
 class Home extends Component {
+  static propTypes = {
+    startTab: PropTypes.number,
+  }
+
+  static defaultProps = {
+    startTab: 0,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 0,
+      activeTab: props.startTab,
     };
   }
 

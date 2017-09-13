@@ -130,6 +130,9 @@ function LoggedOutHome(props) {
             Email: staff@uprise.org
           </div>
           <div className={s.contentText}>
+            3600 Monument Ave, #12 | Richmond | VA | 23230
+          </div>
+          <div className={s.contentText}>
             1442A Walnut St #149 | Berkeley | CA | 94709
           </div>
         </div>
