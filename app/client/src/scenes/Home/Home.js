@@ -63,7 +63,6 @@ class Home extends Component {
           <div className={s.searchContainer}>
             <SearchActions />
           </div>
-
           <div className={s.searchContainer}>
             <SearchCampaigns />
           </div>
