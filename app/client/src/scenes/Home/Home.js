@@ -36,9 +36,9 @@ class Home extends Component {
     // Too difficult to override in css :/
     const inkBarStyle = {
       backgroundColor: '#333',
-      width: '30%',
+      width: '35%',
       height: '3px',
-      marginLeft: '10%',
+      marginLeft: '7.5%',
       marginBottom: '2px',
     };
 

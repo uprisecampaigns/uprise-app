@@ -3,6 +3,7 @@
 
 .menuItemsContainer {
   display: flex;
+  align-items: baseline;
 
   > div {
     margin-left: 0.5rem;
@@ -38,21 +39,22 @@
   }
 }
 
+svg.accountIcon {
+  color: $black !important;
+  height: 2rem !important;
+  width: 2rem !important;
+  padding-right: 0.5rem;
+}
+
 .menuIconContainer {
   display: none;
   cursor: pointer;
 }
 
 .headerButton {
-  @extend .lowerCaseButton;
-  button span {
-    font-size: 1.1rem !important;
-    font-weight: 500 !important;
-    padding-right: 0px !important;
-    padding-left: 0px !important;
-  }
+  font-size: 1.1rem;
+  line-height: 1.1rem;
 }
-
 
 
 @media (max-width: $screen-sm-min) {

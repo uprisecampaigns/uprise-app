@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
-import FlatButton from 'material-ui/FlatButton';
+import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 
 import Link from 'components/Link';
 import ContentDropdownMenu from 'components/ContentDropdownMenu';
@@ -22,7 +22,7 @@ function UnauthenticatedIcons(props) {
         className={s.headerButton}
       >
         <Link useAhref={false} to="/login">
-          <FlatButton label="LOGIN" />
+          LOGIN
         </Link>
       </div>
 
@@ -30,7 +30,7 @@ function UnauthenticatedIcons(props) {
         className={s.headerButton}
       >
         <Link useAhref={false} external to="uprisecampaigns.org/donate">
-          <FlatButton label="Donate" />
+        Donate
         </Link>
       </div>
 
@@ -89,33 +89,24 @@ function UnauthenticatedIcons(props) {
 }
 
 function AuthenticatedIcons(props) {
+  const { userObject } = props;
+
+  const accountIcon = (
+    <span>
+      <AccountCircle className={s.accountIcon} />
+      {userObject.first_name} {userObject.last_name}
+    </span>
+  );
+
   return (
     <div className={s.menuItemsContainer}>
 
       <ContentDropdownMenu
-        title="Profile"
-        className={s.rightIcon}
+        title={accountIcon}
         dropdowns={[
-          { title: 'My Commitments', path: '/volunteer/opportunity-commitments' },
-          { title: 'My Subscriptions', path: '/volunteer/campaign-subscriptions' },
-        ]}
-      />
-
-      <ContentDropdownMenu
-        title="Organize"
-        className={s.rightIcon}
-        dropdowns={[
-          { title: 'My Campaigns', path: '/organize' },
-          { title: 'Create Campaign', path: '/organize/create-campaign' },
-        ]}
-      />
-
-      <ContentDropdownMenu
-        title="Settings"
-        dropdowns={[
-          { title: 'Account', path: '/settings/account' },
-          { title: 'Privacy & Security', path: '/settings/privacy-security' },
-          { title: 'Contact', path: '/settings/contact' },
+          { title: 'Profile', path: '/volunteer' },
+          { title: 'Organize', path: '/organize' },
+          { title: 'Settings', path: '/settings' },
           { title: 'Logout', path: '#', action: props.logout },
         ]}
       />
@@ -125,7 +116,15 @@ function AuthenticatedIcons(props) {
 }
 
 AuthenticatedIcons.propTypes = {
+  userObject: PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+  }),
   logout: PropTypes.func.isRequired,
+};
+
+AuthenticatedIcons.defaultProps = {
+  userObject: undefined,
 };
 
 function Header(props) {
@@ -160,7 +159,10 @@ function Header(props) {
         <div className={s.rightIconsContainer}>
 
           { props.loggedIn ?
-            <AuthenticatedIcons logout={props.clickedLogout} />
+            <AuthenticatedIcons
+              userObject={props.userObject}
+              logout={props.clickedLogout}
+            />
             :
             <UnauthenticatedIcons />
           }
@@ -181,9 +183,17 @@ function Header(props) {
 }
 
 Header.propTypes = {
+  userObject: PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+  }),
   loggedIn: PropTypes.bool.isRequired,
   clickedLogout: PropTypes.func.isRequired,
   handleDrawerToggle: PropTypes.func.isRequired,
+};
+
+Header.defaultProps = {
+  userObject: undefined,
 };
 
 export default Header;
