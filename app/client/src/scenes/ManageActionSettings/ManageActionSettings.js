@@ -190,7 +190,6 @@ class ManageActionSettings extends Component {
 
       const validators = [
         (component) => { validateString(component, 'title', 'titleErrorText', 'Opportunity Name is Required'); },
-        (component) => { validateString(component, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required'); },
         (component) => { component.state.formData.virtual || validateState(component); },
         (component) => { component.state.formData.virtual || validateZipcode(component); },
         (component) => { component.state.formData.ongoing || validateStartEndTimes(component); },

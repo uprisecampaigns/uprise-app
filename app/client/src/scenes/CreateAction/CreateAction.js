@@ -144,7 +144,6 @@ class CreateAction extends Component {
 
       const validators = [
         (component) => { validateString(component, 'title', 'titleErrorText', 'Opportunity Name is Required'); },
-        (component) => { validateString(component, 'internalTitle', 'internalTitleErrorText', 'Internal Name is Required'); },
         (component) => { validateState(component); }, // TODO: error is confusing if virtual is set and state input is invalid
         (component) => { validateZipcode(component); },
         (component) => { component.state.formData.ongoing || validateStartEndTimes(component); },

@@ -236,7 +236,7 @@ module.exports = buildSchema(`
 
   input CreateActionInput {
     title: String!
-    internalTitle: String!
+    internalTitle: String
     campaignId: String!
     description: String
     virtual: Boolean
