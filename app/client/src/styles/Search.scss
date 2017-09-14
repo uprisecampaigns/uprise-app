@@ -101,6 +101,10 @@
       }
 
       >div:first-of-type {
+        @media (max-width: $screen-xs-min) {
+          padding-right: 0px !important;
+        }
+
         >span:first-of-type {
           font-size: 1.4rem !important;
           color: darken($azure, 5%) !important;
