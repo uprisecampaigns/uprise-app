@@ -80,6 +80,26 @@ class ActionProfileForm extends PureComponent {
             />
           </div>
 
+          { (saving || uploading) ? (
+
+            <div className={s.savingThrobberContainer}>
+              <CircularProgress
+                size={100}
+                thickness={5}
+              />
+            </div>
+          ) : (
+
+            <div className={[s.organizeButton, s.saveButton].join(' ')}>
+              <RaisedButton
+                onTouchTap={formSubmit}
+                primary
+                type="submit"
+                label="Save Changes"
+              />
+            </div>
+          )}
+
           <div className={f.sectionLabel}>Keywords</div>
 
           <div className={f.keywordsContainer}>
@@ -102,26 +122,6 @@ class ActionProfileForm extends PureComponent {
           <div className={f.sectionLabel}>Activities</div>
 
           { activitiesTogglesList }
-
-          { (saving || uploading) ? (
-
-            <div className={s.savingThrobberContainer}>
-              <CircularProgress
-                size={100}
-                thickness={5}
-              />
-            </div>
-          ) : (
-
-            <div className={[s.organizeButton, s.saveButton].join(' ')}>
-              <RaisedButton
-                onTouchTap={formSubmit}
-                primary
-                type="submit"
-                label="Save Changes"
-              />
-            </div>
-          )}
 
         </div>
       </div>
