@@ -65,21 +65,21 @@ class ActionSettingsForm extends Component {
 
                 <div className={s.textFieldContainer}>
                   <TextField
-                    floatingLabelText="Opportunity Internal Name"
-                    fullWidth
-                    value={data.internalTitle}
-                    onChange={(event) => { handleInputChange(event, 'internalTitle', event.target.value); }}
-                    errorText={errors.internalTitleErrorText}
-                  />
-                </div>
-
-                <div className={s.textFieldContainer}>
-                  <TextField
                     floatingLabelText="Opportunity Public Name"
                     fullWidth
                     value={data.title}
                     onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
                     errorText={errors.titleErrorText}
+                  />
+                </div>
+
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Opportunity Internal Name (optional)"
+                    fullWidth
+                    value={data.internalTitle}
+                    onChange={(event) => { handleInputChange(event, 'internalTitle', event.target.value); }}
+                    errorText={errors.internalTitleErrorText}
                   />
                 </div>
 
