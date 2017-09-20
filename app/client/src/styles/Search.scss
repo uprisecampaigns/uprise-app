@@ -23,7 +23,7 @@
 
     @media (min-width: $screen-lg-min) {
       display: inline-block;
-      width: 35%;
+      width: 25%;
     }
   }
 
@@ -34,7 +34,7 @@
     @media (min-width: $screen-lg-min) {
       border-left: 1px solid darken($white, 9%);
       display: inline-block;
-      width: 65%;
+      width: 75%;
     }
   }
 
@@ -205,7 +205,7 @@
 
 .listItem {
   padding: 1rem;
-  font-size: 1rem !important;
+  font-size: 0.875rem !important;
   font-weight: 400 !important;
 }
 

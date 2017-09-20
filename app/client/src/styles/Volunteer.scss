@@ -5,6 +5,7 @@
 
 .outerContainer {
   width: 100%;
+  max-width: $max-content-width;
   overflow-x: hidden;
   margin: 0rem auto 5rem auto;
 
