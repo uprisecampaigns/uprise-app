@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import SwipeableViews from 'react-swipeable-views';
 
 import SearchActions from 'components/SearchActions';
 import SearchCampaigns from 'components/SearchCampaigns';
@@ -64,17 +63,15 @@ class Home extends Component {
           />
         </Tabs>
 
-        <SwipeableViews
-          index={activeTab}
-          onChangeIndex={this.handleChange}
-        >
+        { (activeTab === 0) ? (
           <div className={s.searchContainer}>
             <SearchActions />
           </div>
+        ) : (
           <div className={s.searchContainer}>
             <SearchCampaigns />
           </div>
-        </SwipeableViews>
+        )}
       </div>
     );
   }

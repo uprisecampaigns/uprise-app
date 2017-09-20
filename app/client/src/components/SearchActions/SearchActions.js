@@ -124,7 +124,7 @@ class SearchActions extends Component {
         <SearchPresentation
           addSelectedItem={this.addSelectedItem}
           searchSelections={<SearchActionSelections />}
-          searchInputs={<SearchActionInputs />}
+          searchInputs={allOpen => <SearchActionInputs allOpen={allOpen} />}
           searchResults={<SearchActionResultsWithData />}
         />
 

@@ -12,7 +12,7 @@ class SearchPresentation extends Component {
   static propTypes = {
     addSelectedItem: PropTypes.func.isRequired,
     searchSelections: PropTypes.node.isRequired,
-    searchInputs: PropTypes.node.isRequired,
+    searchInputs: PropTypes.func.isRequired,
     searchResults: PropTypes.node.isRequired,
   }
 
@@ -58,74 +58,86 @@ class SearchPresentation extends Component {
 
     return (
       <div className={s.searchContentContainer}>
-        <div className={s.searchBarContainer}>
-          <div className={s.searchBar}>
-            <SearchBar
-              collectionName="keywords"
-              inputLabel="keyword search"
-              addItem={this.addSelectedItem}
-              inputRef={(el) => { this.searchBarInputElements[0] = el; }}
-            />
-          </div>
 
-          <div
-            className={s.filterContainer}
-            onTouchTap={this.handleOpenFilter}
-          >
-            <span>Filter</span>
-            <IconButton
-              iconClassName="material-icons"
-            >filter_list</IconButton>
+        <div className={s.desktopFiltersContainer}>
+          <Divider />
+          <div className={s.filterHeaderContainer}>
+            <span className={s.filterHeader}>Filters</span>
           </div>
+          <Divider />
+          {searchInputs(true)}
+          <Divider />
         </div>
-        <div className={s.filterResultsOuterContainer}>
 
-          <div className={s.selectionsResultsContainer}>
-
-            <div className={s.selectionsContainer}>
-              {searchSelections}
+        <div className={s.allSizesContainer}>
+          <div className={s.searchBarContainer}>
+            <div className={s.searchBar}>
+              <SearchBar
+                collectionName="keywords"
+                inputLabel="keyword search"
+                addItem={this.addSelectedItem}
+                inputRef={(el) => { this.searchBarInputElements[0] = el; }}
+              />
             </div>
 
-            { this.state.filterOpen && (
-              <div>
-                <div className={s.filterOverlay} />
-                <div className={s.filterOptionsContainer}>
-                  <div>
+            <div
+              className={s.mobileFilterContainer}
+              onTouchTap={this.handleOpenFilter}
+            >
+              <span>Filter</span>
+              <IconButton
+                iconClassName="material-icons"
+              >filter_list</IconButton>
+            </div>
+          </div>
+          <div className={s.filterResultsOuterContainer}>
 
-                    <Divider />
+            <div className={s.selectionsResultsContainer}>
 
-                    <div className={s.filterHeaderContainer}>
+              <div className={s.selectionsContainer}>
+                {searchSelections}
+              </div>
 
-                      <span className={s.filterHeader}>Filter</span>
+              { this.state.filterOpen && (
+                <div>
+                  <div className={s.filterOverlay} />
+                  <div className={s.filterOptionsContainer}>
+                    <div>
 
-                      <span className={s.doneButtonContainer}>
-                        <RaisedButton
-                          className={s.primaryButton}
-                          onTouchTap={this.handleCloseFilter}
-                          primary
-                          label="Done"
-                        />
-                      </span>
+                      <Divider />
+
+                      <div className={s.filterHeaderContainer}>
+
+                        <span className={s.filterHeader}>Filter</span>
+
+                        <span className={s.doneButtonContainer}>
+                          <RaisedButton
+                            className={s.primaryButton}
+                            onTouchTap={this.handleCloseFilter}
+                            primary
+                            label="Done"
+                          />
+                        </span>
+                      </div>
+
+                      <Divider />
+
+                      {searchInputs(false)}
+
                     </div>
-
                     <Divider />
-
-                    {searchInputs}
-
                   </div>
-                  <Divider />
                 </div>
-              </div>
-            )}
+              )}
 
-            { (true || !this.state.filterOpen) && (
-              <div className={s.resultsContainer}>
-                {searchResults}
-              </div>
-            )}
+              { (true || !this.state.filterOpen) && (
+                <div className={s.resultsContainer}>
+                  {searchResults}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-
       </div>
     );
   }

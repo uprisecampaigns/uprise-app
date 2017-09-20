@@ -7,6 +7,36 @@
 
   .searchContentContainer {
     border: 1px solid darken($white, 9%);
+    display: flex;
+  }
+
+  .desktopFiltersContainer {
+    display: none;
+
+    .filterHeaderContainer {
+      padding: 1rem;
+
+      .filterHeader {
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+    }
+
+    @media (min-width: $screen-lg-min) {
+      display: inline-block;
+      width: 35%;
+    }
+  }
+
+  .allSizesContainer {
+    display: block;
+    width: 100%;
+
+    @media (min-width: $screen-lg-min) {
+      border-left: 1px solid darken($white, 9%);
+      display: inline-block;
+      width: 65%;
+    }
   }
 
   .searchBarContainer {
@@ -20,10 +50,14 @@
       flex: 4;
     }
 
-    .filterContainer {
+    .mobileFilterContainer {
       font-weight: 400;
       display: block;
       padding: 0 1rem;
+
+      @media (min-width: $screen-lg-min) {
+        display: none;
+      }
 
       >button {
         top: 0.5rem;
@@ -33,10 +67,10 @@
 
   .selectionsResultsContainer {
     flex: 2;
-    @media (min-width: $screen-sm-min) {
-      border: 1px solid darken($white, 9%);
-      border-top: none;
-    }
+  }
+
+  .selectionsContainer {
+    padding: 0rem 1rem;
   }
 
   .filterOverlay {

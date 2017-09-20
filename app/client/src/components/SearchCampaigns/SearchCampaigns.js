@@ -64,7 +64,7 @@ class SearchCampaigns extends Component {
         <SearchPresentation
           addSelectedItem={this.addSelectedItem}
           searchSelections={<SearchCampaignSelections />}
-          searchInputs={<SearchCampaignInputs />}
+          searchInputs={allOpen => <SearchCampaignInputs allOpen={allOpen} />}
           searchResults={<SearchCampaignResultsWithData />}
         />
 
