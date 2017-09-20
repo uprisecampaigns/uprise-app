@@ -5,6 +5,18 @@
 .outerContainer {
   width: 100%;
 
+  .tabsOuterContainer {
+    width: 100%;
+    background-color: darken($white, 5%);
+    border-bottom: 1px inset darken($white, 25%);
+    box-shadow: 0px 2px 1px 1px darken($white, 10%);;
+  }
+
+  .tabsInnerContainer {
+    max-width: $max-content-width;
+    margin: auto;
+  }
+
   .tabs {
     width: 100%;
     max-width: 25rem;
@@ -31,10 +43,6 @@
     overflow: hidden;
     padding-bottom: 2rem;
 
-    @media (min-width: $screen-lg-min) {
-      background-color: darken($white, 5%);
-    }
-
     > div {
       background-color: $white;
       min-height: 100vh;
@@ -43,7 +51,7 @@
 
       @media (min-width: $screen-lg-min) {
         top: 1rem;
-        max-width: $screen-lg-min - 100px;
+        max-width: $max-content-width;
         margin: 0rem auto;
       }
     }

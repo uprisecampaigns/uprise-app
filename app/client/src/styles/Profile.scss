@@ -5,7 +5,8 @@
 
 .outerContainer {
   width: 100%;
-  margin-bottom: 4rem;
+  max-width: $max-content-width;
+  margin: 0rem auto 4rem auto;
 
   .innerContainer {
     width: 90%;

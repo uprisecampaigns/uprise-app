@@ -31,13 +31,12 @@
   line-height: 1.1rem;
 
   svg {
-    color: $brick-red !important;
+    color: $white !important;
   }
 }
 
 .menuOpen {
   .dropdownButton {
     margin-bottom: -2px;
-    border-bottom: 2px solid $brick-red;
   }
 }

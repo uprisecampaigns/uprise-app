@@ -1,12 +1,37 @@
 @import '~styles/variables';
 @import '~styles/buttons';
 
-.menuItemsContainer {
-  display: flex;
-  align-items: baseline;
+.outerHeaderContainer {
+  width: 100%;
+  background-color: $dark-blue;
+}
 
+.header {
+  display: flex;
+  color: $white;
+  height: 7rem;
+  align-items: center;
+  line-height: 2rem;
+  max-width: $max-content-width;
+  position: relative;
+  margin: 0 auto;
+}
+
+.leftHeaderItems {
+  position: relative;
+
+  .headerButton {
+    padding-right: 2rem;
+  }
+}
+
+.rightHeaderItems {
+  position: absolute;
+  right: 2rem;
+  
   > div {
-    margin-left: 0.5rem;
+    display: inline-block;
+    padding-left: 2rem;
   }
 }
 
@@ -20,27 +45,20 @@
 .logoContainer {
 
   img {
-    height: 8rem;
+    height: 7rem;
   }
 }
 
-.appBar {
-  background-color: rgb(255, 255, 255) !important;
-  align-items: center;
-}
-
-.rightIconsContainer {
+.menuItemsContainer {
   display: inline-flex;
+  align-items: baseline;
   margin-right: 1rem;
+  flex: 2;
 
-  .rightIcon {
-    display: inline-flex !important;
-    flex: 1;
-  }
 }
 
 svg.accountIcon {
-  color: $black !important;
+  color: $white !important;
   height: 2rem !important;
   width: 2rem !important;
   padding-right: 0.5rem;
@@ -52,20 +70,26 @@ svg.accountIcon {
 }
 
 .headerButton {
+  display: inline-block;
   font-size: 1.1rem;
   line-height: 1.1rem;
 }
 
 
-@media (max-width: $screen-sm-min) {
+@media (max-width: $screen-md-min) {
+
   .menuIconContainer {
-    margin-right: 20px;
-    margin-top: -8px;
+    margin-left: 1rem;
     display: inline-flex;
+
+    svg {
+      width: 3rem !important;
+      height: 3rem !important;
+      color: $white !important;
+    }
   }
 
-  .rightIconsContainer {
+  .menuItemsContainer {
     display: none;
   }
 }
-

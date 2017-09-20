@@ -38,30 +38,34 @@ class Home extends Component {
       width: '35%',
       height: '3px',
       marginLeft: '7.5%',
-      marginBottom: '2px',
+      marginBottom: '0px',
     };
 
     return (
       <div className={s.outerContainer}>
-        <Tabs
-          className={s.tabs}
-          contentContainerClassName={s.tabsContentContainer}
-          onChange={this.handleChange}
-          value={activeTab}
-          inkBarStyle={inkBarStyle}
-        >
-          <Tab
-            label="Opportunities"
-            className={activeTab === 0 ? s.activeTab : s.tab}
-            value={0}
-          />
+        <div className={s.tabsOuterContainer}>
+          <div className={s.tabsInnerContainer}>
+            <Tabs
+              className={s.tabs}
+              contentContainerClassName={s.tabsContentContainer}
+              onChange={this.handleChange}
+              value={activeTab}
+              inkBarStyle={inkBarStyle}
+            >
+              <Tab
+                label="Opportunities"
+                className={activeTab === 0 ? s.activeTab : s.tab}
+                value={0}
+              />
 
-          <Tab
-            label="Campaigns"
-            className={activeTab === 1 ? s.activeTab : s.tab}
-            value={1}
-          />
-        </Tabs>
+              <Tab
+                label="Campaigns"
+                className={activeTab === 1 ? s.activeTab : s.tab}
+                value={1}
+              />
+            </Tabs>
+          </div>
+        </div>
 
         { (activeTab === 0) ? (
           <div className={s.searchContainer}>

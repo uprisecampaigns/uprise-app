@@ -6,7 +6,6 @@
   width: 100%;
 
   .searchContentContainer {
-    border: 1px solid darken($white, 9%);
     display: flex;
   }
 
@@ -125,7 +124,7 @@
     }
 
     .resultsHeader {
-      font-size: 0.8rem;
+      font-size: 0.875rem !important;
       font-weight: 400 !important;
       padding: 0.5rem 3rem 0.5rem 3rem !important;
 
@@ -149,8 +148,8 @@
 
     .subheaderContainer {
       color: $fire-red;
-      font-size: 1.2rem;
       font-weight: 500;
+      font-size: 0.875rem !important;
       white-space: normal !important;
       display: inline-block;
       margin-top: 0rem;
@@ -158,6 +157,7 @@
 
     .locationContainer {
       color: darken($white, 30%);
+      font-size: 0.875rem !important;
     }
 
     .descriptionContainer {
