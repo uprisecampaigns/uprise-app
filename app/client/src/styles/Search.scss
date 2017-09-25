@@ -125,7 +125,7 @@
 
     .resultsHeader {
       font-size: 0.722rem !important;
-      line-height: 0.944rem !important;
+      line-height: 1rem !important;
       font-weight: 400 !important;
       padding: 1.111rem 3rem 1.111rem 3rem !important;
       margin-left: 2.777rem;
@@ -150,9 +150,10 @@
 
         >span:first-of-type {
           font-size: 1.111rem !important;
-          line-height: 1.222rem !important;
+          line-height: 1.4rem !important;
           color: darken($azure, 5%) !important;
           font-weight: 500;
+          margin-bottom: 0.277rem;
         }
       }
     }
@@ -169,7 +170,7 @@
     .locationContainer {
       color: darken($white, 30%);
       font-size: 0.722rem !important;
-      line-height: 0.944rem !important;
+      line-height: 1rem !important;
     }
 
     .descriptionContainer {
