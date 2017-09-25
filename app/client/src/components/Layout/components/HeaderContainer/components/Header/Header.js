@@ -106,7 +106,7 @@ function AuthenticatedIcons(props) {
         <div
           className={s.headerButton}
         >
-          <Link useAhref={false} to="/volunteer">
+          <Link useAhref={false} to="/">
             <HandHeartIcon className={s.accountIcon} />
             Volunteer
           </Link>
@@ -126,6 +126,7 @@ function AuthenticatedIcons(props) {
         <ContentDropdownMenu
           title={accountIcon}
           dropdowns={[
+            { title: 'Profile', path: '/volunteer' },
             { title: 'Settings', path: '/settings' },
             { title: 'Logout', path: '#', action: props.logout },
           ]}
