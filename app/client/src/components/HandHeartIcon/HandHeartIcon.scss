@@ -1,0 +1,11 @@
+@import '~styles/variables';
+
+.outline, .fingers {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 6px;
+}
+
+.heart {
+  fill: currentColor;
+}

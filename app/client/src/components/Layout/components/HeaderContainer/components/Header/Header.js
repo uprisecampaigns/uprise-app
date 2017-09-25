@@ -6,6 +6,7 @@ import PanTool from 'material-ui/svg-icons/action/pan-tool';
 
 import Link from 'components/Link';
 import ContentDropdownMenu from 'components/ContentDropdownMenu';
+import HandHeartIcon from 'components/HandHeartIcon';
 
 import upriseLogo from 'img/uprise-logo.png';
 import s from './Header.scss';
@@ -106,7 +107,7 @@ function AuthenticatedIcons(props) {
           className={s.headerButton}
         >
           <Link useAhref={false} to="/volunteer">
-            <PanTool className={s.accountIcon} />
+            <HandHeartIcon className={s.accountIcon} />
             Volunteer
           </Link>
         </div>
