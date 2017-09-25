@@ -43,7 +43,7 @@
     display: flex;
     justify-content: space-around;
     align-items: baseline;
-    margin: 1rem 0rem;
+    margin: 1rem 0rem 2rem 0rem;
 
     .searchBar {
       flex: 4;
@@ -124,13 +124,23 @@
     }
 
     .resultsHeader {
-      font-size: 0.875rem !important;
+      font-size: 0.722rem !important;
+      line-height: 0.944rem !important;
       font-weight: 400 !important;
-      padding: 0.5rem 3rem 0.5rem 3rem !important;
+      padding: 1.111rem 3rem 1.111rem 3rem !important;
+      margin-left: 2.777rem;
 
       @media (max-width: $screen-xs-min) {
         padding-left: 1rem !important;
         padding-right: 1rem !important;
+      }
+
+      img {
+        width: 2.222rem !important;
+        height: 2.222rem !important;
+        position: absolute;
+        margin-right: 0.555rem !important;
+        margin-left: -2.777rem;
       }
 
       >div:first-of-type {
@@ -139,7 +149,8 @@
         }
 
         >span:first-of-type {
-          font-size: 1.4rem !important;
+          font-size: 1.111rem !important;
+          line-height: 1.222rem !important;
           color: darken($azure, 5%) !important;
           font-weight: 500;
         }
@@ -149,7 +160,7 @@
     .subheaderContainer {
       color: $fire-red;
       font-weight: 500;
-      font-size: 0.875rem !important;
+      font-size: 0.777rem !important;
       white-space: normal !important;
       display: inline-block;
       margin-top: 0rem;
@@ -157,7 +168,8 @@
 
     .locationContainer {
       color: darken($white, 30%);
-      font-size: 0.875rem !important;
+      font-size: 0.722rem !important;
+      line-height: 0.944rem !important;
     }
 
     .descriptionContainer {
@@ -205,7 +217,8 @@
 
 .listItem {
   padding: 1rem;
-  font-size: 0.875rem !important;
+  font-size: 0.772rem !important;
+  line-height: 1.222rem !important;
   font-weight: 400 !important;
 }
 

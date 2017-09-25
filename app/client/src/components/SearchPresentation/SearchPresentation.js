@@ -74,7 +74,7 @@ class SearchPresentation extends Component {
             <div className={s.searchBar}>
               <SearchBar
                 collectionName="keywords"
-                inputLabel="keyword search"
+                inputLabel="Keyword search"
                 addItem={this.addSelectedItem}
                 inputRef={(el) => { this.searchBarInputElements[0] = el; }}
               />

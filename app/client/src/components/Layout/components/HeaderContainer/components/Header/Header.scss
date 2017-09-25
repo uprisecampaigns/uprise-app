@@ -11,7 +11,7 @@
   color: $white;
   height: 7rem;
   align-items: center;
-  line-height: 2rem;
+  line-height: 7rem;
   max-width: $max-content-width;
   position: relative;
   margin: 0 auto;
@@ -43,9 +43,10 @@
 }
 
 .logoContainer {
+  margin: 0rem 4rem 0rem 1rem;
 
   img {
-    height: 7rem;
+    height: 2rem;
   }
 }
 
@@ -61,7 +62,7 @@ svg.accountIcon {
   color: $white !important;
   height: 2rem !important;
   width: 2rem !important;
-  padding-right: 0.5rem;
+  padding-right: 0.55rem;
 }
 
 .menuIconContainer {
@@ -71,8 +72,8 @@ svg.accountIcon {
 
 .headerButton {
   display: inline-block;
-  font-size: 1.1rem;
-  line-height: 1.1rem;
+  font-size: 1.22rem;
+  line-height: 1.22rem;
 }
 
 
