@@ -11,7 +11,7 @@
     background-color: $white;
     border-bottom: 1px inset darken($white, 25%);
     box-shadow: 0px 2px 1px 1px darken($white, 10%);;
-    margin-bottom: 2.5rem;
+    margin-bottom: 0.5rem;
   }
 
   .tabsInnerContainer {
@@ -33,7 +33,7 @@
   }
 
   .tab {
-    color: $brick-red !important;
+    color: $dark-blue !important;
     font-weight: 500 !important;
     text-transform: none !important;
     font-size: 1.3rem !important;
