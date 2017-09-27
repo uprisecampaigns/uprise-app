@@ -4,7 +4,6 @@ import moment from 'moment';
 import isEqual from 'lodash.isequal';
 import { Card, CardHeader } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
-import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 
 
@@ -83,7 +82,6 @@ class SearchActionResults extends PureComponent {
               { (action.city && action.state) && <div>Place: {action.city}, {action.state}</div> }
             </CardHeader>
           </Card>
-          <Divider />
         </Link>
       );
     }) : [];
