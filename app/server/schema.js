@@ -54,6 +54,11 @@ module.exports = buildSchema(`
     actions: [ActionResult]
   }
 
+  type ShiftResult {
+    start: String!
+    end: String!
+  }
+
   type ActionResult {
     id: String!
     title: String
@@ -76,6 +81,7 @@ module.exports = buildSchema(`
     location_notes: String
     public_url: String
     activities: [ActivityResult]
+    shifts: [ShiftResult]
     owner: UserResult
     campaign: CampaignResult
   }
@@ -234,6 +240,11 @@ module.exports = buildSchema(`
     id: String!
   }
 
+  input ShiftInput {
+    start: String!
+    end: String!
+  }
+
   input CreateActionInput {
     title: String!
     internalTitle: String
@@ -252,6 +263,7 @@ module.exports = buildSchema(`
     endTime: String
     activities: [String]
     tags: [String]
+    shifts: [ShiftInput]
   }
 
   input EditActionInput {
@@ -273,6 +285,7 @@ module.exports = buildSchema(`
     endTime: String
     activities: [String]
     tags: [String]
+    shifts: [ShiftInput]
   }
 
   input SendMessageInput {

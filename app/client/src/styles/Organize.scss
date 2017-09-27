@@ -6,6 +6,7 @@
 .outerContainer {
   width: 100%;
   overflow-x: hidden;
+  min-height: 100vh;
   margin-bottom: 5rem;
 
   .savingThrobberContainer {
@@ -129,5 +130,17 @@
     >div:first-of-type {
       padding: 0px;
     }
+  }
+
+  .stepperOuterContainer {
+    display: flex;
+  }
+
+  .stepperContainer {
+    flex: 1;
+  }
+
+  .stepperContentContainer {
+    flex: 3;
   }
 }

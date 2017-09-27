@@ -4,7 +4,15 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
+
+import {
+  Step,
+  Stepper,
+  StepButton,
+  StepContent,
+} from 'material-ui/Stepper';
 
 import Link from 'components/Link';
 
@@ -22,11 +30,13 @@ import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 import CreateActionMutation from 'schemas/mutations/CreateActionMutation.graphql';
 
 import ActionSettingsForm from 'components/ActionSettingsForm';
+import ShiftScheduler from 'components/ShiftScheduler';
 
 import s from 'styles/Organize.scss';
 
 
 const WrappedActionSettingsForm = formWrapper(ActionSettingsForm);
+const WrappedShiftScheduler = formWrapper(ShiftScheduler);
 
 class CreateAction extends Component {
   static propTypes = {
@@ -56,6 +66,7 @@ class CreateAction extends Component {
         zipcode: '',
         locationNotes: '',
         ongoing: false,
+        shifts: [],
         date: undefined,
         startTime: undefined,
         endTime: undefined,
@@ -65,6 +76,7 @@ class CreateAction extends Component {
         title: '',
         slug: '',
       },
+      stepIndex: 0,
     };
 
     this.state = Object.assign({}, initialState);
@@ -84,37 +96,15 @@ class CreateAction extends Component {
     endTimeErrorText: null,
   }
 
-  formSubmit = async (data) => {
-    const formData = Object.assign({}, data, { campaignId: this.props.campaignId });
-
-    if (formData.ongoing) {
-      formData.startTime = null;
-      formData.endTime = null;
-    } else {
-      const startTime = moment(formData.date);
-      startTime.minutes(moment(formData.startTime).minutes());
-      startTime.hours(moment(formData.startTime).hours());
-
-      const timeDiff = moment(formData.endTime).diff(moment(formData.startTime));
-
-      const endTime = moment(startTime).add(timeDiff, 'milliseconds');
-
-      formData.startTime = startTime.format();
-      formData.endTime = endTime.format();
-    }
-    delete formData.date;
+  createAction = async () => {
+    const actionData = { ...this.state.formData, campaignId: this.props.campaignId };
 
     try {
       const results = await this.props.createActionMutation({
         variables: {
-          data: formData,
+          data: actionData,
         },
-        // TODO: decide between refetch and update
-        refetchQueries: ['SearchActionsQuery'], // , 'CampaignActions'],
-        // updateQueries: {
-        //   ActionsQuery: addAction,
-        //   MyActionsQuery: addAction
-        // }
+        refetchQueries: ['SearchActionsQuery'],
       });
       this.setState({
         modalOpen: true,
@@ -127,11 +117,72 @@ class CreateAction extends Component {
     }
   }
 
+  settingsSubmit = async (data) => {
+    const formData = { ...this.state.formData, ...data };
+    this.setState({ formData, stepIndex: 1 });
+    return {
+      success: true,
+      message: 'Please fill out dates and shifts',
+    };
+  }
+
+  shiftSubmit = (data) => {
+    const formData = { ...this.state.formData, ...data };
+    this.setState({ formData, stepIndex: 2 });
+  }
+
+  handlePrev = () => {
+    if (this.state.stepIndex > 0) {
+      this.setState(prevState => ({ ...prevState,
+        stepIndex: prevState.stepIndex - 1,
+      }));
+    }
+  }
+
+  handleNext = () => {
+    const { stepIndex } = this.state;
+
+    if (stepIndex === 0) {
+      console.log(this);
+      console.log(this.wrappedActionSettingsForm);
+      this.wrappedActionSettingsForm.wrappedInstance.formSubmit();
+    } else if (stepIndex === 1) {
+      this.shiftScheduler.formSubmit();
+    } else if (stepIndex === 2) {
+      this.createAction();
+    }
+  };
+
+  renderStepActions = (step) => {
+    const { stepIndex } = this.state;
+
+    return (
+      <div>
+        <RaisedButton
+          label={stepIndex === 2 ? 'Finish' : 'Next'}
+          disableTouchRipple
+          disableFocusRipple
+          primary
+          onClick={this.handleNext}
+        />
+        {step > 0 && (
+          <FlatButton
+            label="Back"
+            disabled={stepIndex === 0}
+            disableTouchRipple
+            disableFocusRipple
+            onClick={this.handlePrev}
+          />
+        )}
+      </div>
+    );
+  }
+
   render() {
     if (this.props.campaign) {
-      const { defaultErrorText, formSubmit } = this;
+      const { defaultErrorText, formSubmit, renderStepActions, shiftSubmit, settingsSubmit } = this;
       const { campaign } = this.props;
-      const { newAction, modalOpen, formData } = this.state;
+      const { newAction, modalOpen, formData, stepIndex } = this.state;
 
       const modalActions = [
         <RaisedButton
@@ -142,11 +193,10 @@ class CreateAction extends Component {
         />,
       ];
 
-      const validators = [
+      const settingsValidators = [
         (component) => { validateString(component, 'title', 'titleErrorText', 'Opportunity Name is Required'); },
-        (component) => { validateState(component); }, // TODO: error is confusing if virtual is set and state input is invalid
+        (component) => { validateState(component); },
         (component) => { validateZipcode(component); },
-        (component) => { component.state.formData.ongoing || validateStartEndTimes(component); },
       ];
 
       return (
@@ -163,14 +213,69 @@ class CreateAction extends Component {
 
           <div className={s.pageSubHeader}>Create Opportunity</div>
 
-          <WrappedActionSettingsForm
-            initialState={formData}
-            initialErrors={defaultErrorText}
-            validators={validators}
-            submit={formSubmit}
-            campaignTitle={campaign.title}
-            submitText="Create"
-          />
+          <div className={s.stepperOuterContainer}>
+            <div className={s.stepperContainer}>
+              <Stepper
+                activeStep={stepIndex}
+                orientation="vertical"
+                className={s.stepper}
+              >
+                <Step>
+                  <StepButton onClick={() => this.setState({ stepIndex: 0 })}>
+                    Details
+                  </StepButton>
+                  <StepContent>
+                    <p>
+                      Instructions: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    </p>
+                    {renderStepActions(0)}
+                  </StepContent>
+                </Step>
+                <Step>
+                  <StepButton onClick={() => this.setState({ stepIndex: 1 })}>
+                    Dates & Shifts
+                  </StepButton>
+                  <StepContent>
+                    <p>
+                      Instructions: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    </p>
+                    {renderStepActions(1)}
+                  </StepContent>
+                </Step>
+                <Step>
+                  <StepButton onClick={() => this.setState({ stepIndex: 2 })}>
+                    Review
+                  </StepButton>
+                  <StepContent>
+                    <p>
+                      Instructions: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    </p>
+                    {renderStepActions(2)}
+                  </StepContent>
+                </Step>
+              </Stepper>
+            </div>
+
+            <div className={s.stepperContentContainer}>
+              { stepIndex === 0 &&
+                <WrappedActionSettingsForm
+                  initialState={formData}
+                  initialErrors={defaultErrorText}
+                  validators={settingsValidators}
+                  submit={settingsSubmit}
+                  ref={(wrappedForm) => { this.wrappedActionSettingsForm = wrappedForm; }}
+                />
+              }
+
+              { stepIndex === 1 &&
+                <ShiftScheduler
+                  data={formData}
+                  submit={shiftSubmit}
+                  ref={(scheduler) => { this.shiftScheduler = scheduler; }}
+                />
+              }
+            </div>
+          </div>
 
           {modalOpen && (
             <Dialog

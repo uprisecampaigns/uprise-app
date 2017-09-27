@@ -20,7 +20,11 @@ export default (WrappedComponent) => {
       initialErrors: PropTypes.object.isRequired,
       submit: PropTypes.func.isRequired,
       dispatch: PropTypes.func.isRequired,
-      validators: PropTypes.arrayOf(PropTypes.func).isRequired,
+      validators: PropTypes.arrayOf(PropTypes.func),
+    }
+
+    static defaultProps = {
+      validators: [],
     }
 
     constructor(props) {
@@ -191,6 +195,6 @@ export default (WrappedComponent) => {
       );
     }
   }
-  return connect()(FormWrapper);
+  return connect(null, null, null, { withRef: true })(FormWrapper);
 };
 
