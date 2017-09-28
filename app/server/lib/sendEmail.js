@@ -4,36 +4,33 @@ const config = require('config/config.js');
 
 const emailClient = postmark(config.postmark.serverKey);
 
-module.exports = function sendEmail ({ to, subject, templateName, context = {}, replyTo }) {
-  return new Promise( (resolve, reject) => {
-
+module.exports = function sendEmail({ to, subject, templateName, context = {}, replyTo }) {
+  return new Promise((resolve, reject) => {
     if (config.postmark.validRecipient(to)) {
-
       const send = (textBody, htmlBody) => {
-
         emailClient.sendEmail({
-          'From': config.postmark.from,
-          'To': to,
-          'Subject': subject, 
-          'TextBody': textBody,
-          'HtmlBody': htmlBody,
-          'ReplyTo': replyTo || config.postmark.from
+          From: config.postmark.from,
+          To: to,
+          Subject: subject,
+          TextBody: textBody,
+          HtmlBody: htmlBody,
+          ReplyTo: replyTo || config.postmark.from,
         }, (err, result) => {
           if (err) {
-            console.error('Unable to send via postmark: ' + err.message);
+            console.error(`Unable to send via postmark: ${err.message}`);
             reject(err);
           } else {
-            console.info('Sent to postmark for delivery: ' + result);
+            console.info(`Sent to postmark for delivery: ${result}`);
             resolve(result);
           }
         });
       };
 
-      ejs.renderFile(config.paths.base+ '/views/' + templateName + '-text.ejs', context, function (err, textBody) {
+      ejs.renderFile(`${config.paths.base}/views/${templateName}-text.ejs`, context, (err, textBody) => {
         if (err) {
           reject(err);
         } else {
-          ejs.renderFile(config.paths.base+ '/views/' + templateName + '-html.ejs', context, function (err, htmlBody) {
+          ejs.renderFile(`${config.paths.base}/views/${templateName}-html.ejs`, context, (err, htmlBody) => {
             if (err) {
               reject(err);
             } else {
@@ -43,8 +40,8 @@ module.exports = function sendEmail ({ to, subject, templateName, context = {}, 
         }
       });
     } else {
-      console.info(to + ' does not pass validRecipient test so not sending email');
+      console.info(`${to} does not pass validRecipient test so not sending email`);
       resolve();
     }
   });
-}
+};

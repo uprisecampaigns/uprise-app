@@ -1,7 +1,6 @@
 const vaUsers = require('./users/VA-users-4.20.17.json');
 
 module.exports = async (knex) => {
-
   let testUser = await knex('users').where('email', 'test@uprise.org').select(['id', 'email']);
 
   if (!testUser.length) {
@@ -11,10 +10,10 @@ module.exports = async (knex) => {
         first_name: 'Test',
         last_name: 'ProgUser',
         zipcode: '12345',
-        password_hash: '$2a$10$/dGp5EQFDO/5pqRSFryjSO3FUq.Rs6svkof/fiSics32mRPU8QCcS' // the password is password!
-      }, 
+        password_hash: '$2a$10$/dGp5EQFDO/5pqRSFryjSO3FUq.Rs6svkof/fiSics32mRPU8QCcS', // the password is password!
+      },
 
-    ], ['id', 'email'] );
+    ], ['id', 'email']);
   }
 
   let antoniaUser = await knex('users').where('email', 'antonia@uprise.org').select(['id', 'email']);
@@ -26,16 +25,15 @@ module.exports = async (knex) => {
         first_name: 'Antonia',
         last_name: 'Scatton',
         zipcode: '12345',
-        password_hash: '$2a$10$/dGp5EQFDO/5pqRSFryjSO3FUq.Rs6svkof/fiSics32mRPU8QCcS' // the password is password!
-      }, 
+        password_hash: '$2a$10$/dGp5EQFDO/5pqRSFryjSO3FUq.Rs6svkof/fiSics32mRPU8QCcS', // the password is password!
+      },
 
-    ], ['id', 'email'] );
+    ], ['id', 'email']);
   }
 
   const newVaUsers = [];
 
-  for (let userRecord of vaUsers) {
-
+  for (const userRecord of vaUsers) {
     const dbUser = await knex('users').where('email', userRecord.email).select(['id', 'email']);
 
     if (dbUser.length === 0) {

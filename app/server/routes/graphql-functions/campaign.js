@@ -7,7 +7,6 @@ const sendEmail = require('lib/sendEmail.js');
 module.exports = {
 
   campaign: async (data, context) => {
-
     const campaign = await Campaign.findOne(data.search);
 
     // TODO: This is repeated in a bunch of places and should be DRYed
@@ -24,7 +23,6 @@ module.exports = {
   },
 
   myCampaigns: async (data, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -33,9 +31,8 @@ module.exports = {
     if (context.user.superuser) {
       myCampaigns = Campaign.search({});
     } else {
-
       myCampaigns = await Campaign.search({
-        ownerId: context.user.id
+        ownerId: context.user.id,
       });
     }
 
@@ -43,7 +40,6 @@ module.exports = {
   },
 
   campaignSubscriptions: async (data, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -54,14 +50,13 @@ module.exports = {
   },
 
   createCampaign: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
 
     // Decamelizing property names
     const input = Object.assign(...Object.keys(options.data).map(k => ({
-        [decamelize(k)]: options.data[k]
+      [decamelize(k)]: options.data[k],
     })));
 
     input.owner_id = context.user.id;
@@ -72,14 +67,13 @@ module.exports = {
   },
 
   editCampaign: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
 
     // Decamelizing property names
     const input = Object.assign(...Object.keys(options.data).map(k => ({
-        [decamelize(k)]: options.data[k]
+      [decamelize(k)]: options.data[k],
     })));
 
     const campaign = await Campaign.edit({ input, userId: context.user.id });
@@ -88,7 +82,6 @@ module.exports = {
   },
 
   deleteCampaign: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -99,7 +92,6 @@ module.exports = {
   },
 
   campaignSubscription: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -115,18 +107,18 @@ module.exports = {
     try {
       campaignCoordinator = await User.findOne('id', campaign.owner_id);
     } catch (e) {
-      throw new Error('Cannot find campaign coordinator: ' + e.message);
+      throw new Error(`Cannot find campaign coordinator: ${e.message}`);
     }
 
     try {
       await sendEmail({
         to: campaignCoordinator.email,
-        subject: user.first_name + ' ' + user.last_name + ' Subscribed to your Campaign', 
+        subject: `${user.first_name} ${user.last_name} Subscribed to your Campaign`,
         templateName: 'campaign-subscription-coordinator',
-        context: { campaign, user }
+        context: { campaign, user },
       });
     } catch (e) {
-      throw new Error('Error sending email to coordinator: ' + e.message);
+      throw new Error(`Error sending email to coordinator: ${e.message}`);
     }
 
     try {
@@ -134,17 +126,16 @@ module.exports = {
         to: user.email,
         subject: 'You Subscribed to a Campaign',
         templateName: 'campaign-subscription-user',
-        context: { campaign, user, campaignCoordinator }
+        context: { campaign, user, campaignCoordinator },
       });
     } catch (e) {
-      throw new Error('Error sending email to user: ' + e.message);
+      throw new Error(`Error sending email to user: ${e.message}`);
     }
 
     return campaign;
   },
 
   cancelCampaignSubscription: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -156,7 +147,6 @@ module.exports = {
   },
 
   subscribedUsers: async (data, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -165,7 +155,7 @@ module.exports = {
 
     const campaign = await Campaign.findOne(data.search);
 
-    if (!User.ownsObject({ user: user, object: campaign })) {
+    if (!User.ownsObject({ user, object: campaign })) {
       throw new Error('User must be campaign coordinator');
     }
 

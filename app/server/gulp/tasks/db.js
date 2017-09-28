@@ -1,4 +1,3 @@
-const fs = require('fs');
 const gulp = require('gulp');
 const knex = require('knex');
 const argv = require('yargs').argv;

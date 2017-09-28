@@ -12,29 +12,28 @@ const gitCommit = childProcess.execSync('git rev-parse HEAD').toString().trim();
 const addAuthRoute = (app, passport, routePath, strategy) => {
   app.post(routePath, (req, res, next) => {
     passport.authenticate(strategy, (err, user, info) => {
-      if (err) { 
-        return next(err); 
+      if (err) {
+        return next(err);
       }
-      if (!user) { 
-        return res.json(info); 
+      if (!user) {
+        return res.json(info);
       }
       if (user) {
         req.logIn(user, (err) => {
-          if (err) { 
-            return next(err); 
+          if (err) {
+            return next(err);
           }
-          return res.json(user); 
+          return res.json(user);
         });
       }
     })(req, res, next);
   });
-}
+};
 
 module.exports = (app, passport) => {
+  addAuthRoute(app, passport, '/api/signup', 'local-signup');
 
-  addAuthRoute(app, passport, "/api/signup", "local-signup");
-
-  addAuthRoute(app, passport, "/api/login", "local-login");
+  addAuthRoute(app, passport, '/api/login', 'local-login');
 
   app.post('/api/checkEmailAvailability', async (req, res) => {
     try {
@@ -47,12 +46,11 @@ module.exports = (app, passport) => {
       }
 
       res.json({
-        available: available
+        available,
       });
-
-    } catch(err) {
+    } catch (err) {
       return res.json({
-        error: err.message
+        error: err.message,
       });
     }
   });
@@ -67,9 +65,9 @@ module.exports = (app, passport) => {
     const token = req.params.token;
 
     try {
-      const result = await User.verifyEmail({token: token});
+      const result = await User.verifyEmail({ token });
       res.redirect('/');
-    } catch(err) {
+    } catch (err) {
       next(err);
     }
   });
@@ -80,9 +78,9 @@ module.exports = (app, passport) => {
     try {
       const result = await User.resetPassword(email, req);
       return res.json('Password reset successfully. Please check your email for further info.');
-    } catch(err) {
+    } catch (err) {
       return res.json({
-        error: err.message
+        error: err.message,
       });
     }
   });
@@ -93,12 +91,12 @@ module.exports = (app, passport) => {
     try {
       const user = await User.usePasswordResetCode(code);
       req.logIn(user, (err) => {
-        if (err) { 
-          return next(err); 
+        if (err) {
+          return next(err);
         }
         res.redirect('/settings/privacy-security');
       });
-    } catch(err) {
+    } catch (err) {
       next(err);
     }
   });
@@ -111,9 +109,9 @@ module.exports = (app, passport) => {
     try {
       const result = await User.changePassword(id, newPassword, oldPassword);
       return res.json('Password changed successfully.');
-    } catch(err) {
+    } catch (err) {
       return res.json({
-        error: err.message
+        error: err.message,
       });
     }
   });
@@ -121,24 +119,23 @@ module.exports = (app, passport) => {
   app.post('/api/checkSession', (req, res) => {
     const isLoggedIn = req.isAuthenticated();
     if (isLoggedIn) {
-
       console.log({
-        name: req.user.first_name + ' ' + req.user.last_name,
+        name: `${req.user.first_name} ${req.user.last_name}`,
         email: req.user.email,
       });
 
       return res.json({
-        isLoggedIn: isLoggedIn,
+        isLoggedIn,
         userObject: {
-          id: req.user.id, 
+          id: req.user.id,
           email: req.user.email,
-          passwordBeingReset: req.user.password_being_reset
+          passwordBeingReset: req.user.password_being_reset,
         },
-        gitCommit
+        gitCommit,
       });
     }
     return res.json({
-      isLoggedIn: isLoggedIn
+      isLoggedIn,
     });
   });
 };
