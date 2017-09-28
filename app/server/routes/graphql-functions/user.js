@@ -10,7 +10,7 @@ module.exports = {
     }
 
     const user = await User.findOne({
-      id: context.user.id
+      id: context.user.id,
     });
 
     return user;
@@ -28,7 +28,6 @@ module.exports = {
   },
 
   editAccount: async ({ data }, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -39,7 +38,7 @@ module.exports = {
 
     // Decamelizing property names
     const input = Object.assign(...Object.keys(data).map(k => ({
-        [decamelize(k)]: data[k]
+      [decamelize(k)]: data[k],
     })));
 
     const previousEmail = context.user.email;
@@ -49,10 +48,9 @@ module.exports = {
     if (previousEmail !== user.email) {
       await User.edit({ id: user.id, email_confirmed: false });
       await User.sendVerificationEmail(user);
-    };
+    }
 
     return user;
-
   },
 
   confirmEmail: async (data, context) => {
@@ -61,18 +59,17 @@ module.exports = {
     try {
       const result = await User.verifyEmail({ token });
       return true;
-    } catch(err) {
+    } catch (err) {
       return false;
     }
   },
 
   resendEmailVerification: async (data, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
 
     return await User.sendVerificationEmail(context.user);
-  }
+  },
 
 };

@@ -16,14 +16,14 @@ module.exports = async ({ knex, users, activities, campaigns, levels, issueAreas
   const actionActivities = [];
 
   const actions = [];
-  for (let action of vaActions) {
+  for (const action of vaActions) {
     const skills = action.skills;
     delete action.skills;
 
     action.owner_id = antoniaUser.id;
     action.start_time = moment(action.start_time).format(),
     action.end_time = moment(action.end_time).format(),
-    action.campaign_id = campaigns.find( (campaign) => campaign.title === action.campaign_title).id;
+    action.campaign_id = campaigns.find(campaign => campaign.title === action.campaign_title).id;
     action.slug = await getValidSlug(action.title);
     delete action.campaign_title;
     const result = await knex('actions').insert([action], ['id', 'title']);
@@ -49,37 +49,35 @@ module.exports = async ({ knex, users, activities, campaigns, levels, issueAreas
   //   { action_id: actions[6].id, activity_id: activities[19].id },
   // ], ['id']);
 
-  const actionActivitiesData = actionActivities.map( (action) => {
-
+  const actionActivitiesData = actionActivities.map((action) => {
     console.log(activities);
     console.log(action);
 
-    const foundActivity = activities.find( (activity) => (activity.description.toLowerCase() === action.activity.toLowerCase()));
+    const foundActivity = activities.find(activity => (activity.description.toLowerCase() === action.activity.toLowerCase()));
 
     console.log(foundActivity);
     return {
       action_id: action.id,
-      activity_id: foundActivity.id
-    }
+      activity_id: foundActivity.id,
+    };
   });
 
   console.log('actionActivitiesData');
   console.log(actionActivitiesData);
   const actionsActivitiesResult = await knex('actions_activities').insert(actionActivitiesData);
 
-  const vaActionLevels = actions.map( (action) => ({ action_id: action.id, level_id: levels[1].id }));
+  const vaActionLevels = actions.map(action => ({ action_id: action.id, level_id: levels[1].id }));
   const actionsLevels = await knex('actions_levels').insert(vaActionLevels, ['id']);
 
-  const vaActionsIssueAreasData = actions.map( (action) => ({ 
+  const vaActionsIssueAreasData = actions.map(action => ({
     action_id: action.id,
-    issue_area_id: issueAreas[Math.floor(Math.random(0,9) * 10)].id
+    issue_area_id: issueAreas[Math.floor(Math.random(0, 9) * 10)].id,
   }));
 
   const actionsIssueAreas = await knex('actions_issue_areas').insert(vaActionsIssueAreasData, ['id']);
 
-  const vaActionTypes = actions.map( (action) => ({ action_id: action.id, type_id: types[0].id }));
+  const vaActionTypes = actions.map(action => ({ action_id: action.id, type_id: types[0].id }));
   const actionsTypes = await knex('actions_types').insert(vaActionTypes, ['id']);
 
   return actions;
-
 };

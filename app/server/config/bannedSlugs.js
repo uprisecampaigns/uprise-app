@@ -16,5 +16,5 @@ module.exports = [
   'feedbacks', 'session', 'sessions', 'assets', 'img', 'image',
   'cart', 'checkout', 'config', 'debug', 'facebook', 'files',
   'item', 'script', 'scripts', 'search', 'share', 'sharer',
-  'static', 'storage'
+  'static', 'storage',
 ];

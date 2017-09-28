@@ -4,7 +4,7 @@ const wordSimilarityThreshold = process.env.DATABASE_WORD_SIMILARITY_THRESHOLD;
 const tagSimilarityThreshold = process.env.DATABASE_TAG_SIMILARITY_THRESHOLD;
 
 const afterCreate = (connection, callback) => {
-  connection.query('SET timezone to \'' + process.env.TZ + '\';', (err) => {
+  connection.query(`SET timezone to '${process.env.TZ}';`, (err) => {
     if (err) {
       callback(err, connection);
     } else {
@@ -38,7 +38,7 @@ module.exports = {
     },
     pool: {
       afterCreate,
-    }
+    },
   },
 
   staging: {

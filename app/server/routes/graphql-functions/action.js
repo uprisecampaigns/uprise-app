@@ -8,11 +8,10 @@ const User = require('models/User');
 
 const sendEmail = require('lib/sendEmail.js');
 
-import { urls } from 'config/config'
+import { urls } from 'config/config';
 
 
 const getFormattedDates = ({ user, action }) => {
-
   if (action.ongoing) {
     return { ongoing: true };
   }
@@ -24,21 +23,20 @@ const getFormattedDates = ({ user, action }) => {
 
   return {
     timezone,
-    start: startTime.tz(timezone).format("dddd, MMMM Do YYYY, h:mma z"),
-    end: endTime.tz(timezone).format("dddd, MMMM Do YYYY, h:mma z"),
-  }
+    start: startTime.tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
+    end: endTime.tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
+  };
 };
 
 module.exports = {
 
   action: async (data, context) => {
-
     const action = await Action.findOne(data.search);
 
     // TODO: This is repeated in a bunch of places and should be DRYed
     action.attending = (context.user) ? await Action.attending({ actionId: action.id, userId: context.user.id }) : false;
 
-    action.is_owner = (context.user ) ? await User.ownsObject({ user: context.user, object: action }) : false;
+    action.is_owner = (context.user) ? await User.ownsObject({ user: context.user, object: action }) : false;
 
     return action;
   },
@@ -49,7 +47,6 @@ module.exports = {
   },
 
   actionCommitments: async (data, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -65,7 +62,6 @@ module.exports = {
   },
 
   deleteAction: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -76,14 +72,13 @@ module.exports = {
   },
 
   createAction: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
 
     // Decamelizing property names
     const input = Object.assign(...Object.keys(options.data).map(k => ({
-        [decamelize(k)]: options.data[k]
+      [decamelize(k)]: options.data[k],
     })));
 
     input.owner_id = context.user.id;
@@ -93,18 +88,16 @@ module.exports = {
   },
 
   createActions: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
 
     const createdActions = [];
 
-    for (let item of options.data) {
-
+    for (const item of options.data) {
       // Decamelizing property names
       const input = Object.assign(...Object.keys(item).map(k => ({
-          [decamelize(k)]: item[k]
+        [decamelize(k)]: item[k],
       })));
 
       input.owner_id = context.user.id;
@@ -119,14 +112,13 @@ module.exports = {
 
 
   editAction: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
 
     // Decamelizing property names
     const input = Object.assign(...Object.keys(options.data).map(k => ({
-        [decamelize(k)]: options.data[k]
+      [decamelize(k)]: options.data[k],
     })));
 
     const action = await Action.edit({ input, userId: context.user.id });
@@ -134,7 +126,6 @@ module.exports = {
   },
 
   signedUpVolunteers: async (data, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -143,7 +134,7 @@ module.exports = {
 
     const action = await Action.findOne(data.search);
 
-    if (!await User.ownsObject({ user: user, object: action })) {
+    if (!await User.ownsObject({ user, object: action })) {
       throw new Error('User must be action coordinator');
     }
 
@@ -153,7 +144,6 @@ module.exports = {
   },
 
   actionSignup: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }
@@ -170,13 +160,13 @@ module.exports = {
     try {
       actionCoordinator = await User.findOne('id', action.owner_id);
     } catch (e) {
-      throw new Error('Cannot find action coordinator: ' + e.message);
+      throw new Error(`Cannot find action coordinator: ${e.message}`);
     }
 
     try {
       campaign = await Campaign.findOne('id', action.campaign_id);
     } catch (e) {
-      throw new Error('Cannot find matching campaign: ' + e.message);
+      throw new Error(`Cannot find matching campaign: ${e.message}`);
     }
 
     const dates = getFormattedDates({ user, action });
@@ -184,33 +174,32 @@ module.exports = {
     try {
       await sendEmail({
         to: actionCoordinator.email,
-        subject: user.first_name + ' ' + user.last_name + ' Signed up to Volunteer', 
+        subject: `${user.first_name} ${user.last_name} Signed up to Volunteer`,
         templateName: 'action-signup-coordinator',
-        context: { action, user, dates, campaign: action.campaign }
+        context: { action, user, dates, campaign: action.campaign },
       });
     } catch (e) {
-      throw new Error('Error sending email to coordinator: ' + e.message);
+      throw new Error(`Error sending email to coordinator: ${e.message}`);
     }
 
-    const icsCalendarUrl  = urls.api + '/calendar-links/ics/' + action.id;
-    const googleCalendarUrl = urls.api + '/calendar-links/google/' + action.id;
+    const icsCalendarUrl = `${urls.api}/calendar-links/ics/${action.id}`;
+    const googleCalendarUrl = `${urls.api}/calendar-links/google/${action.id}`;
 
     try {
       await sendEmail({
         to: user.email,
         subject: 'You Signed up to Volunteer',
         templateName: 'action-signup-volunteer',
-        context: { action, dates, user, actionCoordinator, campaign: action.campaign, googleCalendarUrl, icsCalendarUrl }
+        context: { action, dates, user, actionCoordinator, campaign: action.campaign, googleCalendarUrl, icsCalendarUrl },
       });
     } catch (e) {
-      throw new Error('Error sending email to volunteer: ' + e.message);
+      throw new Error(`Error sending email to volunteer: ${e.message}`);
     }
 
     return action;
   },
 
   cancelActionSignup: async (options, context) => {
-
     if (!context.user) {
       throw new Error('User must be logged in');
     }

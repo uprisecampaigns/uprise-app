@@ -76,7 +76,6 @@ module.exports.up = async (knex, Promise) => {
       .onDelete('CASCADE');
 
     table.primary(['campaign_id', 'issue_area_id']);
-
   });
 
   await knex.schema.createTable('campaigns_levels', (table) => {
@@ -92,7 +91,6 @@ module.exports.up = async (knex, Promise) => {
       .onDelete('CASCADE');
 
     table.primary(['campaign_id', 'level_id']);
-
   });
 
   await knex.schema.createTable('campaigns_types', (table) => {
@@ -108,7 +106,6 @@ module.exports.up = async (knex, Promise) => {
       .onDelete('CASCADE');
 
     table.primary(['campaign_id', 'type_id']);
-
   });
 
 
@@ -162,7 +159,6 @@ module.exports.up = async (knex, Promise) => {
       .onDelete('CASCADE');
 
     table.primary(['action_id', 'level_id']);
-
   });
 
   await knex.schema.createTable('actions_types', (table) => {
@@ -178,7 +174,6 @@ module.exports.up = async (knex, Promise) => {
       .onDelete('CASCADE');
 
     table.primary(['action_id', 'type_id']);
-
   });
 
   await knex.schema.createTable('actions_issue_areas', (table) => {
@@ -194,7 +189,6 @@ module.exports.up = async (knex, Promise) => {
       .onDelete('CASCADE');
 
     table.primary(['action_id', 'issue_area_id']);
-
   });
 
   await knex.schema.createTable('activities', (table) => {
@@ -204,7 +198,6 @@ module.exports.up = async (knex, Promise) => {
 
     table.text('title');
     table.text('description');
-
   });
 
   await knex.schema.createTable('actions_activities', (table) => {
@@ -220,9 +213,7 @@ module.exports.up = async (knex, Promise) => {
       .onDelete('CASCADE');
 
     table.primary(['action_id', 'activity_id']);
-
   });
-
 };
 
 module.exports.down = async (knex, Promise) => {

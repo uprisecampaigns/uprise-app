@@ -9,7 +9,6 @@ const Campaign = require('models/Campaign.js');
 const Action = require('models/Action.js');
 
 const getContext = (action) => {
-
   const timezone = (action.zipcode && zipcodeToTimezone.lookup(action.zipcode)) ? zipcodeToTimezone.lookup(action.zipcode) : 'America/New_York';
 
   const hasDate = !action.ongoing || moment(action.start_time).isValid();
@@ -25,12 +24,10 @@ const getContext = (action) => {
     hasLocation,
     hasDate,
   };
-}
+};
 
 module.exports = async (app) => {
-
   app.get('/api/rss/campaign/:slug', async (req, res, next) => {
-
     try {
       const slug = req.params.slug;
       const campaign = await Campaign.findOne({ slug });
@@ -44,17 +41,15 @@ module.exports = async (app) => {
         pubDate: moment().toDate(),
       });
 
-      const actions = campaign.actions.filter(action => {
-        return moment(action.end_time).isAfter(moment()) || action.ongoing
-      });
+      const actions = campaign.actions.filter(action => moment(action.end_time).isAfter(moment()) || action.ongoing);
 
-      await Promise.all(actions.map( async (action) => {
+      await Promise.all(actions.map(async (action) => {
         Object.assign(action, await Action.details(action, true));
         action.campaign_title = campaign.title;
 
         const context = getContext(action);
 
-        ejs.renderFile(config.paths.base + '/views/action-description-rss.ejs', context, function (err, textBody) {
+        ejs.renderFile(`${config.paths.base}/views/action-description-rss.ejs`, context, (err, textBody) => {
           if (err) {
             throw new Error(err);
           } else {
@@ -71,14 +66,12 @@ module.exports = async (app) => {
       }));
 
       return res.send(feed.xml());
-
     } catch (e) {
       next(e);
     }
   });
 
   app.get('/api/rss/:search', async (req, res, next) => {
-
     try {
       const search = req.params.search;
       const actionSearch = await Action.search({
@@ -92,7 +85,7 @@ module.exports = async (app) => {
       const actions = actionSearch.actions;
 
       const feed = new RSS({
-        title: `UpRise Volunteer Opportunities`,
+        title: 'UpRise Volunteer Opportunities',
         description: `Opportunities matching keyword: ${search}`,
         feed_url: `${config.urls.api}/api/rss/${search}`,
         site_url: `${config.urls.client}/${search}`,
@@ -101,12 +94,12 @@ module.exports = async (app) => {
         pubDate: moment().toDate(),
       });
 
-      await Promise.all(actions.map( async (action) => {
+      await Promise.all(actions.map(async (action) => {
         Object.assign(action, await Action.details(action, false));
 
         const context = getContext(action);
 
-        ejs.renderFile(config.paths.base + '/views/action-description-rss.ejs', context, function (err, textBody) {
+        ejs.renderFile(`${config.paths.base}/views/action-description-rss.ejs`, context, (err, textBody) => {
           if (err) {
             throw new Error(err);
           } else {
@@ -120,17 +113,12 @@ module.exports = async (app) => {
             });
           }
         });
-
       }));
 
       return res.send(feed.xml());
-
     } catch (e) {
       next(e);
     }
   });
-
-}
-
-
+};
 

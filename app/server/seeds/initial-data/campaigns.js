@@ -10,18 +10,16 @@ module.exports = async ({ knex, users, types, activities, levels, issueAreas }) 
 
   const maxTagNum = 6;
 
-  const pickTag = (tags) => {
-    return tags[Math.floor(Math.random(0,tags.length) * 10)];
-  }
+  const pickTag = tags => tags[Math.floor(Math.random(0, tags.length) * 10)];
 
   const genTags = (tags) => {
-    const tagNum = Math.floor(Math.random(0,maxTagNum) * 10);
+    const tagNum = Math.floor(Math.random(0, maxTagNum) * 10);
     const chosenTags = [];
 
     let i = 0;
 
     while (i < tagNum) {
-      let tag = pickTag(tags);
+      const tag = pickTag(tags);
       if (!chosenTags.includes(tag)) {
         chosenTags.push(tag);
         i++;
@@ -29,35 +27,34 @@ module.exports = async ({ knex, users, types, activities, levels, issueAreas }) 
     }
 
     return [...new Set(chosenTags)];
-  }
+  };
 
-  vaCampaigns.forEach( (campaign) => {
+  vaCampaigns.forEach((campaign) => {
     campaign.tags = genTags(vaKeywords);
   });
 
-  const campaigns = await knex('campaigns').insert(vaCampaigns , ['id', 'title']);
+  const campaigns = await knex('campaigns').insert(vaCampaigns, ['id', 'title']);
 
-  const vaCampaignsLevelsData = campaigns.map( (campaign) => ({ 
+  const vaCampaignsLevelsData = campaigns.map(campaign => ({
     campaign_id: campaign.id,
-    level_id: levels[1].id
+    level_id: levels[1].id,
   }));
 
   const campaignsLevels = await knex('campaigns_levels').insert(vaCampaignsLevelsData, ['id']);
 
-  const vaCampaignsTypesData = campaigns.map( (campaign) => ({ 
+  const vaCampaignsTypesData = campaigns.map(campaign => ({
     campaign_id: campaign.id,
-    type_id: types[0].id
+    type_id: types[0].id,
   }));
 
   const campaignsTypes = await knex('campaigns_types').insert(vaCampaignsTypesData, ['id']);
 
-  const vaCampaignsIssueAreasData = campaigns.map( (campaign) => ({ 
+  const vaCampaignsIssueAreasData = campaigns.map(campaign => ({
     campaign_id: campaign.id,
-    issue_area_id: issueAreas[Math.floor(Math.random(0,9) * 10)].id
+    issue_area_id: issueAreas[Math.floor(Math.random(0, 9) * 10)].id,
   }));
 
   const campaignIssueAreas = await knex('campaigns_issue_areas').insert(vaCampaignsIssueAreasData, ['id']);
 
   return { campaigns, levels, issueAreas, types };
-
 };

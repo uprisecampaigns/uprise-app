@@ -4,4 +4,4 @@ module.exports = function (sendErr, eventId) {
   } else {
     console.log('Captured exception and sent to Sentry successfully');
   }
-}
+};

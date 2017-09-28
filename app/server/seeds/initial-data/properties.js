@@ -71,5 +71,4 @@ module.exports = async (knex, users) => {
 
 
   return { levels, issueAreas, types, activities };
-
 };

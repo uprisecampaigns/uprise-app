@@ -18,11 +18,10 @@ const ravenCallback = require('lib/ravenCallback.js');
 
 
 module.exports = (app) => {
-
   const root = Object.assign({}, userFuncs, campaignFuncs, actionFuncs, miscFuncs);
 
   app.use('/api/graphql', graphqlExpress(req => ({
-    schema: schema,
+    schema,
     rootValue: root,
     context: { user: req.user },
     debug: (app.get('env') === 'development'),
@@ -54,11 +53,10 @@ module.exports = (app) => {
         message: error.message,
         stack: process.env.NODE_ENV === 'development' ? error.stack.split('\n') : null,
       };
-    }
+    },
   })));
 
   app.use('/api/graphiql', authenticationMiddleware.isLoggedIn, graphiqlExpress({
-    endpointURL: '/api/graphql'
+    endpointURL: '/api/graphql',
   }));
-
-}
+};

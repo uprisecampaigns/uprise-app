@@ -1,5 +1,5 @@
 const express = require('express');
-const session  = require('express-session');
+const session = require('express-session');
 const redis = require('redis');
 const RedisStore = require('connect-redis')(session);
 const passport = require('passport');
@@ -18,7 +18,7 @@ const app = express();
 
 
 Raven.config(config.sentry.dsn, {
-  parseUser: ['id', 'email', 'first_name', 'last_name', 'zipcode', 'phone_number']
+  parseUser: ['id', 'email', 'first_name', 'last_name', 'zipcode', 'phone_number'],
 }).install();
 
 app.use(Raven.requestHandler());
@@ -34,16 +34,16 @@ app.set('trust proxy', true);
 app.use(logger((tokens, req, res) => {
   const logArray = [
     tokens['remote-addr'](req), '-',
-    req.user && req.user.first_name + ' ' + req.user.last_name + ' - ' + req.user.email,
+    req.user && `${req.user.first_name} ${req.user.last_name} - ${req.user.email}`,
     tokens.date(req, res, 'clf'),
     tokens.method(req, res),
     tokens.url(req, res),
-    'HTTP/:' + tokens['http-version'](req),
+    `HTTP/:${tokens['http-version'](req)}`,
     tokens.status(req, res),
     tokens.res(req, res, 'content-length'), '-',
     tokens['response-time'](req, res), 'ms',
     tokens.referrer(req, res),
-    tokens['user-agent'](req)
+    tokens['user-agent'](req),
   ];
 
   // Only log the body of graphql requests
@@ -51,7 +51,7 @@ app.use(logger((tokens, req, res) => {
   // TODO: better long term fix for not logging sensitive info
   if (req.method.toLowerCase() === 'post' && req.baseUrl === '/api/graphql' &&
       !JSON.stringify(req.body).toLowerCase().includes('password')) {
-    logArray.push(' Graphql body: ' + JSON.stringify(req.body));
+    logArray.push(` Graphql body: ${JSON.stringify(req.body)}`);
   }
 
   return logArray.join(' ');
@@ -68,13 +68,13 @@ const sessionOptions = config.sessionOptions;
 
 const redisClient = redis.createClient(config.redis);
 
-redisClient.on('error', function(err) {
+redisClient.on('error', (err) => {
   console.error(err);
 });
 
 sessionOptions.store = new RedisStore({
-  client: redisClient
-}); 
+  client: redisClient,
+});
 
 app.use(session(sessionOptions));
 app.use(passport.initialize());
@@ -84,7 +84,7 @@ app.use(passport.session());
 require('routes/index')(app, passport);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -97,22 +97,22 @@ app.use(Raven.errorHandler());
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.json({
       message: err.message,
-      error: err
+      error: err,
     });
   });
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.json({
-        message: err.message,
-        error: {}
-    });
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    message: err.message,
+    error: {},
+  });
 });
 module.exports = app;
