@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import moment from 'moment';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import AutoComplete from 'material-ui/AutoComplete';
@@ -16,16 +15,11 @@ class ActionSettingsForm extends Component {
     refs: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    saving: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    saving: false,
   }
 
   render() {
     const {
-      data, refs, formSubmit, errors, saving, handleInputChange,
+      data, refs, formSubmit, errors, handleInputChange,
     } = this.props;
 
     const statesList = Object.keys(states);

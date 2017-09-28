@@ -18,6 +18,33 @@ const updateProperties = require('models/updateProperties')('action');
 const config = require('config/config.js');
 
 
+const createShifts = async (shifts, actionId) => {
+  const shiftResults = [];
+  for (const shift of shifts) {
+    shift.action_id = actionId;
+    shiftResults.push(await db('shifts').insert(shift, 'id', 'start', 'end'));
+  }
+
+  return shiftResults;
+}
+
+const updateShifts = async (shifts, actionId) => {
+  const shiftResults = [];
+  console.log(shifts);
+  for (const shift of shifts) {
+    if (typeof shift.id === 'string') {
+      await db('shifts')
+        .where('id', shift.id)
+        .delete();
+    }
+
+    shift.action_id = actionId;
+    shiftResults.push(await db('shifts').insert(shift, 'id', 'start', 'end'));
+  }
+
+  return shiftResults;
+}
+
 class Action {
   static async findOne(...args) {
     const action = await db('actions')
@@ -457,12 +484,22 @@ class Action {
         .where('actions_activities.action_id', action.id)
         .select('activities.id as id', 'activities.title as title', 'activities.description as description');
 
+      const shiftsQuery = db('shifts')
+        .select(['id',
+          db.raw('to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start'),
+          db.raw('to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end')])
+        .where('action_id', action.id)
 
-      [details.campaign, details.owner, details.activities] = await Promise.all([
-        Campaign.findOne('id', action.campaign_id),
-        User.findOne('id', action.owner_id),
-        activitiesQuery,
-      ]);
+      try {
+        [details.campaign, details.owner, details.activities, details.shifts] = await Promise.all([
+          Campaign.findOne('id', action.campaign_id),
+          User.findOne('id', action.owner_id),
+          activitiesQuery,
+          shiftsQuery,
+        ]);
+      } catch (e) {
+        throw new Error(`Error querying details: ${e.message}`);
+      }
 
       details.dashboard_url = url.resolve(config.urls.client, `organize/${details.campaign.slug}/opportunity/${action.slug}`);
     }
@@ -515,7 +552,7 @@ class Action {
         const newActionData = Object.assign({}, options, { slug });
 
         try {
-          const { activities, ...newActionInput } = newActionData;
+          const { activities, shifts, ...newActionInput } = newActionData;
 
           const newInsertInput = (user.superuser === true) ? { ...newActionInput, owner_id: campaign.owner_id } : newActionInput;
 
@@ -527,6 +564,10 @@ class Action {
 
           if (activities && activities.length) {
             await updateProperties(activities, 'activity', action.id);
+          }
+
+          if (shifts && shifts.length) {
+            await createShifts(shifts, action.id);
           }
 
           return Object.assign({}, action, await this.details(action));
@@ -551,7 +592,7 @@ class Action {
         throw new Error(`Cannot find action with id=${input.id}`);
       } else if (await User.ownsObject({ user, object: action })) {
         try {
-          const { activities, ...newInput } = input;
+          const { activities, shifts, ...newInput } = input;
 
           const actionResult = await db('actions')
             .where('id', newInput.id)
@@ -563,6 +604,10 @@ class Action {
 
           if (activities && activities.length) {
             await updateProperties(activities, 'activity', action.id);
+          }
+
+          if (shifts && shifts.length) {
+            await updateShifts(shifts, action.id);
           }
 
           return Object.assign({}, action, await this.details(action));

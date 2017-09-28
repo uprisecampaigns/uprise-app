@@ -1,6 +1,11 @@
 fragment ActionDetails on ActionResult {
   description
   tags
+  shifts {
+    id
+    start
+    end
+  }
   activities {
     id
     title

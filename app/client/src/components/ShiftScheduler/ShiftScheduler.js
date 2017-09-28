@@ -2,17 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
-import CircularProgress from 'material-ui/CircularProgress';
-import AutoComplete from 'material-ui/AutoComplete';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import s from 'styles/Form.scss';
 
 
-const blankShift = () => ({ 
-  start: undefined, 
+const blankShift = () => ({
+  id: undefined,
+  start: undefined,
   end: undefined,
   startError: null,
   endError: null,
@@ -38,9 +34,10 @@ class ShiftScheduler extends Component {
 
       const foundIndex = placeholderShift ? -1 : shiftDates.findIndex(d => moment(d.date).isSame(shiftDate, 'day'));
 
-      const newShift = { 
-        start: shift.start, 
-        end: shift.end,
+      const newShift = {
+        id: shift.id,
+        start: moment(shift.start).toDate(),
+        end: moment(shift.end).toDate(),
         startError: null,
         endError: null,
       };
@@ -97,7 +94,7 @@ class ShiftScheduler extends Component {
 
       newShiftDate.shifts = newShifts;
 
-      return newShiftDate; 
+      return newShiftDate;
     });
 
     this.setState({ shiftDates: newShiftDates });
@@ -112,9 +109,10 @@ class ShiftScheduler extends Component {
       const shifts = this.state.shiftDates.reduce((accumulator, shiftDate) => {
         console.log(shiftDate);
 
-        const newShifts = shiftDate.shifts.map((shift) => ({
+        const newShifts = shiftDate.shifts.map(shift => ({
           start: moment(shift.start).format(),
           end: moment(shift.end).format(),
+          id: shift.id,
         }));
 
         return [...accumulator, ...newShifts];
@@ -157,9 +155,11 @@ class ShiftScheduler extends Component {
     const newShifts = [...this.state.shiftDates];
 
     const date = moment(this.state.shiftDates[dateIndex].date);
-    const newTime = moment(time).year(date.year()).month(date.month()).dayOfYear(date.dayOfYear());
+    const mTime = moment(time);
+    const newTime = date.hour(mTime.hour()).minute(mTime.minute());
 
     newShifts[dateIndex].shifts[shiftIndex][type] = newTime.toDate();
+    newShifts[dateIndex].shifts[shiftIndex][type + 'Error'] = null;
 
     this.setState({ shiftDates: newShifts });
   }
@@ -168,6 +168,7 @@ class ShiftScheduler extends Component {
     const newShifts = [...this.state.shiftDates];
 
     newShifts[dateIndex].date = date;
+    newShifts[dateIndex].dateErro = null;
 
     this.setState({ shiftDates: newShifts });
   }

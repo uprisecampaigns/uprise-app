@@ -55,6 +55,7 @@ module.exports = buildSchema(`
   }
 
   type ShiftResult {
+    id: String!
     start: String!
     end: String!
   }
@@ -241,6 +242,7 @@ module.exports = buildSchema(`
   }
 
   input ShiftInput {
+    id: String
     start: String!
     end: String!
   }
