@@ -38,11 +38,14 @@
   }
 
   .searchBarContainer {
-
+    margin: 1rem 1rem 2rem 1rem;
     display: flex;
     justify-content: space-around;
     align-items: baseline;
-    margin: 1rem 2.777rem 2rem 2.777rem;
+
+    @media (min-width: $screen-md-min) {
+      margin: 1rem 0rem 2rem 2.777rem;
+    }
 
     .searchBar {
       flex: 1;
@@ -119,9 +122,13 @@
     overflow-x: hidden;
 
     .card {
-      margin: .5rem 2.777rem .5rem 2.777rem;
+      margin: .5rem 1rem .5rem 1rem;
       box-shadow: 0px 2px 2px 0px darken($white, 50%) !important;
-      padding: 1.111rem 3rem 1.111rem 4.11rem !important
+      padding: 1.111rem 3rem 1.111rem 4.11rem !important;
+
+      @media (min-width: $screen-md-min) {
+        margin: .5rem 0rem .5rem 2.777rem;
+      }
     }
 
     .resultsHeader {
