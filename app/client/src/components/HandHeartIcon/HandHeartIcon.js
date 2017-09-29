@@ -19,11 +19,6 @@ class HandHeartIcon extends PureComponent {
         <line className={s.fingers} y2="13.5" x2="45.6" y1="45.8" x1="45.6" />
         <line className={s.fingers} y2="13.2" x2="60.8" y1="45.5" x1="60.8" />
         <line className={s.fingers} y2="23.7" x2="73.9" y1="45.2" x1="73.9" />
-        <path
-          className={s.heart}
-          // eslint-disable-next-line max-len
-          d="m59.5 62.2c0.2-3.7 2.9-6.8 6.4-7.4 3.3-0.6 6.4 1.1 8.1 3.6 1.9 3 1.5 7-0.9 9.9l-13.5 13.5-14-14c-2.5-3.2-2.4-7.7 0.2-10.6 2.4-2.7 6.6-3.5 9.8-1.7 3.5 2.1 3.9 6.4 3.9 6.7z"
-        />
       </SvgIcon>
     );
   }
