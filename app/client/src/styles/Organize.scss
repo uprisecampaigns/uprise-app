@@ -5,9 +5,10 @@
 
 .outerContainer {
   width: 100%;
+  max-width: $max-content-width;
   overflow-x: hidden;
   min-height: 100vh;
-  margin-bottom: 5rem;
+  margin: 0rem auto 5rem auto;
 
   .savingThrobberContainer {
     width: 100%;

@@ -27,7 +27,12 @@ class SearchActionInputs extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     selectedCollection: PropTypes.string.isRequired,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  };
+    allOpen: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    allOpen: false,
+  }
 
   setDates = (dates) => {
     this.props.dispatch(setSearchDates('action', dates));
@@ -52,6 +57,8 @@ class SearchActionInputs extends PureComponent {
       setDates,
     } = this;
 
+    const { allOpen } = this.props;
+
     const activitiesTogglesList = togglesList({
       collection: this.props.activities,
       selectedCollection: this.props.selectedCollection,
@@ -68,6 +75,7 @@ class SearchActionInputs extends PureComponent {
         <ControlledListItem
           primaryText="Location"
           className={s.listItemContainer}
+          initiallyOpen={allOpen}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
               <GeographySearch
@@ -82,6 +90,7 @@ class SearchActionInputs extends PureComponent {
         <div className={s.listItemContainer}>
           <ControlledListItem
             primaryText="Activities"
+            initiallyOpen={allOpen}
             nestedItems={activitiesTogglesList}
           />
         </div>
@@ -91,6 +100,7 @@ class SearchActionInputs extends PureComponent {
         <ControlledListItem
           primaryText="Date"
           className={s.listItemContainer}
+          initiallyOpen={allOpen}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.dateSearchContainer].join(' ')}>
               <ConnectedDateTimeSearch

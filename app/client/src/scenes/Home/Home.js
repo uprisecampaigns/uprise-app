@@ -1,144 +1,84 @@
-import React from 'react';
-import FlatButton from 'material-ui/FlatButton';
+import React, { Component, PropTypes } from 'react';
+import { Tabs, Tab } from 'material-ui/Tabs';
 
-import Link from 'components/Link';
+import SearchActions from 'components/SearchActions';
+import SearchCampaigns from 'components/SearchCampaigns';
 
-import s from 'styles/Page.scss';
+import s from 'styles/Home.scss';
 
 
-function Home(props) {
-  return (
-    <div className={s.root}>
-      <div
-        className={s.homeContentSection1}
-      >
-        <div className={s.fullContainer}>
-          <div className={s.contentTitle}>Take Action</div>
-          <div className={s.contentText}>
-            UpRise is reforming our political campaign process by putting you back in the drivers&apos; seat.
-            Sign up now to find volunteering opportunities or create a page so volunteers can find you.
-          </div>
-          <div className={s.homeButtonContainer}>
-            <Link
-              useAhref={false}
-              to="/signup"
+class Home extends Component {
+  static propTypes = {
+    startTab: PropTypes.number,
+  }
+
+  static defaultProps = {
+    startTab: 0,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: props.startTab,
+    };
+  }
+
+  handleChange = (value) => {
+    this.setState({
+      activeTab: value,
+    });
+  };
+
+  render() {
+    const { activeTab } = this.state;
+
+    // Too difficult to override in css :/
+    const inkBarStyle = {
+      backgroundColor: '#333',
+      width: '35%',
+      height: '3px',
+      marginLeft: '7.5%',
+      marginBottom: '0px',
+    };
+
+    return (
+      <div className={s.outerContainer}>
+        <div className={s.tabsOuterContainer}>
+          <div className={s.tabsInnerContainer}>
+            <Tabs
+              className={s.tabs}
+              contentContainerClassName={s.tabsContentContainer}
+              onChange={this.handleChange}
+              value={activeTab}
+              inkBarStyle={inkBarStyle}
             >
-              <FlatButton
-                className={s.homeButton}
-                label="Sign up now"
+              <Tab
+                label="Opportunities"
+                className={activeTab === 0 ? s.activeTab : s.tab}
+                value={0}
               />
-            </Link>
+
+              <Tab
+                label="Campaigns"
+                className={activeTab === 1 ? s.activeTab : s.tab}
+                value={1}
+              />
+            </Tabs>
           </div>
         </div>
+
+        { (activeTab === 0) ? (
+          <div className={s.searchContainer}>
+            <SearchActions />
+          </div>
+        ) : (
+          <div className={s.searchContainer}>
+            <SearchCampaigns />
+          </div>
+        )}
       </div>
-
-      <div
-        className={s.homeContentSection2}
-      >
-        <div className={s.fullContainer}>
-          <div className={s.contentTitle}>Volunteers</div>
-          <div className={s.contentText}>
-            UpRise is a social network platform you can use to organize your political life: to find, sign up for and create real-world actions.
-          </div>
-          <div className={s.linkContainer}>
-            <Link
-              useAhref
-              to="uprisecampaigns.org/home/volunteers"
-              external
-              sameTab
-            >
-              Learn More
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className={s.homeContentSection3}
-      >
-        <div className={s.fullContainer}>
-          <div className={s.contentTitle}>Campaigns</div>
-          <div className={s.contentText}>
-            UpRise will connect you with new volunteers and provide the tools you need to create effective volunteer-powered campaigns.
-          </div>
-          <div className={s.linkContainer}>
-            <Link
-              useAhref
-              to="uprisecampaigns.org/home/campaigns"
-              external
-              sameTab
-            >
-              Learn More
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className={s.homeContentSection4}
-      >
-        <div className={s.fullContainer}>
-          <div className={s.halfContainer}>
-            <div className={s.contentTitle}>Subscribe</div>
-            <div className={s.contentText}>
-              Subscribe today and join the UpRise community.
-            </div>
-            <div className={s.homeButtonContainer}>
-              <Link
-                useAhref={false}
-                to="https://act.myngp.com/Forms/-8815703986835813888"
-                external
-                sameTab
-              >
-                <FlatButton
-                  className={s.homeButton}
-                  label="Get the Newsletter"
-                />
-              </Link>
-            </div>
-          </div>
-
-          <div className={s.halfContainer}>
-            <div className={s.contentTitle}>Support</div>
-            <div className={s.contentText}>
-              Become a supporting member of UpRise.
-            </div>
-            <div className={s.homeButtonContainer}>
-              <Link
-                useAhref={false}
-                to="https://act.myngp.com/Forms/-8527473610684102144"
-                external
-                sameTab
-              >
-                <FlatButton
-                  className={s.homeButton}
-                  label="Contribute Today"
-                />
-              </Link>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div
-        className={s.homeContentSection5}
-      >
-        <div className={s.fullContainer}>
-          <div className={s.contentTitle}>Contact Us</div>
-          <div className={s.contentText}>
-            Email: staff@uprise.org
-          </div>
-          <div className={s.contentText}>
-            3600 Monument Ave, #12 | Richmond | VA | 23230
-          </div>
-          <div className={s.contentText}>
-            1442A Walnut St #149 | Berkeley | CA | 94709
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Home;

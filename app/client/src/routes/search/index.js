@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import Search from 'scenes/Search';
+import Home from 'scenes/Home';
 
 
 export default {
@@ -9,7 +9,7 @@ export default {
   action() {
     return {
       title: 'Search',
-      component: <Layout><Search /></Layout>,
+      component: <Layout><Home /></Layout>,
     };
   },
 };

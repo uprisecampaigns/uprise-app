@@ -1,9 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import Divider from 'material-ui/Divider';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 
@@ -14,7 +10,7 @@ import s from './ContentDropdownMenu.scss';
 
 class ContentDropdownMenu extends Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.node.isRequired,
     dropdowns: PropTypes.arrayOf(PropTypes.shape({
       action: PropTypes.func,
       path: PropTypes.string,
@@ -55,23 +51,21 @@ class ContentDropdownMenu extends Component {
     };
 
     return (
-      <div key={index}>
-        <Link
-          to={dropdown.path}
-          useAhref={false}
-          onClick={itemClicked}
-          preventDefault={dropdown.external}
-          external={dropdown.external}
-          sameTab={dropdown.sameTab}
+      <Link
+        to={dropdown.path}
+        useAhref={false}
+        onClick={itemClicked}
+        preventDefault={dropdown.external}
+        external={dropdown.external}
+        sameTab={dropdown.sameTab}
+      >
+        <div
+          key={index}
+          className={s.dropdownItemText}
         >
-          <MenuItem
-            className={s.dropdownItemText}
-            value={index}
-            primaryText={dropdown.title}
-          />
-        </Link>
-        {(index < this.props.dropdowns.length - 1) && <Divider />}
-      </div>
+          {dropdown.title}
+        </div>
+      </Link>
     );
   }
 
@@ -85,26 +79,20 @@ class ContentDropdownMenu extends Component {
           open={menuOpen}
           anchorEl={popoverAnchorEl}
           onRequestClose={this.handleCloseMenu}
-          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
           className={s.dropdownItemsContainer}
         >
-          <Menu className={s.dropdownMenu}>
+          <div className={s.dropdownMenu}>
             {dropdownItems}
-          </Menu>
+          </div>
         </Popover>
         <div
           className={s.dropdownButton}
           onTouchTap={this.handleOpenMenu}
         >
-          <FlatButton
-            label={(
-              <span>
-                {this.props.title}
-                { menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore /> }
-              </span>
-            )}
-          />
+          {this.props.title}
+          { menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore /> }
         </div>
       </div>
     );

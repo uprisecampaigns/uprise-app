@@ -3,15 +3,11 @@ import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import uniqWith from 'lodash.uniqwith';
 import moment from 'moment-timezone';
-import FontIcon from 'material-ui/FontIcon';
-
-import ResultsCount from 'components/ResultsCount';
-import Link from 'components/Link';
 
 import SearchPresentation from 'components/SearchPresentation';
 
 import {
-  addSearchItem, sortBy,
+  addSearchItem,
 } from 'actions/SearchActions';
 
 import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
@@ -106,25 +102,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-const ResultsCountWithData = compose(
-  connect(mapStateToProps),
-  graphql(SearchActionsQuery, graphqlOptions),
-)(ResultsCount);
-
 const SearchActionResultsWithData = compose(
   connect(mapStateToProps),
   graphql(SearchActionsQuery, graphqlOptions),
 )(SearchActionResults);
 
-const searchSortWrapper = connect(state => ({
-  selected: state.actionsSearch.sortBy.name,
-  descending: state.actionsSearch.sortBy.descending,
-}));
-
-const searchSortItems = [
-  { label: 'Date', prop: 'date' },
-  { label: 'Campaign Name', prop: 'campaignName' },
-];
 
 class SearchActions extends Component {
   static propTypes = {
@@ -135,35 +117,14 @@ class SearchActions extends Component {
     this.props.dispatch(addSearchItem('action', collectionName, value));
   }
 
-  sortSelect = (value) => {
-    this.props.dispatch(sortBy('action', value));
-  }
-
   render() {
     return (
       <div className={s.outerContainer}>
 
-        <Link to="/search">
-          <div className={[s.navHeader, s.searchNavHeader].join(' ')}>
-            <FontIcon
-              className={['material-icons', s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
-            Search
-          </div>
-        </Link>
-
-        <div className={s.titleContainer}>
-          Search Opportunities
-        </div>
-
         <SearchPresentation
           addSelectedItem={this.addSelectedItem}
-          sortSelect={this.sortSelect}
-          resultsCount={<ResultsCountWithData />}
-          searchSortWrapper={searchSortWrapper}
-          searchSortItems={searchSortItems}
           searchSelections={<SearchActionSelections />}
-          searchInputs={<SearchActionInputs />}
+          searchInputs={allOpen => <SearchActionInputs allOpen={allOpen} />}
           searchResults={<SearchActionResultsWithData />}
         />
 

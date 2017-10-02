@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchActions from 'scenes/SearchActions';
+import Home from 'scenes/Home';
 import Layout from 'components/Layout';
 
 import {
@@ -17,7 +17,7 @@ export default {
 
     return {
       title: `${tag} Opportunities`,
-      component: <Layout><SearchActions /></Layout>,
+      component: <Layout><Home /></Layout>,
     };
   },
 };

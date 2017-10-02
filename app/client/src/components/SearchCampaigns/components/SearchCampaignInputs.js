@@ -15,7 +15,12 @@ import s from 'styles/Search.scss';
 class SearchCampaignInputs extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-  };
+    allOpen: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    allOpen: false,
+  }
 
   addSelectedItem = (collectionName, value) => {
     this.props.dispatch(addSearchItem('campaign', collectionName, value));
@@ -26,12 +31,15 @@ class SearchCampaignInputs extends PureComponent {
       addSelectedItem,
     } = this;
 
+    const { allOpen } = this.props;
+
     return (
       <List className={s.searchInputsList}>
 
         <ControlledListItem
           primaryText="Location"
           className={s.listItemContainer}
+          initiallyOpen={allOpen}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
               <ZipcodeSearch

@@ -37,11 +37,12 @@ const withMeQuery = graphql(MeQuery, {
       email: '',
     },
   }),
-  skip: ownProps => !ownProps.loggedIn,
+  skip: ownProps => !ownProps.loggedIn && !ownProps.fetchingAuthUpdate,
 });
 
 const mapStateToProps = state => ({
   loggedIn: state.userAuthSession.isLoggedIn,
+  fetchingAuthUpdate: state.userAuthSession.fetchingAuthUpdate,
 });
 
 export default compose(
