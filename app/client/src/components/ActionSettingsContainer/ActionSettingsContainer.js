@@ -28,6 +28,8 @@ import ShiftScheduler from 'components/ShiftScheduler';
 import s from 'styles/Organize.scss';
 
 
+import ReviewDetails from './components/ReviewDetails';
+
 const WrappedActionSettingsForm = formWrapper(ActionSettingsForm);
 
 class ActionSettingsContainer extends Component {
@@ -154,15 +156,23 @@ class ActionSettingsContainer extends Component {
     }
   }
 
+  toggleOngoing = (ongoing) => {
+    this.setState((prevState) => ({
+      formData: { ...prevState.formData, ongoing }
+    }));
+  }
+
   handleNext = () => {
-    const { stepIndex } = this.state;
+    const { formData, stepIndex } = this.state;
 
     if (stepIndex === 0) {
       console.log(this);
       console.log(this.wrappedActionSettingsForm);
       this.wrappedActionSettingsForm.wrappedInstance.formSubmit();
-    } else if (stepIndex === 1) {
+    } else if (stepIndex === 1 && !formData.ongoing) {
       this.shiftScheduler.formSubmit();
+    } else if (stepIndex === 1 && formData.ongoing) {
+      this.setState({ formData, stepIndex: 2 });
     } else if (stepIndex === 2) {
       this.props.submit(this.state.formData);
     }
@@ -225,7 +235,7 @@ class ActionSettingsContainer extends Component {
             </Step>
             <Step>
               <StepButton onClick={() => this.setState({ stepIndex: 1 })}>
-                Dates & Shifts
+                Opportunity Type
               </StepButton>
               <StepContent>
                 <p>
@@ -260,11 +270,39 @@ class ActionSettingsContainer extends Component {
           }
 
           { stepIndex === 1 &&
-            <ShiftScheduler
-              data={formData}
-              submit={shiftSubmit}
-              ref={(scheduler) => { this.shiftScheduler = scheduler; }}
-            />
+            <div>
+              <div className={s.opportunityTypeToggleContainer}>
+                <RaisedButton
+                  label="Role"
+                  disableTouchRipple
+                  disableFocusRipple
+                  primary={formData.ongoing}
+                  onClick={() => this.toggleOngoing(true)}
+                />
+
+                <RaisedButton
+                  label="Event"
+                  disableTouchRipple
+                  disableFocusRipple
+                  primary={!formData.ongoing}
+                  onClick={() => this.toggleOngoing(false)}
+                />
+              </div>
+
+              { formData.ongoing ? (
+                <div>Role</div>
+              ) : 
+                <ShiftScheduler
+                  data={formData}
+                  submit={shiftSubmit}
+                  ref={(scheduler) => { this.shiftScheduler = scheduler; }}
+                />
+              }
+            </div>
+          }
+
+          { stepIndex === 2 &&
+            <ReviewDetails action={formData} />
           }
         </div>
       </div>

@@ -82,7 +82,7 @@ class ShiftScheduler extends Component {
         }
 
         if (!shiftError) {
-          if (moment(newShift.end).isBefore(moment(newShift.start))) {
+          if (!moment(newShift.end).isAfter(moment(newShift.start))) {
             shiftError = true;
             newShift.endError = 'End time must be before start';
           }
