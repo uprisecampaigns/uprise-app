@@ -8,6 +8,7 @@ import timeWithZone from 'lib/timeWithZone';
 import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
+import KeywordTag from 'components/KeywordTag';
 
 import s from 'styles/Profile.scss';
 
@@ -24,8 +25,16 @@ class CampaignProfile extends PureComponent {
     if (this.props.campaign) {
       const { campaign, saving, subscribe, cancelSubscription } = this.props;
 
-      const keywords = (Array.isArray(campaign.tags) && campaign.tags.length > 0) ? (
-        <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
+      const keywords = (Array.isArray(campaign.tags) && campaign.tags.length) ? (
+        <div className={s.detailLine}>
+          {campaign.tags.map(tag => (
+            <KeywordTag
+              label={tag}
+              type="campaign"
+              className={s.keywordTag}
+            />
+          ))}
+        </div>
       ) : null;
 
       const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ?

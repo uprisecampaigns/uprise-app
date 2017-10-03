@@ -8,7 +8,7 @@ import {
   addSearchItem, clearSearch,
 } from 'actions/SearchActions';
 
-import s from './KeywordTag.scss';
+import { setPage } from 'actions/PageNavActions';
 
 
 function KeywordTag(props) {
@@ -20,12 +20,13 @@ function KeywordTag(props) {
 
     dispatch(clearSearch(type));
     dispatch(addSearchItem(type, 'tags', label));
+    dispatch(setPage('home', type));
     history.push('/search');
   };
 
   return (
     <Chip
-      { ...other }
+      {...other}
       onTouchTap={handleClicked}
     >
       {label}
