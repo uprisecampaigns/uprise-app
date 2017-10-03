@@ -6,7 +6,7 @@ export const defaultStartState = {};
 
 export const defaultHomeNavStartState = {
   ...defaultStartState,
-  page: 'actions',
+  page: 'action',
 };
 
 export function updatePageNav(navState = defaultStartState, action) {

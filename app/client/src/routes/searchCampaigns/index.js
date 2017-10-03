@@ -8,7 +8,7 @@ export default {
   path: '/search/search-campaigns',
 
   action(context) {
-    context.store.dispatch(setPage('home', 'campaigns'));
+    context.store.dispatch(setPage('home', 'campaign'));
 
     return {
       title: 'Search Campaigns',
