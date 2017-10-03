@@ -1,0 +1,6 @@
+{
+  "name": "KeywordTag",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./KeywordTag.js"
+}

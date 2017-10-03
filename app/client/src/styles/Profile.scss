@@ -120,5 +120,15 @@
         }
       }
     }
+
+    .keywordTag {
+      display: inline-block !important;
+      margin: 0rem .5rem 0rem 0rem !important;
+      background-color: $brick-red !important;
+      
+      span {
+        color: $white !important;
+      }
+    }
   }
 }
