@@ -5,6 +5,7 @@ import { updateNotifications } from './NotificationsReducer';
 import { updateSearch } from './SearchReducer';
 import { updateUploads } from './UploadReducer';
 import { updateMessages } from './MessageReducer';
+import { updatePageNav } from './PageNavReducer';
 
 function createFilteredReducer(reducerFunction, reducerPredicate) {
   return (state, action) => {
@@ -21,6 +22,7 @@ const appReducer = combineReducers({
   notifications: updateNotifications,
   actionsSearch: createFilteredReducer(updateSearch, action => action.searchType === 'action'),
   campaignsSearch: createFilteredReducer(updateSearch, action => action.searchType === 'campaign'),
+  homePageNav: createFilteredReducer(updatePageNav, action => action.page === 'home'),
   apollo: apolloClient.reducer(),
 });
 
