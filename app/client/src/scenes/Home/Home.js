@@ -17,7 +17,7 @@ class Home extends Component {
   }
 
   static defaultProps = {
-    page: 'actions',
+    page: 'action',
   }
 
   handleChange = (value) => {
@@ -49,20 +49,20 @@ class Home extends Component {
             >
               <Tab
                 label="Opportunities"
-                className={activeTab === 'actions' ? s.activeTab : s.tab}
-                value="actions"
+                className={activeTab === 'action' ? s.activeTab : s.tab}
+                value="action"
               />
 
               <Tab
                 label="Campaigns"
                 className={activeTab === 'campaigns' ? s.activeTab : s.tab}
-                value="campaigns"
+                value="campaign"
               />
             </Tabs>
           </div>
         </div>
 
-        { (activeTab === 'actions') ? (
+        { (activeTab === 'action') ? (
           <div className={s.searchContainer}>
             <SearchActions />
           </div>
