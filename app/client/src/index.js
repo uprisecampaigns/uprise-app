@@ -20,6 +20,10 @@ import {
   defaultActionStartState,
 } from 'reducers/SearchReducer';
 
+import {
+  defaultHomeNavStartState,
+} from 'reducers/PageNavReducer';
+
 import { checkSessionStatus } from 'actions/AuthActions';
 import {
   startPageLoad,
@@ -44,6 +48,7 @@ const container = document.getElementById('app');
 const store = configureStore({
   actionsSearch: defaultActionStartState,
   campaignsSearch: defaultCampaignStartState,
+  homePageNav: defaultHomeNavStartState,
 });
 
 injectTapEventPlugin();

@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
+
+import { setPage } from 'actions/PageNavActions';
 
 import SearchActions from 'components/SearchActions';
 import SearchCampaigns from 'components/SearchCampaigns';
@@ -9,28 +12,20 @@ import s from 'styles/Home.scss';
 
 class Home extends Component {
   static propTypes = {
-    startTab: PropTypes.number,
+    dispatch: PropTypes.func.isRequired,
+    page: PropTypes.string,
   }
 
   static defaultProps = {
-    startTab: 0,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeTab: props.startTab,
-    };
+    page: 'actions',
   }
 
   handleChange = (value) => {
-    this.setState({
-      activeTab: value,
-    });
+    this.props.dispatch(setPage('home', value));
   };
 
   render() {
-    const { activeTab } = this.state;
+    const activeTab = this.props.page;
 
     // Too difficult to override in css :/
     const inkBarStyle = {
@@ -54,20 +49,20 @@ class Home extends Component {
             >
               <Tab
                 label="Opportunities"
-                className={activeTab === 0 ? s.activeTab : s.tab}
-                value={0}
+                className={activeTab === 'actions' ? s.activeTab : s.tab}
+                value="actions"
               />
 
               <Tab
                 label="Campaigns"
-                className={activeTab === 1 ? s.activeTab : s.tab}
-                value={1}
+                className={activeTab === 'campaigns' ? s.activeTab : s.tab}
+                value="campaigns"
               />
             </Tabs>
           </div>
         </div>
 
-        { (activeTab === 0) ? (
+        { (activeTab === 'actions') ? (
           <div className={s.searchContainer}>
             <SearchActions />
           </div>
@@ -81,4 +76,8 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  page: state.homePageNav.page,
+});
+
+export default connect(mapStateToProps)(Home);
