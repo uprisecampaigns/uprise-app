@@ -53,7 +53,6 @@ class ActionSettingsContainer extends Component {
       locationNotes: '',
       ongoing: false,
       shifts: [],
-      date: undefined,
       startTime: undefined,
       endTime: undefined,
     },
@@ -88,7 +87,6 @@ class ActionSettingsContainer extends Component {
 
       // Handle date/time
       const newDateTimes = {
-        date: action.startTime && moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
         startTime: action.startTime && moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
         endTime: action.endTime && moment(action.endTime).isValid() ? moment(action.endTime).toDate() : undefined,
       };

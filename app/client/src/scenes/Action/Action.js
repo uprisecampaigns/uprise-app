@@ -107,6 +107,18 @@ class Action extends Component {
         action.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.detailLine}>{activity.description}</div>) :
         [];
 
+      const shifts = (Array.isArray(action.shifts) && action.shifts.length) ?
+        action.shifts.map((shift, index) => {
+          const start = moment(shift.start);
+          const end = moment(shift.end);
+          const dateString = `${start.format('ddd MMM Do: h:mm')} - ${end.format('h:mm a')}`;
+
+          return (
+            <div key={JSON.stringify(shift)} className={s.detailLine}>{dateString}</div>
+          );
+        }) :
+        [];
+
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.detailLine}>{action.tags.join(', ')}</div>
       ) : null;
@@ -255,6 +267,15 @@ class Action extends Component {
                   Activities and Skills Needed:
                 </div>
                 <div>{activities}</div>
+              </div>
+            )}
+
+            { shifts.length > 0 && (
+              <div className={s.shiftsContainer}>
+                <div className={s.header}>
+                Shift Schedule
+                </div>
+                <div>{shifts}</div>
               </div>
             )}
 
