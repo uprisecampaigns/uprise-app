@@ -12,6 +12,7 @@ import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
 import AddToCalendar from 'components/AddToCalendar';
+import KeywordTag from 'components/KeywordTag';
 
 import {
   promptLogin, notify,
@@ -120,7 +121,15 @@ class Action extends Component {
         [];
 
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
-        <div className={s.detailLine}>{action.tags.join(', ')}</div>
+        <div className={s.detailLine}>
+          {action.tags.map(tag => (
+            <KeywordTag
+              label={tag}
+              type="action"
+              className={s.keywordTag}
+            />
+          ))}
+        </div>
       ) : null;
 
       const startTime = moment(action.start_time);
