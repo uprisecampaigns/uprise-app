@@ -45,6 +45,44 @@ Raven.config(sentryDsn).install();
 
 const container = document.getElementById('app');
 
+if ('serviceWorker' in navigator) {
+  // Delay registration until after the page has loaded, to ensure that our
+  // precaching requests don't degrade the first visit experience.
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').then((reg) => {
+      // updatefound is fired if service-worker.js changes.
+      // eslint-disable-next-line no-param-reassign
+      reg.onupdatefound = () => {
+        const installingWorker = reg.installing;
+
+        installingWorker.onstatechange = () => {
+          switch (installingWorker.state) {
+            case 'installed':
+              if (navigator.serviceWorker.controller) {
+                // At this point, the old content will have been purged and the fresh content will
+                // have been added to the cache.
+                // TODO: sure we need to do a hard reload here?
+                window.setTimeout(() => {
+                  window.location.reload(true);
+                }, 100);
+              }
+              break;
+
+            case 'redundant':
+              console.error('The installing service worker became redundant.');
+              break;
+
+            default:
+              break;
+          }
+        };
+      };
+    }).catch((e) => {
+      console.error('Error during service worker registration:', e);
+    });
+  });
+}
+
 const store = configureStore({
   actionsSearch: defaultActionStartState,
   campaignsSearch: defaultCampaignStartState,
