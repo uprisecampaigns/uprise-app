@@ -8,6 +8,12 @@ services:
       - "8888:8888"
       - "127.0.0.1:5859:5859"
       - "127.0.0.1:5857:5857"
+      - "127.0.0.1:5856:5856"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500k"
+        max-file: "50"
 
   nginx:
     ports:
