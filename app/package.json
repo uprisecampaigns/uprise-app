@@ -128,6 +128,7 @@
     "universal-router": "^2.0.0",
     "url-loader": "^0.5.8",
     "webpack": "^2.4.1",
-    "webpack-bundle-analyzer": "^2.4.0"
+    "webpack-bundle-analyzer": "^2.4.0",
+    "webpack-pwa-manifest": "^3.3.2"
   }
 }

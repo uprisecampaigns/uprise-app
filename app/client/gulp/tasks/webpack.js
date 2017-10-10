@@ -18,6 +18,7 @@ const HtmlWebpackTemplate = require('html-webpack-template');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require("compression-webpack-plugin");
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 const config = require('config/gulp.js');
 
@@ -79,6 +80,19 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     minify: env.production(),
     // // navigateFallback: PUBLIC_PATH + 'index.html',
     // staticFileGlobsIgnorePatterns: [/\.map$/],
+  });
+
+  const pwaManifestPlugin =  new WebpackPwaManifest({
+    name: 'UpRise Campaigns',
+    short_name: 'UpRise',
+    description: 'Your Home for Progressive Volunteering',
+    background_color: '#0e4053',
+    icons: [
+      {
+        src: path.resolve(config.src, 'img/uprise-logo.png'),
+        sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+      },
+    ]
   });
 
   config.webpack = {
@@ -201,6 +215,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       new webpack.optimize.AggressiveMergingPlugin(),
       swPrecachePlugin,
       progressPlugin,
+      pwaManifestPlugin,
     ] : [
       // bundleAnalyzerPlugin,
       definePlugin,
@@ -211,6 +226,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       occurenceOrderPlugin,
       swPrecachePlugin,
       new webpack.optimize.AggressiveMergingPlugin(),
+      pwaManifestPlugin,
     ],
 
     bail: env.production(),
