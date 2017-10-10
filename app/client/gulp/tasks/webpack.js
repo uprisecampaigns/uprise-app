@@ -11,6 +11,7 @@ const childProcess = require('child_process');
 const webpack = require('webpack');
 const gulpWebpack = require('webpack-stream');
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackTemplate = require('html-webpack-template');
@@ -46,6 +47,16 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     inject: false // html-webpack-template requires this to work
   })
 
+  let currentProgress = 0;
+  const progressPlugin = new ProgressPlugin((percentage, msg) => {
+    percentage = Math.floor(percentage * 100);
+    if (percentage !== currentProgress) {
+      currentProgress = percentage;
+      const logline = currentProgress + '% ' + msg;
+      gutil.log('webpack', logline);
+    }
+  });
+
   const definePlugin = new webpack.DefinePlugin({
     'process.env': {
       'NODE_ENV': env.development() ? JSON.stringify('development') : JSON.stringify('production'),
@@ -80,6 +91,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       path: config.dest
     },
     devtool: env.development() ? "eval-cheap-module-source-map" : "",
+    watch: true,
     module: {
       rules: [
         {
@@ -188,10 +200,12 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       occurenceOrderPlugin,
       new webpack.optimize.AggressiveMergingPlugin(),
       swPrecachePlugin,
+      progressPlugin,
     ] : [
       // bundleAnalyzerPlugin,
       definePlugin,
       commonsChunkPlugin,
+      progressPlugin,
       extractTextPlugin,
       htmlWebpackPlugin,
       occurenceOrderPlugin,
