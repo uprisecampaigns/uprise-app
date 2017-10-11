@@ -115,8 +115,7 @@ const onRenderComplete = function initialRenderComplete(route, location) {
 
   const pos = scrollPositionsHistory[location.key];
   if (pos) {
-    scrollX = pos.scrollX;
-    scrollY = pos.scrollY;
+    ({ scrollX, scrollY } = pos);
   } else {
     const targetHash = location.hash.substr(1);
     if (targetHash) {

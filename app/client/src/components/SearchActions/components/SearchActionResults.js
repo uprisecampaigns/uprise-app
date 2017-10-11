@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Infinite from 'react-infinite';
 import moment from 'moment';
 import isEqual from 'lodash.isequal';
@@ -16,20 +16,21 @@ import Link from 'components/Link';
 import s from 'styles/Search.scss';
 
 
-class SearchActionResults extends PureComponent {
+class SearchActionResults extends Component {
   static propTypes = {
     actions: PropTypes.arrayOf(PropTypes.object),
     cursor: PropTypes.object,
     sortBy: PropTypes.object.isRequired,
     graphqlLoading: PropTypes.bool.isRequired,
-    allItemsLoaded: PropTypes.bool.isRequired,
     isInfiniteLoading: PropTypes.bool.isRequired,
     handleInfiniteLoad: PropTypes.func.isRequired,
+    allItemsLoaded: PropTypes.bool,
   }
 
   static defaultProps = {
     actions: undefined,
     cursor: undefined,
+    allItemsLoaded: false,
   }
 
   shouldComponentUpdate(nextProps) {

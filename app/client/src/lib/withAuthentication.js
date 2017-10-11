@@ -10,7 +10,7 @@ import {
 
 export default (WrappedComponent) => {
   class WithAuthentication extends Component {
-    static PropTypes = {
+    static propTypes = {
       dispatch: PropTypes.func.isRequired,
     }
 

@@ -111,11 +111,12 @@ class Action extends Component {
 
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.detailLine}>
-          {action.tags.map(tag => (
+          {action.tags.map((tag, index) => (
             <KeywordTag
               label={tag}
               type="action"
               className={s.keywordTag}
+              key={index}
             />
           ))}
         </div>

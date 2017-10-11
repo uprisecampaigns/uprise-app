@@ -70,7 +70,9 @@ class Link extends React.Component {
 
   render() {
     const {
-      to, children, external, mailTo, useAhref, className, ...props
+      // eslint-disable-next-line no-unused-vars
+      to, children, external, preventDefault, sameTab,
+      mailTo, useAhref, className, ...props
     } = this.props;
 
     // If link is external and not mailTo no 'http' is included at beginning, add it
@@ -92,6 +94,7 @@ class Link extends React.Component {
           {...props}
           onTouchTap={e => this.handleClick(e, url)}
           onClick={e => this.handleClick(e, url)}
+          onKeyPress={e => this.handleClick(e, url)}
           className={[className].concat([s.link]).join(' ')}
         >
           {children}
@@ -103,6 +106,7 @@ class Link extends React.Component {
         {...props}
         onTouchTap={e => this.handleClick(e, url)}
         onClick={e => this.handleClick(e, url)}
+        onKeyPress={e => this.handleClick(e, url)}
         className={[className].concat([s.link]).join(' ')}
         role="link"
         tabIndex="0"

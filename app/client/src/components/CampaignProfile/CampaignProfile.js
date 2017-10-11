@@ -30,9 +30,10 @@ class CampaignProfile extends PureComponent {
 
       const keywords = (Array.isArray(campaign.tags) && campaign.tags.length) ? (
         <div className={s.detailLine}>
-          {campaign.tags.map(tag => (
+          {campaign.tags.map((tag, index) => (
             <KeywordTag
               label={tag}
+              key={index}
               type="campaign"
               className={s.keywordTag}
             />

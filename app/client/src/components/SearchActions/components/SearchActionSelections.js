@@ -21,7 +21,7 @@ const SelectedActivitiesContainer = connect(state => ({ items: state.actionsSear
 const SelectedTimesContainer = connect(state => ({ items: state.actionsSearch.times }))(SelectedItemsContainer);
 
 const SelectedDatesContainer = connect((state) => {
-  const dates = state.actionsSearch.dates;
+  const { dates } = state.actionsSearch;
 
   const items = [];
 

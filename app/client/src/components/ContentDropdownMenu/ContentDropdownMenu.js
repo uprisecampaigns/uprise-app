@@ -59,6 +59,7 @@ class ContentDropdownMenu extends Component {
         preventDefault={dropdown.external}
         external={dropdown.external}
         sameTab={dropdown.sameTab}
+        key={index}
       >
         <div
           key={index}
