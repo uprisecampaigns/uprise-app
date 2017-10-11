@@ -1,5 +1,4 @@
 import React from 'react';
-import { assert, expect } from 'chai';
 import { render, shallow, mount } from 'enzyme';
 import Snackbar from 'material-ui/Snackbar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -17,20 +16,20 @@ const options = {
 }
 
 describe('(Component) Layout', () => {
-  it('renders without exploding', () => {
+  test('renders without exploding', () => {
     const connected = shallow(<ConnectedLayout><div></div></ConnectedLayout>, options);
     const component = connected.dive();
-    expect(component).to.have.lengthOf(1);
-    expect(component.find(Snackbar)).to.have.lengthOf(1);
+    expect(component).toHaveLength(1);
+    expect(component.find(Snackbar)).toHaveLength(1);
   });
 
-  it('defaults to correct state', () => {
+  test('defaults to correct state', () => {
     const connected = shallow(<ConnectedLayout><div></div></ConnectedLayout>, options);
     const component = connected.dive();
-    expect(component.state('drawerOpen')).to.be.false;
+    expect(component.state('drawerOpen')).toBe.false;
   });
 
-  it('does not display snackbar initially', () => {
+  test('does not display snackbar initially', () => {
     const connected = shallow(<ConnectedLayout><div></div></ConnectedLayout>, options);
 
     const snackbar = connected.dive().find(Snackbar).dive({
@@ -38,11 +37,11 @@ describe('(Component) Layout', () => {
       childContextTypes: {muiTheme: React.PropTypes.object}
     });
 
-    expect(snackbar.instance().props.open).to.be.false;
-    expect(snackbar.instance().props.message).to.equal('');
+    expect(snackbar.instance().props.open).toBe.false;
+    expect(snackbar.instance().props.message).toEqual('');
   });
 
-  it('displays snackbar after redux notification', () => {
+  test('displays snackbar after redux notification', () => {
     store.dispatch(notify('testing'));
 
     const connected = shallow(<ConnectedLayout><div></div></ConnectedLayout>, options);
@@ -52,11 +51,11 @@ describe('(Component) Layout', () => {
       childContextTypes: {muiTheme: React.PropTypes.object}
     });
 
-    expect(snackbar.instance().props.open).to.be.true;
-    expect(snackbar.instance().props.message).to.equal('testing');
+    expect(snackbar.instance().props.open).toBe.true;
+    expect(snackbar.instance().props.message).toEqual('testing');
   });
 
-  it('hides snackbar after redux clear', () => {
+  test('hides snackbar after redux clear', () => {
     store.dispatch(clear());
 
     const connected = shallow(<ConnectedLayout><div></div></ConnectedLayout>, options);
@@ -66,8 +65,8 @@ describe('(Component) Layout', () => {
       childContextTypes: {muiTheme: React.PropTypes.object}
     });
 
-    expect(snackbar.instance().props.open).to.be.false;
-    expect(snackbar.instance().props.message).to.equal('');
+    expect(snackbar.instance().props.open).toBe.false;
+    expect(snackbar.instance().props.message).toEqual('');
   });
 });
 

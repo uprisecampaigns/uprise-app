@@ -1,4 +1,3 @@
-import { assert, expect } from 'chai';
 const isEqual = require('lodash.isequal');
 
 import { 
@@ -17,7 +16,7 @@ import {
 
 describe('(Actions) SearchActions', () => {
 
-  it('should create an action to add a new search item', () => {
+  test('should create an action to add a new search item', () => {
 
     const newKeyword = 'a new keyword';
 
@@ -33,11 +32,11 @@ describe('(Actions) SearchActions', () => {
         addSearchItem('actions', 'keywords', newKeyword), 
         expectedAction
       )
-    ).to.be.true;
+    ).toBe.true;
 
   });
 
-  it('should create an action to remove a new search item', () => {
+  test('should create an action to remove a new search item', () => {
 
     const newKeyword = 'a new keyword';
 
@@ -53,7 +52,7 @@ describe('(Actions) SearchActions', () => {
         removeSearchItem('actions', 'keywords', newKeyword), 
         expectedAction
       )
-    ).to.be.true;
+    ).toBe.true;
 
   });
 
