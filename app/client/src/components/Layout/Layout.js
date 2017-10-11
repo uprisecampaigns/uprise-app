@@ -39,7 +39,10 @@ export class Layout extends Component {
     };
   }
 
-  handleDrawerToggle = () => this.setState({ drawerOpen: !this.state.drawerOpen });
+  handleDrawerToggle = (event) => {
+    typeof event.preventDefault === 'function' && event.preventDefault();
+    this.setState({ drawerOpen: !this.state.drawerOpen });
+  }
 
   handleDrawerRequestChange = (open, reason) => {
     this.setState({

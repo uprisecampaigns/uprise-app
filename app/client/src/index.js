@@ -159,8 +159,9 @@ async function onLocationChange(location) {
     // Traverses the list of routes in the order they are defined until
     // it finds the first route that matches provided URL path string
     // and whose action method returns anything other than `undefined`.
-    const route = await UniversalRouter.resolve(routes, {
-      path: location.pathname,
+    const router = new UniversalRouter(routes);
+    const route = await router.resolve({
+      pathname: location.pathname,
       query: queryString.parse(location.search),
       apolloClient,
       store, // be wary of using the store in routing considering async updates

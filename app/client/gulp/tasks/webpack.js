@@ -124,7 +124,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
           ]
         },
         {
-          test: /\.jsx?$/,
+          test: /\.m?jsx?$/,
           loader: 'babel-loader',
           include: [
             path.resolve(config.publicRoot),

@@ -2,7 +2,7 @@
 
 export default {
 
-  path: '/',
+  path: '',
 
   // Routes are evaluated in order
   children: [
