@@ -87,9 +87,10 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     short_name: 'UpRise',
     description: 'Your Home for Progressive Volunteering',
     background_color: '#0e4053',
+    theme_color: '#0e4053',
     icons: [
       {
-        src: path.resolve(config.src, 'img/uprise-logo.png'),
+        src: path.resolve(config.src, 'img/uprise-logo-icon.png'),
         sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
       },
     ]
