@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';

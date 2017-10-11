@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Menu from 'material-ui/svg-icons/navigation/menu';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 import Assignment from 'material-ui/svg-icons/action/assignment';

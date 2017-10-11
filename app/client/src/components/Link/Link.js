@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import history from 'lib/history';
 
 import s from 'styles/Link.scss';

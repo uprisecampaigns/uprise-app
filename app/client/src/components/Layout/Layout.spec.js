@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { assert, expect } from 'chai';
 import { render, shallow, mount } from 'enzyme';
@@ -13,7 +14,7 @@ const muiTheme = getMuiTheme();
 
 const options = {
   context: { store }, 
-  childContextTypes: { store: React.PropTypes.object.isRequired } 
+  childContextTypes: { store: PropTypes.object.isRequired } 
 }
 
 describe('(Component) Layout', () => {
@@ -35,7 +36,7 @@ describe('(Component) Layout', () => {
 
     const snackbar = connected.dive().find(Snackbar).dive({
       context: {muiTheme},
-      childContextTypes: {muiTheme: React.PropTypes.object}
+      childContextTypes: {muiTheme: PropTypes.object}
     });
 
     expect(snackbar.instance().props.open).to.be.false;
@@ -49,7 +50,7 @@ describe('(Component) Layout', () => {
 
     const snackbar = connected.dive().find(Snackbar).dive({
       context: {muiTheme},
-      childContextTypes: {muiTheme: React.PropTypes.object}
+      childContextTypes: {muiTheme: PropTypes.object}
     });
 
     expect(snackbar.instance().props.open).to.be.true;
@@ -63,7 +64,7 @@ describe('(Component) Layout', () => {
 
     const snackbar = connected.dive().find(Snackbar).dive({
       context: {muiTheme},
-      childContextTypes: {muiTheme: React.PropTypes.object}
+      childContextTypes: {muiTheme: PropTypes.object}
     });
 
     expect(snackbar.instance().props.open).to.be.false;

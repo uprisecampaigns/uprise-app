@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Chip from 'material-ui/Chip';
 
 import s from './SelectedItemsContainer.scss';

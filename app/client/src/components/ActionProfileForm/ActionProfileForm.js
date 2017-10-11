@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
