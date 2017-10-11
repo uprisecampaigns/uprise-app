@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { attemptLogout } from 'actions/AuthActions';
 import { graphql, compose } from 'react-apollo';
@@ -14,7 +15,15 @@ class NavDrawerContainer extends Component {
     onRequestChange: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
-    userObject: PropTypes.object.isRequired,
+    userObject: PropTypes.object,
+  };
+
+  static defaultProps = {
+    userObject: {
+      first_name: '',
+      last_name: '',
+      email: '',
+    },
   };
 
   clickedLogout = (event) => {
@@ -37,11 +46,7 @@ class NavDrawerContainer extends Component {
 
 const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
-    userObject: !data.loading && data.me ? data.me : {
-      first_name: '',
-      last_name: '',
-      email: '',
-    },
+    userObject: !data.loading && data.me ? data.me : undefined,
   }),
   skip: ownProps => !ownProps.loggedIn,
 });

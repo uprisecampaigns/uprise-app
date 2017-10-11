@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -45,7 +46,7 @@ class Organize extends PureComponent {
           Organize
         </div>
 
-        <Link to={'/organize/create-campaign'}>
+        <Link to="/organize/create-campaign">
           <div className={s.organizeButton}>
             <RaisedButton
               primary

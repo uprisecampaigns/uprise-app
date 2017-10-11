@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import Chip from 'material-ui/Chip';
 
@@ -12,7 +13,9 @@ import { setPage } from 'actions/PageNavActions';
 
 
 function KeywordTag(props) {
-  const { dispatch, label, type, ...other } = props;
+  const {
+    dispatch, label, type, ...other
+  } = props;
 
   const handleClicked = (event) => {
     event.stopPropagation();

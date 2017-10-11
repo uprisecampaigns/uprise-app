@@ -10,9 +10,13 @@ export const SORT_BY = 'SORT_BY';
 
 export const clearSearch = searchType => ({ type: CLEAR_SEARCH, searchType });
 
-export const addSearchItem = (searchType, collectionName, value) => ({ type: ADD_SEARCH_ITEM, searchType, collection: collectionName, value });
+export const addSearchItem = (searchType, collectionName, value) => ({
+  type: ADD_SEARCH_ITEM, searchType, collection: collectionName, value,
+});
 
-export const removeSearchItem = (searchType, collectionName, value) => ({ type: REMOVE_SEARCH_ITEM, searchType, collection: collectionName, value });
+export const removeSearchItem = (searchType, collectionName, value) => ({
+  type: REMOVE_SEARCH_ITEM, searchType, collection: collectionName, value,
+});
 
 export const unsetSearchDates = searchType => ({ type: UNSET_DATES, searchType });
 
@@ -21,4 +25,6 @@ export const setSearchDates = (searchType, dates) => {
   return { type: SET_DATES, searchType, dates };
 };
 
-export const sortBy = (searchType, selection, descending = undefined) => ({ type: SORT_BY, searchType, selection, descending });
+export const sortBy = (searchType, selection, descending = undefined) => ({
+  type: SORT_BY, searchType, selection, descending,
+});

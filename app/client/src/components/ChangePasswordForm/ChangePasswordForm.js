@@ -1,11 +1,14 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import s from 'styles/Form.scss';
 
 
-function OldPassword({ show, data, errors, handleInputChange, error }) {
+function OldPassword({
+  show, data, errors, handleInputChange, error,
+}) {
   if (show) {
     return (
       <div className={s.textFieldContainer}>

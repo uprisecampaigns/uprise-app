@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import FontIcon from 'material-ui/FontIcon';
 
 import Link from 'components/Link';
@@ -20,11 +21,12 @@ class PrivacySecurity extends PureComponent {
     return (
       <div className={s.outerContainer}>
 
-        <Link to={'/settings'}>
+        <Link to="/settings">
           <div className={[s.navHeader, s.settingsNavHeader].join(' ')}>
             <FontIcon
               className={['material-icons', s.backArrow].join(' ')}
-            >arrow_back</FontIcon>
+            >arrow_back
+            </FontIcon>
             Settings
           </div>
         </Link>

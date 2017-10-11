@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import history from 'lib/history';
 
@@ -9,7 +10,7 @@ import {
 
 export default (WrappedComponent) => {
   class WithAuthentication extends Component {
-    static PropTypes = {
+    static propTypes = {
       dispatch: PropTypes.func.isRequired,
     }
 

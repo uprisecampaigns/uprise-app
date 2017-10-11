@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -21,7 +22,9 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { data, handleInputChange, formSubmit, loginError, message } = this.props;
+    const {
+      data, handleInputChange, formSubmit, loginError, message,
+    } = this.props;
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>

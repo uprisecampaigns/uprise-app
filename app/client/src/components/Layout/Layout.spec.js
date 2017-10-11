@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { render, shallow, mount } from 'enzyme';
 import Snackbar from 'material-ui/Snackbar';
@@ -12,7 +13,7 @@ const muiTheme = getMuiTheme();
 
 const options = {
   context: { store }, 
-  childContextTypes: { store: React.PropTypes.object.isRequired } 
+  childContextTypes: { store: PropTypes.object.isRequired } 
 }
 
 describe('(Component) Layout', () => {
@@ -34,7 +35,7 @@ describe('(Component) Layout', () => {
 
     const snackbar = connected.dive().find(Snackbar).dive({
       context: {muiTheme},
-      childContextTypes: {muiTheme: React.PropTypes.object}
+      childContextTypes: {muiTheme: PropTypes.object}
     });
 
     expect(snackbar.instance().props.open).toBe.false;
@@ -48,7 +49,7 @@ describe('(Component) Layout', () => {
 
     const snackbar = connected.dive().find(Snackbar).dive({
       context: {muiTheme},
-      childContextTypes: {muiTheme: React.PropTypes.object}
+      childContextTypes: {muiTheme: PropTypes.object}
     });
 
     expect(snackbar.instance().props.open).toBe.true;
@@ -62,7 +63,7 @@ describe('(Component) Layout', () => {
 
     const snackbar = connected.dive().find(Snackbar).dive({
       context: {muiTheme},
-      childContextTypes: {muiTheme: React.PropTypes.object}
+      childContextTypes: {muiTheme: PropTypes.object}
     });
 
     expect(snackbar.instance().props.open).toBe.false;

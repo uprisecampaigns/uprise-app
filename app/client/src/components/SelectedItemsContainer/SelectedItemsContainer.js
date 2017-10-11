@@ -1,10 +1,13 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Chip from 'material-ui/Chip';
 
 import s from './SelectedItemsContainer.scss';
 
 function SelectedItemsContainer(props) {
-  const { collectionName, items, removeItem, className } = props;
+  const {
+    collectionName, items, removeItem, className,
+  } = props;
 
   const selectedItemsContainer = items.map((item, index) => {
     const renderedLabel = (typeof props.renderLabel === 'function') ? props.renderLabel(item) : item;

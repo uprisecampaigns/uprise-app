@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withApollo } from 'react-apollo';
 
@@ -64,7 +65,8 @@ class Signup extends Component {
 
   handleInputChange = (event, type, value) => {
     if (!(typeof type === 'string' && type === 'zipcode' && (value.length > 5 || !isNumeric(value)))) {
-      this.setState(Object.assign({},
+      this.setState(Object.assign(
+        {},
         this.state,
         { [type]: value },
       ));

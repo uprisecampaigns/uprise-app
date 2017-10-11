@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import isEmail from 'validator/lib/isEmail';
 
@@ -45,7 +46,8 @@ class Login extends Component {
   hasErrors = false
 
   handleInputChange = (event, type, value) => {
-    this.setState(Object.assign({},
+    this.setState(Object.assign(
+      {},
       this.state,
       { [type]: value },
     ));

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
@@ -67,7 +68,8 @@ class LoginModalPrompt extends Component {
           <IconButton
             onTouchTap={this.closeModal}
             iconClassName="material-icons"
-          >close</IconButton>
+          >close
+          </IconButton>
         )}
 
         { this.state.currentPage === 'login' ? (

@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -26,8 +27,10 @@ class CampaignProfileForm extends PureComponent {
   }
 
   render() {
-    const { data, formSubmit, errors, campaignId,
-      handleInputChange, saving, uploading } = this.props;
+    const {
+      data, formSubmit, errors, campaignId,
+      handleInputChange, saving, uploading,
+    } = this.props;
 
     return (
       <div className={s.outerContainer}>
@@ -84,10 +87,10 @@ class CampaignProfileForm extends PureComponent {
           <div className={f.textareaContainer}>
             <TextField
               name="description"
-              hintText={`Write a short description here. 
-                This will show up in the search results. 
-                You do not need to include the name of the campaign, your website url, or your issues, keywords, etc. 
-                as they will all appear automatically`}
+              hintText="Write a short description here.
+                This will show up in the search results.
+                You do not need to include the name of the campaign, your website url, or your issues, keywords, etc.
+                as they will all appear automatically"
               value={data.description}
               multiLine
               rows={4}

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -35,7 +36,8 @@ class SearchPresentation extends Component {
     this.searchBarInputElements.forEach(element => element.blur());
     event.preventDefault();
 
-    this.setState(prevState => (Object.assign({},
+    this.setState(prevState => (Object.assign(
+      {},
       prevState,
       {
         filterOpen: !prevState.filterOpen,
@@ -45,7 +47,8 @@ class SearchPresentation extends Component {
 
   handleCloseFilter = (event) => {
     typeof event.preventDefault === 'function' && event.preventDefault();
-    this.setState(prevState => (Object.assign({},
+    this.setState(prevState => (Object.assign(
+      {},
       prevState,
       { filterOpen: false },
     )));
@@ -87,7 +90,8 @@ class SearchPresentation extends Component {
               <span>Filter</span>
               <IconButton
                 iconClassName="material-icons"
-              >filter_list</IconButton>
+              >filter_list
+              </IconButton>
             </div>
           </div>
           <div className={s.filterResultsOuterContainer}>
