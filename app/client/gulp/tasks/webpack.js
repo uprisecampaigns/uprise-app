@@ -19,6 +19,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const CompressionPlugin = require("compression-webpack-plugin");
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 const config = require('config/gulp.js');
 
@@ -95,6 +96,8 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       },
     ]
   });
+
+  const faviconPlugin = new FaviconsWebpackPlugin(path.resolve(config.src, 'img/uprise-logo-icon.png'));
 
   config.webpack = {
     entry: {
@@ -217,6 +220,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       swPrecachePlugin,
       progressPlugin,
       pwaManifestPlugin,
+      faviconPlugin,
     ] : [
       // bundleAnalyzerPlugin,
       definePlugin,
@@ -228,6 +232,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       swPrecachePlugin,
       new webpack.optimize.AggressiveMergingPlugin(),
       pwaManifestPlugin,
+      faviconPlugin,
     ],
 
     bail: env.production(),
