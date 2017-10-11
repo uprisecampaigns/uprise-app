@@ -24,7 +24,8 @@ class SignupForm extends PureComponent {
   render() {
     const {
       data, formSubmit, errors,
-      handleInputChange, cancel } = this.props;
+      handleInputChange, cancel,
+    } = this.props;
 
     return (
       <div className={s.outerContainer}>

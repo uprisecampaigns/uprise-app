@@ -216,7 +216,8 @@ class ManageCampaignUploadActions extends Component {
             <div className={s.navHeader}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
               Settings
             </div>
           </Link>

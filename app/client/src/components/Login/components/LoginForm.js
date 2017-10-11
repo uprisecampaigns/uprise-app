@@ -22,7 +22,9 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { data, handleInputChange, formSubmit, loginError, message } = this.props;
+    const {
+      data, handleInputChange, formSubmit, loginError, message,
+    } = this.props;
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>

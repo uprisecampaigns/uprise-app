@@ -90,7 +90,8 @@ class ManageCampaignVolunteers extends Component {
 
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
 
               { campaign.title }
             </div>

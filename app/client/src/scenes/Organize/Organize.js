@@ -46,7 +46,7 @@ class Organize extends PureComponent {
           Organize
         </div>
 
-        <Link to={'/organize/create-campaign'}>
+        <Link to="/organize/create-campaign">
           <div className={s.organizeButton}>
             <RaisedButton
               primary

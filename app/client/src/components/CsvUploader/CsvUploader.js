@@ -185,7 +185,9 @@ class CsvUploader extends React.Component {
     });
   }
 
-  cellRenderer = ({ columnIndex, key, parent, rowIndex, style }) => {
+  cellRenderer = ({
+    columnIndex, key, parent, rowIndex, style,
+  }) => {
     const { config } = this.props;
 
     const availableHeaders = Array.from(config.headers);

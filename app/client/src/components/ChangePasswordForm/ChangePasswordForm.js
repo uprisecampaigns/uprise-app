@@ -6,7 +6,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import s from 'styles/Form.scss';
 
 
-function OldPassword({ show, data, errors, handleInputChange, error }) {
+function OldPassword({
+  show, data, errors, handleInputChange, error,
+}) {
   if (show) {
     return (
       <div className={s.textFieldContainer}>

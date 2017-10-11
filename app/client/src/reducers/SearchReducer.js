@@ -53,9 +53,7 @@ export function updateSearch(searchState = defaultStartState, action) {
           }
         }
 
-        collection.push(
-          typeof action.value === 'string' ? action.value.trim() : action.value,
-        );
+        collection.push(typeof action.value === 'string' ? action.value.trim() : action.value);
       }
 
       return Object.assign({}, searchState, {

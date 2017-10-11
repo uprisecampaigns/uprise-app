@@ -33,7 +33,8 @@ class DateTimeSearch extends Component {
     }));
 
     if (prop === 'ongoing') {
-      this.setState(Object.assign({},
+      this.setState(Object.assign(
+        {},
         this.state,
         {
           ongoing: value,
@@ -43,7 +44,8 @@ class DateTimeSearch extends Component {
         },
       ));
     } else if (prop === 'onDate') {
-      this.setState(Object.assign({},
+      this.setState(Object.assign(
+        {},
         this.state,
         {
           onDate: value,
@@ -52,7 +54,8 @@ class DateTimeSearch extends Component {
         },
       ));
     } else {
-      this.setState(Object.assign({},
+      this.setState(Object.assign(
+        {},
         this.state,
         {
           [prop]: value,
@@ -63,7 +66,9 @@ class DateTimeSearch extends Component {
   }
 
   formSubmit = () => {
-    const { ongoing, onDate, startDate, endDate } = this.state;
+    const {
+      ongoing, onDate, startDate, endDate,
+    } = this.state;
     const { setDates } = this.props;
 
     if (ongoing) {
@@ -101,7 +106,9 @@ class DateTimeSearch extends Component {
   formatDate = date => moment(date).format('M/D/YYYY')
 
   render() {
-    const { ongoing, onDate, startDate, endDate } = this.state;
+    const {
+      ongoing, onDate, startDate, endDate,
+    } = this.state;
     const { formSubmit, handleInputChange, formatDate } = this;
 
     const dialogStyle = {

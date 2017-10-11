@@ -188,7 +188,9 @@ class ImageUploader extends Component {
   }
 
   render() {
-    const { imageSrc, editImageSrc, imageCrop, uploading } = this.state;
+    const {
+      imageSrc, editImageSrc, imageCrop, uploading,
+    } = this.state;
 
     return (
 
@@ -239,7 +241,8 @@ class ImageUploader extends Component {
                 <FontIcon
                   className={[s.removeImageButton, 'material-icons'].join(' ')}
                   onTouchTap={this.removeImage}
-                >delete</FontIcon>
+                >delete
+                </FontIcon>
                 <img alt="Uploaded" src={imageSrc} />
               </div>
             ) : (

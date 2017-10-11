@@ -7,7 +7,8 @@ import { CLICKED_SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL,
   CLICKED_CHANGE_PASSWORD, CHANGE_PASSWORD_SUCCESS, CHANGE_PASSWORD_FAIL,
   CLICKED_RESET_PASSWORD, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL } from 'actions/AuthActions';
 
-const defaultStartState = { isLoggedIn: false,
+const defaultStartState = {
+  isLoggedIn: false,
   fetchingAuthUpdate: false,
   userObject: {},
   error: null,
@@ -82,7 +83,7 @@ export function updateUserInfo(userAuthState = defaultStartState, action) {
           error: null,
         });
       }
-      // set to default conditions 
+      // set to default conditions
       // (ignore errors and let login/signup handle server errors)
       return Object.assign({}, defaultStartState);
     }

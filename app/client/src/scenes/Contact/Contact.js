@@ -83,11 +83,12 @@ class Contact extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/settings'}>
+          <Link to="/settings">
             <div className={[s.navHeader, s.settingsNavHeader].join(' ')}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
               Settings
             </div>
           </Link>

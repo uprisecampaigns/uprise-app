@@ -69,7 +69,9 @@ class Link extends React.Component {
   };
 
   render() {
-    const { to, children, external, mailTo, useAhref, className, ...props } = this.props;
+    const {
+      to, children, external, mailTo, useAhref, className, ...props
+    } = this.props;
 
     // If link is external and not mailTo no 'http' is included at beginning, add it
 

@@ -13,7 +13,9 @@ import { setPage } from 'actions/PageNavActions';
 
 
 function KeywordTag(props) {
-  const { dispatch, label, type, ...other } = props;
+  const {
+    dispatch, label, type, ...other
+  } = props;
 
   const handleClicked = (event) => {
     event.stopPropagation();

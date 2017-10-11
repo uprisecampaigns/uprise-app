@@ -68,7 +68,8 @@ class LoginModalPrompt extends Component {
           <IconButton
             onTouchTap={this.closeModal}
             iconClassName="material-icons"
-          >close</IconButton>
+          >close
+          </IconButton>
         )}
 
         { this.state.currentPage === 'login' ? (

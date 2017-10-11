@@ -30,7 +30,8 @@ class ForgotPassword extends Component {
   hasErrors = false
 
   handleInputChange = (event, type, value) => {
-    this.setState(Object.assign({},
+    this.setState(Object.assign(
+      {},
       this.state,
       { [type]: value },
     ));

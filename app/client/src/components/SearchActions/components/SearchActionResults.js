@@ -49,7 +49,9 @@ class SearchActionResults extends PureComponent {
   )
 
   render() {
-    const { sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, ...props } = this.props;
+    const {
+      sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, ...props
+    } = this.props;
 
     const actions = props.actions ? Array.from(props.actions).sort(itemsSort(sortBy)).map((action, actionIndex) => {
       // TODO: better datetime parsing (not relying on native Date) and checking for missing values

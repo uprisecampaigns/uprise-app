@@ -24,7 +24,9 @@ export function startedUpload() {
   return { type: START_UPLOAD };
 }
 
-export function attemptUpload({ onSuccess, filePath, collectionName, collectionId, contentType, blob }) {
+export function attemptUpload({
+  onSuccess, filePath, collectionName, collectionId, contentType, blob,
+}) {
   return async (dispatch, getState) => {
     if (getState().uploads.uploading) {
       dispatch(notify('Already uploading file. Please try again after previous upload is finished.'));

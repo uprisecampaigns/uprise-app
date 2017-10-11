@@ -64,7 +64,8 @@ class ComposeMessage extends React.Component {
 
   handleInputChange = (event, type, value) => {
     this.setState(prevState => ({
-      formData: Object.assign({},
+      formData: Object.assign(
+        {},
         prevState.formData,
         { [type]: value },
       ),

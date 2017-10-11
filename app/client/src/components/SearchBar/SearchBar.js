@@ -32,7 +32,8 @@ class SearchBar extends PureComponent {
   }
 
   handleInputChange = (value) => {
-    this.setState(Object.assign({},
+    this.setState(Object.assign(
+      {},
       this.state,
       { value },
     ));
@@ -49,14 +50,17 @@ class SearchBar extends PureComponent {
 
     this.props.addItem(this.props.collectionName, this.state.value);
 
-    this.setState(Object.assign({},
+    this.setState(Object.assign(
+      {},
       this.state,
       { value: '' },
     ));
   }
 
   render() {
-    const { collectionToSearch, inputLabel, iconName, inputRef, className } = this.props;
+    const {
+      collectionToSearch, inputLabel, iconName, inputRef, className,
+    } = this.props;
 
     const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
       <AutoComplete
@@ -90,7 +94,8 @@ class SearchBar extends PureComponent {
             iconClassName="material-icons"
             type="submit"
             onTouchTap={this.addItem}
-          >{iconName || 'search'}</IconButton>
+          >{iconName || 'search'}
+          </IconButton>
         </form>
       </div>
     );

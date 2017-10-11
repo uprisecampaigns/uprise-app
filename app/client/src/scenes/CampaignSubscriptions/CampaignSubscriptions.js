@@ -50,11 +50,12 @@ class CampaignSubscriptions extends PureComponent {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/volunteer'}>
+          <Link to="/volunteer">
             <div className={[s.navHeader, s.volunteerNavHeader].join(' ')}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
               My Profile
             </div>
           </Link>
@@ -79,10 +80,8 @@ class CampaignSubscriptions extends PureComponent {
   }
 }
 
-export default compose(
-  graphql(CampaignSubscriptionsQuery, {
-    props: ({ data }) => ({
-      campaignSubscriptions: data.campaignSubscriptions,
-    }),
+export default compose(graphql(CampaignSubscriptionsQuery, {
+  props: ({ data }) => ({
+    campaignSubscriptions: data.campaignSubscriptions,
   }),
-)(CampaignSubscriptions);
+}))(CampaignSubscriptions);

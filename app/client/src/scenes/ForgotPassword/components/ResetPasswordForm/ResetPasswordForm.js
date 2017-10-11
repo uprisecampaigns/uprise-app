@@ -21,7 +21,9 @@ class ResetPasswordForm extends PureComponent {
   }
 
   render() {
-    const { data, handleInputChange, formSubmit, cancelReset, resetError } = this.props;
+    const {
+      data, handleInputChange, formSubmit, cancelReset, resetError,
+    } = this.props;
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>

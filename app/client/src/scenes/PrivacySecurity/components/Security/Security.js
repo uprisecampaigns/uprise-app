@@ -107,6 +107,4 @@ const mapStateToProps = state => ({
   passwordBeingReset: state.userAuthSession.userObject.passwordBeingReset || false,
 });
 
-export default compose(
-  connect(mapStateToProps),
-)(Security);
+export default compose(connect(mapStateToProps))(Security);

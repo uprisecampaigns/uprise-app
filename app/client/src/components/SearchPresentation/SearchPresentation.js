@@ -36,7 +36,8 @@ class SearchPresentation extends Component {
     this.searchBarInputElements.forEach(element => element.blur());
     event.preventDefault();
 
-    this.setState(prevState => (Object.assign({},
+    this.setState(prevState => (Object.assign(
+      {},
       prevState,
       {
         filterOpen: !prevState.filterOpen,
@@ -46,7 +47,8 @@ class SearchPresentation extends Component {
 
   handleCloseFilter = (event) => {
     typeof event.preventDefault === 'function' && event.preventDefault();
-    this.setState(prevState => (Object.assign({},
+    this.setState(prevState => (Object.assign(
+      {},
       prevState,
       { filterOpen: false },
     )));
@@ -88,7 +90,8 @@ class SearchPresentation extends Component {
               <span>Filter</span>
               <IconButton
                 iconClassName="material-icons"
-              >filter_list</IconButton>
+              >filter_list
+              </IconButton>
             </div>
           </div>
           <div className={s.filterResultsOuterContainer}>

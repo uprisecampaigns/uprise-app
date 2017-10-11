@@ -59,7 +59,8 @@ class ManageCampaignActionsContainer extends PureComponent {
 
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
 
               {campaign.title}
             </div>

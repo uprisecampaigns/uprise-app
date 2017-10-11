@@ -35,7 +35,9 @@ class ManageCampaignComposeMessage extends Component {
   }
 
   handleSend = async ({ subject, body }) => {
-    const { userObject, recipients, sendMessage, campaign, dispatch } = this.props;
+    const {
+      userObject, recipients, sendMessage, campaign, dispatch,
+    } = this.props;
 
     const fullBody = `From: ${userObject.first_name} ${userObject.last_name}\n
       Please reply to: ${userObject.email}\n
@@ -91,7 +93,8 @@ class ManageCampaignComposeMessage extends Component {
             <div className={s.navHeader}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
               Volunteers
             </div>
           </Link>

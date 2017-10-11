@@ -65,7 +65,8 @@ class Signup extends Component {
 
   handleInputChange = (event, type, value) => {
     if (!(typeof type === 'string' && type === 'zipcode' && (value.length > 5 || !isNumeric(value)))) {
-      this.setState(Object.assign({},
+      this.setState(Object.assign(
+        {},
         this.state,
         { [type]: value },
       ));

@@ -24,7 +24,7 @@ function Volunteer(props) {
 
         <Divider />
 
-        <Link to={'/volunteer/opportunity-commitments'}>
+        <Link to="/volunteer/opportunity-commitments">
           <ListItem
             primaryText="My Commitments"
           />
@@ -32,7 +32,7 @@ function Volunteer(props) {
 
         <Divider />
 
-        <Link to={'/volunteer/campaign-subscriptions'}>
+        <Link to="/volunteer/campaign-subscriptions">
           <ListItem
             primaryText="My Subscriptions"
           />

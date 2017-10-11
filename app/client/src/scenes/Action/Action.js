@@ -149,7 +149,8 @@ class Action extends Component {
               <div className={s.navHeader}>
                 <FontIcon
                   className={['material-icons', s.backArrow].join(' ')}
-                >arrow_back</FontIcon>
+                >arrow_back
+                </FontIcon>
                 {action.title}
               </div>
             </Link>

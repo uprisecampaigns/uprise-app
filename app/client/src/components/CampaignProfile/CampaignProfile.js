@@ -24,7 +24,9 @@ class CampaignProfile extends PureComponent {
 
   render() {
     if (this.props.campaign) {
-      const { campaign, saving, subscribe, cancelSubscription } = this.props;
+      const {
+        campaign, saving, subscribe, cancelSubscription,
+      } = this.props;
 
       const keywords = (Array.isArray(campaign.tags) && campaign.tags.length) ? (
         <div className={s.detailLine}>
@@ -89,7 +91,8 @@ class CampaignProfile extends PureComponent {
               <div className={s.navHeader}>
                 <FontIcon
                   className={['material-icons', s.backArrow].join(' ')}
-                >arrow_back</FontIcon>
+                >arrow_back
+                </FontIcon>
                 {campaign.title}
               </div>
             </Link>

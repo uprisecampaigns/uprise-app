@@ -11,7 +11,7 @@ import EmailAvailableQuery from 'schemas/queries/EmailAvailableQuery.graphql';
 import states from 'lib/states-list';
 
 
-// TODO: I hate this entire validation system. It should be refactored into a 
+// TODO: I hate this entire validation system. It should be refactored into a
 //      Higher order component or something sensible/fancy like that
 //      In the meantime, it could at least not be so rigid in the propnames, etc.
 

@@ -63,11 +63,12 @@ class ActionCommitments extends PureComponent {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/volunteer'}>
+          <Link to="/volunteer">
             <div className={[s.navHeader, s.volunteerNavHeader].join(' ')}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
               My Profile
             </div>
           </Link>
@@ -91,10 +92,8 @@ class ActionCommitments extends PureComponent {
   }
 }
 
-export default compose(
-  graphql(ActionCommitmentsQuery, {
-    props: ({ data }) => ({
-      actionCommitments: data.actionCommitments,
-    }),
+export default compose(graphql(ActionCommitmentsQuery, {
+  props: ({ data }) => ({
+    actionCommitments: data.actionCommitments,
   }),
-)(ActionCommitments);
+}))(ActionCommitments);
