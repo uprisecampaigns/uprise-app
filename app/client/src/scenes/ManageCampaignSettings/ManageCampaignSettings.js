@@ -101,6 +101,8 @@ class ManageCampaignInfoContainer extends Component {
         }
       });
 
+      campaign.zipcodeList = typeof campaign.zipcodeList === 'object' ? campaign.zipcodeList.join(',') : '';
+
       this.setState(prevState => ({
         formData: Object.assign({}, prevState.formData, campaign),
       }));
@@ -137,6 +139,8 @@ class ManageCampaignInfoContainer extends Component {
     const formData = Object.assign({}, data);
 
     formData.id = this.props.campaign.id;
+
+    formData.zipcodeList = formData.zipcodeList.split(',').map(zip => zip.trim());
 
     try {
       await this.props.editCampaignMutation({
