@@ -79,6 +79,7 @@ module.exports = buildSchema(`
     city: String
     state: String
     zipcode: String
+    distance: String
     location_notes: String
     public_url: String
     activities: [ActivityResult]
@@ -94,6 +95,7 @@ module.exports = buildSchema(`
   type ActionSearchResult {
     total: Int!
     cursor: ActionResult
+    targetZipcode: String
     actions: [ActionResult]!
   }
 
@@ -134,6 +136,7 @@ module.exports = buildSchema(`
     dates: DateSearchInput
     times: [String]
     geographies: [GeographySearchInput]
+    targetZipcode: String
     sortBy: SortByInput
     cursor: ActionCursorInput
     limit: Int
