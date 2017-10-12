@@ -15,6 +15,7 @@ fragment ActionBasicInfo on ActionResult {
   city
   state
   zipcode
+  distance
   location_notes
   public_url
   campaign {

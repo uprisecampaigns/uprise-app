@@ -139,19 +139,26 @@ class Action {
 
   static async search(search) {
     const defaultPageLimit = 20;
+    const milesInMeter = 0.000621371192237;
+    const defaultTargetZipcode = config.geography.defaultZipcode;
+    const targetZipcode = (typeof search.targetZipcode === 'string' && validator.isNumeric(search.targetZipcode) && search.targetZipcode.length === 5) ?
+      search.targetZipcode : defaultTargetZipcode;
 
-    const searchQuery = db('actions')
+    const searchQuery = db.from('actions')
       .select(['actions.id as id', 'actions.title as title',
         db.raw('to_char(actions.start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
         db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
         'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
         'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
         'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing',
+        db.raw('round(ST_DISTANCE(zipcodes.location, target_zip.location) * ?) AS distance', milesInMeter),
         'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
 
       .where('actions.deleted', false)
       .andWhere('campaigns.deleted', false)
       .innerJoin('campaigns', 'actions.campaign_id', 'campaigns.id')
+      .leftOuterJoin('zipcodes', 'zipcodes.postal_code', 'actions.zipcode')
+      .crossJoin(db.raw('(SELECT postal_code, location from zipcodes where postal_code=?) target_zip', targetZipcode))
       .modify((qb) => {
         if (search) {
           const tags = db('actions')
@@ -335,7 +342,6 @@ class Action {
                 } else {
                   const distance = geography.distance || 10; // default to 10 miles
                   const zipcode = geography.zipcode;
-                  const milesInMeter = 0.000621371192237;
 
                   // TODO: It would be nice to refactor some of this out into knex language
                   const distanceQuery = db.select('id')
@@ -443,6 +449,7 @@ class Action {
 
     return {
       total,
+      targetZipcode,
       actions: actionResults,
       cursor,
     };

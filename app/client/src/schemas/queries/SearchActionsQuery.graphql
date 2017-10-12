@@ -10,6 +10,7 @@ query SearchActionsQuery($search:ActionSearchInput) {
         title
       }
     }
+    targetZipcode
     actions {
       ...ActionBasicInfo
     }

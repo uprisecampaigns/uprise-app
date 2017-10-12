@@ -38,4 +38,7 @@ module.exports = {
   sentry: {
     dsn: process.env.SENTRY_PRIVATE_DSN,
   },
+  geography: {
+    defaultZipcode: process.env.DEFAULT_ZIPCODE,
+  },
 };
