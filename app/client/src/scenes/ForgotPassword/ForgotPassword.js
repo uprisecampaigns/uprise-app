@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import isEmail from 'validator/lib/isEmail';
 import history from 'lib/history';
@@ -29,7 +30,8 @@ class ForgotPassword extends Component {
   hasErrors = false
 
   handleInputChange = (event, type, value) => {
-    this.setState(Object.assign({},
+    this.setState(Object.assign(
+      {},
       this.state,
       { [type]: value },
     ));

@@ -37,7 +37,7 @@ export const promptLogin = ({ title, exitable } = {}) => ({ type: PROMPT_LOGIN, 
 export const hideLoginPrompt = () => ({ type: HIDE_LOGIN_PROMPT });
 
 export const confirmNavFromDirtyForm = () => async (dispatch, getState) => {
-  const nextUrl = getState().notifications.nextUrl;
+  const { nextUrl } = getState().notifications;
 
   dispatch(cleanForm());
 

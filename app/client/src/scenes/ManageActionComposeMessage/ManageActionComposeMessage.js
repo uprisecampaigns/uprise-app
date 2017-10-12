@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 
@@ -40,7 +41,9 @@ class ManageActionComposeMessage extends Component {
   }
 
   handleSend = async ({ subject, body }) => {
-    const { userObject, recipients, sendMessage, ...props } = this.props;
+    const {
+      userObject, recipients, sendMessage, ...props
+    } = this.props;
 
     const fullBody = `From: ${userObject.first_name} ${userObject.last_name
     }\nPlease reply to: ${userObject.email
@@ -73,7 +76,9 @@ class ManageActionComposeMessage extends Component {
 
   render() {
     if (this.props.campaign && this.props.action && this.props.recipients && this.props.userObject) {
-      const { campaign, action, userObject, recipients } = this.props;
+      const {
+        campaign, action, userObject, recipients,
+      } = this.props;
 
       const baseActionUrl = `/organize/${campaign.slug}/opportunity/${action.slug}`;
 
@@ -91,7 +96,8 @@ class ManageActionComposeMessage extends Component {
             <div className={s.navHeader}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
               Dashboard
             </div>
           </Link>

@@ -1,5 +1,7 @@
 /* eslint-disable react/no-danger */
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+
+import React, { PureComponent } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import formStyle from 'styles/Form.scss';

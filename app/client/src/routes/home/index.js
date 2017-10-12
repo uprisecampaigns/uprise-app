@@ -5,7 +5,7 @@ import HomeWrapper from './HomeWrapper';
 
 export default {
 
-  path: '/',
+  path: '',
 
   async action(context) {
     return {

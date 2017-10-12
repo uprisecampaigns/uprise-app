@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import history from 'lib/history';
 
@@ -80,7 +81,8 @@ export default (WrappedComponent) => {
         this.props.dispatch(dirtyForm());
 
         this.setState(prevState => ({
-          formData: Object.assign({},
+          formData: Object.assign(
+            {},
             prevState.formData,
             { [type]: newValue },
           ),
@@ -143,8 +145,7 @@ export default (WrappedComponent) => {
 
       const notifyError = (message) => {
         this.props.dispatch(notify(message ||
-          'There was an error with your request. Please reload the page or contact help@uprise.org for support.',
-        ));
+          'There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
       };
 
       if (!this.hasErrors && !this.state.saving) {
@@ -176,7 +177,9 @@ export default (WrappedComponent) => {
         handleToggle, formSubmit,
       } = this;
 
-      const { formData, saving, errors, refs } = this.state;
+      const {
+        formData, saving, errors, refs,
+      } = this.state;
 
       return (
         <WrappedComponent

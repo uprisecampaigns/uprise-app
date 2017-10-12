@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -20,7 +21,9 @@ class ResetPasswordForm extends PureComponent {
   }
 
   render() {
-    const { data, handleInputChange, formSubmit, cancelReset, resetError } = this.props;
+    const {
+      data, handleInputChange, formSubmit, cancelReset, resetError,
+    } = this.props;
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>

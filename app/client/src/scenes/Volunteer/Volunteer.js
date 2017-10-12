@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
@@ -23,7 +24,7 @@ function Volunteer(props) {
 
         <Divider />
 
-        <Link to={'/volunteer/opportunity-commitments'}>
+        <Link to="/volunteer/opportunity-commitments">
           <ListItem
             primaryText="My Commitments"
           />
@@ -31,7 +32,7 @@ function Volunteer(props) {
 
         <Divider />
 
-        <Link to={'/volunteer/campaign-subscriptions'}>
+        <Link to="/volunteer/campaign-subscriptions">
           <ListItem
             primaryText="My Subscriptions"
           />

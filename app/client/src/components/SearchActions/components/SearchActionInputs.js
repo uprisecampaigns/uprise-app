@@ -1,5 +1,6 @@
 
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import { List } from 'material-ui/List';
@@ -25,7 +26,7 @@ const ConnectedDateTimeSearch = connect(state => ({ selectedTimes: state.actions
 class SearchActionInputs extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    selectedCollection: PropTypes.string.isRequired,
+    selectedCollection: PropTypes.arrayOf(PropTypes.string).isRequired,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     allOpen: PropTypes.bool,
   }
@@ -87,13 +88,12 @@ class SearchActionInputs extends PureComponent {
 
         <Divider />
 
-        <div className={s.listItemContainer}>
-          <ControlledListItem
-            primaryText="Activities"
-            initiallyOpen={allOpen}
-            nestedItems={activitiesTogglesList}
-          />
-        </div>
+        <ControlledListItem
+          primaryText="Activities"
+          initiallyOpen={allOpen}
+          nestedItems={activitiesTogglesList}
+          className={s.listItemContainer}
+        />
 
         <Divider />
 

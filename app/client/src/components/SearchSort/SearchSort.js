@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { List, ListItem } from 'material-ui/List';
 import ArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward';
 import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward';

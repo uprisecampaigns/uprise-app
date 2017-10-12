@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
@@ -63,7 +64,8 @@ class ComposeMessage extends React.Component {
 
   handleInputChange = (event, type, value) => {
     this.setState(prevState => ({
-      formData: Object.assign({},
+      formData: Object.assign(
+        {},
         prevState.formData,
         { [type]: value },
       ),

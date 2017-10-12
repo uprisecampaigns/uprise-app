@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import moment from 'moment';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import AutoComplete from 'material-ui/AutoComplete';

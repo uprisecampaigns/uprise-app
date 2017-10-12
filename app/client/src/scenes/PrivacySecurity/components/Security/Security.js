@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'react-apollo';
 
@@ -106,6 +107,4 @@ const mapStateToProps = state => ({
   passwordBeingReset: state.userAuthSession.userObject.passwordBeingReset || false,
 });
 
-export default compose(
-  connect(mapStateToProps),
-)(Security);
+export default compose(connect(mapStateToProps))(Security);

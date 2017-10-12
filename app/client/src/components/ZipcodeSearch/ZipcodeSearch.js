@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import isNumeric from 'validator/lib/isNumeric';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -28,7 +29,8 @@ class ZipcodeSearch extends PureComponent {
     if (typeof type === 'string' && type === 'zipcode') {
       // TODO: more canonical zipcode validation (across all site)
       if (isNumeric(value) && value.length < 6) {
-        this.setState(Object.assign({},
+        this.setState(Object.assign(
+          {},
           this.state,
           { [type]: value },
         ));
@@ -45,7 +47,8 @@ class ZipcodeSearch extends PureComponent {
 
     this.props.addItem('geographies', { zipcode });
 
-    this.setState(Object.assign({},
+    this.setState(Object.assign(
+      {},
       this.state, { zipcode: '' },
     ));
   }

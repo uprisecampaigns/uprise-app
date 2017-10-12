@@ -1,5 +1,6 @@
 
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -24,7 +25,8 @@ function UserMenuItem(props) {
           iconClassName={[s.materialIcons, 'material-icons'].join(' ')}
           className={s.userIcon}
           onTouchTap={itemClicked}
-        >account_box</IconButton>
+        >account_box
+        </IconButton>
       </div>
 
       <div className={s.accountInfoContainer}>

@@ -1,5 +1,6 @@
 
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -20,7 +21,7 @@ const SelectedActivitiesContainer = connect(state => ({ items: state.actionsSear
 const SelectedTimesContainer = connect(state => ({ items: state.actionsSearch.times }))(SelectedItemsContainer);
 
 const SelectedDatesContainer = connect((state) => {
-  const dates = state.actionsSearch.dates;
+  const { dates } = state.actionsSearch;
 
   const items = [];
 
