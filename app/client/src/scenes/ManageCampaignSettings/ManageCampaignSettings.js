@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import FontIcon from 'material-ui/FontIcon';
@@ -28,7 +29,7 @@ import s from 'styles/Organize.scss';
 
 const WrappedCampaignSettingsForm = formWrapper(CampaignSettingsForm);
 
-class ManageCampaignInfoContainer extends Component {
+export class ManageCampaignSettings extends Component {
   static propTypes = {
     campaign: PropTypes.object,
     user: PropTypes.object.isRequired,
@@ -101,6 +102,8 @@ class ManageCampaignInfoContainer extends Component {
         }
       });
 
+      campaign.zipcodeList = typeof campaign.zipcodeList === 'object' ? campaign.zipcodeList.join(',') : '';
+
       this.setState(prevState => ({
         formData: Object.assign({}, prevState.formData, campaign),
       }));
@@ -137,6 +140,8 @@ class ManageCampaignInfoContainer extends Component {
     const formData = Object.assign({}, data);
 
     formData.id = this.props.campaign.id;
+
+    formData.zipcodeList = formData.zipcodeList.split(',').map(zip => zip.trim());
 
     try {
       await this.props.editCampaignMutation({
@@ -189,7 +194,8 @@ class ManageCampaignInfoContainer extends Component {
             <div className={s.navHeader}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
               { campaign.title }
             </div>
           </Link>
@@ -240,4 +246,4 @@ export default compose(
   withMeQuery,
   withCampaignQuery,
   graphql(EditCampaignMutation, { name: 'editCampaignMutation' }),
-)(ManageCampaignInfoContainer);
+)(ManageCampaignSettings);

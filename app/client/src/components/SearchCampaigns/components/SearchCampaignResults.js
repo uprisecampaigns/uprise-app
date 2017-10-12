@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Infinite from 'react-infinite';
 import isEqual from 'lodash.isequal';
 import { Card, CardHeader } from 'material-ui/Card';
@@ -58,7 +59,7 @@ class SearchCampaignResults extends Component {
           to={`/campaign/${campaign.slug}`}
           key={campaign.id}
         >
-          <Card>
+          <Card className={s.card}>
             <CardHeader
               title={campaign.title}
               className={s.resultsHeader}

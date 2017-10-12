@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
@@ -21,7 +22,6 @@ class CsvUploader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      csvFile: null,
       rows: null,
     };
   }
@@ -46,7 +46,6 @@ class CsvUploader extends React.Component {
       return;
     }
 
-    this.setState({ csvFile });
     Parser.parse(csvFile, {
       error: (err, file, inputElem, reason) => {
         console.error(err);
@@ -87,7 +86,6 @@ class CsvUploader extends React.Component {
     event.stopPropagation();
     event.preventDefault();
     this.setState({
-      csvFile: null,
       rows: null,
     });
   }
@@ -131,7 +129,6 @@ class CsvUploader extends React.Component {
       dispatch(notify('Successfully imported'));
 
       this.setState({
-        csvFile: null,
         rows: null,
       });
     } catch (e) {
@@ -184,7 +181,9 @@ class CsvUploader extends React.Component {
     });
   }
 
-  cellRenderer = ({ columnIndex, key, parent, rowIndex, style }) => {
+  cellRenderer = ({
+    columnIndex, key, parent, rowIndex, style,
+  }) => {
     const { config } = this.props;
 
     const availableHeaders = Array.from(config.headers);

@@ -5,7 +5,8 @@
 
 .outerContainer {
   width: 100%;
-  margin-bottom: 4rem;
+  max-width: $max-content-width;
+  margin: 0rem auto 4rem auto;
 
   .innerContainer {
     width: 90%;
@@ -117,6 +118,16 @@
         button {
           background-color: transparent !important;
         }
+      }
+    }
+
+    .keywordTag {
+      display: inline-block !important;
+      margin: 0rem .5rem 0rem 0rem !important;
+      background-color: $brick-red !important;
+      
+      span {
+        color: $white !important;
       }
     }
   }

@@ -1,24 +1,29 @@
 "use strict";
 
 const gulp = require('gulp');
+const gutil = require('gulp-util');
 const notify = require('gulp-notify');
 const env = require('gulp-environments');
 const del = require('del');
 const path = require('path');
+const fs = require('fs');
 const childProcess = require('child_process');
 const webpack = require('webpack');
-const gulpWebpack = require('gulp-webpack');
+const gulpWebpack = require('webpack-stream');
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackTemplate = require('html-webpack-template');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require("compression-webpack-plugin");
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 const config = require('config/gulp.js');
 
 gulp.task('webpack', ['webpack:clean'], (done) => {
-
   console.log('Running webpack task');
 
   const gitCommit = childProcess.execSync('git rev-parse HEAD').toString().trim();
@@ -44,6 +49,16 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     inject: false // html-webpack-template requires this to work
   })
 
+  let currentProgress = 0;
+  const progressPlugin = new ProgressPlugin((percentage, msg) => {
+    percentage = Math.floor(percentage * 100);
+    if (percentage !== currentProgress) {
+      currentProgress = percentage;
+      const logline = currentProgress + '% ' + msg;
+      gutil.log('webpack', logline);
+    }
+  });
+
   const definePlugin = new webpack.DefinePlugin({
     'process.env': {
       'NODE_ENV': env.development() ? JSON.stringify('development') : JSON.stringify('production'),
@@ -58,6 +73,32 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     }
   });
 
+  const swPrecachePlugin = new SWPrecacheWebpackPlugin({
+    verbose: true,
+    debug: true,
+    cacheId: 'sw-precache-uprise-app',
+    filename: 'service-worker.js',
+    minify: env.production(),
+    // // navigateFallback: PUBLIC_PATH + 'index.html',
+    // staticFileGlobsIgnorePatterns: [/\.map$/],
+  });
+
+  const pwaManifestPlugin =  new WebpackPwaManifest({
+    name: 'UpRise Campaigns',
+    short_name: 'UpRise',
+    description: 'Your Home for Progressive Volunteering',
+    background_color: '#0e4053',
+    theme_color: '#0e4053',
+    icons: [
+      {
+        src: path.resolve(config.src, 'img/uprise-logo-icon.png'),
+        sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+      },
+    ]
+  });
+
+  const faviconPlugin = new FaviconsWebpackPlugin(path.resolve(config.src, 'img/uprise-logo-icon.png'));
+
   config.webpack = {
     entry: {
       'index': ['babel-polyfill', path.resolve(config.src, 'index')]
@@ -65,9 +106,10 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     output: {
       filename: '[name]-[hash].js',
       publicPath: process.env.CLIENT_BASE_URL,
-      path: path.resolve(config.dest)
+      path: config.dest
     },
     devtool: env.development() ? "eval-cheap-module-source-map" : "",
+    watch: env.development(),
     module: {
       rules: [
         {
@@ -82,7 +124,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
           ]
         },
         {
-          test: /\.jsx?$/,
+          test: /\.m?jsx?$/,
           loader: 'babel-loader',
           include: [
             path.resolve(config.publicRoot),
@@ -174,15 +216,23 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       }),
       definePlugin,
       occurenceOrderPlugin,
-      new webpack.optimize.AggressiveMergingPlugin()
+      new webpack.optimize.AggressiveMergingPlugin(),
+      swPrecachePlugin,
+      progressPlugin,
+      pwaManifestPlugin,
+      faviconPlugin,
     ] : [
       // bundleAnalyzerPlugin,
       definePlugin,
       commonsChunkPlugin,
+      progressPlugin,
       extractTextPlugin,
       htmlWebpackPlugin,
       occurenceOrderPlugin,
-      new webpack.optimize.AggressiveMergingPlugin()
+      swPrecachePlugin,
+      new webpack.optimize.AggressiveMergingPlugin(),
+      pwaManifestPlugin,
+      faviconPlugin,
     ],
 
     bail: env.production(),
@@ -195,7 +245,20 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
   };
 
   return gulp.src(config.src)
-    .pipe(gulpWebpack(config.webpack, webpack))
+    .pipe(gulpWebpack(config.webpack, webpack, (err, stats) => {
+      err && console.error(err);
+
+      setImmediate(() => {
+        // write the in-memory service-worker.js to disk
+        const abspath = path.resolve(config.dest, 'service-worker.js')
+        const content = stats.compilation.compiler.outputFileSystem.readFileSync(abspath)
+        fs.writeFileSync(abspath, content)
+
+        gutil.log(stats.toString({
+          colors: gutil.colors.supportsColor,
+        }));
+      });
+    }))
     .on("error", notify.onError("Error: <%= error.message %>"))
     .pipe(gulp.dest(config.dest))
     .pipe(notify());

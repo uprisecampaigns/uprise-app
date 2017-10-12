@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import LinearProgress from 'material-ui/LinearProgress';
@@ -38,7 +39,10 @@ export class Layout extends Component {
     };
   }
 
-  handleDrawerToggle = () => this.setState({ drawerOpen: !this.state.drawerOpen });
+  handleDrawerToggle = (event) => {
+    typeof event.preventDefault === 'function' && event.preventDefault();
+    this.setState({ drawerOpen: !this.state.drawerOpen });
+  }
 
   handleDrawerRequestChange = (open, reason) => {
     this.setState({
@@ -105,11 +109,9 @@ export class Layout extends Component {
   }
 }
 
-export default withAuthentication(
-  connect(state => ({
-    pageLoading: state.notifications.pageLoading,
-    notificationMessage: state.notifications.message,
-    displayFormNavWarning: state.notifications.displayFormNavWarning,
-    displayNotification: state.notifications.display,
-  }))(Layout),
-);
+export default withAuthentication(connect(state => ({
+  pageLoading: state.notifications.pageLoading,
+  notificationMessage: state.notifications.message,
+  displayFormNavWarning: state.notifications.displayFormNavWarning,
+  displayNotification: state.notifications.display,
+}))(Layout));

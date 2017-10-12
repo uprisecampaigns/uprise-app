@@ -139,7 +139,7 @@ export function startedSessionCheck() {
 export function checkedSessionStatus(result) {
   // If the hash of the server commit has changed,
   // hard reload the page to get new code
-  // TODO: more elegant solution 
+  // TODO: more elegant solution
   if (typeof result.gitCommit === 'string' &&
       result.gitCommit.trim() !== gitCommit.trim()) {
     window.setTimeout(() => {

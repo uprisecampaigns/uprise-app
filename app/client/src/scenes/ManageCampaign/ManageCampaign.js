@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -88,11 +89,12 @@ class ManageCampaignContainer extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to={'/organize'}>
+          <Link to="/organize">
             <div className={[s.navHeader, s.organizeNavHeader].join(' ')}>
               <FontIcon
                 className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
+              >arrow_back
+              </FontIcon>
               Organize
             </div>
           </Link>

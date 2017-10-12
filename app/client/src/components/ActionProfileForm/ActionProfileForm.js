@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -67,9 +68,9 @@ class ActionProfileForm extends PureComponent {
           <div className={f.textareaContainer}>
             <TextField
               name="description"
-              hintText={`Write a short description here. 
-                This will show up in the search results. 
-                You do not need to include the name of the opportunity, or issues, keywords, etc. as they will all appear automatically`}
+              hintText="Write a short description here.
+                This will show up in the search results.
+                You do not need to include the name of the opportunity, or issues, keywords, etc. as they will all appear automatically"
               value={data.description}
               multiLine
               rows={4}

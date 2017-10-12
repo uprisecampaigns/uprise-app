@@ -2,7 +2,7 @@
 
 export default {
 
-  path: '/',
+  path: '',
 
   // Routes are evaluated in order
   children: [
@@ -42,11 +42,6 @@ export default {
     require('./manageActionProfileEdit').default,
     require('./manageActionComposeMessage').default,
 
-    // /search/
-    require('./search').default,
-    require('./searchActions').default,
-    require('./searchCampaigns').default,
-
     // /volunteer/
     require('./volunteer').default,
     require('./actionCommitments').default,
@@ -60,6 +55,11 @@ export default {
 
     // /help/
     require('./searchDefinitions').default,
+
+    // /search/
+    require('./search').default,
+    require('./searchActions').default,
+    require('./searchCampaigns').default,
 
     // Wildcard routes, e.g. { path: '*', ... } (must go last)
     require('./notFound').default,

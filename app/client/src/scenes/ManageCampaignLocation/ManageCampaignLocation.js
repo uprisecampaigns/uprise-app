@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import FontIcon from 'material-ui/FontIcon';

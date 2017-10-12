@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -187,7 +188,9 @@ class ImageUploader extends Component {
   }
 
   render() {
-    const { imageSrc, editImageSrc, imageCrop, uploading } = this.state;
+    const {
+      imageSrc, editImageSrc, imageCrop, uploading,
+    } = this.state;
 
     return (
 
@@ -238,7 +241,8 @@ class ImageUploader extends Component {
                 <FontIcon
                   className={[s.removeImageButton, 'material-icons'].join(' ')}
                   onTouchTap={this.removeImage}
-                >delete</FontIcon>
+                >delete
+                </FontIcon>
                 <img alt="Uploaded" src={imageSrc} />
               </div>
             ) : (

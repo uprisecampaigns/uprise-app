@@ -4,7 +4,8 @@
 .outerContainer {
   width: 100%;
   overflow-x: hidden;
-  margin-bottom: 5rem;
+  max-width: $max-content-width;
+  margin: 0rem auto 5rem auto;
 }
 
 .innerContainer {

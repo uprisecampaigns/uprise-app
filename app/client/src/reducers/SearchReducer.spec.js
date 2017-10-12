@@ -1,4 +1,3 @@
-import { assert, expect } from 'chai';
 import { updateSearch } from './SearchReducer';
 const isEqual = require('lodash.isequal');
 
@@ -15,7 +14,7 @@ import { defaultStartState } from './SearchReducer';
 
 describe('(Reducer) SearchReducer', () => {
 
-  it('should return the initial state', () => {
+  test('should return the initial state', () => {
     expect(isEqual(updateSearch(undefined, {}), {
       keywords: [], 
       activities: [], 
@@ -27,10 +26,10 @@ describe('(Reducer) SearchReducer', () => {
         name: 'date',
         descending: false
       }
-    })).to.be.true;
+    })).toBe.true;
   });
 
-  it('should handle adding a search term string', () => {
+  test('should handle adding a search term string', () => {
 
     expect(
       isEqual(
@@ -52,10 +51,10 @@ describe('(Reducer) SearchReducer', () => {
           }
         }
       )
-    ).to.be.true;
+    ).toBe.true;
   });
 
-  it('should handle adding a search term object', () => {
+  test('should handle adding a search term object', () => {
 
     expect(
       isEqual(
@@ -83,10 +82,10 @@ describe('(Reducer) SearchReducer', () => {
           }
         }
       )
-    ).to.be.true;
+    ).toBe.true;
   });
 
-  it('should handle removing a search term string', () => {
+  test('should handle removing a search term string', () => {
     const state = updateSearch(undefined, {
       type: ADD_SEARCH_ITEM,
       collection: 'keywords',
@@ -102,10 +101,10 @@ describe('(Reducer) SearchReducer', () => {
         }),
         defaultStartState
       )
-    ).to.be.true;
+    ).toBe.true;
   });
 
-  it('should handle removing a search term object', () => {
+  test('should handle removing a search term object', () => {
     const state = updateSearch(undefined, {
       type: ADD_SEARCH_ITEM,
       collection: 'geographies',
@@ -127,10 +126,10 @@ describe('(Reducer) SearchReducer', () => {
         }),
         defaultStartState
       )
-    ).to.be.true;
+    ).toBe.true;
   });
 
-  it('shouldn\'t add the same string item twice', () => {
+  test('shouldn\'t add the same string item twice', () => {
     const state = updateSearch(undefined, {
       type: ADD_SEARCH_ITEM,
       collection: 'keywords',
@@ -149,10 +148,10 @@ describe('(Reducer) SearchReducer', () => {
           zipcode: '12345'
         }
       }).keywords
-    ).to.have.lengthOf(1);
+    ).toHaveLength(1);
   });
 
-  it('shouldn\'t add the same string item twice', () => {
+  test('shouldn\'t add the same string item twice', () => {
     const state = updateSearch(undefined, {
       type: ADD_SEARCH_ITEM,
       collection: 'keywords',
@@ -165,7 +164,7 @@ describe('(Reducer) SearchReducer', () => {
         collection: 'keywords',
         value: 'a new keyword'
       }).keywords
-    ).to.have.lengthOf(1);
+    ).toHaveLength(1);
 
     expect(
       updateSearch(state, {
@@ -173,7 +172,7 @@ describe('(Reducer) SearchReducer', () => {
         collection: 'keywords',
         value: 'a new KEYWORD'
       }).keywords
-    ).to.have.lengthOf(1);
+    ).toHaveLength(1);
 
     expect(
       updateSearch(state, {
@@ -181,7 +180,7 @@ describe('(Reducer) SearchReducer', () => {
         collection: 'keywords',
         value: '  a new keyword   '
       }).keywords
-    ).to.have.lengthOf(1);
+    ).toHaveLength(1);
 
   });
 

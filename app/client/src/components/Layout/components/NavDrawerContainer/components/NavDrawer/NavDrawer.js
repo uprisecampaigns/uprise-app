@@ -1,5 +1,6 @@
 
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -24,7 +25,8 @@ function UserMenuItem(props) {
           iconClassName={[s.materialIcons, 'material-icons'].join(' ')}
           className={s.userIcon}
           onTouchTap={itemClicked}
-        >account_box</IconButton>
+        >account_box
+        </IconButton>
       </div>
 
       <div className={s.accountInfoContainer}>
@@ -71,8 +73,8 @@ class NavDrawer extends Component {
   }
 
   menuItems = [
-    { path: '/search', title: 'Search' },
-    { path: '/volunteer', title: 'Manage' },
+    { path: '/', title: 'Volunteer' },
+    { path: '/volunteer', title: 'Profile' },
     { path: '/organize', title: 'Organize' },
     { path: '/settings', title: 'Settings' },
   ]
@@ -164,17 +166,6 @@ class NavDrawer extends Component {
           <MenuItem
             className={s.navMenuItem}
             primaryText="Sign Up"
-          />
-        </Link>
-
-        <Link
-          to="/search"
-          useAhref={false}
-          onClick={this.itemClicked}
-        >
-          <MenuItem
-            className={s.navMenuItem}
-            primaryText="Search"
           />
         </Link>
 

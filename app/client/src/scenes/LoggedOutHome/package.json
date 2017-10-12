@@ -1,0 +1,6 @@
+{
+  "name": "LoggedOutHome",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LoggedOutHome.js"
+}

@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import isNumeric from 'validator/lib/isNumeric';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -37,7 +38,8 @@ class GeographySearch extends PureComponent {
       }
     }
 
-    valid && this.setState(prevState => (Object.assign({},
+    valid && this.setState(prevState => (Object.assign(
+      {},
       prevState,
       { [type]: value },
     )));
@@ -62,7 +64,8 @@ class GeographySearch extends PureComponent {
          parseInt(searchItem.distance, 10) > 0 && searchItem.zipcode.length === 5)) {
       this.props.addItem('geographies', searchItem);
 
-      this.setState(prevState => (Object.assign({},
+      this.setState(prevState => (Object.assign(
+        {},
         prevState,
         {
           distance: '10',

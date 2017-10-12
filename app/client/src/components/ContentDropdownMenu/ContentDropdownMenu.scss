@@ -2,14 +2,15 @@
 @import '~styles/buttons';
 
 .container {
-  font-size: 1.1rem !important;
+  font-size: 1.22rem !important;
 }
 
 .dropdownItemsContainer {
   margin-top: 1rem;
+  padding: 1rem;
 
   div {
-    font-size: 1.1rem !important;
+    font-size: 1.22rem !important;
   }
 }
 
@@ -17,22 +18,25 @@
   padding: 0px !important;
 }
 
+.dropdownItemText {
+  cursor: pointer;
+  color: $brick-red !important;
+  padding: 1rem;
+}
+
 .dropdownButton {
-  @extend .lowerCaseButton;
-  button span {
-    font-size: 1.1rem !important;
-    font-weight: 500 !important;
-    padding: 0rem 0rem 0rem .2rem !important;
-  }
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  line-height: 1.22rem;
 
   svg {
-    color: $brick-red !important;
+    color: $white !important;
   }
 }
 
 .menuOpen {
   .dropdownButton {
     margin-bottom: -2px;
-    border-bottom: 2px solid $brick-red;
   }
 }

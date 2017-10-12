@@ -1,5 +1,6 @@
 
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import { List } from 'material-ui/List';
@@ -25,9 +26,14 @@ const ConnectedDateTimeSearch = connect(state => ({ selectedTimes: state.actions
 class SearchActionInputs extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    selectedCollection: PropTypes.string.isRequired,
+    selectedCollection: PropTypes.arrayOf(PropTypes.string).isRequired,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  };
+    allOpen: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    allOpen: false,
+  }
 
   setDates = (dates) => {
     this.props.dispatch(setSearchDates('action', dates));
@@ -52,6 +58,8 @@ class SearchActionInputs extends PureComponent {
       setDates,
     } = this;
 
+    const { allOpen } = this.props;
+
     const activitiesTogglesList = togglesList({
       collection: this.props.activities,
       selectedCollection: this.props.selectedCollection,
@@ -68,6 +76,7 @@ class SearchActionInputs extends PureComponent {
         <ControlledListItem
           primaryText="Location"
           className={s.listItemContainer}
+          initiallyOpen={allOpen}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
               <GeographySearch
@@ -79,18 +88,19 @@ class SearchActionInputs extends PureComponent {
 
         <Divider />
 
-        <div className={s.listItemContainer}>
-          <ControlledListItem
-            primaryText="Activities"
-            nestedItems={activitiesTogglesList}
-          />
-        </div>
+        <ControlledListItem
+          primaryText="Activities"
+          initiallyOpen={allOpen}
+          nestedItems={activitiesTogglesList}
+          className={s.listItemContainer}
+        />
 
         <Divider />
 
         <ControlledListItem
           primaryText="Date"
           className={s.listItemContainer}
+          initiallyOpen={allOpen}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.dateSearchContainer].join(' ')}>
               <ConnectedDateTimeSearch

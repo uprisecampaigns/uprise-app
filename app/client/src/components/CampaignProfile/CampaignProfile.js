@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import moment from 'moment-timezone';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -8,6 +9,7 @@ import timeWithZone from 'lib/timeWithZone';
 import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
+import KeywordTag from 'components/KeywordTag';
 
 import s from 'styles/Profile.scss';
 
@@ -22,10 +24,21 @@ class CampaignProfile extends PureComponent {
 
   render() {
     if (this.props.campaign) {
-      const { campaign, saving, subscribe, cancelSubscription } = this.props;
+      const {
+        campaign, saving, subscribe, cancelSubscription,
+      } = this.props;
 
-      const keywords = (Array.isArray(campaign.tags) && campaign.tags.length > 0) ? (
-        <div className={s.detailLine}>{campaign.tags.join(', ')}</div>
+      const keywords = (Array.isArray(campaign.tags) && campaign.tags.length) ? (
+        <div className={s.detailLine}>
+          {campaign.tags.map((tag, index) => (
+            <KeywordTag
+              label={tag}
+              key={index}
+              type="campaign"
+              className={s.keywordTag}
+            />
+          ))}
+        </div>
       ) : null;
 
       const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ?
@@ -79,7 +92,8 @@ class CampaignProfile extends PureComponent {
               <div className={s.navHeader}>
                 <FontIcon
                   className={['material-icons', s.backArrow].join(' ')}
-                >arrow_back</FontIcon>
+                >arrow_back
+                </FontIcon>
                 {campaign.title}
               </div>
             </Link>

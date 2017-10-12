@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Infinite from 'react-infinite';
 import moment from 'moment';
 import isEqual from 'lodash.isequal';
@@ -15,20 +16,21 @@ import Link from 'components/Link';
 import s from 'styles/Search.scss';
 
 
-class SearchActionResults extends PureComponent {
+class SearchActionResults extends Component {
   static propTypes = {
     actions: PropTypes.arrayOf(PropTypes.object),
     cursor: PropTypes.object,
     sortBy: PropTypes.object.isRequired,
     graphqlLoading: PropTypes.bool.isRequired,
-    allItemsLoaded: PropTypes.bool.isRequired,
     isInfiniteLoading: PropTypes.bool.isRequired,
     handleInfiniteLoad: PropTypes.func.isRequired,
+    allItemsLoaded: PropTypes.bool,
   }
 
   static defaultProps = {
     actions: undefined,
     cursor: undefined,
+    allItemsLoaded: false,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -48,7 +50,9 @@ class SearchActionResults extends PureComponent {
   )
 
   render() {
-    const { sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, ...props } = this.props;
+    const {
+      sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, ...props
+    } = this.props;
 
     const actions = props.actions ? Array.from(props.actions).sort(itemsSort(sortBy)).map((action, actionIndex) => {
       // TODO: better datetime parsing (not relying on native Date) and checking for missing values

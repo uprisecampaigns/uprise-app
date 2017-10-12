@@ -19,7 +19,7 @@ function Settings(props) {
 
         <Divider />
 
-        <Link to={'/settings/account'}>
+        <Link to="/settings/account">
           <ListItem
             primaryText="Account"
           />
@@ -27,7 +27,7 @@ function Settings(props) {
 
         <Divider />
 
-        <Link to={'/settings/privacy-security'}>
+        <Link to="/settings/privacy-security">
           <ListItem
             primaryText="Privacy & Security"
           />
@@ -35,7 +35,7 @@ function Settings(props) {
 
         <Divider />
 
-        <Link to={'/settings/contact'}>
+        <Link to="/settings/contact">
           <ListItem
             primaryText="Contact"
           />

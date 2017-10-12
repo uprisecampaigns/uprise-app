@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -23,7 +24,8 @@ class SignupForm extends PureComponent {
   render() {
     const {
       data, formSubmit, errors,
-      handleInputChange, cancel } = this.props;
+      handleInputChange, cancel,
+    } = this.props;
 
     return (
       <div className={s.outerContainer}>

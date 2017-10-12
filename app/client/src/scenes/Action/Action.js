@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import moment from 'moment-timezone';
@@ -12,6 +13,7 @@ import timeWithZone from 'lib/timeWithZone';
 
 import Link from 'components/Link';
 import AddToCalendar from 'components/AddToCalendar';
+import KeywordTag from 'components/KeywordTag';
 
 import {
   promptLogin, notify,
@@ -108,7 +110,16 @@ class Action extends Component {
         [];
 
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
-        <div className={s.detailLine}>{action.tags.join(', ')}</div>
+        <div className={s.detailLine}>
+          {action.tags.map((tag, index) => (
+            <KeywordTag
+              label={tag}
+              type="action"
+              className={s.keywordTag}
+              key={index}
+            />
+          ))}
+        </div>
       ) : null;
 
       const startTime = moment(action.start_time);
@@ -139,7 +150,8 @@ class Action extends Component {
               <div className={s.navHeader}>
                 <FontIcon
                   className={['material-icons', s.backArrow].join(' ')}
-                >arrow_back</FontIcon>
+                >arrow_back
+                </FontIcon>
                 {action.title}
               </div>
             </Link>
