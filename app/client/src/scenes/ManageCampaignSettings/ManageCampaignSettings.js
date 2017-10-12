@@ -29,7 +29,7 @@ import s from 'styles/Organize.scss';
 
 const WrappedCampaignSettingsForm = formWrapper(CampaignSettingsForm);
 
-class ManageCampaignInfoContainer extends Component {
+export class ManageCampaignSettings extends Component {
   static propTypes = {
     campaign: PropTypes.object,
     user: PropTypes.object.isRequired,
@@ -246,4 +246,4 @@ export default compose(
   withMeQuery,
   withCampaignQuery,
   graphql(EditCampaignMutation, { name: 'editCampaignMutation' }),
-)(ManageCampaignInfoContainer);
+)(ManageCampaignSettings);
