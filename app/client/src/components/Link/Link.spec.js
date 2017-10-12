@@ -4,13 +4,11 @@ import Link from './Link';
 
 describe('(Component) Link', () => {
   test('renders without exploding', () => {
-    const wrapper = shallow(<Link to="http://test.com" external={true} />);
+    const wrapper = mount(<Link to="http://test.com" external={true} />);
 
     expect(wrapper).toHaveLength(1);
-    console.log(wrapper.props());
-    // console.log(wrapper.instance().props());
-    expect(wrapper.instance().props().to).toEqual("http://test.com");
-    expect(wrapper.instance().props().external).toEqual(true);
+    expect(wrapper.instance().props.to).toEqual("http://test.com");
+    expect(wrapper.instance().props.external).toEqual(true);
   });
 
   test(
@@ -40,15 +38,15 @@ describe('(Component) Link', () => {
 
 
   test('contains an ahref tag when appropriate', () => {
-    const wrapper = shallow(<Link to="http://test.com" useAhref={true} external={true} />);
+    const wrapper = mount(<Link to="http://test.com" useAhref={true} external={true} />);
 
-    expect(wrapper).to.have.exactly(1).descendants('a');
+    expect(wrapper.find('a')).toBePresent();
   });
 
   test('contains a span tag when appropriate', () => {
     const wrapper = shallow(<Link to="/test" useAhref={false}/>);
 
-    expect(wrapper).to.have.exactly(1).descendants('span');
+    expect(wrapper.find('span')).toBePresent();
   });
 
 });

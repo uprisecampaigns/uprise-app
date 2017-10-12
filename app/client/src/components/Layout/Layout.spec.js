@@ -11,17 +11,17 @@ import { notify, clear } from 'actions/NotificationsActions';
 const store = configureStore();
 const muiTheme = getMuiTheme();
 
+
 const options = {
-  context: { store }, 
-  childContextTypes: { store: PropTypes.object.isRequired } 
+  context: { store, muiTheme }, 
+  childContextTypes: { store: PropTypes.object.isRequired, muiTheme: PropTypes.object } 
 }
 
 describe('(Component) Layout', () => {
   test('renders without exploding', () => {
     const connected = shallow(<ConnectedLayout><div></div></ConnectedLayout>, options);
-    const component = connected.dive();
+    const component = connected.dive().dive();
     expect(component).toHaveLength(1);
-    expect(component.find(Snackbar)).toHaveLength(1);
   });
 
   test('defaults to correct state', () => {
@@ -32,8 +32,9 @@ describe('(Component) Layout', () => {
 
   test('does not display snackbar initially', () => {
     const connected = shallow(<ConnectedLayout><div></div></ConnectedLayout>, options);
+    const component = connected.dive().dive().dive();
 
-    const snackbar = connected.dive().find(Snackbar).dive({
+    const snackbar = component.find(Snackbar).dive({
       context: {muiTheme},
       childContextTypes: {muiTheme: PropTypes.object}
     });
@@ -46,8 +47,9 @@ describe('(Component) Layout', () => {
     store.dispatch(notify('testing'));
 
     const connected = shallow(<ConnectedLayout><div></div></ConnectedLayout>, options);
+    const component = connected.dive().dive().dive();
 
-    const snackbar = connected.dive().find(Snackbar).dive({
+    const snackbar = component.find(Snackbar).dive({
       context: {muiTheme},
       childContextTypes: {muiTheme: PropTypes.object}
     });
@@ -60,8 +62,9 @@ describe('(Component) Layout', () => {
     store.dispatch(clear());
 
     const connected = shallow(<ConnectedLayout><div></div></ConnectedLayout>, options);
+    const component = connected.dive().dive().dive();
 
-    const snackbar = connected.dive().find(Snackbar).dive({
+    const snackbar = component.find(Snackbar).dive({
       context: {muiTheme},
       childContextTypes: {muiTheme: PropTypes.object}
     });

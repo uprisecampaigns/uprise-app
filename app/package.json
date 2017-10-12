@@ -6,7 +6,7 @@
     "dev": "node /src/app/client/bin/start.js & node --inspect=0.0.0.0:5859 /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
     "prod": "node /src/app/client/bin/start.js & node /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
     "test": "jest",
-    "test:watch": "cd client && ../node_modules/mocha/bin/mocha --require ignore-styles --require config/test.js --watch './src/**/*.spec.js'",
+    "test:watch": "jest --watch",
     "db:migrate:make": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:make --name new",
     "db:migrate:rollback": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:rollback",
     "db:migrate:latest": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:latest",
@@ -159,8 +159,9 @@
       "<rootDir>/../node_modules"
     ],
     "transformIgnorePatterns": [
-      "/app/node_modules/(enzyme-adapter-react-16)/"
+      "/app/node_modules/(enzyme-adapter-react-16|react-ga|react-dropzone)?/"
     ],
+    "setupTestFrameworkScriptFile": "<rootDir>/../node_modules/jest-enzyme/lib/index.js",
     "setupFiles": [
       "<rootDir>/setupTests.js"
     ]

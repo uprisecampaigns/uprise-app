@@ -10,6 +10,6 @@ const store = configureStore();
 describe('(Component) ImageUploader', () => {
   test('renders without exploding', () => {
     const wrapper = shallow(<ImageUploader store={store}/>);
-    expect(wrapper).to.have.lengthOf(1);
+    expect(wrapper).toHaveLength(1);
   });
 });
