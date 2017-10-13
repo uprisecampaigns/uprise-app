@@ -147,6 +147,7 @@ module.exports = buildSchema(`
     slug: String
     start_time: String
     campaign_name: String
+    distance: String
   }
 
   input ActionQueryInput {
