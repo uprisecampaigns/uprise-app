@@ -188,21 +188,6 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 
       new webpack.optimize.UglifyJsPlugin({
         mangle: true,
-        compress: {
-          // warnings: true,
-          warnings: false, // Suppress uglification warnings
-          dead_code: true,
-          drop_debugger: true,
-          conditionals: true,
-          evaluate: true,
-          drop_console: true,
-          pure_getters: true,
-          sequences: true,
-          booleans: true,
-          unsafe: true,
-          unsafe_comps: true,
-          screw_ie8: true
-        },
         output: {
           comments: false
         }
