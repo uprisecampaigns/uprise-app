@@ -143,6 +143,7 @@ class Action {
     const defaultTargetZipcode = config.geography.defaultZipcode;
     const targetZipcode = (typeof search.targetZipcode === 'string' && validator.isNumeric(search.targetZipcode) && search.targetZipcode.length === 5) ?
       search.targetZipcode : defaultTargetZipcode;
+    const distanceQueryString = `round(ST_DISTANCE(zipcodes.location, target_zip.location) * ${milesInMeter})`;
 
     const searchQuery = db.from('actions')
       .select(['actions.id as id', 'actions.title as title',
@@ -151,9 +152,8 @@ class Action {
         'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
         'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
         'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing',
-        db.raw('round(ST_DISTANCE(zipcodes.location, target_zip.location) * ?) AS distance', milesInMeter),
+        db.raw(`${distanceQueryString} as distance`),
         'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
-
       .where('actions.deleted', false)
       .andWhere('campaigns.deleted', false)
       .innerJoin('campaigns', 'actions.campaign_id', 'campaigns.id')
@@ -370,55 +370,53 @@ class Action {
     };
 
     const searchPageQuery = searchQuery.clone().modify((qb) => {
-      if (search.sortBy) {
-        if (search.sortBy.name === 'campaignName') {
-          qb.orderBy('campaigns.title', (search.sortBy.descending) ? 'DESC' : 'ASC');
-        } else if (search.sortBy.name === 'date') {
-          qb.orderByRaw(`actions.start_time ${search.sortBy.descending ? 'DESC' : 'ASC'} NULLS FIRST`);
-        }
-      } else {
-        qb.orderByRaw('actions.start_time ASC NULLS FIRST');
+
+      const sortBy = search.sortBy || {
+        name: 'distance',
+        descending: false,
+      };
+
+      if (sortBy.name === 'campaignName') {
+        qb.orderBy('campaigns.title', (sortBy.descending) ? 'DESC' : 'ASC');
+      } else if (sortBy.name === 'date') {
+        qb.orderByRaw(`actions.start_time ${sortBy.descending ? 'DESC' : 'ASC'} NULLS FIRST`);
+      } else if (sortBy.name === 'distance') {
+        qb.orderByRaw(`distance ${sortBy.descending ? 'DESC' : 'ASC'} NULLS LAST`);
       }
 
       if (search.cursor) {
-        if (search.sortBy) {
-          if (search.sortBy.name === 'campaignName') {
-            qb.andWhere(function () {
-              this.orWhere('campaigns.title', (search.sortBy.descending) ? '<' : '>', search.cursor.campaign_name);
+        if (sortBy.name === 'campaignName') {
+          qb.andWhere(function () {
+            this.orWhere('campaigns.title', (sortBy.descending) ? '<' : '>', search.cursor.campaign_name);
+            this.orWhere(function () {
+              this.andWhere('campaigns.title', '=', search.cursor.campaign_name);
+              this.andWhere('actions.slug', '>', search.cursor.slug);
+            });
+          });
+        } else if (sortBy.name === 'date') {
+          qb.andWhere(function () {
+            if (typeof search.cursor.start_type !== undefined && moment(search.cursor.start_time).isValid()) {
+              this.orWhere(db.raw('?::timestamptz', search.cursor.start_time), (sortBy.descending) ? '>' : '<', db.raw('actions.start_time'));
               this.orWhere(function () {
-                this.andWhere('campaigns.title', '=', search.cursor.campaign_name);
+                this.andWhere(db.raw('?::timestamptz', search.cursor.start_time), '=', db.raw('actions.start_time'));
                 this.andWhere('actions.slug', '>', search.cursor.slug);
               });
-            });
-          } else if (search.sortBy.name === 'date') {
-            qb.andWhere(function () {
-              if (typeof search.cursor.start_type !== undefined && moment(search.cursor.start_time).isValid()) {
-                this.orWhere(db.raw('?::timestamptz', search.cursor.start_time), (search.sortBy.descending) ? '>' : '<', db.raw('actions.start_time'));
-                this.orWhere(function () {
-                  this.andWhere(db.raw('?::timestamptz', search.cursor.start_time), '=', db.raw('actions.start_time'));
-                  this.andWhere('actions.slug', '>', search.cursor.slug);
-                });
-              } else {
-                this.orWhere(function () {
-                  this.whereNull('actions.start_time');
-                  this.andWhere('actions.slug', '>', search.cursor.slug);
-                });
-                this.orWhereNotNull('actions.start_time');
-              }
-            });
-          }
-        } else if (typeof search.cursor.start_type !== undefined && moment(search.cursor.start_time).isValid()) {
-          this.orWhere(db.raw('?::timestamptz', search.cursor.start_time), '<', db.raw('actions.start_time'));
-          this.orWhere(function () {
-            this.andWhere(db.raw('?::timestamptz', search.cursor.start_time), '=', db.raw('actions.start_time'));
-            this.andWhere('actions.slug', '>', search.cursor.slug);
+            } else {
+              this.orWhere(function () {
+                this.whereNull('actions.start_time');
+                this.andWhere('actions.slug', '>', search.cursor.slug);
+              });
+              this.orWhereNotNull('actions.start_time');
+            }
           });
-        } else {
-          this.orWhere(function () {
-            this.whereNull('actions.start_time');
-            this.andWhere('actions.slug', '>', search.cursor.slug);
+        } else if (sortBy.name === 'distance') {
+          qb.andWhere(function () {
+            this.orWhere(db.raw(distanceQueryString), (sortBy.descending) ? '<' : '>', search.cursor.distance);
+            this.orWhere(function () {
+              this.andWhere(db.raw(distanceQueryString), '=', search.cursor.distance);
+              this.andWhere('actions.slug', '>', search.cursor.slug);
+            });
           });
-          this.orWhereNotNull('actions.start_time');
         }
       }
 
