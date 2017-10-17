@@ -202,7 +202,7 @@ class User {
       subject: 'Confirm your email address',
       templateName: 'verification-email',
       context: {
-        verifyURL: `${config.urls.client}/settings/confirm-email/${user.verificationToken}`,
+        verifyURL: `${config.urls.client}settings/confirm-email/${user.verificationToken}`,
       },
     });
   }

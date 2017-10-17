@@ -8,7 +8,7 @@ import {
 
 export default {
 
-  path: '*',
+  path: '(.*)',
 
   action(context) {
     const tag = context.path.replace(/\//, '');
