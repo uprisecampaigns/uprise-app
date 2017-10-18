@@ -66,6 +66,7 @@ module.exports = buildSchema(`
     internal_title: String
     slug: String
     description: String
+    date: String
     start_time: String
     end_time: String
     tags: [String]

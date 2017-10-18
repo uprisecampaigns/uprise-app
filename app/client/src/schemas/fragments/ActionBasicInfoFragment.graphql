@@ -24,5 +24,10 @@ fragment ActionBasicInfo on ActionResult {
     slug
     profile_image_url
   }
+  shifts {
+    id
+    start
+    end
+  }
 }
 

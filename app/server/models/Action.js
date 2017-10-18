@@ -6,6 +6,7 @@ const uuid = require('uuid/v4');
 const moment = require('moment-timezone');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
+const zipcodeToTimezone = require('zipcode-to-timezone');
 
 const db = knex(knexConfig[process.env.NODE_ENV]);
 
@@ -168,24 +169,35 @@ class Action {
     const defaultPageLimit = 20;
     const milesInMeter = 0.000621371192237;
     const defaultTargetZipcode = config.geography.defaultZipcode;
+
     const targetZipcode = (typeof search.targetZipcode === 'string' && validator.isNumeric(search.targetZipcode) && search.targetZipcode.length === 5) ?
       search.targetZipcode : defaultTargetZipcode;
+
+    const timezone = zipcodeToTimezone.lookup(targetZipcode);
+
     const distanceQueryString = `round(ST_DISTANCE(zipcodes.location, target_zip.location) * ${milesInMeter})`;
 
-    const searchQuery = db.from('actions')
-      .select(['actions.id as id', 'actions.title as title',
-        db.raw('to_char(actions.start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
-        db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
+    const searchQueryWithoutDateFiltering = db.from('actions')
+      .select([
+        db.raw('coalesce((array_agg(shifts.id))[1], actions.id) as id'), // This just provides a unique id, but is very hacky
+        'actions.id as action_id', 'actions.title as title',
+        db.raw('to_char(coalesce(min(shifts.start), actions.start_time) at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
+        db.raw('to_char(coalesce(max(shifts.end), actions.end_time) at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
+        db.raw(`date(coalesce(shifts.start, actions.start_time) at time zone '${timezone}') as date`),
         'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
         'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
         'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing',
         db.raw(`${distanceQueryString} as distance`),
+        db.raw('(case when count(shifts.id)=0 then \'[]\'::json else json_agg(json_build_object(\'id\', shifts.id, \'start\', (to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), \'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as shifts'),
         'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
       .where('actions.deleted', false)
       .andWhere('campaigns.deleted', false)
       .innerJoin('campaigns', 'actions.campaign_id', 'campaigns.id')
+      .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
       .leftOuterJoin('zipcodes', 'zipcodes.postal_code', 'actions.zipcode')
       .crossJoin(db.raw('(SELECT postal_code, location from zipcodes where postal_code=?) target_zip', targetZipcode))
+      .groupByRaw(`date(coalesce(shifts.start, actions.start_time) at time zone '${timezone}'), actions.id, zipcodes.location, target_zip.location, campaigns.id`)
+      .as('actions')
       .modify((qb) => {
         if (search) {
           const tags = db('actions')
@@ -323,43 +335,6 @@ class Action {
             });
           }
 
-          if (search.dates) {
-            qb.andWhere(function () {
-              if (search.dates.onDate) {
-                this.andWhere(db.raw("(?::timestamptz, ?::timestamptz + interval '1 day') OVERLAPS (actions.start_time, actions.end_time)", [
-                  search.dates.onDate, search.dates.onDate,
-                ]));
-              }
-
-              if (search.dates.startDate) {
-                this.andWhere(db.raw('?::timestamptz <= actions.start_time', search.dates.startDate));
-              }
-
-              if (search.dates.endDate) {
-                this.andWhere(db.raw("?::timestamptz + interval '1 day' >= actions.end_time", search.dates.endDate));
-              }
-
-              if (search.dates.ongoing) {
-                this.orWhere('ongoing', true);
-              }
-            });
-          }
-
-          // TODO: Clean this up
-          if (search.times) {
-            qb.andWhere(function () {
-              search.times.forEach((time) => {
-                if (time.toLowerCase() === 'saturdays') {
-                  this.orWhere(db.raw('EXTRACT (DOW FROM actions.start_time::date) = 6'));
-                  this.orWhere(db.raw('EXTRACT (DOW FROM actions.end_time::date) = 6'));
-                }
-                if (time.toLowerCase() === 'sundays') {
-                  this.orWhere(db.raw('EXTRACT (DOW FROM actions.start_time::date) = 0'));
-                  this.orWhere(db.raw('EXTRACT (DOW FROM actions.end_time::date) = 0'));
-                }
-              });
-            });
-          }
 
           if (search.geographies) {
             qb.andWhere(function () {
@@ -391,10 +366,44 @@ class Action {
         }
       });
 
-    const dateTimeSearch = (queryObj) => {
+    const searchQuery = db.select('*').from(searchQueryWithoutDateFiltering).modify((qb) => {
+      if (search.dates) {
+        qb.andWhere(function () {
+          if (search.dates.onDate) {
+            this.andWhere(db.raw("(?::timestamptz, ?::timestamptz + interval '1 day') OVERLAPS (timestamptz(start_time), timestamptz(end_time))", [
+              search.dates.onDate, search.dates.onDate,
+            ]));
+          }
 
+          if (search.dates.startDate) {
+            this.andWhere(db.raw('?::timestamptz <= timestamptz(start_time)', search.dates.startDate));
+          }
 
-    };
+          if (search.dates.endDate) {
+            this.andWhere(db.raw("?::timestamptz + interval '1 day' >= timestamptz(end_time)", search.dates.endDate));
+          }
+
+          if (search.dates.ongoing) {
+            this.orWhere('ongoing', true);
+          }
+        });
+      }
+
+      // TODO: Clean this up
+      if (search.times) {
+        qb.andWhere(function () {
+          search.times.forEach((time) => {
+            if (time.toLowerCase() === 'saturdays') {
+              this.orWhere(db.raw('EXTRACT (DOW FROM date) = 6'));
+            }
+            if (time.toLowerCase() === 'sundays') {
+              this.orWhere(db.raw('EXTRACT (DOW FROM date) = 0'));
+              this.orWhere(db.raw('EXTRACT (DOW FROM date) = 0'));
+            }
+          });
+        });
+      }
+    });
 
     const searchPageQuery = searchQuery.clone().modify((qb) => {
 
@@ -406,7 +415,7 @@ class Action {
       if (sortBy.name === 'campaignName') {
         qb.orderBy('campaigns.title', (sortBy.descending) ? 'DESC' : 'ASC');
       } else if (sortBy.name === 'date') {
-        qb.orderByRaw(`actions.start_time ${sortBy.descending ? 'DESC' : 'ASC'} NULLS FIRST`);
+        qb.orderByRaw(`timestamptz(start_time) ${sortBy.descending ? 'DESC' : 'ASC'} NULLS FIRST`);
       } else if (sortBy.name === 'distance') {
         qb.orderByRaw(`distance ${sortBy.descending ? 'DESC' : 'ASC'} NULLS LAST`);
       }
@@ -423,17 +432,17 @@ class Action {
         } else if (sortBy.name === 'date') {
           qb.andWhere(function () {
             if (typeof search.cursor.start_type !== undefined && moment(search.cursor.start_time).isValid()) {
-              this.orWhere(db.raw('?::timestamptz', search.cursor.start_time), (sortBy.descending) ? '>' : '<', db.raw('actions.start_time'));
+              this.orWhere(db.raw('?::timestamptz', search.cursor.start_time), (sortBy.descending) ? '>' : '<', db.raw('timestamptz(actions.start_time)'));
               this.orWhere(function () {
-                this.andWhere(db.raw('?::timestamptz', search.cursor.start_time), '=', db.raw('actions.start_time'));
+                this.andWhere(db.raw('?::timestamptz', search.cursor.start_time), '=', db.raw('timestamptz(start_time)'));
                 this.andWhere('actions.slug', '>', search.cursor.slug);
               });
             } else {
               this.orWhere(function () {
-                this.whereNull('actions.start_time');
+                this.whereNull('start_time');
                 this.andWhere('actions.slug', '>', search.cursor.slug);
               });
-              this.orWhereNotNull('actions.start_time');
+              this.orWhereNotNull('start_time');
             }
           });
         } else if (sortBy.name === 'distance') {

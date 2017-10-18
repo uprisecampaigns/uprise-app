@@ -73,7 +73,7 @@ class SearchActionResults extends Component {
               <div><Link to={`/campaign/${action.campaign.slug}`} className={s.subheaderContainer}>{action.campaign.title}</Link></div>
               { !action.ongoing && startTime && (
                 <div>
-                  <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div>
+                  <div>Date: {timeWithZone(startTime, action.zipcode, 'ddd MMM Do, YYYY')}</div>
                   <div>Time: {`${startTimeString} - ${endTimeString}`}</div>
                 </div>
               )}
