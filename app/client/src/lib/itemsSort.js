@@ -11,6 +11,11 @@ export default function itemsSort(sortBy) {
         return moment(a.start_time).isBefore(moment(b.start_time)) ? 1 : -1;
       }
       return moment(a.start_time).isAfter(moment(b.start_time)) ? 1 : -1;
+    } else if (sortBy.name === 'shiftDate') {
+      if (sortBy.descending) {
+        return moment(a.start).isBefore(moment(b.start)) ? 1 : -1;
+      }
+      return moment(a.start).isAfter(moment(b.start)) ? 1 : -1;
     } else if (sortBy.name === 'campaignName') {
       if (sortBy.descending) {
         return (a.campaign.title.toLowerCase() < b.campaign.title.toLowerCase()) ? 1 : -1;

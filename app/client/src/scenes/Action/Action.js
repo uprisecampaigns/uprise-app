@@ -10,6 +10,8 @@ import FontIcon from 'material-ui/FontIcon';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import timeWithZone from 'lib/timeWithZone';
+import itemsSort from 'lib/itemsSort';
+
 
 import Link from 'components/Link';
 import AddToCalendar from 'components/AddToCalendar';
@@ -109,17 +111,36 @@ class Action extends Component {
         action.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.detailLine}>{activity.description}</div>) :
         [];
 
-      const shifts = (Array.isArray(action.shifts) && action.shifts.length) ?
-        action.shifts.map((shift, index) => {
-          const start = moment(shift.start);
-          const end = moment(shift.end);
-          const dateString = `${start.format('ddd MMM Do: h:mm')} - ${end.format('h:mm a')}`;
+      const shiftGroups = (Array.isArray(action.shifts) && action.shifts.length) ?
+        [...action.shifts]
+          .filter((shift) => moment(shift.end).isAfter(moment()))
+          .sort(itemsSort({name: 'shiftDate'})).reduce((result, shift) => ({
+          ...result,
+          [moment(shift.start).startOf('day').toDate()]: [
+            ...(result[moment(shift.start).startOf('day').toDate()] || []),
+            shift,
+          ],
+        }), {}) : [];
 
-          return (
-            <div key={JSON.stringify(shift)} className={s.detailLine}>{dateString}</div>
-          );
-        }) :
-        [];
+      const shiftDisplay = Object.keys(shiftGroups).map((date, index) => {
+        const shiftGroup = shiftGroups[date];
+        const dateString = timeWithZone(date, action.zipcode, 'ddd MMM Do');
+
+        const shiftLines = shiftGroup.map((shift, index) => (
+          <div key={JSON.stringify(shift)}>
+            {timeWithZone(shift.start, action.zipcode, 'h:mm')} - {timeWithZone(shift.end, action.zipcode, 'h:mm a z')}
+          </div>
+        ));
+
+        return (
+          <div key={JSON.stringify(shiftGroup)} className={s.detailLine}>
+            {dateString}:
+            <div>
+              {shiftLines}
+            </div>
+          </div>
+        );
+      });
 
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.detailLine}>
@@ -282,12 +303,12 @@ class Action extends Component {
               </div>
             )}
 
-            { shifts.length > 0 && (
+            { shiftDisplay.length > 0 && (
               <div className={s.shiftsContainer}>
                 <div className={s.header}>
                 Shift Schedule
                 </div>
-                <div>{shifts}</div>
+                <div>{shiftDisplay}</div>
               </div>
             )}
 
