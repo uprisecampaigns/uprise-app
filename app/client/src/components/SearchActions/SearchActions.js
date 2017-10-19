@@ -41,6 +41,7 @@ const graphqlOptions = {
                 ...data.variables.search,
                 cursor: {
                   start_time: result.cursor.start_time,
+                  created_at: result.cursor.created_at,
                   id: result.cursor.id,
                   slug: result.cursor.slug,
                   campaign_name: result.cursor.campaign.title,

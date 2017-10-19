@@ -5,6 +5,7 @@ fragment ActionBasicInfo on ActionResult {
   slug
   start_time
   end_time
+  created_at
   ongoing
   virtual
   attending
