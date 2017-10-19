@@ -69,6 +69,7 @@ module.exports = buildSchema(`
     date: String
     start_time: String
     end_time: String
+    created_at: String
     tags: [String]
     virtual: Boolean
     ongoing: Boolean
@@ -147,6 +148,7 @@ module.exports = buildSchema(`
     id: String
     slug: String
     start_time: String
+    created_at: String
     campaign_name: String
     distance: String
   }

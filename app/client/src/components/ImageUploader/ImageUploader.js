@@ -210,7 +210,7 @@ class ImageUploader extends Component {
                   <ReactCrop
                     className={s.reactCrop}
                     src={editImageSrc}
-                    onComplete={this.imageCropChange}
+                    onChange={this.imageCropChange}
                     crop={imageCrop}
                   />
                 </div>

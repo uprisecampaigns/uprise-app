@@ -5,6 +5,7 @@ query SearchActionsQuery($search:ActionSearchInput) {
     total
     cursor {
       start_time
+      created_at
       slug
       campaign {
         title

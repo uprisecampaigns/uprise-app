@@ -5,6 +5,12 @@ export default function itemsSort(sortBy) {
     if (sortBy.name === 'date') {
       // When sorting by date, ongoing roles always go first
       if (a.ongoing || b.ongoing) {
+        // If both are ongoing, secondary sort by created_at
+        if (a.ongoing && b.ongoing &&
+            typeof a.created_at === 'string' && typeof b.created_at === 'string') {
+          return moment(a.created_at).isBefore(moment(b.created_at)) ? 1 : -1;
+        }
+
         return a.ongoing ? -1 : 1;
       }
       if (sortBy.descending) {

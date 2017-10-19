@@ -189,6 +189,7 @@ class Action {
         'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing',
         db.raw(`${distanceQueryString} as distance`),
         db.raw('(case when count(shifts.id)=0 then \'[]\'::json else json_agg(json_build_object(\'id\', shifts.id, \'start\', (to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), \'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as shifts'),
+        db.raw('to_char(actions.created_at at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as created_at'),
         'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
       .where('actions.deleted', false)
       .andWhere('campaigns.deleted', false)
@@ -426,7 +427,7 @@ class Action {
             this.orWhere('campaigns.title', (sortBy.descending) ? '<' : '>', search.cursor.campaign_name);
             this.orWhere(function () {
               this.andWhere('campaigns.title', '=', search.cursor.campaign_name);
-              this.andWhere('actions.slug', '>', search.cursor.slug);
+              this.andWhere('actions.created_at', '<', db.raw('?::timestamptz', search.cursor.created_at));
             });
           });
         } else if (sortBy.name === 'date') {
@@ -435,12 +436,12 @@ class Action {
               this.orWhere(db.raw('?::timestamptz', search.cursor.start_time), (sortBy.descending) ? '>' : '<', db.raw('timestamptz(actions.start_time)'));
               this.orWhere(function () {
                 this.andWhere(db.raw('?::timestamptz', search.cursor.start_time), '=', db.raw('timestamptz(start_time)'));
-                this.andWhere('actions.slug', '>', search.cursor.slug);
+                this.andWhere(db.raw('timestamptz(actions.created_at)'), '<', db.raw('?::timestamptz', search.cursor.created_at));
               });
             } else {
               this.orWhere(function () {
                 this.whereNull('start_time');
-                this.andWhere('actions.slug', '>', search.cursor.slug);
+                this.andWhere(db.raw('timestamptz(actions.created_at)'), '<', db.raw('?::timestamptz', search.cursor.created_at));
               });
               this.orWhereNotNull('start_time');
             }
@@ -450,7 +451,7 @@ class Action {
             this.orWhere(db.raw(distanceQueryString), (sortBy.descending) ? '<' : '>', search.cursor.distance);
             this.orWhere(function () {
               this.andWhere(db.raw(distanceQueryString), '=', search.cursor.distance);
-              this.andWhere('actions.slug', '>', search.cursor.slug);
+              this.andWhere(db.raw('timestamptz(actions.created_at)'), '<', db.raw('?::timestamptz', search.cursor.created_at));
             });
           });
         }
@@ -462,7 +463,7 @@ class Action {
         qb.limit(defaultPageLimit);
       }
 
-      qb.orderBy('actions.slug', 'asc');
+      qb.orderBy('actions.created_at', 'desc');
     });
 
     const searchTotalsQuery = db.count('id').from(searchQuery.as('count_rows'));
