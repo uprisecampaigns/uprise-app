@@ -2,6 +2,9 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { compose, graphql } from 'react-apollo';
 import RaisedButton from 'material-ui/RaisedButton';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -23,7 +26,33 @@ class ManageCampaignActionsContainer extends PureComponent {
     campaignSlug: PropTypes.string.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      createActionDropdownOpen: false,
+    };
+  }
+
+  toggleCreateActionDropdown = (event) => {
+    event.preventDefault();
+
+    this.setState({
+      createActionDropdownOpen: true,
+      createActionDropdownAnchorEl: event.currentTarget,
+    });
+  }
+
+  closeCreateActionDropdown = () => {
+    this.setState({
+      createActionDropdownOpen: false,
+    });
+  }
+
   render() {
+    const { toggleCreateActionDropdown, closeCreateActionDropdown } = this;
+    const { createActionDropdownOpen, createActionDropdownAnchorEl } = this.state;
+
     if (this.props.campaign && this.props.actions) {
       const { campaign, actions } = this.props;
 
@@ -68,21 +97,36 @@ class ManageCampaignActionsContainer extends PureComponent {
 
           <div className={s.pageSubHeader}>Opportunities</div>
 
-          <Link to={`/organize/${campaign.slug}/create-opportunity`}>
-            <div className={s.organizeButton}>
-              <RaisedButton
-                primary
-                type="submit"
-                label="Create Opportunity"
-              />
-            </div>
-          </Link>
+          <div className={s.organizeButton}>
+            <RaisedButton
+              primary
+              type="submit"
+              label="Create Opportunity"
+              onTouchTap={toggleCreateActionDropdown}
+            />
+          </div>
+
+          <Popover
+            open={createActionDropdownOpen}
+            anchorEl={createActionDropdownAnchorEl}
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onRequestClose={closeCreateActionDropdown}
+          >
+            <Menu>
+              <Link to={`/organize/${campaign.slug}/create-role`}>
+                <MenuItem primaryText="Create ongoing role or project" />
+              </Link>
+              <Link to={`/organize/${campaign.slug}/create-event`}>
+                <MenuItem primaryText="Create with specific date/times" />
+              </Link>
+            </Menu>
+          </Popover>
 
           <List>
-
             { actionsList }
-
           </List>
+
         </div>
       );
     }

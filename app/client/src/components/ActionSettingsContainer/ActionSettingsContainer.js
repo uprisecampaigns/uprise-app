@@ -36,6 +36,7 @@ const WrappedActionSettingsForm = formWrapper(ActionSettingsForm);
 class ActionSettingsContainer extends Component {
   static propTypes = {
     submit: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     action: PropTypes.object,
   }
@@ -52,7 +53,6 @@ class ActionSettingsContainer extends Component {
       state: '',
       zipcode: '',
       locationNotes: '',
-      ongoing: false,
       shifts: [],
       startTime: undefined,
       endTime: undefined,
@@ -64,7 +64,10 @@ class ActionSettingsContainer extends Component {
 
     this.state = {
       stepIndex: 0,
-      formData: ActionSettingsContainer.defaultProps.action,
+      formData: {
+        ...ActionSettingsContainer.defaultProps.action,
+        ongoing: (props.type === 'role'),
+      }
     };
   }
 
@@ -127,16 +130,23 @@ class ActionSettingsContainer extends Component {
 
   settingsSubmit = async (data) => {
     const formData = { ...this.state.formData, ...data };
-    this.setState({ formData, stepIndex: 1 });
+
+    if (formData.ongoing) {
+      this.setState({ formData, stepIndex: 1 });
+    } else {
+      this.setState({ formData });
+      this.shiftScheduler.formSubmit();
+    }
+
     return {
       success: true,
-      message: 'Please fill out dates and shifts',
+      message: false,
     };
   }
 
   shiftSubmit = (data) => {
     const formData = { ...this.state.formData, ...data };
-    this.setState({ formData, stepIndex: 2 });
+    this.setState({ formData, stepIndex: 1 });
   }
 
   submit = () => {
@@ -168,10 +178,8 @@ class ActionSettingsContainer extends Component {
       console.log(this);
       console.log(this.wrappedActionSettingsForm);
       this.wrappedActionSettingsForm.wrappedInstance.formSubmit();
-    } else if (stepIndex === 1 && !formData.ongoing) {
-      this.shiftScheduler.formSubmit();
-    } else if (stepIndex === 1 && formData.ongoing) {
-      this.setState({ formData, stepIndex: 2 });
+    } else if (stepIndex === 1) {
+      // SUBMIT DETAILS PAGE
     } else if (stepIndex === 2) {
       this.props.submit(this.state.formData);
     }
@@ -223,7 +231,7 @@ class ActionSettingsContainer extends Component {
           >
             <Step>
               <StepButton onClick={() => this.setState({ stepIndex: 0 })}>
-                Details
+                Basic Info
               </StepButton>
               <StepContent>
                 <p>
@@ -234,7 +242,7 @@ class ActionSettingsContainer extends Component {
             </Step>
             <Step>
               <StepButton onClick={() => this.setState({ stepIndex: 1 })}>
-                Opportunity Type
+                Details
               </StepButton>
               <StepContent>
                 <p>
@@ -245,7 +253,7 @@ class ActionSettingsContainer extends Component {
             </Step>
             <Step>
               <StepButton onClick={() => this.setState({ stepIndex: 2 })}>
-                Review
+                Preview
               </StepButton>
               <StepContent>
                 <p>
@@ -259,44 +267,29 @@ class ActionSettingsContainer extends Component {
 
         <div className={s.stepperContentContainer}>
           { stepIndex === 0 &&
-            <WrappedActionSettingsForm
-              initialState={formData}
-              initialErrors={defaultErrorText}
-              validators={settingsValidators}
-              submit={settingsSubmit}
-              ref={(wrappedForm) => { this.wrappedActionSettingsForm = wrappedForm; }}
-            />
-          }
-
-          { stepIndex === 1 &&
             <div>
-              <div className={s.opportunityTypeToggleContainer}>
-                <RaisedButton
-                  label="Role"
-                  disableTouchRipple
-                  disableFocusRipple
-                  primary={formData.ongoing}
-                  onClick={() => this.toggleOngoing(true)}
-                />
+              <WrappedActionSettingsForm
+                initialState={formData}
+                initialErrors={defaultErrorText}
+                validators={settingsValidators}
+                submit={settingsSubmit}
+                ref={(wrappedForm) => { this.wrappedActionSettingsForm = wrappedForm; }}
+              />
 
-                <RaisedButton
-                  label="Event"
-                  disableTouchRipple
-                  disableFocusRipple
-                  primary={!formData.ongoing}
-                  onClick={() => this.toggleOngoing(false)}
-                />
-              </div>
-
-              { formData.ongoing ? (
-                <div>Role</div>
-              ) : 
+              { !formData.ongoing && (
                 <ShiftScheduler
                   data={formData}
                   submit={shiftSubmit}
                   ref={(scheduler) => { this.shiftScheduler = scheduler; }}
                 />
-              }
+              )}
+            </div>
+          }
+
+          { stepIndex === 1 &&
+            <div>
+              Details
+
             </div>
           }
 

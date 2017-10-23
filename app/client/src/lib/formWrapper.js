@@ -155,7 +155,9 @@ export default (WrappedComponent) => {
           const result = await this.props.submit(this.state.formData);
 
           if (result.success) {
-            this.props.dispatch(notify(result.message || 'Success'));
+            if (typeof result.message !== 'boolean' && result.message !== false) {
+              this.props.dispatch(notify(result.message || 'Success'));
+            }
           } else {
             notifyError(result.message);
           }

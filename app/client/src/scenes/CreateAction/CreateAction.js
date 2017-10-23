@@ -20,6 +20,7 @@ class CreateAction extends Component {
   static propTypes = {
     campaign: PropTypes.object,
     createActionMutation: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignId: PropTypes.string.isRequired,
   }
@@ -64,7 +65,7 @@ class CreateAction extends Component {
   render() {
     if (this.props.campaign) {
       const { newAction, modalOpen } = this.state;
-      const { campaign } = this.props;
+      const { campaign, type } = this.props;
       const { createAction } = this;
 
       const modalActions = [
@@ -94,6 +95,7 @@ class CreateAction extends Component {
 
           <ActionSettingsContainer
             campaignId={campaign.id}
+            type={type}
             submit={createAction}
           />
 
