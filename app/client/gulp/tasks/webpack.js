@@ -214,7 +214,6 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       extractTextPlugin,
       htmlWebpackPlugin,
       occurenceOrderPlugin,
-      swPrecachePlugin,
       new webpack.optimize.AggressiveMergingPlugin(),
       pwaManifestPlugin,
       faviconPlugin,
@@ -234,10 +233,12 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       err && console.error(err);
 
       setImmediate(() => {
-        // write the in-memory service-worker.js to disk
-        const abspath = path.resolve(config.dest, 'service-worker.js')
-        const content = stats.compilation.compiler.outputFileSystem.readFileSync(abspath)
-        fs.writeFileSync(abspath, content)
+        if (env.production()) {
+          // write the in-memory service-worker.js to disk
+          const abspath = path.resolve(config.dest, 'service-worker.js')
+          const content = stats.compilation.compiler.outputFileSystem.readFileSync(abspath)
+          fs.writeFileSync(abspath, content)
+        }
 
         gutil.log(stats.toString({
           colors: gutil.colors.supportsColor,

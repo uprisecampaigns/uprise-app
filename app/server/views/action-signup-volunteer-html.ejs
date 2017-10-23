@@ -474,16 +474,18 @@ h4{
                                                             <% } %>
                                                           </p>
 
-                                                          <p>
+                                                          <% if (!action.ongoing && googleCalendarUrl && icsCalendarUrl) { %>
+                                                            <p>
 
-                                                            Add to calendar:
-                                                            <a target="_blank" style="color: #336699; font-weight: normal; text-decoration: underline;" href="<%= googleCalendarUrl %>">
-                                                              Google
-                                                            </a>&nbsp;
-                                                            <a target="_blank" style="color: #336699; font-weight: normal; text-decoration: underline;" href="<%= icsCalendarUrl  %>">
-                                                              ICS
-                                                            </a>
-                                                          </p>
+                                                              Add to calendar:
+                                                              <a target="_blank" style="color: #336699; font-weight: normal; text-decoration: underline;" href="<%= googleCalendarUrl %>">
+                                                                Google
+                                                              </a>&nbsp;
+                                                              <a target="_blank" style="color: #336699; font-weight: normal; text-decoration: underline;" href="<%= icsCalendarUrl  %>">
+                                                                ICS
+                                                              </a>
+                                                            </p>
+                                                          <% } %>
 
                                                           <p>
                                                             You may contact the Opportunity Coordinator, <%= actionCoordinator.first_name %> <%= actionCoordinator.last_name %> at email: 
