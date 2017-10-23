@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import moment from 'moment-timezone';
+import camelCase from 'camelcase';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
@@ -27,9 +28,13 @@ class ActionProfile extends PureComponent {
   render() {
     if (this.props.action) {
       const {
-        action, saving, signup, cancelSignup,
+        saving, signup, cancelSignup,
       } = this.props;
 
+      // Just camel-casing property keys
+      const action = Object.assign(...Object.keys(this.props.action).map((k) => {
+        return { [camelCase(k)]: this.props.action[k] };
+      }));
 
       const activities = (Array.isArray(action.activities) && action.activities.length) ?
         action.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.detailLine}>{activity.description}</div>) :
@@ -81,8 +86,8 @@ class ActionProfile extends PureComponent {
       ) : null;
 
 
-      const startTime = moment(action.start_time);
-      const endTime = moment(action.end_time);
+      const startTime = moment(action.startTime);
+      const endTime = moment(action.endTime);
 
       const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
       const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
@@ -90,7 +95,7 @@ class ActionProfile extends PureComponent {
       return (
         <div className={s.outerContainer}>
 
-          { action.is_owner && (
+          { action.isOwner && (
             <Link to={`/organize/${action.campaign.slug}/opportunity/${action.slug}`}>
               <div className={s.navHeader}>
                 <FontIcon
@@ -170,28 +175,28 @@ class ActionProfile extends PureComponent {
 
             { action.owner && (
               <div className={s.contactContainer}>
-                Contact Coordinator: {action.owner.first_name} {action.owner.last_name}
+                Contact Coordinator: {action.owner.firstName} {action.owner.lastName}
                 <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>
                   {action.owner.email}
                 </Link>
               </div>
             )}
 
-            { (action.location_name || action.street_address || (action.city && action.state && action.zipcode)) && (
+            { (action.locationName || action.streetAddress || (action.city && action.state && action.zipcode)) && (
               <div className={s.locationContainer}>
                 <div className={s.header}>
                   Location Details
                 </div>
-                {action.location_name &&
-                  <div className={s.detailLine}>{action.location_name}</div>
+                {action.locationName &&
+                  <div className={s.detailLine}>{action.locationName}</div>
                 }
 
-                {action.street_address &&
-                  <div className={s.detailLine}>{action.street_address}</div>
+                {action.streetAddress &&
+                  <div className={s.detailLine}>{action.streetAddress}</div>
                 }
 
-                {action.street_address2 &&
-                  <div className={s.detailLine}>{action.street_address2}</div>
+                {action.streetAddress2 &&
+                  <div className={s.detailLine}>{action.streetAddress2}</div>
                 }
 
                 { (action.city && action.state && action.zipcode) && (
@@ -200,8 +205,8 @@ class ActionProfile extends PureComponent {
                   </div>
                 )}
 
-                {action.location_notes &&
-                  <div className={s.detailLine}>{action.location_notes}</div>
+                {action.locationNotes &&
+                  <div className={s.detailLine}>{action.locationNotes}</div>
                 }
               </div>
             )}

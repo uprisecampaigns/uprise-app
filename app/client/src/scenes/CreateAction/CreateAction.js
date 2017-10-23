@@ -94,7 +94,7 @@ class CreateAction extends Component {
           <div className={s.pageSubHeader}>Create Opportunity</div>
 
           <ActionSettingsContainer
-            campaignId={campaign.id}
+            campaign={campaign}
             type={type}
             submit={createAction}
           />

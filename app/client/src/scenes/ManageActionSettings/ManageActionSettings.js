@@ -83,6 +83,7 @@ class ManageActionSettings extends Component {
           <ActionSettingsContainer 
             submit={editAction}
             action={action}
+            campaign={campaign}
           />
 
         </div>

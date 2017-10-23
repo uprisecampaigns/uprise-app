@@ -23,13 +23,12 @@ import {
   validateStartEndTimes,
 } from 'lib/validateComponentForms';
 
+import ActionProfile from 'components/ActionProfile';
 import ActionSettingsForm from 'components/ActionSettingsForm';
 import ShiftScheduler from 'components/ShiftScheduler';
 
 import s from 'styles/Organize.scss';
 
-
-import ReviewDetails from './components/ReviewDetails';
 
 const WrappedActionSettingsForm = formWrapper(ActionSettingsForm);
 
@@ -37,6 +36,7 @@ class ActionSettingsContainer extends Component {
   static propTypes = {
     submit: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
+    campaign: PropTypes.object.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     action: PropTypes.object,
   }
@@ -179,7 +179,7 @@ class ActionSettingsContainer extends Component {
       console.log(this.wrappedActionSettingsForm);
       this.wrappedActionSettingsForm.wrappedInstance.formSubmit();
     } else if (stepIndex === 1) {
-      // SUBMIT DETAILS PAGE
+      this.setState({ stepIndex: 2 })
     } else if (stepIndex === 2) {
       this.props.submit(this.state.formData);
     }
@@ -213,6 +213,7 @@ class ActionSettingsContainer extends Component {
   render() {
     const { defaultErrorText, renderStepActions, shiftSubmit, settingsSubmit } = this;
     const { formData, stepIndex } = this.state;
+    const { campaign } = this.props;
 
 
     const settingsValidators = [
@@ -294,7 +295,12 @@ class ActionSettingsContainer extends Component {
           }
 
           { stepIndex === 2 &&
-            <ReviewDetails action={formData} />
+            <ActionProfile
+              signup={() => {}}
+              cancelSignup={() => {}}
+              action={{ ...formData, campaign }}
+              saving={false}
+            />
           }
         </div>
       </div>
