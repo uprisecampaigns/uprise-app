@@ -45,7 +45,7 @@ Raven.config(sentryDsn).install();
 
 const container = document.getElementById('app');
 
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
   // Delay registration until after the page has loaded, to ensure that our
   // precaching requests don't degrade the first visit experience.
   window.addEventListener('load', () => {
