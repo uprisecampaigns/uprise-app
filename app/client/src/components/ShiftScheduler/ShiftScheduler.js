@@ -169,7 +169,7 @@ class ShiftScheduler extends Component {
     const newShifts = [...this.state.shiftDates];
 
     newShifts[dateIndex].date = date;
-    newShifts[dateIndex].dateErro = null;
+    newShifts[dateIndex].dateError = null;
 
     this.setState({ shiftDates: newShifts });
   }

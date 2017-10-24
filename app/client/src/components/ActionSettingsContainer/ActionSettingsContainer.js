@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import camelCase from 'camelcase';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import camelCase from 'camelcase';
-
 import {
   Step,
   Stepper,
@@ -14,6 +13,7 @@ import {
   StepContent,
 } from 'material-ui/Stepper';
 
+import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import formWrapper from 'lib/formWrapper';
 import {
@@ -25,18 +25,21 @@ import {
 
 import ActionProfile from 'components/ActionProfile';
 import ActionSettingsForm from 'components/ActionSettingsForm';
+import ActionProfileForm from 'components/ActionProfileForm';
 import ShiftScheduler from 'components/ShiftScheduler';
 
 import s from 'styles/Organize.scss';
 
 
 const WrappedActionSettingsForm = formWrapper(ActionSettingsForm);
+const WrappedActionProfileForm = formWrapper(ActionProfileForm);
 
 class ActionSettingsContainer extends Component {
   static propTypes = {
     submit: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
     campaign: PropTypes.object.isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     action: PropTypes.object,
   }
@@ -54,6 +57,8 @@ class ActionSettingsContainer extends Component {
       zipcode: '',
       locationNotes: '',
       shifts: [],
+      activities: [],
+      tags: [],
       startTime: undefined,
       endTime: undefined,
     },
@@ -89,18 +94,15 @@ class ActionSettingsContainer extends Component {
         return undefined;
       }));
 
-      // Handle date/time
-      const newDateTimes = {
-        startTime: action.startTime && moment(action.startTime).isValid() ? moment(action.startTime).toDate() : undefined,
-        endTime: action.endTime && moment(action.endTime).isValid() ? moment(action.endTime).toDate() : undefined,
-      };
+      const shifts = [...action.shifts];
+      if (action.startTime && moment(action.startTime).isValid() && action.endTime && moment(action.endTime).isValid()) {
+        shifts.push({
+          start: action.startTime,
+          end: action.endTime,
+        });
+      }
 
-      delete action.startTime;
-      delete action.endTime;
-
-      this.setState(prevState => ({
-        formData: { ...prevState.formData, ...newDateTimes },
-      }));
+      action.shifts = [...action.shifts, ...shifts];
 
       Object.keys(action).forEach((k) => {
         if (!Object.keys(ActionSettingsContainer.defaultProps.action).includes(camelCase(k))) {
@@ -149,6 +151,18 @@ class ActionSettingsContainer extends Component {
     this.setState({ formData, stepIndex: 1 });
   }
 
+
+  profileSubmit = async (data) => {
+    const formData = { ...this.state.formData, ...data };
+
+    this.setState({ formData, stepIndex: 2 });
+
+    return {
+      success: true,
+      message: false,
+    };
+  }
+
   submit = () => {
     // this.setState({
     //   formData: { ...data },
@@ -176,10 +190,12 @@ class ActionSettingsContainer extends Component {
 
     if (stepIndex === 0) {
       console.log(this);
-      console.log(this.wrappedActionSettingsForm);
-      this.wrappedActionSettingsForm.wrappedInstance.formSubmit();
+      console.log(this.actionSettingsForm);
+      this.actionSettingsForm.wrappedInstance.formSubmit();
     } else if (stepIndex === 1) {
-      this.setState({ stepIndex: 2 })
+      console.log(this.actionProfileForm);
+      console.log(this.actionProfileForm.wrappedInstance);
+      this.actionProfileForm.wrappedInstance.formSubmit();
     } else if (stepIndex === 2) {
       this.props.submit(this.state.formData);
     }
@@ -211,10 +227,18 @@ class ActionSettingsContainer extends Component {
   }
 
   render() {
-    const { defaultErrorText, renderStepActions, shiftSubmit, settingsSubmit } = this;
+    const { defaultErrorText, renderStepActions, shiftSubmit, profileSubmit, settingsSubmit } = this;
     const { formData, stepIndex } = this.state;
-    const { campaign } = this.props;
+    const { campaign, activities } = this.props;
 
+    const activityDetails = formData.activities.map(activity => {
+      const activityMatch = activities.find(a => a.id === activity.id);
+      return {
+        id: activity.id,
+        title: activityMatch.title,
+        description: activityMatch.description,
+      }
+    });
 
     const settingsValidators = [
       (component) => { validateString(component, 'title', 'titleErrorText', 'Opportunity Name is Required'); },
@@ -274,7 +298,7 @@ class ActionSettingsContainer extends Component {
                 initialErrors={defaultErrorText}
                 validators={settingsValidators}
                 submit={settingsSubmit}
-                ref={(wrappedForm) => { this.wrappedActionSettingsForm = wrappedForm; }}
+                ref={(form) => { this.actionSettingsForm = form; }}
               />
 
               { !formData.ongoing && (
@@ -289,8 +313,13 @@ class ActionSettingsContainer extends Component {
 
           { stepIndex === 1 &&
             <div>
-              Details
-
+              <WrappedActionProfileForm
+                initialState={formData}
+                initialErrors={defaultErrorText}
+                validators={[]}
+                submit={profileSubmit}
+                ref={(form) => { this.actionProfileForm = form; }}
+              />
             </div>
           }
 
@@ -298,7 +327,11 @@ class ActionSettingsContainer extends Component {
             <ActionProfile
               signup={() => {}}
               cancelSignup={() => {}}
-              action={{ ...formData, campaign }}
+              action={{
+                ...formData,
+                campaign,
+                activities: activityDetails
+              }}
               saving={false}
             />
           }
@@ -309,5 +342,9 @@ class ActionSettingsContainer extends Component {
 }
 
 export default compose(
-  connect(),
+  graphql(ActivitiesQuery, {
+    props: ({ data }) => ({
+      activities: !data.loading && data.activities ? data.activities : [],
+    }),
+  })
 )(ActionSettingsContainer);

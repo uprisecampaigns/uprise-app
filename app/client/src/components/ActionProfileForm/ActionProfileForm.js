@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { graphql, compose } from 'react-apollo';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
+
+import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import SearchBar from 'components/SearchBar';
 import SelectedItemsContainer from 'components/SelectedItemsContainer';
@@ -134,4 +137,11 @@ const mapStateToProps = state => ({
   uploading: state.uploads.uploading,
 });
 
-export default connect(mapStateToProps)(ActionProfileForm);
+export default compose(
+  connect(mapStateToProps),
+  graphql(ActivitiesQuery, {
+    props: ({ data }) => ({
+      activities: !data.loading && data.activities ? data.activities : [],
+    }),
+  })
+)(ActionProfileForm);
