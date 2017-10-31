@@ -5,8 +5,11 @@ import { ApolloProvider } from 'react-apollo';
 // eslint-disable-next-line import/extensions
 import UniversalRouter from 'universal-router';
 import queryString from 'query-string';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import bowser from 'bowser';
 
 import RedBox from 'redbox-react';
 
@@ -184,10 +187,23 @@ async function onLocationChange(location) {
     ReactGA.set({ page: location.pathname });
     ReactGA.pageview(location.pathname);
 
+    // Hack for samsung browsers which aren't well suported by the
+    // inline-style-prefixer library that material-ui uses
+    const userAgent = bowser.samsungBrowser ? 'all' : undefined;
+
     appInstance = ReactDOM.render(
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme, { userAgent })}>
         <ApolloProvider client={apolloClient} store={store}>
-          <App context={context}>{route.component}</App>
+          <App
+            pageTitle={route.pageTitle}
+            title={route.title}
+            description={route.description}
+            context={context}
+            url={window.location.href}
+            image={route.image}
+          >
+            {route.component}
+          </App>
         </ApolloProvider>
       </MuiThemeProvider>,
       container,

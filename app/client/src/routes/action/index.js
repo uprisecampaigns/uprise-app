@@ -21,6 +21,7 @@ export default {
       if (result.data.action) {
         return {
           title: result.data.action.title,
+          image: result.data.action.campaign.profile_image_url,
           component: (
             <Layout>
               <Action actionSlug={slug} actionId={result.data.action.id} />

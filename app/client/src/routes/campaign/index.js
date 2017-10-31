@@ -22,6 +22,7 @@ export default {
       if (result.data.campaign) {
         return {
           title: result.data.campaign.title,
+          image: result.data.campaign.profile_image_url,
           component: (
             <Layout>
               <Campaign campaignSlug={slug} campaignId={result.data.campaign.id} />

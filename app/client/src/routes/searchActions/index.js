@@ -11,7 +11,7 @@ export default {
     context.store.dispatch(setPage('home', 'action'));
 
     return {
-      title: 'Search Opportunities',
+      title: 'Search for Volunteer Opportunities',
       component: <Layout><Home startTab={0} /></Layout>,
     };
   },

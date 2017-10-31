@@ -8,7 +8,7 @@ export default {
 
   action() {
     return {
-      title: 'Search',
+      title: 'Search for Volunteer Opportunities',
       component: <Layout><Home /></Layout>,
     };
   },

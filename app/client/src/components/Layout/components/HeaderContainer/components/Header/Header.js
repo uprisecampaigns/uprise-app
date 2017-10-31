@@ -153,10 +153,11 @@ function Header(props) {
   return (
     <div className={s.outerHeaderContainer}>
       <div className={s.header}>
-        <div className={s.menuIconContainer}>
-          <Menu
-            onTouchTap={props.handleDrawerToggle}
-          />
+        <div
+          className={s.menuIconContainer}
+          onClick={props.handleDrawerToggle}
+        >
+          <Menu />
         </div>
 
         <Link useAhref={false} preventDefault={false} to="/">

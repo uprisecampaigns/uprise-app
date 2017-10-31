@@ -43,7 +43,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 
   const htmlWebpackPlugin = new HtmlWebpackPlugin({
     template: HtmlWebpackTemplate,
-    title: 'UpRise App',
+    title: 'UpRise.org - Your Home for Progressive Volunteering',
     appMountId: 'app', // Generate #app where to mount
     mobile: true, // Scale page on mobile
     inject: false // html-webpack-template requires this to work
