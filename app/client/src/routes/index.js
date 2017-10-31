@@ -70,8 +70,10 @@ export default {
     const route = await next();
 
     // Provide default values for title, description etc.
-    route.title = `${route.title || 'Untitled Page'} - www.uprise.org`;
-    route.description = route.description || '';
+    route.pageTitle = route.title || 'Untitled Page';
+    route.title = `${route.pageTitle} - UpRise.org`;
+    // eslint-disable-next-line max-len
+    route.description = route.description || 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.';
 
     return route;
   },

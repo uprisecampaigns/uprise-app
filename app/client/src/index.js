@@ -194,7 +194,16 @@ async function onLocationChange(location) {
     appInstance = ReactDOM.render(
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme, { userAgent })}>
         <ApolloProvider client={apolloClient} store={store}>
-          <App context={context}>{route.component}</App>
+          <App
+            pageTitle={route.pageTitle}
+            title={route.title}
+            description={route.description}
+            context={context}
+            url={window.location.href}
+            image={route.image}
+          >
+            {route.component}
+          </App>
         </ApolloProvider>
       </MuiThemeProvider>,
       container,

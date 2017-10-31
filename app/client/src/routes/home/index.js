@@ -9,7 +9,7 @@ export default {
 
   async action(context) {
     return {
-      title: 'UpRise App Home',
+      title: 'Your Home for Progressive Volunteering',
       component: <Layout><HomeWrapper /></Layout>,
     };
   },
