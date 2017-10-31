@@ -46,6 +46,19 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     title: 'UpRise.org - Your Home for Progressive Volunteering',
     appMountId: 'app', // Generate #app where to mount
     mobile: true, // Scale page on mobile
+    meta: [
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: config.siteUrl },
+      { property: 'og:title', content: 'Your Home for Progressive Volunteering' },
+      { property: 'og:image', content: `${config.siteUrl}images/uprise-logo-icon.png` },
+      { property: 'og:description', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
+      { property: 'og:site_name', content: 'UpRise.org' },
+      { name: 'twitter:card', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
+      { name: 'twitter:site', content: '@uprisedotorg' },
+      { name: 'twitter:title', content: 'Your Home for Progressive Volunteering' },
+      { name: 'twitter:description', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
+      { name: 'twitter:image', content: `${config.siteUrl}images/uprise-logo-icon.png` },
+    ],
     inject: false // html-webpack-template requires this to work
   })
 
@@ -152,7 +165,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
         },
         {
           test: /\.(png|jpg)$/,
-          loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
+          loader: 'url-loader?limit=8192&name=images/[name].[ext]' // inline base64 URLs for <=8k images, direct URLs for the rest
         },
         {
           test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,

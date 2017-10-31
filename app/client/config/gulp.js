@@ -15,5 +15,6 @@ module.exports = {
   gulpDir: path.resolve(publicRoot, 'gulp'),
   nodeModules: path.resolve(appRoot, 'node_modules'),
   dest: path.resolve(publicRoot, 'builds'),
-  src: path.resolve(publicRoot, 'src')
+  src: path.resolve(publicRoot, 'src'),
+  siteUrl: process.env.CLIENT_BASE_URL,
 };
