@@ -112,6 +112,8 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 
   const faviconPlugin = new FaviconsWebpackPlugin(path.resolve(config.src, 'img/uprise-logo-icon.png'));
 
+  const contextReplacementPlugin = new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/);
+
   config.webpack = {
     entry: {
       'index': ['babel-polyfill', path.resolve(config.src, 'index')]
@@ -219,6 +221,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       progressPlugin,
       pwaManifestPlugin,
       faviconPlugin,
+      contextReplacementPlugin,
     ] : [
       // bundleAnalyzerPlugin,
       definePlugin,
@@ -230,6 +233,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       new webpack.optimize.AggressiveMergingPlugin(),
       pwaManifestPlugin,
       faviconPlugin,
+      contextReplacementPlugin,
     ],
 
     bail: env.production(),
