@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import 'styles/fonts-loader.scss';
 
-import upriseLogoIcon from 'img/uprise-logo-icon.png';
+import upriseLogoIcon from 'img/uprise-logo-icon-wide.png';
 
 const ContextType = {
 };

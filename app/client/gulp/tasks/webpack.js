@@ -50,14 +50,14 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       { property: 'og:type', content: 'website' },
       { property: 'og:url', content: config.siteUrl },
       { property: 'og:title', content: 'Your Home for Progressive Volunteering' },
-      { property: 'og:image', content: `${config.siteUrl}images/uprise-logo-icon.png` },
+      { property: 'og:image', content: `${config.siteUrl}images/uprise-logo-icon-wide.png` },
       { property: 'og:description', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
       { property: 'og:site_name', content: 'UpRise.org' },
       { name: 'twitter:card', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
       { name: 'twitter:site', content: '@uprisedotorg' },
       { name: 'twitter:title', content: 'Your Home for Progressive Volunteering' },
       { name: 'twitter:description', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
-      { name: 'twitter:image', content: `${config.siteUrl}images/uprise-logo-icon.png` },
+      { name: 'twitter:image', content: `${config.siteUrl}images/uprise-logo-icon-wide.png` },
     ],
     inject: false // html-webpack-template requires this to work
   })
