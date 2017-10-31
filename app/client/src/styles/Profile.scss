@@ -13,6 +13,44 @@
     margin: 1rem 5% 0 5%;
     font-size: 1rem;
 
+    .actionTitleSignupContainer {
+      display: flex;
+    }
+
+    .actionHeaderContainer {
+      display: inline-block;
+      margin: 1rem;
+    }
+
+    .actionTitle {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    .actionSubheader {
+      font-size: 1rem;
+    }
+
+    .desktopSignupRegisterLogin {
+      font-size: 1.2rem;
+      display: inline-block;
+      border: 1px solid $light-grey;
+      margin: 1rem;
+      padding: 1rem;
+    }
+
+    .aboutContainer {
+      margin: 1rem;
+
+      .aboutText {
+
+      }
+
+      .aboutTitle {
+        font-size: 1.3rem;
+      }
+    }
+
     .campaignHeader {
       margin-top: 1rem;
       margin-bottom: 1rem;

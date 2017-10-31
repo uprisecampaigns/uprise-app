@@ -17,6 +17,7 @@ const statesList = Object.keys(states);
 export default (WrappedComponent) => {
   class FormWrapper extends React.Component {
     static propTypes = {
+      forceRefresh: PropTypes.bool,
       initialState: PropTypes.object.isRequired,
       initialErrors: PropTypes.object.isRequired,
       submit: PropTypes.func.isRequired,
@@ -25,6 +26,7 @@ export default (WrappedComponent) => {
     }
 
     static defaultProps = {
+      forceRefresh: true,
       validators: [],
     }
 
@@ -39,7 +41,7 @@ export default (WrappedComponent) => {
     }
 
     componentWillReceiveProps(nextProps) {
-      if (nextProps.initialState && !this.state.saving) {
+      if (nextProps.forceRefresh && nextProps.initialState && !this.state.saving) {
         this.setState({
           formData: Object.assign({}, nextProps.initialState),
         });

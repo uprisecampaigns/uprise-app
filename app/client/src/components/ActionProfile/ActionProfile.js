@@ -12,6 +12,7 @@ import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
 import KeywordTag from 'components/KeywordTag';
+import SignupRegisterLogin from 'components/SignupRegisterLogin';
 import AddToCalendar from 'components/AddToCalendar';
 
 import s from 'styles/Profile.scss';
@@ -109,24 +110,27 @@ class ActionProfile extends PureComponent {
 
           <div className={s.innerContainer}>
 
-            <div className={s.profileHeaderContainer}>
-              <div className={s.titleContainer}>{action.title}</div>
+            <div className={s.actionTitleSignupContainer}>
+              <div className={s.actionHeaderContainer}>
+                <div className={s.actionTitle}>{action.title}</div>
+                <Link to={`/campaign/${action.campaign.slug}`}>
+                  <div className={s.actionSubheader}>{action.campaign.title}</div>
+                </Link>
+              </div>
+              <SignupRegisterLogin 
+                className={s.desktopSignupRegisterLogin}
+                attending={action.attending}
+                shifts={action.shifts}
+                handleSignup={signup}
+              />
             </div>
 
-            <Link to={`/campaign/${action.campaign.slug}`}>
-              <div className={s.campaignHeader}>{action.campaign.title}</div>
-            </Link>
-
-            { (startTime.isValid() && endTime.isValid()) && (
-              <div>
-                <div className={s.dateTimePlaceContainer}>{startTime.format('ddd, MMM Do, YYYY')}</div>
-                <div className={s.dateTimePlaceContainer}>{startTimeString} - {endTimeString}</div>
-              </div>
-            )}
-
-            { (action.city && action.state) &&
-              <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
-            }
+            <div className={s.aboutContainer}>
+              <div className={s.aboutTitle}>About this Volunteer Event</div>
+              { (typeof action.description === 'string' && action.description.trim() !== '') &&
+                <div className={s.descriptionText}>{action.description}</div>
+              }
+            </div>
 
             <div className={s.attendingContainer}>
               {saving ? (
@@ -169,10 +173,16 @@ class ActionProfile extends PureComponent {
               )}
             </div>
 
-            { (typeof action.description === 'string' && action.description.trim() !== '') &&
-              <div className={s.descriptionContainer}>{action.description}</div>
-            }
+            { (startTime.isValid() && endTime.isValid()) && (
+              <div>
+                <div className={s.dateTimePlaceContainer}>{startTime.format('ddd, MMM Do, YYYY')}</div>
+                <div className={s.dateTimePlaceContainer}>{startTimeString} - {endTimeString}</div>
+              </div>
+            )}
 
+            { (action.city && action.state) &&
+              <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
+            }
             { action.owner && (
               <div className={s.contactContainer}>
                 Contact Coordinator: {action.owner.firstName} {action.owner.lastName}

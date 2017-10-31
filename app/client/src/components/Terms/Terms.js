@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import content from 'content/terms.md';
+
 import formStyle from 'styles/Form.scss';
 import pageStyle from 'styles/Page.scss';
 
@@ -12,11 +14,10 @@ class Terms extends PureComponent {
   static propTypes = {
     agreeToTerms: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
-    content: PropTypes.object.isRequired,
   }
 
   render() {
-    const { agreeToTerms, cancel, content } = this.props;
+    const { agreeToTerms, cancel } = this.props;
     const { title, html } = content;
 
     return (

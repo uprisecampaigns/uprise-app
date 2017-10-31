@@ -5,6 +5,7 @@ const config = require('config/gulp.js');
 
 let exec;
 if (process.env.NODE_DEBUG) {
+  // nodemon isn't releasing the port on restart so we have to kill the process :(
   exec = 'kill-port --port 5856 && node --inspect=0.0.0.0:5856';
 } else {
   exec = 'node';
@@ -18,7 +19,8 @@ nodemon({
     config.serverRoot,
   ],
   exec,
-  ext: 'js json'
+  ext: 'js json',
+  delay: '80ms',
 });
 
 nodemon.on('start', function () {

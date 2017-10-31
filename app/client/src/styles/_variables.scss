@@ -8,6 +8,9 @@ $dark-blue: #0e4053;
 $azure: #32779a;
 $black: #000;
 $white: #fff;
+$light-grey: darken($white, 10%);
+$medium-grey: darken($white, 50%);
+$dark-grey: darken($white, 90%);
 
 // Fonts
 $font-family: "Roboto", Helvetica, Arial, sans-serif;

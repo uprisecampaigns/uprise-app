@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { withApollo } from 'react-apollo';
 
 import history from 'lib/history';
+
 import { attemptSignup } from 'actions/AuthActions';
+import { attemptLogin } from 'actions/AuthActions';
+
 import isNumeric from 'validator/lib/isNumeric';
 
 import formWrapper from 'lib/formWrapper';
@@ -14,21 +17,21 @@ import {
   validateZipcode,
   validateEmail,
   validateEmailAvailable,
-  validatePhoneNumber,
   validatePasswords,
 } from 'lib/validateComponentForms';
 
 import Terms from 'components/Terms';
-import SignupForm from './components/SignupForm';
+import RegisterLoginForm from './components/RegisterLoginForm';
 
-const WrappedSignupForm = formWrapper(SignupForm);
+const WrappedRegisterLoginForm = formWrapper(RegisterLoginForm);
 
-class Signup extends Component {
+class RegisterLogin extends Component {
   static propTypes = {
     termsContent: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     signupError: PropTypes.string.isRequired,
     handleCancel: PropTypes.func,
+    formType: PropTypes.string,
   }
 
   static defaultProps = {
@@ -36,6 +39,7 @@ class Signup extends Component {
       (typeof event.preventDefault === 'function') && event.preventDefault();
       history.push('/login');
     },
+    formType: 'register',
   }
 
   constructor(props) {
@@ -43,13 +47,14 @@ class Signup extends Component {
 
     this.state = {
       page: 0,
+      formType: props.formType,
       formData: {
         firstName: '',
         lastName: '',
         email: '',
+        password: '',
         password1: '',
         password2: '',
-        phoneNumber: '',
         zipcode: '',
       },
     };
@@ -59,27 +64,32 @@ class Signup extends Component {
     firstNameErrorText: null,
     lastNameErrorText: null,
     zipcodeErrorText: null,
-    phoneNumberErrorText: null,
     emailErrorText: null,
   }
 
-  handleInputChange = (event, type, value) => {
-    if (!(typeof type === 'string' && type === 'zipcode' && (value.length > 5 || !isNumeric(value)))) {
-      this.setState(Object.assign(
-        {},
-        this.state,
-        { [type]: value },
-      ));
+  formSubmit = async (data) => {
+    if (this.state.formType === 'register' && this.state.page === 0) {
+      this.setState({
+        formData: Object.assign({}, data),
+        page: 1,
+      });
+    } else {
+
+      this.props.dispatch(attemptLogin({
+        email: data.email,
+        password: data.password,
+      }));
+
+      return { success: true, message: false };
     }
+
+    return { success: true, message: 'okok' };
   }
 
-  formSubmit = async (data) => {
+  setFormType = (formType) => {
     this.setState({
-      formData: Object.assign({}, data),
-      page: 1,
+      formType
     });
-
-    return { success: true, message: 'Please read and agree to terms' };
   }
 
   agreeToTerms = (event) => {
@@ -94,19 +104,29 @@ class Signup extends Component {
   }
 
   render() {
-    const validators = [
-      component => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
-      component => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
+    const { page, formType } = this.state;
+
+    const registerValidators = page === 0 ? [
       component => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
       component => validateString(component, 'password1', 'password1ErrorText', 'Please enter a password'),
-      component => validateZipcode(component),
+      component => validatePasswords(component, 'password1', 'password2', 'password1ErrorText', 'password2ErrorText'),
       component => validateEmail(component),
       component => validateEmailAvailable(component),
-      component => validatePhoneNumber(component),
-      component => validatePasswords(component, 'password1', 'password2', 'password1ErrorText', 'password2ErrorText'),
+    ] : [
+      component => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
+      component => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
+      component => validateZipcode(component),
     ];
 
-    if (this.state.page === 1) {
+    const loginValidators = [
+      component => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
+      component => validateEmail(component),
+      component => validateString(component, 'password', 'passwordErrorText', 'Please enter a password'),
+    ];
+
+    const validators = formType === 'register' ? registerValidators : loginValidators;
+
+    if (this.state.page === 2) {
       return (
         <Terms
           agreeToTerms={this.agreeToTerms}
@@ -117,19 +137,22 @@ class Signup extends Component {
     }
 
     return (
-      <WrappedSignupForm
+      <WrappedRegisterLoginForm
         initialState={this.state.formData}
         initialErrors={this.defaultErrorText}
+        forceRefresh={false}
         validators={validators}
         submit={this.formSubmit}
+        setFormType={this.setFormType}
         signupError={this.props.signupError}
-        cancel={this.props.handleCancel}
+        page={page}
+        formType={formType}
       />
     );
   }
 }
 
-const SignupWithApollo = withApollo(Signup);
+const RegisterLoginWithApollo = withApollo(RegisterLogin);
 
 const mapStateToProps = state => ({
   signupError: state.userAuthSession.error,
@@ -137,4 +160,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps)(SignupWithApollo);
+export default connect(mapStateToProps)(RegisterLoginWithApollo);
