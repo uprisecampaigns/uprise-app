@@ -68,7 +68,7 @@ class App extends React.PureComponent {
           <meta property="og:image" content={image} />
           <meta property="og:description" content={description} />
           <meta property="og:site_name" content="UpRise.org" />
-          <meta name="twitter:card" content={description} />
+          <meta name="twitter:card" content="summary" />
           <meta name="twitter:site" content="@uprisedotorg" />
           <meta name="twitter:url" content={url} />
           <meta name="twitter:title" content={title} />

@@ -53,7 +53,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       { property: 'og:image', content: `${config.siteUrl}images/uprise-logo-icon-wide.png` },
       { property: 'og:description', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
       { property: 'og:site_name', content: 'UpRise.org' },
-      { name: 'twitter:card', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
+      { name: 'twitter:card', content: 'summary' },
       { name: 'twitter:site', content: '@uprisedotorg' },
       { name: 'twitter:title', content: 'UpRise.org - Your Home for Progressive Volunteering' },
       { name: 'twitter:description', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
