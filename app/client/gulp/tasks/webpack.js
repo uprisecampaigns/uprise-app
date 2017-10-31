@@ -109,7 +109,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       path: config.dest
     },
     devtool: env.development() ? "eval-cheap-module-source-map" : "",
-    watch: env.development(),
+    watch: true,
     module: {
       rules: [
         {
