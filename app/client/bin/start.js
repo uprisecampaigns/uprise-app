@@ -5,7 +5,7 @@ const config = require('config/gulp.js');
 
 let exec;
 if (process.env.NODE_DEBUG) {
-  exec = 'node --inspect=0.0.0.0:5856';
+  exec = 'kill-port --port 5856 && node --inspect=0.0.0.0:5856';
 } else {
   exec = 'node';
 }
