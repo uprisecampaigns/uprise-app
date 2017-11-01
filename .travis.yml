@@ -1,0 +1,28 @@
+
+sudo: required
+
+language: node
+
+services: 
+  - docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.10.0
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
+  - docker-compose --version
+  - docker --version
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - cp postgres/db.env.example postgres/db.env
+  - cp postgres-backup/backup.env.example postgres-backup/backup.env
+  - docker-compose build web
+  - docker-compose -f docker-compose.yml up -d --no-deps web
+  - docker-compose -f docker-compose.yml exec web npm run test
+
+script:
+  - npm run test
