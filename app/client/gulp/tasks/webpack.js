@@ -19,6 +19,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const config = require('config/gulp.js');
 
@@ -117,7 +118,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       publicPath: process.env.CLIENT_BASE_URL,
       path: config.dest
     },
-    devtool: env.development() ? "eval-cheap-module-source-map" : "",
+    devtool: env.development() ? "eval-cheap-module-source-map" : "source-map",
     watch: true,
     module: {
       rules: [
@@ -193,10 +194,15 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       htmlWebpackPlugin,
       extractTextPlugin,
 
-      new webpack.optimize.UglifyJsPlugin({
-        mangle: true,
-        output: {
-          comments: false
+      new UglifyJSPlugin ({
+        parallel: true,
+        sourceMap: true,
+        uglifyOptions: {
+          mangle: true,
+          ecma: 8,
+          output: {
+            comments: false
+          }
         }
       }),
       new CompressionPlugin({
