@@ -8,11 +8,7 @@ export default {
   path: '/help/search-definitions',
 
   async action() {
-    const data = await new Promise((resolve) => {
-      require.ensure([], (require) => {
-        resolve(require('content/search-definitions.md'));
-      }, 'search-definitions');
-    });
+    const data = await import(/* webpackChunkName: "search-definitions" */ 'content/search-definitions.md');
 
     return {
       title: data.title,

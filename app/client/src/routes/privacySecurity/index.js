@@ -8,11 +8,7 @@ export default {
   path: '/settings/privacy-security',
 
   async action() {
-    const privacyContent = await new Promise((resolve) => {
-      require.ensure([], (require) => {
-        resolve(require('content/privacy.md'));
-      }, 'privacy');
-    });
+    const privacyContent = await import(/* webpackChunkName: "privacy" */ 'content/privacy.md');
 
     return {
       title: 'Privacy and Security',
