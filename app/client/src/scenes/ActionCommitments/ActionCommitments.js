@@ -4,7 +4,7 @@ import { compose, graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
-import timeWithZone from 'lib/timeWithZone';
+import withTimeWithZone from 'lib/withTimeWithZone';
 import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
@@ -17,11 +17,12 @@ import s from 'styles/Volunteer.scss';
 class ActionCommitments extends PureComponent {
   static propTypes = {
     actionCommitments: PropTypes.arrayOf(PropTypes.object).isRequired,
+    timeWithZone: PropTypes.func.isRequired,
   }
 
   render() {
     if (this.props.actionCommitments) {
-      const { actionCommitments } = this.props;
+      const { actionCommitments, timeWithZone } = this.props;
 
       const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map(action => (
         <Link key={action.id} to={`/opportunity/${action.slug}`}>
@@ -96,4 +97,4 @@ export default compose(graphql(ActionCommitmentsQuery, {
   props: ({ data }) => ({
     actionCommitments: data.actionCommitments,
   }),
-}))(ActionCommitments);
+}))(withTimeWithZone(ActionCommitments));

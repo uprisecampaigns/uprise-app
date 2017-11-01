@@ -7,8 +7,7 @@ import { Card, CardHeader } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
 import CircularProgress from 'material-ui/CircularProgress';
 
-
-import timeWithZone from 'lib/timeWithZone';
+import withTimeWithZone from 'lib/withTimeWithZone';
 import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
@@ -25,6 +24,7 @@ class SearchActionResults extends Component {
     isInfiniteLoading: PropTypes.bool.isRequired,
     handleInfiniteLoad: PropTypes.func.isRequired,
     allItemsLoaded: PropTypes.bool,
+    timeWithZone: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -51,7 +51,7 @@ class SearchActionResults extends Component {
 
   render() {
     const {
-      sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, ...props
+      sortBy, isInfiniteLoading, allItemsLoaded, handleInfiniteLoad, timeWithZone, ...props
     } = this.props;
 
     const actions = props.actions ? Array.from(props.actions).sort(itemsSort(sortBy)).map((action, actionIndex) => {
@@ -120,4 +120,4 @@ class SearchActionResults extends Component {
   }
 }
 
-export default SearchActionResults;
+export default withTimeWithZone(SearchActionResults);

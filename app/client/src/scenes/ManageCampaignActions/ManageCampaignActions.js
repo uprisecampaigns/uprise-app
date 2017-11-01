@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
-import timeWithZone from 'lib/timeWithZone';
+import withTimeWithZone from 'lib/withTimeWithZone';
 
 import Link from 'components/Link';
 
@@ -19,13 +19,14 @@ class ManageCampaignActionsContainer extends PureComponent {
   static propTypes = {
     campaign: PropTypes.object.isRequired,
     actions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    timeWithZone: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
   }
 
   render() {
     if (this.props.campaign && this.props.actions) {
-      const { campaign, actions } = this.props;
+      const { campaign, actions, timeWithZone } = this.props;
 
       const actionsList = actions.map(action => (
         <Link key={action.id} to={`/organize/${campaign.slug}/opportunity/${action.slug}`}>
@@ -121,4 +122,4 @@ export default compose(
     }),
   }),
 
-)(ManageCampaignActionsContainer);
+)(withTimeWithZone(ManageCampaignActionsContainer));

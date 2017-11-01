@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import timeWithZone from 'lib/timeWithZone';
+import withTimeWithZone from 'lib/withTimeWithZone';
 
 import Link from 'components/Link';
 import AddToCalendar from 'components/AddToCalendar';
@@ -34,6 +34,7 @@ class Action extends Component {
     signup: PropTypes.func.isRequired,
     cancelSignup: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
+    timeWithZone: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     actionSlug: PropTypes.string.isRequired,
   };
@@ -101,7 +102,7 @@ class Action extends Component {
 
   render() {
     if (this.props.action) {
-      const { action } = this.props;
+      const { action, timeWithZone } = this.props;
       const { modalOpen } = this.state;
       const { signup, confirmSignup, cancelSignup } = this;
 
@@ -327,4 +328,4 @@ export default compose(
   withActionQuery,
   graphql(ActionSignupMutation, { name: 'signup' }),
   graphql(CancelActionSignupMutation, { name: 'cancelSignup' }),
-)(Action);
+)(withTimeWithZone(Action));

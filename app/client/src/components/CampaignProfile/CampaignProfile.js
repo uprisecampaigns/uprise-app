@@ -5,8 +5,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
 
-import timeWithZone from 'lib/timeWithZone';
 import itemsSort from 'lib/itemsSort';
+import withTimeWithZone from 'lib/withTimeWithZone';
 
 import Link from 'components/Link';
 import KeywordTag from 'components/KeywordTag';
@@ -20,12 +20,13 @@ class CampaignProfile extends PureComponent {
     subscribe: PropTypes.func.isRequired,
     cancelSubscription: PropTypes.func.isRequired,
     saving: PropTypes.bool.isRequired,
+    timeWithZone: PropTypes.func.isRequired,
   }
 
   render() {
     if (this.props.campaign) {
       const {
-        campaign, saving, subscribe, cancelSubscription,
+        campaign, saving, subscribe, cancelSubscription, timeWithZone,
       } = this.props;
 
       const keywords = (Array.isArray(campaign.tags) && campaign.tags.length) ? (
@@ -192,4 +193,4 @@ class CampaignProfile extends PureComponent {
   }
 }
 
-export default CampaignProfile;
+export default withTimeWithZone(CampaignProfile);
