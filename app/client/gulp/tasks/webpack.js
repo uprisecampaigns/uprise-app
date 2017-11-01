@@ -10,7 +10,6 @@ const fs = require('fs');
 const childProcess = require('child_process');
 const webpack = require('webpack');
 const gulpWebpack = require('webpack-stream');
-const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -30,11 +29,6 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 
   const extractTextPlugin = new ExtractTextPlugin('[name].css');
   const occurenceOrderPlugin = new webpack.optimize.OccurrenceOrderPlugin()
-
-  const commonsChunkPlugin = new CommonsChunkPlugin({
-    names: ['fonts-loader'],
-    minChunks: Infinity,
-  });
 
   const bundleAnalyzerPlugin = new BundleAnalyzerPlugin({
     analyzerHost: process.env.BUNDLE_ANALYZER_HOST,
@@ -198,7 +192,6 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     plugins: env.production() ? [
       htmlWebpackPlugin,
       extractTextPlugin,
-      commonsChunkPlugin,
 
       new webpack.optimize.UglifyJsPlugin({
         mangle: true,
@@ -224,7 +217,6 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     ] : [
       // bundleAnalyzerPlugin,
       definePlugin,
-      commonsChunkPlugin,
       progressPlugin,
       extractTextPlugin,
       htmlWebpackPlugin,
