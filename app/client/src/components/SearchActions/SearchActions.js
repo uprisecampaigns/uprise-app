@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import uniqWith from 'lodash.uniqwith';
-import moment from 'moment-timezone';
+import moment from 'moment';
 
 import SearchPresentation from 'components/SearchPresentation';
 

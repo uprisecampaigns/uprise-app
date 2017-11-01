@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import moment from 'moment-timezone';
 
 
 export default (WrappedComponent) => {
@@ -11,6 +10,8 @@ export default (WrappedComponent) => {
 
     componentWillMount = async () => {
       const zipcodeToTimezone = await import(/* webpackChunkName: "zipcode-to-timezone" */ 'zipcode-to-timezone');
+      const moment = await import(/* webpackChunkName: "moment-timezone" */ 'moment-timezone');
+
       this.setState({
         timeWithZone: (date, zipcode, formatString) => {
           const timezone = (zipcode && zipcodeToTimezone.lookup(zipcode)) ? zipcodeToTimezone.lookup(zipcode) : 'America/New_York';

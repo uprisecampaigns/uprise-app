@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import moment from 'moment-timezone';
 import didYouMean from 'didyoumean';
 import FontIcon from 'material-ui/FontIcon';
 import SelectField from 'material-ui/SelectField';
@@ -40,7 +39,16 @@ class ManageCampaignUploadActions extends Component {
     super(props);
     this.state = {
       timezone: 'America/Los_Angeles',
+      timezoneNames: [],
     };
+  }
+
+  componentWillMount = async () => {
+    const moment = await import(/* webpackChunkName: "moment-timezone" */ 'moment-timezone');
+    this.setState({
+      timezoneNames: moment.tz.names(),
+      moment,
+    });
   }
 
   handleTimezoneChange = (event, value) => {
@@ -71,7 +79,7 @@ class ManageCampaignUploadActions extends Component {
       if (typeof value !== 'string') {
         throw new Error('Can only process strings to dates');
       }
-      const date = moment.tz(value.trim(), timezone);
+      const date = this.state.moment.tz(value.trim(), timezone);
       if (!date.isValid()) {
         throw new Error(`Date is not valid: ${value}`);
       }
@@ -230,7 +238,7 @@ class ManageCampaignUploadActions extends Component {
               value={this.state.timezone}
               onChange={(event, i, value) => this.handleTimezoneChange(event, value)}
             >
-              {moment.tz.names().map((name, index) => (
+              {this.state.timezoneNames.map((name, index) => (
                 <MenuItem key={name} value={name} primaryText={name} />
               ))}
             </SelectField>
