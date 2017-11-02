@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node /src/app/client/bin/start.js & node --inspect=0.0.0.0:5859 /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
     "prod": "node /src/app/client/bin/start.js & node /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
-    "test": "jest",
+    "test": "jest --no-cache",
     "test:watch": "jest --watch",
     "db:migrate:make": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:make --name new",
     "db:migrate:rollback": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:rollback",
@@ -118,6 +118,7 @@
   "devDependencies": {
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
+    "babel-plugin-dynamic-import-node": "^1.1.0",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.1",
     "eslint": "^4.8.0",
