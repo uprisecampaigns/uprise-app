@@ -25,4 +25,4 @@ before_install:
   - docker-compose -f docker-compose.yml exec web npm run test
 
 script:
-  - npm run test
+  - docker-compose -f docker-compose.yml exec web npm run test
