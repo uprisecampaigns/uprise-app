@@ -7,11 +7,7 @@ export default {
   path: '/terms-and-conditions',
 
   async action() {
-    const data = await new Promise((resolve) => {
-      require.ensure([], (require) => {
-        resolve(require('content/terms.md'));
-      }, 'terms');
-    });
+    const data = await import(/* webpackChunkName: "terms" */ 'content/terms.md');
 
     return {
       title: data.title,

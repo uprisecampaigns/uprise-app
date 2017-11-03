@@ -31,9 +31,9 @@ class LoginModalPrompt extends Component {
       currentPage: 'login',
     };
 
-    require.ensure([], (require) => {
+    import(/* webpackChunkName: "terms" */ 'content/terms.md').then((content) => {
       this.setState({
-        termsContent: require('content/terms.md'),
+        termsContent: content,
       });
     });
   }

@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import 'styles/fonts-loader.scss';
 
-import upriseLogoIcon from 'img/uprise-logo-icon.png';
+import upriseLogoIcon from 'img/uprise-logo-icon-wide.png';
 
 const ContextType = {
 };
@@ -68,7 +68,7 @@ class App extends React.PureComponent {
           <meta property="og:image" content={image} />
           <meta property="og:description" content={description} />
           <meta property="og:site_name" content="UpRise.org" />
-          <meta name="twitter:card" content={description} />
+          <meta name="twitter:card" content="summary" />
           <meta name="twitter:site" content="@uprisedotorg" />
           <meta name="twitter:url" content={url} />
           <meta name="twitter:title" content={title} />

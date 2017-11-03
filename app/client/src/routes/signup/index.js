@@ -8,11 +8,7 @@ export default {
   path: '/signup',
 
   async action() {
-    const termsContent = await new Promise((resolve) => {
-      require.ensure([], (require) => {
-        resolve(require('content/terms.md'));
-      }, 'terms');
-    });
+    const termsContent = await import(/* webpackChunkName: "terms" */ 'content/terms.md');
 
     return {
       title: 'Signup',

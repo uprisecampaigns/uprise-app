@@ -8,7 +8,6 @@ import MenuItem from 'material-ui/MenuItem';
 import FontIcon from 'material-ui/FontIcon';
 import Dropzone from 'react-dropzone';
 import Parser from 'papaparse';
-import { CellMeasurer, CellMeasurerCache, Grid, AutoSizer } from 'react-virtualized';
 
 import { notify } from 'actions/NotificationsActions';
 
@@ -23,7 +22,25 @@ class CsvUploader extends React.Component {
     super(props);
     this.state = {
       rows: null,
+      importsLoaded: false,
     };
+  }
+
+  componentWillMount = async () => {
+    const {
+      CellMeasurer,
+      CellMeasurerCache,
+      Grid,
+      AutoSizer,
+    } = await import(/* webpackChunkName: "react-virtualized" */ 'react-virtualized');
+
+    this.setState({
+      importsLoaded: true,
+      CellMeasurer,
+      CellMeasurerCache,
+      Grid,
+      AutoSizer,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -70,7 +87,7 @@ class CsvUploader extends React.Component {
           values: selectedHeaders,
         });
 
-        this.measurerCache = new CellMeasurerCache({
+        this.measurerCache = new this.state.CellMeasurerCache({
           defaultWidth: 150,
           fixedWidth: true,
           defaultHeight: 60,
@@ -185,6 +202,7 @@ class CsvUploader extends React.Component {
     columnIndex, key, parent, rowIndex, style,
   }) => {
     const { config } = this.props;
+    const { CellMeasurer } = this.state;
 
     const availableHeaders = Array.from(config.headers);
     availableHeaders.unshift({
@@ -248,7 +266,13 @@ class CsvUploader extends React.Component {
   }
 
   render() {
-    const { rows } = this.state;
+    const { rows, importsLoaded } = this.state;
+
+    if (!importsLoaded) {
+      return false;
+    }
+
+    const { Grid, AutoSizer } = this.state;
 
     if (rows) {
       return (

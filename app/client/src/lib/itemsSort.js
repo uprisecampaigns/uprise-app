@@ -1,4 +1,4 @@
-import moment from 'moment-timezone';
+import moment from 'moment';
 
 export default function itemsSort(sortBy) {
   return function compare(a, b) {

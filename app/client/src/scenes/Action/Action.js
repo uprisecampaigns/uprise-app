@@ -6,6 +6,11 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import ActionProfile from 'components/ActionProfile';
+import withTimeWithZone from 'lib/withTimeWithZone';
+
+import Link from 'components/Link';
+import AddToCalendar from 'components/AddToCalendar';
+import KeywordTag from 'components/KeywordTag';
 
 import {
   promptLogin, notify,
@@ -26,6 +31,7 @@ class Action extends Component {
     signup: PropTypes.func.isRequired,
     cancelSignup: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
+    timeWithZone: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     actionSlug: PropTypes.string.isRequired,
   };
@@ -93,7 +99,7 @@ class Action extends Component {
 
   render() {
     if (this.props.action) {
-      const { action } = this.props;
+      const { action, timeWithZone } = this.props;
       const { modalOpen, saving } = this.state;
       const { signup, confirmSignup, cancelSignup } = this;
 
@@ -167,4 +173,4 @@ export default compose(
   withActionQuery,
   graphql(ActionSignupMutation, { name: 'signup' }),
   graphql(CancelActionSignupMutation, { name: 'cancelSignup' }),
-)(Action);
+)(withTimeWithZone(Action));

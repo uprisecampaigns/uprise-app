@@ -8,11 +8,7 @@ export default {
   path: '/welcome',
 
   async action() {
-    const data = await new Promise((resolve) => {
-      require.ensure([], (require) => {
-        resolve(require('content/welcome.md'));
-      }, 'welcome');
-    });
+    const data = await import(/* webpackChunkName: "welcome" */ 'content/welcome.md');
 
     return {
       title: data.title,

@@ -10,7 +10,6 @@ const fs = require('fs');
 const childProcess = require('child_process');
 const webpack = require('webpack');
 const gulpWebpack = require('webpack-stream');
-const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -20,6 +19,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const config = require('config/gulp.js');
 
@@ -31,11 +31,6 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
   const extractTextPlugin = new ExtractTextPlugin('[name].css');
   const occurenceOrderPlugin = new webpack.optimize.OccurrenceOrderPlugin()
 
-  const commonsChunkPlugin = new CommonsChunkPlugin({
-    names: ['fonts-loader'],
-    minChunks: Infinity,
-  });
-
   const bundleAnalyzerPlugin = new BundleAnalyzerPlugin({
     analyzerHost: process.env.BUNDLE_ANALYZER_HOST,
     analyzerPort: process.env.BUNDLE_ANALYZER_PORT,
@@ -46,6 +41,19 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     title: 'UpRise.org - Your Home for Progressive Volunteering',
     appMountId: 'app', // Generate #app where to mount
     mobile: true, // Scale page on mobile
+    meta: [
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: config.siteUrl },
+      { property: 'og:title', content: 'UpRise.org - Your Home for Progressive Volunteering' },
+      { property: 'og:image', content: `${config.siteUrl}images/uprise-logo-icon-wide.png` },
+      { property: 'og:description', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
+      { property: 'og:site_name', content: 'UpRise.org' },
+      { name: 'twitter:card', content: 'summary' },
+      { name: 'twitter:site', content: '@uprisedotorg' },
+      { name: 'twitter:title', content: 'UpRise.org - Your Home for Progressive Volunteering' },
+      { name: 'twitter:description', content: 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.' },
+      { name: 'twitter:image', content: `${config.siteUrl}images/uprise-logo-icon-wide.png` },
+    ],
     inject: false // html-webpack-template requires this to work
   })
 
@@ -99,6 +107,8 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 
   const faviconPlugin = new FaviconsWebpackPlugin(path.resolve(config.src, 'img/uprise-logo-icon.png'));
 
+  const contextReplacementPlugin = new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/);
+
   config.webpack = {
     entry: {
       'index': ['babel-polyfill', path.resolve(config.src, 'index')]
@@ -108,8 +118,8 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       publicPath: process.env.CLIENT_BASE_URL,
       path: config.dest
     },
-    devtool: env.development() ? "eval-cheap-module-source-map" : "",
-    watch: env.development(),
+    devtool: env.development() ? "eval-cheap-module-source-map" : "source-map",
+    watch: true,
     module: {
       rules: [
         {
@@ -128,12 +138,11 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
           loader: 'babel-loader',
           include: [
             path.resolve(config.publicRoot),
-            path.resolve(config.nodeModules, 'camelcase'),
           ],
           query: {
             cacheDirectory: true,
-            presets: ['es2015', 'react', 'stage-3'],
-            plugins: ['transform-runtime', 'transform-class-properties']
+            presets: ['stage-3', 'react'],
+            plugins: ['syntax-dynamic-import', 'transform-runtime', 'transform-class-properties']
           }
         },
         {
@@ -152,7 +161,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
         },
         {
           test: /\.(png|jpg)$/,
-          loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
+          loader: 'url-loader?limit=8192&name=images/[name].[ext]' // inline base64 URLs for <=8k images, direct URLs for the rest
         },
         {
           test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
@@ -184,12 +193,16 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     plugins: env.production() ? [
       htmlWebpackPlugin,
       extractTextPlugin,
-      commonsChunkPlugin,
 
-      new webpack.optimize.UglifyJsPlugin({
-        mangle: true,
-        output: {
-          comments: false
+      new UglifyJSPlugin ({
+        parallel: true,
+        sourceMap: true,
+        uglifyOptions: {
+          mangle: true,
+          ecma: 8,
+          output: {
+            comments: false
+          }
         }
       }),
       new CompressionPlugin({
@@ -206,10 +219,10 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       progressPlugin,
       pwaManifestPlugin,
       faviconPlugin,
+      contextReplacementPlugin,
     ] : [
       // bundleAnalyzerPlugin,
       definePlugin,
-      commonsChunkPlugin,
       progressPlugin,
       extractTextPlugin,
       htmlWebpackPlugin,
@@ -217,6 +230,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       new webpack.optimize.AggressiveMergingPlugin(),
       pwaManifestPlugin,
       faviconPlugin,
+      contextReplacementPlugin,
     ],
 
     bail: env.production(),
