@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import FontIcon from 'material-ui/FontIcon';
 
 import ActionSettingsContainer from 'components/ActionSettingsContainer';
@@ -17,7 +16,7 @@ import EditActionMutation from 'schemas/mutations/EditActionMutation.graphql';
 import s from 'styles/Organize.scss';
 
 
-class ManageActionSettings extends Component {
+class ManageActionSettings extends React.PureComponent {
   static propTypes = {
     action: PropTypes.object,
     campaign: PropTypes.object,
@@ -33,10 +32,6 @@ class ManageActionSettings extends Component {
   static defaultProps = {
     action: undefined,
     campaign: undefined,
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   editAction = async (data) => {

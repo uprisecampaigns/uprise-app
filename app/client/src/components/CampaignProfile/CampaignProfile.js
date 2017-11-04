@@ -34,7 +34,7 @@ class CampaignProfile extends PureComponent {
           {campaign.tags.map((tag, index) => (
             <KeywordTag
               label={tag}
-              key={index}
+              key={JSON.stringify(tag)}
               type="campaign"
               className={s.keywordTag}
             />

@@ -3,12 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withApollo } from 'react-apollo';
 
-import history from 'lib/history';
-
-import { attemptSignup } from 'actions/AuthActions';
-import { attemptLogin } from 'actions/AuthActions';
-
-import isNumeric from 'validator/lib/isNumeric';
+import { attemptSignup, attemptLogin } from 'actions/AuthActions';
 
 import formWrapper from 'lib/formWrapper';
 
@@ -30,15 +25,10 @@ class RegisterLogin extends Component {
     termsContent: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     signupError: PropTypes.string.isRequired,
-    handleCancel: PropTypes.func,
     formType: PropTypes.string,
   }
 
   static defaultProps = {
-    handleCancel: (event) => {
-      (typeof event.preventDefault === 'function') && event.preventDefault();
-      history.push('/login');
-    },
     formType: 'register',
   }
 
@@ -60,11 +50,10 @@ class RegisterLogin extends Component {
     };
   }
 
-  defaultErrorText = {
-    firstNameErrorText: null,
-    lastNameErrorText: null,
-    zipcodeErrorText: null,
-    emailErrorText: null,
+  setFormType = (formType) => {
+    this.setState({
+      formType,
+    });
   }
 
   formSubmit = async (data) => {
@@ -85,10 +74,11 @@ class RegisterLogin extends Component {
     return { success: true, message: 'okok' };
   }
 
-  setFormType = (formType) => {
-    this.setState({
-      formType,
-    });
+  defaultErrorText = {
+    firstNameErrorText: null,
+    lastNameErrorText: null,
+    zipcodeErrorText: null,
+    emailErrorText: null,
   }
 
   agreeToTerms = (event) => {

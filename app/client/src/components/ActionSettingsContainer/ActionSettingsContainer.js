@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
-import { connect } from 'react-redux';
 import moment from 'moment';
 import camelCase from 'camelcase';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -20,7 +19,6 @@ import {
   validateString,
   validateState,
   validateZipcode,
-  validateStartEndTimes,
 } from 'lib/validateComponentForms';
 
 import ActionProfile from 'components/ActionProfile';
@@ -84,6 +82,36 @@ class ActionSettingsContainer extends Component {
     this.handleActionProps(nextProps);
   }
 
+  settingsSubmit = async (data) => {
+    const formData = { ...this.state.formData, ...data };
+
+    if (formData.ongoing) {
+      this.setState({ formData, stepIndex: 1 });
+    } else {
+      this.setState({ formData });
+      this.shiftScheduler.formSubmit();
+    }
+
+    return {
+      success: true,
+      message: false,
+    };
+  }
+
+  defaultErrorText = {
+    titleErrorText: null,
+    internalTitleErrorText: null,
+    locationNameErrorText: null,
+    locationNotesErrorText: null,
+    streetAddressErrorText: null,
+    cityErrorText: null,
+    stateErrorText: null,
+    zipcodeErrorText: null,
+    dateErrorText: null,
+    startTimeErrorText: null,
+    endTimeErrorText: null,
+  }
+
   handleActionProps = (nextProps) => {
     if (nextProps.action && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null
@@ -114,36 +142,6 @@ class ActionSettingsContainer extends Component {
         formData: { ...prevState.formData, ...action },
       }));
     }
-  }
-
-  defaultErrorText = {
-    titleErrorText: null,
-    internalTitleErrorText: null,
-    locationNameErrorText: null,
-    locationNotesErrorText: null,
-    streetAddressErrorText: null,
-    cityErrorText: null,
-    stateErrorText: null,
-    zipcodeErrorText: null,
-    dateErrorText: null,
-    startTimeErrorText: null,
-    endTimeErrorText: null,
-  }
-
-  settingsSubmit = async (data) => {
-    const formData = { ...this.state.formData, ...data };
-
-    if (formData.ongoing) {
-      this.setState({ formData, stepIndex: 1 });
-    } else {
-      this.setState({ formData });
-      this.shiftScheduler.formSubmit();
-    }
-
-    return {
-      success: true,
-      message: false,
-    };
   }
 
   shiftSubmit = (data) => {
@@ -190,15 +188,11 @@ class ActionSettingsContainer extends Component {
     const { formData, stepIndex } = this.state;
 
     if (stepIndex === 0) {
-      console.log(this);
-      console.log(this.actionSettingsForm);
       this.actionSettingsForm.wrappedInstance.formSubmit();
     } else if (stepIndex === 1) {
-      console.log(this.actionProfileForm);
-      console.log(this.actionProfileForm.wrappedInstance);
       this.actionProfileForm.wrappedInstance.formSubmit();
     } else if (stepIndex === 2) {
-      this.props.submit(this.state.formData);
+      this.props.submit(formData);
     }
   };
 

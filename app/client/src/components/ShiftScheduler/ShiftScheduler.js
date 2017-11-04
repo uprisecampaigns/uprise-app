@@ -106,10 +106,7 @@ class ShiftScheduler extends Component {
   formSubmit = () => {
     const hasErrors = this.validate();
     if (!hasErrors) {
-      console.log(this.state.shiftDates);
       const shifts = this.state.shiftDates.reduce((accumulator, shiftDate) => {
-        console.log(shiftDate);
-
         const newShifts = shiftDate.shifts.map(shift => ({
           start: moment(shift.start).format(),
           end: moment(shift.end).format(),

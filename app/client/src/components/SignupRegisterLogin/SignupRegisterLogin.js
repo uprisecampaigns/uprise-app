@@ -1,16 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Popover from 'material-ui/Popover';
 import Dialog from 'material-ui/Dialog';
 import { connect } from 'react-redux';
-import { graphql, compose } from 'react-apollo';
 import FlatButton from 'material-ui/FlatButton';
 
-import Link from 'components/Link';
-
 import { pressedSignup, closedModal } from 'actions/ActionSignupActions';
-
-import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import RegisterLogin from './components/RegisterLogin';
 import ActionSignupModal from './components/ActionSignupModal';
@@ -18,23 +12,17 @@ import ActionSignupModal from './components/ActionSignupModal';
 import s from './SignupRegisterLogin.scss';
 
 
-class SignupRegisterLogin extends React.Component {
+class SignupRegisterLogin extends React.PureComponent {
   static propTypes = {
     action: PropTypes.object.isRequired,
-    userObject: PropTypes.object.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     signupModalOpen: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {
       action,
-      userObject,
       loggedIn,
       signupModalOpen,
       dispatch,
@@ -91,14 +79,6 @@ class SignupRegisterLogin extends React.Component {
   }
 }
 
-const withMeQuery = graphql(MeQuery, {
-  props: ({ data }) => ({
-    userObject: !data.loading && data.me ? data.me : {
-      email: '',
-    },
-  }),
-  skip: ownProps => !ownProps.loggedIn && !ownProps.fetchingAuthUpdate,
-});
 
 const mapStateToProps = state => ({
   loggedIn: state.userAuthSession.isLoggedIn,
@@ -106,7 +86,4 @@ const mapStateToProps = state => ({
   signupModalOpen: state.actionSignup.modalOpen,
 });
 
-export default compose(
-  connect(mapStateToProps),
-  withMeQuery,
-)(SignupRegisterLogin);
+export default connect(mapStateToProps)(SignupRegisterLogin);

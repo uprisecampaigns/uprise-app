@@ -16,17 +16,14 @@ class RegisterLoginForm extends PureComponent {
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
-    cancel: PropTypes.func.isRequired,
     setFormType: PropTypes.func.isRequired,
     formType: PropTypes.string.isRequired,
     page: PropTypes.number,
-    signupError: PropTypes.string,
     client: PropTypes.instanceOf(ApolloClient).isRequired,
   }
 
   static defaultProps = {
     page: 0,
-    signupError: '',
   }
 
   handleEmailChange = async (event, value) => {
@@ -54,7 +51,7 @@ class RegisterLoginForm extends PureComponent {
   render() {
     const {
       data, formSubmit, errors, page,
-      handleInputChange, cancel, formType,
+      handleInputChange, formType,
     } = this.props;
 
 

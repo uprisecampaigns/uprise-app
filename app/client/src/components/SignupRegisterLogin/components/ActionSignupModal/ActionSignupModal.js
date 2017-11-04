@@ -21,8 +21,7 @@ class ActionSignupModal extends Component {
   static propTypes = {
     action: PropTypes.object,
     userObject: PropTypes.object.isRequired,
-    modalOpen: PropTypes.bool.isRequired,
-    withTimeZone: PropTypes.func.isRequired,
+    timeWithZone: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     signup: PropTypes.func.isRequired,
   }
@@ -55,6 +54,7 @@ class ActionSignupModal extends Component {
 
   toggleCheck = (shift) => {
     const shifts = [...this.state.shifts];
+    // eslint-disable-next-line no-restricted-syntax
     for (const s of shifts) {
       if (isEqual(s, shift)) {
         s.selected = !s.selected;
@@ -101,7 +101,7 @@ class ActionSignupModal extends Component {
   }
 
   render() {
-    const { action, modalOpen, userObject } = this.props;
+    const { action, userObject } = this.props;
     const { shifts, page, agreeToShare } = this.state;
     const {
       toggleCheck, selectShifts, confirmSignup, formatShiftLine,
@@ -173,7 +173,7 @@ class ActionSignupModal extends Component {
       case 2: {
         return (
           <div>
-            <div>You've been signed up</div>
+            <div>You&apos;ve been signed up</div>
             <div>
               Thank you so much for signing up. Saved events will show up
               in your profile so you can easily view them later.
@@ -198,7 +198,6 @@ class ActionSignupModal extends Component {
 }
 
 const mapStateToProps = state => ({
-  modalOpen: state.actionSignup.modalOpen,
   action: state.actionSignup.action,
   loggedIn: state.userAuthSession.isLoggedIn,
   fetchingAuthUpdate: state.userAuthSession.fetchingAuthUpdate,
