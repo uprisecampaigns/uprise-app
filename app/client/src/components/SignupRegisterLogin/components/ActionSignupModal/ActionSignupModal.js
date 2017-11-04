@@ -17,7 +17,7 @@ import MeQuery from 'schemas/queries/MeQuery.graphql';
 import ActionSignupMutation from 'schemas/mutations/ActionSignupMutation.graphql';
 
 
-class ActionSignupModal extends Component {
+export class ActionSignupModal extends Component {
   static propTypes = {
     action: PropTypes.object,
     userObject: PropTypes.object.isRequired,

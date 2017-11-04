@@ -20,7 +20,7 @@ import RegisterLoginForm from './components/RegisterLoginForm';
 
 const WrappedRegisterLoginForm = formWrapper(RegisterLoginForm);
 
-class RegisterLogin extends Component {
+export class RegisterLogin extends Component {
   static propTypes = {
     termsContent: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
