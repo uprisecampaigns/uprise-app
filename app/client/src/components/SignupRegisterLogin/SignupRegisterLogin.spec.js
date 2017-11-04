@@ -3,6 +3,8 @@ import { render, shallow, mount } from 'enzyme';
 
 import SignupRegisterLogin from './SignupRegisterLogin';
 
+import configureStore from 'store/configureStore';
+const store = configureStore();
 
 describe('(Component) SignupRegisterLogin', () => {
   test('renders without exploding', () => {
@@ -13,7 +15,7 @@ describe('(Component) SignupRegisterLogin', () => {
       start_time: new Date(),
       end_time: new Date(),
     };
-    const wrapper = shallow(<SignupRegisterLogin event={action}/>);
+    const wrapper = shallow(<SignupRegisterLogin store={store} event={action}/>);
     expect(wrapper).toHaveLength(1);
   });
 });
