@@ -9,15 +9,19 @@ export default (WrappedComponent) => {
     }
 
     componentWillMount = async () => {
-      const zipcodeToTimezone = await import(/* webpackChunkName: "zipcode-to-timezone" */ 'zipcode-to-timezone');
-      const moment = await import(/* webpackChunkName: "moment-timezone" */ 'moment-timezone');
+      try {
+        const zipcodeToTimezone = await import(/* webpackChunkName: "zipcode-to-timezone" */ 'zipcode-to-timezone');
+        const moment = await import(/* webpackChunkName: "moment-timezone" */ 'moment-timezone');
 
-      this.setState({
-        timeWithZone: (date, zipcode, formatString) => {
-          const timezone = (zipcode && zipcodeToTimezone.lookup(zipcode)) ? zipcodeToTimezone.lookup(zipcode) : 'America/New_York';
-          return moment(date).tz(timezone).format(formatString);
-        },
-      });
+        this.setState({
+          timeWithZone: (date, zipcode, formatString) => {
+            const timezone = (zipcode && zipcodeToTimezone.lookup(zipcode)) ? zipcodeToTimezone.lookup(zipcode) : 'America/New_York';
+            return moment(date).tz(timezone).format(formatString);
+          },
+        });
+      } catch (e) {
+        throw new Error(`Problem loading libraries: e.message`);
+      }
     }
 
     render() {
