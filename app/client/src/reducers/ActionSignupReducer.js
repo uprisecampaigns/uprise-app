@@ -11,8 +11,8 @@ export const defaultStartState = {
 export function updateActionSignup(signupState = defaultStartState, action) {
   switch (action.type) {
     case PRESSED_SIGNUP: {
-      return { 
-        ...signupState, 
+      return {
+        ...signupState,
         action: action.action,
         modalOpen: true,
       };

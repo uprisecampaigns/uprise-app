@@ -32,7 +32,7 @@ class RegisterLoginForm extends PureComponent {
   handleEmailChange = async (event, value) => {
     const { setFormType, handleInputChange, client } = this.props;
 
-    handleInputChange(event, 'email', value); 
+    handleInputChange(event, 'email', value);
 
     const response = await client.query({
       query: EmailAvailableQuery,
@@ -54,7 +54,7 @@ class RegisterLoginForm extends PureComponent {
   render() {
     const {
       data, formSubmit, errors, page,
-      handleInputChange, cancel, formType
+      handleInputChange, cancel, formType,
     } = this.props;
 
 
@@ -140,46 +140,44 @@ class RegisterLoginForm extends PureComponent {
           </div>
         </form>
       );
-
-    } else {
-      return (
-        <form
-          onSubmit={formSubmit}
-        >
-          <div>
-            <div className={s.textFieldContainer}>
-              <TextField
-                floatingLabelText="Email"
-                type="email"
-                value={data.email}
-                onChange={(event) => { this.handleEmailChange(event, event.target.value); }}
-                errorText={errors.emailErrorText}
-                fullWidth
-              />
-            </div>
-
-            <div className={s.textFieldContainer}>
-              <TextField
-                floatingLabelText="Password"
-                type="password"
-                value={data.password}
-                onChange={(event) => { handleInputChange(event, 'password', event.target.value); }}
-                errorText={errors.passwordErrorText}
-                fullWidth
-              />
-            </div>
-          </div>
-          <div className={[s.button, s.secondaryButton].join(' ')}>
-            <RaisedButton
-              onTouchTap={formSubmit}
-              primary
-              type="submit"
-              label="Login"
+    }
+    return (
+      <form
+        onSubmit={formSubmit}
+      >
+        <div>
+          <div className={s.textFieldContainer}>
+            <TextField
+              floatingLabelText="Email"
+              type="email"
+              value={data.email}
+              onChange={(event) => { this.handleEmailChange(event, event.target.value); }}
+              errorText={errors.emailErrorText}
+              fullWidth
             />
           </div>
-        </form>
-      );
-    }
+
+          <div className={s.textFieldContainer}>
+            <TextField
+              floatingLabelText="Password"
+              type="password"
+              value={data.password}
+              onChange={(event) => { handleInputChange(event, 'password', event.target.value); }}
+              errorText={errors.passwordErrorText}
+              fullWidth
+            />
+          </div>
+        </div>
+        <div className={[s.button, s.secondaryButton].join(' ')}>
+          <RaisedButton
+            onTouchTap={formSubmit}
+            primary
+            type="submit"
+            label="Login"
+          />
+        </div>
+      </form>
+    );
   }
 }
 

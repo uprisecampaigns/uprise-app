@@ -72,7 +72,7 @@ class ActionSettingsContainer extends Component {
       formData: {
         ...ActionSettingsContainer.defaultProps.action,
         ongoing: (props.type === 'role'),
-      }
+      },
     };
   }
 
@@ -173,15 +173,16 @@ class ActionSettingsContainer extends Component {
 
   handlePrev = () => {
     if (this.state.stepIndex > 0) {
-      this.setState(prevState => ({ ...prevState,
+      this.setState(prevState => ({
+        ...prevState,
         stepIndex: prevState.stepIndex - 1,
       }));
     }
   }
 
   toggleOngoing = (ongoing) => {
-    this.setState((prevState) => ({
-      formData: { ...prevState.formData, ongoing }
+    this.setState(prevState => ({
+      formData: { ...prevState.formData, ongoing },
     }));
   }
 
@@ -227,17 +228,19 @@ class ActionSettingsContainer extends Component {
   }
 
   render() {
-    const { defaultErrorText, renderStepActions, shiftSubmit, profileSubmit, settingsSubmit } = this;
+    const {
+      defaultErrorText, renderStepActions, shiftSubmit, profileSubmit, settingsSubmit,
+    } = this;
     const { formData, stepIndex } = this.state;
     const { campaign, activities } = this.props;
 
-    const activityDetails = formData.activities.map(activity => {
+    const activityDetails = formData.activities.map((activity) => {
       const activityMatch = activities.find(a => a.id === activity.id);
       return {
         id: activity.id,
         title: activityMatch.title,
         description: activityMatch.description,
-      }
+      };
     });
 
     const settingsValidators = [
@@ -330,7 +333,7 @@ class ActionSettingsContainer extends Component {
               action={{
                 ...formData,
                 campaign,
-                activities: activityDetails
+                activities: activityDetails,
               }}
               saving={false}
             />
@@ -341,10 +344,8 @@ class ActionSettingsContainer extends Component {
   }
 }
 
-export default compose(
-  graphql(ActivitiesQuery, {
-    props: ({ data }) => ({
-      activities: !data.loading && data.activities ? data.activities : [],
-    }),
-  })
-)(ActionSettingsContainer);
+export default compose(graphql(ActivitiesQuery, {
+  props: ({ data }) => ({
+    activities: !data.loading && data.activities ? data.activities : [],
+  }),
+}))(ActionSettingsContainer);

@@ -55,7 +55,7 @@ class ActionSignupModal extends Component {
 
   toggleCheck = (shift) => {
     const shifts = [...this.state.shifts];
-    for (let s of shifts) {
+    for (const s of shifts) {
       if (isEqual(s, shift)) {
         s.selected = !s.selected;
       }
@@ -66,7 +66,7 @@ class ActionSignupModal extends Component {
 
   selectShifts = () => {
     if (this.state.shifts.filter(s => s.selected).length) {
-      this.setState({ page: 1});
+      this.setState({ page: 1 });
     } else {
       this.props.dispatch(notify('Please select at least one shift'));
     }
@@ -103,14 +103,15 @@ class ActionSignupModal extends Component {
   render() {
     const { action, modalOpen, userObject } = this.props;
     const { shifts, page, agreeToShare } = this.state;
-    const { toggleCheck, selectShifts, confirmSignup, formatShiftLine } = this;
+    const {
+      toggleCheck, selectShifts, confirmSignup, formatShiftLine,
+    } = this;
 
     switch (page) {
       case 0: {
-
         const shiftsList = shifts.map((shift) => {
           const timeDisplay = formatShiftLine(shift);
-          
+
           return (
             <div key={JSON.stringify(shift)}>
               <Checkbox
@@ -142,7 +143,7 @@ class ActionSignupModal extends Component {
             { !action.ongoing && (
               <div>
                 <div>Shifts selected</div>
-                { shifts.map((shift) => (
+                { shifts.map(shift => (
                   <div key={JSON.stringify(shift)}>
                     { formatShiftLine(shift) }
                   </div>
@@ -177,7 +178,7 @@ class ActionSignupModal extends Component {
               Thank you so much for signing up. Saved events will show up
               in your profile so you can easily view them later.
             </div>
-            <Link 
+            <Link
               to="/volunteer/opportunity-commitments"
               useAhref={false}
             >

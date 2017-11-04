@@ -76,15 +76,15 @@ class SignupRegisterLogin extends React.Component {
           </div>
         )}
 
-      { signupModalOpen &&
-        <Dialog
-          modal={false}
-          open={signupModalOpen}
-          onRequestClose={() => dispatch(closedModal())}
-        >
-          <ActionSignupModal />
-        </Dialog>
-      }
+        { signupModalOpen &&
+          <Dialog
+            modal={false}
+            open={signupModalOpen}
+            onRequestClose={() => dispatch(closedModal())}
+          >
+            <ActionSignupModal />
+          </Dialog>
+        }
 
       </div>
     );

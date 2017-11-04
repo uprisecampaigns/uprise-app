@@ -34,9 +34,7 @@ class ActionProfile extends PureComponent {
       } = this.props;
 
       // Just camel-casing property keys
-      const action = Object.assign(...Object.keys(this.props.action).map((k) => {
-        return { [camelCase(k)]: this.props.action[k] };
-      }));
+      const action = Object.assign(...Object.keys(this.props.action).map(k => ({ [camelCase(k)]: this.props.action[k] })));
 
       const activities = (Array.isArray(action.activities) && action.activities.length) ?
         action.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.detailLine}>{activity.description}</div>) :
@@ -118,7 +116,7 @@ class ActionProfile extends PureComponent {
                   <div className={s.actionSubheader}>{action.campaign.title}</div>
                 </Link>
               </div>
-              <SignupRegisterLogin 
+              <SignupRegisterLogin
                 className={s.desktopSignupRegisterLogin}
                 action={action}
                 handleSignup={signup}

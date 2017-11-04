@@ -74,7 +74,6 @@ class RegisterLogin extends Component {
         page: 1,
       });
     } else {
-
       this.props.dispatch(attemptLogin({
         email: data.email,
         password: data.password,
@@ -88,7 +87,7 @@ class RegisterLogin extends Component {
 
   setFormType = (formType) => {
     this.setState({
-      formType
+      formType,
     });
   }
 

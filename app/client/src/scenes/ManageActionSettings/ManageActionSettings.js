@@ -80,7 +80,7 @@ class ManageActionSettings extends Component {
 
           <div className={s.pageSubHeader}>Settings</div>
 
-          <ActionSettingsContainer 
+          <ActionSettingsContainer
             submit={editAction}
             action={action}
             campaign={campaign}

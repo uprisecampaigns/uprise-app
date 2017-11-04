@@ -143,5 +143,5 @@ export default compose(
     props: ({ data }) => ({
       activities: !data.loading && data.activities ? data.activities : [],
     }),
-  })
+  }),
 )(ActionProfileForm);

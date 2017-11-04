@@ -160,7 +160,7 @@ class ShiftScheduler extends Component {
     const newTime = date.hour(mTime.hour()).minute(mTime.minute());
 
     newShifts[dateIndex].shifts[shiftIndex][type] = newTime.toDate();
-    newShifts[dateIndex].shifts[shiftIndex][type + 'Error'] = null;
+    newShifts[dateIndex].shifts[shiftIndex][`${type}Error`] = null;
 
     this.setState({ shiftDates: newShifts });
   }
@@ -176,7 +176,9 @@ class ShiftScheduler extends Component {
 
   render() {
     const { shiftDates } = this.state;
-    const { formSubmit, addShift, addDate, changeDate, changeShift, removeShift, removeDate } = this;
+    const {
+      formSubmit, addShift, addDate, changeDate, changeShift, removeShift, removeDate,
+    } = this;
 
     const formatDate = date => moment(date).format('M/D/YYYY');
 
@@ -210,7 +212,8 @@ class ShiftScheduler extends Component {
             <div
               onTouchTap={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
               className={s.touchIcon}
-            >Remove Shift</div>
+            >Remove Shift
+            </div>
           )}
 
         </div>
@@ -233,13 +236,15 @@ class ShiftScheduler extends Component {
           <div
             onTouchTap={(event) => { event.preventDefault(); addShift(dateIndex); }}
             className={s.touchIcon}
-          >Add Shift</div>
+          >Add Shift
+          </div>
 
           { dateIndex > 0 && (
             <div
               onTouchTap={(event) => { event.preventDefault(); removeDate(dateIndex); }}
               className={s.touchIcon}
-            >Remove Date</div>
+            >Remove Date
+            </div>
           )}
         </div>
       );
@@ -259,7 +264,8 @@ class ShiftScheduler extends Component {
               <div
                 onTouchTap={(event) => { event.preventDefault(); addDate(); }}
                 className={s.touchIcon}
-              >Add Date</div>
+              >Add Date
+              </div>
             </form>
           </div>
         </div>
