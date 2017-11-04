@@ -20,7 +20,7 @@ export default (WrappedComponent) => {
           },
         });
       } catch (e) {
-        throw new Error(`Problem loading libraries: e.message`);
+        throw new Error(`Problem loading libraries: ${e.message}`);
       }
     }
 
