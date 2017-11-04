@@ -156,6 +156,9 @@ function Header(props) {
         <div
           className={s.menuIconContainer}
           onClick={props.handleDrawerToggle}
+          onKeyPress={props.handleDrawerToggle}
+          role="button"
+          tabIndex="0"
         >
           <Menu />
         </div>
