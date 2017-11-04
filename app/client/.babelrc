@@ -1,6 +1,6 @@
 {
-  presets: ['es2015', 'stage-3'],
-  plugins: ['transform-runtime', 'transform-class-properties'],
+  presets: ['es2015', 'react', 'stage-3'],
+  plugins: ['dynamic-import-node', 'transform-runtime', 'transform-class-properties'],
   env: {
     test: {
       presets: ['es2015', 'react', 'stage-3'],
