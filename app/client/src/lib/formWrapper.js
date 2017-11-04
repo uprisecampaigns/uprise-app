@@ -135,9 +135,12 @@ export default (WrappedComponent) => {
       this.hasErrors = false;
       this.resetErrorText();
 
+      const results = [];
+      // eslint-disable-next-line no-restricted-syntax
       for (const validator of this.props.validators) {
-        await validator(this);
+        results.push(validator(this));
       }
+      await Promise.all(results);
 
       const notifyError = (message) => {
         this.props.dispatch(notify(message ||
