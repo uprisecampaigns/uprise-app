@@ -7,7 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 
-import timeWithZone from 'lib/timeWithZone';
+import withTimeWithZone from 'lib/withTimeWithZone';
 import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
@@ -24,12 +24,13 @@ class ActionProfile extends PureComponent {
     signup: PropTypes.func.isRequired,
     cancelSignup: PropTypes.func.isRequired,
     saving: PropTypes.bool.isRequired,
+    timeWithZone: PropTypes.func.isRequired,
   }
 
   render() {
     if (this.props.action) {
       const {
-        saving, signup, cancelSignup,
+        saving, signup, cancelSignup, timeWithZone,
       } = this.props;
 
       // Just camel-casing property keys
@@ -119,8 +120,7 @@ class ActionProfile extends PureComponent {
               </div>
               <SignupRegisterLogin 
                 className={s.desktopSignupRegisterLogin}
-                attending={action.attending}
-                shifts={action.shifts}
+                action={action}
                 handleSignup={signup}
               />
             </div>
@@ -256,4 +256,4 @@ class ActionProfile extends PureComponent {
   }
 }
 
-export default ActionProfile;
+export default withTimeWithZone(ActionProfile);
