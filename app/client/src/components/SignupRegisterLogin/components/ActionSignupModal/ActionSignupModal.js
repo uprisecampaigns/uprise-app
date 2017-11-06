@@ -38,7 +38,11 @@ export class ActionSignupModal extends Component {
     const startingPage = action.ongoing ? 1 : 0;
     const shifts = Array.isArray(action.shifts) ? [...action.shifts] : [];
 
-    if (action.startTime && moment(action.startTime).isValid() && action.endTime && moment(action.endTime).isValid()) {
+    if (shifts.length === 0 &&
+      action.startTime &&
+      moment(action.startTime).isValid() &&
+      action.endTime &&
+      moment(action.endTime).isValid()) {
       shifts.push({
         start: action.startTime,
         end: action.endTime,
@@ -52,11 +56,19 @@ export class ActionSignupModal extends Component {
     };
   }
 
+  mapShift = shift => ({
+    id: shift.id,
+    start: shift.start,
+    end: shift.end,
+    selected: shift.selected,
+  })
+
   toggleCheck = (shift) => {
-    const shifts = [...this.state.shifts];
+    const shifts = [...this.state.shifts].map(this.mapShift);
+
     // eslint-disable-next-line no-restricted-syntax
     for (const s of shifts) {
-      if (isEqual(s, shift)) {
+      if (isEqual(s, this.mapShift(shift))) {
         s.selected = !s.selected;
       }
     }
