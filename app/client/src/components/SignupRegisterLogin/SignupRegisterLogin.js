@@ -6,8 +6,8 @@ import FlatButton from 'material-ui/FlatButton';
 
 import { pressedSignup, closedModal } from 'actions/ActionSignupActions';
 
-import RegisterLogin from './components/RegisterLogin';
-import ActionSignupModal from './components/ActionSignupModal';
+import ConnectedRegisterLogin from './components/RegisterLogin';
+import ConnectedActionSignupModal from './components/ActionSignupModal';
 
 import s from './SignupRegisterLogin.scss';
 
@@ -60,7 +60,7 @@ class SignupRegisterLogin extends React.PureComponent {
         ) : (
           <div className={s.header}>
             Register or login to volunteer for this
-            <RegisterLogin />
+            <ConnectedRegisterLogin />
           </div>
         )}
 
@@ -70,7 +70,7 @@ class SignupRegisterLogin extends React.PureComponent {
             open={signupModalOpen}
             onRequestClose={() => dispatch(closedModal())}
           >
-            <ActionSignupModal />
+            <ConnectedActionSignupModal />
           </Dialog>
         }
 
