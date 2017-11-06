@@ -90,6 +90,7 @@ export class ActionSignupModal extends Component {
         await this.props.signup({
           variables: {
             actionId: this.props.action.id,
+            shifts: this.state.shifts.filter(s => s.selected).map(s => ({ id: s.id, start: s.start, end: s.end })),
           },
           // TODO: decide between refetch and update
           refetchQueries: ['ActionCommitmentsQuery', 'SignedUpVolunteersQuery', 'ActionQuery'],

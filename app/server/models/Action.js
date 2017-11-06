@@ -110,17 +110,41 @@ class Action {
     }
   }
 
-  static async signup({ userId, actionId }) {
-    if (await this.attending({ userId, actionId })) {
-      return await Action.findOne({ id: actionId });
-    }
-    const result = await db('action_signups')
-      .insert({
-        user_id: userId,
-        action_id: actionId,
+  static async signup({ userId, actionId, shifts }) {
+    const action = await Action.findOne({ id: actionId });
+
+    if (action.ongoing) {
+      if (await this.attending({ userId, actionId })) {
+        return action;
+      }
+
+      await db('action_signups')
+        .insert({
+          user_id: userId,
+          action_id: actionId,
+        });
+
+    } else {
+      if (!shifts || !shifts.length) {
+        throw new Error(`No shifts provided to signup for and action is not ongoing`);
+      }
+
+      const shiftSignups = [];
+      shifts.forEach((shift) => {
+        if (typeof shift.id !== 'string') {
+          throw new Error(`Shift must have id`);
+        }
+
+        shiftSignups.push(db('shift_signups').insert({
+          shift_id: shift.id,
+          user_id: userId,
+        }));
       });
 
-    return await Action.findOne({ id: actionId });
+      await Promise.all(shiftSignups);
+    }
+
+    return action;
   }
 
   static async cancelSignup({ userId, actionId }) {

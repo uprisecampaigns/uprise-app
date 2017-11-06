@@ -150,7 +150,12 @@ module.exports = {
 
     const { user } = context;
 
-    const action = await Action.signup({ userId: user.id, actionId: options.actionId });
+    const action = await Action.signup({
+      userId: user.id,
+      actionId: options.actionId,
+      shifts: options.shifts,
+    });
+
     action.attending = await Action.attending({ actionId: action.id, userId: user.id });
 
     let actionCoordinator;

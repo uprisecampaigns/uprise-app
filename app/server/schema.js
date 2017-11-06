@@ -318,7 +318,7 @@ module.exports = buildSchema(`
     createAction(data: CreateActionInput): ActionResult
     createActions(data: [CreateActionInput]): [ActionResult]
     editAction(data: EditActionInput): ActionResult
-    actionSignup(actionId: String!): ActionResult
+    actionSignup(actionId: String!, shifts: [ShiftInput]): ActionResult
     cancelActionSignup(actionId: String!): ActionResult
     campaignSubscription(campaignId: String!): CampaignResult
     cancelCampaignSubscription(campaignId: String!): CampaignResult
