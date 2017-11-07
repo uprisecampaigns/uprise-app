@@ -31,19 +31,45 @@ const createShifts = async (shifts, actionId) => {
 
 const updateShifts = async (shifts, actionId) => {
   const shiftResults = [];
-  console.log(shifts);
-  for (const shift of shifts) {
-    if (typeof shift.id === 'string') {
-      await db('shifts')
-        .where('id', shift.id)
-        .delete();
+  const shiftDeletes = [];
+  const shiftInserts = [];
+
+  await db('shifts').where('action_id', actionId).del();
+
+  shifts.forEach((shift) => {
+    shift.action_id = actionId;
+    shiftInserts.push(db('shifts').insert(shift, 'id', 'start', 'end'));
+  });
+
+  return await Promise.all(shiftInserts);
+}
+
+const insertShifts = async ({ shifts, userId }) => {
+  const shiftSignupInserts = [];
+  shifts.forEach((shift) => {
+    if (typeof shift.id !== 'string') {
+      throw new Error(`Shift must have id`);
     }
 
-    shift.action_id = actionId;
-    shiftResults.push(await db('shifts').insert(shift, 'id', 'start', 'end'));
-  }
+    shiftSignupInserts.push(db('shift_signups').insert({
+      shift_id: shift.id,
+      user_id: userId,
+    }));
+  });
 
-  return shiftResults;
+  await Promise.all(shiftSignupInserts);
+}
+
+const removeShifts = async ({ actionId, userId }) => {
+  const currentShifts = await db('shift_signups')
+    .join('shifts', 'shifts.id', '=', 'shift_signups.shift_id')
+    .select('shift_signups.id as id')
+    .where('shift_signups.user_id', '=', userId)
+    .andWhere('shifts.action_id', '=', actionId);
+
+  const currentShiftIds = currentShifts.map(s => s.id);
+
+  await db('shift_signups').whereIn('id', currentShiftIds).del();
 }
 
 class Action {
@@ -104,12 +130,27 @@ class Action {
       });
 
     if (signup.length > 1) {
-      throw new Error(`More than one signup for user with id: ${userId}for action with id: ${actionId}`);
+      throw new Error(`More than one role signup for user with id: ${userId}for action with id: ${actionId}`);
+    } else if (signup.length == 1) {
+      return true;
     } else {
-      return signup.length === 1;
+      const signedUpShifts = await Action.signedUpShifts({ userId, actionId });
+      return signedUpShifts.length > 0;
     }
   }
 
+  static async signedUpShifts({ userId, actionId }) {
+    return await db('shift_signups')
+      .innerJoin('shifts', 'shifts.id', '=', 'shift_signups.shift_id')
+      .select(['shifts.action_id as action_id', 'shifts.id as id',
+        'shifts.start as start', 'shifts.end as end',
+        'shift_signups.user_id as user_id'])
+      .where('user_id', userId)
+      .andWhere('action_id', actionId);
+  }
+
+  // If action is not ongoing, shifts passed in here will over-write any previously
+  // signed up shifts
   static async signup({ userId, actionId, shifts }) {
     const action = await Action.findOne({ id: actionId });
 
@@ -129,36 +170,41 @@ class Action {
         throw new Error(`No shifts provided to signup for and action is not ongoing`);
       }
 
-      const shiftSignups = [];
-      shifts.forEach((shift) => {
-        if (typeof shift.id !== 'string') {
-          throw new Error(`Shift must have id`);
-        }
-
-        shiftSignups.push(db('shift_signups').insert({
-          shift_id: shift.id,
-          user_id: userId,
-        }));
-      });
-
-      await Promise.all(shiftSignups);
+      await removeShifts({ actionId, userId });
+      await insertShifts({ userId, shifts });
     }
 
     return action;
   }
 
-  static async cancelSignup({ userId, actionId }) {
-    if (!await this.attending({ userId, actionId })) {
-      return await Action.findOne({ id: actionId });
+  static async changeShifts({ userId, actionId, newShifts }) {
+    const action = await Action.findOne({ id: actionId });
+    if (action.ongoing) {
+      throw new Error('Action is ongoing and can\'t have shift signups');
     }
-    const result = await db('action_signups')
+
+    await removeShifts({ actionId, userId });
+    await insertShifts({ userId, shifts });
+
+    return action;
+  }
+
+  static async cancelSignup({ userId, actionId }) {
+    const action = await Action.findOne({ id: actionId });
+    if (!await this.attending({ userId, actionId })) {
+      return action;
+    }
+
+    await db('action_signups')
       .where({
         user_id: userId,
         action_id: actionId,
       })
       .del();
 
-    return await Action.findOne({ id: actionId });
+    await removeShifts({ actionId, userId });
+
+    return action;
   }
 
   static async signedUpVolunteers({ actionId }) {

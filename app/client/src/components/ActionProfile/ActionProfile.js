@@ -119,7 +119,6 @@ class ActionProfile extends PureComponent {
               <SignupRegisterLogin
                 className={s.desktopSignupRegisterLogin}
                 action={action}
-                handleSignup={signup}
               />
             </div>
 

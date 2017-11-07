@@ -74,6 +74,7 @@ module.exports = buildSchema(`
     virtual: Boolean
     ongoing: Boolean
     attending: Boolean
+    signed_up_shifts: [ShiftResult]
     is_owner: Boolean
     location_name: String
     street_address: String

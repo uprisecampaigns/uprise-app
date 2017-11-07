@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
-import moment from 'moment';
 import camelCase from 'camelcase';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -38,6 +37,7 @@ class ActionSettingsContainer extends Component {
     type: PropTypes.string.isRequired,
     campaign: PropTypes.object.isRequired,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+    graphqlLoading: PropTypes.bool.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     action: PropTypes.object,
   }
@@ -122,16 +122,6 @@ class ActionSettingsContainer extends Component {
         return undefined;
       }));
 
-      const shifts = [...action.shifts];
-      if (action.startTime && moment(action.startTime).isValid() && action.endTime && moment(action.endTime).isValid()) {
-        shifts.push({
-          start: action.startTime,
-          end: action.endTime,
-        });
-      }
-
-      action.shifts = [...action.shifts, ...shifts];
-
       Object.keys(action).forEach((k) => {
         if (!Object.keys(ActionSettingsContainer.defaultProps.action).includes(camelCase(k))) {
           delete action[k];
@@ -149,7 +139,6 @@ class ActionSettingsContainer extends Component {
     this.setState({ formData, stepIndex: 1 });
   }
 
-
   profileSubmit = async (data) => {
     const formData = { ...this.state.formData, ...data };
 
@@ -159,14 +148,6 @@ class ActionSettingsContainer extends Component {
       success: true,
       message: false,
     };
-  }
-
-  submit = () => {
-    // this.setState({
-    //   formData: { ...data },
-    // });
-
-    // this.props.submit(data);
   }
 
   handlePrev = () => {
@@ -226,15 +207,22 @@ class ActionSettingsContainer extends Component {
       defaultErrorText, renderStepActions, shiftSubmit, profileSubmit, settingsSubmit,
     } = this;
     const { formData, stepIndex } = this.state;
-    const { campaign, activities } = this.props;
+    const { campaign, activities, graphqlLoading } = this.props;
+
+    if (graphqlLoading) {
+      return null;
+    }
 
     const activityDetails = formData.activities.map((activity) => {
       const activityMatch = activities.find(a => a.id === activity.id);
-      return {
-        id: activity.id,
-        title: activityMatch.title,
-        description: activityMatch.description,
-      };
+      if (activityMatch) {
+        return {
+          id: activity.id,
+          title: activityMatch.title,
+          description: activityMatch.description,
+        };
+      }
+      return undefined;
     });
 
     const settingsValidators = [
@@ -341,5 +329,6 @@ class ActionSettingsContainer extends Component {
 export default compose(graphql(ActivitiesQuery, {
   props: ({ data }) => ({
     activities: !data.loading && data.activities ? data.activities : [],
+    graphqlLoading: data.loading,
   }),
 }))(ActionSettingsContainer);

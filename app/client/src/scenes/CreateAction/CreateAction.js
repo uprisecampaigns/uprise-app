@@ -2,13 +2,16 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import history from 'history';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import FontIcon from 'material-ui/FontIcon';
 
 import Link from 'components/Link';
 import ActionSettingsContainer from 'components/ActionSettingsContainer';
+
+import { notify } from 'actions/NotificationsActions';
+
+import history from 'lib/history';
 
 import CreateActionMutation from 'schemas/mutations/CreateActionMutation.graphql';
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
@@ -19,6 +22,7 @@ import s from 'styles/Organize.scss';
 class CreateAction extends Component {
   static propTypes = {
     campaign: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
     createActionMutation: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
@@ -51,14 +55,16 @@ class CreateAction extends Component {
         },
         refetchQueries: ['SearchActionsQuery'],
       });
+
+      this.props.dispatch(notify('Opportunity successfully created'));
+
       this.setState({
         modalOpen: true,
         newAction: results.data.createAction,
       });
-      return { success: true, message: 'Opportunity Created' };
     } catch (e) {
       console.error(e);
-      return { success: false, message: e.message };
+      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
     }
   }
 

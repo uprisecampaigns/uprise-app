@@ -9,6 +9,11 @@ fragment ActionBasicInfo on ActionResult {
   ongoing
   virtual
   attending
+  signed_up_shifts {
+    id
+    start
+    end
+  }
   is_owner
   location_name
   street_address

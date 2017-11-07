@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
-import moment from 'moment';
 import isEqual from 'lodash.isequal';
 import Checkbox from 'material-ui/Checkbox';
 import FlatButton from 'material-ui/FlatButton';
@@ -12,9 +11,11 @@ import Link from 'components/Link';
 import withTimeWithZone from 'lib/withTimeWithZone';
 
 import { notify } from 'actions/NotificationsActions';
+import { closedModal } from 'actions/ActionSignupActions';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 import ActionSignupMutation from 'schemas/mutations/ActionSignupMutation.graphql';
+import CancelActionSignupMutation from 'schemas/mutations/CancelActionSignupMutation.graphql';
 
 
 export class ActionSignupModal extends Component {
@@ -24,6 +25,7 @@ export class ActionSignupModal extends Component {
     timeWithZone: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     signup: PropTypes.func.isRequired,
+    cancelAttendance: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -36,16 +38,11 @@ export class ActionSignupModal extends Component {
     const { action } = props;
 
     const startingPage = action.ongoing ? 1 : 0;
-    const shifts = Array.isArray(action.shifts) ? [...action.shifts] : [];
+    const shifts = Array.isArray(action.shifts) ? [...action.shifts].map(this.mapShift) : [];
 
-    if (shifts.length === 0 &&
-      action.startTime &&
-      moment(action.startTime).isValid() &&
-      action.endTime &&
-      moment(action.endTime).isValid()) {
-      shifts.push({
-        start: action.startTime,
-        end: action.endTime,
+    if (Array.isArray(action.signedUpShifts)) {
+      action.signedUpShifts.forEach((signedUpShift) => {
+        shifts.find(s => s.id === signedUpShift.id).selected = true;
       });
     }
 
@@ -53,6 +50,7 @@ export class ActionSignupModal extends Component {
       agreeToShare: false,
       page: startingPage,
       shifts,
+      attending: action.attending,
     };
   }
 
@@ -107,17 +105,39 @@ export class ActionSignupModal extends Component {
     }
   }
 
+  cancelAttendance = async () => {
+    try {
+      await this.props.cancelAttendance({
+        variables: {
+          actionId: this.props.action.id,
+        },
+        // TODO: decide between refetch and update
+        refetchQueries: ['ActionCommitmentsQuery', 'SignedUpVolunteersQuery', 'ActionQuery'],
+      });
+
+      this.setState({ page: 2 });
+    } catch (e) {
+      console.error(e);
+      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+    }
+  }
+
   formatShiftLine = (shift) => {
     const { action, timeWithZone } = this.props;
 
-    return `${timeWithZone(shift.start, action.zipcode, 'MMM ddd, Do h:mm')} - ${timeWithZone(shift.end, action.zipcode, 'h:mm a z')}`;
+    return `${timeWithZone(shift.start, action.zipcode, 'ddd MMM Do: h:mm')} - ${timeWithZone(shift.end, action.zipcode, 'h:mm a z')}`;
   }
 
   render() {
     const { action, userObject } = this.props;
-    const { shifts, page, agreeToShare } = this.state;
+
     const {
-      toggleCheck, selectShifts, confirmSignup, formatShiftLine,
+      shifts, page,
+      agreeToShare, attending,
+    } = this.state;
+
+    const {
+      toggleCheck, selectShifts, confirmSignup, formatShiftLine, cancelAttendance,
     } = this;
 
     switch (page) {
@@ -140,6 +160,12 @@ export class ActionSignupModal extends Component {
           <div>
             <div>Select Shifts</div>
             { shiftsList }
+            { attending &&
+              <FlatButton
+                label="I can no longer attend this"
+                onClick={cancelAttendance}
+              />
+            }
             <FlatButton
               label="Continue"
               onClick={selectShifts}
@@ -151,12 +177,18 @@ export class ActionSignupModal extends Component {
       case 1: {
         return (
           <div>
-            <div>Almost there!</div>
+            { attending ? (
+              <div>Confirm Changes</div>
+            ) : (
+              <div>Almost there!</div>
+            )}
+
             <div>{ action.title }</div>
+
             { !action.ongoing && (
               <div>
                 <div>Shifts selected</div>
-                { shifts.map(shift => (
+                { shifts.filter(s => s.selected).map(shift => (
                   <div key={JSON.stringify(shift)}>
                     { formatShiftLine(shift) }
                   </div>
@@ -184,6 +216,21 @@ export class ActionSignupModal extends Component {
       }
 
       case 2: {
+        if (attending) {
+          return (
+            <div>
+              <div>Your scheduled shifts have been successfully changed.</div>
+              <div>
+                Lorem Ipsum
+              </div>
+              <FlatButton
+                label="Done"
+                onClick={e => this.props.dispatch(closedModal())}
+              />
+            </div>
+          );
+        }
+
         return (
           <div>
             <div>You&apos;ve been signed up</div>
@@ -231,4 +278,5 @@ export default compose(
   connect(mapStateToProps),
   withMeQuery,
   graphql(ActionSignupMutation, { name: 'signup' }),
+  graphql(CancelActionSignupMutation, { name: 'cancelAttendance' }),
 )(ActionSignupModal);

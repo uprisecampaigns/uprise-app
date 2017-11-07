@@ -35,6 +35,7 @@ module.exports = {
 
     // TODO: This is repeated in a bunch of places and should be DRYed
     action.attending = (context.user) ? await Action.attending({ actionId: action.id, userId: context.user.id }) : false;
+    action.signed_up_shifts = (context.user) ? await Action.signedUpShifts({ actionId: action.id, userId: context.user.id }) : [];
 
     action.is_owner = (context.user) ? await User.ownsObject({ user: context.user, object: action }) : false;
 
@@ -143,6 +144,8 @@ module.exports = {
     return volunteers;
   },
 
+  // If action is not ongoing, shifts passed in here will over-write any previously
+  // signed up shifts
   actionSignup: async (options, context) => {
     if (!context.user) {
       throw new Error('User must be logged in');
@@ -157,6 +160,7 @@ module.exports = {
     });
 
     action.attending = await Action.attending({ actionId: action.id, userId: user.id });
+    action.signed_up_shifts = await Action.signedUpShifts({ actionId: action.id, userId: user.id });
 
     let actionCoordinator;
     let campaign;
@@ -211,6 +215,7 @@ module.exports = {
 
     const action = await Action.cancelSignup({ userId: context.user.id, actionId: options.actionId });
     action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
+    action.signed_up_shifts = await Action.signedUpShifts({ actionId: action.id, userId: context.user.id });
 
     return action;
   },

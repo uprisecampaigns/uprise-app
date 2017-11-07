@@ -36,7 +36,28 @@ class SignupRegisterLogin extends React.PureComponent {
         { loggedIn ? (
           <div>
             { action.attending ? (
-              <div>Change your...</div>
+              <div>
+                <div>You&apos;ve signed up to volunteer for this event!</div>
+                <div>
+                  We understand things come up and you may need to make
+                  changes to your schedule.
+                </div>
+                { action.ongoing ? (
+                  <div>
+                    <FlatButton
+                      label="Cancel my comittment"
+                      onClick={event => dispatch(pressedSignup(action))}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <FlatButton
+                      label="Edit my Shifts"
+                      onClick={event => dispatch(pressedSignup(action))}
+                    />
+                  </div>
+                )}
+              </div>
             ) : (
               <div>
                 { action.ongoing ? (

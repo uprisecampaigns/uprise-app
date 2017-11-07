@@ -7,6 +7,9 @@ import FontIcon from 'material-ui/FontIcon';
 import ActionSettingsContainer from 'components/ActionSettingsContainer';
 import Link from 'components/Link';
 
+import { notify } from 'actions/NotificationsActions';
+
+import history from 'lib/history';
 
 import ActionQuery from 'schemas/queries/ActionQuery.graphql';
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
@@ -20,6 +23,7 @@ class ManageActionSettings extends React.PureComponent {
   static propTypes = {
     action: PropTypes.object,
     campaign: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
     editActionMutation: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     graphqlLoading: PropTypes.bool.isRequired,
@@ -40,7 +44,7 @@ class ManageActionSettings extends React.PureComponent {
     actionData.activities = actionData.activities.map(a => a.id);
 
     try {
-      await this.props.editActionMutation({
+      const results = await this.props.editActionMutation({
         variables: {
           data: actionData,
         },
@@ -48,10 +52,16 @@ class ManageActionSettings extends React.PureComponent {
         refetchQueries: ['ActionQuery', 'SearchActionsQuery'],
       });
 
-      return { success: true, message: 'Changes Saved' };
+      const action = results.data.editAction;
+
+      this.props.dispatch(notify('Opportunity successfully modified'));
+
+      setTimeout(() => {
+        history.push(`/opportunity/${action.slug}`);
+      }, 500);
     } catch (e) {
       console.error(e);
-      return { success: false, message: e.message };
+      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
     }
   }
 
