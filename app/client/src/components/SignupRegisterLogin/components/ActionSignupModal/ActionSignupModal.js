@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
+import moment from 'moment';
 import isEqual from 'lodash.isequal';
 import Checkbox from 'material-ui/Checkbox';
 import FlatButton from 'material-ui/FlatButton';
@@ -142,19 +143,21 @@ export class ActionSignupModal extends Component {
 
     switch (page) {
       case 0: {
-        const shiftsList = shifts.map((shift) => {
-          const timeDisplay = formatShiftLine(shift);
+        const shiftsList = [...shifts]
+          .filter(s => moment(s.start).isAfter(moment()))
+          .map((shift) => {
+            const timeDisplay = formatShiftLine(shift);
 
-          return (
-            <div key={JSON.stringify(shift)}>
-              <Checkbox
-                label={timeDisplay}
-                checked={shift.selected}
-                onCheck={() => toggleCheck(shift)}
-              />
-            </div>
-          );
-        });
+            return (
+              <div key={JSON.stringify(shift)}>
+                <Checkbox
+                  label={timeDisplay}
+                  checked={shift.selected}
+                  onCheck={() => toggleCheck(shift)}
+                />
+              </div>
+            );
+          });
 
         return (
           <div>
