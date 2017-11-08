@@ -69,6 +69,7 @@ class SignupRegisterLogin extends React.PureComponent {
                   </div>
                 ) : (
                   <div>
+                    <div>Volunteer for this Event</div>
                     <FlatButton
                       label="Select shift(s)"
                       onClick={event => dispatch(pressedSignup(action))}

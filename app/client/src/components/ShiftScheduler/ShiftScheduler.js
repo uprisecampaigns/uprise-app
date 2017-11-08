@@ -168,6 +168,13 @@ class ShiftScheduler extends Component {
     newShifts[dateIndex].date = date;
     newShifts[dateIndex].dateError = null;
 
+    const mDate = moment(date);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const shift of newShifts[dateIndex].shifts) {
+      shift.start = moment(shift.start).date(mDate.date()).year(mDate.year()).toDate();
+      shift.end = moment(shift.end).date(mDate.date()).year(mDate.year()).toDate();
+    }
+
     this.setState({ shiftDates: newShifts });
   }
 

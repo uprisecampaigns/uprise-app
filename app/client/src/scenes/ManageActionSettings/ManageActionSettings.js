@@ -85,8 +85,6 @@ class ManageActionSettings extends React.PureComponent {
             </div>
           </Link>
 
-          <div className={s.pageSubHeader}>Settings</div>
-
           <ActionSettingsContainer
             submit={editAction}
             action={action}

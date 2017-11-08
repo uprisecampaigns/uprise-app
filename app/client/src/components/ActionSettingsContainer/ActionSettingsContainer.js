@@ -57,19 +57,19 @@ class ActionSettingsContainer extends Component {
       shifts: [],
       activities: [],
       tags: [],
-      startTime: undefined,
-      endTime: undefined,
     },
   }
 
   constructor(props) {
     super(props);
 
+    const ongoing = (typeof props.action === 'object' && typeof props.action.ongoing === 'boolean') ?
+      props.action.ongoing : (props.type === 'role');
     this.state = {
       stepIndex: 0,
       formData: {
         ...ActionSettingsContainer.defaultProps.action,
-        ongoing: (props.type === 'role'),
+        ongoing,
       },
     };
   }
@@ -108,8 +108,6 @@ class ActionSettingsContainer extends Component {
     stateErrorText: null,
     zipcodeErrorText: null,
     dateErrorText: null,
-    startTimeErrorText: null,
-    endTimeErrorText: null,
   }
 
   handleActionProps = (nextProps) => {

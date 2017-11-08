@@ -2,9 +2,6 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import moment from 'moment-timezone';
 import camelCase from 'camelcase';
-import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 
 import withTimeWithZone from 'lib/withTimeWithZone';
@@ -13,7 +10,6 @@ import itemsSort from 'lib/itemsSort';
 import Link from 'components/Link';
 import KeywordTag from 'components/KeywordTag';
 import SignupRegisterLogin from 'components/SignupRegisterLogin';
-import AddToCalendar from 'components/AddToCalendar';
 
 import s from 'styles/Profile.scss';
 
@@ -21,23 +17,18 @@ import s from 'styles/Profile.scss';
 class ActionProfile extends PureComponent {
   static propTypes = {
     action: PropTypes.object.isRequired,
-    signup: PropTypes.func.isRequired,
-    cancelSignup: PropTypes.func.isRequired,
-    saving: PropTypes.bool.isRequired,
     timeWithZone: PropTypes.func.isRequired,
   }
 
   render() {
     if (this.props.action) {
-      const {
-        saving, signup, cancelSignup, timeWithZone,
-      } = this.props;
+      const { timeWithZone } = this.props;
 
       // Just camel-casing property keys
       const action = Object.assign(...Object.keys(this.props.action).map(k => ({ [camelCase(k)]: this.props.action[k] })));
 
       const activities = (Array.isArray(action.activities) && action.activities.length) ?
-        action.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.detailLine}>{activity.description}</div>) :
+        action.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.activityLine}>{activity.description}</div>) :
         [];
 
       const shiftGroups = (Array.isArray(action.shifts) && action.shifts.length) ?
@@ -63,7 +54,7 @@ class ActionProfile extends PureComponent {
         ));
 
         return (
-          <div key={JSON.stringify(shiftGroup)} className={s.detailLine}>
+          <div key={JSON.stringify(shiftGroup)} className={s.shiftDateGroup}>
             {dateString}:
             <div>
               {shiftLines}
@@ -73,7 +64,7 @@ class ActionProfile extends PureComponent {
       });
 
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
-        <div className={s.detailLine}>
+        <div className={s.keywordLine}>
           {action.tags.map((tag, index) => (
             <KeywordTag
               label={tag}
@@ -84,13 +75,6 @@ class ActionProfile extends PureComponent {
           ))}
         </div>
       ) : null;
-
-
-      const startTime = moment(action.startTime);
-      const endTime = moment(action.endTime);
-
-      const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
-      const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
 
       return (
         <div className={s.outerContainer}>
@@ -122,129 +106,100 @@ class ActionProfile extends PureComponent {
               />
             </div>
 
-            <div className={s.aboutContainer}>
-              <div className={s.aboutTitle}>About this Volunteer Event</div>
-              { (typeof action.description === 'string' && action.description.trim() !== '') &&
-                <div className={s.descriptionText}>{action.description}</div>
-              }
-            </div>
+            <div className={s.alternatingBackgroundsContainer}>
 
-            <div className={s.attendingContainer}>
-              {saving ? (
-                <div className={s.savingThrobberContainer}>
-                  <CircularProgress
-                    size={100}
-                    thickness={5}
-                  />
+              <div className={s.actionDetailsContainer}>
+                <div className={s.actionDetailsTitle}>About this Volunteer Event</div>
+                { (typeof action.description === 'string' && action.description.trim() !== '') &&
+                  <div className={s.actionDetailsContent}>{action.description}</div>
+                }
+
+                <div className={s.detailsNumbersContainer}>
+                  <div className={s.detailsNumbers}>
+                    <div className={s.detailsNumbersHeader}>Keywords</div>
+                    <div className={s.detailsNumbersNumber}>{action.tags.length}</div>
+                  </div>
+
+                  <div className={s.detailsNumbers}>
+                    <div className={s.detailsNumbersHeader}>Miles away</div>
+                    <div className={s.detailsNumbersNumber}>{action.distance}</div>
+                  </div>
                 </div>
-              ) : (
-                <div>
-                  { action.attending ? (
-                    <div>
+              </div>
 
-                      { !action.ongoing && (startTime.isValid() && endTime.isValid()) && (
-                        <AddToCalendar className={s.calendarLinkContainer} event={action}>
-                          <FlatButton
-                            label="Add to Calendar"
-                            secondary
-                            icon={<FontIcon className="material-icons">add_circle_outline</FontIcon>}
-                          />
-                        </AddToCalendar>
-                      )}
+              { (action.locationName || action.streetAddress || (action.city && action.state && action.zipcode)) && (
+                <div className={s.actionDetailsContainer}>
+                  <div className={s.actionDetailsTitle}>
+                    Location
+                  </div>
+                  <div className={s.actionDetailsContent}>
+                    {action.locationName &&
+                      <div>{action.locationName}</div>
+                    }
 
-                      <RaisedButton
-                        onTouchTap={cancelSignup}
-                        primary
-                        label="Cancel attendance"
-                      />
-                    </div>
-                  ) : (
-                    <RaisedButton
-                      onTouchTap={signup}
-                      primary
-                      className={s.primaryButton}
-                      label="Sign up now"
-                    />
-                  )}
+                    {action.streetAddress &&
+                      <div>{action.streetAddress}</div>
+                    }
+
+                    {action.streetAddress2 &&
+                      <div>{action.streetAddress2}</div>
+                    }
+
+                    { (action.city && action.state && action.zipcode) && (
+                      <div>
+                        {action.city}, {action.state} {action.zipcode}
+                      </div>
+                    )}
+
+                    {action.locationNotes &&
+                      <div>{action.locationNotes}</div>
+                    }
+                  </div>
                 </div>
               )}
-            </div>
 
-            { (startTime.isValid() && endTime.isValid()) && (
-              <div>
-                <div className={s.dateTimePlaceContainer}>{startTime.format('ddd, MMM Do, YYYY')}</div>
-                <div className={s.dateTimePlaceContainer}>{startTimeString} - {endTimeString}</div>
-              </div>
-            )}
-
-            { (action.city && action.state) &&
-              <div className={s.dateTimePlaceContainer}>{action.city}, {action.state}</div>
-            }
-            { action.owner && (
-              <div className={s.contactContainer}>
-                Contact Coordinator: {action.owner.firstName} {action.owner.lastName}
-                <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>
-                  {action.owner.email}
-                </Link>
-              </div>
-            )}
-
-            { (action.locationName || action.streetAddress || (action.city && action.state && action.zipcode)) && (
-              <div className={s.locationContainer}>
-                <div className={s.header}>
-                  Location Details
-                </div>
-                {action.locationName &&
-                  <div className={s.detailLine}>{action.locationName}</div>
-                }
-
-                {action.streetAddress &&
-                  <div className={s.detailLine}>{action.streetAddress}</div>
-                }
-
-                {action.streetAddress2 &&
-                  <div className={s.detailLine}>{action.streetAddress2}</div>
-                }
-
-                { (action.city && action.state && action.zipcode) && (
-                  <div className={s.detailLine}>
-                    {action.city}, {action.state} {action.zipcode}
+              { activities.length > 0 && (
+                <div className={s.actionDetailsContainer}>
+                  <div className={s.actionDetailsTitle}>
+                    Activities and Skills Needed:
                   </div>
-                )}
-
-                {action.locationNotes &&
-                  <div className={s.detailLine}>{action.locationNotes}</div>
-                }
-              </div>
-            )}
-
-            { activities.length > 0 && (
-              <div className={s.activitiesContainer}>
-                <div className={s.header}>
-                  Activities and Skills Needed:
+                  <div className={s.actionDetailsContent}>{activities}</div>
                 </div>
-                <div>{activities}</div>
-              </div>
-            )}
+              )}
 
-            { shiftDisplay.length > 0 && (
-              <div className={s.shiftsContainer}>
-                <div className={s.header}>
-                Shift Schedule
+              { keywords && (
+                <div className={s.actionDetailsContainer}>
+                  <div className={s.actionDetailsTitle}>
+                    Keywords:
+                  </div>
+                  <div className={s.actionDetailsContent}>{keywords}</div>
                 </div>
-                <div>{shiftDisplay}</div>
-              </div>
-            )}
+              )}
 
-            { keywords && (
-              <div className={s.keywordsContainer}>
-                <div className={s.header}>
-                  Keywords:
+              { shiftDisplay.length > 0 && (
+                <div className={s.actionDetailsContainer}>
+                  <div className={s.actionDetailsTitle}>
+                  Shift Schedule
+                  </div>
+                  <div className={s.actionDetailsContent}>{shiftDisplay}</div>
                 </div>
-                <div>{keywords}</div>
-              </div>
-            )}
+              )}
 
+              { action.owner && (
+                <div className={s.actionDetailsContainer}>
+                  <div className={s.actionDetailsTitle}>
+                    Get in touch
+                  </div>
+                  <div>{action.owner.first_name} {action.owner.last_name} - Contact Coordinator</div>
+                  <div>
+                    <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>
+                      {action.owner.email}
+                    </Link>
+                  </div>
+                </div>
+              )}
+
+            </div>
           </div>
         </div>
       );
