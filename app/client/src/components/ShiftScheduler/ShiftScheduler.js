@@ -56,6 +56,12 @@ class ShiftScheduler extends Component {
     this.state = { shiftDates };
   }
 
+  componentDidUpdate() {
+    if (this.errorElem) {
+      this.errorElem.scrollIntoView();
+    }
+  }
+
   validate = () => {
     let hasErrors = false;
 
@@ -199,8 +205,11 @@ class ShiftScheduler extends Component {
     const renderDateForm = (shiftDate, dateIndex) => {
       const renderedShifts = shiftDate.shifts.map((shift, shiftIndex) => (
         <div>
-          <div className={s.textFieldContainer}>
-            <div className={s.shiftLabel}>Shift { shiftIndex + 1 }:</div>
+          <div
+            className={s.textFieldContainer}
+            ref={(input) => { if (shift.startError || shift.endError) { this.errorElem = input; } }}
+          >
+            <div className={s.shiftLabel}><span>Shift { shiftIndex + 1 }:</span></div>
             <TimePicker
               floatingLabelText="Start Time"
               value={shift.start}
@@ -232,7 +241,10 @@ class ShiftScheduler extends Component {
 
       return (
         <div>
-          <div className={s.textFieldContainer}>
+          <div
+            className={s.textFieldContainer}
+            ref={(input) => { if (shiftDate.dateError) { this.errorElem = input; } }}
+          >
             <DatePicker
               value={shiftDate.date}
               errorText={shiftDate.dateError}
