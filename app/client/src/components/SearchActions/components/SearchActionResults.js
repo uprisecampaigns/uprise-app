@@ -84,6 +84,9 @@ class SearchActionResults extends Component {
                 <div>Virtual Action</div>
               )}
               { (action.city && action.state) && <div>Place: {action.city}, {action.state}</div> }
+              { action.distance && (
+                <div>{action.distance} miles away</div>
+              )}
             </CardHeader>
           </Card>
         </Link>

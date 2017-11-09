@@ -48,6 +48,11 @@ module.exports = {
   },
 
   actions: async (data, context) => {
+
+    if (context.user && typeof context.user.zipcode === 'string') {
+      data.search.targetZipcode = context.user.zipcode;
+    }
+
     const actions = await Action.search(data.search);
     return actions;
   },
