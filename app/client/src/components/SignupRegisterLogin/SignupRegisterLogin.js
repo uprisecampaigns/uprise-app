@@ -2,14 +2,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
 
 import { pressedSignup, closedModal } from 'actions/ActionSignupActions';
 
 import ConnectedRegisterLogin from './components/RegisterLogin';
 import ConnectedActionSignupModal from './components/ActionSignupModal';
 
-import s from './SignupRegisterLogin.scss';
+import s from 'styles/SignupRegisterLogin.scss';
 
 
 class SignupRegisterLogin extends React.PureComponent {
@@ -34,27 +33,33 @@ class SignupRegisterLogin extends React.PureComponent {
         {...props}
       >
         { loggedIn ? (
-          <div>
+          <div className={s.container}>
             { action.attending ? (
               <div>
-                <div>You&apos;ve signed up to volunteer for this event!</div>
-                <div>
+                <div className={s.header}>You&apos;ve signed up to volunteer for this event!</div>
+                <div className={s.content}>
                   We understand things come up and you may need to make
                   changes to your schedule.
                 </div>
                 { action.ongoing ? (
-                  <div>
-                    <FlatButton
-                      label="Cancel my comittment"
-                      onClick={event => dispatch(pressedSignup(action))}
-                    />
+                  <div
+                    className={s.button}
+                    onClick={event => dispatch(pressedSignup(action))}
+                    onKeyPress={event => dispatch(pressedSignup(action))}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    Cancel my comittment
                   </div>
                 ) : (
-                  <div>
-                    <FlatButton
-                      label="Edit my Shifts"
-                      onClick={event => dispatch(pressedSignup(action))}
-                    />
+                  <div
+                    className={s.button}
+                    onClick={event => dispatch(pressedSignup(action))}
+                    onKeyPress={event => dispatch(pressedSignup(action))}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    Edit my Shifts
                   </div>
                 )}
               </div>
@@ -62,18 +67,28 @@ class SignupRegisterLogin extends React.PureComponent {
               <div>
                 { action.ongoing ? (
                   <div>
-                    <FlatButton
-                      label="Signup"
+                    <div
+                      className={s.button}
                       onClick={event => dispatch(pressedSignup(action))}
-                    />
+                      onKeyPress={event => dispatch(pressedSignup(action))}
+                      role="button"
+                      tabIndex="0"
+                    >
+                      Signup
+                    </div>
                   </div>
                 ) : (
                   <div>
-                    <div>Volunteer for this Event</div>
-                    <FlatButton
-                      label="Select shift(s)"
+                    <div className={s.header}>Volunteer for this Event</div>
+                    <div
+                      className={s.button}
                       onClick={event => dispatch(pressedSignup(action))}
-                    />
+                      onKeyPress={event => dispatch(pressedSignup(action))}
+                      role="button"
+                      tabIndex="0"
+                    >
+                      Select shift(s)
+                    </div>
                   </div>
                 )}
               </div>

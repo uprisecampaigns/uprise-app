@@ -5,7 +5,7 @@ import { compose, graphql } from 'react-apollo';
 import moment from 'moment';
 import isEqual from 'lodash.isequal';
 import Checkbox from 'material-ui/Checkbox';
-import FlatButton from 'material-ui/FlatButton';
+import Divider from 'material-ui/Divider';
 
 import Link from 'components/Link';
 
@@ -17,6 +17,8 @@ import { closedModal } from 'actions/ActionSignupActions';
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 import ActionSignupMutation from 'schemas/mutations/ActionSignupMutation.graphql';
 import CancelActionSignupMutation from 'schemas/mutations/CancelActionSignupMutation.graphql';
+
+import s from 'styles/SignupRegisterLogin.scss';
 
 
 export class ActionSignupModal extends Component {
@@ -43,7 +45,7 @@ export class ActionSignupModal extends Component {
 
     if (Array.isArray(action.signedUpShifts)) {
       action.signedUpShifts.forEach((signedUpShift) => {
-        shifts.find(s => s.id === signedUpShift.id).selected = true;
+        shifts.find(shift => shift.id === signedUpShift.id).selected = true;
       });
     }
 
@@ -62,13 +64,13 @@ export class ActionSignupModal extends Component {
     selected: shift.selected,
   })
 
-  toggleCheck = (shift) => {
+  toggleCheck = (toggleShift) => {
     const shifts = [...this.state.shifts].map(this.mapShift);
 
     // eslint-disable-next-line no-restricted-syntax
-    for (const s of shifts) {
-      if (isEqual(s, this.mapShift(shift))) {
-        s.selected = !s.selected;
+    for (const shift of shifts) {
+      if (isEqual(shift, this.mapShift(toggleShift))) {
+        shift.selected = !shift.selected;
       }
     }
 
@@ -76,7 +78,7 @@ export class ActionSignupModal extends Component {
   }
 
   selectShifts = () => {
-    if (this.state.shifts.filter(s => s.selected).length) {
+    if (this.state.shifts.filter(shift => shift.selected).length) {
       this.setState({ page: 1 });
     } else {
       this.props.dispatch(notify('Please select at least one shift'));
@@ -89,7 +91,7 @@ export class ActionSignupModal extends Component {
         await this.props.signup({
           variables: {
             actionId: this.props.action.id,
-            shifts: this.state.shifts.filter(s => s.selected).map(s => ({ id: s.id, start: s.start, end: s.end })),
+            shifts: this.state.shifts.filter(shift => shift.selected).map(shift => ({ id: shift.id, start: shift.start, end: shift.end })),
           },
           // TODO: decide between refetch and update
           refetchQueries: ['ActionCommitmentsQuery', 'SignedUpVolunteersQuery', 'ActionQuery'],
@@ -144,7 +146,7 @@ export class ActionSignupModal extends Component {
     switch (page) {
       case 0: {
         const shiftsList = [...shifts]
-          .filter(s => moment(s.start).isAfter(moment()))
+          .filter(shift => moment(shift.start).isAfter(moment()))
           .map((shift) => {
             const timeDisplay = formatShiftLine(shift);
 
@@ -154,65 +156,93 @@ export class ActionSignupModal extends Component {
                   label={timeDisplay}
                   checked={shift.selected}
                   onCheck={() => toggleCheck(shift)}
+                  className={s.shiftCheckbox}
                 />
               </div>
             );
           });
 
         return (
-          <div>
-            <div>Select Shifts</div>
+          <div className={s.container}>
+            <div className={s.header}>Select Shifts</div>
+
             { shiftsList }
-            { attending &&
-              <FlatButton
-                label="I can no longer attend this"
-                onClick={cancelAttendance}
-              />
-            }
-            <FlatButton
-              label="Continue"
-              onClick={selectShifts}
-            />
+
+            <Divider />
+
+            <div className={s.buttonContainer}>
+              { attending &&
+                <div
+                  className={s.cancelButton}
+                  onClick={cancelAttendance}
+                  onKeyPress={cancelAttendance}
+                  role="button"
+                  tabIndex="0"
+                >
+                  I can no longer attend this
+                </div>
+              }
+
+              <div
+                className={s.button}
+                onClick={selectShifts}
+                onKeyPress={selectShifts}
+                role="button"
+                tabIndex="0"
+              >
+                Continue
+              </div>
+            </div>
           </div>
         );
       }
 
       case 1: {
         return (
-          <div>
+          <div className={s.container}>
             { attending ? (
-              <div>Confirm Changes</div>
+              <div className={s.header}>Confirm Changes</div>
             ) : (
-              <div>Almost there!</div>
+              <div className={s.header}>Almost there!</div>
             )}
 
-            <div>{ action.title }</div>
+            <div className={s.content}>
+              <div>{ action.title }</div>
 
-            { !action.ongoing && (
-              <div>
-                <div>Shifts selected</div>
-                { shifts.filter(s => s.selected).map(shift => (
-                  <div key={JSON.stringify(shift)}>
-                    { formatShiftLine(shift) }
-                  </div>
-                ))}
-              </div>
-            )}
-            <div>Your Name:</div>
-            <div>{userObject.first_name} {userObject.last_name}</div>
-            <div>Your Email:</div>
-            <div>{userObject.email}</div>
+              { !action.ongoing && (
+                <div>
+                  <div className={s.label}>Shifts selected</div>
+                  { shifts.filter(shift => shift.selected).map(shift => (
+                    <div key={JSON.stringify(shift)}>
+                      { formatShiftLine(shift) }
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className={s.label}>Your Name:</div>
+              <div>{userObject.first_name} {userObject.last_name}</div>
+              <div className={s.label}>Your Email:</div>
+              <div>{userObject.email}</div>
+            </div>
+
+            <Divider />
 
             <Checkbox
               label="Share my contact details with the campaign manager"
               checked={agreeToShare}
               onCheck={() => this.setState({ agreeToShare: !agreeToShare })}
+              className={s.checkbox}
             />
 
-            <FlatButton
-              label="Sign up now"
+            <div
+              className={s.button}
               onClick={confirmSignup}
-            />
+              onKeyPress={confirmSignup}
+              role="button"
+              tabIndex="0"
+            >
+              Sign up now
+            </div>
 
           </div>
         );
@@ -221,33 +251,45 @@ export class ActionSignupModal extends Component {
       case 2: {
         if (attending) {
           return (
-            <div>
-              <div>Your scheduled shifts have been successfully changed.</div>
-              <div>
+            <div className={s.container}>
+              <div className={s.header}>Your scheduled shifts have been successfully changed.</div>
+              <div className={s.content}>
                 Lorem Ipsum
               </div>
-              <FlatButton
-                label="Done"
+
+              <div
+                className={s.button}
                 onClick={e => this.props.dispatch(closedModal())}
-              />
+                onKeyPress={e => this.props.dispatch(closedModal())}
+                role="button"
+                tabIndex="0"
+              >
+                Done
+              </div>
             </div>
           );
         }
 
         return (
-          <div>
-            <div>You&apos;ve been signed up</div>
-            <div>
+          <div className={s.container}>
+            <div className={s.header}>You&apos;ve been signed up</div>
+
+            <div className={s.content}>
               Thank you so much for signing up. Saved events will show up
               in your profile so you can easily view them later.
             </div>
+
+            <Divider />
+
             <Link
               to="/volunteer/opportunity-commitments"
               useAhref={false}
             >
-              <FlatButton
-                label="View Events"
-              />
+              <div
+                className={s.button}
+              >
+                View Events
+              </div>
             </Link>
           </div>
         );
