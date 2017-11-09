@@ -10,10 +10,10 @@ import RemoveCircle from 'material-ui/svg-icons/content/remove-circle';
 import s from 'styles/Form.scss';
 
 
-const blankShift = () => ({
+const blankShift = (date = moment().startOf('day').toDate()) => ({
   id: undefined,
-  start: undefined,
-  end: undefined,
+  start: moment(date).add(12, 'hour').toDate(),
+  end: moment(date).add(16, 'hour').toDate(),
   startError: null,
   endError: null,
 });
@@ -125,7 +125,8 @@ class ShiftScheduler extends Component {
   addDate = () => {
     const newShifts = [...this.state.shiftDates];
 
-    newShifts.push({ date: undefined, dateError: null, shifts: [blankShift()] });
+    const newDate = moment().startOf('day').toDate();
+    newShifts.push({ date: newDate, dateError: null, shifts: [blankShift(newDate)] });
 
     this.setState({ shiftDates: newShifts });
   }
@@ -133,7 +134,9 @@ class ShiftScheduler extends Component {
   addShift = (dateIndex) => {
     const newShifts = [...this.state.shiftDates];
 
-    newShifts[dateIndex].shifts.push(blankShift());
+    const { date } = newShifts[dateIndex];
+
+    newShifts[dateIndex].shifts.push(blankShift(date));
 
     this.setState({ shiftDates: newShifts });
   }
