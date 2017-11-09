@@ -31,6 +31,11 @@ const getFormattedDates = ({ user, action }) => {
 module.exports = {
 
   action: async (data, context) => {
+
+    if (context.user && typeof context.user.zipcode === 'string') {
+      data.search.targetZipcode = context.user.zipcode;
+    }
+
     const action = await Action.findOne(data.search);
 
     // TODO: This is repeated in a bunch of places and should be DRYed

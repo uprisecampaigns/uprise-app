@@ -120,10 +120,12 @@ class ActionProfile extends PureComponent {
                     <div className={s.detailsNumbersNumber}>{action.tags.length}</div>
                   </div>
 
-                  <div className={s.detailsNumbers}>
-                    <div className={s.detailsNumbersHeader}>Miles away</div>
-                    <div className={s.detailsNumbersNumber}>{action.distance}</div>
-                  </div>
+                  { action.distance && (
+                    <div className={s.detailsNumbers}>
+                      <div className={s.detailsNumbersHeader}>Miles away</div>
+                      <div className={s.detailsNumbersNumber}>{action.distance}</div>
+                    </div>
+                  )}
                 </div>
               </div>
 

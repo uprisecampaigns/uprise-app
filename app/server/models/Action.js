@@ -19,6 +19,10 @@ const updateProperties = require('models/updateProperties')('action');
 const config = require('config/config.js');
 
 
+const milesInMeter = 0.000621371192237;
+const defaultTargetZipcode = config.geography.defaultZipcode;
+const distanceQueryString = `round(ST_DISTANCE(zipcodes.location, target_zip.location) * ${milesInMeter})`;
+
 const createShifts = async (shifts, actionId) => {
   const shiftResults = [];
   for (const shift of shifts) {
@@ -73,15 +77,22 @@ const removeShifts = async ({ actionId, userId }) => {
 }
 
 class Action {
-  static async findOne(...args) {
-    const action = await db('actions')
+  static async findOne({ targetZipcode = defaultTargetZipcode, ...args }) {
+
+    const actionQuery = db('actions')
       .select(['id', 'title', 'internal_title', 'slug', 'tags', 'owner_id', 'description', 'campaign_id',
         db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
         db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
+        db.raw(`${distanceQueryString} as distance`),
         'location_name', 'street_address', 'street_address2',
-        'city', 'state', 'zipcode', 'location_notes', 'virtual', 'ongoing'])
-      .where(...args)
+        'city', 'state', 'actions.zipcode as zipcode', 'location_notes', 'virtual', 'ongoing'])
+      .leftOuterJoin('zipcodes', 'zipcodes.postal_code', 'actions.zipcode')
+      .crossJoin(db.raw('(SELECT postal_code, location from zipcodes where postal_code=?) target_zip', targetZipcode))
+      .as('actions')
+      .where(args)
       .first();
+
+    const action = await actionQuery;
 
     Object.assign(action, await this.details(action));
 
@@ -237,15 +248,11 @@ class Action {
 
   static async search(search) {
     const defaultPageLimit = 20;
-    const milesInMeter = 0.000621371192237;
-    const defaultTargetZipcode = config.geography.defaultZipcode;
 
     const targetZipcode = (typeof search.targetZipcode === 'string' && validator.isNumeric(search.targetZipcode) && search.targetZipcode.length === 5) ?
       search.targetZipcode : defaultTargetZipcode;
 
     const timezone = zipcodeToTimezone.lookup(targetZipcode);
-
-    const distanceQueryString = `round(ST_DISTANCE(zipcodes.location, target_zip.location) * ${milesInMeter})`;
 
     const searchQueryWithoutDateFiltering = db.from('actions')
       .select([
