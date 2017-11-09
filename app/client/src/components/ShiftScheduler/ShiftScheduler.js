@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
+import Divider from 'material-ui/Divider';
+import AddCircle from 'material-ui/svg-icons/content/add-circle';
+import RemoveCircle from 'material-ui/svg-icons/content/remove-circle';
 
 import s from 'styles/Form.scss';
 
@@ -194,7 +197,7 @@ class ShiftScheduler extends Component {
       const renderedShifts = shiftDate.shifts.map((shift, shiftIndex) => (
         <div>
           <div className={s.textFieldContainer}>
-            <span>Shift { shiftIndex + 1 }:</span>
+            <div className={s.shiftLabel}>Shift { shiftIndex + 1 }:</div>
             <TimePicker
               floatingLabelText="Start Time"
               value={shift.start}
@@ -216,7 +219,8 @@ class ShiftScheduler extends Component {
             <div
               onTouchTap={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
               className={s.touchIcon}
-            >Remove Shift
+            >
+              <RemoveCircle />Remove Shift
             </div>
           )}
 
@@ -240,16 +244,20 @@ class ShiftScheduler extends Component {
           <div
             onTouchTap={(event) => { event.preventDefault(); addShift(dateIndex); }}
             className={s.touchIcon}
-          >Add Shift
+          >
+            <AddCircle />Add Shift
           </div>
 
           { dateIndex > 0 && (
             <div
               onTouchTap={(event) => { event.preventDefault(); removeDate(dateIndex); }}
               className={s.touchIcon}
-            >Remove Date
+            >
+              <RemoveCircle />Remove Date
             </div>
           )}
+
+          <Divider />
         </div>
       );
     };
@@ -268,7 +276,8 @@ class ShiftScheduler extends Component {
               <div
                 onTouchTap={(event) => { event.preventDefault(); addDate(); }}
                 className={s.touchIcon}
-              >Add Date
+              >
+                <AddCircle />Add Date
               </div>
             </form>
           </div>
