@@ -1,4 +1,4 @@
-# Uprise Campaigns Volunteer Platform App
+# Uprise Campaigns Volunteer Platform App [![Build Status](https://travis-ci.org/uprisecampaigns/uprise-app.svg?branch=master)](https://travis-ci.org/uprisecampaigns/uprise-app)
 
 One stop containerized repo for all of the pieces of the Uprise Campaigns Volunteer Platform App.
 
