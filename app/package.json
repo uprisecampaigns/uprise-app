@@ -129,10 +129,10 @@
     "eslint-plugin-react": "^7.4.0",
     "gulp-cached": "^1.1.1",
     "gulp-eslint": "^4.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "ignore-styles": "^5.0.1",
     "isomorphic-fetch": "^2.2.1",
     "jest": "^21.2.1",
-    "jest-css-modules": "^1.1.0",
     "jest-enzyme": "^4.0.1",
     "jest-transform-graphql": "^2.1.0",
     "jsdom": "^11.3.0",
@@ -150,11 +150,11 @@
     "rootDir": "client",
     "transform": {
       "\\.(gql|graphql)$": "jest-transform-graphql",
-      "^.+\\.js$": "babel-jest",
-      "^.+\\.(css|scss|less)$": "jest-css-modules"
+      "^.+\\.js$": "babel-jest"
     },
     "moduleNameMapper": {
-      "\\.(md|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
+      "\\.(md|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "^.+\\.(css|scss|less)$": "identity-obj-proxy"
     },
     "moduleFileExtensions": [
       "js",
@@ -175,6 +175,7 @@
     "setupTestFrameworkScriptFile": "<rootDir>/../node_modules/jest-enzyme/lib/index.js",
     "setupFiles": [
       "<rootDir>/setupTests.js"
-    ]
+    ],
+    "verbose": true
   }
 }

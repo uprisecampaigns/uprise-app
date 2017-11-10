@@ -183,8 +183,16 @@ class ShiftScheduler extends Component {
     const mDate = moment(date);
     // eslint-disable-next-line no-restricted-syntax
     for (const shift of newShifts[dateIndex].shifts) {
-      shift.start = moment(shift.start).date(mDate.date()).month(mDate.month()).year(mDate.year()).toDate();
-      shift.end = moment(shift.end).date(mDate.date()).month(mDate.month()).year(mDate.year()).toDate();
+      shift.start = moment(shift.start)
+        .date(mDate.date())
+        .month(mDate.month())
+        .year(mDate.year())
+        .toDate();
+      shift.end = moment(shift.end)
+        .date(mDate.date())
+        .month(mDate.month())
+        .year(mDate.year())
+        .toDate();
     }
 
     this.setState({ shiftDates: newShifts });
@@ -204,7 +212,7 @@ class ShiftScheduler extends Component {
 
     const renderDateForm = (shiftDate, dateIndex) => {
       const renderedShifts = shiftDate.shifts.map((shift, shiftIndex) => (
-        <div>
+        <div key={JSON.stringify(shift)}>
           <div
             className={s.textFieldContainer}
             ref={(input) => { if (shift.startError || shift.endError) { this.errorElem = input; } }}
@@ -240,7 +248,7 @@ class ShiftScheduler extends Component {
       ));
 
       return (
-        <div>
+        <div className={s.dateShiftContainer}>
           <div
             className={s.textFieldContainer}
             ref={(input) => { if (shiftDate.dateError) { this.errorElem = input; } }}
