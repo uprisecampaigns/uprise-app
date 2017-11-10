@@ -219,9 +219,18 @@ class Action {
   }
 
   static async signedUpVolunteers({ actionId }) {
-    const result = await db('action_signups')
-      .where('action_id', actionId)
-      .innerJoin('users', 'action_signups.user_id', 'users.id');
+    const query = db('actions')
+      .select(['users.id as id', 'users.first_name as first_name', 'users.last_name as last_name',
+        'users.email as email', 'users.zipcode as zipcode'])
+      .leftOuterJoin('action_signups', 'action_signups.action_id', 'actions.id')
+      .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
+      .join('shift_signups', 'shift_signups.shift_id', 'shifts.id')
+      .join('users', function() {
+        this.on('shift_signups.user_id', 'users.id').orOn('action_signups.user_id', 'users.id')
+      })
+      .where('actions.id', actionId);
+
+    const result = await query;
 
     return result;
   }
