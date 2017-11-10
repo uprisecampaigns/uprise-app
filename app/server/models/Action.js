@@ -226,18 +226,34 @@ class Action {
     return result;
   }
 
-  static async usersActions({ userId }) {
-    const results = await db('action_signups')
+  static async usersActions({ user }) {
+
+    const targetZipcode = (typeof user.zipcode === 'string' && validator.isNumeric(user.zipcode) && user.zipcode.length === 5) ?
+      user.zipcode : defaultTargetZipcode;
+
+    // TODO: need to select from action_signups and shift_signups
+    const actionQuery = db('actions')
       // TODO: DRY this fancy select out
       .select(['actions.id as id', 'actions.title as title', 'actions.campaign_id as campaign_id',
         db.raw('to_char(actions.start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
         db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
         'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
         'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
+        db.raw(`${distanceQueryString} as distance`),
         'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing'])
-      .where('action_signups.user_id', userId)
+      .where('action_signups.user_id', user.id)
+      .orWhere('shift_signups.user_id', user.id)
       .andWhere('actions.deleted', false)
-      .innerJoin('actions', 'action_signups.action_id', 'actions.id');
+      .leftOuterJoin('zipcodes', 'zipcodes.postal_code', 'actions.zipcode')
+      .crossJoin(db.raw('(SELECT postal_code, location from zipcodes where postal_code=?) target_zip', targetZipcode))
+      .leftOuterJoin('action_signups', 'action_signups.action_id', 'actions.id')
+      .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
+      .join('shift_signups', 'shifts.id', 'shift_signups.shift_id')
+      .as('actions');
+
+    console.log(actionQuery.toString());
+
+    const results = await actionQuery;
 
     await Promise.all(results.map(async (action) => {
       Object.assign(action, await this.details(action));

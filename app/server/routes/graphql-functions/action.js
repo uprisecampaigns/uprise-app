@@ -62,7 +62,7 @@ module.exports = {
       throw new Error('User must be logged in');
     }
 
-    const actionCommitments = await Action.usersActions({ userId: context.user.id });
+    const actionCommitments = await Action.usersActions({ user: context.user });
 
     return actionCommitments;
   },
