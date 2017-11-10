@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 
 import { pressedSignup, closedModal } from 'actions/ActionSignupActions';
 
+import s from 'styles/SignupRegisterLogin.scss';
+
 import ConnectedRegisterLogin from './components/RegisterLogin';
 import ConnectedActionSignupModal from './components/ActionSignupModal';
-
-import s from 'styles/SignupRegisterLogin.scss';
 
 
 class SignupRegisterLogin extends React.PureComponent {

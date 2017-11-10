@@ -24,7 +24,7 @@ class ActionCommitments extends PureComponent {
     if (this.props.actionCommitments) {
       const { actionCommitments, timeWithZone } = this.props;
 
-      const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map(action => {
+      const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map((action) => {
         const shiftList = (action.signed_up_shifts && action.signed_up_shifts.length) ?
           action.signed_up_shifts.map(shift => (
             <div key={shift.id} className={s.listDetailLine}>
@@ -63,7 +63,7 @@ class ActionCommitments extends PureComponent {
 
             </ListItem>
           </Link>
-        )
+        );
       });
 
       return (
