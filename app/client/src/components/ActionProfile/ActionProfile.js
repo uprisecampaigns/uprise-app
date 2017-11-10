@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import moment from 'moment-timezone';
+import moment from 'moment';
 import camelCase from 'camelcase';
 import FontIcon from 'material-ui/FontIcon';
-
-import withTimeWithZone from 'lib/withTimeWithZone';
-import itemsSort from 'lib/itemsSort';
 
 import Link from 'components/Link';
 import KeywordTag from 'components/KeywordTag';
 import SignupRegisterLogin from 'components/SignupRegisterLogin';
+import ShiftGroupList from 'components/ShiftGroupList';
 
 import s from 'styles/Profile.scss';
 
@@ -17,51 +15,16 @@ import s from 'styles/Profile.scss';
 class ActionProfile extends PureComponent {
   static propTypes = {
     action: PropTypes.object.isRequired,
-    timeWithZone: PropTypes.func.isRequired,
   }
 
   render() {
     if (this.props.action) {
-      const { timeWithZone } = this.props;
-
       // Just camel-casing property keys
       const action = Object.assign(...Object.keys(this.props.action).map(k => ({ [camelCase(k)]: this.props.action[k] })));
 
       const activities = (Array.isArray(action.activities) && action.activities.length) ?
         action.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.activityLine}>{activity.description}</div>) :
         [];
-
-      const shiftGroups = (Array.isArray(action.shifts) && action.shifts.length) ?
-        [...action.shifts]
-          .filter(shift => moment(shift.end).isAfter(moment()))
-          .sort(itemsSort({ name: 'shiftDate' }))
-          .reduce((result, shift) => ({ // performs "group by date"
-            ...result,
-            [moment(shift.start).startOf('day').toDate()]: [
-              ...(result[moment(shift.start).startOf('day').toDate()] || []),
-              shift,
-            ],
-          }), {}) : [];
-
-      const shiftDisplay = Object.keys(shiftGroups).map((date, index) => {
-        const shiftGroup = shiftGroups[date];
-        const dateString = timeWithZone(date, action.zipcode, 'ddd MMM Do');
-
-        const shiftLines = shiftGroup.map((shift, shiftIndex) => (
-          <div key={JSON.stringify(shift)}>
-            {timeWithZone(shift.start, action.zipcode, 'h:mm')} - {timeWithZone(shift.end, action.zipcode, 'h:mm a z')}
-          </div>
-        ));
-
-        return (
-          <div key={JSON.stringify(shiftGroup)} className={s.shiftDateGroup}>
-            {dateString}:
-            <div>
-              {shiftLines}
-            </div>
-          </div>
-        );
-      });
 
       const keywords = (Array.isArray(action.tags) && action.tags.length) ? (
         <div className={s.keywordLine}>
@@ -75,6 +38,9 @@ class ActionProfile extends PureComponent {
           ))}
         </div>
       ) : null;
+
+      const hasUpcomingShifts = (action.shifts &&
+        action.shifts.filter(shift => moment(shift.end).isAfter(moment())).length > 0);
 
       return (
         <div className={s.outerContainer}>
@@ -178,12 +144,14 @@ class ActionProfile extends PureComponent {
                 </div>
               )}
 
-              { shiftDisplay.length > 0 && (
+              { hasUpcomingShifts && (
                 <div className={s.actionDetailsContainer}>
                   <div className={s.actionDetailsTitle}>
                   Shift Schedule
                   </div>
-                  <div className={s.actionDetailsContent}>{shiftDisplay}</div>
+                  <div className={s.actionDetailsContent}>
+                    <ShiftGroupList action={action} s={s} />
+                  </div>
                 </div>
               )}
 
@@ -210,4 +178,4 @@ class ActionProfile extends PureComponent {
   }
 }
 
-export default withTimeWithZone(ActionProfile);
+export default ActionProfile;

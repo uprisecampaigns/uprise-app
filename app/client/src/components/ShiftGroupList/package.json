@@ -1,0 +1,6 @@
+{
+  "name": "ShiftGroupList",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ShiftGroupList.js"
+}
