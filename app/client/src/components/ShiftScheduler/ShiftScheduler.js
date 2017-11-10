@@ -148,7 +148,8 @@ class ShiftScheduler extends Component {
   }
 
   removeDate = (dateIndex) => {
-    const newShifts = [...this.state.shiftDates].splice(dateIndex, 1);
+    const newShifts = [...this.state.shiftDates];
+    newShifts.splice(dateIndex, 1);
 
     this.setState({ shiftDates: newShifts });
   }
