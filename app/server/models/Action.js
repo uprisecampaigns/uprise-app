@@ -25,30 +25,41 @@ const distanceQueryString = `round(ST_DISTANCE(zipcodes.location, target_zip.loc
 
 const createShifts = async (shifts, actionId) => {
   const shiftResults = [];
-  for (const shift of shifts) {
-    shift.action_id = actionId;
-    shiftResults.push(await db('shifts').insert(shift, 'id', 'start', 'end'));
-  }
+  const insertQueries = [];
 
-  return shiftResults;
+  shifts.forEach((shift) => insertQueries.push(db('shifts').insert({ action_id: actionId, ...shift}, ['id', 'start', 'end'])));
+
+  return await Promise.all(insertQueries);
 }
 
 const updateShifts = async (shifts, actionId) => {
-  const shiftResults = [];
-  const shiftDeletes = [];
-  const shiftInserts = [];
+  const shiftsToModify = shifts.filter(s => typeof s.id === 'string' && s.id.length);
+  const newShifts = shifts.filter(s => typeof s.id !== 'string' || !s.id.length);
 
-  await db('shifts').where('action_id', actionId).del();
+  const shiftIds = shiftsToModify.map(s => s.id);
 
-  shifts.forEach((shift) => {
-    shift.action_id = actionId;
-    shiftInserts.push(db('shifts').insert(shift, 'id', 'start', 'end'));
-  });
+  const prevShiftsIds = await db('shifts').select('id').where('action_id', actionId).map(s => s.id);
 
-  return await Promise.all(shiftInserts);
+  const shiftIdsToDelete = prevShiftsIds.filter(shiftId => !shiftIds.includes(shiftId));
+
+  if (shiftIdsToDelete.length) {
+    await db('shifts').whereIn('id', shiftIdsToDelete).del();
+  }
+
+  const modifyQueries = [];
+  shiftsToModify.forEach((shift) => modifyQueries.push(db('shifts')
+    .where('id', shift.id)
+    .update({ start: shift.start, end: shift.end })
+    .returning(['id', 'start', 'end']))
+  )
+
+  const modifyResults = await Promise.all(modifyQueries);
+  const newShiftResults = await createShifts(newShifts, actionId);
+
+  return modifyResults.concat(newShiftResults);
 }
 
-const insertShifts = async ({ shifts, userId }) => {
+const insertShiftSignups = async ({ shifts, userId }) => {
   const shiftSignupInserts = [];
   shifts.forEach((shift) => {
     if (typeof shift.id !== 'string') {
@@ -64,7 +75,7 @@ const insertShifts = async ({ shifts, userId }) => {
   await Promise.all(shiftSignupInserts);
 }
 
-const removeShifts = async ({ actionId, userId }) => {
+const removeShiftSignups = async ({ actionId, userId }) => {
   const currentShifts = await db('shift_signups')
     .join('shifts', 'shifts.id', '=', 'shift_signups.shift_id')
     .select('shift_signups.id as id')
@@ -181,8 +192,8 @@ class Action {
         throw new Error(`No shifts provided to signup for and action is not ongoing`);
       }
 
-      await removeShifts({ actionId, userId });
-      await insertShifts({ userId, shifts });
+      await removeShiftSignups({ actionId, userId });
+      await insertShiftSignups({ userId, shifts });
     }
 
     return action;
@@ -194,8 +205,8 @@ class Action {
       throw new Error('Action is ongoing and can\'t have shift signups');
     }
 
-    await removeShifts({ actionId, userId });
-    await insertShifts({ userId, shifts });
+    await removeShiftSignups({ actionId, userId });
+    await insertShiftSignups({ userId, shifts });
 
     return action;
   }
@@ -213,7 +224,7 @@ class Action {
       })
       .del();
 
-    await removeShifts({ actionId, userId });
+    await removeShiftSignups({ actionId, userId });
 
     return action;
   }
