@@ -224,8 +224,8 @@ class Action {
         'users.email as email', 'users.zipcode as zipcode'])
       .leftOuterJoin('action_signups', 'action_signups.action_id', 'actions.id')
       .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
-      .join('shift_signups', 'shift_signups.shift_id', 'shifts.id')
-      .join('users', function() {
+      .leftOuterJoin('shift_signups', 'shift_signups.shift_id', 'shifts.id')
+      .leftOuterJoin('users', function() {
         this.on('shift_signups.user_id', 'users.id').orOn('action_signups.user_id', 'users.id')
       })
       .where('actions.id', actionId);
@@ -240,7 +240,6 @@ class Action {
     const targetZipcode = (typeof user.zipcode === 'string' && validator.isNumeric(user.zipcode) && user.zipcode.length === 5) ?
       user.zipcode : defaultTargetZipcode;
 
-    // TODO: need to select from action_signups and shift_signups
     const actionQuery = db('actions')
       // TODO: DRY this fancy select out
       .select(['actions.id as id', 'actions.title as title', 'actions.campaign_id as campaign_id',
@@ -257,10 +256,8 @@ class Action {
       .crossJoin(db.raw('(SELECT postal_code, location from zipcodes where postal_code=?) target_zip', targetZipcode))
       .leftOuterJoin('action_signups', 'action_signups.action_id', 'actions.id')
       .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
-      .join('shift_signups', 'shifts.id', 'shift_signups.shift_id')
+      .leftOuterJoin('shift_signups', 'shifts.id', 'shift_signups.shift_id')
       .as('actions');
-
-    console.log(actionQuery.toString());
 
     const results = await actionQuery;
 
