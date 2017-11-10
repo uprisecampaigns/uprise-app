@@ -67,6 +67,7 @@ class SignupRegisterLogin extends React.PureComponent {
               <div>
                 { action.ongoing ? (
                   <div>
+                    <div className={s.header}>Sign up for this Role</div>
                     <div
                       className={s.button}
                       onClick={event => dispatch(pressedSignup(action))}

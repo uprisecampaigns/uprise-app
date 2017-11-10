@@ -54,6 +54,7 @@ class ActionSettingsContainer extends Component {
       state: '',
       zipcode: '',
       locationNotes: '',
+      description: '',
       shifts: [],
       activities: [],
       tags: [],
