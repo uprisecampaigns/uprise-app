@@ -5,9 +5,11 @@
 <%= campaign.title %> 
 <%= action.dashboard_url %>
 <%= action.title %>
-<% if (!action.ongoing) { %>
-  <%= dates.start %> <br/>
-<% } %>
+<% if (!action.ongoing) {
+     dates.shifts.forEach((shift) => { %>
+       <%= shift.start %> - <%= shift.end %>
+<%   })
+   } %>
 
 
 You may contact <%= user.first_name %> <%= user.last_name %> at email: <%= user.email %> <% if (user.phone_number) { %> or phone: <%= user.phone_number %> <% } %>

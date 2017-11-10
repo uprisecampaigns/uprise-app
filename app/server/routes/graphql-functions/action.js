@@ -16,15 +16,15 @@ const getFormattedDates = ({ user, action }) => {
     return { ongoing: true };
   }
 
-  const startTime = moment(action.start_time);
-  const endTime = moment(action.end_time);
-
   const timezone = (user.zipcode && zipcodeToTimezone.lookup(user.zipcode)) ? zipcodeToTimezone.lookup(user.zipcode) : 'America/New_York';
 
   return {
     timezone,
-    start: startTime.tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
-    end: endTime.tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
+    shifts: action.signed_up_shifts.map((shift) => ({
+      timezone,
+      start: moment(shift.start).tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
+      end: moment(shift.end).tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
+    }))
   };
 };
 
