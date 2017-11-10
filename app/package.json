@@ -170,7 +170,7 @@
       "<rootDir>/../node_modules"
     ],
     "transformIgnorePatterns": [
-      "/app/node_modules/(enzyme-adapter-react-16|react-ga|react-dropzone)?/"
+      "/app/node_modules/(enzyme-adapter-react-16|react-ga|react-dropzone|identity-obj-proxy)?/"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/../node_modules/jest-enzyme/lib/index.js",
     "setupFiles": [
