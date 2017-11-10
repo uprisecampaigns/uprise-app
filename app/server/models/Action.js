@@ -251,6 +251,8 @@ class Action {
     const targetZipcode = (typeof user.zipcode === 'string' && validator.isNumeric(user.zipcode) && user.zipcode.length === 5) ?
       user.zipcode : defaultTargetZipcode;
 
+    const timezone = zipcodeToTimezone.lookup(targetZipcode);
+
     const actionQuery = db('actions')
       // TODO: DRY this fancy select out
       .select(['actions.id as id', 'actions.title as title', 'actions.campaign_id as campaign_id',
@@ -259,6 +261,7 @@ class Action {
         'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
         'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
         db.raw(`${distanceQueryString} as distance`),
+        db.raw('(case when count(shifts.id)=0 then \'[]\'::json else json_agg(json_build_object(\'id\', shifts.id, \'start\', (to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), \'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as signed_up_shifts'),
         'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing'])
       .where('action_signups.user_id', user.id)
       .orWhere('shift_signups.user_id', user.id)
@@ -268,6 +271,7 @@ class Action {
       .leftOuterJoin('action_signups', 'action_signups.action_id', 'actions.id')
       .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
       .leftOuterJoin('shift_signups', 'shifts.id', 'shift_signups.shift_id')
+      .groupBy('actions.id', 'zipcodes.location', 'target_zip.location')
       .as('actions');
 
     const results = await actionQuery;
