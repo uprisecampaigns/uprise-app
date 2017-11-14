@@ -65,12 +65,6 @@ class ManageCampaignActionsContainer extends PureComponent {
               {action.title}
             </div>
 
-            {action.start_time && (
-              <div className={s.actionListDetailLine}>
-                {timeWithZone(action.start_time, action.zipcode, 'ddd, MMM Do YYYY, h:mma z')}
-              </div>
-            )}
-
             {(action.city && action.state) && (
               <div className={s.actionListDetailLine}>
                 {action.city}, {action.state}
