@@ -34,3 +34,4 @@ after_success:
     else
       docker tag upriseapp_web uprisecampaigns/web:$TRAVIS_BRANCH;
       docker push uprisecampaigns/web:$TRAVIS_BRANCH;
+    fi
