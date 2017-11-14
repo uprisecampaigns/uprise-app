@@ -22,7 +22,15 @@ before_install:
   - cp postgres-backup/backup.env.example postgres-backup/backup.env
   - docker-compose build web
   - docker-compose -f docker-compose.yml up -d --no-deps web
-  - docker-compose -f docker-compose.yml exec web npm run test
 
 script:
   - docker-compose -f docker-compose.yml exec web npm run test
+
+after_success:
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
+      docker tag upriseapp_web uprisecampaigns/web:latest;
+      docker push uprisecampaigns/web:latest;
+    else
+      docker tag upriseapp_web uprisecampaigns/web:$TRAVIS_BRANCH;
+      docker push uprisecampaigns/web:$TRAVIS_BRANCH;
