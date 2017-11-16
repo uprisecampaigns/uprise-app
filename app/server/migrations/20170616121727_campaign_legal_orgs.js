@@ -34,8 +34,7 @@ exports.down = function (knex, Promise) {
       knex.schema.table(tableName, (t) => {
         // for each existing column, drop it
         existingColumns.forEach(columnName => t.dropColumn(columnName));
-      }),
-    );
+      }));
 };
 
 module.exports.configuration = { transaction: true };

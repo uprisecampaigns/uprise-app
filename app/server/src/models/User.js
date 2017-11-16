@@ -14,7 +14,8 @@ class User {
   static findOne(...args) {
     return db.table('users').where(...args).first(
       'id', 'first_name', 'last_name', 'email',
-      'phone_number', 'zipcode', 'email_confirmed');
+      'phone_number', 'zipcode', 'email_confirmed',
+    );
   }
 
   static async create(user) {

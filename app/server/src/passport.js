@@ -38,50 +38,54 @@ module.exports = (passport) => {
 
   passport.use(
     'local-signup',
-    new LocalStrategy({
-      usernameField: 'email',
-      passwordField: 'password',
-      passReqToCallback: true, // allows us to pass back the entire request to the callback
-    },
-    async (req, email, password, done) => {
+    new LocalStrategy(
+      {
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true, // allows us to pass back the entire request to the callback
+      },
+      async (req, email, password, done) => {
       // find a user whose email is the same as the forms email
       // we are checking to see if the user trying to login already exists
 
-      if (email.trim() === '') {
-        return done(null, false, { error: 'Email is required' });
-      }
-      try {
-        const rows = await db.select().from('users').where('email', email);
-
-        if (rows.length) {
-          return done(null, false, { error: 'That email is already being used.' });
+        if (email.trim() === '') {
+          return done(null, false, { error: 'Email is required' });
         }
-        const salt = bcrypt.genSaltSync(10);
-        const passwordHash = bcrypt.hashSync(password, salt);
+        try {
+          const rows = await db.select().from('users').where('email', email);
 
-        const { zipcode, firstName, lastName, phoneNumber } = req.body;
+          if (rows.length) {
+            return done(null, false, { error: 'That email is already being used.' });
+          }
+          const salt = bcrypt.genSaltSync(10);
+          const passwordHash = bcrypt.hashSync(password, salt);
 
-        const userInfo = {
-          email,
-          zipcode,
-          password_hash: passwordHash,
-          first_name: firstName,
-          last_name: lastName,
-          phone_number: phoneNumber,
-        };
+          const {
+            zipcode, firstName, lastName, phoneNumber,
+          } = req.body;
 
-        const user = await User.create(userInfo);
+          const userInfo = {
+            email,
+            zipcode,
+            password_hash: passwordHash,
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: phoneNumber,
+          };
 
-        await User.sendVerificationEmail(user);
+          const user = await User.create(userInfo);
 
-        return done(null, {
-          id: user.id,
-          email: user.email,
-        });
-      } catch (err) {
-        return done(err);
-      }
-    }),
+          await User.sendVerificationEmail(user);
+
+          return done(null, {
+            id: user.id,
+            email: user.email,
+          });
+        } catch (err) {
+          return done(err);
+        }
+      },
+    ),
   );
 
   // =========================================================================
@@ -90,11 +94,12 @@ module.exports = (passport) => {
 
   passport.use(
     'local-login',
-    new LocalStrategy({
-      usernameField: 'email',
-      passwordField: 'password',
-      passReqToCallback: true,
-    },
+    new LocalStrategy(
+      {
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true,
+      },
       ((req, email, password, done) => {
         db.select().from('users').where('email', email).first()
           .then((user) => {
@@ -121,7 +126,8 @@ module.exports = (passport) => {
             return done(null, userObject);
           })
           .catch(err => done(err));
-      })),
+      }),
+    ),
   );
 };
 

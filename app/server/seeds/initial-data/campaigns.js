@@ -1,7 +1,9 @@
 const vaCampaigns = require('./campaigns/VA-campaigns-4.18.17.json');
 const vaKeywords = require('./campaigns/VA-keywords-4.18.17.json');
 
-module.exports = async ({ knex, users, types, activities, levels, issueAreas }) => {
+module.exports = async ({
+  knex, users, types, activities, levels, issueAreas,
+}) => {
   // Deletes ALL existing entries
   await knex('campaigns').del();
   await knex('campaigns_types').del();
@@ -56,5 +58,7 @@ module.exports = async ({ knex, users, types, activities, levels, issueAreas }) 
 
   const campaignIssueAreas = await knex('campaigns_issue_areas').insert(vaCampaignsIssueAreasData, ['id']);
 
-  return { campaigns, levels, issueAreas, types };
+  return {
+    campaigns, levels, issueAreas, types,
+  };
 };

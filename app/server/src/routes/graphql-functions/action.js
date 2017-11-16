@@ -195,7 +195,9 @@ module.exports = {
         to: actionCoordinator.email,
         subject: `${user.first_name} ${user.last_name} Signed up to Volunteer`,
         templateName: 'action-signup-coordinator',
-        context: { action, user, dates, campaign: action.campaign },
+        context: {
+          action, user, dates, campaign: action.campaign,
+        },
       });
     } catch (e) {
       throw new Error(`Error sending email to coordinator: ${e.message}`);
@@ -209,7 +211,9 @@ module.exports = {
         to: user.email,
         subject: 'You Signed up to Volunteer',
         templateName: 'action-signup-volunteer',
-        context: { action, dates, user, actionCoordinator, campaign: action.campaign, googleCalendarUrl, icsCalendarUrl },
+        context: {
+          action, dates, user, actionCoordinator, campaign: action.campaign, googleCalendarUrl, icsCalendarUrl,
+        },
       });
     } catch (e) {
       throw new Error(`Error sending email to volunteer: ${e.message}`);

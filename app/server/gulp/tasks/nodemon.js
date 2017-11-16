@@ -30,11 +30,11 @@ gulp.task('nodemon', () => {
 
   const monitor = nodemon(nodemonOpts);
 
-  monitor.on('start', function () {
+  monitor.on('start', () => {
     console.log('Server nodemon has started');
-  }).on('quit', function () {
+  }).on('quit', () => {
     console.log('Server nodemon has quit');
-  }).on('restart', function (files) {
+  }).on('restart', (files) => {
     console.log('Server nodemon restarted due to: ', files);
   }).on('SIGINT', () => {
     console.log('Server nodemon received SIGINT');

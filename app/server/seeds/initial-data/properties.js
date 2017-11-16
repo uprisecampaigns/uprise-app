@@ -70,5 +70,7 @@ module.exports = async (knex, users) => {
   ], ['id', 'title', 'description']);
 
 
-  return { levels, issueAreas, types, activities };
+  return {
+    levels, issueAreas, types, activities,
+  };
 };
