@@ -6,7 +6,7 @@ const Raven = require('raven');
 const graphqlExpress = graphqlServer.graphqlExpress;
 const graphiqlExpress = graphqlServer.graphiqlExpress;
 
-const schema = require('../schema');
+const schema = require('../schema.js');
 const authenticationMiddleware = require('middlewares/authentication.js');
 
 const userFuncs = require('./graphql-functions/user.js');

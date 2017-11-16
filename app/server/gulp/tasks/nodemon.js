@@ -9,27 +9,35 @@ const config = require('config/gulp');
 gulp.task('nodemon', () => {
   let exec;
   if (process.env.NODE_DEBUG) {
-    exec = `${path.resolve(config.appRoot, 'node_modules', 'babel-cli', 'bin', 'babel-node.js')} --inspect=0.0.0.0:5857 `;
+    exec = 'kill-port --port 5857 && node --inspect=0.0.0.0:5857';
   } else {
-    exec = path.resolve(config.appRoot, 'node_modules', 'babel-cli', 'bin', 'babel-node.js');
+    exec = 'node';
   }
 
   const gitWatchFiles = fs.readdirSync(config.gitWatchDir)
     .map(filename => path.resolve(config.gitWatchDir, filename));
 
   const nodemonOpts = {
-    script: path.resolve(config.serverRoot, 'bin', 'www'),
+    script: path.resolve(config.serverSrc, 'app.js'),
     exec,
     ignoreRoot: ['node_modules'],
     ignore: [config.publicRoot],
     watch: [config.serverRoot, ...gitWatchFiles],
+    verbose: true,
     ext: 'js,json,ejs',
     legacyWatch: true,
-    verbose: true,
   };
 
   const monitor = nodemon(nodemonOpts);
-  process.once('SIGINT', () => {
+
+  monitor.on('start', function () {
+    console.log('Server nodemon has started');
+  }).on('quit', function () {
+    console.log('Server nodemon has quit');
+  }).on('restart', function (files) {
+    console.log('Server nodemon restarted due to: ', files);
+  }).on('SIGINT', () => {
+    console.log('Server nodemon received SIGINT');
     monitor.once('exit', () => {
       process.exit();
     });

@@ -1,5 +1,4 @@
-import validator from 'validator';
-
+const validator = require('validator');
 const uuid = require('uuid/v4');
 const url = require('url');
 const knex = require('knex');
