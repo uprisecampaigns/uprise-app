@@ -8,7 +8,7 @@ const User = require('models/User');
 
 const sendEmail = require('lib/sendEmail.js');
 
-import { urls } from 'config/config';
+const urls = require('config/config').urls;
 
 
 const getFormattedDates = ({ user, action }) => {

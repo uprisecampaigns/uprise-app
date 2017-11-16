@@ -1,5 +1,4 @@
-import validator from 'validator';
-
+const validator = require('validator');
 const assert = require('assert');
 const url = require('url');
 const uuid = require('uuid/v4');

@@ -5,6 +5,7 @@ const RedisStore = require('connect-redis')(session);
 const passport = require('passport');
 const path = require('path');
 const logger = require('morgan');
+const debug = require('debug')('app');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const Raven = require('raven');
@@ -114,4 +115,9 @@ app.use((err, req, res, next) => {
     error: {},
   });
 });
-module.exports = app;
+
+app.set('port', process.env.PORT || 3000);
+
+const server = app.listen(app.get('port'), () => {
+  debug('Express server listening on port ' + server.address().port);
+});
