@@ -370,7 +370,6 @@ class Action {
     };
 
     const searchPageQuery = searchQuery.clone().modify((qb) => {
-
       const sortBy = search.sortBy || {
         name: 'distance',
         descending: false,

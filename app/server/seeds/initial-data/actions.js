@@ -3,7 +3,9 @@ const vaActions = require('./actions/VA-actions-4.21.17.json');
 
 const moment = require('moment');
 
-module.exports = async ({ knex, users, activities, campaigns, levels, issueAreas, types }) => {
+module.exports = async ({
+  knex, users, activities, campaigns, levels, issueAreas, types,
+}) => {
   // Deletes ALL existing entries
   await knex('actions').del();
   await knex('actions_activities').del();

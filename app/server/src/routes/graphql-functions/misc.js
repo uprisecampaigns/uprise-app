@@ -33,7 +33,8 @@ module.exports = {
   fileUploadSignature: async (data, context) => {
     const {
       collectionId, collectionName, fileName,
-      contentEncoding, contentType, ...input } = data.input;
+      contentEncoding, contentType, ...input
+    } = data.input;
 
     if (!context.user) {
       throw new Error('User must be logged in');
