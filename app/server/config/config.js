@@ -33,7 +33,7 @@ module.exports = {
     client: process.env.CLIENT_BASE_URL,
   },
   paths: {
-    base: path.resolve(__dirname, '..'),
+    base: path.resolve(__dirname, '..', 'src'),
   },
   sentry: {
     dsn: process.env.SENTRY_PRIVATE_DSN,
