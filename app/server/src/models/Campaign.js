@@ -1,5 +1,4 @@
 const validator = require('validator');
-const uuid = require('uuid/v4');
 const url = require('url');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
@@ -9,7 +8,6 @@ const db = knex(knexConfig[process.env.NODE_ENV]);
 const User = require('models/User.js');
 
 const getValidSlug = require('models/getValidSlug');
-const updateProperties = require('models/updateProperties')('campaign');
 
 const config = require('config/config.js');
 
@@ -29,6 +27,7 @@ class Campaign {
     const campaigns = await db.table('campaigns').where(...args).orderBy('slug', 'asc');
 
     for (const campaign of campaigns) {
+      // eslint-disable-next-line no-await-in-loop
       Object.assign(campaign, await this.details(campaign));
     }
 
@@ -67,15 +66,15 @@ class Campaign {
       const campaign = await db('campaigns').where('id', campaignId).first();
 
       if (await User.ownsObject({ user, object: campaign })) {
-        const campaignResult = await db('campaigns')
+        const updateResult = await db('campaigns')
           .where('id', campaignId)
           .update(input, [
             'id', 'title', 'slug', 'description', 'tags', 'owner_id',
           ]);
 
-        const campaign = campaignResult[0];
+        const campaignResult = updateResult[0];
 
-        return Object.assign({}, campaign, await this.details(campaign));
+        return { ...campaignResult, ...(await this.details(campaignResult)) };
       }
       throw new Error('User must be owner of campaign');
     } else {
@@ -104,7 +103,7 @@ class Campaign {
       .where('id', campaign.id)
       .update({ deleted: true });
 
-    const actionsResult = await db('actions')
+    await db('actions')
       .where('campaign_id', campaign.id)
       .update({ deleted: true });
 
@@ -127,29 +126,31 @@ class Campaign {
 
   static async subscribe({ userId, campaignId }) {
     if (await this.subscribed({ userId, campaignId })) {
-      return await Campaign.findOne({ id: campaignId });
+      return Campaign.findOne({ id: campaignId });
     }
-    const result = await db('campaign_signups')
+
+    await db('campaign_signups')
       .insert({
         user_id: userId,
         campaign_id: campaignId,
       });
 
-    return await Campaign.findOne({ id: campaignId });
+    return Campaign.findOne({ id: campaignId });
   }
 
   static async cancelSubscription({ userId, campaignId }) {
     if (!await this.subscribed({ userId, campaignId })) {
-      return await Campaign.findOne({ id: campaignId });
+      return Campaign.findOne({ id: campaignId });
     }
-    const result = await db('campaign_signups')
+
+    await db('campaign_signups')
       .where({
         user_id: userId,
         campaign_id: campaignId,
       })
       .del();
 
-    return await Campaign.findOne({ id: campaignId });
+    return Campaign.findOne({ id: campaignId });
   }
 
   static async subscribedUsers({ campaignId }) {
@@ -182,7 +183,7 @@ class Campaign {
       .modify((qb) => {
         if (search) {
           if (search.titles) {
-            qb.andWhere(function () {
+            qb.andWhere(function titleQueryBuilder() {
               search.titles.forEach((title) => {
                 this.orWhere(db.raw('title %> ?', title));
               });
@@ -203,7 +204,7 @@ class Campaign {
               .as('tags');
 
             search.tags.forEach((tag) => {
-              qb.andWhere(function () {
+              qb.andWhere(function tagsQueryBuilder() {
                 const tagQuery = db.select('id')
                   .distinct()
                   .from(tags)
@@ -220,8 +221,7 @@ class Campaign {
               .as('tags');
 
             search.keywords.forEach((keyword) => {
-              qb.andWhere(function () {
-                const stringComparator = /^#/.test(keyword) ? 'ILIKE ?' : '% ?';
+              qb.andWhere(function keywordQueryBuilder() {
                 const stringOverlapComparator = /^#/.test(keyword) ? "SIMILAR TO '%(,| )\\?' || ? || '(,| )\\?%'" : '%> ?';
 
                 this.orWhere(db.raw(`title ${stringOverlapComparator}`, keyword));
@@ -241,10 +241,10 @@ class Campaign {
           }
 
           if (search.geographies) {
-            qb.andWhere(function () {
+            qb.andWhere(function geographyQueryBuilder() {
               search.geographies.forEach((geography) => {
                 if (validator.isNumeric(geography.zipcode)) {
-                  const zipcode = geography.zipcode;
+                  const { zipcode } = geography;
                   this.orWhereRaw('? = ANY(zipcode_list)', zipcode);
                 }
               });
@@ -266,7 +266,10 @@ class Campaign {
         .select(['actions.id as id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing', 'campaign_id', 'owner_id', 'description',
           db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
           db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
-          db.raw('(case when count(shifts.id)=0 then \'[]\'::json else json_agg(json_build_object(\'id\', shifts.id, \'start\', (to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), \'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as shifts'),
+          db.raw('(case when count(shifts.id)=0 then \'[]\'::json else ' +
+            'json_agg(json_build_object(\'id\', shifts.id, \'start\', ' +
+            '(to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), ' +
+            '\'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as shifts'),
           'location_name', 'street_address', 'street_address2',
           'city', 'state', 'zipcode', 'location_notes', 'virtual', 'ongoing',
         ])
@@ -294,7 +297,7 @@ class Campaign {
       .modify((qb) => {
         if (search) {
           if (search.keywords) {
-            qb.andWhere(function () {
+            qb.andWhere(function typesQueryBuilder() {
               search.keywords.forEach((keyword) => {
                 this.orWhere(db.raw('title %> ?', keyword));
                 this.orWhere(db.raw('description %> ?', keyword));

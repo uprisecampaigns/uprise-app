@@ -8,7 +8,8 @@ const sendEmail = require('lib/sendEmail.js');
 const config = require('config/config.js');
 
 const awsConfig = config.aws;
-const contactEmail = config.postmark.contactEmail;
+const { postmark } = config;
+const { contactEmail } = postmark;
 
 const s3 = new S3({
   accessKeyId: awsConfig.accessKeyId,
@@ -33,7 +34,7 @@ module.exports = {
   fileUploadSignature: async (data, context) => {
     const {
       collectionId, collectionName, fileName,
-      contentEncoding, contentType, ...input
+      contentEncoding, contentType,
     } = data.input;
 
     if (!context.user) {
@@ -82,18 +83,28 @@ module.exports = {
     const userActions = await Action.find('owner_id', user.id);
 
     // TODO: replace this with parallel promises
-    for (const action of userActions) {
-      const signedUpVolunteers = await Action.signedUpVolunteers({ actionId: action.id });
-      allowedRecipients = allowedRecipients.concat(signedUpVolunteers);
-    }
+    const userActionQueries = [];
+    userActions.forEach((action) => {
+      userActionQueries.push(Action.signedUpVolunteers({ actionId: action.id }));
+    });
+
+    const signedUpVolunteers = (await Promise.all(userActionQueries))
+      .reduce((accumulator, value) => accumulator.concat(value), []);
+
+    allowedRecipients = allowedRecipients.concat(signedUpVolunteers);
 
     const userCampaigns = await Campaign.find('owner_id', user.id);
 
     // TODO: replace this with parallel promises
-    for (const campaign of userCampaigns) {
-      const subscribedUsers = await Campaign.subscribedUsers({ campaignId: campaign.id });
-      allowedRecipients = allowedRecipients.concat(subscribedUsers);
-    }
+    const userCampaignQueries = [];
+    userCampaigns.forEach((campaign) => {
+      userCampaignQueries.push(Campaign.subscribedUsers({ campaignId: campaign.id }));
+    });
+
+    const subscribedUsers = (Promise.all(userCampaignQueries))
+      .reduce((accumulator, value) => accumulator.concat(value), []);
+
+    allowedRecipients = allowedRecipients.concat(subscribedUsers);
 
     const allowedEmails = allowedRecipients.map(v => v.email);
 

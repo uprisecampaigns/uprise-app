@@ -1,8 +1,8 @@
 
 const tableName = 'campaigns';
 
-exports.up = function (knex, Promise) {
-  return knex.schema.table(tableName, (table) => {
+exports.up = (knex, Promise) => (
+  knex.schema.table(tableName, (table) => {
     table.boolean('legal_org').notNullable().defaultTo(false);
     table.text('org_website');
     table.text('org_name');
@@ -11,10 +11,10 @@ exports.up = function (knex, Promise) {
     table.text('org_contact_position');
     table.text('org_contact_email');
     table.text('org_contact_phone');
-  });
-};
+  })
+);
 
-exports.down = function (knex, Promise) {
+exports.down = (knex, Promise) => {
   // Borrowed from https://github.com/tgriesser/knex/issues/1091#issuecomment-163670542
   const columnsToDrop = [
     'legal_org',

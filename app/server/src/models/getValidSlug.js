@@ -1,6 +1,4 @@
-
 const getSlug = require('speakingurl');
-const assert = require('assert');
 const knex = require('knex');
 
 const knexConfig = require('config/knexfile.js');
@@ -26,6 +24,7 @@ const getValidSlug = async (title) => {
     if (bannedSlugs.includes(slug)) {
       found = true;
     } else {
+      // eslint-disable-next-line no-await-in-loop
       const [actionSlugs, campaignSlugs] = await Promise.all([
         db('actions').where('slug', slug),
         db('campaigns').where('slug', slug),
@@ -36,7 +35,7 @@ const getValidSlug = async (title) => {
       }
     }
 
-    append++;
+    append += 1;
   } while (found);
 
   return slug;

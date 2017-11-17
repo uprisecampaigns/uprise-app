@@ -1,4 +1,4 @@
-
+/* eslint-disable no-await-in-loop */
 
 exports.up = async (knex, Promise) => {
   await knex.schema.createTable('shifts', (table) => {
@@ -37,7 +37,7 @@ exports.up = async (knex, Promise) => {
       action_id: action.id,
       start: action.start_time,
       end: action.end_time,
-    }
+    };
 
     const shiftId = (await knex('shifts').insert(shift, 'id'))[0];
     await knex('actions').where('id', action.id).update({ start_time: null, end_time: null });

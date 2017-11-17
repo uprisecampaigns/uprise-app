@@ -34,9 +34,11 @@ module.exports = async (knex) => {
   const newVaUsers = [];
 
   for (const userRecord of vaUsers) {
+    // eslint-disable-next-line no-await-in-loop
     const dbUser = await knex('users').where('email', userRecord.email).select(['id', 'email']);
 
     if (dbUser.length === 0) {
+      // eslint-disable-next-line no-await-in-loop
       const newUser = await knex('users').insert([userRecord], ['id', 'email']);
       newVaUsers.push(newUser);
     } else {

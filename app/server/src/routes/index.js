@@ -1,17 +1,20 @@
-const path = require('path');
 const express = require('express');
+
+const graphqlRoutes = require('./graphql.js');
+const authenticationRoutes = require('./authentication.js');
+const rssRoutes = require('./rss.js');
+const calendarLinkRoutes = require('./calendar-links.js');
 
 const router = express.Router();
 
 module.exports = (app, passport) => {
-  // set authentication routes
-  require('./authentication.js')(app, passport);
+  authenticationRoutes(app, passport);
 
-  require('./graphql.js')(app);
+  graphqlRoutes(app);
 
-  require('./rss.js')(app);
+  rssRoutes(app);
 
-  require('./calendar-links.js')(app);
+  calendarLinkRoutes(app);
 
   // set other routes
   app.use('/', router);

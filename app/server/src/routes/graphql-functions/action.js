@@ -3,12 +3,11 @@ const moment = require('moment-timezone');
 const zipcodeToTimezone = require('zipcode-to-timezone');
 
 const Action = require('models/Action');
-const Campaign = require('models/Campaign');
 const User = require('models/User');
 
 const sendEmail = require('lib/sendEmail.js');
 
-const urls = require('config/config').urls;
+const { urls } = require('config/config');
 
 
 const getFormattedDates = ({ user, action }) => {
@@ -20,23 +19,23 @@ const getFormattedDates = ({ user, action }) => {
 
   return {
     timezone,
-    shifts: action.signed_up_shifts.map((shift) => ({
+    shifts: action.signed_up_shifts.map(shift => ({
       timezone,
       start: moment(shift.start).tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
       end: moment(shift.end).tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
-    }))
+    })),
   };
 };
 
 module.exports = {
-
   action: async (data, context) => {
+    const { search } = data;
 
     if (context.user && typeof context.user.zipcode === 'string') {
-      data.search.targetZipcode = context.user.zipcode;
+      search.targetZipcode = context.user.zipcode;
     }
 
-    const action = await Action.findOne(data.search);
+    const action = await Action.findOne(search);
 
     // TODO: This is repeated in a bunch of places and should be DRYed
     action.attending = (context.user) ? await Action.attending({ actionId: action.id, userId: context.user.id }) : false;
@@ -48,12 +47,13 @@ module.exports = {
   },
 
   actions: async (data, context) => {
+    const { search } = data;
 
     if (context.user && typeof context.user.zipcode === 'string') {
-      data.search.targetZipcode = context.user.zipcode;
+      search.targetZipcode = context.user.zipcode;
     }
 
-    const actions = await Action.search(data.search);
+    const actions = await Action.search(search);
     return actions;
   },
 
@@ -103,9 +103,9 @@ module.exports = {
       throw new Error('User must be logged in');
     }
 
-    const createdActions = [];
+    const actionCreations = [];
 
-    for (const item of options.data) {
+    options.data.forEach((item) => {
       // Decamelizing property names
       const input = Object.assign(...Object.keys(item).map(k => ({
         [decamelize(k)]: item[k],
@@ -113,10 +113,10 @@ module.exports = {
 
       input.owner_id = context.user.id;
 
-      const action = await Action.create(input);
+      actionCreations.push(Action.create(input));
+    });
 
-      createdActions.push(action);
-    }
+    const createdActions = await Promise.all(actionCreations);
 
     return createdActions;
   },
@@ -173,19 +173,12 @@ module.exports = {
     action.signed_up_shifts = await Action.signedUpShifts({ actionId: action.id, userId: user.id });
 
     let actionCoordinator;
-    let campaign;
 
     // TODO: replace with more sophisticated model of "coordinator"
     try {
       actionCoordinator = await User.findOne('id', action.owner_id);
     } catch (e) {
       throw new Error(`Cannot find action coordinator: ${e.message}`);
-    }
-
-    try {
-      campaign = await Campaign.findOne('id', action.campaign_id);
-    } catch (e) {
-      throw new Error(`Cannot find matching campaign: ${e.message}`);
     }
 
     const dates = getFormattedDates({ user, action });

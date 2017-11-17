@@ -10,8 +10,9 @@ const afterCreate = (connection, callback) => {
     } else {
       // For some reason you have to call the similarity() function
       // first before you can set pg_trgm.similarity_threshold
-      connection.query(`select similarity('a', 'a'); SET pg_trgm.similarity_threshold='${similarityThreshold}'; SET pg_trgm.word_similarity_threshold='${similarityThreshold}'`, (err) => {
-        callback(err, connection);
+      // eslint-disable-next-line max-len
+      connection.query(`select similarity('a', 'a'); SET pg_trgm.similarity_threshold='${similarityThreshold}'; SET pg_trgm.word_similarity_threshold='${similarityThreshold}'`, (similarityThresholdQueryErr) => {
+        callback(similarityThresholdQueryErr, connection);
       });
     }
   });

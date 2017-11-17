@@ -29,7 +29,7 @@ const getContext = (action) => {
 module.exports = async (app) => {
   app.get('/api/rss/campaign/:slug', async (req, res, next) => {
     try {
-      const slug = req.params.slug;
+      const { slug } = req.params;
       const campaign = await Campaign.findOne({ slug });
 
       const feed = new RSS({
@@ -43,8 +43,9 @@ module.exports = async (app) => {
 
       const actions = campaign.actions.filter(action => moment(action.end_time).isAfter(moment()) || action.ongoing);
 
-      await Promise.all(actions.map(async (action) => {
-        Object.assign(action, await Action.details(action, true));
+      await Promise.all(actions.map(async (a) => {
+        const details = await Action.details(a, true);
+        const action = { ...a, ...details };
         action.campaign_title = campaign.title;
 
         const context = getContext(action);
@@ -67,13 +68,13 @@ module.exports = async (app) => {
 
       return res.send(feed.xml());
     } catch (e) {
-      next(e);
+      return next(e);
     }
   });
 
   app.get('/api/rss/:search', async (req, res, next) => {
     try {
-      const search = req.params.search;
+      const { search } = req.params;
       const actionSearch = await Action.search({
         keywords: [search],
         dates: {
@@ -82,7 +83,7 @@ module.exports = async (app) => {
         },
       });
 
-      const actions = actionSearch.actions;
+      const { actions } = actionSearch;
 
       const feed = new RSS({
         title: 'UpRise Volunteer Opportunities',
@@ -117,7 +118,7 @@ module.exports = async (app) => {
 
       return res.send(feed.xml());
     } catch (e) {
-      next(e);
+      return next(e);
     }
   });
 };

@@ -1,7 +1,6 @@
+/* eslint-disable func-names */
 const validator = require('validator');
-const assert = require('assert');
 const url = require('url');
-const uuid = require('uuid/v4');
 const moment = require('moment-timezone');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
@@ -23,13 +22,12 @@ const defaultTargetZipcode = config.geography.defaultZipcode;
 const distanceQueryString = `round(ST_DISTANCE(zipcodes.location, target_zip.location) * ${milesInMeter})`;
 
 const createShifts = async (shifts, actionId) => {
-  const shiftResults = [];
   const insertQueries = [];
 
-  shifts.forEach((shift) => insertQueries.push(db('shifts').insert({ action_id: actionId, ...shift}, ['id', 'start', 'end'])));
+  shifts.forEach(shift => insertQueries.push(db('shifts').insert({ action_id: actionId, ...shift }, ['id', 'start', 'end'])));
 
-  return await Promise.all(insertQueries);
-}
+  return Promise.all(insertQueries);
+};
 
 const updateShifts = async (shifts, actionId) => {
   const shiftsToModify = shifts.filter(s => typeof s.id === 'string' && s.id.length);
@@ -46,23 +44,22 @@ const updateShifts = async (shifts, actionId) => {
   }
 
   const modifyQueries = [];
-  shiftsToModify.forEach((shift) => modifyQueries.push(db('shifts')
+  shiftsToModify.forEach(shift => modifyQueries.push(db('shifts')
     .where('id', shift.id)
     .update({ start: shift.start, end: shift.end })
-    .returning(['id', 'start', 'end']))
-  )
+    .returning(['id', 'start', 'end'])));
 
   const modifyResults = await Promise.all(modifyQueries);
   const newShiftResults = await createShifts(newShifts, actionId);
 
   return modifyResults.concat(newShiftResults);
-}
+};
 
 const insertShiftSignups = async ({ shifts, userId }) => {
   const shiftSignupInserts = [];
   shifts.forEach((shift) => {
     if (typeof shift.id !== 'string') {
-      throw new Error(`Shift must have id`);
+      throw new Error('Shift must have id');
     }
 
     shiftSignupInserts.push(db('shift_signups').insert({
@@ -72,7 +69,7 @@ const insertShiftSignups = async ({ shifts, userId }) => {
   });
 
   await Promise.all(shiftSignupInserts);
-}
+};
 
 const removeShiftSignups = async ({ actionId, userId }) => {
   const currentShifts = await db('shift_signups')
@@ -84,11 +81,10 @@ const removeShiftSignups = async ({ actionId, userId }) => {
   const currentShiftIds = currentShifts.map(s => s.id);
 
   await db('shift_signups').whereIn('id', currentShiftIds).del();
-}
+};
 
 class Action {
   static async findOne({ targetZipcode = defaultTargetZipcode, ...args }) {
-
     const actionQuery = db('actions')
       .select(['id', 'title', 'internal_title', 'slug', 'tags', 'owner_id', 'description', 'campaign_id',
         db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
@@ -113,6 +109,7 @@ class Action {
     const actions = await db.table('actions').where(...args).orderBy('slug', 'asc');
 
     for (const action of actions) {
+      // eslint-disable-next-line no-await-in-loop
       Object.assign(action, await this.details(action));
     }
 
@@ -152,7 +149,7 @@ class Action {
 
     if (signup.length > 1) {
       throw new Error(`More than one role signup for user with id: ${userId}for action with id: ${actionId}`);
-    } else if (signup.length == 1) {
+    } else if (signup.length === 1) {
       return true;
     } else {
       const signedUpShifts = await Action.signedUpShifts({ userId, actionId });
@@ -161,7 +158,7 @@ class Action {
   }
 
   static async signedUpShifts({ userId, actionId }) {
-    return await db('shift_signups')
+    return db('shift_signups')
       .innerJoin('shifts', 'shifts.id', '=', 'shift_signups.shift_id')
       .select(['shifts.action_id as action_id', 'shifts.id as id',
         'shifts.start as start', 'shifts.end as end',
@@ -185,27 +182,14 @@ class Action {
           user_id: userId,
           action_id: actionId,
         });
-
     } else {
       if (!shifts || !shifts.length) {
-        throw new Error(`No shifts provided to signup for and action is not ongoing`);
+        throw new Error('No shifts provided to signup for and action is not ongoing');
       }
 
       await removeShiftSignups({ actionId, userId });
       await insertShiftSignups({ userId, shifts });
     }
-
-    return action;
-  }
-
-  static async changeShifts({ userId, actionId, newShifts }) {
-    const action = await Action.findOne({ id: actionId });
-    if (action.ongoing) {
-      throw new Error('Action is ongoing and can\'t have shift signups');
-    }
-
-    await removeShiftSignups({ actionId, userId });
-    await insertShiftSignups({ userId, shifts });
 
     return action;
   }
@@ -235,8 +219,8 @@ class Action {
       .leftOuterJoin('action_signups', 'action_signups.action_id', 'actions.id')
       .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
       .leftOuterJoin('shift_signups', 'shift_signups.shift_id', 'shifts.id')
-      .leftOuterJoin('users', function() {
-        this.on('shift_signups.user_id', 'users.id').orOn('action_signups.user_id', 'users.id')
+      .leftOuterJoin('users', function () {
+        this.on('shift_signups.user_id', 'users.id').orOn('action_signups.user_id', 'users.id');
       })
       .where('actions.id', actionId);
 
@@ -246,11 +230,8 @@ class Action {
   }
 
   static async usersActions({ user }) {
-
     const targetZipcode = (typeof user.zipcode === 'string' && validator.isNumeric(user.zipcode) && user.zipcode.length === 5) ?
       user.zipcode : defaultTargetZipcode;
-
-    const timezone = zipcodeToTimezone.lookup(targetZipcode);
 
     const actionQuery = db('actions')
       // TODO: DRY this fancy select out
@@ -260,8 +241,12 @@ class Action {
         'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
         'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
         db.raw(`${distanceQueryString} as distance`),
-        db.raw('(case when count(shifts.id)=0 then \'[]\'::json else json_agg(json_build_object(\'id\', shifts.id, \'start\', (to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), \'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as signed_up_shifts'),
-        'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing'])
+        db.raw('(case when count(shifts.id)=0 then \'[]\'::json else ' +
+          'json_agg(json_build_object(\'id\', shifts.id, \'start\', ' +
+          '(to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), ' +
+          '\'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as signed_up_shifts'),
+        'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode',
+        'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing'])
       .where('action_signups.user_id', user.id)
       .orWhere('shift_signups.user_id', user.id)
       .andWhere('actions.deleted', false)
@@ -285,7 +270,11 @@ class Action {
   static async search(search) {
     const defaultPageLimit = 20;
 
-    const targetZipcode = (typeof search.targetZipcode === 'string' && validator.isNumeric(search.targetZipcode) && search.targetZipcode.length === 5) ?
+    const hasTargetZipcode = (typeof search.targetZipcode === 'string' &&
+      validator.isNumeric(search.targetZipcode) &&
+      search.targetZipcode.length === 5);
+
+    const targetZipcode = hasTargetZipcode ?
       search.targetZipcode : defaultTargetZipcode;
 
     const timezone = zipcodeToTimezone.lookup(targetZipcode);
@@ -299,18 +288,24 @@ class Action {
         db.raw(`date(coalesce(shifts.start, actions.start_time) at time zone '${timezone}') as date`),
         'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
         'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
-        'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing',
+        'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode',
+        'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing',
         db.raw(`${distanceQueryString} as distance`),
-        db.raw('(case when count(shifts.id)=0 then \'[]\'::json else json_agg(json_build_object(\'id\', shifts.id, \'start\', (to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), \'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as shifts'),
+        db.raw('(case when count(shifts.id)=0 then \'[]\'::json else ' +
+          'json_agg(json_build_object(\'id\', shifts.id, \'start\', ' +
+          '(to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), ' +
+          '\'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as shifts'),
         db.raw('to_char(actions.created_at at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as created_at'),
-        'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
+        'campaigns.title as campaign_title', 'campaigns.id as campaign_id',
+        'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
       .where('actions.deleted', false)
       .andWhere('campaigns.deleted', false)
       .innerJoin('campaigns', 'actions.campaign_id', 'campaigns.id')
       .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
       .leftOuterJoin('zipcodes', 'zipcodes.postal_code', 'actions.zipcode')
       .crossJoin(db.raw('(SELECT postal_code, location from zipcodes where postal_code=?) target_zip', targetZipcode))
-      .groupByRaw(`date(coalesce(shifts.start, actions.start_time) at time zone '${timezone}'), actions.id, zipcodes.location, target_zip.location, campaigns.id`)
+      .groupByRaw(`date(coalesce(shifts.start, actions.start_time) at time zone '${timezone}'), ` +
+        'actions.id, zipcodes.location, target_zip.location, campaigns.id')
       .as('actions')
       .modify((qb) => {
         if (search) {
@@ -433,10 +428,6 @@ class Action {
 
           if (search.activities) {
             qb.andWhere(function () {
-              const activities = db('activities')
-                .select('id', 'title', 'description')
-                .as('activities');
-
               search.activities.forEach((activity) => {
                 const activityQuery = db.select('action_id')
                   .distinct()
@@ -456,8 +447,7 @@ class Action {
                 if (typeof geography.virtual === 'boolean' && geography.virtual) {
                   this.orWhere('actions.virtual', geography.virtual);
                 } else {
-                  const distance = geography.distance || 10; // default to 10 miles
-                  const zipcode = geography.zipcode;
+                  const { distance = 10, zipcode } = geography; // default to 10 miles
 
                   // TODO: It would be nice to refactor some of this out into knex language
                   const distanceQuery = db.select('id')
@@ -544,8 +534,13 @@ class Action {
           });
         } else if (sortBy.name === 'date') {
           qb.andWhere(function () {
-            if (typeof search.cursor.start_type !== undefined && moment(search.cursor.start_time).isValid()) {
-              this.orWhere(db.raw('?::timestamptz', search.cursor.start_time), (sortBy.descending) ? '>' : '<', db.raw('timestamptz(actions.start_time)'));
+            if (typeof search.cursor.start_type !== 'undefined' && moment(search.cursor.start_time).isValid()) {
+              this.orWhere(
+                db.raw('?::timestamptz', search.cursor.start_time),
+                (sortBy.descending) ? '>' : '<',
+                db.raw('timestamptz(actions.start_time)'),
+              );
+
               this.orWhere(function () {
                 this.andWhere(db.raw('?::timestamptz', search.cursor.start_time), '=', db.raw('timestamptz(start_time)'));
                 this.andWhere(db.raw('timestamptz(actions.created_at)'), '<', db.raw('?::timestamptz', search.cursor.created_at));
@@ -583,21 +578,22 @@ class Action {
     const total = (await searchTotalsQuery)[0].count;
     const actionResults = await searchPageQuery;
 
-    actionResults.forEach((action) => {
-      action.campaign = {
+    const detailedActionResults = actionResults.map(action => ({
+      ...action,
+      campaign: {
         id: action.campaign_id,
         title: action.campaign_title,
         slug: action.campaign_slug,
         profile_image_url: action.campaign_profile_image_url,
-      };
-    });
+      },
+    }));
 
-    const cursor = actionResults.length ? [...actionResults].pop() : undefined;
+    const cursor = detailedActionResults.length ? [...detailedActionResults].pop() : undefined;
 
     return {
       total,
       targetZipcode,
-      actions: actionResults,
+      actions: detailedActionResults,
       cursor,
     };
   }
@@ -615,7 +611,7 @@ class Action {
         .select(['id',
           db.raw('to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start'),
           db.raw('to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end')])
-        .where('action_id', action.id)
+        .where('action_id', action.id);
 
       try {
         [details.campaign, details.owner, details.activities, details.shifts] = await Promise.all([
@@ -721,23 +717,23 @@ class Action {
         try {
           const { activities, shifts, ...newInput } = input;
 
-          const actionResult = await db('actions')
+          const updateResult = await db('actions')
             .where('id', newInput.id)
             .update(newInput, [
               'id', 'title', 'internal_title', 'slug', 'description', 'tags', 'owner_id', 'campaign_id',
             ]);
 
-          const action = actionResult[0];
+          const actionResult = updateResult[0];
 
           if (activities && activities.length) {
-            await updateProperties(activities, 'activity', action.id);
+            await updateProperties(activities, 'activity', actionResult.id);
           }
 
           if (shifts && shifts.length) {
-            await updateShifts(shifts, action.id);
+            await updateShifts(shifts, actionResult.id);
           }
 
-          return Object.assign({}, action, await this.details(action));
+          return Object.assign({}, actionResult, await this.details(actionResult));
         } catch (e) {
           throw new Error(`Cannot edit action: ${e.message}`);
         }

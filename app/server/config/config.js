@@ -24,7 +24,8 @@ module.exports = {
   postmark: {
     serverKey: process.env.POSTMARK_SECRET_KEY,
     validRecipient: email =>
-      process.env.NODE_ENV === 'production' || (email.split('@').pop() === 'uprise.org'), // only send to @uprise.org email accounts for non production
+      // only send to @uprise.org email accounts for non production
+      process.env.NODE_ENV === 'production' || (email.split('@').pop() === 'uprise.org'),
     from: 'notifications@uprise.org',
     contactEmail: 'help@uprise.org',
   },
@@ -33,7 +34,7 @@ module.exports = {
     client: process.env.CLIENT_BASE_URL,
   },
   paths: {
-    base: path.resolve(__dirname, '..'),
+    base: path.resolve(__dirname, '..', 'src'),
   },
   sentry: {
     dsn: process.env.SENTRY_PRIVATE_DSN,

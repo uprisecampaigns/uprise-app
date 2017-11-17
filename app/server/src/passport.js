@@ -5,9 +5,7 @@ const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
 
 const db = knex(knexConfig[process.env.NODE_ENV]);
-const config = require('config/config.js');
 const User = require('models/User.js');
-const sendEmail = require('lib/sendEmail.js');
 
 
 module.exports = (passport) => {
@@ -104,7 +102,7 @@ module.exports = (passport) => {
         db.select().from('users').where('email', email).first()
           .then((user) => {
             if (!user) {
-              console.log('no user found...');
+              console.error(`No user found with email: ${email}`);
               return done(null, false, { error: 'Email not found.' });
             }
 

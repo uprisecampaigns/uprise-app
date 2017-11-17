@@ -1,16 +1,13 @@
 const path = require('path');
 const gulp = require('gulp');
-const watch = require('gulp-watch');
 const cache = require('gulp-cached');
 const eslint = require('gulp-eslint');
 const gulpIf = require('gulp-if');
-const argv = require('yargs').argv;
+const { argv } = require('yargs');
 
 const config = require('config/gulp');
 
 const lintSrcPath = `${config.serverRoot}/**/*.js`;
-
-console.log(`fix = ${argv.fix}`);
 
 const eslintConfig = {
   configFile: path.resolve(config.serverRoot, '.eslintrc'),

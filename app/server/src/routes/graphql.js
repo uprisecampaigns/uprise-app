@@ -1,10 +1,7 @@
-const graphqlHTTP = require('express-graphql');
-const bodyParser = require('body-parser');
 const graphqlServer = require('graphql-server-express');
 const Raven = require('raven');
 
-const graphqlExpress = graphqlServer.graphqlExpress;
-const graphiqlExpress = graphqlServer.graphiqlExpress;
+const { graphqlExpress, graphiqlExpress } = graphqlServer;
 
 const schema = require('../schema.js');
 const authenticationMiddleware = require('middlewares/authentication.js');
