@@ -1,7 +1,6 @@
 const fs = require('fs');
 const gulp = require('gulp');
 const path = require('path');
-const yargs = require('yargs');
 const nodemon = require('gulp-nodemon');
 
 const config = require('config/gulp');
@@ -31,13 +30,13 @@ gulp.task('nodemon', () => {
   const monitor = nodemon(nodemonOpts);
 
   monitor.on('start', () => {
-    console.log('Server nodemon has started');
+    console.info('Server nodemon has started');
   }).on('quit', () => {
-    console.log('Server nodemon has quit');
+    console.info('Server nodemon has quit');
   }).on('restart', (files) => {
-    console.log('Server nodemon restarted due to: ', files);
+    console.info('Server nodemon restarted due to: ', files);
   }).on('SIGINT', () => {
-    console.log('Server nodemon received SIGINT');
+    console.info('Server nodemon received SIGINT');
     monitor.once('exit', () => {
       process.exit();
     });

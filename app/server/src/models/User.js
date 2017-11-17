@@ -51,7 +51,7 @@ class User {
     if (!tokenResult) {
       throw new Error('User email verification does not exist');
     } else if (tokenResult.used) {
-      console.log(`Email Verification token already used: ${token}`);
+      console.error(`Email Verification token already used: ${token}`);
       return { token };
     }
 
@@ -133,7 +133,7 @@ class User {
 
     const resetCode = rows[0];
 
-    const emailResult = await sendEmail({
+    await sendEmail({
       to: user.email,
       subject: 'Reset your password',
       templateName: 'password-reset-email',
@@ -157,8 +157,7 @@ class User {
     }
 
     // TODO: check for expiration time?
-
-    const passwordResetResults = await db.table('user_password_resets')
+    await db.table('user_password_resets')
       .where({
         code,
       })
@@ -182,13 +181,16 @@ class User {
   }
 
   static async ownsObject({ user, object, userId }) {
-    if (!(user && typeof user.superuser === 'boolean')) {
-      user = await db.table('users').where('id', userId).first();
-    }
-    return (object.owner_id === user.id || user.superuser);
+    const userTest = (!(user && typeof user.superuser === 'boolean')) ?
+      await db.table('users').where('id', userId).first() :
+      user;
+
+    return (object.owner_id === userTest.id || userTest.superuser);
   }
 
-  static async sendVerificationEmail(user) {
+  static async sendVerificationEmail(u) {
+    const user = { ...u };
+
     const verification = {
       token: uuid(),
       user_id: user.id,
@@ -198,7 +200,7 @@ class User {
 
     user.verificationToken = rows[0].token;
 
-    return await sendEmail({
+    return sendEmail({
       to: user.email,
       subject: 'Confirm your email address',
       templateName: 'verification-email',

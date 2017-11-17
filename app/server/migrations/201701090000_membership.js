@@ -1,5 +1,5 @@
 module.exports.up = async (knex, Promise) => {
-  console.log('running migration 201701090000_membership.js');
+  console.info('running migration 201701090000_membership.js');
 
   await knex.schema.createTable('users', (table) => {
     table.uuid('id').notNullable().defaultTo(knex.raw('uuid_generate_v1mc()')).primary();

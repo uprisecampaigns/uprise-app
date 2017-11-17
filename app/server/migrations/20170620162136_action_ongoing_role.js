@@ -1,13 +1,13 @@
 
 const tableName = 'actions';
 
-exports.up = function (knex, Promise) {
-  return knex.schema.table(tableName, (table) => {
+exports.up = (knex, Promise) => (
+  knex.schema.table(tableName, (table) => {
     table.boolean('ongoing').notNullable().defaultTo(false);
-  });
-};
+  })
+);
 
-exports.down = function (knex, Promise) {
+exports.down = (knex, Promise) => {
   // Borrowed from https://github.com/tgriesser/knex/issues/1091#issuecomment-163670542
   const columnsToDrop = [
     'ongoing',

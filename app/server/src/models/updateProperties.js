@@ -12,7 +12,7 @@ const updateProperties = type => async (collection, name, id) => {
   const pluralName = pluralize(name);
 
   try {
-    const deleteResult = await db(`${pluralType}_${pluralName}`)
+    await db(`${pluralType}_${pluralName}`)
       .where(`${type}_id`, id)
       .delete();
   } catch (e) {

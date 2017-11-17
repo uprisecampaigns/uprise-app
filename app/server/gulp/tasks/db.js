@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const knex = require('knex');
-const argv = require('yargs').argv;
+const { argv } = require('yargs');
 
 const config = require('config/knexfile');
 

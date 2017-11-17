@@ -10,8 +10,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const Raven = require('raven');
 
-const LocalStrategy = require('passport-local').Strategy;
-
 const config = require('config/config.js');
 
 const app = express();
@@ -64,7 +62,7 @@ app.use(cookieParser());
 // Sessions/PassportJS/Authentication
 require('./passport.js')(passport);
 
-const sessionOptions = config.sessionOptions;
+const { sessionOptions } = config;
 
 const redisClient = redis.createClient(config.redis);
 

@@ -3,12 +3,11 @@ const moment = require('moment-timezone');
 const zipcodeToTimezone = require('zipcode-to-timezone');
 
 const Action = require('models/Action');
-const Campaign = require('models/Campaign');
 const User = require('models/User');
 
 const sendEmail = require('lib/sendEmail.js');
 
-const urls = require('config/config').urls;
+const { urls } = require('config/config');
 
 
 const getFormattedDates = ({ user, action }) => {
@@ -92,9 +91,9 @@ module.exports = {
       throw new Error('User must be logged in');
     }
 
-    const createdActions = [];
+    const actionCreations = [];
 
-    for (const item of options.data) {
+    options.data.forEach((item) => {
       // Decamelizing property names
       const input = Object.assign(...Object.keys(item).map(k => ({
         [decamelize(k)]: item[k],
@@ -102,10 +101,10 @@ module.exports = {
 
       input.owner_id = context.user.id;
 
-      const action = await Action.create(input);
+      actionCreations.push(Action.create(input));
+    });
 
-      createdActions.push(action);
-    }
+    const createdActions = await Promise.all(actionCreations);
 
     return createdActions;
   },
@@ -154,19 +153,12 @@ module.exports = {
     action.attending = await Action.attending({ actionId: action.id, userId: user.id });
 
     let actionCoordinator;
-    let campaign;
 
     // TODO: replace with more sophisticated model of "coordinator"
     try {
       actionCoordinator = await User.findOne('id', action.owner_id);
     } catch (e) {
       throw new Error(`Cannot find action coordinator: ${e.message}`);
-    }
-
-    try {
-      campaign = await Campaign.findOne('id', action.campaign_id);
-    } catch (e) {
-      throw new Error(`Cannot find matching campaign: ${e.message}`);
     }
 
     const dates = getFormattedDates({ user, action });

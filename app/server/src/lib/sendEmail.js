@@ -32,9 +32,9 @@ module.exports = function sendEmail({
         if (err) {
           reject(err);
         } else {
-          ejs.renderFile(`${config.paths.base}/views/${templateName}-html.ejs`, context, (err, htmlBody) => {
-            if (err) {
-              reject(err);
+          ejs.renderFile(`${config.paths.base}/views/${templateName}-html.ejs`, context, (renderErr, htmlBody) => {
+            if (renderErr) {
+              reject(renderErr);
             } else {
               send(textBody, htmlBody);
             }

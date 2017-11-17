@@ -24,14 +24,16 @@ module.exports = async ({
       const tag = pickTag(tags);
       if (!chosenTags.includes(tag)) {
         chosenTags.push(tag);
-        i++;
+        i += 1;
       }
     }
 
     return [...new Set(chosenTags)];
   };
 
+
   vaCampaigns.forEach((campaign) => {
+    // eslint-disable-next-line no-param-reassign
     campaign.tags = genTags(vaKeywords);
   });
 
@@ -42,21 +44,21 @@ module.exports = async ({
     level_id: levels[1].id,
   }));
 
-  const campaignsLevels = await knex('campaigns_levels').insert(vaCampaignsLevelsData, ['id']);
+  await knex('campaigns_levels').insert(vaCampaignsLevelsData, ['id']);
 
   const vaCampaignsTypesData = campaigns.map(campaign => ({
     campaign_id: campaign.id,
     type_id: types[0].id,
   }));
 
-  const campaignsTypes = await knex('campaigns_types').insert(vaCampaignsTypesData, ['id']);
+  await knex('campaigns_types').insert(vaCampaignsTypesData, ['id']);
 
   const vaCampaignsIssueAreasData = campaigns.map(campaign => ({
     campaign_id: campaign.id,
     issue_area_id: issueAreas[Math.floor(Math.random(0, 9) * 10)].id,
   }));
 
-  const campaignIssueAreas = await knex('campaigns_issue_areas').insert(vaCampaignsIssueAreasData, ['id']);
+  await knex('campaigns_issue_areas').insert(vaCampaignsIssueAreasData, ['id']);
 
   return {
     campaigns, levels, issueAreas, types,

@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 const initProperties = require('./initial-data/properties.js');
 const initUsers = require('./initial-data/users.js');

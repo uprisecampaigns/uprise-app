@@ -27,8 +27,7 @@ const getAction = async (id) => {
 module.exports = async (app) => {
   app.get('/api/calendar-links/google/:id', async (req, res, next) => {
     try {
-      const id = req.params.id;
-
+      const { id } = req.params;
       const { action, dates, location } = await getAction(id);
 
       // FROM: http://stackoverflow.com/a/21653600/1787596
@@ -36,6 +35,7 @@ module.exports = async (app) => {
       // https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1
       const googleCalendarUrl = 'https://www.google.com/calendar/render?action=TEMPLATE' +
         `&text=${encodeURIComponent(action.title)}` +
+        // eslint-disable-next-line max-len
         `&dates=${encodeURIComponent(dates.startTime.toISOString().replace(/-|:|\.\d\d\d/g, ''))}/${encodeURIComponent(dates.endTime.toISOString().replace(/-|:|\.\d\d\d/g, ''))}` +
         `&details=${encodeURIComponent(action.description)}` +
         `&location=${encodeURIComponent(location)}`;
@@ -48,8 +48,7 @@ module.exports = async (app) => {
 
   app.get('/api/calendar-links/ics/:id', async (req, res, next) => {
     try {
-      const id = req.params.id;
-
+      const { id } = req.params;
       const { action, dates, location } = await getAction(id);
 
       const cal = ical({
@@ -57,7 +56,7 @@ module.exports = async (app) => {
         domain: os.hostname(),
       });
 
-      const icalEvent = cal.createEvent({
+      cal.createEvent({
         start: dates.startTime.toDate(),
         end: dates.endTime.toDate(),
         summary: action.title,

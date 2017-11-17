@@ -1,7 +1,5 @@
 const validator = require('validator');
-const assert = require('assert');
 const url = require('url');
-const uuid = require('uuid/v4');
 const moment = require('moment-timezone');
 const knex = require('knex');
 const knexConfig = require('config/knexfile.js');
@@ -37,6 +35,7 @@ class Action {
     const actions = await db.table('actions').where(...args).orderBy('slug', 'asc');
 
     for (const action of actions) {
+      // eslint-disable-next-line no-await-in-loop
       Object.assign(action, await this.details(action));
     }
 
@@ -83,29 +82,31 @@ class Action {
 
   static async signup({ userId, actionId }) {
     if (await this.attending({ userId, actionId })) {
-      return await Action.findOne({ id: actionId });
+      return Action.findOne({ id: actionId });
     }
-    const result = await db('action_signups')
+
+    await db('action_signups')
       .insert({
         user_id: userId,
         action_id: actionId,
       });
 
-    return await Action.findOne({ id: actionId });
+    return Action.findOne({ id: actionId });
   }
 
   static async cancelSignup({ userId, actionId }) {
     if (!await this.attending({ userId, actionId })) {
-      return await Action.findOne({ id: actionId });
+      return Action.findOne({ id: actionId });
     }
-    const result = await db('action_signups')
+
+    await db('action_signups')
       .where({
         user_id: userId,
         action_id: actionId,
       })
       .del();
 
-    return await Action.findOne({ id: actionId });
+    return Action.findOne({ id: actionId });
   }
 
   static async signedUpVolunteers({ actionId }) {
@@ -122,9 +123,11 @@ class Action {
       .select(['actions.id as id', 'actions.title as title', 'actions.campaign_id as campaign_id',
         db.raw('to_char(actions.start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
         db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
-        'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
+        'actions.tags as tags', 'actions.owner_id as owner_id',
+        'actions.slug as slug', 'actions.description as description',
         'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
-        'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing'])
+        'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes',
+        'actions.virtual as virtual', 'actions.ongoing as ongoing'])
       .where('action_signups.user_id', userId)
       .andWhere('actions.deleted', false)
       .innerJoin('actions', 'action_signups.action_id', 'actions.id');
@@ -140,8 +143,12 @@ class Action {
     const defaultPageLimit = 20;
     const milesInMeter = 0.000621371192237;
     const defaultTargetZipcode = config.geography.defaultZipcode;
-    const targetZipcode = (typeof search.targetZipcode === 'string' && validator.isNumeric(search.targetZipcode) && search.targetZipcode.length === 5) ?
-      search.targetZipcode : defaultTargetZipcode;
+    const hasInputZipcode = (typeof search.targetZipcode === 'string' &&
+      validator.isNumeric(search.targetZipcode) &&
+      search.targetZipcode.length === 5);
+
+    const targetZipcode = hasInputZipcode ? search.targetZipcode : defaultTargetZipcode;
+
     const distanceQueryString = `round(ST_DISTANCE(zipcodes.location, target_zip.location) * ${milesInMeter})`;
 
     const searchQuery = db.from('actions')
@@ -149,11 +156,14 @@ class Action {
         db.raw('to_char(actions.start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
         db.raw('to_char(actions.end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
         'actions.tags as tags', 'actions.owner_id as owner_id', 'actions.slug as slug', 'actions.description as description',
-        'actions.location_name as location_name', 'actions.street_address as street_address', 'actions.street_address2 as street_address2',
-        'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes', 'actions.virtual as virtual', 'actions.ongoing as ongoing',
+        'actions.location_name as location_name', 'actions.street_address as street_address',
+        'actions.street_address2 as street_address2',
+        'actions.city as city', 'actions.state as state', 'actions.zipcode as zipcode', 'actions.location_notes as location_notes',
+        'actions.virtual as virtual', 'actions.ongoing as ongoing',
         db.raw(`${distanceQueryString} as distance`),
         db.raw('to_char(actions.created_at at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as created_at'),
-        'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
+        'campaigns.title as campaign_title', 'campaigns.id as campaign_id', 'campaigns.slug as campaign_slug',
+        'campaigns.profile_image_url as campaign_profile_image_url'])
       .where('actions.deleted', false)
       .andWhere('campaigns.deleted', false)
       .innerJoin('campaigns', 'actions.campaign_id', 'campaigns.id')
@@ -170,7 +180,7 @@ class Action {
             .as('campaign_tags');
 
           if (search.ids) {
-            qb.andWhere(function () {
+            qb.andWhere(function idQueryBuilder() {
               search.ids.forEach((id) => {
                 this.orWhere('actions.id', id);
               });
@@ -178,7 +188,7 @@ class Action {
           }
 
           if (search.slugs) {
-            qb.andWhere(function () {
+            qb.andWhere(function slugQueryBuilder() {
               search.slugs.forEach((slug) => {
                 this.orWhere('actions.slug', slug);
               });
@@ -186,7 +196,7 @@ class Action {
           }
 
           if (search.campaignIds) {
-            qb.andWhere(function () {
+            qb.andWhere(function campaignIdQueryBuilder() {
               search.campaignIds.forEach((id) => {
                 this.orWhere('campaigns.id', id);
               });
@@ -195,7 +205,7 @@ class Action {
 
           if (search.tags) {
             search.tags.forEach((tag) => {
-              qb.andWhere(function () {
+              qb.andWhere(function tagQueryBuilder() {
                 const tagQuery = db.select('id')
                   .distinct()
                   .from(tags)
@@ -223,7 +233,7 @@ class Action {
 
           if (search.keywords) {
             search.keywords.forEach((keyword) => {
-              qb.andWhere(function () {
+              qb.andWhere(function keywordQueryBuilder() {
                 const strictStringComparator = 'ILIKE ?';
                 const looseStringComparator = '% ?';
 
@@ -270,7 +280,7 @@ class Action {
           }
 
           if (search.campaignNames) {
-            qb.andWhere(function () {
+            qb.andWhere(function campaignNameQueryBuilder() {
               search.campaignNames.forEach((campaignName) => {
                 this.orWhere(db.raw('campaigns.title %> ?', campaignName));
               });
@@ -279,11 +289,7 @@ class Action {
 
 
           if (search.activities) {
-            qb.andWhere(function () {
-              const activities = db('activities')
-                .select('id', 'title', 'description')
-                .as('activities');
-
+            qb.andWhere(function activityQueryBuilder() {
               search.activities.forEach((activity) => {
                 const activityQuery = db.select('action_id')
                   .distinct()
@@ -297,7 +303,7 @@ class Action {
           }
 
           if (search.dates) {
-            qb.andWhere(function () {
+            qb.andWhere(function dateQueryBuilder() {
               if (search.dates.onDate) {
                 this.andWhere(db.raw("(?::timestamptz, ?::timestamptz + interval '1 day') OVERLAPS (actions.start_time, actions.end_time)", [
                   search.dates.onDate, search.dates.onDate,
@@ -320,7 +326,7 @@ class Action {
 
           // TODO: Clean this up
           if (search.times) {
-            qb.andWhere(function () {
+            qb.andWhere(function timeQueryBuilder() {
               search.times.forEach((time) => {
                 if (time.toLowerCase() === 'saturdays') {
                   this.orWhere(db.raw('EXTRACT (DOW FROM actions.start_time::date) = 6'));
@@ -335,17 +341,16 @@ class Action {
           }
 
           if (search.geographies) {
-            qb.andWhere(function () {
+            qb.andWhere(function geographyQueryBuilder() {
               search.geographies.forEach((geography) => {
                 if (typeof geography.virtual === 'boolean' && geography.virtual) {
                   this.orWhere('actions.virtual', geography.virtual);
                 } else {
-                  const distance = geography.distance || 10; // default to 10 miles
-                  const zipcode = geography.zipcode;
+                  const { distance = 10, zipcode } = geography; // default to 10 miles
 
                   // TODO: It would be nice to refactor some of this out into knex language
                   const distanceQuery = db.select('id')
-                    .from(function () {
+                    .from(function locationQueryBuilder() {
                       this.select('actions.id', db.raw('ST_DISTANCE(actions.location, target_zip.location) * ? AS distance', milesInMeter))
                         .as('distances')
                         .from(db.raw(`
@@ -364,11 +369,6 @@ class Action {
         }
       });
 
-    const dateTimeSearch = (queryObj) => {
-
-
-    };
-
     const searchPageQuery = searchQuery.clone().modify((qb) => {
       const sortBy = search.sortBy || {
         name: 'distance',
@@ -385,23 +385,23 @@ class Action {
 
       if (search.cursor) {
         if (sortBy.name === 'campaignName') {
-          qb.andWhere(function () {
+          qb.andWhere(function campaignNameFilter() {
             this.orWhere('campaigns.title', (sortBy.descending) ? '<' : '>', search.cursor.campaign_name);
-            this.orWhere(function () {
+            this.orWhere(function timeAndCampaignNameFilter() {
               this.andWhere('campaigns.title', '=', search.cursor.campaign_name);
               this.andWhere('actions.created_at', '<', db.raw('?::timestamptz', search.cursor.created_at));
             });
           });
         } else if (sortBy.name === 'date') {
-          qb.andWhere(function () {
-            if (typeof search.cursor.start_type !== undefined && moment(search.cursor.start_time).isValid()) {
+          qb.andWhere(function cursorTimeFilter() {
+            if (typeof search.cursor.start_type !== 'undefined' && moment(search.cursor.start_time).isValid()) {
               this.orWhere(db.raw('?::timestamptz', search.cursor.start_time), (sortBy.descending) ? '>' : '<', db.raw('actions.start_time'));
-              this.orWhere(function () {
+              this.orWhere(function timeandCreatedAtFilter() {
                 this.andWhere(db.raw('?::timestamptz', search.cursor.start_time), '=', db.raw('actions.start_time'));
                 this.andWhere('actions.created_at', '<', db.raw('?::timestamptz', search.cursor.created_at));
               });
             } else {
-              this.orWhere(function () {
+              this.orWhere(function createdAtFilter() {
                 this.whereNull('actions.start_time');
                 this.andWhere('actions.created_at', '<', db.raw('?::timestamptz', search.cursor.created_at));
               });
@@ -409,9 +409,9 @@ class Action {
             }
           });
         } else if (sortBy.name === 'distance') {
-          qb.andWhere(function () {
+          qb.andWhere(function distanceFilter() {
             this.orWhere(db.raw(distanceQueryString), (sortBy.descending) ? '<' : '>', search.cursor.distance);
-            this.orWhere(function () {
+            this.orWhere(function createdAtFilter() {
               this.andWhere(db.raw(distanceQueryString), '=', search.cursor.distance);
               this.andWhere('actions.created_at', '<', db.raw('?::timestamptz', search.cursor.created_at));
             });
@@ -433,21 +433,22 @@ class Action {
     const total = (await searchTotalsQuery)[0].count;
     const actionResults = await searchPageQuery;
 
-    actionResults.forEach((action) => {
-      action.campaign = {
+    const detailedResults = actionResults.map(action => ({
+      ...action,
+      campaign: {
         id: action.campaign_id,
         title: action.campaign_title,
         slug: action.campaign_slug,
         profile_image_url: action.campaign_profile_image_url,
-      };
-    });
+      },
+    }));
 
-    const cursor = actionResults.length ? [...actionResults].pop() : undefined;
+    const cursor = detailedResults.length ? [...detailedResults].pop() : undefined;
 
     return {
       total,
       targetZipcode,
-      actions: actionResults,
+      actions: detailedResults,
       cursor,
     };
   }
@@ -484,7 +485,7 @@ class Action {
       .modify((qb) => {
         if (search) {
           if (search.keywords) {
-            qb.andWhere(function () {
+            qb.andWhere(function titleQueryBuilder() {
               search.keywords.forEach((keyword) => {
                 this.orWhere(db.raw('title %> ?', keyword));
                 this.orWhere(db.raw('description %> ?', keyword));
@@ -557,19 +558,19 @@ class Action {
         try {
           const { activities, ...newInput } = input;
 
-          const actionResult = await db('actions')
+          const updateResult = await db('actions')
             .where('id', newInput.id)
             .update(newInput, [
               'id', 'title', 'internal_title', 'slug', 'description', 'tags', 'owner_id', 'campaign_id',
             ]);
 
-          const action = actionResult[0];
+          const actionResult = updateResult[0];
 
           if (activities && activities.length) {
-            await updateProperties(activities, 'activity', action.id);
+            await updateProperties(activities, 'activity', actionResult.id);
           }
 
-          return Object.assign({}, action, await this.details(action));
+          return Object.assign({}, actionResult, await this.details(actionResult));
         } catch (e) {
           throw new Error(`Cannot edit action: ${e.message}`);
         }

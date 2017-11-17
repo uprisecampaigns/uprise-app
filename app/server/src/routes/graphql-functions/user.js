@@ -57,9 +57,10 @@ module.exports = {
     const { token } = data;
 
     try {
-      const result = await User.verifyEmail({ token });
+      await User.verifyEmail({ token });
       return true;
     } catch (err) {
+      console.error(`Error confirming email: ${err}`);
       return false;
     }
   },
@@ -69,7 +70,7 @@ module.exports = {
       throw new Error('User must be logged in');
     }
 
-    return await User.sendVerificationEmail(context.user);
+    return User.sendVerificationEmail(context.user);
   },
 
 };
