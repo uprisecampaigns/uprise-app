@@ -25,6 +25,7 @@ before_install:
 
 script:
   - docker-compose -f docker-compose.yml exec web npm run test
+  - docker-compose -f docker-compose.yml exec web npm run lint
 
 after_success:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
