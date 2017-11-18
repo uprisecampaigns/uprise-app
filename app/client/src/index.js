@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'raf/polyfill';
 import { ApolloProvider } from 'react-apollo';
 
 // eslint-disable-next-line import/extensions
