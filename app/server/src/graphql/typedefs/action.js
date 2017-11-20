@@ -184,6 +184,7 @@ module.exports = function () {
     ActivityResult, ActionResult, ActionSearchResult,
     ActionSearchInput, ActionCursorInput, ActionQueryInput,
     DeleteActionInput, CreateActionInput, EditActionInput,
+    ShiftResult, ShiftInput,
     ActionQueries, ActionMutations,
   ];
 };
