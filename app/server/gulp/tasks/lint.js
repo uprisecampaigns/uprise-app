@@ -17,7 +17,7 @@ const eslintConfig = {
 const isFixed = file => file.eslint != null && file.eslint.fixed;
 
 
-gulp.task('cached-lint', () => gulp.src(lintSrcPath)
+gulp.task('lint', () => gulp.src(lintSrcPath)
   .pipe(cache('eslint'))
   // Only uncached and changed files past this point
   .pipe(eslint(eslintConfig))
@@ -30,8 +30,8 @@ gulp.task('cached-lint', () => gulp.src(lintSrcPath)
     }
   })));
 
-gulp.task('lint-watch', ['cached-lint'], () =>
-  gulp.watch(lintSrcPath, ['cached-lint'], (event) => {
+gulp.task('lint-watch', ['lint'], () =>
+  gulp.watch(lintSrcPath, ['lint'], (event) => {
     if (event.type === 'deleted' && cache.caches.eslint) {
       // remove deleted files from cache
       delete cache.caches.eslint[event.path];
