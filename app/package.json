@@ -11,9 +11,9 @@
     "db:migrate:rollback": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:rollback",
     "db:migrate:latest": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:latest",
     "db:seed:run": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:seed:run",
-    "lint-watch": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js cached-lint-watch",
-    "lint": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js cached-lint",
-    "lint-fix": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js cached-lint --fix"
+    "lint-watch": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js lint-watch",
+    "lint": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js lint",
+    "lint-fix": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js lint --fix"
   },
   "dependencies": {
     "apollo-client": "^1.0.0-rc.2",
