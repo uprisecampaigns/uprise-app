@@ -24,6 +24,8 @@ const CampaignResult = `
     zipcode_list: [String]
     phone_number: String
     website_url: String
+    public_url: String
+    dashboard_url: String
     profile_image_url: String
     profile_subheader: String
     legal_org: Boolean

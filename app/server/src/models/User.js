@@ -11,11 +11,53 @@ const db = knex(knexConfig[process.env.NODE_ENV]);
 const sendEmail = require('lib/sendEmail.js');
 
 class User {
-  static findOne(...args) {
-    return db.table('users').where(...args).first(
-      'id', 'first_name', 'last_name', 'email',
-      'phone_number', 'zipcode', 'email_confirmed',
-    );
+  static findOne({ selections = [], args }) {
+    // If one of the args has a property name 'id', we really want it to
+    // refer to 'users.id'
+    const newArgs = Object.assign(...Object.keys(args).map((k) => {
+      if (k === 'id') {
+        return { 'users.id': args[k] };
+      }
+      return { [k]: args[k] };
+    }));
+
+    const allSelections = [
+      ...selections,
+      'users.id as id', 'first_name', 'last_name', 'user_profiles.description as description',
+      'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
+    ];
+
+    return db.table('users')
+      .leftJoin('users_activities', 'users_activities.user_id', 'users.id')
+      .leftJoin('activities', 'users_activities.activity_id', 'activities.id')
+      .leftJoin('user_profiles', 'user_profiles.user_id', 'users.id')
+      .where(newArgs)
+      .first(...allSelections);
+  }
+
+  static search(search) {
+    const searchQuery = db('users')
+      .leftJoin('users_activities', 'users_activities.user_id', 'users.id')
+      .leftJoin('activities', 'users_activities.activity_id', 'activities.id')
+      .leftJoin('user_profiles', 'user_profiles.user_id', 'users.id')
+      .select([
+        'first_name', 'last_name', 'user_profiles.description as description',
+        'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
+        'activities',
+      ])
+      .modify((qb) => {
+        if (search) {
+          if (search.names) {
+            qb.andWhere(function nameQueryBuilder() {
+              search.names.forEach((name) => {
+                this.orWhere(db.raw('first_name || \' \' || last_name %> ?', name));
+              });
+            });
+          }
+        }
+      });
+
+    return searchQuery;
   }
 
   static async create(user) {
@@ -26,19 +68,31 @@ class User {
     }
 
     const rows = await db.table('users').insert(user, ['id', 'email']);
+    await db.table('user_profiles').insert({ user_id: user.id });
 
     Object.assign(userInfo, rows[0]);
     return userInfo;
   }
 
   static async edit(options) {
+    const {
+      profile_image_url, description,
+      subheader, activities, ...userArgs
+    } = options;
+
     const userResult = await db('users')
-      .where('id', options.id)
-      .update(options, [
+      .where('id', userArgs.id)
+      .update(userArgs, [
         'id', 'first_name', 'last_name', 'email', 'phone_number', 'zipcode', 'email_confirmed',
       ]);
 
-    return userResult[0];
+    const userProfileResult = await db('user_profiles')
+      .where('user_id', userArgs.id)
+      .update({ profile_image_url, description, subheader }, [
+        'profile_image_url', 'description', 'subheader',
+      ]);
+
+    return { ...userResult[0], ...userProfileResult[0] };
   }
 
   static getUserProfile(id) {

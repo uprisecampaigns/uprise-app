@@ -11,14 +11,21 @@ module.exports = {
       }
 
       const user = await User.findOne({
-        id: context.user.id,
+        args: { id: context.user.id },
+        selections: [
+          'users.id as id', 'first_name', 'last_name', 'email',
+          'phone_number', 'zipcode', 'email_confirmed',
+          'user_profiles.subheader as subheader', 'user_profiles.description as description',
+          'user_profiles.profile_image_url as profile_image_url', 'activities',
+        ],
       });
 
       return user;
     },
 
     emailAvailable: async (root, args, context) => {
-      const result = await User.findOne('email', args.email);
+      const result = await User.findOne({ args: { email: args.email } });
+
       let available = true;
 
       if (result) {
@@ -26,6 +33,25 @@ module.exports = {
       }
 
       return available;
+    },
+
+    user: async (root, args, context) => {
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const user = await User.findOne({ args: args.search });
+
+      return user;
+    },
+
+    users: async (root, { search }, context) => {
+      if (!context.user) {
+        throw new Error('User must be logged in');
+      }
+
+      const users = await User.search(search);
+      return users;
     },
   },
 

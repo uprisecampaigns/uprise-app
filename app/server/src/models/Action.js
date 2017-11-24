@@ -465,7 +465,7 @@ class Action {
 
       [details.campaign, details.owner, details.activities] = await Promise.all([
         Campaign.findOne('id', action.campaign_id),
-        User.findOne('id', action.owner_id),
+        User.findOne({ args: { id: action.owner_id } }),
         activitiesQuery,
       ]);
 

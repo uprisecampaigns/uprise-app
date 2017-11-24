@@ -258,6 +258,20 @@ class Campaign {
     return results;
   }
 
+  static async findActions(campaignId) {
+    const actionsQuery = db('actions')
+      .select(['id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing', 'campaign_id', 'owner_id', 'description',
+        db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
+        db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
+        'location_name', 'street_address', 'street_address2',
+        'city', 'state', 'zipcode', 'location_notes', 'virtual', 'ongoing',
+      ])
+      .where('campaign_id', campaignId)
+      .andWhere('deleted', false);
+
+    return actionsQuery;
+  }
+
   static async details(campaign, quick = false) {
     const details = {};
 
@@ -273,7 +287,7 @@ class Campaign {
         .andWhere('deleted', false);
 
       [details.owner, details.actions] = await Promise.all([
-        User.findOne('id', campaign.owner_id),
+        User.findOne({ args: { id: campaign.owner_id } }),
         actionsQuery,
       ]);
     }

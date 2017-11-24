@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars, func-names */
+const { ActivityResult } = require('./action.js');
+const { GeographySearchInput } = require('./searchInputs.js');
 
 const UserResult = `
   type UserResult {
@@ -9,6 +11,10 @@ const UserResult = `
     email: String
     zipcode: String
     email_confirmed: Boolean
+    description: String
+    profile_image_url: String
+    subheader: String
+    activities: [ActivityResult]
   }
 `;
 
@@ -22,6 +28,25 @@ const EditAccountInput = `
     city: String
     state: String
     zipcode: String
+    activities: [String]
+    description: String
+    profileImageUrl: String
+    subheader: String
+  }
+`;
+
+const UserQueryInput = `
+  input UserQueryInput {
+    id: String
+  }
+`;
+
+const UserSearchInput = `
+  input UserSearchInput {
+    names: [String]
+    keywords: [String]
+    tags: [String]
+    geographies: [GeographySearchInput]
   }
 `;
 
@@ -29,6 +54,8 @@ const UserQueries = `
   extend type Query {
     me: UserResult
     emailAvailable(email: String): Boolean
+    user(search: UserQueryInput): UserResult
+    users(search: UserSearchInput): [UserResult]
   }
 `;
 
@@ -43,6 +70,7 @@ const UserMutations = `
 module.exports = function () {
   return [
     UserResult, EditAccountInput,
+    UserQueryInput, UserSearchInput,
     UserMutations, UserQueries,
   ];
 };

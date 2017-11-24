@@ -5,12 +5,15 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
+import ImageUploader from 'components/ImageUploader';
+
 import s from 'styles/Form.scss';
 
 
 class AccountForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
+    userId: PropTypes.string.isRequired,
     formSubmit: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
@@ -25,7 +28,7 @@ class AccountForm extends PureComponent {
 
   render() {
     const {
-      data, formSubmit, errors, saving,
+      data, formSubmit, errors, saving, userId,
       handleInputChange, cancel, submitText,
     } = this.props;
 
@@ -47,6 +50,7 @@ class AccountForm extends PureComponent {
                     fullWidth
                   />
                 </div>
+
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Last"
@@ -56,6 +60,42 @@ class AccountForm extends PureComponent {
                     fullWidth
                   />
                 </div>
+
+                <div className={s.textFieldContainer}>
+                  <TextField
+                    floatingLabelText="Title"
+                    value={data.subheader}
+                    onChange={(event) => { handleInputChange(event, 'subheader', event.target.value); }}
+                    errorText={errors.subheaderErrorText}
+                    fullWidth
+                  />
+                </div>
+
+                <div className={s.textareaContainer}>
+                  <TextField
+                    name="description"
+                    hintText="Write a short description of yourself"
+                    value={data.description}
+                    multiLine
+                    rows={4}
+                    onChange={(event) => { handleInputChange(event, 'description', event.target.value); }}
+                    errorText={errors.descriptionErrorText}
+                    fullWidth
+                    underlineShow={false}
+                  />
+                </div>
+
+                <ImageUploader
+                  onChange={(imgSrc) => { handleInputChange(undefined, 'profileImageUrl', imgSrc); }}
+                  imageSrc={data.profileImageUrl}
+                  imageHeight={800}
+                  imageWidth={800}
+                  imageUploadOptions={{
+                    collectionName: 'users',
+                    collectionId: userId,
+                    filePath: 'profile',
+                  }}
+                />
 
                 <div className={s.textFieldContainer}>
                   <TextField

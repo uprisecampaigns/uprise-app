@@ -39,7 +39,8 @@ module.exports = (app, passport) => {
   app.post('/api/checkEmailAvailability', async (req, res) => {
     try {
       const { email } = req.body;
-      const result = await User.findOne('email', email);
+      const result = await User.findOne({ args: { email } });
+
       let available = true;
 
       if (result) {

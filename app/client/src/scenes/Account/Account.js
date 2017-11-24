@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux';
 import camelCase from 'camelcase';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -48,6 +49,9 @@ class Account extends Component {
         phoneNumber: '',
         zipcode: '',
         email: '',
+        subheader: '',
+        description: '',
+        profileImageUrl: '',
       },
     };
 
@@ -90,6 +94,8 @@ class Account extends Component {
     zipcodeErrorText: null,
     phoneNumberErrorText: null,
     emailErrorText: null,
+    subheaderErrorText: null,
+    descriptionErrorText: null,
   }
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender with previous form data
@@ -158,7 +164,7 @@ class Account extends Component {
             validators={validators}
             submit={formSubmit}
             submitText="Save Changes"
-            user={user}
+            userId={user.id}
           />
 
         </div>
@@ -169,6 +175,7 @@ class Account extends Component {
 }
 
 export default compose(
+  connect(),
   graphql(MeQuery, {
     options: ownProps => ({
       fetchPolicy: 'cache-and-network',

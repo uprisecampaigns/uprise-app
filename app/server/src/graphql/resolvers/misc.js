@@ -52,6 +52,10 @@ module.exports = {
         if (!ownsObject) {
           throw new Error('User must be owner of campaign');
         }
+      } else if (collectionName === 'users') {
+        if (context.user.id !== collectionId) {
+          throw new Error('Cannot upload profile picture to a different user\'s profile');
+        }
       } else {
         throw new Error(`collectionName: ${collectionName} not recognized`);
       }

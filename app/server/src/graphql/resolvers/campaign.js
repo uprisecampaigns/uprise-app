@@ -126,7 +126,7 @@ module.exports = {
 
       // TODO: replace with more sophisticated model of "coordinator"
       try {
-        campaignCoordinator = await User.findOne('id', campaign.owner_id);
+        campaignCoordinator = await User.findOne({ args: { id: campaign.owner_id } });
       } catch (e) {
         throw new Error(`Cannot find campaign coordinator: ${e.message}`);
       }
@@ -167,4 +167,16 @@ module.exports = {
       return campaign;
     },
   },
+
+  // TODO: This is the more canonical version of graphql resolvers, BUT
+  // it results in a handful of problems including:
+  // - multiple round trips to the database (could be solved with something like http://join-monster.readthedocs.io/en/latest/)
+  // - other pieces of server code are already calling Campaign.findOne and they need the details from those queries
+  //   which could be solved with replacing that code with graphql queries
+  // CampaignResult: {
+  //   owner: (campaign) => User.findOne({ args: { id: campaign.owner_id } }),
+  //   actions: (campaign) => Campaign.findActions(campaign.id),
+  //   public_url: (campaign) => url.resolve(config.urls.client, `campaign/${campaign.slug}`),
+  //   dashboard_url: (campaign) => url.resolve(config.urls.client, `organize/${campaign.slug}`),
+  // },
 };

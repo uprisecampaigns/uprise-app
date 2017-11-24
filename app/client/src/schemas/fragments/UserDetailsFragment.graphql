@@ -6,4 +6,7 @@ fragment UserDetails on UserResult {
   zipcode
   phone_number
   email_confirmed
+  subheader
+  description
+  profile_image_url
 }
