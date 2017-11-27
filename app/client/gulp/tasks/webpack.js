@@ -138,6 +138,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
           loader: 'babel-loader',
           include: [
             path.resolve(config.publicRoot),
+            path.resolve(config.nodeModules, 'camelcase'),
           ],
           query: {
             cacheDirectory: true,
