@@ -138,10 +138,11 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
           loader: 'babel-loader',
           include: [
             path.resolve(config.publicRoot),
+            path.resolve(config.nodeModules, 'camelcase'),
           ],
           query: {
             cacheDirectory: true,
-            presets: ['stage-3', 'react'],
+            presets: ['es2015', 'react', 'stage-3'],
             plugins: ['syntax-dynamic-import', 'transform-runtime', 'transform-class-properties']
           }
         },
