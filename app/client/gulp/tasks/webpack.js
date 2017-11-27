@@ -142,7 +142,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
           ],
           query: {
             cacheDirectory: true,
-            presets: ['stage-3', 'react'],
+            presets: ['es2015', 'react', 'stage-3'],
             plugins: ['syntax-dynamic-import', 'transform-runtime', 'transform-class-properties']
           }
         },
