@@ -41,8 +41,6 @@ class ManageActionSettings extends React.PureComponent {
   editAction = async (data) => {
     const actionData = { ...data, id: this.props.actionId, campaignId: this.props.campaignId };
 
-    actionData.activities = actionData.activities.map(a => a.id);
-
     try {
       const results = await this.props.editActionMutation({
         variables: {

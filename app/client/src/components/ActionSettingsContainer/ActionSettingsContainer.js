@@ -172,7 +172,12 @@ class ActionSettingsContainer extends Component {
     } else if (stepIndex === 1) {
       this.actionProfileForm.wrappedInstance.formSubmit();
     } else if (stepIndex === 2) {
-      this.props.submit(formData);
+      const submitData = {
+        ...formData,
+        activities: formData.activities.map(a => a.id),
+      };
+
+      this.props.submit(submitData);
     }
   };
 
