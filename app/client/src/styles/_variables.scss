@@ -7,6 +7,8 @@ $dark-teal: #0a3b42;
 $dark-blue: #0e4053;
 $azure: #32779a;
 $black: #000;
+$light-grey: lighten($black, 90%);
+$grey: lighten($black, 50%);
 $white: #fff;
 
 // Fonts

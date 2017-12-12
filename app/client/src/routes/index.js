@@ -53,6 +53,9 @@ export default {
     // /campaign/
     require('./campaign').default,
 
+    // /user/
+    require('./userProfile').default,
+
     // /help/
     require('./searchDefinitions').default,
 

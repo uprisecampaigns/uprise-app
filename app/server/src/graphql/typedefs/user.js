@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars, func-names */
-const { ActivityResult } = require('./action.js');
+const { ActivityResult, ActionResult } = require('./action.js');
+const { CampaignResult } = require('./campaign.js');
 const { GeographySearchInput } = require('./searchInputs.js');
 
 const UserResult = `
@@ -10,11 +11,15 @@ const UserResult = `
     phone_number: String
     email: String
     zipcode: String
+    city: String
+    state: String
     email_confirmed: Boolean
     description: String
     profile_image_url: String
     subheader: String
     activities: [ActivityResult]
+    actions: [ActionResult]
+    campaigns: [CampaignResult]
   }
 `;
 

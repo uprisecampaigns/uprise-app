@@ -1,3 +1,6 @@
+#import "../fragments/ActionBasicInfoFragment.graphql"
+#import "../fragments/CampaignBasicInfoFragment.graphql"
+
 fragment UserDetails on UserResult {
   id
   first_name
@@ -9,4 +12,19 @@ fragment UserDetails on UserResult {
   subheader
   description
   profile_image_url
+  city
+  state
+  activities {
+    id
+    title
+    description
+  }
+
+  campaigns {
+    ...CampaignBasicInfo
+  }
+
+  actions {
+    ...ActionBasicInfo
+  }
 }

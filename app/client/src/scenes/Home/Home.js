@@ -8,6 +8,8 @@ import { setPage } from 'actions/PageNavActions';
 import SearchActions from 'components/SearchActions';
 import SearchCampaigns from 'components/SearchCampaigns';
 
+import inkBarStyle from 'styles/tabInkBarStyle';
+
 import s from 'styles/Home.scss';
 
 
@@ -27,15 +29,6 @@ class Home extends Component {
 
   render() {
     const activeTab = this.props.page;
-
-    // Too difficult to override in css :/
-    const inkBarStyle = {
-      backgroundColor: '#333',
-      width: '35%',
-      height: '3px',
-      marginLeft: '7.5%',
-      marginBottom: '0px',
-    };
 
     return (
       <div className={s.outerContainer}>

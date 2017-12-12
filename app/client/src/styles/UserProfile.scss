@@ -1,0 +1,53 @@
+@import '~styles/variables';
+@import '~styles/nav';
+@import '~styles/buttons';
+@import '~styles/modals';
+@import '~styles/tabs';
+
+.userProfileContainer {
+  display: flex;
+  min-height: 100vh;
+}
+
+.leftContent {
+  flex: 1;
+  background-color: $azure;
+  color: $white;
+  font-weight: 400;
+  text-align: center;
+}
+
+.centerContent {
+  flex: 2;
+  background-color: $light-grey;
+  padding: 5%;
+
+  .infoBox {
+    background-color: $white;
+    border: 1px solid $grey;
+  }
+}
+
+.rightContent {
+  flex: 1;
+  border-right: 1px solid $grey;
+}
+
+.nameHeader {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+.userSubheader {
+  margin: 1rem 0;
+}
+
+.userDescription {
+  margin: 1rem 0;
+}
+
+.profileImage {
+  margin-top: 2rem;
+  border-radius: 50%;
+  max-width: 60%;
+}
