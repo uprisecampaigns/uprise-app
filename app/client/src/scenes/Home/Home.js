@@ -8,10 +8,16 @@ import { setPage } from 'actions/PageNavActions';
 import SearchActions from 'components/SearchActions';
 import SearchCampaigns from 'components/SearchCampaigns';
 
-import inkBarStyle from 'styles/tabInkBarStyle';
-
 import s from 'styles/Home.scss';
 
+// Too difficult to override in css :/
+const inkBarStyle = {
+  backgroundColor: '#333',
+  width: '35%',
+  height: '3px',
+  marginLeft: '7.5%',
+  marginBottom: '0px',
+};
 
 class Home extends Component {
   static propTypes = {
