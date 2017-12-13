@@ -5,6 +5,8 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
+import togglesList from 'lib/togglesList';
+
 import ImageUploader from 'components/ImageUploader';
 
 import s from 'styles/Form.scss';
@@ -20,6 +22,8 @@ class AccountForm extends PureComponent {
     saving: PropTypes.bool,
     submitText: PropTypes.string.isRequired,
     errors: PropTypes.object.isRequired,
+    handleToggle: PropTypes.func.isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   static defaultProps = {
@@ -28,9 +32,19 @@ class AccountForm extends PureComponent {
 
   render() {
     const {
-      data, formSubmit, errors, saving, userId,
-      handleInputChange, cancel, submitText,
+      data, formSubmit, errors, saving, userId, activities,
+      handleInputChange, cancel, submitText, handleToggle,
     } = this.props;
+
+    const activitiesTogglesList = togglesList({
+      collection: activities,
+      selectedCollection: data.activities.map(a => a.id),
+      collectionName: 'activities',
+      keyPropName: 'id',
+      displayPropName: 'description',
+      containerClassName: s.listItem, // TODO: right className?
+      handleToggle,
+    });
 
     return (
       <div className={s.outerContainer}>
@@ -135,6 +149,10 @@ class AccountForm extends PureComponent {
                     label="Cancel"
                   />
                 </div>
+
+                <div className={s.sectionLabel}>Activities</div>
+
+                { activitiesTogglesList }
 
                 { saving ? (
 

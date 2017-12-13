@@ -19,6 +19,7 @@ import Link from 'components/Link';
 import AccountForm from 'components/AccountForm';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
+import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import EditAccountMutation from 'schemas/mutations/EditAccountMutation.graphql';
 
@@ -31,6 +32,7 @@ class Account extends Component {
   static propTypes = {
     user: PropTypes.object,
     editAccountMutation: PropTypes.func.isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     graphqlLoading: PropTypes.bool.isRequired,
   }
@@ -52,6 +54,7 @@ class Account extends Component {
         subheader: '',
         description: '',
         profileImageUrl: '',
+        activities: [],
       },
     };
 
@@ -97,6 +100,7 @@ class Account extends Component {
     subheaderErrorText: null,
     descriptionErrorText: null,
   }
+
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender with previous form data
     // If I could figure out how to avoid keeping state here
@@ -109,6 +113,8 @@ class Account extends Component {
     const formData = Object.assign({}, data);
 
     formData.id = this.props.user.id;
+
+    formData.activities = formData.activities.map(activity => (activity.id));
 
     try {
       await this.props.editAccountMutation({
@@ -128,7 +134,7 @@ class Account extends Component {
   render() {
     if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
-      const { user } = this.props;
+      const { user, activities } = this.props;
       const { formData } = state;
 
       const validators = [
@@ -165,6 +171,7 @@ class Account extends Component {
             submit={formSubmit}
             submitText="Save Changes"
             userId={user.id}
+            activities={activities}
           />
 
         </div>
@@ -183,6 +190,11 @@ export default compose(
     props: ({ data }) => ({
       user: data.me,
       graphqlLoading: data.loading,
+    }),
+  }),
+  graphql(ActivitiesQuery, {
+    props: ({ data }) => ({
+      activities: !data.loading && data.activities ? data.activities : [],
     }),
   }),
   graphql(EditAccountMutation, { name: 'editAccountMutation' }),

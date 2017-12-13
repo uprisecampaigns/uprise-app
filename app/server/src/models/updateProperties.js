@@ -34,5 +34,4 @@ const updateProperties = type => async (collection, name, id) => {
   }
 };
 
-
 module.exports = updateProperties;

@@ -16,7 +16,7 @@ module.exports = {
           'users.id as id', 'first_name', 'last_name', 'email',
           'phone_number', 'zipcode', 'email_confirmed',
           'user_profiles.subheader as subheader', 'user_profiles.description as description',
-          'user_profiles.profile_image_url as profile_image_url', 'activities',
+          'user_profiles.profile_image_url as profile_image_url',
         ],
       });
 

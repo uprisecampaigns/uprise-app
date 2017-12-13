@@ -66,7 +66,7 @@ class UserProfile extends PureComponent {
               <img
                 src={user.profile_image_url}
                 className={s.profileImage}
-                alt="User Profile Image"
+                alt="User Profile"
               />
             </div>
           )}

@@ -10,6 +10,8 @@ const knexConfig = require('config/knexfile.js');
 const db = knex(knexConfig[process.env.NODE_ENV]);
 const sendEmail = require('lib/sendEmail.js');
 
+const updateProperties = require('models/updateProperties')('user');
+
 class User {
   static findOne({ selections = [], args }) {
     // If one of the args has a property name 'id', we really want it to
@@ -25,14 +27,20 @@ class User {
       ...selections,
       'users.id as id', 'first_name', 'last_name', 'user_profiles.description as description',
       'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
+      db.raw('(case when count(activities.id)=0 then \'[]\'::json else ' +
+        'json_agg(json_build_object(\'id\', activities.id, \'title\', activities.title, ' +
+        '\'description\', activities.description)) end) as activities'),
     ];
 
-    return db.table('users')
+    const userQuery = db.table('users')
       .leftJoin('users_activities', 'users_activities.user_id', 'users.id')
       .leftJoin('activities', 'users_activities.activity_id', 'activities.id')
       .leftJoin('user_profiles', 'user_profiles.user_id', 'users.id')
       .where(newArgs)
+      .groupBy('users.id', 'user_profiles.id')
       .first(...allSelections);
+
+    return userQuery;
   }
 
   static search(search) {
@@ -43,7 +51,6 @@ class User {
       .select([
         'first_name', 'last_name', 'user_profiles.description as description',
         'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
-        'activities',
       ])
       .modify((qb) => {
         if (search) {
@@ -91,6 +98,10 @@ class User {
       .update({ profile_image_url, description, subheader }, [
         'profile_image_url', 'description', 'subheader',
       ]);
+
+    if (activities && activities.length) {
+      await updateProperties(activities, 'activity', userArgs.id);
+    }
 
     return { ...userResult[0], ...userProfileResult[0] };
   }
