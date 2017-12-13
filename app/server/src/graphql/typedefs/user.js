@@ -20,6 +20,7 @@ const UserResult = `
     activities: [ActivityResult]
     actions: [ActionResult]
     campaigns: [CampaignResult]
+    tags: [String]
   }
 `;
 
@@ -34,6 +35,7 @@ const EditAccountInput = `
     state: String
     zipcode: String
     activities: [String]
+    tags: [String]
     description: String
     profileImageUrl: String
     subheader: String

@@ -13,8 +13,9 @@
   flex: 1;
   background-color: $azure;
   color: $white;
-  font-weight: 400;
+  font-weight: 300;
   text-align: center;
+  padding: 1rem;
 }
 
 .centerContent {
@@ -31,6 +32,7 @@
 .rightContent {
   flex: 1;
   border-right: 1px solid $grey;
+  padding: 1rem;
 }
 
 .nameHeader {
@@ -49,5 +51,36 @@
 .profileImage {
   margin-top: 2rem;
   border-radius: 50%;
+  border: 2px solid $white;
   max-width: 60%;
+}
+
+.infoBoxContainer {
+  padding: 1rem;
+}
+
+.infoBoxHeader {
+  margin: 1rem 0;
+  color: $grey;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.keywordsHeader {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  color: $grey;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.keywordTag {
+  cursor: pointer !important;
+  margin-bottom: 0.5rem !important;
+  background-color: transparent !important;
+
+  span {
+    color: $azure !important;
+    padding: 0px !important;
+  }
 }

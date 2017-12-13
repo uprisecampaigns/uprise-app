@@ -25,7 +25,7 @@ class User {
 
     const allSelections = [
       ...selections,
-      'users.id as id', 'first_name', 'last_name', 'user_profiles.description as description',
+      'users.id as id', 'first_name', 'last_name', 'user_profiles.description as description', 'user_profiles.tags as tags',
       'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
       db.raw('(case when count(activities.id)=0 then \'[]\'::json else ' +
         'json_agg(json_build_object(\'id\', activities.id, \'title\', activities.title, ' +
@@ -49,7 +49,7 @@ class User {
       .leftJoin('activities', 'users_activities.activity_id', 'activities.id')
       .leftJoin('user_profiles', 'user_profiles.user_id', 'users.id')
       .select([
-        'first_name', 'last_name', 'user_profiles.description as description',
+        'first_name', 'last_name', 'user_profiles.description as description', 'user_profiles.tags as tags',
         'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
       ])
       .modify((qb) => {
@@ -84,7 +84,7 @@ class User {
   static async edit(options) {
     const {
       profile_image_url, description,
-      subheader, activities, ...userArgs
+      subheader, tags, activities, ...userArgs
     } = options;
 
     const userResult = await db('users')
@@ -95,8 +95,10 @@ class User {
 
     const userProfileResult = await db('user_profiles')
       .where('user_id', userArgs.id)
-      .update({ profile_image_url, description, subheader }, [
-        'profile_image_url', 'description', 'subheader',
+      .update({
+        profile_image_url, description, subheader, tags,
+      }, [
+        'profile_image_url', 'description', 'subheader', 'tags',
       ]);
 
     if (activities && activities.length) {

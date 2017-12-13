@@ -55,6 +55,7 @@ class Account extends Component {
         description: '',
         profileImageUrl: '',
         activities: [],
+        tags: [],
       },
     };
 

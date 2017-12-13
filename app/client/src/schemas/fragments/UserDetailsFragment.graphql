@@ -19,11 +19,10 @@ fragment UserDetails on UserResult {
     title
     description
   }
-
+  tags
   campaigns {
     ...CampaignBasicInfo
   }
-
   actions {
     ...ActionBasicInfo
   }

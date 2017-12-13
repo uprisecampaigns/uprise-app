@@ -8,6 +8,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import togglesList from 'lib/togglesList';
 
 import ImageUploader from 'components/ImageUploader';
+import SearchBar from 'components/SearchBar';
+import SelectedItemsContainer from 'components/SelectedItemsContainer';
 
 import s from 'styles/Form.scss';
 
@@ -23,6 +25,8 @@ class AccountForm extends PureComponent {
     submitText: PropTypes.string.isRequired,
     errors: PropTypes.object.isRequired,
     handleToggle: PropTypes.func.isRequired,
+    addItem: PropTypes.func.isRequired,
+    removeItem: PropTypes.func.isRequired,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
@@ -34,6 +38,7 @@ class AccountForm extends PureComponent {
     const {
       data, formSubmit, errors, saving, userId, activities,
       handleInputChange, cancel, submitText, handleToggle,
+      addItem, removeItem,
     } = this.props;
 
     const activitiesTogglesList = togglesList({
@@ -142,6 +147,28 @@ class AccountForm extends PureComponent {
                   />
                 </div>
 
+                <div className={s.sectionLabel}>Activities</div>
+                { activitiesTogglesList }
+
+                <div className={s.sectionLabel}>Keywords</div>
+
+                <div className={s.keywordsContainer}>
+                  <SearchBar
+                    collectionName="tags"
+                    inputLabel="Keyword"
+                    addItem={addItem}
+                    iconName="add"
+                    className={s.keywordsInputContainer}
+                  />
+
+                  <SelectedItemsContainer
+                    collectionName="tags"
+                    removeItem={removeItem}
+                    items={data.tags}
+                    className={s.selectedKeywordsContainer}
+                  />
+                </div>
+
                 <div className={s.button}>
                   <RaisedButton
                     onTouchTap={cancel}
@@ -149,10 +176,6 @@ class AccountForm extends PureComponent {
                     label="Cancel"
                   />
                 </div>
-
-                <div className={s.sectionLabel}>Activities</div>
-
-                { activitiesTogglesList }
 
                 { saving ? (
 

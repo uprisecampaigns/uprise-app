@@ -12,9 +12,14 @@ import withTimeWithZone from 'lib/withTimeWithZone';
 import Link from 'components/Link';
 import KeywordTag from 'components/KeywordTag';
 
-import inkBarStyle from 'styles/tabInkBarStyle';
 import s from 'styles/UserProfile.scss';
 
+
+// Too difficult to override in css :/
+const inkBarStyle = {
+  backgroundColor: '#333',
+  height: '3px',
+};
 
 class UserProfile extends PureComponent {
   static propTypes = {
@@ -30,32 +35,51 @@ class UserProfile extends PureComponent {
   render() {
     const { user, activeTab, handleTabChange } = this.props;
 
-    let infoBoxContent;
+    const keywords = (Array.isArray(user.tags) && user.tags.length) ? (
+      <div className={s.keywordLine}>
+        {user.tags.map((tag, index) => (
+          <KeywordTag
+            label={tag}
+            type="action"
+            className={s.keywordTag}
+            key={index}
+          />
+        ))}
+      </div>
+    ) : null;
 
-    switch (activeTab) {
-      case 'interests': {
-        infoBoxContent = (Array.isArray(user.activities) && user.activities.length) ?
-          user.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.infoBoxLine}>{activity.description}</div>) :
-          null;
-        break;
-      }
-      case 'opportunities': {
-        infoBoxContent = 'Opportunities!';
-        infoBoxContent = (Array.isArray(user.actions) && action.actions.length) ?
-          user.actions.map((action, index) => <div key={JSON.stringify(action)} className={s.infoBoxLine}>{action.title}</div>) :
-          null;
-        break;
-      }
-      case 'campaigns': {
-        infoBoxContent = (Array.isArray(user.campaigns) && action.campaigns.length) ?
-          user.campaigns.map((campaign, index) => <div key={JSON.stringify(campaign)} className={s.infoBoxLine}>{campaign.title}</div>) :
-          null;
-        break;
-      }
-      default: {
-        infoBoxContent = null;
-      }
-    }
+    const infoBoxMapping = {
+      interests: {
+        singular: 'activity',
+        plural: 'activities',
+        headerText: 'Interested in...',
+        text: activity => activity.description,
+      },
+      opportunities: {
+        singular: 'action',
+        plural: 'actions',
+        headerText: 'Volunteering for...',
+        text: action => action.title,
+      },
+      campaigns: {
+        singular: 'campaign',
+        plural: 'campaigns',
+        headerText: 'Subscribed to...',
+        text: campaign => campaign.title,
+      },
+    };
+
+    const selected = infoBoxMapping[activeTab];
+    const collection = user[selected.plural];
+
+    const infoBoxContent = (Array.isArray(collection) && collection.length) ? (
+      <div>
+        <div className={s.infoBoxHeader}>
+          { selected.headerText }
+        </div>
+        { collection.map((item, index) => <div key={JSON.stringify(item)} className={s.infoBoxLine}>{ selected.text(item) }</div>) }
+      </div> ) :
+      null;
 
     return (
       <div className={s.userProfileContainer}>
@@ -110,7 +134,7 @@ class UserProfile extends PureComponent {
                   contentContainerClassName={s.tabsContentContainer}
                   onChange={handleTabChange}
                   value={activeTab}
-                  inkBarStyle={inkBarStyle}
+                  inkBarStyle={ inkBarStyle }
                 >
                   <Tab
                     label="Interests"
@@ -133,14 +157,17 @@ class UserProfile extends PureComponent {
               </div>
             </div>
 
-            <div>
+            <div className={s.infoBoxContainer}>
               { infoBoxContent }
             </div>
 
           </div>
         </div>
         <div className={s.rightContent}>
-
+          <div className={s.keywordsHeader}>
+            Keywords...
+          </div>
+          { keywords }
         </div>
       </div>
     );
