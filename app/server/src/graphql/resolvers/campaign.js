@@ -126,7 +126,7 @@ module.exports = {
 
       // TODO: replace with more sophisticated model of "coordinator"
       try {
-        campaignCoordinator = await User.findOne({ args: { id: campaign.owner_id } });
+        campaignCoordinator = await User.findOne({ args: { id: campaign.owner_id }, selections: ['email'] });
       } catch (e) {
         throw new Error(`Cannot find campaign coordinator: ${e.message}`);
       }

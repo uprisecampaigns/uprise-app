@@ -158,7 +158,7 @@ module.exports = {
 
       // TODO: replace with more sophisticated model of "coordinator"
       try {
-        actionCoordinator = await User.findOne({ args: { 'users.id': action.owner_id } });
+        actionCoordinator = await User.findOne({ args: { 'users.id': action.owner_id }, selections: ['email'] });
       } catch (e) {
         throw new Error(`Cannot find action coordinator: ${e.message}`);
       }
