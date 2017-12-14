@@ -58,13 +58,13 @@ class UserProfile extends PureComponent {
       opportunities: {
         singular: 'action',
         plural: 'actions',
-        headerText: 'Volunteering for...',
+        headerText: 'Actions Header...',
         text: action => action.title,
       },
       campaigns: {
         singular: 'campaign',
         plural: 'campaigns',
-        headerText: 'Subscribed to...',
+        headerText: 'Campaigns Header...',
         text: campaign => campaign.title,
       },
     };
@@ -104,18 +104,18 @@ class UserProfile extends PureComponent {
             </div>
           )}
 
+          { user.subheader && (
+            <div className={s.userSubheader}>
+              { user.subheader }
+            </div>
+          )}
+
           <RaisedButton
             onTouchTap={() => {}}
             primary
             label="Contact"
             className={s.primaryButton}
           />
-
-          { user.subheader && (
-            <div className={s.userSubheader}>
-              { user.subheader }
-            </div>
-          )}
 
           { user.description && (
             <div className={s.userDescription}>

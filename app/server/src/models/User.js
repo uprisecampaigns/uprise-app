@@ -27,17 +27,42 @@ class User {
       ...selections,
       'users.id as id', 'first_name', 'last_name', 'user_profiles.description as description', 'user_profiles.tags as tags',
       'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
-      db.raw('(case when count(activities.id)=0 then \'[]\'::json else ' +
-        'json_agg(json_build_object(\'id\', activities.id, \'title\', activities.title, ' +
-        '\'description\', activities.description)) end) as activities'),
+      'campaigns_query.object as campaigns', 'actions_query.object as actions', 'activities_query.object as activities',
     ];
 
+    const activitiesQuery = db.table('users_activities')
+      .select([
+        'users_activities.user_id as user_id',
+        db.raw('json_agg(activities) as object')
+      ])
+      .leftOuterJoin('activities', 'users_activities.activity_id', 'activities.id')
+      .groupBy('activities.id', 'users_activities.user_id')
+      .as('activities_query');
+
+    const actionsQuery = db.table('actions')
+      .select([
+        'owner_id',
+        db.raw('(case when count(id)=0 then \'[]\'::json else ' +
+        'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object')
+      ])
+      .groupBy('owner_id')
+      .as('actions_query');
+
+    const campaignsQuery = db.table('campaigns')
+      .select([
+        'owner_id',
+        db.raw('(case when count(id)=0 then \'[]\'::json else ' +
+        'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object')
+      ])
+      .groupBy('owner_id')
+      .as('campaigns_query');
+
     const userQuery = db.table('users')
-      .leftJoin('users_activities', 'users_activities.user_id', 'users.id')
-      .leftJoin('activities', 'users_activities.activity_id', 'activities.id')
-      .leftJoin('user_profiles', 'user_profiles.user_id', 'users.id')
       .where(newArgs)
-      .groupBy('users.id', 'user_profiles.id')
+      .leftOuterJoin('user_profiles', 'user_profiles.user_id', 'users.id')
+      .leftJoin(campaignsQuery, 'campaigns_query.owner_id', 'users.id')
+      .leftJoin(actionsQuery, 'actions_query.owner_id', 'users.id')
+      .leftJoin(activitiesQuery, 'activities_query.user_id', 'users.id')
       .first(...allSelections);
 
     return userQuery;

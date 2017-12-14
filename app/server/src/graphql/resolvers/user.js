@@ -13,8 +13,8 @@ module.exports = {
       const user = await User.findOne({
         args: { id: context.user.id },
         selections: [
-          'users.id as id', 'first_name', 'last_name', 'email',
-          'phone_number', 'zipcode', 'email_confirmed',
+          'users.id as id', 'users.first_name', 'users.last_name', 'users.email',
+          'users.phone_number', 'users.zipcode', 'email_confirmed',
           'user_profiles.subheader as subheader', 'user_profiles.description as description',
           'user_profiles.profile_image_url as profile_image_url',
         ],
