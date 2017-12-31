@@ -19,9 +19,10 @@ export default {
       });
 
       if (result.data.action) {
+        const { action } = result.data;
         return {
-          title: result.data.action.title,
-          image: result.data.action.campaign.profile_image_url,
+          title: action.title,
+          image: typeof action.campaign.profile_image_url === 'string' ? action.campaign.profile_image_url : '',
           component: (
             <Layout>
               <Action actionSlug={slug} actionId={result.data.action.id} />
