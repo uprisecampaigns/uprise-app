@@ -3,9 +3,9 @@ import React, { PureComponent } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Tabs, Tab } from 'material-ui/Tabs';
 
-import withTimeWithZone from 'lib/withTimeWithZone';
-
 import KeywordTag from 'components/KeywordTag';
+
+import history from 'lib/history';
 
 import s from 'styles/UserProfile.scss';
 
@@ -25,6 +25,12 @@ class UserProfile extends PureComponent {
 
   static defaultProps = {
     activeTab: 'interests',
+  }
+
+  handleContact = (event) => {
+    const { user } = this.props;
+    (typeof event === 'object' && typeof event.preventDefault === 'function') && event.preventDefault();
+    history.push(`/user/${user.id}/compose`);
   }
 
   render() {
@@ -106,7 +112,7 @@ class UserProfile extends PureComponent {
           )}
 
           <RaisedButton
-            onTouchTap={() => {}}
+            onTouchTap={this.handleContact}
             primary
             label="Contact"
             className={s.primaryButton}
@@ -169,4 +175,4 @@ class UserProfile extends PureComponent {
   }
 }
 
-export default withTimeWithZone(UserProfile);
+export default UserProfile;

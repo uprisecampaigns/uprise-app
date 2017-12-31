@@ -19,6 +19,8 @@ class ComposeMessage extends React.Component {
     detailLines: PropTypes.arrayOf(PropTypes.string).isRequired,
     recipients: PropTypes.arrayOf(PropTypes.shape({
       email: PropTypes.string,
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
     })).isRequired,
     handleSend: PropTypes.func.isRequired,
   }
@@ -98,7 +100,7 @@ class ComposeMessage extends React.Component {
             Send From: {fromEmail}
           </div>
           <div className={s.detailLine}>
-            Recipients: {recipients.map(r => r.email).join(', ')}
+            Recipients: {recipients.map(r => ((typeof r.email === 'string') ? r.email : `${r.first_name} ${r.last_name}`)).join(', ')}
           </div>
 
           <TextField

@@ -55,6 +55,7 @@ export default {
 
     // /user/
     require('./userProfile').default,
+    require('./messageUser').default,
 
     // /help/
     require('./searchDefinitions').default,
