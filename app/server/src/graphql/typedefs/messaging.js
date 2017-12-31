@@ -3,7 +3,7 @@
 const SendMessageInput = `
   input SendMessageInput {
     replyToEmail: String!
-    recipientEmails: [String]!
+    recipientIds: [String]!
     subject: String
     body: String
   }

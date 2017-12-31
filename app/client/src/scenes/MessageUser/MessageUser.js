@@ -47,7 +47,7 @@ class MessageUser extends Component {
           variables: {
             data: {
               replyToEmail: userObject.email,
-              recipientEmails: recipients.map(r => r.email),
+              recipientIds: recipients.map(r => r.id),
               subject,
               body: fullBody,
             },

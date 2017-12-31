@@ -2,7 +2,6 @@ const S3 = require('aws-sdk/clients/s3');
 
 const User = require('models/User');
 const Campaign = require('models/Campaign');
-const Action = require('models/Action');
 const sendEmail = require('lib/sendEmail.js');
 
 const config = require('config/config.js');
@@ -85,52 +84,30 @@ module.exports = {
       }
 
       // TODO: more sophisticated determining who can send to whom
-      let allowedRecipients = [];
-      const userActions = await Action.find('owner_id', user.id);
+      // for now - we just assert that the user has confirmed their email
+      // and that they are the owner of at least one campaign
+      const usersCampaigns = Campaign.find({ owner_id: user.id });
 
-      // TODO: replace this with parallel promises
-      const userActionQueries = [];
-      userActions.forEach((action) => {
-        userActionQueries.push(Action.signedUpVolunteers({ actionId: action.id }));
-      });
-
-      const signedUpVolunteers = (await Promise.all(userActionQueries))
-        .reduce((accumulator, value) => accumulator.concat(value), []);
-
-      allowedRecipients = allowedRecipients.concat(signedUpVolunteers);
-
-      const userCampaigns = await Campaign.find('owner_id', user.id);
-
-      // TODO: replace this with parallel promises
-      const userCampaignQueries = [];
-      userCampaigns.forEach((campaign) => {
-        userCampaignQueries.push(Campaign.subscribedUsers({ campaignId: campaign.id }));
-      });
-
-      const subscribedUsers = (Promise.all(userCampaignQueries))
-        .reduce((accumulator, value) => accumulator.concat(value), []);
-
-      allowedRecipients = allowedRecipients.concat(subscribedUsers);
-
-      const allowedEmails = allowedRecipients.map(v => v.email);
+      if (!user.email_confirmed || usersCampaigns.length === 0) {
+        throw new Error('User must have confirmed email and at least one campaign.');
+      }
 
       const errors = [];
-      data.recipientEmails.forEach(async (recipient) => {
-        if (!allowedEmails.includes(recipient)) {
-          errors.push(`User not allowed to message ${recipient}`);
-        } else {
-          try {
-            await sendEmail({
-              to: recipient,
-              replyTo: data.replyToEmail,
-              subject: data.subject,
-              templateName: 'compose-message',
-              context: { user, body: data.body },
-            });
-          } catch (e) {
-            console.error(e);
-            errors.push(e.message);
-          }
+
+      data.recipientIds.forEach(async (recipientId) => {
+        try {
+          const recipient = await User.findOne({ selections: ['email'], args: { id: recipientId } });
+
+          await sendEmail({
+            to: recipient.email,
+            replyTo: data.replyToEmail,
+            subject: data.subject,
+            templateName: 'compose-message',
+            context: { user, body: data.body },
+          });
+        } catch (e) {
+          console.error(e);
+          errors.push(e.message);
         }
       });
 

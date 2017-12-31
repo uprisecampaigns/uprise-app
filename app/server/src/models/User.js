@@ -16,7 +16,7 @@ const updateProperties = require('models/updateProperties')('user');
 const activitiesQuery = db.table('users_activities')
   .select([
     'users_activities.user_id as user_id',
-    db.raw('json_agg(activities) as object')
+    db.raw('json_agg(activities) as object'),
   ])
   .leftOuterJoin('activities', 'users_activities.activity_id', 'activities.id')
   .groupBy('activities.id', 'users_activities.user_id')
@@ -26,7 +26,7 @@ const actionsQuery = db.table('actions')
   .select([
     'owner_id',
     db.raw('(case when count(id)=0 then \'[]\'::json else ' +
-    'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object')
+    'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object'),
   ])
   .groupBy('owner_id')
   .as('actions_query');
@@ -35,7 +35,7 @@ const campaignsQuery = db.table('campaigns')
   .select([
     'owner_id',
     db.raw('(case when count(id)=0 then \'[]\'::json else ' +
-    'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object')
+    'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object'),
   ])
   .groupBy('owner_id')
   .as('campaigns_query');
@@ -129,7 +129,6 @@ class User {
               });
             });
           }
-
         }
       });
 
