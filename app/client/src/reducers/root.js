@@ -22,6 +22,7 @@ const appReducer = combineReducers({
   notifications: updateNotifications,
   actionsSearch: createFilteredReducer(updateSearch, action => action.searchType === 'action'),
   campaignsSearch: createFilteredReducer(updateSearch, action => action.searchType === 'campaign'),
+  usersSearch: createFilteredReducer(updateSearch, action => action.searchType === 'user'),
   homePageNav: createFilteredReducer(updatePageNav, action => action.page === 'home'),
   apollo: apolloClient.reducer(),
 });

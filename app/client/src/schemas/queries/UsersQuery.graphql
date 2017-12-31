@@ -1,0 +1,7 @@
+#import "../fragments/UserDetailsFragment.graphql"
+
+query UsersQuery($search:UserSearchInput) {
+  users(search:$search) {
+    ...UserDetails
+  }
+}

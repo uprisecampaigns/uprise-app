@@ -7,6 +7,7 @@ import { setPage } from 'actions/PageNavActions';
 
 import SearchActions from 'components/SearchActions';
 import SearchCampaigns from 'components/SearchCampaigns';
+import SearchUsers from 'components/SearchUsers';
 
 import s from 'styles/Home.scss';
 
@@ -58,19 +59,35 @@ class Home extends Component {
                 className={activeTab === 'campaigns' ? s.activeTab : s.tab}
                 value="campaign"
               />
+
+              <Tab
+                label="Users"
+                className={activeTab === 'users' ? s.activeTab : s.tab}
+                value="user"
+              />
             </Tabs>
           </div>
         </div>
 
-        { (activeTab === 'action') ? (
-          <div className={s.searchContainer}>
-            <SearchActions />
-          </div>
-        ) : (
-          <div className={s.searchContainer}>
-            <SearchCampaigns />
-          </div>
-        )}
+        <div>
+          { (activeTab === 'action') && (
+            <div className={s.searchContainer}>
+              <SearchActions />
+            </div>
+          )}
+
+          { (activeTab === 'campaign') && (
+            <div className={s.searchContainer}>
+              <SearchCampaigns />
+            </div>
+          )}
+
+          { (activeTab === 'user') && (
+            <div className={s.searchContainer}>
+              <SearchUsers />
+            </div>
+          )}
+        </div>
       </div>
     );
   }

@@ -12,6 +12,34 @@ const sendEmail = require('lib/sendEmail.js');
 
 const updateProperties = require('models/updateProperties')('user');
 
+
+const activitiesQuery = db.table('users_activities')
+  .select([
+    'users_activities.user_id as user_id',
+    db.raw('json_agg(activities) as object')
+  ])
+  .leftOuterJoin('activities', 'users_activities.activity_id', 'activities.id')
+  .groupBy('activities.id', 'users_activities.user_id')
+  .as('activities_query');
+
+const actionsQuery = db.table('actions')
+  .select([
+    'owner_id',
+    db.raw('(case when count(id)=0 then \'[]\'::json else ' +
+    'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object')
+  ])
+  .groupBy('owner_id')
+  .as('actions_query');
+
+const campaignsQuery = db.table('campaigns')
+  .select([
+    'owner_id',
+    db.raw('(case when count(id)=0 then \'[]\'::json else ' +
+    'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object')
+  ])
+  .groupBy('owner_id')
+  .as('campaigns_query');
+
 class User {
   static findOne({ selections = [], args }) {
     // If one of the args has a property name 'id', we really want it to
@@ -30,33 +58,6 @@ class User {
       'campaigns_query.object as campaigns', 'actions_query.object as actions', 'activities_query.object as activities',
     ];
 
-    const activitiesQuery = db.table('users_activities')
-      .select([
-        'users_activities.user_id as user_id',
-        db.raw('json_agg(activities) as object')
-      ])
-      .leftOuterJoin('activities', 'users_activities.activity_id', 'activities.id')
-      .groupBy('activities.id', 'users_activities.user_id')
-      .as('activities_query');
-
-    const actionsQuery = db.table('actions')
-      .select([
-        'owner_id',
-        db.raw('(case when count(id)=0 then \'[]\'::json else ' +
-        'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object')
-      ])
-      .groupBy('owner_id')
-      .as('actions_query');
-
-    const campaignsQuery = db.table('campaigns')
-      .select([
-        'owner_id',
-        db.raw('(case when count(id)=0 then \'[]\'::json else ' +
-        'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object')
-      ])
-      .groupBy('owner_id')
-      .as('campaigns_query');
-
     const userQuery = db.table('users')
       .where(newArgs)
       .leftOuterJoin('user_profiles', 'user_profiles.user_id', 'users.id')
@@ -70,11 +71,9 @@ class User {
 
   static search(search) {
     const searchQuery = db('users')
-      .leftJoin('users_activities', 'users_activities.user_id', 'users.id')
-      .leftJoin('activities', 'users_activities.activity_id', 'activities.id')
       .leftJoin('user_profiles', 'user_profiles.user_id', 'users.id')
       .select([
-        'first_name', 'last_name', 'user_profiles.description as description', 'user_profiles.tags as tags',
+        'users.id as id', 'first_name', 'last_name', 'user_profiles.description as description', 'user_profiles.tags as tags',
         'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
       ])
       .modify((qb) => {
@@ -86,6 +85,51 @@ class User {
               });
             });
           }
+
+          if (search.tags) {
+            const tags = db('users')
+              .select(db.raw('id, unnest(tags) tag'))
+              .as('tags');
+
+            search.tags.forEach((tag) => {
+              qb.andWhere(function tagsQueryBuilder() {
+                const tagQuery = db.select('id')
+                  .distinct()
+                  .from(tags)
+                  .whereRaw('tag ILIKE ?', tag);
+
+                this.where('users.id', 'in', tagQuery);
+              });
+            });
+          }
+
+          if (search.keywords) {
+            const tags = db('users')
+              .select(db.raw('id, unnest(tags) tag'))
+              .as('tags');
+
+            search.keywords.forEach((keyword) => {
+              qb.andWhere(function keywordQueryBuilder() {
+                const stringOverlapComparator = /^#/.test(keyword) ? "SIMILAR TO '%(,| )\\?' || ? || '(,| )\\?%'" : '%> ?';
+
+                this.orWhere(db.raw(`first_name ${stringOverlapComparator}`, keyword));
+
+                this.orWhere(db.raw(`last_name ${stringOverlapComparator}`, keyword));
+
+                this.orWhere(db.raw(`subheader ${stringOverlapComparator}`, keyword));
+
+                this.orWhere(db.raw(`description ${stringOverlapComparator}`, keyword));
+
+                const tagKeywordQuery = db.select('id')
+                  .distinct()
+                  .from(tags)
+                  .whereRaw(`tag ${stringOverlapComparator}`, keyword);
+
+                this.orWhere('users.id', 'in', tagKeywordQuery);
+              });
+            });
+          }
+
         }
       });
 

@@ -1,15 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
-import FontIcon from 'material-ui/FontIcon';
 import { Tabs, Tab } from 'material-ui/Tabs';
 
-import itemsSort from 'lib/itemsSort';
 import withTimeWithZone from 'lib/withTimeWithZone';
 
-import Link from 'components/Link';
 import KeywordTag from 'components/KeywordTag';
 
 import s from 'styles/UserProfile.scss';
@@ -42,7 +37,7 @@ class UserProfile extends PureComponent {
             label={tag}
             type="action"
             className={s.keywordTag}
-            key={index}
+            key={JSON.stringify(tag)}
           />
         ))}
       </div>
@@ -78,7 +73,7 @@ class UserProfile extends PureComponent {
           { selected.headerText }
         </div>
         { collection.map((item, index) => <div key={JSON.stringify(item)} className={s.infoBoxLine}>{ selected.text(item) }</div>) }
-      </div> ) :
+      </div>) :
       null;
 
     return (
@@ -134,7 +129,7 @@ class UserProfile extends PureComponent {
                   contentContainerClassName={s.tabsContentContainer}
                   onChange={handleTabChange}
                   value={activeTab}
-                  inkBarStyle={ inkBarStyle }
+                  inkBarStyle={inkBarStyle}
                 >
                   <Tab
                     label="Interests"
