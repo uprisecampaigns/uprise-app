@@ -162,12 +162,11 @@ class ImageUploader extends Component {
         // TODO: Is `revokeObjectURL` important??
         canvas.toBlob((blob) => {
           uploadBlob(blob);
+          // eslint-disable-next-line no-unused-vars
           const url = URL.createObjectURL(blob);
-          this.props.onChange(url);
         });
       } else {
         const url = canvas.toDataURL('image/jpeg');
-        this.props.onChange(url);
 
         const blob = base64ToBlob(url);
         uploadBlob(blob);
