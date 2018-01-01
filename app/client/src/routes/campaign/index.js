@@ -20,9 +20,10 @@ export default {
       });
 
       if (result.data.campaign) {
+        const { campaign } = result.data;
         return {
-          title: result.data.campaign.title,
-          image: result.data.campaign.profile_image_url,
+          title: campaign.title,
+          image: typeof campaign.profile_image_url === 'string' ? campaign.profile_image_url : '',
           component: (
             <Layout>
               <Campaign campaignSlug={slug} campaignId={result.data.campaign.id} />

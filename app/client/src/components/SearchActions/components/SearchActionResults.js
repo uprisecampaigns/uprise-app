@@ -90,7 +90,7 @@ class SearchActionResults extends Component {
           </Link>
         );
       } catch (e) {
-        console.error(`Error rendering action: ${e.message}`);
+        console.error(`Error rendering search action result: ${e.message}`);
         return null;
       }
     }) : [];
