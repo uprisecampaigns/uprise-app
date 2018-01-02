@@ -13,6 +13,7 @@ html {
   font-weight: 400;
   font-family: $font-family;
   line-height: 1.375; /* ~22px */
+  overflow-x: hidden;
 
   font-size: 1.125em; /* ~18px; */
 
@@ -27,6 +28,7 @@ html {
 
 body {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 button, button span {

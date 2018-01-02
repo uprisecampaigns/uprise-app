@@ -6,10 +6,10 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
 
 import itemsSort from 'lib/itemsSort';
-import withTimeWithZone from 'lib/withTimeWithZone';
 
 import Link from 'components/Link';
 import KeywordTag from 'components/KeywordTag';
+import ShiftGroupList from 'components/ShiftGroupList';
 
 import s from 'styles/Profile.scss';
 
@@ -20,13 +20,12 @@ class CampaignProfile extends PureComponent {
     subscribe: PropTypes.func.isRequired,
     cancelSubscription: PropTypes.func.isRequired,
     saving: PropTypes.bool.isRequired,
-    timeWithZone: PropTypes.func.isRequired,
   }
 
   render() {
     if (this.props.campaign) {
       const {
-        campaign, saving, subscribe, cancelSubscription, timeWithZone,
+        campaign, saving, subscribe, cancelSubscription,
       } = this.props;
 
       const keywords = (Array.isArray(campaign.tags) && campaign.tags.length) ? (
@@ -34,7 +33,7 @@ class CampaignProfile extends PureComponent {
           {campaign.tags.map((tag, index) => (
             <KeywordTag
               label={tag}
-              key={index}
+              key={JSON.stringify(tag)}
               type="campaign"
               className={s.keywordTag}
             />
@@ -44,43 +43,40 @@ class CampaignProfile extends PureComponent {
 
       const actions = (Array.isArray(campaign.actions) && campaign.actions.length > 0) ?
         Array.from(campaign.actions)
-          .filter(a => (moment(a.end_time).isAfter(moment()) || a.ongoing))
+          .filter((action) => {
+            if (action.ongoing) {
+              return true;
+            }
+
+            let hasUpcomingShift = false;
+            if (action.shifts) {
+              action.shifts.forEach((shift) => {
+                if (moment(shift.end).isAfter(moment())) {
+                  hasUpcomingShift = true;
+                }
+              });
+            }
+
+            return hasUpcomingShift;
+          })
           .sort(itemsSort({ name: 'date', descending: false }))
           .map((action) => {
-            if (action.ongoing) {
-              return (
-                <Link to={`/opportunity/${action.slug}`} key={action.id}>
-                  <div className={[s.detailLine, s.actionListing].join(' ')}>
-                    <div>
-                      {action.title}
-                    </div>
-                    <div>
-                      {action.city}{action.state && `, ${action.state}`}
-                    </div>
-                  </div>
-                </Link>
-              );
-            } else if (action.start_time && action.end_time) {
-              const startTime = moment(action.start_time);
-              const endTime = moment(action.end_time);
+            const shiftLines = (action.shifts && action.shifts.length) ?
+              <ShiftGroupList action={action} s={s} /> : null;
 
-              const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
-              const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
-
-              return (
-                <Link to={`/opportunity/${action.slug}`} key={action.id}>
-                  <div className={[s.detailLine, s.actionListing].join(' ')}>
-                    <div>
-                      {action.title}
-                    </div>
-                    <div>
-                      {startTime.format('MMM Do, YYYY')}, {startTimeString} - {endTimeString}
-                      {action.city && `, ${action.city}`}{action.state && `, ${action.state}`}
-                    </div>
+            return (
+              <Link to={`/opportunity/${action.slug}`} key={action.id}>
+                <div className={[s.detailLine, s.actionListing].join(' ')}>
+                  <div className={s.listHeader}>
+                    {action.title}
                   </div>
-                </Link>
-              );
-            } return null;
+                  <div className={s.listContent}>
+                    {shiftLines}
+                    {action.city}{action.state && `, ${action.state}`}
+                  </div>
+                </div>
+              </Link>
+            );
           }) : [];
 
 
@@ -193,4 +189,4 @@ class CampaignProfile extends PureComponent {
   }
 }
 
-export default withTimeWithZone(CampaignProfile);
+export default CampaignProfile;

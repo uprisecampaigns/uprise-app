@@ -6,10 +6,10 @@ import organizeCampaignPaths from 'routes/organizeCampaignPaths';
 
 
 export default organizeCampaignPaths({
-  path: '/organize/:slug/create-opportunity',
+  path: '/organize/:slug/create-role',
   component: campaign => (
     <Layout>
-      <CreateAction campaignId={campaign.id} />
+      <CreateAction campaignId={campaign.id} type="role" />
     </Layout>
   ),
 });

@@ -7,7 +7,8 @@
   width: 100%;
   max-width: $max-content-width;
   overflow-x: hidden;
-  margin: 0rem auto 5rem auto;
+  min-height: 100vh;
+  margin: 0rem auto 0rem auto;
 
   .savingThrobberContainer {
     width: 100%;
@@ -130,5 +131,20 @@
     >div:first-of-type {
       padding: 0px;
     }
+  }
+
+  .stepperOuterContainer {
+    display: flex;
+  }
+
+  .stepperContainer {
+    flex: 1;
+    background-color: $light-grey;
+    border: 1px solid $dark-grey;
+    z-index: 100;
+  }
+
+  .stepperContentContainer {
+    flex: 3;
   }
 }

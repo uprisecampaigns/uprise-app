@@ -11,6 +11,22 @@ const ActivityResult = `
   }
 `;
 
+const ShiftResult = `
+  type ShiftResult {
+    id: String!
+    start: String!
+    end: String!
+  }
+`;
+
+const ShiftInput = `
+  input ShiftInput {
+    id: String
+    start: String!
+    end: String!
+  }
+`;
+
 const ActionResult = `
   type ActionResult {
     id: String!
@@ -25,6 +41,7 @@ const ActionResult = `
     virtual: Boolean
     ongoing: Boolean
     attending: Boolean
+    signed_up_shifts: [ShiftResult]
     is_owner: Boolean
     location_name: String
     street_address: String
@@ -36,6 +53,7 @@ const ActionResult = `
     location_notes: String
     public_url: String
     activities: [ActivityResult]
+    shifts: [ShiftResult]
     owner: UserResult
     campaign: CampaignResult
   }
@@ -87,7 +105,6 @@ const ActionQueryInput = `
   }
 `;
 
-
 const DeleteActionInput = `
   input DeleteActionInput {
     id: String!
@@ -112,6 +129,7 @@ const CreateActionInput = `
     startTime: String
     endTime: String
     activities: [String]
+    shifts: [ShiftInput]
     tags: [String]
   }
 `;
@@ -135,6 +153,7 @@ const EditActionInput = `
     startTime: String
     endTime: String
     activities: [String]
+    shifts: [ShiftInput]
     tags: [String]
   }
 `;
@@ -155,7 +174,7 @@ const ActionMutations = `
     createAction(data: CreateActionInput): ActionResult
     createActions(data: [CreateActionInput]): [ActionResult]
     editAction(data: EditActionInput): ActionResult
-    actionSignup(actionId: String!): ActionResult
+    actionSignup(actionId: String!, shifts: [ShiftInput]): ActionResult
     cancelActionSignup(actionId: String!): ActionResult
   }
 `;
@@ -165,6 +184,7 @@ module.exports = function () {
     ActivityResult, ActionResult, ActionSearchResult,
     ActionSearchInput, ActionCursorInput, ActionQueryInput,
     DeleteActionInput, CreateActionInput, EditActionInput,
+    ShiftResult, ShiftInput,
     ActionQueries, ActionMutations,
   ];
 };

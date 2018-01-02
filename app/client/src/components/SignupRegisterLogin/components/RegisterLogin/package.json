@@ -1,0 +1,6 @@
+{
+  "name": "RegisterLogin",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./RegisterLogin.js"
+}

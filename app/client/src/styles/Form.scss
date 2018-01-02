@@ -7,7 +7,6 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
-  margin-bottom: 5rem;
 
   @media (max-width: $screen-sm-min) {
     margin: 0rem 0rem 1rem 0rem;
@@ -16,6 +15,7 @@
 
 .innerContainer {
   display: block;
+  flex: 1;
   text-align: center;
   max-width: $max-content-width - 100px;
 
@@ -155,4 +155,22 @@
       margin: 0px;
     }
   }
+}
+
+.touchIcon {
+  cursor: pointer;
+  color: $brick-red;
+  margin: 1rem 0;
+  text-align: left;
+
+  svg {
+    color: $brick-red !important;
+  }
+}
+
+.shiftLabel {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-end;
 }

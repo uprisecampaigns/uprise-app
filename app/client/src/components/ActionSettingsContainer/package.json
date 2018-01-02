@@ -1,0 +1,6 @@
+{
+  "name": "ActionSettingsContainer",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ActionSettingsContainer.js"
+}

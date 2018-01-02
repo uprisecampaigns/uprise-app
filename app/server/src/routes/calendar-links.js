@@ -5,7 +5,7 @@ const ical = require('ical-generator');
 const Action = require('models/Action.js');
 
 const getAction = async (id) => {
-  const action = await Action.findOne('id', id);
+  const action = await Action.findOne({ id });
 
   const startTime = moment(action.start_time);
   const endTime = moment(action.end_time);

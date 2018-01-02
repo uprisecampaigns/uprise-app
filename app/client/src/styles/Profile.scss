@@ -7,128 +7,214 @@
   width: 100%;
   max-width: $max-content-width;
   margin: 0rem auto 4rem auto;
+}
 
-  .innerContainer {
-    width: 90%;
-    margin: 1rem 5% 0 5%;
+.innerContainer {
+  width: 90%;
+  margin: 1rem 5% 0 5%;
+  font-size: 1rem;
+}
+
+.actionTitleSignupContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.actionHeaderContainer {
+  flex: 3 0;
+  display: inline-block;
+  margin: 1rem;
+}
+
+.actionTitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.actionSubheader {
+  font-size: 1rem;
+}
+
+.desktopSignupRegisterLogin {
+  flex: 1 0;
+  font-size: 1.2rem;
+  display: inline-block;
+  border: 1px solid $light-grey;
+  padding: 1rem;
+}
+
+.actionDetailsContainer {
+
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
+  .actionDetailsTitle {
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+
+  .actionDetailsContent {
     font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+}
 
-    .campaignHeader {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      color: $azure;
-      font-size: 1.6rem;
-      text-align: center;
-      align-items: center;
+.detailsNumbersContainer {
+  display: flex;
+  justify-content: space-evenly;
+
+  .detailsNumbers {
+    text-align: center;
+  }
+
+  .detailsNumbersHeader {
+    font-size: 0.8rem;
+  }
+
+  .detailsNumbersNumber {
+    font-size: 2rem;
+    color: $brick-red;
+  }
+}
+
+.shiftDateGroup {
+  margin-bottom: 1rem;
+}
+
+.alternatingBackgroundsContainer > div:nth-of-type(even) {
+  margin: 0 -9999rem;
+  padding-left: 9999rem;
+  padding-right: 9999rem;
+  background-color: $light-grey;
+}
+
+.campaignHeader {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: $azure;
+  font-size: 1.6rem;
+  text-align: center;
+  align-items: center;
+}
+
+.profileHeaderContainer {
+  position: relative;
+
+  .settingsIcon {
+    top: 0px;
+    right: 0px;
+    position: absolute;
+
+    :global .material-icons {
+      font-size: 3rem !important;
+      color: darken($white, 45%) !important;
     }
+  }
+}
 
-    .profileHeaderContainer {
-      position: relative;
+.profileImageContainer {
+  padding: 1rem;
+  font-size: 1.6rem;
+  text-align: center;
 
-      .settingsIcon {
-        top: 0px;
-        right: 0px;
-        position: absolute;
+  img {
+    max-width: 50%;
+  }
+}
 
-        :global .material-icons {
-          font-size: 3rem !important;
-          color: darken($white, 45%) !important;
-        }
-      }
+.profileSubheaderContainer {
+  color: lighten($azure, 10%);
+  padding: 1rem;
+  font-size: 2rem;
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.dateTimePlaceContainer {
+  color: lighten($azure, 10%);
+}
+
+.websiteUrlContainer {
+  text-align: center;
+  padding: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  a {
+    color: $brick-red !important;
+  }
+}
+
+.contactContainer {
+  color: $fire-red;
+  margin-top: 2rem;
+
+  a {
+    color: $fire-red;
+    margin-left: 1rem;
+  }
+}
+
+.header {
+  color: lighten($azure, 10%);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 2rem 0 0rem 0;
+}
+
+.listHeader {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.listContent {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.detailLine {
+  color: darken($azure, 20%);
+}
+
+.detailLine.actionListing {
+  margin: 1rem 0 0 0;
+}
+
+.descriptionContainer {
+  border: 1px solid darken($white, 20%);
+  padding: 1rem;
+  margin: 2rem auto;
+  color: $azure;
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attendingContainer, .subscribedContainer {
+  text-align: center;
+  margin: 1rem auto 1rem auto;
+
+  @extend .primaryButton;
+
+  .calendarLinkContainer {
+    margin-bottom: 1rem;
+
+    button {
+      background-color: transparent !important;
     }
+  }
+}
 
-    .profileImageContainer {
-      padding: 1rem;
-      font-size: 1.6rem;
-      text-align: center;
+.keywordTag {
+  display: inline-block !important;
+  margin: 0rem .5rem 0rem 0rem !important;
+  background-color: $brick-red !important;
 
-      img {
-        max-width: 50%;
-      }
-    }
-
-    .profileSubheaderContainer {
-      color: lighten($azure, 10%);
-      padding: 1rem;
-      font-size: 2rem;
-      margin-top: 1rem;
-      text-align: center;
-      font-weight: 500;
-    }
-
-    .dateTimePlaceContainer {
-      color: lighten($azure, 10%);
-    }
-
-    .websiteUrlContainer {
-      text-align: center;
-      padding: 1rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      a {
-        color: $brick-red !important;
-      }
-    }
-
-    .contactContainer {
-      color: $fire-red;
-      margin-top: 2rem;
-
-      a { 
-        color: $fire-red;
-        margin-left: 1rem;
-      }
-    }
-
-    .header {
-      color: lighten($azure, 10%);
-      font-size: 1.5rem;
-      font-weight: 500;
-      margin: 2rem 0 0rem 0;
-    }
-
-    .detailLine {
-      color: darken($azure, 20%);
-    }
-
-    .detailLine.actionListing {
-      margin: 1rem 0 0 0;
-    }
-
-    .descriptionContainer {
-      border: 1px solid darken($white, 20%);
-      padding: 1rem;
-      margin: 2rem auto;
-      color: $azure;
-      white-space: pre-wrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .attendingContainer, .subscribedContainer {
-      text-align: center;
-      margin: 1rem auto 1rem auto;
-
-      @extend .primaryButton;
-
-      .calendarLinkContainer {
-        margin-bottom: 1rem;
-
-        button {
-          background-color: transparent !important;
-        }
-      }
-    }
-
-    .keywordTag {
-      display: inline-block !important;
-      margin: 0rem .5rem 0rem 0rem !important;
-      background-color: $brick-red !important;
-      
-      span {
-        color: $white !important;
-      }
-    }
+  span {
+    color: $white !important;
   }
 }

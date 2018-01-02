@@ -1,3 +1,5 @@
+#import "../fragments/ActionBasicInfoFragment.graphql"
+
 fragment CampaignDetails on CampaignResult {
   description
   profile_subheader
@@ -32,14 +34,6 @@ fragment CampaignDetails on CampaignResult {
     email
   }
   actions {
-    id
-    title
-    slug
-    start_time
-    end_time
-    ongoing
-    city
-    state
-    zipcode
+    ...ActionBasicInfo
   }
 }

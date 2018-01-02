@@ -277,14 +277,20 @@ class Campaign {
 
     if (!quick) {
       const actionsQuery = db('actions')
-        .select(['id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing', 'campaign_id', 'owner_id', 'description',
+        .select(['actions.id as id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing', 'campaign_id', 'owner_id', 'description',
           db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
           db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
+          db.raw('(case when count(shifts.id)=0 then \'[]\'::json else ' +
+            'json_agg(json_build_object(\'id\', shifts.id, \'start\', ' +
+            '(to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), ' +
+            '\'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as shifts'),
           'location_name', 'street_address', 'street_address2',
           'city', 'state', 'zipcode', 'location_notes', 'virtual', 'ongoing',
         ])
+        .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
         .where('campaign_id', campaign.id)
-        .andWhere('deleted', false);
+        .groupBy('actions.id')
+        .andWhere('actions.deleted', false);
 
       [details.owner, details.actions] = await Promise.all([
         User.findOne({ args: { id: campaign.owner_id } }),

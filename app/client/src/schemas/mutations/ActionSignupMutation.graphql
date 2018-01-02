@@ -1,7 +1,7 @@
 #import "../fragments/ActionBasicInfoFragment.graphql"
 
-mutation ActionSignupMutation ($actionId:String!) {
-  actionSignup(actionId:$actionId){
+mutation ActionSignupMutation ($actionId:String!, $shifts:[ShiftInput]) {
+  actionSignup(actionId:$actionId, shifts:$shifts){
     ...ActionBasicInfo
     attending
   }

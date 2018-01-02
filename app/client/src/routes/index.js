@@ -33,7 +33,8 @@ export default {
     require('./manageCampaignProfileEdit').default,
     require('./manageCampaignActions').default,
     require('./manageCampaignUploadActions').default,
-    require('./createAction').default,
+    require('./createRole').default,
+    require('./createEvent').default,
 
     // /organize/:campaignSlug/opportunity/:actionSlug
     require('./manageAction').default,

@@ -1,0 +1,65 @@
+@import '~styles/variables';
+
+.buttonContainer {
+  display: inline-block;
+}
+
+.menu a {
+  text-decoration: none !important;
+}
+
+.button {
+  cursor: pointer;
+  text-align: center;
+  margin: 1rem;
+  padding: 1rem;
+  background-color: $dark-blue;
+  font-size: 1rem;
+  color: $white;
+  flex: 1;
+}
+
+.cancelButton {
+  @extend .button;
+  background-color: $medium-grey;
+}
+
+.container {
+  hr {
+    margin: 1rem 0rem !important;
+  }
+}
+
+.header {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 300;
+  color: $black;
+  text-align: left;
+}
+
+.content {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: $black;
+  text-align: left;
+}
+
+.label {
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.checkbox {
+  margin: 1rem 0rem;
+}
+
+.shiftCheckbox {
+  margin: 1rem 0rem;
+  font-size: 1rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-around;
+}

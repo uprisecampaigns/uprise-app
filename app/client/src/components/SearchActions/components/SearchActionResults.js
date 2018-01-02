@@ -74,7 +74,7 @@ class SearchActionResults extends Component {
                 <div><Link to={`/campaign/${action.campaign.slug}`} className={s.subheaderContainer}>{action.campaign.title}</Link></div>
                 { !action.ongoing && startTime && (
                   <div>
-                    <div>Date: {startTime.format('ddd MMM Do, YYYY')}</div>
+                    <div>Date: {timeWithZone(startTime, action.zipcode, 'ddd MMM Do, YYYY')}</div>
                     <div>Time: {`${startTimeString} - ${endTimeString}`}</div>
                   </div>
                 )}
@@ -85,6 +85,9 @@ class SearchActionResults extends Component {
                   <div>Virtual Action</div>
                 )}
                 { (action.city && action.state) && <div>Place: {action.city}, {action.state}</div> }
+                { action.distance && (
+                  <div>{action.distance} miles away</div>
+                )}
               </CardHeader>
             </Card>
           </Link>

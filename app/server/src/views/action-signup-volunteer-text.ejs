@@ -6,9 +6,11 @@ You signed up for the following opportunity:
 <%= campaign.public_url %> 
 <%= action.title %>
 <%= action.public_url %>
-<% if (!action.ongoing) { %>
-  <%= dates.start %> <br/>
-<% } %>
+<% if (!action.ongoing) {
+     dates.shifts.forEach((shift) => { %>
+       <%= shift.start %> - <%= shift.end %>
+<%   })
+   } %>
 
 ====
 

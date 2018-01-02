@@ -24,42 +24,47 @@ class ActionCommitments extends PureComponent {
     if (this.props.actionCommitments) {
       const { actionCommitments, timeWithZone } = this.props;
 
-      const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map(action => (
-        <Link key={action.id} to={`/opportunity/${action.slug}`}>
-          <ListItem>
-
-            <div className={s.listTitle}>
-              {action.title}
+      const actionsList = Array.from(actionCommitments).sort(itemsSort({ name: 'date', descending: false })).map((action) => {
+        const shiftList = (action.signed_up_shifts && action.signed_up_shifts.length) ?
+          action.signed_up_shifts.map(shift => (
+            <div key={shift.id} className={s.listDetailLine}>
+              {timeWithZone(shift.start, action.zipcode, 'ddd, MMM Do YYYY, h:mm')} - {timeWithZone(shift.end, action.zipcode, 'h:mm a z')}
             </div>
+          )) : null;
 
-            <div className={s.listSecondaryHeader}>
-              {action.campaign.title}
-            </div>
+        return (
+          <Link key={action.id} to={`/opportunity/${action.slug}`}>
+            <ListItem>
 
-            {action.start_time && (
-              <div className={s.listDetailLine}>
-                {timeWithZone(action.start_time, action.zipcode, 'ddd, MMM Do YYYY, h:mma z')}
+              <div className={s.listTitle}>
+                {action.title}
               </div>
-            )}
 
-            {(action.city && action.state) && (
-              <div className={s.listDetailLine}>
-                {action.city}, {action.state}
+              <div className={s.listSecondaryHeader}>
+                {action.campaign.title}
               </div>
-            )}
 
-            {(action.owner) && (
-              <div className={s.listDetailLine}>
-                Coordinator: {action.owner.first_name} {action.owner.last_name}&nbsp;
-                <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>
-                  {action.owner.email}
-                </Link>
-              </div>
-            )}
+              {shiftList}
 
-          </ListItem>
-        </Link>
-      ));
+              {(action.city && action.state) && (
+                <div className={s.listDetailLine}>
+                  {action.city}, {action.state}
+                </div>
+              )}
+
+              {(action.owner) && (
+                <div className={s.listDetailLine}>
+                  Coordinator: {action.owner.first_name} {action.owner.last_name}&nbsp;
+                  <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>
+                    {action.owner.email}
+                  </Link>
+                </div>
+              )}
+
+            </ListItem>
+          </Link>
+        );
+      });
 
       return (
         <div className={s.outerContainer}>

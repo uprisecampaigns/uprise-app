@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { graphql, compose } from 'react-apollo';
 import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
-import RaisedButton from 'material-ui/RaisedButton';
+
+import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import SearchBar from 'components/SearchBar';
 import SelectedItemsContainer from 'components/SelectedItemsContainer';
@@ -18,25 +19,18 @@ class ActionProfileForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
-    formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     handleToggle: PropTypes.func.isRequired,
     addItem: PropTypes.func.isRequired,
     removeItem: PropTypes.func.isRequired,
-    saving: PropTypes.bool,
-    uploading: PropTypes.bool.isRequired,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }
-
-  static defaultProps = {
-    saving: false,
   }
 
   render() {
     const {
-      data, formSubmit, errors, activities,
+      data, errors, activities,
       handleToggle, addItem, removeItem,
-      handleInputChange, saving, uploading,
+      handleInputChange,
     } = this.props;
 
     const activitiesTogglesList = togglesList({
@@ -81,26 +75,6 @@ class ActionProfileForm extends PureComponent {
             />
           </div>
 
-          { (saving || uploading) ? (
-
-            <div className={s.savingThrobberContainer}>
-              <CircularProgress
-                size={100}
-                thickness={5}
-              />
-            </div>
-          ) : (
-
-            <div className={[s.organizeButton, s.saveButton].join(' ')}>
-              <RaisedButton
-                onTouchTap={formSubmit}
-                primary
-                type="submit"
-                label="Save Changes"
-              />
-            </div>
-          )}
-
           <div className={f.sectionLabel}>Keywords</div>
 
           <div className={f.keywordsContainer}>
@@ -134,4 +108,11 @@ const mapStateToProps = state => ({
   uploading: state.uploads.uploading,
 });
 
-export default connect(mapStateToProps)(ActionProfileForm);
+export default compose(
+  connect(mapStateToProps),
+  graphql(ActivitiesQuery, {
+    props: ({ data }) => ({
+      activities: !data.loading && data.activities ? data.activities : [],
+    }),
+  }),
+)(ActionProfileForm);

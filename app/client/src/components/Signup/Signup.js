@@ -18,8 +18,8 @@ import {
   validatePasswords,
 } from 'lib/validateComponentForms';
 
+import Terms from 'components/Terms';
 import SignupForm from './components/SignupForm';
-import Terms from './components/Terms';
 
 const WrappedSignupForm = formWrapper(SignupForm);
 

@@ -17,11 +17,17 @@ const statesList = Object.keys(states);
 export default (WrappedComponent) => {
   class FormWrapper extends React.Component {
     static propTypes = {
+      forceRefresh: PropTypes.bool,
       initialState: PropTypes.object.isRequired,
       initialErrors: PropTypes.object.isRequired,
       submit: PropTypes.func.isRequired,
       dispatch: PropTypes.func.isRequired,
-      validators: PropTypes.arrayOf(PropTypes.func).isRequired,
+      validators: PropTypes.arrayOf(PropTypes.func),
+    }
+
+    static defaultProps = {
+      forceRefresh: true,
+      validators: [],
     }
 
     constructor(props) {
@@ -35,7 +41,7 @@ export default (WrappedComponent) => {
     }
 
     componentWillReceiveProps(nextProps) {
-      if (nextProps.initialState && !this.state.saving) {
+      if (nextProps.forceRefresh && nextProps.initialState && !this.state.saving) {
         this.setState({
           formData: Object.assign({}, nextProps.initialState),
         });
@@ -154,7 +160,9 @@ export default (WrappedComponent) => {
           const result = await this.props.submit(this.state.formData);
 
           if (result.success) {
-            this.props.dispatch(notify(result.message || 'Success'));
+            if (typeof result.message !== 'boolean' && result.message !== false) {
+              this.props.dispatch(notify(result.message || 'Success'));
+            }
           } else {
             notifyError(result.message);
           }
@@ -197,6 +205,6 @@ export default (WrappedComponent) => {
       );
     }
   }
-  return connect()(FormWrapper);
+  return connect(null, null, null, { withRef: true })(FormWrapper);
 };
 

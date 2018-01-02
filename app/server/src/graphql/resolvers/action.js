@@ -15,25 +15,32 @@ const getFormattedDates = ({ user, action }) => {
     return { ongoing: true };
   }
 
-  const startTime = moment(action.start_time);
-  const endTime = moment(action.end_time);
-
   const timezone = (user.zipcode && zipcodeToTimezone.lookup(user.zipcode)) ? zipcodeToTimezone.lookup(user.zipcode) : 'America/New_York';
 
   return {
     timezone,
-    start: startTime.tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
-    end: endTime.tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
+    shifts: action.signed_up_shifts.map(shift => ({
+      timezone,
+      start: moment(shift.start).tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
+      end: moment(shift.end).tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
+    })),
   };
 };
 
 module.exports = {
   Query: {
     action: async (root, args, context) => {
-      const action = await Action.findOne(args.search);
+      const { search } = args;
+
+      if (context.user && typeof context.user.zipcode === 'string') {
+        search.targetZipcode = context.user.zipcode;
+      }
+
+      const action = await Action.findOne(search);
 
       // TODO: This is repeated in a bunch of places and should be DRYed
       action.attending = (context.user) ? await Action.attending({ actionId: action.id, userId: context.user.id }) : false;
+      action.signed_up_shifts = (context.user) ? await Action.signedUpShifts({ actionId: action.id, userId: context.user.id }) : [];
 
       action.is_owner = (context.user) ? await User.ownsObject({ user: context.user, object: action }) : false;
 
@@ -41,7 +48,13 @@ module.exports = {
     },
 
     actions: async (root, args, context) => {
-      const actions = await Action.search(args.search);
+      const { search } = args;
+
+      if (context.user && typeof context.user.zipcode === 'string') {
+        search.targetZipcode = context.user.zipcode;
+      }
+
+      const actions = await Action.search(search);
       return actions;
     },
 
@@ -50,7 +63,7 @@ module.exports = {
         throw new Error('User must be logged in');
       }
 
-      const actionCommitments = await Action.usersActions({ userId: context.user.id });
+      const actionCommitments = await Action.usersActions({ user: context.user });
 
       return actionCommitments;
     },
@@ -129,7 +142,6 @@ module.exports = {
       return createdActions;
     },
 
-
     editAction: async (root, args, context) => {
       if (!context.user) {
         throw new Error('User must be logged in');
@@ -144,6 +156,8 @@ module.exports = {
       return action;
     },
 
+    // If action is not ongoing, shifts passed in here will over-write any previously
+    // signed up shifts
     actionSignup: async (root, args, context) => {
       if (!context.user) {
         throw new Error('User must be logged in');
@@ -151,8 +165,14 @@ module.exports = {
 
       const { user } = context;
 
-      const action = await Action.signup({ userId: user.id, actionId: args.actionId });
+      const action = await Action.signup({
+        userId: user.id,
+        actionId: args.actionId,
+        shifts: args.shifts,
+      });
+
       action.attending = await Action.attending({ actionId: action.id, userId: user.id });
+      action.signed_up_shifts = await Action.signedUpShifts({ actionId: action.id, userId: user.id });
 
       let actionCoordinator;
 
@@ -204,6 +224,7 @@ module.exports = {
 
       const action = await Action.cancelSignup({ userId: context.user.id, actionId: args.actionId });
       action.attending = await Action.attending({ actionId: action.id, userId: context.user.id });
+      action.signed_up_shifts = await Action.signedUpShifts({ actionId: action.id, userId: context.user.id });
 
       return action;
     },
