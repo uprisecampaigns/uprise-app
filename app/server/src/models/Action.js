@@ -613,10 +613,20 @@ class Action {
           db.raw('to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end')])
         .where('action_id', action.id);
 
+      const userQuery = User.findOne({
+        args: { id: action.owner_id },
+        selections: [
+          'users.id as id', 'users.first_name', 'users.last_name', 'users.email',
+          'users.phone_number', 'users.zipcode', 'email_confirmed',
+          'user_profiles.subheader as subheader', 'user_profiles.description as description',
+          'user_profiles.profile_image_url as profile_image_url',
+        ],
+      });
+
       try {
         [details.campaign, details.owner, details.activities, details.shifts] = await Promise.all([
           Campaign.findOne('id', action.campaign_id),
-          User.findOne('id', action.owner_id),
+          userQuery,
           activitiesQuery,
           shiftsQuery,
         ]);
