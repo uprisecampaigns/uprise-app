@@ -314,6 +314,10 @@ export class ActionSignupModal extends Component {
             >
               <div
                 className={s.button}
+                onClick={e => this.props.dispatch(closedModal())}
+                onKeyPress={e => this.props.dispatch(closedModal())}
+                role="button"
+                tabIndex="0"
               >
                 View Events
               </div>
