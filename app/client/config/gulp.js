@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require('path');
+const url = require('url');
 const gitRoot = path.resolve(__dirname, '..', '..', '..', '.git');
 const appRoot = path.resolve(__dirname, '..', '..');
 const publicRoot = path.resolve(appRoot, 'client');
@@ -17,4 +18,5 @@ module.exports = {
   dest: path.resolve(publicRoot, 'builds'),
   src: path.resolve(publicRoot, 'src'),
   siteUrl: process.env.CLIENT_BASE_URL,
+  apiUrl: url.resolve(process.env.CLIENT_BASE_URL, 'api'),
 };
