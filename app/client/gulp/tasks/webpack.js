@@ -16,7 +16,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackTemplate = require('html-webpack-template');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require("compression-webpack-plugin");
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const WriteFilePlugin = require('write-file-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
@@ -81,14 +82,25 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     }
   });
 
-  const swPrecachePlugin = new SWPrecacheWebpackPlugin({
-    verbose: true,
-    debug: true,
-    cacheId: 'sw-precache-uprise-app',
-    filename: 'service-worker.js',
-    minify: env.production(),
-    // // navigateFallback: PUBLIC_PATH + 'index.html',
-    // staticFileGlobsIgnorePatterns: [/\.map$/],
+  const writeFilePlugin = new WriteFilePlugin({
+    exitOnErrors: false,
+    force: true,
+    test: /\.js$/,
+  });
+
+  const workboxPlugin = new WorkboxPlugin({
+    globDirectory: config.dest,
+    globPatterns: ['**/*.{html,js,css,png,jpg}'],
+    swDest: path.join(config.dest, 'service-worker.js'),
+    clientsClaim: true,
+    skipWaiting: true,
+    maximumFileSizeToCacheInBytes: 14 * 1024 * 1024,
+    runtimeCaching: [
+      {
+        urlPattern: new RegExp(config.apiUrl),
+        handler: 'staleWhileRevalidate',
+      }
+    ],
   });
 
   const pwaManifestPlugin =  new WebpackPwaManifest({
@@ -216,11 +228,12 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       definePlugin,
       occurenceOrderPlugin,
       new webpack.optimize.AggressiveMergingPlugin(),
-      swPrecachePlugin,
       progressPlugin,
       pwaManifestPlugin,
       faviconPlugin,
       contextReplacementPlugin,
+      writeFilePlugin,
+      workboxPlugin,
     ] : [
       // bundleAnalyzerPlugin,
       definePlugin,
@@ -232,6 +245,8 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       pwaManifestPlugin,
       faviconPlugin,
       contextReplacementPlugin,
+      writeFilePlugin,
+      workboxPlugin,
     ],
 
     bail: env.production(),
@@ -244,17 +259,12 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
   };
 
   return gulp.src(config.src)
-    .pipe(gulpWebpack(config.webpack, webpack, (err, stats) => {
+    .pipe(gulpWebpack({
+      config: config.webpack
+    }, webpack, (err, stats) => {
       err && console.error(err);
 
       setImmediate(() => {
-        if (env.production()) {
-          // write the in-memory service-worker.js to disk
-          const abspath = path.resolve(config.dest, 'service-worker.js')
-          const content = stats.compilation.compiler.outputFileSystem.readFileSync(abspath)
-          fs.writeFileSync(abspath, content)
-        }
-
         gutil.log(stats.toString({
           colors: gutil.colors.supportsColor,
         }));
