@@ -75,6 +75,7 @@ class ActionProfile extends PureComponent {
 
               <div className={s.alternatingBackgroundsContainer}>
 
+                { /* Commenting until I can convince Antonia to keep it
                 <div className={s.actionDetailsContainer}>
                   <div className={s.actionDetailsTitle}>About this Volunteer Event</div>
                   { (typeof action.description === 'string' && action.description.trim() !== '') &&
@@ -95,6 +96,8 @@ class ActionProfile extends PureComponent {
                     )}
                   </div>
                 </div>
+
+                */ }
 
                 { (action.locationName || action.streetAddress || (action.city && action.state && action.zipcode)) && (
                   <div className={s.actionDetailsContainer}>
