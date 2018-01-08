@@ -24,6 +24,14 @@ function Volunteer(props) {
 
         <Divider />
 
+        <Link to={`/user/${userObject.id}`}>
+          <ListItem
+            primaryText="My Profile"
+          />
+        </Link>
+
+        <Divider />
+
         <Link to="/volunteer/opportunity-commitments">
           <ListItem
             primaryText="My Commitments"

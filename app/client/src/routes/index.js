@@ -20,6 +20,7 @@ export default {
     require('./contact').default,
     require('./privacySecurity').default,
     require('./confirmEmail').default,
+    require('./editProfile').default,
 
     // /organize/
     require('./organize').default,

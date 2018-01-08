@@ -5,29 +5,18 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import togglesList from 'lib/togglesList';
-
-import ImageUploader from 'components/ImageUploader';
-import SearchBar from 'components/SearchBar';
-import SelectedItemsContainer from 'components/SelectedItemsContainer';
-
 import s from 'styles/Form.scss';
 
 
 class AccountForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
-    userId: PropTypes.string.isRequired,
     formSubmit: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
     submitText: PropTypes.string.isRequired,
     errors: PropTypes.object.isRequired,
-    handleToggle: PropTypes.func.isRequired,
-    addItem: PropTypes.func.isRequired,
-    removeItem: PropTypes.func.isRequired,
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   static defaultProps = {
@@ -36,20 +25,9 @@ class AccountForm extends PureComponent {
 
   render() {
     const {
-      data, formSubmit, errors, saving, userId, activities,
-      handleInputChange, cancel, submitText, handleToggle,
-      addItem, removeItem,
+      data, formSubmit, errors, saving,
+      handleInputChange, cancel, submitText,
     } = this.props;
-
-    const activitiesTogglesList = togglesList({
-      collection: activities,
-      selectedCollection: data.activities.map(a => a.id),
-      collectionName: 'activities',
-      keyPropName: 'id',
-      displayPropName: 'description',
-      containerClassName: s.listItem, // TODO: right className?
-      handleToggle,
-    });
 
     return (
       <div className={s.outerContainer}>
@@ -82,42 +60,6 @@ class AccountForm extends PureComponent {
 
                 <div className={s.textFieldContainer}>
                   <TextField
-                    floatingLabelText="Title"
-                    value={data.subheader}
-                    onChange={(event) => { handleInputChange(event, 'subheader', event.target.value); }}
-                    errorText={errors.subheaderErrorText}
-                    fullWidth
-                  />
-                </div>
-
-                <div className={s.textareaContainer}>
-                  <TextField
-                    name="description"
-                    hintText="Write a short description of yourself"
-                    value={data.description}
-                    multiLine
-                    rows={4}
-                    onChange={(event) => { handleInputChange(event, 'description', event.target.value); }}
-                    errorText={errors.descriptionErrorText}
-                    fullWidth
-                    underlineShow={false}
-                  />
-                </div>
-
-                <ImageUploader
-                  onChange={(imgSrc) => { handleInputChange(undefined, 'profileImageUrl', imgSrc); }}
-                  imageSrc={data.profileImageUrl}
-                  imageHeight={800}
-                  imageWidth={800}
-                  imageUploadOptions={{
-                    collectionName: 'users',
-                    collectionId: userId,
-                    filePath: 'profile',
-                  }}
-                />
-
-                <div className={s.textFieldContainer}>
-                  <TextField
                     floatingLabelText="Phone Number"
                     value={data.phoneNumber}
                     onChange={(event) => { handleInputChange(event, 'phoneNumber', event.target.value); }}
@@ -144,28 +86,6 @@ class AccountForm extends PureComponent {
                     errorText={errors.emailErrorText}
                     fullWidth
                     type="email"
-                  />
-                </div>
-
-                <div className={s.sectionLabel}>Activities</div>
-                { activitiesTogglesList }
-
-                <div className={s.sectionLabel}>Keywords</div>
-
-                <div className={s.keywordsContainer}>
-                  <SearchBar
-                    collectionName="tags"
-                    inputLabel="Keyword"
-                    addItem={addItem}
-                    iconName="add"
-                    className={s.keywordsInputContainer}
-                  />
-
-                  <SelectedItemsContainer
-                    collectionName="tags"
-                    removeItem={removeItem}
-                    items={data.tags}
-                    className={s.selectedKeywordsContainer}
                   />
                 </div>
 

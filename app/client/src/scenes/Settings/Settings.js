@@ -19,6 +19,14 @@ function Settings(props) {
 
         <Divider />
 
+        <Link to="/settings/edit-profile">
+          <ListItem
+            primaryText="Edit Profile"
+          />
+        </Link>
+
+        <Divider />
+
         <Link to="/settings/account">
           <ListItem
             primaryText="Account"

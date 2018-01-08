@@ -7,30 +7,24 @@ import FontIcon from 'material-ui/FontIcon';
 
 import formWrapper from 'lib/formWrapper';
 
-import {
-  validateString,
-  validateZipcode,
-  validateEmail,
-  validateEmailAvailable,
-  validatePhoneNumber,
-} from 'lib/validateComponentForms';
-
 import Link from 'components/Link';
-import AccountForm from 'components/AccountForm';
+import UserProfileForm from 'components/UserProfileForm';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
+import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import EditAccountMutation from 'schemas/mutations/EditAccountMutation.graphql';
 
 import s from 'styles/Settings.scss';
 
 
-const WrappedAccountForm = formWrapper(AccountForm);
+const WrappedUserProfileForm = formWrapper(UserProfileForm);
 
-class Account extends Component {
+class EditUserProfile extends Component {
   static propTypes = {
     user: PropTypes.object,
     editAccountMutation: PropTypes.func.isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     graphqlLoading: PropTypes.bool.isRequired,
   }
@@ -44,11 +38,11 @@ class Account extends Component {
 
     const initialState = {
       formData: {
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        zipcode: '',
-        email: '',
+        subheader: '',
+        description: '',
+        profileImageUrl: '',
+        activities: [],
+        tags: [],
       },
     };
 
@@ -86,11 +80,8 @@ class Account extends Component {
   }
 
   defaultErrorText = {
-    firstNameErrorText: null,
-    lastNameErrorText: null,
-    zipcodeErrorText: null,
-    phoneNumberErrorText: null,
-    emailErrorText: null,
+    subheaderErrorText: null,
+    descriptionErrorText: null,
   }
 
   formSubmit = async (data) => {
@@ -105,6 +96,8 @@ class Account extends Component {
     const formData = Object.assign({}, data);
 
     formData.id = this.props.user.id;
+
+    formData.activities = formData.activities.map(activity => (activity.id));
 
     try {
       await this.props.editAccountMutation({
@@ -124,19 +117,10 @@ class Account extends Component {
   render() {
     if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
-      const { user } = this.props;
+      const { user, activities } = this.props;
       const { formData } = state;
 
-      const validators = [
-        component => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
-        component => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
-        component => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
-        component => validateZipcode(component),
-        component => validateEmail(component),
-        component => validateEmailAvailable(component, user.email),
-        component => validatePhoneNumber(component),
-      ];
-
+      const validators = [];
 
       return (
         <div className={s.outerContainer}>
@@ -151,15 +135,16 @@ class Account extends Component {
             </div>
           </Link>
 
-          <div className={s.settingsHeader}>Account</div>
+          <div className={s.settingsHeader}>User Profile</div>
 
-          <WrappedAccountForm
+          <WrappedUserProfileForm
             initialState={formData}
             initialErrors={defaultErrorText}
             validators={validators}
             submit={formSubmit}
             submitText="Save Changes"
             userId={user.id}
+            activities={activities}
           />
 
         </div>
@@ -180,5 +165,10 @@ export default compose(
       graphqlLoading: data.loading,
     }),
   }),
+  graphql(ActivitiesQuery, {
+    props: ({ data }) => ({
+      activities: !data.loading && data.activities ? data.activities : [],
+    }),
+  }),
   graphql(EditAccountMutation, { name: 'editAccountMutation' }),
-)(Account);
+)(EditUserProfile);
