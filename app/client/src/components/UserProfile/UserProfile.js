@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Tabs, Tab } from 'material-ui/Tabs';
 
 import KeywordTag from 'components/KeywordTag';
 
@@ -10,21 +9,9 @@ import history from 'lib/history';
 import s from 'styles/UserProfile.scss';
 
 
-// Too difficult to override in css :/
-const inkBarStyle = {
-  backgroundColor: '#333',
-  height: '3px',
-};
-
 class UserProfile extends PureComponent {
   static propTypes = {
     user: PropTypes.object.isRequired,
-    handleTabChange: PropTypes.func.isRequired,
-    activeTab: PropTypes.string,
-  }
-
-  static defaultProps = {
-    activeTab: 'interests',
   }
 
   handleContact = (event) => {
@@ -34,7 +21,7 @@ class UserProfile extends PureComponent {
   }
 
   render() {
-    const { user, activeTab, handleTabChange } = this.props;
+    const { user } = this.props;
 
     const keywords = (Array.isArray(user.tags) && user.tags.length) ? (
       <div className={s.keywordLine}>
@@ -49,38 +36,13 @@ class UserProfile extends PureComponent {
       </div>
     ) : null;
 
-    const infoBoxMapping = {
-      interests: {
-        singular: 'activity',
-        plural: 'activities',
-        headerText: 'Interested in...',
-        text: activity => activity.description,
-      },
-      opportunities: {
-        singular: 'action',
-        plural: 'actions',
-        headerText: 'Actions Header...',
-        text: action => action.title,
-      },
-      campaigns: {
-        singular: 'campaign',
-        plural: 'campaigns',
-        headerText: 'Campaigns Header...',
-        text: campaign => campaign.title,
-      },
-    };
-
-    const selected = infoBoxMapping[activeTab];
-    const collection = user[selected.plural];
-
-    const infoBoxContent = (Array.isArray(collection) && collection.length) ? (
+    const infoBoxContent = (Array.isArray(user.activities) && user.activities.length) ? (
       <div>
-        <div className={s.infoBoxHeader}>
-          { selected.headerText }
-        </div>
-        { collection.map((item, index) => <div key={JSON.stringify(item)} className={s.infoBoxLine}>{ selected.text(item) }</div>) }
-      </div>) :
-      null;
+        { user.activities.map((activity, index) => <div key={JSON.stringify(activity)} className={s.infoBoxLine}>{ activity.description }</div>) }
+      </div>
+    ) : (
+      <div>This user doesn&apos;t have any interests selected yet!</div>
+    );
 
     return (
       <div className={s.userProfileContainer}>
@@ -118,44 +80,21 @@ class UserProfile extends PureComponent {
             className={s.primaryButton}
           />
 
-          { user.description && (
-            <div className={s.userDescription}>
-              { user.description }
-            </div>
-          )}
-
         </div>
 
         <div className={s.centerContent}>
-          <div className={s.infoBox}>
-            <div className={s.tabsOuterContainer}>
-              <div className={s.tabsInnerContainer}>
-                <Tabs
-                  className={s.tabs}
-                  contentContainerClassName={s.tabsContentContainer}
-                  onChange={handleTabChange}
-                  value={activeTab}
-                  inkBarStyle={inkBarStyle}
-                >
-                  <Tab
-                    label="Interests"
-                    className={activeTab === 'interests' ? s.activeTab : s.tab}
-                    value="interests"
-                  />
 
-                  <Tab
-                    label="Opportunities"
-                    className={activeTab === 'opportunities' ? s.activeTab : s.tab}
-                    value="opportunities"
-                  />
-
-                  <Tab
-                    label="Campaigns"
-                    className={activeTab === 'campaigns' ? s.activeTab : s.tab}
-                    value="campaigns"
-                  />
-                </Tabs>
+          { user.description && (
+            <div className={s.infoBox}>
+              <div className={s.userDescription}>
+                { user.description }
               </div>
+            </div>
+          )}
+
+          <div className={s.infoBox}>
+            <div className={s.infoBoxHeader}>
+              Interested in...
             </div>
 
             <div className={s.infoBoxContainer}>

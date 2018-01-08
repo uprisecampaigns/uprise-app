@@ -22,11 +22,14 @@
   flex: 2;
   background-color: $light-grey;
   padding: 5%;
+}
 
-  .infoBox {
-    background-color: $white;
-    border: 1px solid $grey;
-  }
+
+.infoBox {
+  background-color: $white;
+  border: 1px solid $grey;
+  margin: 1rem 0rem;
+  padding: 1rem;
 }
 
 .rightContent {
@@ -45,7 +48,6 @@
 }
 
 .userDescription {
-  margin: 1rem 0;
 }
 
 .profileImage {

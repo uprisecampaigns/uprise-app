@@ -20,16 +20,7 @@ class UserProfileContainer extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      activeTab: 'interests',
-    };
   }
-
-  handleTabChange = (activeTab) => {
-    this.setState({ activeTab });
-  };
-
 
   render() {
     if (this.props.user) {
@@ -37,8 +28,6 @@ class UserProfileContainer extends Component {
 
       return (
         <UserProfile
-          activeTab={this.state.activeTab}
-          handleTabChange={this.handleTabChange}
           user={user}
         />
       );
