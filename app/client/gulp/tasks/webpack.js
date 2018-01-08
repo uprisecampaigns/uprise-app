@@ -94,7 +94,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
     swDest: path.join(config.dest, 'service-worker.js'),
     clientsClaim: true,
     skipWaiting: true,
-    maximumFileSizeToCacheInBytes: 14 * 1024 * 1024,
+    maximumFileSizeToCacheInBytes: 3 * 1024 * 1024, // 3MB
     runtimeCaching: [
       {
         urlPattern: new RegExp(config.apiUrl),
@@ -131,7 +131,6 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       path: config.dest
     },
     devtool: env.development() ? "eval-cheap-module-source-map" : "source-map",
-    watch: true,
     module: {
       rules: [
         {
@@ -242,11 +241,8 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       htmlWebpackPlugin,
       occurenceOrderPlugin,
       new webpack.optimize.AggressiveMergingPlugin(),
-      pwaManifestPlugin,
       faviconPlugin,
       contextReplacementPlugin,
-      writeFilePlugin,
-      workboxPlugin,
     ],
 
     bail: env.production(),
@@ -260,7 +256,8 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 
   return gulp.src(config.src)
     .pipe(gulpWebpack({
-      config: config.webpack
+      config: config.webpack,
+      watch: !env.production(),
     }, webpack, (err, stats) => {
       err && console.error(err);
 
