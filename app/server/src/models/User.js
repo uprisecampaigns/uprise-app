@@ -143,7 +143,7 @@ class User {
     }
 
     const rows = await db.table('users').insert(user, ['id', 'email']);
-    await db.table('user_profiles').insert({ user_id: user.id });
+    await db.table('user_profiles').insert({ user_id: rows[0].id });
 
     Object.assign(userInfo, rows[0]);
     return userInfo;
