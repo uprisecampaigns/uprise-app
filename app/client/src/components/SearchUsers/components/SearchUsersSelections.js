@@ -16,6 +16,10 @@ const SelectedKeywordsContainer = connect(state => ({ items: state.usersSearch.k
 
 const SelectedTagsContainer = connect(state => ({ items: state.usersSearch.tags }))(SelectedItemsContainer);
 
+const SelectedGeographiesContainer = connect(state => ({ items: state.usersSearch.geographies }))(SelectedItemsContainer);
+
+const renderSelectedGeographyLabel = geography => `Within ${geography.distance} miles of ${geography.zipcode}`;
+
 class SearchUsersSelections extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -39,6 +43,11 @@ class SearchUsersSelections extends PureComponent {
         <SelectedKeywordsContainer
           collectionName="keywords"
           removeItem={removeSelectedItem}
+        />
+        <SelectedGeographiesContainer
+          collectionName="geographies"
+          removeItem={removeSelectedItem}
+          renderLabel={renderSelectedGeographyLabel}
         />
       </div>
     );

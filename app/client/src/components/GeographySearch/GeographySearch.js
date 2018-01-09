@@ -17,6 +17,11 @@ const textFieldStyle = {
 class GeographySearch extends PureComponent {
   static propTypes = {
     addItem: PropTypes.func.isRequired,
+    showVirtual: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    showVirtual: true,
   }
 
   constructor(props) {
@@ -24,8 +29,11 @@ class GeographySearch extends PureComponent {
     this.state = {
       distance: '10',
       zipcode: '',
-      virtual: false,
     };
+
+    if (props.showVirtual) {
+      this.state.virtual = false;
+    }
   }
 
   handleInputChange = (event, type, value) => {
@@ -70,13 +78,14 @@ class GeographySearch extends PureComponent {
         {
           distance: '10',
           zipcode: '',
-          virtual: false,
+          virtual: this.props.showVirtual ? false : undefined,
         },
       )));
     }
   }
 
   render() {
+    const { showVirtual } = this.props;
     const { distance, zipcode, virtual } = this.state;
     const { addItem, handleInputChange } = this;
 
@@ -85,12 +94,14 @@ class GeographySearch extends PureComponent {
         onSubmit={addItem}
       >
 
-        <Checkbox
-          label="Virtual (anywhere)"
-          checked={virtual}
-          onCheck={(event, isChecked) => { handleInputChange(event, 'virtual', isChecked); }}
-          className={s.checkboxContainer}
-        />
+        {showVirtual && (
+          <Checkbox
+            label="Virtual (anywhere)"
+            checked={virtual}
+            onCheck={(event, isChecked) => { handleInputChange(event, 'virtual', isChecked); }}
+            className={s.checkboxContainer}
+          />
+        )}
 
         {!virtual && (
           <div>

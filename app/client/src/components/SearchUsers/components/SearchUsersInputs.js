@@ -8,7 +8,7 @@ import {
 } from 'actions/SearchActions';
 
 import ControlledListItem from 'components/ControlledListItem';
-import ZipcodeSearch from 'components/ZipcodeSearch';
+import GeographySearch from 'components/GeographySearch';
 
 import s from 'styles/Search.scss';
 
@@ -43,8 +43,9 @@ class SearchUsersInputs extends PureComponent {
           initiallyOpen={allOpen}
           nestedItems={[(
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
-              <ZipcodeSearch
+              <GeographySearch
                 addItem={addSelectedItem}
+                showVirtual={false}
               />
             </div>
           )]}

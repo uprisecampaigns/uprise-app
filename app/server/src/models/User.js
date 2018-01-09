@@ -13,6 +13,8 @@ const sendEmail = require('lib/sendEmail.js');
 const updateProperties = require('models/updateProperties')('user');
 
 
+const milesInMeter = 0.000621371192237;
+
 const activitiesQuery = db.table('users_activities')
   .select([
     'users_activities.user_id as user_id',
@@ -128,6 +130,29 @@ class User {
                   .whereRaw(`tag ${stringOverlapComparator}`, keyword);
 
                 this.orWhere('users.id', 'in', tagKeywordQuery);
+              });
+            });
+          }
+
+          if (search.geographies) {
+            qb.andWhere(function () {
+              search.geographies.forEach((geography) => {
+                const { distance = 10, zipcode } = geography; // default to 10 miles
+
+                // TODO: It would be nice to refactor some of this out into knex language
+                const distanceQuery = db.select('id')
+                  .from(function () {
+                    this.select('users.id', db.raw('ST_DISTANCE(users.location, target_zip.location) * ? AS distance', milesInMeter))
+                      .as('distances')
+                      .from(db.raw(`
+                        (SELECT postal_code, location from zipcodes where postal_code=?) target_zip
+                        CROSS JOIN
+                        (select * from users join zipcodes on zipcodes.postal_code = users.zipcode) users
+                      `, zipcode));
+                  })
+                  .where('distance', '<=', distance);
+
+                this.orWhere('users.id', 'in', distanceQuery);
               });
             });
           }

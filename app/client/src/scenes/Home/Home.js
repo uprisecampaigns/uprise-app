@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { compose, graphql } from 'react-apollo';
 import { Tabs, Tab } from 'material-ui/Tabs';
-
-import { setPage } from 'actions/PageNavActions';
 
 import SearchActions from 'components/SearchActions';
 import SearchCampaigns from 'components/SearchCampaigns';
 import SearchUsers from 'components/SearchUsers';
+
+import { setPage } from 'actions/PageNavActions';
+
+import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import s from 'styles/Home.scss';
 
@@ -24,10 +27,12 @@ class Home extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     page: PropTypes.string,
+    user: PropTypes.object,
   }
 
   static defaultProps = {
     page: 'action',
+    user: undefined,
   }
 
   handleChange = (value) => {
@@ -35,7 +40,10 @@ class Home extends Component {
   };
 
   render() {
+    const { user } = this.props;
     const activeTab = this.props.page;
+
+    const hasCampaigns = typeof user === 'object' && Array.isArray(user.campaigns) && user.campaigns.length;
 
     return (
       <div className={s.outerContainer}>
@@ -60,11 +68,13 @@ class Home extends Component {
                 value="campaign"
               />
 
-              <Tab
-                label="Users"
-                className={activeTab === 'users' ? s.activeTab : s.tab}
-                value="user"
-              />
+              { hasCampaigns && (
+                <Tab
+                  label="Users"
+                  className={activeTab === 'users' ? s.activeTab : s.tab}
+                  value="user"
+                />
+              )}
             </Tabs>
           </div>
         </div>
@@ -97,4 +107,14 @@ const mapStateToProps = state => ({
   page: state.homePageNav.page,
 });
 
-export default connect(mapStateToProps)(Home);
+export default compose(
+  connect(mapStateToProps),
+  graphql(MeQuery, {
+    options: ownProps => ({
+      fetchPolicy: 'cache-and-network',
+    }),
+    props: ({ data }) => ({
+      user: data.me,
+    }),
+  }),
+)(Home);
