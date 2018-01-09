@@ -18,10 +18,6 @@ class UserProfileContainer extends Component {
     user: undefined,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     if (this.props.user) {
       const { user } = this.props;
