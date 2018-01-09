@@ -50,7 +50,20 @@ module.exports = {
         throw new Error('User must be logged in');
       }
 
-      const users = await User.search(search);
+      let hasSearch = false;
+      if (typeof search === 'object') {
+        for (let searchCategory of Object.values(search)) {
+          if (typeof searchCategory === 'object' && Object.keys(searchCategory).length) {
+            hasSearch = true;
+          }
+        }
+      }
+
+      if (!hasSearch) {
+        return [];
+      }
+
+      const users = await User.search({ search, userId: context.user.id });
       return users;
     },
   },

@@ -69,7 +69,7 @@ class User {
     return userQuery;
   }
 
-  static search(search) {
+  static search({ search, userId }) {
     const searchQuery = db('users')
       .leftJoin('user_profiles', 'user_profiles.user_id', 'users.id')
       .select([
@@ -77,6 +77,8 @@ class User {
         'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
       ])
       .modify((qb) => {
+        qb.whereNot('users.id', userId);
+
         if (search) {
           if (search.names) {
             qb.andWhere(function nameQueryBuilder() {
