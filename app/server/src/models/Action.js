@@ -212,21 +212,20 @@ class Action {
     return action;
   }
 
-  static async signedUpVolunteers({ actionId }) {
-    const query = db('actions')
+  static async signedUpVolunteers({ actionId, shiftsQuery }) {
+    const query = db('users')
+      .leftJoin('action_signups', 'action_signups.user_id', 'users.id')
+      .leftJoin('shift_signups', 'shift_signups.user_id', 'users.id')
+      .leftJoin('shifts', 'shift_signups.shift_id', 'shifts.id')
+      .leftJoin('actions', function () {
+        this.on('action_signups.action_id', 'actions.id').orOn('shifts.action_id', 'actions.id');
+      })
       .select(['users.id as id', 'users.first_name as first_name', 'users.last_name as last_name',
         'users.email as email', 'users.zipcode as zipcode'])
-      .leftOuterJoin('action_signups', 'action_signups.action_id', 'actions.id')
-      .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
-      .leftOuterJoin('shift_signups', 'shift_signups.shift_id', 'shifts.id')
-      .leftOuterJoin('users', function () {
-        this.on('shift_signups.user_id', 'users.id').orOn('action_signups.user_id', 'users.id');
-      })
-      .where('actions.id', actionId);
+      .where('actions.id', actionId)
+      .groupBy('users.id');
 
-    const result = await query;
-
-    return result;
+    return query;
   }
 
   static async usersActions({ user }) {
