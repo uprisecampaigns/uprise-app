@@ -65,6 +65,7 @@ exports.down = async (knex, Promise) => {
 
   const signups = await knex('shift_signups')
     .join('shifts', 'shifts.id', '=', 'shift_signups.shift_id')
+    .distinct('shift_signups.user_id', 'shifts.action_id')
     .select('shifts.action_id as action_id', 'shift_signups.user_id as user_id');
 
   for (const signup of signups) {
