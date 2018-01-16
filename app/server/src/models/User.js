@@ -37,7 +37,7 @@ const campaignsQuery = db.table('campaigns')
   .select([
     'owner_id',
     db.raw('(case when count(id)=0 then \'[]\'::json else ' +
-    'json_agg(json_build_object(\'id\', id, \'title\', title)) end) as object'),
+    'json_agg(json_build_object(\'id\', id, \'title\', title, \'slug\', slug)) end) as object'),
   ])
   .groupBy('owner_id')
   .as('campaigns_query');
@@ -135,13 +135,13 @@ class User {
           }
 
           if (search.geographies) {
-            qb.andWhere(function () {
+            qb.andWhere(function geographyQueryBuilder() {
               search.geographies.forEach((geography) => {
                 const { distance = 10, zipcode } = geography; // default to 10 miles
 
                 // TODO: It would be nice to refactor some of this out into knex language
                 const distanceQuery = db.select('id')
-                  .from(function () {
+                  .from(function distanceQueryBuilder() {
                     this.select('users.id', db.raw('ST_DISTANCE(users.location, target_zip.location) * ? AS distance', milesInMeter))
                       .as('distances')
                       .from(db.raw(`

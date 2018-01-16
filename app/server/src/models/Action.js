@@ -212,7 +212,7 @@ class Action {
     return action;
   }
 
-  static async signedUpVolunteers({ actionId, shiftsQuery }) {
+  static async signedUpVolunteers({ actionId, shiftSearch }) {
     const query = db('users')
       .leftJoin('action_signups', 'action_signups.user_id', 'users.id')
       .leftJoin('shift_signups', 'shift_signups.user_id', 'users.id')
@@ -223,6 +223,11 @@ class Action {
       .select(['users.id as id', 'users.first_name as first_name', 'users.last_name as last_name',
         'users.email as email', 'users.zipcode as zipcode'])
       .where('actions.id', actionId)
+      .modify((qb) => {
+        if (shiftSearch) {
+          qb.andWhere('shifts.id', shiftSearch.id);
+        }
+      })
       .groupBy('users.id');
 
     return query;

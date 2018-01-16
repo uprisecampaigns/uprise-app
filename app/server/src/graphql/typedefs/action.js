@@ -27,6 +27,13 @@ const ShiftInput = `
   }
 `;
 
+const ShiftQueryInput = `
+  input ShiftQueryInput {
+    id: String
+    start: String
+    end: String
+  }
+`;
 const ActionResult = `
   type ActionResult {
     id: String!
@@ -164,7 +171,7 @@ const ActionQueries = `
     actionCommitments: [ActionResult]
     actions(search: ActionSearchInput): ActionSearchResult
     activities: [ActivityResult],
-    signedUpVolunteers(search: ActionQueryInput): [UserResult]
+    signedUpVolunteers(actionSearch: ActionQueryInput, shiftSearch: ShiftQueryInput): [UserResult]
   }
 `;
 
@@ -184,7 +191,7 @@ module.exports = function () {
     ActivityResult, ActionResult, ActionSearchResult,
     ActionSearchInput, ActionCursorInput, ActionQueryInput,
     DeleteActionInput, CreateActionInput, EditActionInput,
-    ShiftResult, ShiftInput,
+    ShiftResult, ShiftInput, ShiftQueryInput,
     ActionQueries, ActionMutations,
   ];
 };

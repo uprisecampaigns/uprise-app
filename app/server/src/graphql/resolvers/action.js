@@ -78,15 +78,17 @@ module.exports = {
         throw new Error('User must be logged in');
       }
 
-      const { user, shiftsQuery } = context;
 
-      const action = await Action.findOne(args.search);
+      const { actionSearch, shiftSearch } = args;
+      const { user } = context;
+
+      const action = await Action.findOne(actionSearch);
 
       if (!await User.ownsObject({ user, object: action })) {
         throw new Error('User must be action coordinator');
       }
 
-      const volunteers = await Action.signedUpVolunteers({ actionId: action.id, shiftsQuery });
+      const volunteers = await Action.signedUpVolunteers({ actionId: action.id, shiftSearch });
 
       return volunteers;
     },

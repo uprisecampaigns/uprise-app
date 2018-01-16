@@ -52,7 +52,7 @@ module.exports = {
 
       let hasSearch = false;
       if (typeof search === 'object') {
-        for (let searchCategory of Object.values(search)) {
+        for (const searchCategory of Object.values(search)) {
           if (typeof searchCategory === 'object' && Object.keys(searchCategory).length) {
             hasSearch = true;
           }

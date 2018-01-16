@@ -3,14 +3,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 import Dialog from 'material-ui/Dialog';
-import {
-  Table, TableBody, TableHeader, TableHeaderColumn,
-  TableRow, TableRowColumn,
-} from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import history from 'lib/history';
+import withTimeWithZone from 'lib/withTimeWithZone';
 
 import Link from 'components/Link';
 
@@ -22,21 +21,38 @@ import SignedUpVolunteersQuery from 'schemas/queries/SignedUpVolunteersQuery.gra
 
 import s from 'styles/Organize.scss';
 
+import VolunteerList from './components/VolunteerList';
+
+
+const ConnectedVolunteerList = graphql(SignedUpVolunteersQuery, {
+  options: ownProps => ({
+    variables: {
+      actionSearch: {
+        id: ownProps.actionId,
+      },
+      shiftSearch: ownProps.selectedShift !== 'all' ? {
+        id: ownProps.selectedShift,
+      } : undefined,
+    },
+  }),
+  props: ({ data }) => ({
+    volunteers: data.signedUpVolunteers,
+  }),
+})(VolunteerList);
 
 class ManageActionVolunteers extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    volunteers: PropTypes.arrayOf(PropTypes.object),
     campaign: PropTypes.object,
     action: PropTypes.object,
+    timeWithZone: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
-    campaignSlug: PropTypes.string.isRequired,
+    actionId: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
     campaign: undefined,
     action: undefined,
-    volunteers: undefined,
   }
 
   constructor(props) {
@@ -46,20 +62,23 @@ class ManageActionVolunteers extends Component {
       selected: [],
       emptyRecipientsModalOpen: false,
     };
+
+    this.updateAvailableShifts(props);
   }
 
-  isSelected = id => (this.state.selected.find(row => row.id === id) !== undefined)
+  componentWillReceiveProps(nextProps) {
+    this.updateAvailableShifts(nextProps);
+  }
 
-  handleRowSelection = (selectedRows) => {
-    if (selectedRows === 'none') {
-      this.setState({ selected: [] });
-    } else {
-      const selected = this.props.volunteers.filter((volunteer, index) => (
-        (selectedRows === 'all' || selectedRows.includes(index))
-      ));
-
-      this.setState({ selected });
+  updateAvailableShifts = (props) => {
+    if (typeof props.action === 'object' && typeof props.action.ongoing === 'boolean' && !props.action.ongoing) {
+      this.setState({ selectedShift: 'all' });
     }
+  }
+
+  handleShiftSelection = (event, key, selectedShift) => {
+    typeof event.stopPropagation === 'function' && event.stopPropagation();
+    this.setState({ selectedShift });
   }
 
   composeMessage = (event) => {
@@ -73,10 +92,14 @@ class ManageActionVolunteers extends Component {
     }
   }
 
+  handleRowSelection = (selected) => {
+    this.setState({ selected });
+  }
+
   render() {
-    if (this.props.action && this.props.campaign && this.props.volunteers) {
-      const { action, campaign, volunteers } = this.props;
-      const { emptyRecipientsModalOpen } = this.state;
+    if (this.props.action && this.props.campaign) {
+      const { action, campaign, timeWithZone } = this.props;
+      const { emptyRecipientsModalOpen, selectedShift, selected } = this.state;
 
       const baseActionUrl = `/organize/${campaign.slug}/opportunity/${action.slug}`;
 
@@ -87,6 +110,14 @@ class ManageActionVolunteers extends Component {
           onTouchTap={(event) => { event.preventDefault(); this.setState({ emptyRecipientsModalOpen: false }); }}
         />,
       ];
+
+      const shiftMenuItems = Array.isArray(action.shifts) ? action.shifts.map(shift => (
+        <MenuItem
+          key={shift.id}
+          value={shift.id}
+          primaryText={`${timeWithZone(shift.start, action.zipcode, 'M/D/YY h:mm')} - ${timeWithZone(shift.end, action.zipcode, 'h:mm a z')}`}
+        />
+      )) : [];
 
       return (
         <div className={s.outerContainer}>
@@ -112,38 +143,25 @@ class ManageActionVolunteers extends Component {
             />
           </div>
 
-          <Table
-            fixedHeader
-            selectable
-            multiSelectable
-            onRowSelection={this.handleRowSelection}
-          >
-            <TableHeader
-              displaySelectAll
-              adjustForCheckbox
-              enableSelectAll
-            >
-              <TableRow>
-                <TableHeaderColumn>Name</TableHeaderColumn>
-                <TableHeaderColumn>Email</TableHeaderColumn>
-                <TableHeaderColumn>Phone</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody
-              displayRowCheckbox
-              showRowHover
-              stripedRows={false}
-              deselectOnClickaway={false}
-            >
-              {volunteers.map((volunteer, index) => (
-                <TableRow key={volunteer.id} selected={this.isSelected(volunteer.id)} selectable>
-                  <TableRowColumn>{`${volunteer.first_name} ${volunteer.last_name}`}</TableRowColumn>
-                  <TableRowColumn>{volunteer.email}</TableRowColumn>
-                  <TableRowColumn>{volunteer.phone_number}</TableRowColumn>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          { !action.ongoing && (
+            <div className={s.shiftsSelector}>
+              <SelectField
+                floatingLabelText="Select Shifts"
+                value={selectedShift}
+                onChange={this.handleShiftSelection}
+              >
+                <MenuItem value="all" primaryText="All" />
+                { shiftMenuItems }
+              </SelectField>
+            </div>
+          )}
+
+          <ConnectedVolunteerList
+            actionId={action.id}
+            selected={selected}
+            selectedShift={selectedShift}
+            handleRowSelection={this.handleRowSelection}
+          />
 
           {emptyRecipientsModalOpen && (
             <Dialog
@@ -168,6 +186,7 @@ class ManageActionVolunteers extends Component {
 
 export default compose(
   connect(),
+  withTimeWithZone,
   graphql(CampaignQuery, {
     options: ownProps => ({
       variables: {
@@ -190,18 +209,6 @@ export default compose(
     }),
     props: ({ data }) => ({
       action: data.action,
-    }),
-  }),
-  graphql(SignedUpVolunteersQuery, {
-    options: ownProps => ({
-      variables: {
-        search: {
-          id: ownProps.actionId,
-        },
-      },
-    }),
-    props: ({ data }) => ({
-      volunteers: data.signedUpVolunteers,
     }),
   }),
 )(ManageActionVolunteers);

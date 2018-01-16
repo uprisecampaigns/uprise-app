@@ -1,7 +1,7 @@
 #import "../fragments/UserDetailsFragment.graphql"
 
-query SignedUpVolunteersQuery ($search:ActionQueryInput) {
-  signedUpVolunteers(search:$search){
+query SignedUpVolunteersQuery ($actionSearch:ActionQueryInput, $shiftSearch:ShiftQueryInput) {
+  signedUpVolunteers(actionSearch:$actionSearch, shiftSearch:$shiftSearch){
     ...UserDetails
   }
 }
