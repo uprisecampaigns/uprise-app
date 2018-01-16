@@ -92,6 +92,9 @@ class ContentDropdownMenu extends Component {
         <div
           className={s.dropdownButton}
           onClick={this.handleOpenMenu}
+          onKeyPress={this.handleOpenMenu}
+          role="link"
+          tabIndex="0"
         >
           {this.props.title}
           { menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore /> }

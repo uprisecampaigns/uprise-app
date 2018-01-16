@@ -57,6 +57,9 @@ class AddToCalendar extends React.Component {
         <div
           className={s.buttonContainer}
           onClick={this.handleClick}
+          onKeyPress={this.handleClick}
+          role="link"
+          tabIndex="0"
         >
           {children}
         </div>

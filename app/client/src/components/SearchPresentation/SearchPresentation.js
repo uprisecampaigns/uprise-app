@@ -86,6 +86,9 @@ class SearchPresentation extends Component {
             <div
               className={s.mobileFilterContainer}
               onClick={this.handleOpenFilter}
+              onKeyPress={this.handleOpenFilter}
+              role="button"
+              tabIndex="0"
             >
               <span>Filter</span>
               <IconButton
@@ -118,6 +121,9 @@ class SearchPresentation extends Component {
                           <RaisedButton
                             className={s.primaryButton}
                             onClick={this.handleCloseFilter}
+                            onKeyPress={this.handleCloseFilter}
+                            role="button"
+                            tabIndex="0"
                             primary
                             label="Done"
                           />
