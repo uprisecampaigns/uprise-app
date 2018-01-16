@@ -216,12 +216,12 @@ class ImageUploader extends Component {
                 <div className={s.buttonContainer}>
                   <RaisedButton
                     className={s.button}
-                    onTouchTap={this.cancelImageEdit}
+                    onClick={this.cancelImageEdit}
                     label="Cancel"
                   />
                   <RaisedButton
                     className={s.primaryButton}
-                    onTouchTap={this.acceptImageCrop}
+                    onClick={this.acceptImageCrop}
                     primary
                     label="Accept"
                   />
@@ -239,7 +239,7 @@ class ImageUploader extends Component {
               <div>
                 <FontIcon
                   className={[s.removeImageButton, 'material-icons'].join(' ')}
-                  onTouchTap={this.removeImage}
+                  onClick={this.removeImage}
                 >delete
                 </FontIcon>
                 <img alt="Uploaded" src={imageSrc} />

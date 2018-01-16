@@ -78,7 +78,7 @@ function ChangePasswordForm({
       </div>
       <div className={s.primaryButton}>
         <RaisedButton
-          onTouchTap={formSubmit}
+          onClick={formSubmit}
           type="submit"
           primary
           label="Save Changes"

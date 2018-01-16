@@ -101,12 +101,12 @@ class Campaign extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
+          onClick={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
         />,
         <RaisedButton
           label="Confirm"
           primary
-          onTouchTap={(event) => { event.preventDefault(); this.confirmSubscription(); }}
+          onClick={(event) => { event.preventDefault(); this.confirmSubscription(); }}
           className={s.primaryButton}
         />,
       ];

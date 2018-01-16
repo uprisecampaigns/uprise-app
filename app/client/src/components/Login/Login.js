@@ -107,7 +107,7 @@ class Login extends Component {
           <RaisedButton
             secondary
             label="Sign Up"
-            onTouchTap={this.props.handleSignupClick}
+            onClick={this.props.handleSignupClick}
           />
         </div>
 

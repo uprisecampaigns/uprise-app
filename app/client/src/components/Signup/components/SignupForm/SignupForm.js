@@ -106,14 +106,14 @@ class SignupForm extends PureComponent {
                 </div>
                 <div className={s.button}>
                   <RaisedButton
-                    onTouchTap={cancel}
+                    onClick={cancel}
                     primary={false}
                     label="Cancel"
                   />
                 </div>
                 <div className={[s.button, s.secondaryButton].join(' ')}>
                   <RaisedButton
-                    onTouchTap={formSubmit}
+                    onClick={formSubmit}
                     primary
                     type="submit"
                     label="Create Account"

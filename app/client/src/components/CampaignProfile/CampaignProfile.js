@@ -135,15 +135,21 @@ class CampaignProfile extends PureComponent {
                 <div>
                   {campaign.subscribed ? (
                     <RaisedButton
-                      onTouchTap={cancelSubscription}
+                      onClick={cancelSubscription}
+                      onKeyPress={cancelSubscription}
+                      role="link"
+                      tabIndex="0"
                       primary
                       label="Cancel Subscription"
                     />
                   ) : (
                     <RaisedButton
-                      onTouchTap={subscribe}
+                      onClick={subscribe}
+                      onKeyPress={subscribe}
                       primary
                       label="Subscribe"
+                      role="link"
+                      tabIndex="0"
                     />
                   )}
                 </div>

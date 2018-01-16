@@ -30,7 +30,7 @@ function KeywordTag(props) {
   return (
     <Chip
       {...other}
-      onTouchTap={handleClicked}
+      onClick={handleClicked}
     >
       {label}
     </Chip>

@@ -113,7 +113,7 @@ class CampaignProfileForm extends PureComponent {
 
             <div className={[s.organizeButton, s.saveButton].join(' ')}>
               <RaisedButton
-                onTouchTap={formSubmit}
+                onClick={formSubmit}
                 primary
                 type="submit"
                 label="Save Changes"

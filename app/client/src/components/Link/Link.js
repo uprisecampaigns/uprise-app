@@ -92,7 +92,6 @@ class Link extends React.Component {
         <a
           href={url}
           {...props}
-          onTouchTap={e => this.handleClick(e, url)}
           onClick={e => this.handleClick(e, url)}
           onKeyPress={e => this.handleClick(e, url)}
           className={[className].concat([s.link]).join(' ')}
@@ -104,7 +103,6 @@ class Link extends React.Component {
     return (
       <span
         {...props}
-        onTouchTap={e => this.handleClick(e, url)}
         onClick={e => this.handleClick(e, url)}
         onKeyPress={e => this.handleClick(e, url)}
         className={[className].concat([s.link]).join(' ')}

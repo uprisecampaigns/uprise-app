@@ -22,7 +22,10 @@ function SelectedItemsContainer(props) {
       <div
         className={s.searchChip}
         key={JSON.stringify(item)}
-        onTouchTap={handleClicked}
+        onClick={handleClicked}
+        onKeyPress={handleClicked}
+        role="button"
+        tabIndex="0"
       >
         <Chip
           onRequestDelete={handleClicked}

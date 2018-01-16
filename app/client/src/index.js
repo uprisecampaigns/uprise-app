@@ -9,7 +9,6 @@ import queryString from 'query-string';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import bowser from 'bowser';
 
 import RedBox from 'redbox-react';
@@ -92,8 +91,6 @@ const store = configureStore({
   campaignsSearch: defaultCampaignStartState,
   homePageNav: defaultHomeNavStartState,
 });
-
-injectTapEventPlugin();
 
 // eslint-disable-next-line no-unused-vars
 let appInstance;

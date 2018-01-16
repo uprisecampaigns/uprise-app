@@ -91,7 +91,10 @@ class ContentDropdownMenu extends Component {
         </Popover>
         <div
           className={s.dropdownButton}
-          onTouchTap={this.handleOpenMenu}
+          onClick={this.handleOpenMenu}
+          onKeyPress={this.handleOpenMenu}
+          role="link"
+          tabIndex="0"
         >
           {this.props.title}
           { menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore /> }

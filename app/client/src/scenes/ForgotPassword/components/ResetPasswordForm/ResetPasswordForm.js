@@ -45,14 +45,14 @@ class ResetPasswordForm extends PureComponent {
                 </div>
                 <div className={s.button}>
                   <RaisedButton
-                    onTouchTap={cancelReset}
+                    onClick={cancelReset}
                     primary={false}
                     label="Cancel"
                   />
                 </div>
                 <div className={[s.button, s.secondaryButton].join(' ')}>
                   <RaisedButton
-                    onTouchTap={formSubmit}
+                    onClick={formSubmit}
                     type="submit"
                     primary
                     label="Reset"

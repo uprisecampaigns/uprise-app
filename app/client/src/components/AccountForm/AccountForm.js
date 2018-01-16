@@ -91,7 +91,7 @@ class AccountForm extends PureComponent {
 
                 <div className={s.button}>
                   <RaisedButton
-                    onTouchTap={cancel}
+                    onClick={cancel}
                     primary={false}
                     label="Cancel"
                   />
@@ -109,7 +109,7 @@ class AccountForm extends PureComponent {
 
                   <div className={[s.organizeButton, s.button].join(' ')}>
                     <RaisedButton
-                      onTouchTap={formSubmit}
+                      onClick={formSubmit}
                       primary
                       type="submit"
                       label={submitText}

@@ -31,12 +31,12 @@ class Terms extends PureComponent {
         <div className={formStyle.outerContainer}>
           <div className={formStyle.innerContainer}>
             <RaisedButton
-              onTouchTap={cancel}
+              onClick={cancel}
               label="Cancel"
               className={formStyle.button}
             />
             <RaisedButton
-              onTouchTap={agreeToTerms}
+              onClick={agreeToTerms}
               primary
               label="I Agree"
               className={[formStyle.secondaryButton, formStyle.button].join(' ')}
