@@ -142,7 +142,7 @@ class CreateCampaignContainer extends Component {
         label="Manage Campaign"
         primary
         className={s.primaryButton}
-        onTouchTap={(event) => { event.preventDefault(); history.push(`/organize/${newCampaign.slug}`); }}
+        onClick={(event) => { event.preventDefault(); history.push(`/organize/${newCampaign.slug}`); }}
       />,
     ];
 
@@ -212,13 +212,13 @@ class CreateCampaignContainer extends Component {
                 label="Resend"
                 primary
                 className={s.primaryButton}
-                onTouchTap={(event) => { event.preventDefault(); resendEmailVerification(); }}
+                onClick={(event) => { event.preventDefault(); resendEmailVerification(); }}
               />,
               <RaisedButton
                 label="Ok"
                 primary={false}
                 className={s.secondaryButton}
-                onTouchTap={(event) => { event.preventDefault(); history.push('/organize'); }}
+                onClick={(event) => { event.preventDefault(); history.push('/organize'); }}
               />]}
             open
           >

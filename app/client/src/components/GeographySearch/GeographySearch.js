@@ -120,7 +120,7 @@ class GeographySearch extends PureComponent {
         <div className={s.addToSearchButton}>
           <RaisedButton
             className={s.primaryButton}
-            onTouchTap={addItem}
+            onClick={addItem}
             type="submit"
             primary
             label="Add to Search"

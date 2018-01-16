@@ -66,7 +66,7 @@ class LoginModalPrompt extends Component {
 
         { this.props.loginModal.exitable && (
           <IconButton
-            onTouchTap={this.closeModal}
+            onClick={this.closeModal}
             iconClassName="material-icons"
           >close
           </IconButton>

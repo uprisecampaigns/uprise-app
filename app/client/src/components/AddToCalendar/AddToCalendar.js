@@ -29,7 +29,7 @@ class AddToCalendar extends React.Component {
     };
   }
 
-  handleTouchTap = (event) => {
+  handleClick = (event) => {
     event.preventDefault();
 
     this.setState({
@@ -56,7 +56,7 @@ class AddToCalendar extends React.Component {
       >
         <div
           className={s.buttonContainer}
-          onTouchTap={this.handleTouchTap}
+          onClick={this.handleClick}
         >
           {children}
         </div>

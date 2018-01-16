@@ -133,12 +133,12 @@ class Action extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
+          onClick={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
         />,
         <RaisedButton
           label="Confirm"
           primary
-          onTouchTap={(event) => { event.preventDefault(); confirmSignup(); }}
+          onClick={(event) => { event.preventDefault(); confirmSignup(); }}
           className={s.primaryButton}
         />,
       ];
@@ -203,14 +203,14 @@ class Action extends Component {
                       )}
 
                       <RaisedButton
-                        onTouchTap={cancelSignup}
+                        onClick={cancelSignup}
                         primary
                         label="Cancel attendance"
                       />
                     </div>
                   ) : (
                     <RaisedButton
-                      onTouchTap={signup}
+                      onClick={signup}
                       primary
                       className={s.primaryButton}
                       label="Sign up now"

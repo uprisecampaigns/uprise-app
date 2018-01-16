@@ -28,13 +28,13 @@ class SearchSort extends PureComponent {
           primaryText={item.label}
           className={s.sortSelected}
           rightIcon={arrow}
-          onTouchTap={event => onSelect(item.prop, event)}
+          onClick={event => onSelect(item.prop, event)}
         />
       ) : (
         <ListItem
           key={item.prop}
           primaryText={item.label}
-          onTouchTap={event => onSelect(item.prop, event)}
+          onClick={event => onSelect(item.prop, event)}
         />
       );
     });

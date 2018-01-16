@@ -89,13 +89,13 @@ export class Layout extends Component {
               label="Leave"
               primary={false}
               className={s.secondaryButton}
-              onTouchTap={(event) => { event.preventDefault(); this.props.dispatch(confirmNavFromDirtyForm()); }}
+              onClick={(event) => { event.preventDefault(); this.props.dispatch(confirmNavFromDirtyForm()); }}
             />,
             <RaisedButton
               label="Keep Editing"
               primary
               className={s.primaryButton}
-              onTouchTap={(event) => { event.preventDefault(); this.props.dispatch(cancelNavFromDirtyForm()); }}
+              onClick={(event) => { event.preventDefault(); this.props.dispatch(cancelNavFromDirtyForm()); }}
             />,
           ]}
           open={this.props.displayFormNavWarning}

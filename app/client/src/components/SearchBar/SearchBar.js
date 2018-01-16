@@ -93,7 +93,7 @@ class SearchBar extends PureComponent {
           <IconButton
             iconClassName="material-icons"
             type="submit"
-            onTouchTap={this.addItem}
+            onClick={this.addItem}
           >{iconName || 'search'}
           </IconButton>
         </form>

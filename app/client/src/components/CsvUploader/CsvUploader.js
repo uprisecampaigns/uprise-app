@@ -213,7 +213,7 @@ class CsvUploader extends React.Component {
     const headerRow = (columnIndex === 0) ? (
       <Checkbox
         checked={this.state.rows.every((i => i.selected))}
-        onTouchTap={(event) => {
+        onClick={(event) => {
           event.preventDefault();
           this.handleSelectAll();
         }}
@@ -232,7 +232,7 @@ class CsvUploader extends React.Component {
     const bodyRow = (columnIndex === 0) ? (
       <Checkbox
         checked={this.state.rows[rowIndex].selected}
-        onTouchTap={(event) => {
+        onClick={(event) => {
           event.preventDefault();
           this.toggleRowSelection(rowIndex);
         }}
@@ -279,7 +279,7 @@ class CsvUploader extends React.Component {
         <div>
           <div className={s.cancelButton}>
             <RaisedButton
-              onTouchTap={this.cancel}
+              onClick={this.cancel}
               primary
               label="Cancel"
             />
@@ -305,7 +305,7 @@ class CsvUploader extends React.Component {
           </AutoSizer>
 
           <RaisedButton
-            onTouchTap={this.submit}
+            onClick={this.submit}
             primary
             label="Submit"
           />

@@ -36,7 +36,7 @@ class Accordion extends React.Component {
       <div className={s.outerContainer}>
         <div 
           className={s.header}
-          onTouchTap={this.toggleOpen}
+          onClick={this.toggleOpen}
         >
           <div 
             className={s.title}

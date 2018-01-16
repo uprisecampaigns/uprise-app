@@ -61,7 +61,7 @@ class ContactForm extends Component {
 
           <div className={s.button}>
             <RaisedButton
-              onTouchTap={cancel}
+              onClick={cancel}
               primary={false}
               label="Cancel"
             />
@@ -79,7 +79,7 @@ class ContactForm extends Component {
 
             <div className={[s.organizeButton, s.button].join(' ')}>
               <RaisedButton
-                onTouchTap={formSubmit}
+                onClick={formSubmit}
                 primary
                 type="submit"
                 label={submitText}

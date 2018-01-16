@@ -78,7 +78,7 @@ class ManageCampaignVolunteers extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={(event) => { event.preventDefault(); this.setState({ emptyRecipientsModalOpen: false }); }}
+          onClick={(event) => { event.preventDefault(); this.setState({ emptyRecipientsModalOpen: false }); }}
         />,
       ];
 
@@ -102,7 +102,7 @@ class ManageCampaignVolunteers extends Component {
           <div className={s.composeMessageButtonContainer}>
             <RaisedButton
               className={s.organizeButton}
-              onTouchTap={this.composeMessage}
+              onClick={this.composeMessage}
               primary
               label="Compose Message"
             />

@@ -168,7 +168,7 @@ class DateTimeSearch extends Component {
         <div className={s.addToSearchButton}>
           <RaisedButton
             className={s.primaryButton}
-            onTouchTap={formSubmit}
+            onClick={formSubmit}
             primary
             label="Add to Search"
           />

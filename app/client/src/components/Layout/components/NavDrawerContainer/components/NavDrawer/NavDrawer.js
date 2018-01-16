@@ -24,7 +24,7 @@ function UserMenuItem(props) {
           iconStyle={iconButtonStyle}
           iconClassName={[s.materialIcons, 'material-icons'].join(' ')}
           className={s.userIcon}
-          onTouchTap={itemClicked}
+          onClick={itemClicked}
         >account_box
         </IconButton>
       </div>

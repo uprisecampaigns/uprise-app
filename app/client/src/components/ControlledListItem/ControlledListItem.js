@@ -30,7 +30,7 @@ class ControlledListItem extends PureComponent {
 
     const { className, ...props } = this.props;
 
-    const handleTouchTap = (event) => {
+    const handleClick = (event) => {
       event.preventDefault();
       event.stopPropagation();
       this.setState(prevState => ({
@@ -43,10 +43,10 @@ class ControlledListItem extends PureComponent {
         open={open}
         className={[className].concat([s.listItem]).join(' ')}
         rightToggle={open ?
-          <NavigationExpandLess onTouchTap={handleTouchTap} /> :
-          <NavigationExpandMore onTouchTap={handleTouchTap} />
+          <NavigationExpandLess onClick={handleClick} /> :
+          <NavigationExpandMore onClick={handleClick} />
         }
-        onTouchTap={handleTouchTap}
+        onClick={handleClick}
         {...props}
       />
     );

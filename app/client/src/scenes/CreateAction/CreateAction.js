@@ -139,7 +139,7 @@ class CreateAction extends Component {
           label="Manage Opportunity"
           primary
           className={s.primaryButton}
-          onTouchTap={(event) => { event.preventDefault(); history.push(`/organize/${campaign.slug}/opportunity/${newAction.slug}`); }}
+          onClick={(event) => { event.preventDefault(); history.push(`/organize/${campaign.slug}/opportunity/${newAction.slug}`); }}
         />,
       ];
 

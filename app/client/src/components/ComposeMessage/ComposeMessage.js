@@ -81,12 +81,12 @@ class ComposeMessage extends React.Component {
       <RaisedButton
         label="Cancel"
         primary={false}
-        onTouchTap={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
+        onClick={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
       />,
       <RaisedButton
         label="Confirm"
         primary
-        onTouchTap={this.confirmSend}
+        onClick={this.confirmSend}
         className={s.primaryButton}
       />,
     ];
@@ -135,7 +135,7 @@ class ComposeMessage extends React.Component {
 
           <div className={s.sendButtonContainer}>
             <RaisedButton
-              onTouchTap={this.clickedSend}
+              onClick={this.clickedSend}
               primary
               label="Send"
             />

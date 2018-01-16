@@ -76,12 +76,12 @@ class ManageCampaignContainer extends Component {
         <RaisedButton
           label="Cancel"
           primary={false}
-          onTouchTap={(event) => { event.preventDefault(); this.setState({ deleteModalOpen: false }); }}
+          onClick={(event) => { event.preventDefault(); this.setState({ deleteModalOpen: false }); }}
         />,
         <RaisedButton
           label="I'm sure"
           primary
-          onTouchTap={this.confirmDelete}
+          onClick={this.confirmDelete}
           className={s.primaryButton}
         />,
       ];
@@ -147,7 +147,7 @@ class ManageCampaignContainer extends Component {
 
             <ListItem
               primaryText="Delete"
-              onTouchTap={this.handleDelete}
+              onClick={this.handleDelete}
             />
 
             <Divider />
