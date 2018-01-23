@@ -36,7 +36,7 @@ class SignupForm extends PureComponent {
                 className={s.form}
                 onSubmit={formSubmit}
               >
-                <div> {this.props.signupError} </div>
+                <div className={s.errorMessage}> {this.props.signupError} </div>
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="First Name"
