@@ -162,7 +162,7 @@ export function checkedSessionStatus(result) {
 }
 
 export function sessionCheckFail(error) {
-  return { type: SESSION_CHECK_FAIL, error };
+  return { type: SESSION_CHECK_FAIL, error: 'There was an error contacting the server.' };
 }
 
 export function checkSessionStatus() {
