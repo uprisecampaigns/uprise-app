@@ -148,11 +148,15 @@ async function onLocationChange(location) {
       scrollX: window.pageXOffset,
       scrollY: window.pageYOffset,
     };
+
     // Delete stored scroll position for next page if any
     if (history.action === 'PUSH') {
       delete scrollPositionsHistory[location.key];
     }
+
     currentLocation = location;
+
+    const isInitialRender = !action;
 
     store.dispatch(startPageLoad());
 
@@ -229,9 +233,11 @@ async function onLocationChange(location) {
       return;
     }
 
-    // Avoid broken navigation in production mode by a full page reload on error
-    // TODO: Send to home page? I'm nervous about a permanent reload loop...
-    window.location.reload(true);
+    // Do a full page reload if error occurs during client-side navigation
+    if (!isInitialRender && currentLocation.key === location.key) {
+      window.location.reload(true);
+    }
+
   }
 }
 
