@@ -156,7 +156,7 @@ async function onLocationChange(location) {
 
     currentLocation = location;
 
-    const isInitialRender = !action;
+    const isInitialRender = !history.action;
 
     store.dispatch(startPageLoad());
 
