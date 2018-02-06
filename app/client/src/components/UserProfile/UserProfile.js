@@ -74,7 +74,7 @@ class UserProfile extends PureComponent {
           )}
 
           <RaisedButton
-            onTouchTap={this.handleContact}
+            onClick={this.handleContact}
             primary
             label="Contact"
             className={s.primaryButton}

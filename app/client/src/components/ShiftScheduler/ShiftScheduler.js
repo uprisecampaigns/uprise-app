@@ -238,7 +238,10 @@ class ShiftScheduler extends Component {
 
           { shiftIndex > 0 && (
             <div
-              onTouchTap={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
+              onClick={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
+              onKeyPress={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
+              role="button"
+              tabIndex="0"
               className={s.touchIcon}
             >
               <RemoveCircle />Remove Shift
@@ -266,7 +269,10 @@ class ShiftScheduler extends Component {
           </div>
           { renderedShifts }
           <div
-            onTouchTap={(event) => { event.preventDefault(); addShift(dateIndex); }}
+            onClick={(event) => { event.preventDefault(); addShift(dateIndex); }}
+            onKeyPress={(event) => { event.preventDefault(); addShift(dateIndex); }}
+            role="button"
+            tabIndex="0"
             className={s.touchIcon}
           >
             <AddCircle />Add Shift
@@ -274,7 +280,10 @@ class ShiftScheduler extends Component {
 
           { dateIndex > 0 && (
             <div
-              onTouchTap={(event) => { event.preventDefault(); removeDate(dateIndex); }}
+              onClick={(event) => { event.preventDefault(); removeDate(dateIndex); }}
+              onKeyPress={(event) => { event.preventDefault(); removeDate(dateIndex); }}
+              role="button"
+              tabIndex="0"
               className={s.touchIcon}
             >
               <RemoveCircle />Remove Date
@@ -298,7 +307,10 @@ class ShiftScheduler extends Component {
             >
               { dateForm }
               <div
-                onTouchTap={(event) => { event.preventDefault(); addDate(); }}
+                onClick={(event) => { event.preventDefault(); addDate(); }}
+                onKeyPress={(event) => { event.preventDefault(); addDate(); }}
+                role="button"
+                tabIndex="0"
                 className={s.touchIcon}
               >
                 <AddCircle />Add Date

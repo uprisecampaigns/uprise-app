@@ -94,7 +94,7 @@ class ManageCampaignActionsContainer extends PureComponent {
               primary
               type="submit"
               label="Create Opportunity"
-              onTouchTap={toggleCreateActionDropdown}
+              onClick={toggleCreateActionDropdown}
             />
           </div>
 

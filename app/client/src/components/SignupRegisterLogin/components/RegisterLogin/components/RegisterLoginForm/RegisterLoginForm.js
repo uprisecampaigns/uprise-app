@@ -129,7 +129,7 @@ class RegisterLoginForm extends PureComponent {
 
           <div className={[s.button, s.secondaryButton].join(' ')}>
             <RaisedButton
-              onTouchTap={formSubmit}
+              onClick={formSubmit}
               primary
               type="submit"
               label="Create Account"
@@ -167,7 +167,7 @@ class RegisterLoginForm extends PureComponent {
         </div>
         <div className={[s.button, s.secondaryButton].join(' ')}>
           <RaisedButton
-            onTouchTap={formSubmit}
+            onClick={formSubmit}
             primary
             type="submit"
             label="Login"
