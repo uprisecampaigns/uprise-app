@@ -136,6 +136,8 @@ const onRenderComplete = function initialRenderComplete(route, location) {
 
 // Re-render the app when window.location changes
 async function onLocationChange(location) {
+  const isInitialRender = !history.action;
+
   try {
     // TODO: Not only does this seem to occasionally get stuck, it also just reeks of code smell
     const fetchingSessionStatus = store.getState().userAuthSession.fetchingAuthUpdate;
@@ -155,8 +157,6 @@ async function onLocationChange(location) {
     }
 
     currentLocation = location;
-
-    const isInitialRender = !history.action;
 
     store.dispatch(startPageLoad());
 
@@ -237,7 +237,6 @@ async function onLocationChange(location) {
     if (!isInitialRender && currentLocation.key === location.key) {
       window.location.reload(true);
     }
-
   }
 }
 
