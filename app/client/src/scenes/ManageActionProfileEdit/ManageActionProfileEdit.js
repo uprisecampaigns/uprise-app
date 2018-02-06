@@ -157,6 +157,7 @@ class ManageActionProfileEdit extends Component {
             initialState={formData}
             initialErrors={defaultErrorText}
             validators={validators}
+            showSaveButton
             submit={formSubmit}
             submitText="Save Changes"
           />

@@ -3,6 +3,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
@@ -23,14 +25,23 @@ class ActionProfileForm extends PureComponent {
     handleToggle: PropTypes.func.isRequired,
     addItem: PropTypes.func.isRequired,
     removeItem: PropTypes.func.isRequired,
+    formSubmit: PropTypes.func.isRequired,
+    saving: PropTypes.bool.isRequired,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+    submitText: PropTypes.string,
+    showSaveButton: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    showSaveButton: false,
+    submitText: 'Save Changes',
   }
 
   render() {
     const {
-      data, errors, activities,
-      handleToggle, addItem, removeItem,
-      handleInputChange,
+      data, errors, activities, handleToggle,
+      addItem, removeItem, submitText, saving,
+      handleInputChange, formSubmit, showSaveButton,
     } = this.props;
 
     const activitiesTogglesList = togglesList({
@@ -45,7 +56,7 @@ class ActionProfileForm extends PureComponent {
 
     return (
       <div className={s.outerContainer}>
-        <div className={s.editCampaignProfileContainer}>
+        <div className={s.editActionProfileContainer}>
 
           <div className={s.editTitleContainer}>
             <TextField
@@ -93,6 +104,26 @@ class ActionProfileForm extends PureComponent {
               className={s.selectedKeywordsContainer}
             />
           </div>
+
+          { showSaveButton && saving && (
+              <div className={s.savingThrobberContainer}>
+                <CircularProgress
+                  size={100}
+                  thickness={5}
+                />
+              </div>
+          )}
+
+          { showSaveButton && !saving && (
+            <div className={[s.organizeButton, s.button].join(' ')}>
+              <RaisedButton
+                onClick={formSubmit}
+                primary
+                type="submit"
+                label={submitText}
+              />
+            </div>
+          )}
 
           <div className={f.sectionLabel}>Activities</div>
 
