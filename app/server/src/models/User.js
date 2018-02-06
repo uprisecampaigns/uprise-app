@@ -21,7 +21,7 @@ const activitiesQuery = db.table('users_activities')
     db.raw('json_agg(activities) as object'),
   ])
   .leftOuterJoin('activities', 'users_activities.activity_id', 'activities.id')
-  .groupBy('activities.id', 'users_activities.user_id')
+  .groupBy('user_id')
   .as('activities_query');
 
 const actionsQuery = db.table('actions')
