@@ -32,6 +32,14 @@ function Volunteer(props) {
 
         <Divider />
 
+        <Link to="/settings/edit-profile">
+          <ListItem
+            primaryText="Edit Profile"
+          />
+        </Link>
+
+        <Divider />
+
         <Link to="/volunteer/opportunity-commitments">
           <ListItem
             primaryText="My Commitments"
