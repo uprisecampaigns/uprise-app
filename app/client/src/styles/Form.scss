@@ -172,9 +172,41 @@
   }
 }
 
-.shiftLabel {
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
+.dateWithShiftsContainer {
+  margin-bottom: 2rem;
+
+  > hr {
+    background-color: $black !important;
+  }
+}
+
+.dateShiftContainer {
   display: flex;
-  align-items: flex-end;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+.shiftContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+.removeDateContainer,
+.removeShiftContainer {
+  margin-left: 1rem;
+}
+
+.dateShiftPicker, .shiftPicker {
+  display: flex;
+  text-align: left;
+  align-items: baseline;
+}
+
+.shiftTimePicker {
+  max-width: 5rem;
+}
+
+.shiftLabel {
+  margin-right: 1rem;
 }

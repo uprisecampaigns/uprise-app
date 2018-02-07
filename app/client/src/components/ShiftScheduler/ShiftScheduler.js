@@ -213,9 +213,12 @@ class ShiftScheduler extends Component {
 
     const renderDateForm = (shiftDate, dateIndex) => {
       const renderedShifts = shiftDate.shifts.map((shift, shiftIndex) => (
-        <div key={JSON.stringify(shift)}>
+        <div
+          key={JSON.stringify(shift)}
+          className={s.shiftContainer}
+        >
           <div
-            className={s.textFieldContainer}
+            className={s.shiftPicker}
             ref={(input) => { if (shift.startError || shift.endError) { this.errorElem = input; } }}
           >
             <div className={s.shiftLabel}><span>Shift { shiftIndex + 1 }:</span></div>
@@ -225,6 +228,7 @@ class ShiftScheduler extends Component {
               errorText={shift.startError}
               minutesStep={5}
               onChange={(event, time) => { changeShift('start', time, dateIndex, shiftIndex); }}
+              className={s.shiftTimePicker}
             />
 
             <TimePicker
@@ -233,18 +237,21 @@ class ShiftScheduler extends Component {
               errorText={shift.endError}
               minutesStep={5}
               onChange={(event, time) => { changeShift('end', time, dateIndex, shiftIndex); }}
+              className={s.shiftTimePicker}
             />
           </div>
 
           { shiftIndex > 0 && (
-            <div
-              onClick={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
-              onKeyPress={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
-              role="button"
-              tabIndex="0"
-              className={s.touchIcon}
-            >
-              <RemoveCircle />Remove Shift
+            <div className={s.removeShiftContainer}>
+              <div
+                onClick={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
+                onKeyPress={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
+                role="button"
+                tabIndex="0"
+                className={s.touchIcon}
+              >
+                <RemoveCircle />Remove Shift
+              </div>
             </div>
           )}
 
@@ -252,22 +259,42 @@ class ShiftScheduler extends Component {
       ));
 
       return (
-        <div className={s.dateShiftContainer}>
-          <div
-            className={s.textFieldContainer}
-            ref={(input) => { if (shiftDate.dateError) { this.errorElem = input; } }}
-          >
-            <DatePicker
-              value={shiftDate.date}
-              errorText={shiftDate.dateError}
-              onChange={(event, date) => { changeDate(dateIndex, date); }}
-              container="dialog"
-              dialogContainerStyle={dialogStyle}
-              floatingLabelText="Date"
-              formatDate={formatDate}
-            />
+        <div className={s.dateWithShiftsContainer}>
+          <div className={s.dateShiftContainer}>
+            <div
+              className={s.textFieldContainer}
+              ref={(input) => { if (shiftDate.dateError) { this.errorElem = input; } }}
+            >
+              <DatePicker
+                value={shiftDate.date}
+                errorText={shiftDate.dateError}
+                onChange={(event, date) => { changeDate(dateIndex, date); }}
+                container="dialog"
+                dialogContainerStyle={dialogStyle}
+                floatingLabelText="Date"
+                formatDate={formatDate}
+                className={s.dateShiftPicker}
+              />
+            </div>
+
+
+            { dateIndex > 0 && (
+              <div className={s.removeDateContainer}>
+                <div
+                  onClick={(event) => { event.preventDefault(); removeDate(dateIndex); }}
+                  onKeyPress={(event) => { event.preventDefault(); removeDate(dateIndex); }}
+                  role="button"
+                  tabIndex="0"
+                  className={s.touchIcon}
+                >
+                  <RemoveCircle />Remove Date
+                </div>
+              </div>
+            )}
           </div>
+
           { renderedShifts }
+
           <div
             onClick={(event) => { event.preventDefault(); addShift(dateIndex); }}
             onKeyPress={(event) => { event.preventDefault(); addShift(dateIndex); }}
@@ -277,18 +304,6 @@ class ShiftScheduler extends Component {
           >
             <AddCircle />Add Shift
           </div>
-
-          { dateIndex > 0 && (
-            <div
-              onClick={(event) => { event.preventDefault(); removeDate(dateIndex); }}
-              onKeyPress={(event) => { event.preventDefault(); removeDate(dateIndex); }}
-              role="button"
-              tabIndex="0"
-              className={s.touchIcon}
-            >
-              <RemoveCircle />Remove Date
-            </div>
-          )}
 
           <Divider />
         </div>
