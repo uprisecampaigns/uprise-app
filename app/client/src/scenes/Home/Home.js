@@ -14,15 +14,6 @@ import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import s from 'styles/Home.scss';
 
-// Too difficult to override in css :/
-const inkBarStyle = {
-  backgroundColor: '#333',
-  width: '35%',
-  height: '3px',
-  marginLeft: '7.5%',
-  marginBottom: '0px',
-};
-
 class Home extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -44,6 +35,15 @@ class Home extends Component {
     const activeTab = this.props.page;
 
     const hasCampaigns = typeof user === 'object' && Array.isArray(user.campaigns) && user.campaigns.length;
+
+    // Too difficult to override in css :/
+    const inkBarStyle = {
+      backgroundColor: '#333',
+      width: hasCampaigns ? '25%' : '35%',
+      height: '3px',
+      marginLeft: hasCampaigns ? '4%' : '7.5%',
+      marginBottom: '0px',
+    };
 
     return (
       <div className={s.outerContainer}>
@@ -70,7 +70,7 @@ class Home extends Component {
 
               { hasCampaigns && (
                 <Tab
-                  label="Users"
+                  label="Volunteers"
                   className={activeTab === 'users' ? s.activeTab : s.tab}
                   value="user"
                 />
