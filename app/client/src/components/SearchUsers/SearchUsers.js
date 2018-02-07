@@ -37,6 +37,7 @@ const mapStateToProps = state => ({
     keywords: state.usersSearch.keywords,
     tags: state.usersSearch.tags,
     geographies: state.usersSearch.geographies,
+    activities: state.usersSearch.activities,
   },
   sortBy: state.usersSearch.sortBy,
 });

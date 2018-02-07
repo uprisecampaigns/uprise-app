@@ -130,6 +130,29 @@ class User {
                   .whereRaw(`tag ${stringOverlapComparator}`, keyword);
 
                 this.orWhere('users.id', 'in', tagKeywordQuery);
+
+                const activityQuery = db.select('user_id')
+                  .distinct()
+                  .from('activities')
+                  .innerJoin('users_activities', 'activities.id', 'users_activities.activity_id')
+                  .whereRaw(`title ${stringOverlapComparator}`, keyword)
+                  .orWhereRaw(`description ${stringOverlapComparator}`, keyword);
+
+                this.orWhere('users.id', 'in', activityQuery);
+              });
+            });
+          }
+
+          if (search.activities) {
+            qb.andWhere(function () {
+              search.activities.forEach((activity) => {
+                const activityQuery = db.select('user_id')
+                  .distinct()
+                  .from('activities')
+                  .innerJoin('users_activities', 'activities.id', 'users_activities.activity_id')
+                  .where('title', activity);
+
+                this.orWhere('users.id', 'in', activityQuery);
               });
             });
           }

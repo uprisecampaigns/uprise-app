@@ -54,6 +54,7 @@ const UserSearchInput = `
     keywords: [String]
     tags: [String]
     geographies: [GeographySearchInput]
+    activities: [String]
   }
 `;
 

@@ -18,6 +18,8 @@ const SelectedTagsContainer = connect(state => ({ items: state.usersSearch.tags 
 
 const SelectedGeographiesContainer = connect(state => ({ items: state.usersSearch.geographies }))(SelectedItemsContainer);
 
+const SelectedActivitiesContainer = connect(state => ({ items: state.usersSearch.activities }))(SelectedItemsContainer);
+
 const renderSelectedGeographyLabel = geography => `Within ${geography.distance} miles of ${geography.zipcode}`;
 
 class SearchUsersSelections extends PureComponent {
@@ -48,6 +50,10 @@ class SearchUsersSelections extends PureComponent {
           collectionName="geographies"
           removeItem={removeSelectedItem}
           renderLabel={renderSelectedGeographyLabel}
+        />
+        <SelectedActivitiesContainer
+          collectionName="activities"
+          removeItem={removeSelectedItem}
         />
       </div>
     );
