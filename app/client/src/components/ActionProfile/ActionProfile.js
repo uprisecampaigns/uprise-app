@@ -75,29 +75,31 @@ class ActionProfile extends PureComponent {
 
               <div className={s.alternatingBackgroundsContainer}>
 
-                { /* Commenting until I can convince Antonia to keep it
-                <div className={s.actionDetailsContainer}>
-                  <div className={s.actionDetailsTitle}>About this Volunteer Event</div>
-                  { (typeof action.description === 'string' && action.description.trim() !== '') &&
-                    <div className={s.actionDetailsContent}>{action.description}</div>
-                  }
+                { action.description && (
+                  <div className={s.actionDetailsContainer}>
+                    <div className={s.actionDetailsTitle}>About this Volunteer Event</div>
+                    { (typeof action.description === 'string' && action.description.trim() !== '') &&
+                      <div className={s.actionDetailsContent}>{action.description}</div>
+                    }
 
-                  <div className={s.detailsNumbersContainer}>
-                    <div className={s.detailsNumbers}>
-                      <div className={s.detailsNumbersHeader}>Keywords</div>
-                      <div className={s.detailsNumbersNumber}>{action.tags.length}</div>
-                    </div>
-
-                    { action.distance && (
+                    { /* Commenting until I can convince Antonia to keep it
+                    <div className={s.detailsNumbersContainer}>
                       <div className={s.detailsNumbers}>
-                        <div className={s.detailsNumbersHeader}>Miles away</div>
-                        <div className={s.detailsNumbersNumber}>{action.distance}</div>
+                        <div className={s.detailsNumbersHeader}>Keywords</div>
+                        <div className={s.detailsNumbersNumber}>{action.tags.length}</div>
                       </div>
-                    )}
-                  </div>
-                </div>
 
-                */ }
+                      { action.distance && (
+                        <div className={s.detailsNumbers}>
+                          <div className={s.detailsNumbersHeader}>Miles away</div>
+                          <div className={s.detailsNumbersNumber}>{action.distance}</div>
+                        </div>
+                      )}
+                    </div>
+                    */ }
+
+                  </div>
+                )}
 
                 { (action.locationName || action.streetAddress || (action.city && action.state && action.zipcode)) && (
                   <div className={s.actionDetailsContainer}>
