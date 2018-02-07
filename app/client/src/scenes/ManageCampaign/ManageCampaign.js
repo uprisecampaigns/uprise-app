@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -8,6 +9,8 @@ import FontIcon from 'material-ui/FontIcon';
 import Divider from 'material-ui/Divider';
 
 import Link from 'components/Link';
+
+import { setPage } from 'actions/PageNavActions';
 
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
@@ -22,6 +25,7 @@ class ManageCampaignContainer extends Component {
   static propTypes = {
     campaign: PropTypes.object,
     deleteCampaignMutation: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
   }
@@ -70,7 +74,7 @@ class ManageCampaignContainer extends Component {
 
   render() {
     if (this.props.campaign) {
-      const { campaign } = this.props;
+      const { campaign, dispatch } = this.props;
 
       const modalActions = [
         <RaisedButton
@@ -107,7 +111,7 @@ class ManageCampaignContainer extends Component {
 
             <Link to={`/organize/${campaign.slug}/opportunities`}>
               <ListItem
-                primaryText="Campaign Opportunities"
+                primaryText="Volunteer Needs"
               />
             </Link>
 
@@ -115,7 +119,18 @@ class ManageCampaignContainer extends Component {
 
             <Link to={`/organize/${campaign.slug}/volunteers`}>
               <ListItem
-                primaryText="Subscribers"
+                primaryText="Contact Volunteers"
+              />
+            </Link>
+
+            <Divider />
+
+            <Link
+              to="/"
+              onClick={() => dispatch(setPage('home', 'user'))}
+            >
+              <ListItem
+                primaryText="Search Volunteers"
               />
             </Link>
 
@@ -129,17 +144,17 @@ class ManageCampaignContainer extends Component {
 
             <Divider />
 
-            <Link to={`/organize/${campaign.slug}/profile/edit`}>
+            <Link to={`/campaign/${campaign.slug}`}>
               <ListItem
-                primaryText="Edit Profile"
+                primaryText="View Profile"
               />
             </Link>
 
             <Divider />
 
-            <Link to={`/campaign/${campaign.slug}`}>
+            <Link to={`/organize/${campaign.slug}/profile/edit`}>
               <ListItem
-                primaryText="View Profile"
+                primaryText="Edit Profile"
               />
             </Link>
 
@@ -176,6 +191,7 @@ class ManageCampaignContainer extends Component {
 }
 
 export default compose(
+  connect(),
   graphql(CampaignQuery, {
     options: ownProps => ({
       variables: {
