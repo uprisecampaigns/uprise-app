@@ -248,9 +248,6 @@ class ActionSettingsContainer extends Component {
                 Basic Info
               </StepButton>
               <StepContent>
-                <p>
-                  Instructions: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                </p>
                 {renderStepActions(0)}
               </StepContent>
             </Step>
@@ -259,9 +256,6 @@ class ActionSettingsContainer extends Component {
                 Details
               </StepButton>
               <StepContent>
-                <p>
-                  Instructions: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                </p>
                 {renderStepActions(1)}
               </StepContent>
             </Step>
@@ -270,9 +264,6 @@ class ActionSettingsContainer extends Component {
                 Preview
               </StepButton>
               <StepContent>
-                <p>
-                  Instructions: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                </p>
                 {renderStepActions(2)}
               </StepContent>
             </Step>
