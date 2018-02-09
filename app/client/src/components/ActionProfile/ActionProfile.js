@@ -101,6 +101,20 @@ class ActionProfile extends PureComponent {
                   </div>
                 )}
 
+                { action.owner && (
+                  <div className={s.actionDetailsContainer}>
+                    <div className={s.actionDetailsTitle}>
+                      Get in touch
+                    </div>
+                    <div>{action.owner.first_name} {action.owner.last_name} - Contact Coordinator</div>
+                    <div>
+                      <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>
+                        {action.owner.email}
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
                 { (action.locationName || action.streetAddress || (action.city && action.state && action.zipcode)) && (
                   <div className={s.actionDetailsContainer}>
                     <div className={s.actionDetailsTitle}>
@@ -135,18 +149,9 @@ class ActionProfile extends PureComponent {
                 { activities.length > 0 && (
                   <div className={s.actionDetailsContainer}>
                     <div className={s.actionDetailsTitle}>
-                      Activities and Skills Needed:
+                      Activities and Skills:
                     </div>
                     <div className={s.actionDetailsContent}>{activities}</div>
-                  </div>
-                )}
-
-                { keywords && (
-                  <div className={s.actionDetailsContainer}>
-                    <div className={s.actionDetailsTitle}>
-                      Keywords:
-                    </div>
-                    <div className={s.actionDetailsContent}>{keywords}</div>
                   </div>
                 )}
 
@@ -161,17 +166,12 @@ class ActionProfile extends PureComponent {
                   </div>
                 )}
 
-                { action.owner && (
+                { keywords && (
                   <div className={s.actionDetailsContainer}>
                     <div className={s.actionDetailsTitle}>
-                      Get in touch
+                      Keywords:
                     </div>
-                    <div>{action.owner.first_name} {action.owner.last_name} - Contact Coordinator</div>
-                    <div>
-                      <Link to={`mailto:${action.owner.email}`} mailTo external useAhref>
-                        {action.owner.email}
-                      </Link>
-                    </div>
+                    <div className={s.actionDetailsContent}>{keywords}</div>
                   </div>
                 )}
 
