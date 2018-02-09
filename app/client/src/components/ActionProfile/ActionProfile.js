@@ -77,7 +77,6 @@ class ActionProfile extends PureComponent {
 
                 { action.description && (
                   <div className={s.actionDetailsContainer}>
-                    <div className={s.actionDetailsTitle}>About this Volunteer Event</div>
                     { (typeof action.description === 'string' && action.description.trim() !== '') &&
                       <div className={s.actionDetailsContent}>{action.description}</div>
                     }
