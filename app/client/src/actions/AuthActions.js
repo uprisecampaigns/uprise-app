@@ -143,7 +143,10 @@ export function checkedSessionStatus(result) {
   if (typeof result.gitCommit === 'string' &&
       result.gitCommit.trim() !== gitCommit.trim()) {
     window.setTimeout(() => {
-      window.location.reload(true);
+      // TODO: Replace with service worker sync and/or
+      // some solution that can't cause cached clients
+      // to get stuck in reload cycle
+      // window.location.reload(true);
     }, 100);
     Raven.captureMessage('git commit rev does not match clients', {
       extra: { result, gitCommit },
