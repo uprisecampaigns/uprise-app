@@ -211,13 +211,17 @@ class User {
         'id', 'first_name', 'last_name', 'email', 'phone_number', 'zipcode', 'email_confirmed',
       ]);
 
-    const userProfileResult = await db('user_profiles')
-      .where('user_id', userArgs.id)
-      .update({
-        profile_image_url, description, subheader, tags,
-      }, [
-        'profile_image_url', 'description', 'subheader', 'tags',
-      ]);
+    let userProfileResult = [];
+
+    if (profile_image_url || description || subheader || tags) {
+      userProfileResult = await db('user_profiles')
+        .where('user_id', userArgs.id)
+        .update({
+          profile_image_url, description, subheader, tags,
+        }, [
+          'profile_image_url', 'description', 'subheader', 'tags',
+        ]);
+    }
 
     if (activities && activities.length) {
       await updateProperties(activities, 'activity', userArgs.id);
