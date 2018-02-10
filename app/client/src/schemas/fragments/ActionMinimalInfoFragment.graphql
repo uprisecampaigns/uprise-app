@@ -1,0 +1,6 @@
+fragment ActionMinimalInfo on ActionResult {
+  id
+  title
+  slug
+}
+

@@ -1,4 +1,4 @@
-#import "../fragments/ActionBasicInfoFragment.graphql"
+#import "../fragments/ActionMinimalInfoFragment.graphql"
 #import "../fragments/CampaignBasicInfoFragment.graphql"
 
 fragment UserDetails on UserResult {
@@ -24,6 +24,6 @@ fragment UserDetails on UserResult {
     ...CampaignBasicInfo
   }
   actions {
-    ...ActionBasicInfo
+    ...ActionMinimalInfo
   }
 }
