@@ -2,51 +2,23 @@
 title: Welcome to UpRise
 ---
 
-Here’s what you will find in our main menu:
+Thanks for joining our progressive community! Welcome home.
 -------------------------------------------
 
-### Search
+### Interested in volunteering?
 
-Find and sign up for volunteer [OPPORTUNITIES](/search/search-opportunities), or find [CAMPAIGNS](/search/search-campaigns) that you
-can subscribe to and hear about all their opportunities.
+Search and sign up for volunteer [OPPORTUNITIES](/search/search-opportunities), including specific shifts, virtual volunteering or ongoing roles and projects.
 
-###
+Search for [CAMPAIGNS](/search/search-campaigns) that you can subscribe to and learn about all their opportunities.
 
-### Manage
-
-Keep track of your volunteering commitments at [MY COMMITMENTS](/volunteer/opportunity-commitments) and manage
-your campaign subscriptions at [MY SUBSCRIPTIONS](/volunteer/campaign-subscriptions).
+Create a profile and set your volunteering preferences at [MY PROFILE](/volunteer) so campaigns can find you.
 
 ###
 
-### Organize
+### Looking for volunteers?
 
-Manage all your campaigns at [MY CAMPAIGNS](/organize) and make new ones at [CREATE CAMPAIGN](/organize/create-campaign).
+Create new campaigns at [CREATE CAMPAIGN](/organize/create-campaign). Campaigns can be any effort you need volunteers to help with.
 
-###
+Manage your campaigns at [ORGANIZE](/organize).
 
-### Settings
-
-Manage your [ACCOUNT](/settings/account), change your password and read our privacy policy
-at [PRIVACY & SECURITY](/settings/privacy-security). You can also [CONTACT US](/settings/contact), or [LOGOUT](/logout).
-
-###
-
-Everything above is just Phase One. We have a lot more planned for you!
------------------------------------------------------------------------
-
-### Volunteer search and skills matching
-
-### Rich volunteer profiles with lifetime accumulation of reward points
-
-### Quality control, skills certifications and two-way rating
-
-### Volunteer community self-organizing tools
-
-### Campaign management dashboard, analytics
-
-### More outreach and project management tools
-
-### Marketplace for other campaign vendors with API integration
-
-### Best practices forums and training
+Recruit volunteers at [VOLUNTEERS](/search/search-volunteers).

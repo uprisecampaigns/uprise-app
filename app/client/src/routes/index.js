@@ -66,6 +66,7 @@ export default {
     require('./search').default,
     require('./searchActions').default,
     require('./searchCampaigns').default,
+    require('./searchUsers').default,
 
     // Wildcard routes, e.g. { path: '*', ... } (must go last)
     require('./notFound').default,

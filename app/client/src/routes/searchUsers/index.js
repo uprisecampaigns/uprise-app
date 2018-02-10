@@ -5,13 +5,13 @@ import Home from 'scenes/Home';
 import { setPage } from 'actions/PageNavActions';
 
 export default {
-  path: '/search/search-users',
+  path: '/search/search-volunteers',
 
   action(context) {
-    context.store.dispatch(setPage('home', 'users'));
+    context.store.dispatch(setPage('home', 'user'));
 
     return {
-      title: 'Search for UpRise Users',
+      title: 'Search for UpRise Volunteers',
       component: <Layout><Home startTab={1} /></Layout>,
     };
   },
