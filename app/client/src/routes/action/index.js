@@ -22,7 +22,7 @@ export default {
         const { action } = result.data;
         return {
           title: action.title,
-          image: typeof action.campaign.profile_image_url === 'string' ? action.campaign.profile_image_url : '',
+          image: typeof action.campaign === 'object' && typeof action.campaign.profile_image_url === 'string' ? action.campaign.profile_image_url : '',
           component: (
             <Layout>
               <Action actionSlug={slug} actionId={result.data.action.id} />
