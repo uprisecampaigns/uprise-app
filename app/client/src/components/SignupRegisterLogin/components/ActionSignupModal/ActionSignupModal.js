@@ -151,7 +151,7 @@ export class ActionSignupModal extends Component {
     switch (page) {
       case 0: {
         const shiftsList = [...shifts]
-          .filter(shift => moment(shift.start).isAfter(moment()))
+          .filter(shift => moment(shift.end).isAfter(moment()))
           .map((shift) => {
             const timeDisplay = formatShiftLine(shift);
 
