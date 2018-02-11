@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
 import { connect } from 'react-redux';
 
-import { pressedSignup, closedModal } from 'actions/ActionSignupActions';
+import { pressedSignup } from 'actions/ActionSignupActions';
 
 import s from 'styles/SignupRegisterLogin.scss';
 
@@ -103,13 +102,7 @@ class SignupRegisterLogin extends React.PureComponent {
         )}
 
         { signupModalOpen &&
-          <Dialog
-            modal={false}
-            open={signupModalOpen}
-            onRequestClose={() => dispatch(closedModal())}
-          >
-            <ConnectedActionSignupModal />
-          </Dialog>
+          <ConnectedActionSignupModal />
         }
 
       </div>

@@ -8,6 +8,7 @@ import moment from 'moment';
 import isEqual from 'lodash.isequal';
 import Checkbox from 'material-ui/Checkbox';
 import Divider from 'material-ui/Divider';
+import Dialog from 'material-ui/Dialog';
 
 import Link from 'components/Link';
 
@@ -145,6 +146,8 @@ export class ActionSignupModal extends Component {
       toggleCheck, selectShifts, confirmSignup, formatShiftLine, cancelAttendance,
     } = this;
 
+    let dialogContent;
+
     switch (page) {
       case 0: {
         const shiftsList = [...shifts]
@@ -164,7 +167,7 @@ export class ActionSignupModal extends Component {
             );
           });
 
-        return (
+        dialogContent = (
           <div className={s.container}>
             <div className={s.header}>Select Shifts</div>
 
@@ -197,11 +200,12 @@ export class ActionSignupModal extends Component {
             </div>
           </div>
         );
+        break;
       }
 
       case 1: {
         if (attending && action.ongoing) {
-          return (
+          dialogContent = (
             <div className={s.container}>
               <div className={s.header}>Cancel</div>
 
@@ -223,61 +227,62 @@ export class ActionSignupModal extends Component {
               </div>
             </div>
           );
-        }
-
-        return (
-          <div className={s.container}>
-            { attending ? (
-              <div className={s.header}>Confirm Changes</div>
-            ) : (
-              <div className={s.header}>Almost there!</div>
-            )}
-
-            <div className={s.content}>
-              <div>{ action.title }</div>
-
-              { !action.ongoing && (
-                <div>
-                  <div className={s.label}>Shifts selected</div>
-                  { shifts.filter(shift => shift.selected).map(shift => (
-                    <div key={JSON.stringify(shift)}>
-                      { formatShiftLine(shift) }
-                    </div>
-                  ))}
-                </div>
+        } else {
+          dialogContent = (
+            <div className={s.container}>
+              { attending ? (
+                <div className={s.header}>Confirm Changes</div>
+              ) : (
+                <div className={s.header}>Almost there!</div>
               )}
-              <div className={s.label}>Your Name:</div>
-              <div>{userObject.first_name} {userObject.last_name}</div>
-              <div className={s.label}>Your Email:</div>
-              <div>{userObject.email}</div>
+
+              <div className={s.content}>
+                <div>{ action.title }</div>
+
+                { !action.ongoing && (
+                  <div>
+                    <div className={s.label}>Shifts selected</div>
+                    { shifts.filter(shift => shift.selected).map(shift => (
+                      <div key={JSON.stringify(shift)}>
+                        { formatShiftLine(shift) }
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className={s.label}>Your Name:</div>
+                <div>{userObject.first_name} {userObject.last_name}</div>
+                <div className={s.label}>Your Email:</div>
+                <div>{userObject.email}</div>
+              </div>
+
+              <Divider />
+
+              <Checkbox
+                label="Share my contact details with the campaign manager"
+                checked={agreeToShare}
+                onCheck={() => this.setState({ agreeToShare: !agreeToShare })}
+                className={s.checkbox}
+              />
+
+              <div
+                className={s.button}
+                onClick={confirmSignup}
+                onKeyPress={confirmSignup}
+                role="button"
+                tabIndex="0"
+              >
+                Sign up now
+              </div>
+
             </div>
-
-            <Divider />
-
-            <Checkbox
-              label="Share my contact details with the campaign manager"
-              checked={agreeToShare}
-              onCheck={() => this.setState({ agreeToShare: !agreeToShare })}
-              className={s.checkbox}
-            />
-
-            <div
-              className={s.button}
-              onClick={confirmSignup}
-              onKeyPress={confirmSignup}
-              role="button"
-              tabIndex="0"
-            >
-              Sign up now
-            </div>
-
-          </div>
-        );
+          );
+        }
+        break;
       }
 
       case 2: {
         if (attending) {
-          return (
+          dialogContent = (
             <div className={s.container}>
               <div className={s.header}>Your scheduled shifts have been successfully changed.</div>
               <div className={s.content}>
@@ -295,41 +300,56 @@ export class ActionSignupModal extends Component {
               </div>
             </div>
           );
-        }
+        } else {
+          dialogContent = (
+            <div className={s.container}>
+              <div className={s.header}>You&apos;ve been signed up</div>
 
-        return (
-          <div className={s.container}>
-            <div className={s.header}>You&apos;ve been signed up</div>
-
-            <div className={s.content}>
-              Thank you so much for signing up. Saved events will show up
-              in your profile so you can easily view them later.
-            </div>
-
-            <Divider />
-
-            <Link
-              to="/volunteer/opportunity-commitments"
-              useAhref={false}
-            >
-              <div
-                className={s.button}
-                onClick={e => this.props.dispatch(closedModal())}
-                onKeyPress={e => this.props.dispatch(closedModal())}
-                role="button"
-                tabIndex="0"
-              >
-                View Events
+              <div className={s.content}>
+                Thank you so much for signing up. Saved events will show up
+                in your profile so you can easily view them later.
               </div>
-            </Link>
-          </div>
-        );
+
+              <Divider />
+
+              <Link
+                to="/volunteer/opportunity-commitments"
+                useAhref={false}
+              >
+                <div
+                  className={s.button}
+                  onClick={e => this.props.dispatch(closedModal())}
+                  onKeyPress={e => this.props.dispatch(closedModal())}
+                  role="button"
+                  tabIndex="0"
+                >
+                  View Events
+                </div>
+              </Link>
+            </div>
+          );
+        }
+        break;
       }
 
       default: {
-        return null;
+        dialogContent = null;
+        break;
       }
     }
+
+    return (
+      <Dialog
+        modal={false}
+        open
+        onRequestClose={() => this.props.dispatch(closedModal())}
+        autoScrollBodyContent
+        autoDetectWindowHeight
+        repositionOnUpdate
+      >
+        { dialogContent }
+      </Dialog>
+    );
   }
 }
 
