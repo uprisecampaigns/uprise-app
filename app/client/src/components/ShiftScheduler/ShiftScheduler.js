@@ -320,6 +320,9 @@ class ShiftScheduler extends Component {
               className={s.form}
               onSubmit={formSubmit}
             >
+
+              <div className={s.sectionLabel}>When:</div>
+
               { dateForm }
               <div
                 onClick={(event) => { event.preventDefault(); addDate(); }}
