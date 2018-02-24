@@ -4,10 +4,9 @@ import apolloClient from 'store/apolloClient';
 import Raven from 'raven-js';
 import ReactGA from 'lib/react-ga';
 
-import { gitCommit } from 'config/config';
+import { gitCommit, defaultSearchRadiusDistance } from 'config/config';
 import { notify, hideLoginPrompt } from 'actions/NotificationsActions';
 import { addDefaultSearchItem } from 'actions/SearchActions';
-import { defaultSearchRadiusDistance } from 'config/config';
 
 
 export const CLICKED_SIGNUP = 'CLICKED_SIGNUP';
@@ -40,7 +39,7 @@ function setDefaultSearchTerms(user) {
     if (typeof user === 'object' &&
         typeof user.zipcode === 'string' &&
         user.zipcode.trim() !== '') {
-      dispatch(addDefaultSearchItem('action', 'geographies', { zipcode: user.zipcode, distance: 10 })); // TODO better definition of default distance
+      dispatch(addDefaultSearchItem('action', 'geographies', { zipcode: user.zipcode, distance: defaultSearchRadiusDistance }));
     }
   };
 }
