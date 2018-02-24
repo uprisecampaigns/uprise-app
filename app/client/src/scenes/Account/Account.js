@@ -131,6 +131,7 @@ class Account extends Component {
         component => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
         component => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
         component => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
+        component => validateString(component, 'zipcode', 'zipcodeErrorText', 'Please enter a zipcode'),
         component => validateZipcode(component),
         component => validateEmail(component),
         component => validateEmailAvailable(component, user.email),

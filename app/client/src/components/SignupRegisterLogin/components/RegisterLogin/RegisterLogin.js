@@ -104,6 +104,7 @@ export class RegisterLogin extends Component {
     ] : [
       component => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
       component => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
+      component => validateString(component, 'zipcode', 'zipcodeErrorText', 'Please enter a zipcode'),
       component => validateZipcode(component),
     ];
 

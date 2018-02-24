@@ -99,6 +99,7 @@ class Signup extends Component {
       component => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
       component => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
       component => validateString(component, 'password1', 'password1ErrorText', 'Please enter a password'),
+      component => validateString(component, 'zipcode', 'zipcodeErrorText', 'Zipcode is required'),
       component => validateZipcode(component),
       component => validateEmail(component),
       component => validateEmailAvailable(component),
