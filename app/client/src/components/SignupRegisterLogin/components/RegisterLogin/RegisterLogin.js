@@ -71,7 +71,7 @@ export class RegisterLogin extends Component {
       return { success: true, message: false };
     }
 
-    return { success: true, message: 'okok' };
+    return { success: true, message: 'Please enter name and zipcode to continue' };
   }
 
   defaultErrorText = {
