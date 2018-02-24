@@ -78,6 +78,7 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
       'AWS_S3_ENDPOINT': '"' + process.env.AWS_S3_ENDPOINT + '"',
       'SENTRY_PUBLIC_DSN': '"' + process.env.SENTRY_PUBLIC_DSN + '"',
       'GOOGLE_UA_ID': '"' + process.env.GOOGLE_UA_ID + '"',
+      'DEFAULT_SEARCH_RADIUS_DISTANCE': process.env.DEFAULT_SEARCH_RADIUS_DISTANCE,
       'GIT_COMMIT': '"' + gitCommit + '"',
     }
   });

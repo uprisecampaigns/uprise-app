@@ -130,6 +130,7 @@ module.exports = (app, passport) => {
         userObject: {
           id: req.user.id,
           email: req.user.email,
+          zipcode: req.user.zipcode,
           passwordBeingReset: req.user.password_being_reset,
         },
         gitCommit,

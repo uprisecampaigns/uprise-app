@@ -6,6 +6,7 @@ import {
   CLEAR_SEARCH,
   ADD_SEARCH_ITEM,
   REMOVE_SEARCH_ITEM,
+  ADD_DEFAULT_SEARCH_ITEM,
   SET_DATES,
   UNSET_DATES,
   SORT_BY,
@@ -54,6 +55,22 @@ export function updateSearch(searchState = defaultStartState, action) {
         }
 
         collection.push(typeof action.value === 'string' ? action.value.trim() : action.value);
+      }
+
+      return Object.assign({}, searchState, {
+        [action.collection]: collection,
+      });
+    }
+
+    case ADD_DEFAULT_SEARCH_ITEM: {
+      const collection = Array.from(searchState[action.collection]);
+
+      // Only add this search type if none exists already
+      if (!collection.length) {
+        if ((typeof action.value === 'string' && action.value.trim() !== '') ||
+            (typeof action.value === 'object')) {
+          collection.push(typeof action.value === 'string' ? action.value.trim() : action.value);
+        }
       }
 
       return Object.assign({}, searchState, {

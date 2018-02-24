@@ -6,6 +6,8 @@ import ReactGA from 'lib/react-ga';
 
 import { gitCommit } from 'config/config';
 import { notify, hideLoginPrompt } from 'actions/NotificationsActions';
+import { addDefaultSearchItem } from 'actions/SearchActions';
+import { defaultSearchRadiusDistance } from 'config/config';
 
 
 export const CLICKED_SIGNUP = 'CLICKED_SIGNUP';
@@ -33,15 +35,33 @@ export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAIL = 'LOGOUT_FAIL';
 
 
+function setDefaultSearchTerms(user) {
+  return async (dispatch) => {
+    if (typeof user === 'object' &&
+        typeof user.zipcode === 'string' &&
+        user.zipcode.trim() !== '') {
+      dispatch(addDefaultSearchItem('action', 'geographies', { zipcode: user.zipcode, distance: 10 })); // TODO better definition of default distance
+    }
+  };
+}
+
+export function updateSessionState(result) {
+  return { type: CHECKED_SESSION_STATUS, result };
+}
+
 export function clickedSignup() {
   return { type: CLICKED_SIGNUP };
 }
 
 export function signupSuccess(userObject) {
-  Raven.setUserContext(userObject);
-  ReactGA.set({ userId: userObject.id });
-  apolloClient.resetStore();
-  return { type: SIGNUP_SUCCESS, userObject };
+  return async (dispatch, getState) => {
+    ReactGA.set({ userId: userObject.id });
+    Raven.setUserContext(userObject);
+    apolloClient.resetStore();
+
+    dispatch(updateSessionState({ isLoggedIn: true, ...userObject }));
+    dispatch(setDefaultSearchTerms(userObject));
+  };
 }
 
 export function signupFail(error) {
@@ -87,11 +107,14 @@ export function clickedLogin() {
 }
 
 export function loginSuccess(userObject) {
-  ReactGA.set({ userId: userObject.id });
-  Raven.setUserContext(userObject);
-  apolloClient.resetStore();
+  return async (dispatch, getState) => {
+    ReactGA.set({ userId: userObject.id });
+    Raven.setUserContext(userObject);
+    apolloClient.resetStore();
 
-  return { type: LOGIN_SUCCESS, userObject };
+    dispatch(updateSessionState({ isLoggedIn: true, ...userObject }));
+    dispatch(setDefaultSearchTerms(userObject));
+  };
 }
 
 export function loginFail(error) {
@@ -137,31 +160,37 @@ export function startedSessionCheck() {
 }
 
 export function checkedSessionStatus(result) {
-  // If the hash of the server commit has changed,
-  // hard reload the page to get new code
-  // TODO: more elegant solution
-  if (typeof result.gitCommit === 'string' &&
-      result.gitCommit.trim() !== gitCommit.trim()) {
-    window.setTimeout(() => {
-      // TODO: Replace with service worker sync and/or
-      // some solution that can't cause cached clients
-      // to get stuck in reload cycle
-      // window.location.reload(true);
-    }, 100);
-    Raven.captureMessage('git commit rev does not match clients', {
-      extra: { result, gitCommit },
-    });
-  }
+  return async (dispatch, getState) => {
+    // If the hash of the server commit has changed,
+    // hard reload the page to get new code
+    // TODO: more elegant solution
+    if (typeof result.gitCommit === 'string' &&
+        result.gitCommit.trim() !== gitCommit.trim()) {
+      window.setTimeout(() => {
+        // TODO: Replace with service worker sync and/or
+        // some solution that can't cause cached clients
+        // to get stuck in reload cycle
+        // window.location.reload(true);
+      }, 100);
+      Raven.captureMessage('git commit rev does not match clients', {
+        extra: { result, gitCommit },
+      });
+    }
 
-  if (result.isLoggedIn) {
-    Raven.setUserContext(result.userObject);
-    ReactGA.set({ userId: result.userObject.id });
-  } else {
-    Raven.setUserContext();
-    ReactGA.set({ userId: undefined });
-  }
+    if (result.isLoggedIn) {
+      if (typeof result.userObject === 'object') {
+        dispatch(setDefaultSearchTerms(result.userObject));
+      }
+      Raven.setUserContext(result.userObject);
+      ReactGA.set({ userId: result.userObject.id });
+    } else {
+      dispatch(setDefaultSearchTerms());
+      Raven.setUserContext();
+      ReactGA.set({ userId: undefined });
+    }
 
-  return { type: CHECKED_SESSION_STATUS, result };
+    dispatch(updateSessionState(result));
+  };
 }
 
 export function sessionCheckFail(error) {
