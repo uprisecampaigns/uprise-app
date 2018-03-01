@@ -9,4 +9,4 @@ export const sentryDsn = process.env.SENTRY_PUBLIC_DSN;
 
 export const gitCommit = process.env.GIT_COMMIT;
 
-export const defaultSearchRadiusDistance = process.DEFAULT_SEARCH_RADIUS_DISTANCE;
+export const defaultSearchRadiusDistance = process.env.DEFAULT_SEARCH_RADIUS_DISTANCE;
