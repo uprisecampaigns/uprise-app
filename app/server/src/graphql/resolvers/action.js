@@ -3,6 +3,7 @@ const moment = require('moment-timezone');
 const zipcodeToTimezone = require('zipcode-to-timezone');
 
 const Action = require('models/Action');
+const Campaign = require('models/Campaign');
 const User = require('models/User');
 
 const sendEmail = require('lib/sendEmail.js');
@@ -214,6 +215,13 @@ module.exports = {
         });
       } catch (e) {
         throw new Error(`Error sending email to volunteer: ${e.message}`);
+      }
+
+      try {
+        await Campaign.subscribe({ userId: user.id, campaignId: action.campaign.id });
+        action.campaign.subscribed = await Campaign.subscribed({ campaignId: action.campaign.id, userId: user.id });
+      } catch (e) {
+        throw new Error(`Error subscribing to campaign: ${e.message}`);
       }
 
       return action;
