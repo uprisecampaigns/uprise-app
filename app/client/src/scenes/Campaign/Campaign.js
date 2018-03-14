@@ -7,11 +7,13 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import CampaignProfile from 'components/CampaignProfile';
+import ConfirmEmailPrompt from 'components/ConfirmEmailPrompt';
 
 import CampaignSubscriptionMutation from 'schemas/mutations/CampaignSubscriptionMutation.graphql';
 import CancelCampaignSubscriptionMutation from 'schemas/mutations/CancelCampaignSubscriptionMutation.graphql';
 
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
+import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import {
   promptLogin, notify,
@@ -26,6 +28,7 @@ class Campaign extends Component {
     dispatch: PropTypes.func.isRequired,
     subscribe: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
+    userObject: PropTypes.object.isRequired,
     cancelSubscription: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
@@ -40,20 +43,25 @@ class Campaign extends Component {
 
     this.state = {
       saving: false,
-      modalOpen: false,
+      subscribeModalOpen: false,
+      confirmEmailModalOpen: false,
     };
   }
 
   subscribe = () => {
     if (this.props.loggedIn) {
-      this.setState({ modalOpen: true });
+      if (this.props.userObject.email_confirmed) {
+        this.setState({ subscribeModalOpen: true });
+      } else {
+        this.setState({ confirmEmailModalOpen: true });
+      }
     } else {
       this.props.dispatch(promptLogin({ exitable: true, title: 'Please login to subscribe to this campaign.' }));
     }
   }
 
   confirmSubscription = async () => {
-    this.setState({ saving: true, modalOpen: false });
+    this.setState({ saving: true, subscribeModalOpen: false });
     try {
       await this.props.subscribe({
         variables: {
@@ -95,13 +103,13 @@ class Campaign extends Component {
   render() {
     if (this.props.campaign) {
       const { campaign, loggedIn } = this.props;
-      const { modalOpen } = this.state;
+      const { subscribeModalOpen, confirmEmailModalOpen } = this.state;
 
       const modalActions = [
         <RaisedButton
           label="Cancel"
           primary={false}
-          onClick={(event) => { event.preventDefault(); this.setState({ modalOpen: false }); }}
+          onClick={(event) => { event.preventDefault(); this.setState({ subscribeModalOpen: false }); }}
         />,
         <RaisedButton
           label="Confirm"
@@ -121,19 +129,29 @@ class Campaign extends Component {
             saving={this.state.saving}
           />
 
-          <Dialog
-            title="Permission to Share?"
-            modal
-            actions={modalActions}
-            actionsContainerClassName={s.modalActionsContainer}
-            open={modalOpen}
-            autoScrollBodyContent
-          >
-            <p>
-              May we have your permission to share your email address and phone number with the coordinator
-              for the purpose of contacting you about volunteering for this campaign?
-            </p>
-          </Dialog>
+          { subscribeModalOpen && (
+            <Dialog
+              title="Permission to Share?"
+              modal
+              actions={modalActions}
+              actionsContainerClassName={s.modalActionsContainer}
+              open={subscribeModalOpen}
+              autoScrollBodyContent
+            >
+              <p>
+                May we have your permission to share your email address and phone number with the coordinator
+                for the purpose of contacting you about volunteering for this campaign?
+              </p>
+            </Dialog>
+          )}
+
+          { confirmEmailModalOpen && (
+            <ConfirmEmailPrompt
+              modal={false}
+              handleResend={() => this.setState({ confirmEmailModalOpen: false })}
+              handleError={() => this.setState({ confirmEmailModalOpen: false })}
+            />
+          )}
         </div>
 
       );
@@ -156,12 +174,23 @@ const withCampaignQuery = graphql(CampaignQuery, {
   }),
 });
 
+const withMeQuery = graphql(MeQuery, {
+  props: ({ data }) => ({
+    userObject: !data.loading && data.me ? data.me : {
+      email: '',
+    },
+  }),
+  skip: ownProps => !ownProps.loggedIn && !ownProps.fetchingAuthUpdate,
+});
+
 const mapStateToProps = state => ({
   loggedIn: state.userAuthSession.isLoggedIn,
+  fetchingAuthUpdate: state.userAuthSession.fetchingAuthUpdate,
 });
 
 export default compose(
   connect(mapStateToProps),
+  withMeQuery,
   withCampaignQuery,
   graphql(CampaignSubscriptionMutation, { name: 'subscribe' }),
   graphql(CancelCampaignSubscriptionMutation, { name: 'cancelSubscription' }),

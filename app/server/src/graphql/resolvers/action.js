@@ -168,6 +168,10 @@ module.exports = {
 
       const { user } = context;
 
+      if (!user.email_confirmed) {
+        throw new Error(`User's email not confirmed: ${user.email}`);
+      }
+
       const action = await Action.signup({
         userId: user.id,
         actionId: args.actionId,

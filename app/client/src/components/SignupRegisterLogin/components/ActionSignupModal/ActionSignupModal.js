@@ -11,6 +11,7 @@ import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 
 import Link from 'components/Link';
+import ConfirmEmailPrompt from 'components/ConfirmEmailPrompt';
 
 import withTimeWithZone from 'lib/withTimeWithZone';
 
@@ -335,17 +336,27 @@ export class ActionSignupModal extends Component {
       }
     }
 
+    if (userObject.email_confirmed) {
+      return (
+        <Dialog
+          modal={false}
+          open
+          onRequestClose={() => this.props.dispatch(closedModal())}
+          autoScrollBodyContent
+          autoDetectWindowHeight
+          repositionOnUpdate
+        >
+          { dialogContent }
+        </Dialog>
+      );
+    }
+
     return (
-      <Dialog
+      <ConfirmEmailPrompt
         modal={false}
-        open
-        onRequestClose={() => this.props.dispatch(closedModal())}
-        autoScrollBodyContent
-        autoDetectWindowHeight
-        repositionOnUpdate
-      >
-        { dialogContent }
-      </Dialog>
+        handleResend={() => this.props.dispatch(closedModal())}
+        handleError={() => this.props.dispatch(closedModal())}
+      />
     );
   }
 }

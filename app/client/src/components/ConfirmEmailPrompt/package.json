@@ -1,0 +1,6 @@
+{
+  "name": "ConfirmEmailPrompt",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ConfirmEmailPrompt.js"
+}

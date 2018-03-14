@@ -16,14 +16,12 @@ import {
   validatePhoneNumber,
 } from 'lib/validateComponentForms';
 
-import { notify } from 'actions/NotificationsActions';
-
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import CreateCampaignMutation from 'schemas/mutations/CreateCampaignMutation.graphql';
-import ResendEmailVerificationMutation from 'schemas/mutations/ResendEmailVerificationMutation.graphql';
 
 import CreateCampaignForm from 'components/CreateCampaignForm';
+import ConfirmEmailPrompt from 'components/ConfirmEmailPrompt';
 
 import s from 'styles/Organize.scss';
 
@@ -116,24 +114,8 @@ class CreateCampaignContainer extends Component {
     }
   }
 
-  resendEmailVerification = async (data) => {
-    const { dispatch, resendEmailVerification } = this.props;
-    try {
-      const results = await resendEmailVerification();
-
-      if (results) {
-        dispatch(notify('Email resent'));
-        history.push('/organize');
-      } else {
-        dispatch(notify('Error resending email'));
-      }
-    } catch (e) {
-      dispatch(notify('Error resending email'));
-    }
-  }
-
   render() {
-    const { formSubmit, defaultErrorText, resendEmailVerification } = this;
+    const { formSubmit, defaultErrorText } = this;
     const { user } = this.props;
     const { newCampaign, modalOpen, formData } = this.state;
 
@@ -203,31 +185,9 @@ class CreateCampaignContainer extends Component {
             )}
           </div>
         ) : (
-          <Dialog
-            title="Confirm Email Address to Proceed"
-            modal
-            actionsContainerClassName={s.modalActionsContainer}
-            actions={[
-              <RaisedButton
-                label="Resend"
-                primary
-                className={s.primaryButton}
-                onClick={(event) => { event.preventDefault(); resendEmailVerification(); }}
-              />,
-              <RaisedButton
-                label="Ok"
-                primary={false}
-                className={s.secondaryButton}
-                onClick={(event) => { event.preventDefault(); history.push('/organize'); }}
-              />]}
-            open
-          >
-            <p>
-              Please check your inbox for an email verification message.
-              Please check your spam folder.
-              If you don&apos;t see it, you can have it resent.
-            </p>
-          </Dialog>
+          <ConfirmEmailPrompt
+            handleResend={() => history.push('/organize')}
+          />
         )}
       </div>
     );
@@ -251,5 +211,4 @@ export default compose(
   connect(),
   withMeQuery,
   graphql(CreateCampaignMutation, { name: 'createCampaignMutation' }),
-  graphql(ResendEmailVerificationMutation, { name: 'resendEmailVerification' }),
 )(CreateCampaignContainer);

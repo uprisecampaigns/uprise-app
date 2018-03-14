@@ -119,6 +119,10 @@ module.exports = {
 
       const { user } = context;
 
+      if (!user.email_confirmed) {
+        throw new Error(`User's email not confirmed: ${user.email}`);
+      }
+
       const campaign = await Campaign.subscribe({ userId: user.id, campaignId: args.campaignId });
       campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: user.id });
 
