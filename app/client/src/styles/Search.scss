@@ -253,6 +253,31 @@ label.listItem {
   font-size: 1.4rem;
 }
 
+.datePickersContainer {
+  max-width: 10rem;
+}
+
+.datePickerGroup {
+  margin-top: 1.5rem;
+}
+
+.datePickerLine {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.datePickerLabel {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.datePicker {
+  >div {
+    width: 4rem !important;
+  }
+}
+
 .checkboxContainer {
 }
 

@@ -126,42 +126,59 @@ class DateTimeSearch extends Component {
         />
 
         {ongoing || (
-          <div>
-            <div>
-              On date:
-              <DatePicker
-                value={onDate}
-                onChange={(event, date) => { handleInputChange('onDate', date); }}
-                container="dialog"
-                dialogContainerStyle={dialogStyle}
-                hintText="On Date"
-                formatDate={formatDate}
-                autoOk
-              />
+          <div className={s.datePickersContainer}>
+            <div className={s.datePickerGroup}>
+              <div className={s.datePickerLine}>
+                <div className={s.datePickerLabel}>
+                  On date:
+                </div>
+                <DatePicker
+                  value={onDate}
+                  onChange={(event, date) => { handleInputChange('onDate', date); }}
+                  container="dialog"
+                  dialogContainerStyle={dialogStyle}
+                  hintText="On Date"
+                  formatDate={formatDate}
+                  autoOk
+                  className={s.datePicker}
+                />
+              </div>
             </div>
-            <div>
-              On or between
-              <DatePicker
-                value={startDate}
-                onChange={(event, date) => { handleInputChange('startDate', date); }}
-                errorText={this.state.startDateError}
-                container="dialog"
-                dialogContainerStyle={dialogStyle}
-                hintText="Start Date"
-                formatDate={formatDate}
-                autoOk
-              />
-              and
-              <DatePicker
-                value={endDate}
-                onChange={(event, date) => { handleInputChange('endDate', date); }}
-                errorText={this.state.endDateError}
-                container="dialog"
-                dialogContainerStyle={dialogStyle}
-                hintText="End Date"
-                formatDate={formatDate}
-                autoOk
-              />
+
+            <div className={s.datePickerGroup}>
+              <div className={s.datePickerLine}>
+                <div className={s.datePickerLabel}>
+                  On or between
+                </div>
+                <DatePicker
+                  value={startDate}
+                  onChange={(event, date) => { handleInputChange('startDate', date); }}
+                  errorText={this.state.startDateError}
+                  container="dialog"
+                  dialogContainerStyle={dialogStyle}
+                  hintText="Start Date"
+                  formatDate={formatDate}
+                  autoOk
+                  className={s.datePicker}
+                />
+              </div>
+
+              <div className={s.datePickerLine}>
+                <div className={s.datePickerLabel}>
+                  and
+                </div>
+                <DatePicker
+                  value={endDate}
+                  onChange={(event, date) => { handleInputChange('endDate', date); }}
+                  errorText={this.state.endDateError}
+                  container="dialog"
+                  dialogContainerStyle={dialogStyle}
+                  hintText="End Date"
+                  formatDate={formatDate}
+                  autoOk
+                  className={s.datePicker}
+                />
+              </div>
             </div>
           </div>
         )}
