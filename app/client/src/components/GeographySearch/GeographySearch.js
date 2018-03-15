@@ -108,7 +108,6 @@ class GeographySearch extends PureComponent {
 
             Within
             <TextField
-              floatingLabelText="miles"
               type="number"
               min="1"
               value={distance}
@@ -116,7 +115,7 @@ class GeographySearch extends PureComponent {
               underlineShow={false}
               onChange={(event) => { handleInputChange(event, 'distance', event.target.value); }}
             />
-            of
+            miles of
             <TextField
               floatingLabelText="Zipcode"
               type="text"
