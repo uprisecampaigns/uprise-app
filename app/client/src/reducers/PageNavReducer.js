@@ -9,6 +9,11 @@ export const defaultHomeNavStartState = {
   page: 'action',
 };
 
+export const defaultRoleNavStartState = {
+  ...defaultStartState,
+  page: 'volunteer',
+};
+
 export function updatePageNav(navState = defaultStartState, action) {
   switch (action.type) {
     case SET_PAGE: {

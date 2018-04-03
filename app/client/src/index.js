@@ -25,6 +25,7 @@ import {
 
 import {
   defaultHomeNavStartState,
+  defaultRoleNavStartState,
 } from 'reducers/PageNavReducer';
 
 import { checkSessionStatus } from 'actions/AuthActions';
@@ -90,6 +91,7 @@ const store = configureStore({
   actionsSearch: defaultActionStartState,
   campaignsSearch: defaultCampaignStartState,
   homePageNav: defaultHomeNavStartState,
+  rolePageNav: defaultRoleNavStartState,
 });
 
 // eslint-disable-next-line no-unused-vars

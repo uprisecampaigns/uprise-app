@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import Home from 'scenes/Home';
+import SearchCampaigns from 'components/SearchCampaigns';
 
 import { setPage } from 'actions/PageNavActions';
 
@@ -12,7 +12,7 @@ export default {
 
     return {
       title: 'Search for Campaigns with Volunteer Opportunities',
-      component: <Layout><Home startTab={1} /></Layout>,
+      component: <Layout><SearchCampaigns /></Layout>,
     };
   },
 };

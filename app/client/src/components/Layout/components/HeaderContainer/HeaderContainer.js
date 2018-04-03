@@ -7,6 +7,7 @@ import { graphql, compose } from 'react-apollo';
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import Header from './components/Header';
+import VolunteerHeader from './components/VolunteerHeader';
 
 class HeaderContainer extends Component {
   static propTypes = {
@@ -22,12 +23,15 @@ class HeaderContainer extends Component {
 
   render() {
     return (
-      <Header
-        userObject={this.props.userObject}
-        loggedIn={this.props.loggedIn}
-        clickedLogout={this.clickedLogout}
-        handleDrawerToggle={this.props.handleDrawerToggle}
-      />
+      <div>
+        <Header
+          userObject={this.props.userObject}
+          loggedIn={this.props.loggedIn}
+          clickedLogout={this.clickedLogout}
+          handleDrawerToggle={this.props.handleDrawerToggle}
+        />
+        <VolunteerHeader />
+      </div>
     );
   }
 }

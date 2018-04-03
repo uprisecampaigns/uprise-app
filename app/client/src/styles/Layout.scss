@@ -27,12 +27,24 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  height: 100%;
   overflow-x: hidden;
 }
 
 button, button span {
   font-weight: 400 !important;
+}
+
+.layoutOuterContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contentContainer {
+  width: 100%;
+  max-width: $max-content-width;
+  margin: 0 auto;
 }
 
 /*

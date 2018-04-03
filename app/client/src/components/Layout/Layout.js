@@ -20,6 +20,7 @@ import {
 
 import HeaderContainer from './components/HeaderContainer';
 import NavDrawerContainer from './components/NavDrawerContainer';
+import Footer from './components/Footer';
 
 
 export class Layout extends Component {
@@ -52,7 +53,7 @@ export class Layout extends Component {
 
   render() {
     return (
-      <div>
+      <div className={s.layoutOuterContainer}>
 
         { this.props.pageLoading &&
           <div className={s.pageLoadingContainer}>
@@ -68,7 +69,11 @@ export class Layout extends Component {
           onRequestChange={this.handleDrawerRequestChange}
         />
 
-        {this.props.children}
+        <div className={s.contentContainer}>
+          {this.props.children}
+        </div>
+
+        <Footer />
 
         <Snackbar
           className={s.snackbar}

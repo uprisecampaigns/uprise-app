@@ -1,0 +1,78 @@
+@import '~styles/variables';
+@import '~styles/buttons';
+
+.outerHeaderContainer {
+  width: 100%;
+  background-color: $denim;
+}
+
+.header {
+  display: flex;
+  color: $white;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: $max-content-width;
+  position: relative;
+  margin: 0 auto;
+}
+
+.volunteerHeader {
+  @extend .header;
+  color: $black;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.volunteerNavHeader {
+  @extend .header;
+  color: $black;
+  background-color: $medium-grey;
+  justify-content: space-between;
+
+  .linksContainer > div {
+    margin: 1rem;
+  }
+}
+
+.logoContainer {
+  background-color: $fire-red;
+  color: $white;
+  padding: 0.5rem 2rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.linksContainer {
+  display: flex;
+
+  > div {
+    margin: 0rem 0rem 0rem 1rem;
+  }
+}
+
+.menuItemsContainer {
+  display: flex;
+  align-items: baseline;
+  margin: 1rem;
+
+  > div {
+    margin: 0rem 0rem 0rem 1rem;
+  }
+}
+
+svg.accountIcon {
+  color: $white !important;
+  height: 1.5rem !important;
+  width: 1.5rem !important;
+  padding-right: 0.55rem;
+}
+
+.headerButton {
+  display: inline-block;
+  font-size: 1.22rem;
+  line-height: 1.22rem;
+}
+
+
+@media (max-width: $screen-md-min) {
+}

@@ -123,6 +123,18 @@ class SearchActions extends Component {
     return (
       <div className={s.outerContainer}>
 
+        <div className={s.searchHeaderOuterContainer}>
+          <div className={s.searchHeaderTitle}>
+            Sign up for an Event
+          </div>
+          <div className={s.searchSubHeader}>
+            568+ Volunteer Events
+          </div>
+          <div className={s.searchSubHeader}>
+            Learn more >
+          </div>
+        </div>
+
         <SearchPresentation
           addSelectedItem={this.addSelectedItem}
           searchSelections={<SearchActionSelections />}

@@ -26,6 +26,7 @@ const appReducer = combineReducers({
   campaignsSearch: createFilteredReducer(updateSearch, action => action.searchType === 'campaign'),
   usersSearch: createFilteredReducer(updateSearch, action => action.searchType === 'user'),
   homePageNav: createFilteredReducer(updatePageNav, action => action.page === 'home'),
+  rolePageNav: createFilteredReducer(updatePageNav, action => action.page === 'role'),
   apollo: apolloClient.reducer(),
 });
 

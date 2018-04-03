@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import LoggedOutHome from 'scenes/LoggedOutHome';
 import Home from 'scenes/Home';
+import SearchActions from 'components/SearchActions';
 
 
 function HomeWrapper(props) {
@@ -15,7 +16,7 @@ function HomeWrapper(props) {
     );
   }
   return (
-    <Home {...props} />
+    <SearchActions />
   );
 }
 

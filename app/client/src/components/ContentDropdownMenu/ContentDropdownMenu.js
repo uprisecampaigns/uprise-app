@@ -12,12 +12,17 @@ import s from './ContentDropdownMenu.scss';
 class ContentDropdownMenu extends Component {
   static propTypes = {
     title: PropTypes.node.isRequired,
+    showExpandCaret: PropTypes.bool,
     dropdowns: PropTypes.arrayOf(PropTypes.shape({
       action: PropTypes.func,
       path: PropTypes.string,
       external: PropTypes.bool,
       sameTab: PropTypes.bool,
     })).isRequired,
+  }
+
+  static defaultProps = {
+    showExpandCaret: true,
   }
 
   constructor(props) {
@@ -72,6 +77,7 @@ class ContentDropdownMenu extends Component {
   }
 
   render() {
+    const { title, showExpandCaret } = this.props;
     const { menuOpen, popoverAnchorEl } = this.state;
     const dropdownItems = this.props.dropdowns.map(this.renderDropdown);
 
@@ -96,8 +102,8 @@ class ContentDropdownMenu extends Component {
           role="link"
           tabIndex="0"
         >
-          {this.props.title}
-          { menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore /> }
+          {title}
+          { showExpandCaret && (menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore />) }
         </div>
       </div>
     );
