@@ -7,7 +7,6 @@ import {
   promptLogin, hideLoginPrompt,
 } from 'actions/NotificationsActions';
 
-
 export default (WrappedComponent) => {
   class WithAuthentication extends Component {
     static propTypes = {

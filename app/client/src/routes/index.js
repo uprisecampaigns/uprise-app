@@ -16,33 +16,9 @@ export default {
 
     // /settings/
     require('./settings').default,
-    require('./account').default,
-    require('./contact').default,
-    require('./privacySecurity').default,
-    require('./confirmEmail').default,
-    require('./editProfile').default,
 
     // /organize/
     require('./organize').default,
-    require('./createCampaign').default,
-
-    // /organize/:slug/
-    require('./manageCampaign').default,
-    require('./manageCampaignSettings').default,
-    require('./manageCampaignVolunteers').default,
-    require('./manageCampaignComposeMessage').default,
-    require('./manageCampaignProfileEdit').default,
-    require('./manageCampaignActions').default,
-    require('./manageCampaignUploadActions').default,
-    require('./createRole').default,
-    require('./createEvent').default,
-
-    // /organize/:campaignSlug/opportunity/:actionSlug
-    require('./manageAction').default,
-    require('./manageActionSettings').default,
-    require('./manageActionVolunteers').default,
-    require('./manageActionProfileEdit').default,
-    require('./manageActionComposeMessage').default,
 
     // /volunteer/
     require('./volunteer').default,
@@ -61,6 +37,9 @@ export default {
 
     // /help/
     require('./searchDefinitions').default,
+
+    // /browse/
+    require('./browse').default,
 
     // /search/
     require('./search').default,

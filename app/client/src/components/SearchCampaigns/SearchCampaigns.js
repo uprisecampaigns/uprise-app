@@ -62,18 +62,6 @@ class SearchCampaigns extends Component {
     return (
       <div className={s.outerContainer}>
 
-        <div className={s.searchHeaderOuterContainer}>
-          <div className={s.searchHeaderTitle}>
-            Follow a Campaign
-          </div>
-          <div className={s.searchSubHeader}>
-            23 Campaigns
-          </div>
-          <div className={s.searchSubHeader}>
-            Learn more >
-          </div>
-        </div>
-
         <SearchPresentation
           addSelectedItem={this.addSelectedItem}
           searchSelections={<SearchCampaignSelections />}

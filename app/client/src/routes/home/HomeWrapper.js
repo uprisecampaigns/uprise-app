@@ -1,29 +1,52 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { connect } from 'react-redux';
 
 import LoggedOutHome from 'scenes/LoggedOutHome';
-import Home from 'scenes/Home';
-import SearchActions from 'components/SearchActions';
+import BrowseHome from 'scenes/BrowseHome';
 
+import { setRole } from 'actions/PageNavActions';
 
-function HomeWrapper(props) {
-  const { fetchingUpdate, loggedIn } = props;
+class HomeWrapper extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
+    fetchingUpdate: PropTypes.bool.isRequired,
+  };
 
-  if (!fetchingUpdate && !loggedIn) {
+  componentDidMount() {
+    this.setContent();
+  }
+
+  componentDidUpdate() {
+    this.setContent();
+  }
+
+  setContent() {
+    const {
+      fetchingUpdate, loggedIn,
+      dispatch,
+    } = this.props;
+
+    if (fetchingUpdate || loggedIn) {
+      dispatch(setRole('volunteer'));
+    }
+  }
+
+  render() {
+    const { fetchingUpdate, loggedIn } = this.props;
+
+    if (fetchingUpdate || loggedIn) {
+      return (
+        <BrowseHome />
+      );
+    }
+
     return (
-      <LoggedOutHome {...props} />
+      <LoggedOutHome {...this.props} />
     );
   }
-  return (
-    <SearchActions />
-  );
 }
-
-HomeWrapper.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
-  fetchingUpdate: PropTypes.bool.isRequired,
-};
 
 const mapStateToProps = state => ({
   loggedIn: state.userAuthSession.isLoggedIn,

@@ -1,0 +1,6 @@
+{
+  "name": "BrowseCampaigns",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./BrowseCampaigns.js"
+}

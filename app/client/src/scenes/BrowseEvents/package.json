@@ -1,0 +1,6 @@
+{
+  "name": "BrowseEvents",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./BrowseEvents.js"
+}

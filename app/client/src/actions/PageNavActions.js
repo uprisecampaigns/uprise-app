@@ -1,3 +1,3 @@
-export const SET_PAGE = 'SET_PAGE';
+export const SET_ROLE= 'SET_ROLE';
 
-export const setPage = (page, value) => ({ type: SET_PAGE, page, value });
+export const setRole = (value) => ({ type: SET_ROLE, value });

@@ -1,0 +1,6 @@
+{
+  "name": "BrowseHome",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./BrowseHome.js"
+}

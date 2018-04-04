@@ -43,6 +43,7 @@ button, button span {
 
 .contentContainer {
   width: 100%;
+  flex: 1;
   max-width: $max-content-width;
   margin: 0 auto;
 }

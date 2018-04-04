@@ -23,11 +23,6 @@ import {
   defaultActionStartState,
 } from 'reducers/SearchReducer';
 
-import {
-  defaultHomeNavStartState,
-  defaultRoleNavStartState,
-} from 'reducers/PageNavReducer';
-
 import { checkSessionStatus } from 'actions/AuthActions';
 import {
   startPageLoad,
@@ -90,8 +85,6 @@ if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
 const store = configureStore({
   actionsSearch: defaultActionStartState,
   campaignsSearch: defaultCampaignStartState,
-  homePageNav: defaultHomeNavStartState,
-  rolePageNav: defaultRoleNavStartState,
 });
 
 // eslint-disable-next-line no-unused-vars

@@ -31,6 +31,8 @@ export class Layout extends Component {
     dispatch: PropTypes.func.isRequired,
     displayFormNavWarning: PropTypes.bool.isRequired,
     pageLoading: PropTypes.bool.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
+    fetchingUpdate: PropTypes.bool.isRequired,
   };
 
   constructor(props) {

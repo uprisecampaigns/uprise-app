@@ -1,14 +1,14 @@
 /* eslint-disable global-require */
 
 import React from 'react';
-import Settings from 'scenes/Settings';
+import BrowseHome from 'scenes/BrowseHome';
 import Layout from 'components/Layout';
 
 import { setRole } from 'actions/PageNavActions';
 
 export default {
 
-  path: '/settings',
+  path: '/browse',
 
   async action({ store, next }) {
 
@@ -22,14 +22,12 @@ export default {
     {
       path: '',
       action: () => ({
-        title: 'Settings',
-        component: <Layout><Settings /></Layout>,
+        title: 'Browse',
+        component: <Layout><BrowseHome /></Layout>,
       }),
     },
-    require('./account').default,
-    require('./contact').default,
-    require('./privacySecurity').default,
-    require('./confirmEmail').default,
-    require('./editProfile').default,
+    require('./browseEvents').default,
+    require('./browseRoles').default,
+    require('./browseCampaigns').default,
   ],
 };

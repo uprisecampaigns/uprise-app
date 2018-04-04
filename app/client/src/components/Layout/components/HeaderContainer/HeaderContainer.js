@@ -15,6 +15,8 @@ class HeaderContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     userObject: PropTypes.object.isRequired,
     loggedIn: PropTypes.bool.isRequired,
+    role: PropTypes.string.isRequired,
+    showBrowse: PropTypes.bool.isRequired,
   };
 
   clickedLogout = (event) => {
@@ -30,7 +32,9 @@ class HeaderContainer extends Component {
           clickedLogout={this.clickedLogout}
           handleDrawerToggle={this.props.handleDrawerToggle}
         />
-        <VolunteerHeader />
+        { this.props.role === 'volunteer' && (
+          <VolunteerHeader showBrowseHeader={this.props.showBrowse} />
+        )}
       </div>
     );
   }
@@ -48,6 +52,8 @@ const withMeQuery = graphql(MeQuery, {
 const mapStateToProps = state => ({
   loggedIn: state.userAuthSession.isLoggedIn,
   fetchingAuthUpdate: state.userAuthSession.fetchingAuthUpdate,
+  role: state.pageNav.role,
+  showBrowse: state.pageNav.showBrowse,
 });
 
 export default compose(
