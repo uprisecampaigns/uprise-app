@@ -31,6 +31,7 @@ class HeaderContainer extends Component {
           loggedIn={this.props.loggedIn}
           clickedLogout={this.clickedLogout}
           handleDrawerToggle={this.props.handleDrawerToggle}
+          role={this.props.role}
         />
         { this.props.role === 'volunteer' && (
           <VolunteerHeader showBrowseHeader={this.props.showBrowse} />

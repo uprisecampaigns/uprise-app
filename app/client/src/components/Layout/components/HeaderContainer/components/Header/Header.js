@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Menu from 'material-ui/svg-icons/navigation/menu';
+import ArrowDropUp from 'material-ui/svg-icons/navigation/arrow-drop-up';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 import Avatar from 'material-ui/Avatar';
 import Assignment from 'material-ui/svg-icons/action/assignment';
@@ -109,6 +110,9 @@ function AuthenticatedIcons(props) {
         <Link useAhref={false} to="/">
           Volunteer
         </Link>
+        { props.role === 'volunteer' && (
+          <ArrowDropUp />
+        )}
       </div>
 
       <div
@@ -117,6 +121,9 @@ function AuthenticatedIcons(props) {
         <Link useAhref={false} to="/organize">
           Organize
         </Link>
+        { props.role === 'organize' && (
+          <ArrowDropUp />
+        )}
       </div>
 
       <ContentDropdownMenu
@@ -139,6 +146,7 @@ AuthenticatedIcons.propTypes = {
     last_name: PropTypes.string,
   }),
   logout: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
 };
 
 AuthenticatedIcons.defaultProps = {
@@ -153,6 +161,7 @@ function Header(props) {
           <AuthenticatedIcons
             userObject={props.userObject}
             logout={props.clickedLogout}
+            role={props.role}
           /> :
           <UnauthenticatedIcons />
         }
@@ -169,6 +178,7 @@ Header.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   clickedLogout: PropTypes.func.isRequired,
   handleDrawerToggle: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
 };
 
 Header.defaultProps = {

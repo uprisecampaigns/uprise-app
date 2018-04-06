@@ -53,10 +53,9 @@
 .menuItemsContainer {
   display: flex;
   align-items: baseline;
-  margin: 1rem;
 
   > div {
-    margin: 0rem 0rem 0rem 1rem;
+    margin: 1rem 0rem 0.5rem 1rem;
   }
 }
 
@@ -68,9 +67,26 @@ svg.accountIcon {
 }
 
 .headerButton {
+  position: relative;
   display: inline-block;
+  text-align: center;
   font-size: 1.22rem;
   line-height: 1.22rem;
+
+  > span {
+    display: block;
+  }
+
+  > svg {
+    position: absolute !important;
+    color: $white !important;
+    top: 0.1rem;
+    height: 4rem !important;
+    width: 4rem !important;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+  }
 }
 
 

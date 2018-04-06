@@ -11,7 +11,7 @@ export default {
   path: '/organize',
 
   async action({ store, next }) {
-    store.dispatch(setRole('organizer'));
+    store.dispatch(setRole('organize'));
 
     const route = await next();
     return route;
