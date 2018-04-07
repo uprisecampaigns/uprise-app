@@ -32,12 +32,12 @@ export default {
         };
       }
       return {
-        redirect: '/search/search-campaigns',
+        redirect: '/browse/campaigns',
       };
     } catch (e) {
       console.error(e);
       return {
-        redirect: '/search/search-campaigns',
+        redirect: '/browse/campaigns',
       };
     }
   },

@@ -22,8 +22,7 @@ export default {
         const { action } = result.data;
         return {
           title: action.title,
-          image:
-            typeof action.campaign === 'object' &&
+          image: typeof action.campaign === 'object' &&
             action.campaign !== null &&
             typeof action.campaign.profile_image_url === 'string' ? action.campaign.profile_image_url : '',
           component: (
@@ -34,12 +33,12 @@ export default {
         };
       }
       return {
-        redirect: '/search/search-opportunities',
+        redirect: '/browse',
       };
     } catch (e) {
       console.error(e);
       return {
-        redirect: '/search/search-opportunities',
+        redirect: '/browse',
       };
     }
   },

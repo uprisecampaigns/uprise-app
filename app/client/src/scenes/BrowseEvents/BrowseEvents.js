@@ -23,8 +23,6 @@ class BrowseEvents extends Component {
   render() {
     const { user } = this.props;
 
-    const hasCampaigns = typeof user === 'object' && Array.isArray(user.campaigns) && user.campaigns.length;
-
     return (
       <div className={s.outerContainer}>
 
@@ -37,7 +35,7 @@ class BrowseEvents extends Component {
           568+ Volunteer Events
         </div>
         <div className={s.subHeader}>
-          Learn more >
+          Learn more &gte;
         </div>
 
         <hr />
