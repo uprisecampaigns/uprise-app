@@ -13,6 +13,7 @@ import bowser from 'bowser';
 
 import RedBox from 'redbox-react';
 
+
 import App from 'components/App';
 
 import configureStore from 'store/configureStore';

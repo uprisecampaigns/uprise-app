@@ -23,8 +23,6 @@ class BrowseRoles extends Component {
   render() {
     const { user } = this.props;
 
-    const hasCampaigns = typeof user === 'object' && Array.isArray(user.campaigns) && user.campaigns.length;
-
     return (
       <div className={s.outerContainer}>
 
@@ -37,7 +35,7 @@ class BrowseRoles extends Component {
           120 Volunteer Roles
         </div>
         <div className={s.subHeader}>
-          Learn more >
+          Learn more &gte;
         </div>
 
         <hr />
