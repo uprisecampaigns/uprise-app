@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 
 import BrowseHeader from 'components/BrowseHeader';
-import SearchActions from 'components/SearchActions';
+import BrowsePresentation from 'components/BrowsePresentation';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 
@@ -35,14 +35,14 @@ class BrowseEvents extends Component {
           568+ Volunteer Events
         </div>
         <div className={s.subHeader}>
-          Learn more &gte;
+          Learn more &gt;
         </div>
 
         <hr />
 
-        <div className={s.searchContainer}>
-          <SearchActions />
-        </div>
+        <BrowsePresentation
+          type="event"
+        />
 
       </div>
     );

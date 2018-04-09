@@ -1,0 +1,6 @@
+{
+  "name": "BrowsePresentation",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./BrowsePresentation.js"
+}

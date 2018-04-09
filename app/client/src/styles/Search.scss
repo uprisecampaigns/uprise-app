@@ -303,3 +303,34 @@ label.listItem {
   text-align: right;
   margin: 1rem 0rem 0rem 0rem;
 }
+
+.inlineTogglesContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.inlineTogglesItem {
+  flex: 0 0 50%;
+}
+
+.dropdownButton {
+  cursor: pointer;
+}
+
+.dropdownItemsContainer {
+  max-width: 50rem;
+}
+
+.dropdownOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, .6);
+}
+
+.searchInputsContainer {
+  display: flex;
+}
