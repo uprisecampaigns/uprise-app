@@ -143,13 +143,15 @@
   }
 
   .stepperContainer {
-    flex: 1;
-    background-color: $light-grey;
-    border: 1px solid $dark-grey;
+    flex: 1 0 30%;
     z-index: 100;
   }
 
   .stepperContentContainer {
-    flex: 3;
+    flex: 3 0 70%;
+  }
+
+  .togglesListContainer {
+    text-transform: capitalize;
   }
 }

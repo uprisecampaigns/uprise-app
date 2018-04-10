@@ -49,7 +49,8 @@ class ActionProfileForm extends PureComponent {
       selectedCollection: data.activities.map(a => a.id),
       collectionName: 'activities',
       keyPropName: 'id',
-      displayPropName: 'description',
+      displayPropName: 'title',
+      secondaryDisplayPropName: 'description',
       containerClassName: s.listItem, // TODO: right className?
       handleToggle,
     });
@@ -58,16 +59,8 @@ class ActionProfileForm extends PureComponent {
       <div className={s.outerContainer}>
         <div className={s.editActionProfileContainer}>
 
-          <div className={s.editTitleContainer}>
-            <TextField
-              value={data.title}
-              className={s.textField}
-              hintText="Opportunity Public Title"
-              onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
-              errorText={errors.titleErrorText}
-              fullWidth
-              underlineShow={false}
-            />
+          <div className={s.sectionLabel}>
+            1. Description
           </div>
 
           <div className={f.textareaContainer}>
@@ -86,7 +79,9 @@ class ActionProfileForm extends PureComponent {
             />
           </div>
 
-          <div className={f.sectionLabel}>Keywords</div>
+          <div className={f.sectionLabel}>
+            2. Keywords
+          </div>
 
           <div className={f.keywordsContainer}>
             <SearchBar
@@ -106,12 +101,12 @@ class ActionProfileForm extends PureComponent {
           </div>
 
           { showSaveButton && saving && (
-              <div className={s.savingThrobberContainer}>
-                <CircularProgress
-                  size={100}
-                  thickness={5}
-                />
-              </div>
+            <div className={s.savingThrobberContainer}>
+              <CircularProgress
+                size={100}
+                thickness={5}
+              />
+            </div>
           )}
 
           { showSaveButton && !saving && (
@@ -125,9 +120,13 @@ class ActionProfileForm extends PureComponent {
             </div>
           )}
 
-          <div className={f.sectionLabel}>Activities</div>
+          <div className={f.sectionLabel}>
+            2. Activities
+          </div>
 
-          { activitiesTogglesList }
+          <div className={s.togglesListContainer}>
+            { activitiesTogglesList }
+          </div>
 
         </div>
       </div>

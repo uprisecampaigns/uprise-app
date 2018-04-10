@@ -69,6 +69,7 @@
 .textFieldContainer {
   display: flex;
   text-align: left;
+  margin-top: -1rem;
 
   input, label {
     font-size: 1.1rem !important;
@@ -94,6 +95,7 @@
 .toggleContainer {
   font-size: 1.1rem;
   text-align: left;
+  margin-top: 1rem;
 }
 
 .helpText {
@@ -106,8 +108,10 @@
 .sectionLabel {
   margin: 3rem 0 0 0;
   text-align: left;
-  font-size: 1.3rem;
-  color: $azure;
+  font-size: 1.2rem;
+  color: $black;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 .errorMessage {
@@ -163,17 +167,22 @@
 
 .touchIcon {
   cursor: pointer;
-  color: $brick-red;
   margin: 1rem 0;
   text-align: left;
+}
 
-  svg {
-    color: $brick-red !important;
+.shiftSchedulerForm {
+
+  .sectionLabel {
+    margin-bottom: 1rem;
   }
 }
 
 .dateWithShiftsContainer {
+  position: relative;
   margin-bottom: 2rem;
+  padding: 2rem 1rem 1rem 1rem;
+  border: 1px solid $light-grey;
 
   > hr {
     background-color: $black !important;
@@ -184,6 +193,10 @@
   display: flex;
   justify-content: flex-start;
   align-items: baseline;
+
+  .textFieldContainer {
+    flex: 1 0 80%;
+  }
 }
 
 .shiftContainer {
@@ -192,7 +205,12 @@
   align-items: baseline;
 }
 
-.removeDateContainer,
+.removeDateContainer {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+}
+
 .removeShiftContainer {
   margin-left: 1rem;
 }
@@ -201,12 +219,49 @@
   display: flex;
   text-align: left;
   align-items: baseline;
+
+  > div:first-of-type {
+    margin-right: 1rem;
+  }
 }
 
 .shiftTimePicker {
   max-width: 5rem;
 }
 
+.dateshiftPicker {
+  max-width: 6rem;
+}
+
+.shiftsContainer {
+  display: flex;
+  align-items: baseline;
+}
+
 .shiftLabel {
-  margin-right: 1rem;
+  flex: 1 0 20%;
+}
+
+.shiftInputsContainer {
+  flex: 1 0 80%;
+}
+
+.addDate {
+  cursor: pointer;
+  border: 1px solid $azure;
+  color: $azure;
+  padding: 0.5rem;
+
+  svg {
+    color: $azure !important;
+  }
+}
+
+.textFieldInlineGroup {
+  display: flex;
+  justify-content: flex-start;
+
+  .textFieldContainer {
+    margin-right: 2rem;
+  }
 }

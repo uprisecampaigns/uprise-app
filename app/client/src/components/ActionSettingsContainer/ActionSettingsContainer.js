@@ -83,15 +83,13 @@ class ActionSettingsContainer extends Component {
     this.handleActionProps(nextProps);
   }
 
-  settingsSubmit = async (data) => {
+  handleSubmit = async (data) => {
     const formData = { ...this.state.formData, ...data };
 
-    if (formData.ongoing) {
-      this.setState({ formData, stepIndex: 1 });
-    } else {
-      this.setState({ formData });
-      this.shiftScheduler.formSubmit();
-    }
+    this.setState(prevState => ({
+      formData,
+      stepIndex: prevState.stepIndex + 1,
+    }));
 
     return {
       success: true,
@@ -133,22 +131,6 @@ class ActionSettingsContainer extends Component {
     }
   }
 
-  shiftSubmit = (data) => {
-    const formData = { ...this.state.formData, ...data };
-    this.setState({ formData, stepIndex: 1 });
-  }
-
-  profileSubmit = async (data) => {
-    const formData = { ...this.state.formData, ...data };
-
-    this.setState({ formData, stepIndex: 2 });
-
-    return {
-      success: true,
-      message: false,
-    };
-  }
-
   handlePrev = () => {
     if (this.state.stepIndex > 0) {
       this.setState(prevState => ({
@@ -158,40 +140,17 @@ class ActionSettingsContainer extends Component {
     }
   }
 
-  toggleOngoing = (ongoing) => {
-    this.setState(prevState => ({
-      formData: { ...prevState.formData, ongoing },
-    }));
-  }
-
-  handleNext = () => {
-    const { formData, stepIndex } = this.state;
-
-    if (stepIndex === 0) {
-      this.actionSettingsForm.wrappedInstance.formSubmit();
-    } else if (stepIndex === 1) {
-      this.actionProfileForm.wrappedInstance.formSubmit();
-    } else if (stepIndex === 2) {
-      const submitData = {
-        ...formData,
-        activities: formData.activities.map(a => a.id),
-      };
-
-      this.props.submit(submitData);
-    }
-  };
-
-  renderStepActions = (step) => {
+  renderStepActions = (step, steps) => {
     const { stepIndex } = this.state;
 
     return (
       <div>
         <RaisedButton
-          label={stepIndex === 2 ? 'Finish' : 'Next'}
+          label={stepIndex === steps.length - 1 ? 'Finish' : 'Next'}
           disableTouchRipple
           disableFocusRipple
           primary
-          onClick={this.handleNext}
+          onClick={steps[stepIndex].action}
         />
         {step > 0 && (
           <FlatButton
@@ -208,7 +167,7 @@ class ActionSettingsContainer extends Component {
 
   render() {
     const {
-      defaultErrorText, renderStepActions, shiftSubmit, profileSubmit, settingsSubmit,
+      defaultErrorText, renderStepActions,
     } = this;
     const { formData, stepIndex } = this.state;
     const { campaign, activities, graphqlLoading } = this.props;
@@ -235,6 +194,78 @@ class ActionSettingsContainer extends Component {
       (component) => { validateZipcode(component); },
     ];
 
+    const steps = [
+      {
+        title: 'Basic Info',
+        content: (
+          <WrappedActionSettingsForm
+            initialState={formData}
+            initialErrors={defaultErrorText}
+            validators={settingsValidators}
+            submit={this.handleSubmit}
+            ref={(form) => { this.actionSettingsForm = form; }}
+          />
+        ),
+        action: () => {
+          this.actionSettingsForm.wrappedInstance.formSubmit();
+        },
+      },
+      {
+        title: 'Details',
+        content: (
+          <WrappedActionProfileForm
+            initialState={formData}
+            initialErrors={defaultErrorText}
+            validators={[]}
+            submit={this.handleSubmit}
+            ref={(form) => { this.actionProfileForm = form; }}
+          />
+        ),
+        action: () => {
+          this.actionProfileForm.wrappedInstance.formSubmit();
+        },
+      },
+      {
+        title: 'Preview',
+        content: (
+          <ActionProfile
+            signup={() => {}}
+            cancelSignup={() => {}}
+            action={{
+              ...formData,
+              campaign,
+              activities: activityDetails,
+            }}
+            saving={false}
+          />
+        ),
+        action: () => {
+          const submitData = {
+            ...formData,
+            activities: formData.activities.map(a => a.id),
+          };
+
+          this.props.submit(submitData);
+        },
+      },
+    ];
+
+    if (!formData.ongoing) {
+      steps.splice(1, 0, {
+        title: 'Dates',
+        content: (
+          <ShiftScheduler
+            data={formData}
+            submit={this.handleSubmit}
+            ref={(scheduler) => { this.shiftScheduler = scheduler; }}
+          />
+        ),
+        action: () => {
+          this.shiftScheduler.formSubmit();
+        },
+      });
+    }
+
     return (
       <div className={s.stepperOuterContainer}>
         <div className={s.stepperContainer}>
@@ -243,78 +274,21 @@ class ActionSettingsContainer extends Component {
             orientation="vertical"
             className={s.stepper}
           >
-            <Step>
-              <StepButton onClick={() => this.setState({ stepIndex: 0 })}>
-                Basic Info
-              </StepButton>
-              <StepContent>
-                {renderStepActions(0)}
-              </StepContent>
-            </Step>
-            <Step>
-              <StepButton onClick={() => this.setState({ stepIndex: 1 })}>
-                Details
-              </StepButton>
-              <StepContent>
-                {renderStepActions(1)}
-              </StepContent>
-            </Step>
-            <Step>
-              <StepButton onClick={() => this.setState({ stepIndex: 2 })}>
-                Preview
-              </StepButton>
-              <StepContent>
-                {renderStepActions(2)}
-              </StepContent>
-            </Step>
+            {steps.map((step, index) => (
+              <Step>
+                <StepButton onClick={() => this.setState({ stepIndex: index })}>
+                  {step.title}
+                </StepButton>
+                <StepContent>
+                  {renderStepActions(index, steps)}
+                </StepContent>
+              </Step>
+            ))}
           </Stepper>
         </div>
 
         <div className={s.stepperContentContainer}>
-          { stepIndex === 0 &&
-            <div>
-              <WrappedActionSettingsForm
-                initialState={formData}
-                initialErrors={defaultErrorText}
-                validators={settingsValidators}
-                submit={settingsSubmit}
-                ref={(form) => { this.actionSettingsForm = form; }}
-              />
-
-              { !formData.ongoing && (
-                <ShiftScheduler
-                  data={formData}
-                  submit={shiftSubmit}
-                  ref={(scheduler) => { this.shiftScheduler = scheduler; }}
-                />
-              )}
-            </div>
-          }
-
-          { stepIndex === 1 &&
-            <div>
-              <WrappedActionProfileForm
-                initialState={formData}
-                initialErrors={defaultErrorText}
-                validators={[]}
-                submit={profileSubmit}
-                ref={(form) => { this.actionProfileForm = form; }}
-              />
-            </div>
-          }
-
-          { stepIndex === 2 &&
-            <ActionProfile
-              signup={() => {}}
-              cancelSignup={() => {}}
-              action={{
-                ...formData,
-                campaign,
-                activities: activityDetails,
-              }}
-              saving={false}
-            />
-          }
+          { steps[stepIndex].content }
         </div>
       </div>
     );
