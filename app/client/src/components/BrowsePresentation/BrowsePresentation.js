@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import SearchInputs from 'components/SearchInputs';
 
-import s from 'styles/Browse.scss';
+import s from 'styles/Volunteer.scss';
 
 
 class BrowsePresentation extends Component {

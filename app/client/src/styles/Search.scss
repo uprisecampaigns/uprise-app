@@ -1,6 +1,7 @@
 @import '~styles/variables';
 @import '~styles/nav';
 @import '~styles/buttons';
+@import '~styles/inputs';
 
 .outerContainer {
   width: 100%;
@@ -302,15 +303,6 @@ label.listItem {
 .addToSearchButton {
   text-align: right;
   margin: 1rem 0rem 0rem 0rem;
-}
-
-.inlineTogglesContainer {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.inlineTogglesItem {
-  flex: 0 0 50%;
 }
 
 .dropdownButton {

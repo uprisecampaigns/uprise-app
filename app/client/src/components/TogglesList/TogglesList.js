@@ -8,7 +8,8 @@ class TogglesList extends Component {
   static propTypes = {
     collectionName: PropTypes.string.isRequired,
     keyPropName: PropTypes.string.isRequired,
-    titlePropName: PropTypes.string.isRequired,
+    displayPropName: PropTypes.string.isRequired,
+    secondaryDisplayPropName: PropTypes.string,
     handleToggle: PropTypes.func.isRequired,
     collection: PropTypes.arrayOf(PropTypes.object).isRequired,
     selectedCollection: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -19,6 +20,7 @@ class TogglesList extends Component {
   static defaultProps = {
     containerClassName: '',
     itemClassName: '',
+    secondaryDisplayPropName: null,
   }
 
   render() {
@@ -26,6 +28,7 @@ class TogglesList extends Component {
       collectionName, displayPropName, keyPropName,
       collection, selectedCollection, handleToggle,
       containerClassName, itemClassName,
+      secondaryDisplayPropName,
     } = this.props;
 
     const toggles = collection.map((item, index) => {
@@ -42,6 +45,7 @@ class TogglesList extends Component {
             key={item.id || index}
             checked={selected}
             primaryText={item[displayPropName]}
+            secondaryText={secondaryDisplayPropName && item[secondaryDisplayPropName]}
           />
         </div>
       );

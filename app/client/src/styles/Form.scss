@@ -1,5 +1,6 @@
 @import '~styles/variables';
 @import '~styles/buttons';
+@import '~styles/inputs';
 @import '~styles/modals';
 
 .outerContainer {
@@ -304,5 +305,9 @@
 
 .activitiesContainer {
   margin-top: 1rem;
+
+  .inlineTogglesContainer {
+    text-transform: capitalize;
+  }
 }
 

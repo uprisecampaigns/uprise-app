@@ -1,12 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
 
-import togglesList from 'lib/togglesList';
-
+import TogglesList from 'components/TogglesList';
 import ImageUploader from 'components/ImageUploader';
 import SearchBar from 'components/SearchBar';
 import SelectedItemsContainer from 'components/SelectedItemsContainer';
@@ -40,17 +36,6 @@ class UserProfileForm extends PureComponent {
       handleInputChange, cancel, submitText, handleToggle,
       addItem, removeItem,
     } = this.props;
-
-    const activitiesTogglesList = togglesList({
-      collection: activities,
-      selectedCollection: data.activities.map(a => a.id),
-      collectionName: 'activities',
-      keyPropName: 'id',
-      displayPropName: 'title',
-      secondaryDisplayPropName: 'description',
-      containerClassName: s.listItem, // TODO: right className?
-      handleToggle,
-    });
 
     return (
       <div className={s.outerContainer}>
@@ -137,7 +122,17 @@ class UserProfileForm extends PureComponent {
                 Select the activities you&apos;re interested in volunteering for. Campaigns will use this to find and contact you if their needs fit your choices
               </div>
               <div className={s.sectionLabel}>Activities</div>
-              { activitiesTogglesList }
+              <TogglesList
+                collection={activities}
+                selectedCollection={data.activities.map(a => a.id)}
+                collectionName="activities"
+                keyPropName="id"
+                displayPropName="title"
+                secondaryDisplayPropName="description"
+                handleToggle={handleToggle}
+                containerClassName={s.inlineTogglesContainer}
+                itemClassName={s.inlineTogglesItem}
+              />
             </div>
           </div>
         </div>
