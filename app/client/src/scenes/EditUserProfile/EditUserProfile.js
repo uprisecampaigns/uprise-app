@@ -3,11 +3,9 @@ import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import camelCase from 'camelcase';
-import FontIcon from 'material-ui/FontIcon';
 
 import formWrapper from 'lib/formWrapper';
 
-import Link from 'components/Link';
 import UserProfileForm from 'components/UserProfileForm';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
@@ -85,14 +83,6 @@ class EditUserProfile extends Component {
   }
 
   formSubmit = async (data) => {
-    // A little hackish to avoid an annoying rerender with previous form data
-    // If I could figure out how to avoid keeping state here
-    // w/ the componentWillReceiveProps/apollo/graphql then
-    // I might not need this
-    this.setState({
-      formData: Object.assign({}, data),
-    });
-
     const formData = Object.assign({}, data);
 
     formData.id = this.props.user.id;
@@ -108,7 +98,7 @@ class EditUserProfile extends Component {
         refetchQueries: ['MeQuery'],
       });
 
-      return { success: true, message: 'Changes Saved' };
+      return { success: true, message: false };
     } catch (e) {
       return { success: false, message: e.message };
     }
@@ -140,6 +130,7 @@ class EditUserProfile extends Component {
             initialErrors={defaultErrorText}
             validators={validators}
             submit={formSubmit}
+            submitOnChange
             submitText="Save Changes"
             activities={activities}
             user={user}
