@@ -8,7 +8,7 @@ import SearchActions from 'components/SearchActions';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 
-import s from 'styles/Browse.scss';
+import s from 'styles/Volunteer.scss';
 
 class BrowseRoles extends Component {
   static propTypes = {
