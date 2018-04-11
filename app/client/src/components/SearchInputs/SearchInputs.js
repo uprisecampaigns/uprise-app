@@ -1,10 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import IconButton from 'material-ui/IconButton';
-import Divider from 'material-ui/Divider';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import TogglesList from 'components/TogglesList';
 import DateTimeSearch from 'components/DateTimeSearch';
@@ -29,8 +25,9 @@ class SearchInputs extends Component {
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
-  constructor(props) {
-    super(props);
+  setDates = (dates) => {
+    const { type } = this.props;
+    this.props.dispatch(setSearchDates(type, dates));
   }
 
   addSelectedItem = (collectionName, value) => {
@@ -47,14 +44,9 @@ class SearchInputs extends Component {
     }
   }
 
-  setDates = (dates) => {
-    const { type } = this.props;
-    this.props.dispatch(setSearchDates(type, dates));
-  }
-
   render() {
     const {
-      type, selectedState,
+      selectedState,
     } = this.props;
 
     return (
@@ -101,10 +93,8 @@ class SearchInputs extends Component {
 }
 
 
-export default compose(
-  graphql(ActivitiesQuery, {
-    props: ({ data }) => ({
-      activities: !data.loading && data.activities ? data.activities : [],
-    }),
+export default compose(graphql(ActivitiesQuery, {
+  props: ({ data }) => ({
+    activities: !data.loading && data.activities ? data.activities : [],
   }),
-)(SearchInputs);
+}))(SearchInputs);

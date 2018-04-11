@@ -1,31 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import LoggedOutHome from 'scenes/LoggedOutHome';
 import BrowseHome from 'scenes/BrowseHome';
 
-class HomeWrapper extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    loggedIn: PropTypes.bool.isRequired,
-    fetchingUpdate: PropTypes.bool.isRequired,
-  };
+function HomeWrapper(props) {
+  const { fetchingUpdate, loggedIn } = props;
 
-  render() {
-    const { fetchingUpdate, loggedIn } = this.props;
-
-    if (fetchingUpdate || loggedIn) {
-      return (
-        <BrowseHome />
-      );
-    }
-
+  if (fetchingUpdate || loggedIn) {
     return (
-      <LoggedOutHome {...this.props} />
+      <BrowseHome />
     );
   }
+
+  return (
+    <LoggedOutHome {...props} />
+  );
 }
+
+HomeWrapper.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  fetchingUpdate: PropTypes.bool.isRequired,
+};
 
 const mapStateToProps = state => ({
   loggedIn: state.userAuthSession.isLoggedIn,

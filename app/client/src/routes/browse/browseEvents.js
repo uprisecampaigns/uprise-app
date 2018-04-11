@@ -12,4 +12,4 @@ export default {
       component: <Layout><BrowseEvents /></Layout>,
     };
   },
-}
+};

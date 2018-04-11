@@ -1,15 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Menu from 'material-ui/svg-icons/navigation/menu';
 import ArrowDropUp from 'material-ui/svg-icons/navigation/arrow-drop-up';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 import Avatar from 'material-ui/Avatar';
-import Assignment from 'material-ui/svg-icons/action/assignment';
 
 import Link from 'components/Link';
 import ContentDropdownMenu from 'components/ContentDropdownMenu';
 
-import upriseLogo from 'img/uprise-logo.png';
 import s from 'styles/Header.scss';
 
 
@@ -96,7 +93,7 @@ function AuthenticatedIcons(props) {
           className={s.accountIcon}
           src={userObject.profile_image_url}
         />) : (
-        <AccountCircle className={s.accountIcon} />
+          <AccountCircle className={s.accountIcon} />
       )}
     </span>
   );
@@ -177,7 +174,6 @@ Header.propTypes = {
   }),
   loggedIn: PropTypes.bool.isRequired,
   clickedLogout: PropTypes.func.isRequired,
-  handleDrawerToggle: PropTypes.func.isRequired,
   role: PropTypes.string.isRequired,
 };
 

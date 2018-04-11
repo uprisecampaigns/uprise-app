@@ -14,11 +14,7 @@ class UserProfileForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-    formSubmit: PropTypes.func.isRequired,
-    cancel: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-    saving: PropTypes.bool,
-    submitText: PropTypes.string.isRequired,
     errors: PropTypes.object.isRequired,
     handleToggle: PropTypes.func.isRequired,
     addItem: PropTypes.func.isRequired,
@@ -26,14 +22,10 @@ class UserProfileForm extends PureComponent {
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
-  static defaultProps = {
-    saving: false,
-  }
-
   render() {
     const {
-      data, formSubmit, errors, saving, user, activities,
-      handleInputChange, cancel, submitText, handleToggle,
+      data, errors, user, activities,
+      handleInputChange, handleToggle,
       addItem, removeItem,
     } = this.props;
 
@@ -98,7 +90,9 @@ class UserProfileForm extends PureComponent {
                 More about me...
               </div>
               <div className={s.profileHelpText}>
-                Write a short description of yourself. Tell organizers whatever you like about who you are, why you volunteer, your skills and experience, and what you are looking for in a volunteering opportunity.
+                {
+                // eslint-disable-next-line max-len
+                }Write a short description of yourself. Tell organizers whatever you like about who you are, why you volunteer, your skills and experience, and what you are looking for in a volunteering opportunity.
               </div>
               <div className={s.textareaContainer}>
                 <TextField
@@ -119,7 +113,9 @@ class UserProfileForm extends PureComponent {
                 Activities I&apos;m interested in...
               </div>
               <div className={s.profileHelpText}>
-                Select the activities you&apos;re interested in volunteering for. Campaigns will use this to find and contact you if their needs fit your choices
+                {
+                // eslint-disable-next-line max-len
+                }Select the activities you&apos;re interested in volunteering for. Campaigns will use this to find and contact you if their needs fit your choices
               </div>
               <div className={s.sectionLabel}>Activities</div>
               <TogglesList

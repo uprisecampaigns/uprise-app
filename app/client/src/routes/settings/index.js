@@ -11,7 +11,6 @@ export default {
   path: '/settings',
 
   async action({ store, next }) {
-
     store.dispatch(setRole('volunteer'));
 
     const route = await next();

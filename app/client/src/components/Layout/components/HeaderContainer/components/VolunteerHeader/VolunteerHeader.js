@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import Link from 'components/Link';
 
-import upriseLogo from 'img/uprise-logo.png';
 import s from 'styles/Header.scss';
 
 

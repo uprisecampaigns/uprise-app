@@ -8,8 +8,11 @@
 
 .footer {
   margin: 1rem auto 0rem auto;
-  display: flex;
   max-width: $max-content-width;
+}
+
+.footerRow {
+  display: flex;
   justify-content: flex-start;
 }
 
@@ -32,4 +35,8 @@
 .addressesList > div:nth-child(1),
 .addressesList > div:nth-child(3) {
   margin-bottom: 1rem;
+}
+
+.logoImage {
+  width: 35%;
 }

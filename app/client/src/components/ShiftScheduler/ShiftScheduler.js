@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
-import AddCircle from 'material-ui/svg-icons/content/add-circle';
 import Add from 'material-ui/svg-icons/content/add';
 import Close from 'material-ui/svg-icons/navigation/close';
 

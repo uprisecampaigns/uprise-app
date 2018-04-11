@@ -4,8 +4,6 @@ import Popover from 'material-ui/Popover';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 
-import Link from 'components/Link';
-
 import s from 'styles/Search.scss';
 
 
@@ -72,7 +70,7 @@ class DropDown extends Component {
           { showExpandCaret && (menuOpen ? <NavigationExpandLess /> : <NavigationExpandMore />) }
         </div>
         { menuOpen &&
-          <div className={s.dropdownOverlay}></div>
+          <div className={s.dropdownOverlay} />
         }
       </div>
     );
