@@ -8,7 +8,7 @@ import SearchCampaigns from 'components/SearchCampaigns';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 
-import s from 'styles/Browse.scss';
+import s from 'styles/Volunteer.scss';
 
 class BrowseCampaigns extends Component {
   static propTypes = {

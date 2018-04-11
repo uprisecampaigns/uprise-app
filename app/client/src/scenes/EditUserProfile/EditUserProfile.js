@@ -15,7 +15,7 @@ import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import EditAccountMutation from 'schemas/mutations/EditAccountMutation.graphql';
 
-import s from 'styles/Settings.scss';
+import s from 'styles/Volunteer.scss';
 
 
 const WrappedUserProfileForm = formWrapper(UserProfileForm);
@@ -125,17 +125,15 @@ class EditUserProfile extends Component {
       return (
         <div className={s.outerContainer}>
 
-          <Link to="/settings">
-            <div className={[s.navHeader, s.settingsNavHeader].join(' ')}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              Settings
-            </div>
-          </Link>
-
-          <div className={s.settingsHeader}>User Profile</div>
+          <div className={s.headerTitle}>
+            { user.first_name } { user.last_name }&apos;s Profile
+          </div>
+          <div className={s.subHeader}>
+            Fill out your profile and share your achievements with campaign coordinators.
+          </div>
+          <div className={s.subHeader}>
+            Learn more &gt;
+          </div>
 
           <WrappedUserProfileForm
             initialState={formData}
@@ -143,8 +141,8 @@ class EditUserProfile extends Component {
             validators={validators}
             submit={formSubmit}
             submitText="Save Changes"
-            userId={user.id}
             activities={activities}
+            user={user}
           />
 
         </div>

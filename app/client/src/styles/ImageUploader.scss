@@ -4,7 +4,7 @@
 .imageUploadContainer {
   max-height: 450px;
   max-width: 450px;
-  margin: 0px auto 5rem auto;
+  margin: 0px auto 1rem auto;
 }
 
 .cropContainer {
@@ -16,18 +16,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
 }
 
 .buttonContainer {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  margin-bottom: 3rem;
-
-  .button {
-    margin: auto 2rem auto 2rem !important;
-  }
+  margin: 1rem auto;
 }
 
 .uploadingThrobberContainer {
@@ -43,8 +38,8 @@
   margin: 1rem auto;
   justify-content: center;
   align-items: center;
-  width: 80vw;
-  height: 80vw;
+  width: 80%;
+  height: 80%;
   max-height: 450px;
   max-width: 450px;
 

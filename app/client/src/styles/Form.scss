@@ -98,11 +98,9 @@
   margin-top: 1rem;
 }
 
-.helpText {
-  color: lighten($azure, 10%);
-  font-weight: 300;
-  font-size: 1.2rem;
-  text-align: left;
+.inputHeader {
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
 .sectionLabel {
@@ -112,6 +110,23 @@
   color: $black;
   text-transform: uppercase;
   font-weight: 500;
+}
+
+.helpText {
+  color: lighten($azure, 10%);
+  font-weight: 300;
+  font-size: 1.2rem;
+  text-align: left;
+}
+
+.profileHelpText {
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+.profileNameHeader {
+  font-size: 1.5rem;
+  text-align: center;
 }
 
 .errorMessage {
@@ -265,3 +280,29 @@
     margin-right: 2rem;
   }
 }
+
+.editProfileContainer {
+  width: 100%;
+  display: flex;
+
+  .leftContainer {
+    flex: 1 0 auto;
+    width: 28%;
+    margin-right: 2%;
+  }
+
+  .rightContainer {
+    flex: 1 0 auto;
+    width: 70%;
+  }
+}
+
+.editProfileBox {
+  padding: 1rem;
+  border: 1px solid $light-grey;
+}
+
+.activitiesContainer {
+  margin-top: 1rem;
+}
+
