@@ -46,9 +46,9 @@ describe('(Component) ShiftScheduler', () => {
 
     const wrapper = shallow(<ShiftScheduler data={action} submit={submit}/>);
 
-    const shiftLabels = wrapper.find({ className: 'shiftLabel' });
+    const shiftContainers = wrapper.find({ className: 'shiftContainer' });
 
-    expect(shiftLabels).toHaveLength(2);
+    expect(shiftContainers).toHaveLength(2);
 
     const shiftDatesState = [
       {
@@ -158,9 +158,9 @@ describe('(Component) ShiftScheduler', () => {
     wrapper.instance().addShift(0);
     wrapper.update();
 
-    const shiftLabels = wrapper.find('[className="shiftLabel"]');
+    const shiftContainers = wrapper.find('[className="shiftContainer"]');
 
-    expect(shiftLabels).toHaveLength(3);
+    expect(shiftContainers).toHaveLength(3);
 
     const dates = wrapper.find('.dateShiftContainer');
     expect(dates).toHaveLength(2);
@@ -217,9 +217,9 @@ describe('(Component) ShiftScheduler', () => {
     wrapper.instance().changeShift('start', moment(today).add('20', 'hour'), 0, 0);
     wrapper.update();
 
-    const shiftLabels = wrapper.find('[className="shiftLabel"]');
+    const shiftContainers = wrapper.find('[className="shiftContainer"]');
 
-    expect(shiftLabels).toHaveLength(2);
+    expect(shiftContainers).toHaveLength(2);
 
     const dates = wrapper.find('.dateShiftContainer');
     expect(dates).toHaveLength(2);
@@ -271,9 +271,9 @@ describe('(Component) ShiftScheduler', () => {
     wrapper.instance().removeShift(0, 1);
     wrapper.update();
 
-    const shiftLabels = wrapper.find('[className="shiftLabel"]');
+    const shiftContainers = wrapper.find('[className="shiftContainer"]');
 
-    expect(shiftLabels).toHaveLength(2);
+    expect(shiftContainers).toHaveLength(2);
 
     const dates = wrapper.find('.dateShiftContainer');
     expect(dates).toHaveLength(2);
@@ -324,9 +324,9 @@ describe('(Component) ShiftScheduler', () => {
     wrapper.instance().removeDate(1);
     wrapper.update();
 
-    const shiftLabels = wrapper.find('[className="shiftLabel"]');
+    const shiftContainers = wrapper.find('[className="shiftContainer"]');
 
-    expect(shiftLabels).toHaveLength(1);
+    expect(shiftContainers).toHaveLength(1);
 
     const dates = wrapper.find('.dateShiftContainer');
     expect(dates).toHaveLength(1);

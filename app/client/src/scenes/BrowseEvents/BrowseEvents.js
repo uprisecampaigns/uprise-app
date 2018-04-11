@@ -8,7 +8,7 @@ import BrowsePresentation from 'components/BrowsePresentation';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 
-import s from 'styles/Browse.scss';
+import s from 'styles/Volunteer.scss';
 
 class BrowseEvents extends Component {
   static propTypes = {

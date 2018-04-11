@@ -7,7 +7,7 @@ export default function togglesList(props) {
   const {
     collectionName, displayPropName, keyPropName,
     collection, selectedCollection, handleToggle,
-    containerClassName,
+    containerClassName, secondaryDisplayPropName,
   } = props;
 
   const toggles = collection.map((item, index) => {
@@ -24,6 +24,7 @@ export default function togglesList(props) {
         key={item.id || index}
         checked={selected}
         primaryText={item[displayPropName]}
+        secondaryText={item[secondaryDisplayPropName] || null}
       />
     );
   });

@@ -33,9 +33,12 @@ class ActionSettingsForm extends Component {
               className={s.form}
               onSubmit={formSubmit}
             >
+              <div className={s.sectionLabel}>
+                1. Title Name
+              </div>
               <div className={s.textFieldContainer}>
                 <TextField
-                  floatingLabelText="Name"
+                  floatingLabelText="Opportunity Public Name"
                   fullWidth
                   value={data.title}
                   onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
@@ -43,6 +46,9 @@ class ActionSettingsForm extends Component {
                 />
               </div>
 
+              <div className={s.sectionLabel}>
+                2. Select Virtual or In-Person
+              </div>
               <div className={s.toggleContainer}>
                 <Toggle
                   label="Virtual Opportunity"
@@ -55,16 +61,8 @@ class ActionSettingsForm extends Component {
               { data.virtual || (
 
                 <div>
-
-                  <div className={s.sectionLabel}>Where:</div>
-
-                  <div className={s.textFieldContainer}>
-                    <TextField
-                      floatingLabelText="Place Name"
-                      value={data.locationName}
-                      onChange={(event) => { handleInputChange(event, 'locationName', event.target.value); }}
-                      errorText={errors.locationNameErrorText}
-                    />
+                  <div className={s.sectionLabel}>
+                    3. Location
                   </div>
 
                   <div className={s.textFieldContainer}>
@@ -76,54 +74,40 @@ class ActionSettingsForm extends Component {
                     />
                   </div>
 
-                  <div className={s.textFieldContainer}>
-                    <TextField
-                      floatingLabelText="Street Address 2"
-                      value={data.streetAddress2}
-                      onChange={(event) => { handleInputChange(event, 'streetAddress2', event.target.value); }}
-                    />
+                  <div className={s.textFieldInlineGroup}>
+
+                    <div className={s.textFieldContainer}>
+                      <TextField
+                        floatingLabelText="City"
+                        value={data.city}
+                        onChange={(event) => { handleInputChange(event, 'city', event.target.value); }}
+                        errorText={errors.cityErrorText}
+                      />
+                    </div>
+
+                    <div className={s.textFieldContainer}>
+                      <AutoComplete
+                        floatingLabelText="State"
+                        searchText={data.state}
+                        dataSource={statesList}
+                        onUpdateInput={(text) => { handleInputChange(undefined, 'state', text); }}
+                        ref={(input) => { refs.stateInput = input; }}
+                        errorText={errors.stateErrorText}
+                      />
+                    </div>
+
+                    <div className={s.textFieldContainer}>
+                      <TextField
+                        floatingLabelText="Zipcode"
+                        type="text"
+                        pattern="[0-9]{5}"
+                        value={data.zipcode}
+                        onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
+                        errorText={errors.zipcodeErrorText}
+                      />
+                    </div>
                   </div>
 
-                  <div className={s.textFieldContainer}>
-                    <TextField
-                      floatingLabelText="City"
-                      value={data.city}
-                      onChange={(event) => { handleInputChange(event, 'city', event.target.value); }}
-                      errorText={errors.cityErrorText}
-                    />
-                  </div>
-
-                  <div className={s.textFieldContainer}>
-                    <AutoComplete
-                      floatingLabelText="State"
-                      searchText={data.state}
-                      dataSource={statesList}
-                      onUpdateInput={(text) => { handleInputChange(undefined, 'state', text); }}
-                      ref={(input) => { refs.stateInput = input; }}
-                      errorText={errors.stateErrorText}
-                    />
-                  </div>
-
-                  <div className={s.textFieldContainer}>
-                    <TextField
-                      floatingLabelText="Zipcode"
-                      type="text"
-                      pattern="[0-9]{5}"
-                      value={data.zipcode}
-                      onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
-                      errorText={errors.zipcodeErrorText}
-                    />
-                  </div>
-
-                  <div className={s.textFieldContainer}>
-                    <TextField
-                      floatingLabelText="Location Notes"
-                      fullWidth
-                      value={data.locationNotes}
-                      onChange={(event) => { handleInputChange(event, 'locationNotes', event.target.value); }}
-                      errorText={errors.locationNotesErrorText}
-                    />
-                  </div>
                 </div>
               )}
             </form>

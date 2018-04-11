@@ -1,5 +1,7 @@
 /* eslint-disable global-require */
 
+import { setRole } from 'actions/PageNavActions';
+
 export default {
 
   path: '',
@@ -45,7 +47,10 @@ export default {
     require('./notFound').default,
   ],
 
-  async action({ next }) {
+  async action({ store, next }) {
+    // Assume role is volunteer unless route sets otherwise
+    store.dispatch(setRole('volunteer'));
+
     // Execute each child route until one of them return the result
     const route = await next();
 

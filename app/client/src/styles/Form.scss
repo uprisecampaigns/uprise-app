@@ -69,6 +69,7 @@
 .textFieldContainer {
   display: flex;
   text-align: left;
+  margin-top: -1rem;
 
   input, label {
     font-size: 1.1rem !important;
@@ -94,6 +95,21 @@
 .toggleContainer {
   font-size: 1.1rem;
   text-align: left;
+  margin-top: 1rem;
+}
+
+.inputHeader {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.sectionLabel {
+  margin: 3rem 0 0 0;
+  text-align: left;
+  font-size: 1.2rem;
+  color: $black;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 .helpText {
@@ -103,11 +119,14 @@
   text-align: left;
 }
 
-.sectionLabel {
-  margin: 3rem 0 0 0;
-  text-align: left;
-  font-size: 1.3rem;
-  color: $azure;
+.profileHelpText {
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+.profileNameHeader {
+  font-size: 1.5rem;
+  text-align: center;
 }
 
 .errorMessage {
@@ -163,17 +182,22 @@
 
 .touchIcon {
   cursor: pointer;
-  color: $brick-red;
   margin: 1rem 0;
   text-align: left;
+}
 
-  svg {
-    color: $brick-red !important;
+.shiftSchedulerForm {
+
+  .sectionLabel {
+    margin-bottom: 1rem;
   }
 }
 
 .dateWithShiftsContainer {
+  position: relative;
   margin-bottom: 2rem;
+  padding: 2rem 1rem 1rem 1rem;
+  border: 1px solid $light-grey;
 
   > hr {
     background-color: $black !important;
@@ -184,6 +208,10 @@
   display: flex;
   justify-content: flex-start;
   align-items: baseline;
+
+  .textFieldContainer {
+    flex: 1 0 80%;
+  }
 }
 
 .shiftContainer {
@@ -192,7 +220,12 @@
   align-items: baseline;
 }
 
-.removeDateContainer,
+.removeDateContainer {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+}
+
 .removeShiftContainer {
   margin-left: 1rem;
 }
@@ -201,12 +234,75 @@
   display: flex;
   text-align: left;
   align-items: baseline;
+
+  > div:first-of-type {
+    margin-right: 1rem;
+  }
 }
 
 .shiftTimePicker {
   max-width: 5rem;
 }
 
-.shiftLabel {
-  margin-right: 1rem;
+.dateshiftPicker {
+  max-width: 6rem;
 }
+
+.shiftsContainer {
+  display: flex;
+  align-items: baseline;
+}
+
+.shiftLabel {
+  flex: 1 0 20%;
+}
+
+.shiftInputsContainer {
+  flex: 1 0 80%;
+}
+
+.addDate {
+  cursor: pointer;
+  border: 1px solid $azure;
+  color: $azure;
+  padding: 0.5rem;
+
+  svg {
+    color: $azure !important;
+  }
+}
+
+.textFieldInlineGroup {
+  display: flex;
+  justify-content: flex-start;
+
+  .textFieldContainer {
+    margin-right: 2rem;
+  }
+}
+
+.editProfileContainer {
+  width: 100%;
+  display: flex;
+
+  .leftContainer {
+    flex: 1 0 auto;
+    width: 28%;
+    margin-right: 2%;
+  }
+
+  .rightContainer {
+    flex: 1 0 auto;
+    width: 70%;
+  }
+}
+
+.editProfileBox {
+  padding: 1rem;
+  border: 1px solid $light-grey;
+}
+
+.activitiesContainer {
+  margin-top: 1rem;
+}
+

@@ -23,10 +23,12 @@ export default (WrappedComponent) => {
       submit: PropTypes.func.isRequired,
       dispatch: PropTypes.func.isRequired,
       validators: PropTypes.arrayOf(PropTypes.func),
+      submitOnChange: PropTypes.bool,
     }
 
     static defaultProps = {
       forceRefresh: true,
+      submitOnChange: false,
       validators: [],
     }
 
@@ -89,6 +91,16 @@ export default (WrappedComponent) => {
             { [type]: newValue },
           ),
         }));
+
+        if (this.props.submitOnChange) {
+          if (typeof this.submitTimer !== 'undefined') {
+            window.clearTimeout(this.submitTimer);
+          }
+
+          this.submitTimer = window.setTimeout(() => {
+            this.formSubmit();
+          }, 1000);
+        }
       }
     }
 
@@ -107,6 +119,10 @@ export default (WrappedComponent) => {
       this.setState(prevState => ({
         formData: Object.assign({}, prevState.formData, { [collectionName]: newCollection }),
       }));
+
+      if (this.props.submitOnChange) {
+        this.formSubmit();
+      }
     }
 
     addItem = (collectionName, tag) => {
@@ -123,6 +139,10 @@ export default (WrappedComponent) => {
       this.setState(prevState => ({
         formData: Object.assign({}, prevState.formData, { tags }),
       }));
+
+      if (this.props.submitOnChange) {
+        this.formSubmit();
+      }
     }
 
     removeItem = (collectionName, tagToRemove) => {
@@ -133,6 +153,10 @@ export default (WrappedComponent) => {
           tags: prevState.formData.tags.filter(tag => tag.toLowerCase() !== tagToRemove.toLowerCase()),
         }),
       }));
+
+      if (this.props.submitOnChange) {
+        this.formSubmit();
+      }
     }
 
     formSubmit = async (event) => {
