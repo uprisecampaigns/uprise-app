@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import HomeWrapper from './HomeWrapper';
+import HomeWrapper from 'components/HomeWrapper';
 
 
 export default {

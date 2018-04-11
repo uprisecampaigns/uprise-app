@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from 'scenes/Home';
+import HomeWrapper from 'components/HomeWrapper';
 import Layout from 'components/Layout';
 
 import {
@@ -17,7 +17,7 @@ export default {
 
     return {
       title: `${tag} Opportunities`,
-      component: <Layout><Home /></Layout>,
+      component: <Layout><HomeWrapper /></Layout>,
     };
   },
 };
