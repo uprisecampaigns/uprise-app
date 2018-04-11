@@ -231,7 +231,7 @@ async function onLocationChange(location) {
 
     // Do a full page reload if error occurs during client-side navigation
     if (!isInitialRender && currentLocation.key === location.key) {
-      window.location.reload(true);
+      // TODO: Proper response during production error
     }
   }
 }
