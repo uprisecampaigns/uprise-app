@@ -12,10 +12,12 @@ class DropDown extends Component {
     title: PropTypes.node.isRequired,
     showExpandCaret: PropTypes.bool,
     content: PropTypes.node.isRequired,
+    closeEvent: PropTypes.func,
   }
 
   static defaultProps = {
     showExpandCaret: true,
+    closeEvent: undefined,
   }
 
   constructor(props) {
@@ -35,14 +37,35 @@ class DropDown extends Component {
   }
 
   handleCloseMenu = () => {
-    this.setState(prevState => (Object.assign({}, prevState, {
+    this.setState(prevState => ({
+      ...prevState,
       menuOpen: false,
-    })));
+    }));
   }
 
   render() {
-    const { title, showExpandCaret, content } = this.props;
+    const {
+      title, showExpandCaret,
+      content, closeEvent,
+    } = this.props;
+
     const { menuOpen, popoverAnchorEl } = this.state;
+
+    const overRideContentHandler = props => (
+      React.Children.map(content, (child) => {
+        const handleCloseEvent = (...args) => {
+          this.handleCloseMenu();
+          child.props[closeEvent](...args);
+        };
+
+        if (typeof child.props[closeEvent] === 'function') {
+          return React.cloneElement(child, {
+            [closeEvent]: handleCloseEvent,
+          });
+        }
+        return child;
+      })
+    );
 
     return (
       <div className={[s.dropdownContainer, menuOpen ? s.dropdownMenuOpen : ''].join(' ')}>
@@ -56,7 +79,7 @@ class DropDown extends Component {
           className={s.dropdownItemsContainer}
         >
           <div className={s.dropdownMenu}>
-            { content }
+            { closeEvent ? overRideContentHandler(content) : content }
           </div>
         </Popover>
         <div

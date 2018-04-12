@@ -73,10 +73,12 @@ class SearchInputs extends Component {
           content={
             <DateTimeSearch
               setDates={this.setDates}
-              handleToggle={this.handleToggle}
               selectedTimes={selectedState.times}
+              showOngoing={false}
+              submitOnChange
             />
           }
+          closeEvent="setDates"
         />
 
         <DropDown
@@ -84,8 +86,10 @@ class SearchInputs extends Component {
           content={
             <GeographySearch
               addItem={this.addSelectedItem}
+              submitOnChange
             />
           }
+          closeEvent="addItem"
         />
       </div>
     );

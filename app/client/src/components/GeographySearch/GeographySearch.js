@@ -18,10 +18,12 @@ class GeographySearch extends PureComponent {
   static propTypes = {
     addItem: PropTypes.func.isRequired,
     showVirtual: PropTypes.bool,
+    submitOnChange: PropTypes.bool,
   }
 
   static defaultProps = {
     showVirtual: true,
+    submitOnChange: false,
   }
 
   constructor(props) {
@@ -46,11 +48,23 @@ class GeographySearch extends PureComponent {
       }
     }
 
-    valid && this.setState(prevState => (Object.assign(
-      {},
-      prevState,
-      { [type]: value },
-    )));
+    if (valid) {
+      this.setState(prevState => (Object.assign(
+        {},
+        prevState,
+        { [type]: value },
+      )));
+
+      if (this.props.submitOnChange) {
+        if (typeof this.submitTimer !== 'undefined') {
+          window.clearTimeout(this.submitTimer);
+        }
+
+        this.submitTimer = window.setTimeout(() => {
+          this.addItem();
+        }, 1000);
+      }
+    }
   }
 
   addItem = (event) => {
@@ -85,7 +99,7 @@ class GeographySearch extends PureComponent {
   }
 
   render() {
-    const { showVirtual } = this.props;
+    const { showVirtual, submitOnChange } = this.props;
     const { distance, zipcode, virtual } = this.state;
     const { addItem, handleInputChange } = this;
 
@@ -127,15 +141,17 @@ class GeographySearch extends PureComponent {
             />
           </div>
         )}
-        <div className={s.addToSearchButton}>
-          <RaisedButton
-            className={s.primaryButton}
-            onClick={addItem}
-            type="submit"
-            primary
-            label="Add to Search"
-          />
-        </div>
+        {submitOnChange || (
+          <div className={s.addToSearchButton}>
+            <RaisedButton
+              className={s.primaryButton}
+              onClick={addItem}
+              type="submit"
+              primary
+              label="Add to Search"
+            />
+          </div>
+        )}
       </form>
     );
   }

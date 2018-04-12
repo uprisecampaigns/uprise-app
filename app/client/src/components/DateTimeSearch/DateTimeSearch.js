@@ -11,7 +11,14 @@ import s from 'styles/Search.scss';
 class DateTimeSearch extends Component {
   static propTypes = {
     setDates: PropTypes.func.isRequired,
+    submitOnChange: PropTypes.bool,
+    showOngoing: PropTypes.bool,
   };
+
+  static defaultProps = {
+    showOngoing: true,
+    submitOnChange: false,
+  }
 
   constructor(props) {
     super(props);
@@ -27,41 +34,41 @@ class DateTimeSearch extends Component {
   }
 
   handleInputChange = (prop, value) => {
-    this.setState(Object.assign({}, this.state, {
+    this.setState(prevState => ({
+      ...prevState,
       startDateError: '',
       endDateError: '',
     }));
 
     if (prop === 'ongoing') {
-      this.setState(Object.assign(
-        {},
-        this.state,
-        {
-          ongoing: value,
-          onDate: null,
-          startDate: null,
-          endDate: null,
-        },
-      ));
+      this.setState(prevState => ({
+        ...prevState,
+        ongoing: value,
+        onDate: null,
+        startDate: null,
+        endDate: null,
+      }));
     } else if (prop === 'onDate') {
-      this.setState(Object.assign(
-        {},
-        this.state,
-        {
-          onDate: value,
-          startDate: null,
-          endDate: null,
-        },
-      ));
+      this.setState(prevState => ({
+        ...prevState,
+        onDate: value,
+        startDate: null,
+        endDate: null,
+      }));
+      if (this.props.submitOnChange) {
+        this.formSubmit();
+      }
     } else {
-      this.setState(Object.assign(
-        {},
-        this.state,
-        {
-          [prop]: value,
-          onDate: null,
-        },
-      ));
+      this.setState(prevState => ({
+        ...prevState,
+        [prop]: value,
+        onDate: null,
+      }));
+      if (this.props.submitOnChange) {
+        if (this.state.startDate !== null && this.state.endDate !== null) {
+          this.formSubmit();
+        }
+      }
     }
   }
 
@@ -106,6 +113,7 @@ class DateTimeSearch extends Component {
   formatDate = date => moment(date).format('M/D/YYYY')
 
   render() {
+    const { showOngoing, submitOnChange } = this.props;
     const {
       ongoing, onDate, startDate, endDate,
     } = this.state;
@@ -118,12 +126,14 @@ class DateTimeSearch extends Component {
     return (
       <div>
 
-        <Checkbox
-          label="Ongoing"
-          checked={ongoing}
-          onCheck={(event, isChecked) => { handleInputChange('ongoing', isChecked); }}
-          className={s.checkboxContainer}
-        />
+        {showOngoing && (
+          <Checkbox
+            label="Ongoing"
+            checked={ongoing}
+            onCheck={(event, isChecked) => { handleInputChange('ongoing', isChecked); }}
+            className={s.checkboxContainer}
+          />
+        )}
 
         {ongoing || (
           <div className={s.datePickersContainer}>
@@ -182,14 +192,16 @@ class DateTimeSearch extends Component {
             </div>
           </div>
         )}
-        <div className={s.addToSearchButton}>
-          <RaisedButton
-            className={s.primaryButton}
-            onClick={formSubmit}
-            primary
-            label="Add to Search"
-          />
-        </div>
+        {submitOnChange || (
+          <div className={s.addToSearchButton}>
+            <RaisedButton
+              className={s.primaryButton}
+              onClick={formSubmit}
+              primary
+              label="Add to Search"
+            />
+          </div>
+        )}
       </div>
     );
   }
