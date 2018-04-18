@@ -5,7 +5,7 @@ import Link from 'components/Link';
 import s from 'styles/Header.scss';
 
 
-function VolunteerHeader(props) {
+function OrganizeHeader(props) {
   return (
     <div className={s.volunteerHeader}>
       <div className={s.logoContainer}>
@@ -13,20 +13,17 @@ function VolunteerHeader(props) {
       </div>
       <div className={s.linksContainer}>
         <div>
-          <Link to="https://uprisecampaigns.org" external useAhref={false}>About</Link>
+          <Link to="/organize" useAhref={false}>Home</Link>
         </div>
         <div>
-          <Link to="/" useAhref={false}>Home</Link>
+          <Link to="/organize/my-campaigns" useAhref={false}>My Campaigns</Link>
         </div>
         <div>
-          <Link to="/browse" useAhref={false}>Browse</Link>
-        </div>
-        <div>
-          <Link to="/browse/campaigns" useAhref={false}>Follow</Link>
+          <Link to="/organize/create-campaign" useAhref={false}>New Campaign</Link>
         </div>
       </div>
     </div>
   );
 }
 
-export default VolunteerHeader;
+export default OrganizeHeader;

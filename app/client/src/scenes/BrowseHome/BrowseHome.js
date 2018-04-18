@@ -12,16 +12,6 @@ function BrowseHome(props) {
 
       <BrowseHeader />
 
-      <div className={s.headerTitle}>
-        Your direct connection to political campaigns
-      </div>
-      <div className={s.subHeader}>
-        A selection of 1000+ volunteer events and roles near you.
-      </div>
-      <div className={s.subHeader}>
-        Learn more &gt;
-      </div>
-
       <hr />
 
       <SearchActions />

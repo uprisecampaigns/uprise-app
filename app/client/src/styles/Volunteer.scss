@@ -48,4 +48,25 @@
     text-align: center;
   }
 
+  .opportunityType {
+    display: inline-block;
+    border: 1px solid $light-grey;
+    margin: 1rem;
+    padding: 1rem;
+    flex: 1;
+  }
+
+  .opportunityTypeHeader {
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+
+  .opportunityTypeSubHeader {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .opportunityType.selectedOpportunityType {
+    border-color: $dark-grey;
+  }
 }

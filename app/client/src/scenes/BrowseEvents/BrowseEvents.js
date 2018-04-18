@@ -1,7 +1,7 @@
 import React from 'react';
 
 import BrowseHeader from 'components/BrowseHeader';
-import BrowsePresentation from 'components/BrowsePresentation';
+import SearchActions from 'components/SearchActions';
 
 import s from 'styles/Volunteer.scss';
 
@@ -12,21 +12,11 @@ function BrowseEvents(props) {
 
       <BrowseHeader />
 
-      <div className={s.headerTitle}>
-        Sign up for an Event
-      </div>
-      <div className={s.subHeader}>
-        568+ Volunteer Events
-      </div>
-      <div className={s.subHeader}>
-        Learn more &gt;
-      </div>
-
       <hr />
 
-      <BrowsePresentation
-        type="event"
-      />
+      <div className={s.searchContainer}>
+        <SearchActions showRoles={false} />
+      </div>
 
     </div>
   );

@@ -12,20 +12,10 @@ function BrowseRoles(props) {
 
       <BrowseHeader />
 
-      <div className={s.headerTitle}>
-        Sign up for a Role
-      </div>
-      <div className={s.subHeader}>
-        120 Volunteer Roles
-      </div>
-      <div className={s.subHeader}>
-        Learn more &gt;
-      </div>
-
       <hr />
 
       <div className={s.searchContainer}>
-        <SearchActions />
+        <SearchActions showRoles />
       </div>
 
     </div>

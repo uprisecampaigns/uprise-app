@@ -1,6 +1,5 @@
 import React from 'react';
 
-import BrowseHeader from 'components/BrowseHeader';
 import SearchCampaigns from 'components/SearchCampaigns';
 
 import s from 'styles/Volunteer.scss';
@@ -9,16 +8,11 @@ function BrowseCampaigns(props) {
   return (
     <div className={s.outerContainer}>
 
-      <BrowseHeader />
-
       <div className={s.headerTitle}>
-        Follow a Campaign
+        Follow Campaigns
       </div>
       <div className={s.subHeader}>
-        23 Campaigns
-      </div>
-      <div className={s.subHeader}>
-        Learn more &gt;
+        Get updates about volunteer opportunities
       </div>
 
       <hr />

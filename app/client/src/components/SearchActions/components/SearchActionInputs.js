@@ -28,10 +28,12 @@ class SearchActionInputs extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     selectedCollection: PropTypes.arrayOf(PropTypes.string).isRequired,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+    showOngoing: PropTypes.bool,
     allOpen: PropTypes.bool,
   }
 
   static defaultProps = {
+    showOngoing: false,
     allOpen: false,
   }
 
@@ -58,7 +60,7 @@ class SearchActionInputs extends PureComponent {
       setDates,
     } = this;
 
-    const { allOpen } = this.props;
+    const { allOpen, showOngoing } = this.props;
 
     const activitiesTogglesList = togglesList({
       collection: this.props.activities,
@@ -97,21 +99,25 @@ class SearchActionInputs extends PureComponent {
 
         <Divider />
 
-        <ControlledListItem
-          primaryText="Date"
-          className={s.listItemContainer}
-          initiallyOpen={allOpen}
-          nestedItems={[(
-            <div key={0} className={[s.listItem, s.dateSearchContainer].join(' ')}>
-              <ConnectedDateTimeSearch
-                setDates={setDates}
-                handleToggle={handleToggle}
-              />
-            </div>
-          )]}
-        />
-
-        <Divider />
+        { !showOngoing && (
+          <ControlledListItem
+            primaryText="Date"
+            className={s.listItemContainer}
+            initiallyOpen={allOpen}
+            nestedItems={[(
+              <div key={0} className={[s.listItem, s.dateSearchContainer].join(' ')}>
+                <ConnectedDateTimeSearch
+                  setDates={setDates}
+                  handleToggle={handleToggle}
+                  showOngoing={showOngoing}
+                />
+              </div>
+            )]}
+          />
+        )}
+        { !showOngoing && (
+          <Divider />
+        )}
       </List>
     );
   }

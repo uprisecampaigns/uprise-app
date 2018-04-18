@@ -1,0 +1,6 @@
+{
+  "name": "OrganizeHeader",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./OrganizeHeader.js"
+}

@@ -8,6 +8,7 @@ import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import Header from './components/Header';
 import VolunteerHeader from './components/VolunteerHeader';
+import OrganizeHeader from './components/OrganizeHeader';
 
 class HeaderContainer extends Component {
   static propTypes = {
@@ -16,7 +17,6 @@ class HeaderContainer extends Component {
     userObject: PropTypes.object.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     role: PropTypes.string.isRequired,
-    showBrowse: PropTypes.bool.isRequired,
   };
 
   clickedLogout = (event) => {
@@ -34,7 +34,10 @@ class HeaderContainer extends Component {
           role={this.props.role}
         />
         { this.props.role === 'volunteer' && (
-          <VolunteerHeader showBrowseHeader={this.props.showBrowse} />
+          <VolunteerHeader />
+        )}
+        { this.props.role === 'organize' && (
+          <OrganizeHeader />
         )}
       </div>
     );
@@ -54,7 +57,6 @@ const mapStateToProps = state => ({
   loggedIn: state.userAuthSession.isLoggedIn,
   fetchingAuthUpdate: state.userAuthSession.fetchingAuthUpdate,
   role: state.pageNav.role,
-  showBrowse: state.pageNav.showBrowse,
 });
 
 export default compose(

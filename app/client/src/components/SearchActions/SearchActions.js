@@ -81,13 +81,20 @@ const graphqlOptions = {
   }),
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const aSearch = state.actionsSearch;
 
-  const hasDateSearch = Object.keys(aSearch.dates).length > 0;
+  let searchDates;
 
-  // TODO: this will reset the infinite scroll if the time rolls over to the next hour
-  const searchDates = hasDateSearch ? aSearch.dates : { ongoing: true, startDate: moment().startOf('hour').format() };
+  if (ownProps.showOngoing) {
+    searchDates = { ongoing: true };
+  } else {
+    const hasDateSearch = Object.keys(aSearch.dates).length > 0;
+
+    // TODO: this will reset the infinite scroll if the time rolls over to the next hour
+    searchDates = hasDateSearch ? aSearch.dates : { startDate: moment().startOf('hour').format() };
+    searchDates.ongoing = false;
+  }
 
   return {
     search: {
@@ -113,6 +120,7 @@ const SearchActionResultsWithData = compose(
 class SearchActions extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    showRoles: PropTypes.bool.isRequired,
   };
 
   addSelectedItem = (collectionName, value) => {
@@ -126,8 +134,17 @@ class SearchActions extends Component {
         <SearchPresentation
           addSelectedItem={this.addSelectedItem}
           searchSelections={<SearchActionSelections />}
-          searchInputs={allOpen => <SearchActionInputs allOpen={allOpen} />}
-          searchResults={<SearchActionResultsWithData />}
+          searchInputs={allOpen => (
+            <SearchActionInputs
+              allOpen={allOpen}
+              showOngoing={this.props.showRoles}
+            />
+          )}
+          searchResults={
+            <SearchActionResultsWithData
+              showOngoing={this.props.showRoles}
+            />
+          }
         />
 
       </div>
