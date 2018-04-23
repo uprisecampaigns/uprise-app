@@ -16,8 +16,8 @@ export default {
     require('./welcome').default,
     require('./terms').default,
 
-    // /settings/
-    require('./settings').default,
+    // /account/
+    require('./account').default,
 
     // /organize/
     require('./organize').default,

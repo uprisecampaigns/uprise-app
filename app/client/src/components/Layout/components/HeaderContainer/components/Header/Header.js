@@ -87,7 +87,9 @@ function AuthenticatedIcons(props) {
   const { userObject } = props;
 
   const accountIcon = (
-    <span>
+    <div
+      className={s.headerButton}
+    >
       { userObject.profile_image_url ? (
         <Avatar
           className={s.accountIcon}
@@ -95,7 +97,7 @@ function AuthenticatedIcons(props) {
         />) : (
           <AccountCircle className={s.accountIcon} />
       )}
-    </span>
+    </div>
   );
 
   return (
@@ -123,15 +125,16 @@ function AuthenticatedIcons(props) {
         )}
       </div>
 
-      <ContentDropdownMenu
-        title={accountIcon}
-        showExpandCaret={false}
-        dropdowns={[
-          { title: 'Profile', path: '/volunteer' },
-          { title: 'Settings', path: '/settings' },
-          { title: 'Logout', path: '#', action: props.logout },
-        ]}
-      />
+      <div
+        className={s.headerButton}
+      >
+        <Link useAhref={false} to="/account">
+          {accountIcon}
+        </Link>
+        { props.role === 'user' && (
+          <ArrowDropUp />
+        )}
+      </div>
 
     </div>
   );

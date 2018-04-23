@@ -55,7 +55,7 @@
   align-items: baseline;
 
   > div {
-    margin: 1rem 0rem 0.5rem 1rem;
+    margin: 1rem 0rem 1rem 1rem;
   }
 }
 
@@ -80,7 +80,7 @@ svg.accountIcon {
   > svg {
     position: absolute !important;
     color: $white !important;
-    top: 0.1rem;
+    top: 65%;
     height: 4rem !important;
     width: 4rem !important;
     left: 50%;

@@ -9,6 +9,7 @@ import MeQuery from 'schemas/queries/MeQuery.graphql';
 import Header from './components/Header';
 import VolunteerHeader from './components/VolunteerHeader';
 import OrganizeHeader from './components/OrganizeHeader';
+import UserHeader from './components/UserHeader';
 
 class HeaderContainer extends Component {
   static propTypes = {
@@ -38,6 +39,9 @@ class HeaderContainer extends Component {
         )}
         { this.props.role === 'organize' && (
           <OrganizeHeader />
+        )}
+        { this.props.role === 'user' && (
+          <UserHeader />
         )}
       </div>
     );

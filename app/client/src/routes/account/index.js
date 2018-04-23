@@ -8,7 +8,7 @@ import { setRole } from 'actions/PageNavActions';
 
 export default {
 
-  path: '/settings',
+  path: '/account',
 
   async action({ store, next }) {
     store.dispatch(setRole('user'));
@@ -21,11 +21,11 @@ export default {
     {
       path: '',
       action: () => ({
-        title: 'Settings',
+        title: 'Account',
         component: <Layout><Settings /></Layout>,
       }),
     },
-    require('./account').default,
+    require('./settings').default,
     require('./contact').default,
     require('./privacySecurity').default,
     require('./confirmEmail').default,
