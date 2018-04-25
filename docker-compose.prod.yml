@@ -1,7 +1,7 @@
 version: "3.0"
 services:
   web:
-    image: upriseapp_web:latest
+    image: uprisecampaigns/web
     env_file: ./app/prod.env
     command: npm run prod
     restart: on-failure
