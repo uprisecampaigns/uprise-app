@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+echo "entrypoint.sh script"
+
 rm /etc/nginx/conf.d/*
 envsubst '$$NGINX_HOST $$NGINX_HTTP_PORT $$NGINX_HTTPS_PORT $$NODE_APP_HOST $$NODE_APP_PORT $$LETSENCRYPT_HOST $$LETSENCRYPT_HTTP_PORT $$LETSENCRYPT_HTTPS_PORT' < /opt/docker/conf.d/uprise.conf > /etc/nginx/conf.d/uprise.conf
 
@@ -40,16 +42,21 @@ then
 fi
 
 watch_keys() {
-  if [ "$PRODUCTION" = "true" ]
-  then
-    while true
-    do
-      inotifywait /etc/letsencrypt/live/$NGINX_HOST/ /etc/nginx/conf.d/
-      echo "Reloading Nginx Configuration"
-      nginx -s reload
-    done
-  fi
+  echo "Watching keys"
+  while true
+  do
+    inotifywait /etc/letsencrypt/live/$NGINX_HOST/ /etc/nginx/conf.d/
+    echo "Reloading Nginx Configuration"
+    nginx -s reload
+  done
 }
 
 ## TODO: use inotifywait to watch for new letsencrypt keys!
-nginx -g 'daemon off;' & watch_keys
+if [ "$PRODUCTION" = "true" ]
+then
+  echo "In production environment"
+  nginx -g 'daemon off;' & watch_keys
+else
+  echo "Not in production environment"
+  nginx -g 'daemon off;'
+fi
