@@ -32,8 +32,8 @@ services:
     restart: on-failure
 
   letsencrypt:
+    build: ./letsencrypt
     image: quay.io/letsencrypt/letsencrypt:latest
-    command:  bash -c "sleep 6 && certbot certonly --standalone -d staging.uprise.me --text --agree-tos --email tech@uprise.org --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --renew-by-default --standalone-supported-challenges http-01"
     entrypoint: ""
     volumes:
       - letsencrypt-keys-volume:/etc/letsencrypt
@@ -41,9 +41,7 @@ services:
     ports:
       - 433
       - 80
-    environment:
-      - TERM=xterm
-      - TZ=America/Los_Angeles
+    env_file: ./letsencrypt/prod.env
     networks:
       letsencrypt-nginx:
         aliases:
