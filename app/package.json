@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run prestart && node /src/app/client/bin/start.js & node --inspect=0.0.0.0:5859 /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
-    "prod": "npm run prestart && node /src/app/client/bin/start.js & node /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
+    "dev": "(npm run prestart) && (node /src/app/client/bin/start.js & node --inspect=0.0.0.0:5859 /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js)",
+    "prod": "(npm run prestart) && (node /src/app/client/bin/start.js & node /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js)",
     "test": "NODE_ENV=test jest --no-cache",
     "test:watch": "NODE_ENV=test jest --watch",
     "db:migrate:make": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:make --name new",
