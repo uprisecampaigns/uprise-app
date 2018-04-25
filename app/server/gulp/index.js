@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const config = require('config/gulp.js');
+const config = require('../config/gulp.js');
 
 const onlyScripts = name => /(\.(js)$)/i.test(path.extname(name));
 
