@@ -32,11 +32,24 @@ then
 
 
   echo Letsencrypt ssl keys have been successfully obtained
-  envsubst '$$NGINX_HOST $$NGINX_HTTP_PORT $$NGINX_HTTPS_PORT $$NODE_APP_HOST $$NODE_APP_PORT $$LETSENCRYPT_HOST $$LETSENCRYPT_HTTP_PORT $$LETSENCRYPT_HTTPS_PORT' < /opt/docker/conf.d/uprise-secure.conf > /etc/nginx/conf.d/uprise.conf 
+  envsubst '$$NGINX_HOST $$NGINX_HTTP_PORT $$NGINX_HTTPS_PORT $$NODE_APP_HOST $$NODE_APP_PORT $$LETSENCRYPT_HOST $$LETSENCRYPT_HTTP_PORT $$LETSENCRYPT_HTTPS_PORT' < /opt/docker/conf.d/uprise-secure.conf > /etc/nginx/conf.d/uprise.conf
 
   echo Stopping background nginx
   # pkill nginx
   kill $(ps aux | grep '[n]ginx' | awk '{print $2}')
 fi
 
-nginx -g 'daemon off;'
+watch_keys() {
+  if [ "$PRODUCTION" = "true" ]
+  then
+    while true
+    do
+      inotifywait /etc/letsencrypt/live/$NGINX_HOST/ /etc/nginx/conf.d/
+      echo "Reloading Nginx Configuration"
+      nginx -s reload
+    done
+  fi
+}
+
+## TODO: use inotifywait to watch for new letsencrypt keys!
+nginx -g 'daemon off;' & watch_keys
