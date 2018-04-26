@@ -14,7 +14,6 @@ import {
   validateWebsiteUrl,
   validateState,
   validateZipcode,
-  validateZipcodeList,
   validateEmail,
   validatePhoneNumber,
 } from 'lib/validateComponentForms';
@@ -67,11 +66,6 @@ export class ManageCampaignSettings extends Component {
         orgContactEmail: '',
         orgContactPhone: '',
         tags: [],
-        zipcodeList: '',
-        locationType: null,
-        legislativeDistrictType: null,
-        locationDistrictNumber: '',
-        locationState: '',
       },
     };
 
@@ -102,8 +96,6 @@ export class ManageCampaignSettings extends Component {
         }
       });
 
-      campaign.zipcodeList = typeof campaign.zipcodeList === 'object' ? campaign.zipcodeList.join(',') : '';
-
       this.setState(prevState => ({
         formData: Object.assign({}, prevState.formData, campaign),
       }));
@@ -124,8 +116,6 @@ export class ManageCampaignSettings extends Component {
     orgContactPositionErrorText: null,
     orgContactEmailErrorText: null,
     orgContactPhoneErrorText: null,
-    zipcodeListErrorText: null,
-    locationDistrictNumberErrorText: null,
   }
 
   formSubmit = async (data) => {
@@ -140,8 +130,6 @@ export class ManageCampaignSettings extends Component {
     const formData = Object.assign({}, data);
 
     formData.id = this.props.campaign.id;
-
-    formData.zipcodeList = formData.zipcodeList.split(',').map(zip => zip.trim());
 
     try {
       await this.props.editCampaignMutation({
@@ -183,8 +171,6 @@ export class ManageCampaignSettings extends Component {
             validateEmail(component, 'orgContactEmail', 'orgContactEmailErrorText');
           }
         },
-        (component) => { validateState(component, 'locationState', 'locationStateErrorText'); },
-        validateZipcodeList,
       ];
 
       return (

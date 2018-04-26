@@ -24,7 +24,6 @@ const campaign = {
   state: 'NY',
   zipcode: '12345',
   tags: [],
-  zipcodeList: ['12345', '12346', '12347'],
 };
 
 describe('(Scene) ManageCampaignSettings', () => {
@@ -32,41 +31,5 @@ describe('(Scene) ManageCampaignSettings', () => {
     const wrapper = mount(<ManageCampaignSettings />, options);
 
     expect(wrapper).toHaveLength(1);
-  });
-
-  test('parses zipcodeList correctly', () => {
-    const wrapper = mount(<ManageCampaignSettings campaign={campaign}/>, options);
-
-    expect(wrapper.state().formData.zipcodeList).toEqual('12345,12346,12347');
-  });
-
-  test('submits zipcodeList correctly', (done) => {
-
-    const editCampaignMock = ({ variables }) => {
-      expect(variables.data.zipcodeList).toEqual(campaign.zipcodeList);
-      done();
-    };
-
-    const wrapper = mount(<ManageCampaignSettings editCampaignMutation={editCampaignMock} campaign={campaign}/>, options);
-
-    wrapper.find('form').first().simulate('submit');
-  });
-
-  test('submits new zipcodeList correctly', async () => {
-    expect.assertions(1);
-
-    const newZipcodeListArray = ['55555', '11111'];
-    const newZipcodeListString = '55555, 11111';
-
-    const editCampaignMock = async ({ variables }) => {
-      console.log(variables);
-      expect(variables.data.zipcodeList).toEqual(newZipcodeListArray);
-      return true;
-    };
-
-    const wrapper = mount(<ManageCampaignSettings editCampaignMutation={editCampaignMock} campaign={campaign}/>, options);
-
-    const wrapperInstance = wrapper.instance();
-    await wrapperInstance.formSubmit({ ...campaign, zipcodeList: newZipcodeListString });
   });
 });

@@ -11,6 +11,8 @@ const getValidSlug = require('models/getValidSlug');
 
 const config = require('config/config.js');
 
+const milesInMeter = 0.000621371192237;
+
 class Campaign {
   static async findOne(...args) {
     const campaign = await db.table('campaigns').where(...args).first();
@@ -244,8 +246,22 @@ class Campaign {
             qb.andWhere(function geographyQueryBuilder() {
               search.geographies.forEach((geography) => {
                 if (validator.isNumeric(geography.zipcode)) {
-                  const { zipcode } = geography;
-                  this.orWhereRaw('? = ANY(zipcode_list)', zipcode);
+                  const { distance = 10, zipcode } = geography; // default to 10 miles
+
+                  // TODO: It would be nice to refactor some of this out into knex language
+                  const distanceQuery = db.select('id')
+                    .from(function () {
+                      this.select('campaigns.id', db.raw('ST_DISTANCE(campaigns.location, target_zip.location) * ? AS distance', milesInMeter))
+                        .as('distances')
+                        .from(db.raw(`
+                          (SELECT postal_code, location from zipcodes where postal_code=?) target_zip
+                          CROSS JOIN
+                          (select * from campaigns join zipcodes on zipcodes.postal_code = campaigns.zipcode) campaigns
+                        `, zipcode));
+                    })
+                    .where('distance', '<=', distance);
+
+                  this.orWhere('campaigns.id', 'in', distanceQuery);
                 }
               });
             });
