@@ -248,6 +248,18 @@ gulp.task('webpack', ['webpack:clean'], (done) => {
 
     bail: env.production(),
     resolve: {
+      alias: {
+        actions: path.resolve(config.src, 'actions'),
+        components: path.resolve(config.src, 'components'),
+        content: path.resolve(config.src, 'content'),
+        img: path.resolve(config.src, 'img'),
+        lib: path.resolve(config.src, 'lib'),
+        reducers: path.resolve(config.src, 'reducers'),
+        routes: path.resolve(config.src, 'routes'),
+        schemas: path.resolve(config.src, 'schemas'),
+        store: path.resolve(config.src, 'store'),
+        styles: path.resolve(config.src, 'styles'),
+      },
       extensions: ['*', '.js', '.jsx', '.json'],
     },
     node: {

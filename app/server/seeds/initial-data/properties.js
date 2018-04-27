@@ -1,76 +1,43 @@
 
 module.exports = async (knex, users) => {
-  // Deletes ALL existing entries
-  await knex('types').del();
-  await knex('issue_areas').del();
-  await knex('levels').del();
-  await knex('campaigns_types').del();
-  await knex('campaigns_issue_areas').del();
-  await knex('campaigns_levels').del();
+  const activities = [
+    { title: 'Art, design, audio, video', description: 'Produce content, graphic design, video or audio' },
+    { title: 'Bookkeeping', description: 'Budgets, contributions, expendtures, FEC reporting' },
+    { title: 'Calling voters', description: 'Phone bank or host a phone bank in your home' },
+    { title: 'Communications', description: 'Advertising and marketing, messaging and persuasion' },
+    { title: 'Coordinate volunteers', description: 'Manage a team of volunteers or a lead a project' },
+    { title: 'Data management', description: 'Enter data or manage donor, volunteer or voter data' },
+    { title: 'Direct voter outreach', description: 'Tabling, fairs and festivals, street teams, hold signs' },
+    { title: 'Door to door', description: 'Canvass, mobilize supporters or persuade undecideds' },
+    { title: 'Drive volunteers, voters', description: 'Drive candidates, volunteers, voters to polls, deliveries' },
+    { title: 'Email, social media', description: 'Email outreach, contact mgmt, social media content' },
+    { title: 'Food and drink', description: 'Provide food or drink for volunteers or house parties' },
+    { title: 'Fundraising', description: 'Research donors, plan events, assist with call time' },
+    { title: 'Host a meet and greet', description: 'Host a house party or event in your building or business' },
+    { title: 'Lawn signs, visibility', description: 'Deliver lawn signs, 4x8s, painting or light construction' },
+    { title: 'Legal, voter protection', description: 'Campaign filing, ballot access, FEC law, voters\' rights' },
+    { title: 'Lobbying', description: 'Call, write or visit legislators, track bills' },
+    { title: 'Meeting', description: 'Attend strategy or planning meetings, discussions ' },
+    { title: 'Office admin', description: 'Help with reception, scheduling, mailings, materials' },
+    { title: 'Online research', description: 'Look up policies, people, events or other opportunities' },
+    { title: 'Organize issue groups', description: 'Outreach to people who share an identity or interest' },
+    { title: 'Organize neighbors', description: 'Outreach to precinct, people who live near you' },
+    { title: 'Policy', description: 'Reseach and write policy briefs and statements' },
+    { title: 'Press relations', description: 'Maintain relationships, press lists, releases, booking' },
+    { title: 'Produce big events', description: 'Promote, cater, AV, lighting, décor, entertainment' },
+    { title: 'Protest, demonstration', description: 'Organize rallies, marches, parades, demonstrations' },
+    { title: 'Tech, software, coding', description: 'Use or develop websites and political tech tools, IT' },
+    { title: 'Training', description: 'Organize trainings or be a trainer' },
+    { title: 'Volunteer housing', description: 'Provide housing for an organizer or volunteer' },
+    { title: 'Website admin', description: 'Manage website, add content, respond to inquiries' },
+    { title: 'Writing, editing', description: 'Write or edit speeches, letters, blog posts, content' },
+  ];
 
-  const levels = await knex('levels').insert([
-    { title: 'Federal' },
-    { title: 'State' },
-    { title: 'County, Regional' },
-    { title: 'Local, Municipal' },
-  ], ['id']);
+  await Promise.all(activities.map(async (activity) => {
+    const exists = await knex('activities').where('title', activity.title);
 
-  const issueAreas = await knex('issue_areas').insert([
-    { title: 'Progressive - All' },
-    { title: 'Government, Elections' },
-    { title: 'Energy, Environment' },
-    { title: 'Domestic Economy' },
-    { title: 'Security, International' },
-    { title: 'Science, Technology' },
-    { title: 'Civil Rights and Liberties' },
-    { title: 'Health Care' },
-    { title: 'Education' },
-    { title: 'Immigration' },
-  ], ['id']);
-
-  const types = await knex('types').insert([
-    { title: 'Candidate', description: 'Election' },
-    { title: 'Ballot Initiative', description: 'Proposition/Referendum/Amendment' },
-    { title: 'Lobbying', description: 'For or against a specific bill' },
-    { title: 'Issue Advocacy', description: 'For or against an issue in general' },
-  ], ['id']);
-
-  const activities = await knex('activities').insert([
-    { title: 'meet', description: 'Meeting' }, // 0
-    { title: 'phone', description: 'Calling voters' }, // 1
-    { title: 'canvass', description: 'Door to door' }, // 2
-    { title: 'outreach', description: 'Outreach, tabling, street teams' }, // 3
-    { title: 'protest', description: 'Protest, demonstration' }, // 4
-    { title: 'visibility', description: 'Lawn signs, visibility' }, // 5
-    { title: 'precinct', description: 'Organize precinct, neighborhood' }, // 6
-    { title: 'issuegroups', description: 'Organize issue groups' }, // 7
-    { title: 'host', description: 'Host a meet and greet' }, // 8
-    { title: 'event', description: 'Big event production' }, // 9
-    { title: 'policy', description: 'Policy' }, // 10
-    { title: 'communications', description: 'Communications' }, // 11
-    { title: 'writing', description: 'Writing, editing' }, // 12
-    { title: 'press', description: 'Press relations' }, // 13
-    { title: 'social', description: 'Email, social media' }, // 14
-    { title: 'website', description: 'Website, software' }, // 15
-    { title: 'design', description: 'Art, design, audio, video' }, // 16
-    { title: 'coordinate', description: 'Coordinate volunteers' }, // 17
-    { title: 'office', description: 'Office admin' }, // 18
-    { title: 'data', description: 'Data management' }, // 19
-    { title: 'legal', description: 'Legal, voter protection' }, // 20
-    { title: 'bookkeeping', description: 'Bookkeeping' }, // 21
-    { title: 'fundraising', description: 'Fundraising' }, // 22
-    { title: 'training', description: 'Training' }, // 23
-    { title: 'drive', description: 'Drive volunteers, voters' }, // 24
-    { title: 'feed', description: 'Feed volunteers' }, // 25
-    { title: 'lobby', description: 'Lobbying' }, // 26
-    { title: 'research', description: 'Online research' }, // 27
-    { title: 'tech', description: 'Tech, software, coding' }, // 28
-    { title: 'house', description: 'Volunteer housing' }, // 29
-
-  ], ['id', 'title', 'description']);
-
-
-  return {
-    levels, issueAreas, types, activities,
-  };
+    if (exists.length === 0) {
+      await knex('activities').insert(activity);
+    }
+  }));
 };

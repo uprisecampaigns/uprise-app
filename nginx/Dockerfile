@@ -1,6 +1,6 @@
 FROM nginx
 
-RUN apt-get update && apt-get install -y curl procps
+RUN apt-get update && apt-get install -y curl procps inotify-tools
 
 RUN mkdir -p /opt/docker/conf.d
 COPY entrypoint.sh /opt/docker

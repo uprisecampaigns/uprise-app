@@ -1,7 +1,7 @@
 version: "3.0"
 services:
   web:
-    build: ./app
+    image: uprisecampaigns/web
     volumes:
       - ./app/package.json:/src/app/package.json
       - ./.git:/src/.git

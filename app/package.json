@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "node /src/app/client/bin/start.js & node --inspect=0.0.0.0:5859 /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
-    "prod": "node /src/app/client/bin/start.js & node /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js",
+    "dev": "(npm run prestart) && (node /src/app/client/bin/start.js & node --inspect=0.0.0.0:5859 /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js)",
+    "prod": "(npm run prestart) && (node /src/app/client/bin/start.js & node /src/app/node_modules/gulp/bin/gulp.js --gulpfile /src/app/server/gulpfile.babel.js)",
     "test": "NODE_ENV=test jest --no-cache",
     "test:watch": "NODE_ENV=test jest --watch",
     "db:migrate:make": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:migrate:make --name new",
@@ -13,7 +13,10 @@
     "db:seed:run": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js db:seed:run",
     "lint-watch": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js lint-watch",
     "lint": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js lint",
-    "lint-fix": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js lint --fix"
+    "lint-fix": "cd server && ../node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.babel.js lint --fix",
+    "create-links": "node scripts/createLinks.js",
+    "pretest": "npm run create-links",
+    "prestart": "npm run create-links"
   },
   "dependencies": {
     "apollo-client": "^1.0.0-rc.2",
