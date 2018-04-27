@@ -42,7 +42,6 @@ There are 6 containers delineated in the docker-compose file:
 Configuring and installing the platform should consist of two steps: 
 
 1. Properly set environment variables
-2. Run `docker-compose build`
 3. Run `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
 
 This should start up all appropriate containers. With default environment variables, visiting `localhost:8080` should direct you to the application.
