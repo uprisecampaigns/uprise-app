@@ -13,6 +13,7 @@ import {
 } from 'actions/SearchActions';
 
 export const defaultStartState = {
+  defaultSet: false,
   keywords: [],
   tags: [],
   activities: [],
@@ -66,7 +67,7 @@ export function updateSearch(searchState = defaultStartState, action) {
       const collection = Array.from(searchState[action.collection]);
 
       // Only add this search type if none exists already
-      if (!collection.length) {
+      if (!searchState.defaultSet) {
         if ((typeof action.value === 'string' && action.value.trim() !== '') ||
             (typeof action.value === 'object')) {
           collection.push(typeof action.value === 'string' ? action.value.trim() : action.value);
@@ -74,6 +75,7 @@ export function updateSearch(searchState = defaultStartState, action) {
       }
 
       return Object.assign({}, searchState, {
+        defaultSet: true,
         [action.collection]: collection,
       });
     }
