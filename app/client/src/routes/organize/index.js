@@ -31,6 +31,7 @@ export default {
     require('./manageCampaign').default,
     require('./manageCampaignSettings').default,
     require('./manageCampaignVolunteers').default,
+    require('./manageCampaignRecruit').default,
     require('./manageCampaignComposeMessage').default,
     require('./manageCampaignProfileEdit').default,
     require('./manageCampaignActions').default,

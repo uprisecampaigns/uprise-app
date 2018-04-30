@@ -1,0 +1,6 @@
+{
+  "name": "ManageCampaignRecruit",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ManageCampaignRecruit.js"
+}

@@ -125,12 +125,9 @@ class ManageCampaignContainer extends Component {
 
             <Divider />
 
-            <Link
-              to="/"
-              onClick={() => dispatch(setPage('home', 'user'))}
-            >
+            <Link to={`/organize/${campaign.slug}/recruit`}>
               <ListItem
-                primaryText="Search Volunteers"
+                primaryText="Recruit Volunteers"
               />
             </Link>
 
