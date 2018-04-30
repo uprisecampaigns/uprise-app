@@ -1,5 +1,5 @@
 import React from 'react';
-import Account from 'scenes/Account';
+import AccountSettings from 'scenes/AccountSettings';
 import Layout from 'components/Layout';
 
 
@@ -9,8 +9,8 @@ export default {
 
   action() {
     return {
-      title: 'Account',
-      component: <Layout><Account /></Layout>,
+      title: 'Account Settings',
+      component: <Layout><AccountSettings /></Layout>,
     };
   },
 };

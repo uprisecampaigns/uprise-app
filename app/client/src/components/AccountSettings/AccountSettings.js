@@ -3,29 +3,34 @@ import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import camelCase from 'camelcase';
-import RaisedButton from 'material-ui/RaisedButton';
-
-import Link from 'components/Link';
+import FontIcon from 'material-ui/FontIcon';
 
 import formWrapper from 'lib/formWrapper';
 
-import UserProfileForm from 'components/UserProfileForm';
+import {
+  validateString,
+  validateZipcode,
+  validateEmail,
+  validateEmailAvailable,
+  validatePhoneNumber,
+} from 'lib/validateComponentForms';
+
+import Link from 'components/Link';
+import AccountForm from 'components/AccountForm';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
-import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
 import EditAccountMutation from 'schemas/mutations/EditAccountMutation.graphql';
 
-import s from 'styles/Volunteer.scss';
+import s from 'styles/Settings.scss';
 
 
-const WrappedUserProfileForm = formWrapper(UserProfileForm);
+const WrappedAccountForm = formWrapper(AccountForm);
 
-class EditUserProfile extends Component {
+class Account extends Component {
   static propTypes = {
     user: PropTypes.object,
     editAccountMutation: PropTypes.func.isRequired,
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     graphqlLoading: PropTypes.bool.isRequired,
   }
@@ -39,11 +44,11 @@ class EditUserProfile extends Component {
 
     const initialState = {
       formData: {
-        subheader: '',
-        description: '',
-        profileImageUrl: '',
-        activities: [],
-        tags: [],
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        zipcode: '',
+        email: '',
       },
     };
 
@@ -81,16 +86,25 @@ class EditUserProfile extends Component {
   }
 
   defaultErrorText = {
-    subheaderErrorText: null,
-    descriptionErrorText: null,
+    firstNameErrorText: null,
+    lastNameErrorText: null,
+    zipcodeErrorText: null,
+    phoneNumberErrorText: null,
+    emailErrorText: null,
   }
 
   formSubmit = async (data) => {
+    // A little hackish to avoid an annoying rerender with previous form data
+    // If I could figure out how to avoid keeping state here
+    // w/ the componentWillReceiveProps/apollo/graphql then
+    // I might not need this
+    this.setState({
+      formData: Object.assign({}, data),
+    });
+
     const formData = Object.assign({}, data);
 
     formData.id = this.props.user.id;
-
-    formData.activities = formData.activities.map(activity => (activity.id));
 
     try {
       await this.props.editAccountMutation({
@@ -101,7 +115,7 @@ class EditUserProfile extends Component {
         refetchQueries: ['MeQuery'],
       });
 
-      return { success: true, message: false };
+      return { success: true, message: 'Changes Saved' };
     } catch (e) {
       return { success: false, message: e.message };
     }
@@ -110,32 +124,43 @@ class EditUserProfile extends Component {
   render() {
     if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
-      const { user, activities } = this.props;
+      const { user } = this.props;
       const { formData } = state;
 
-      const validators = [];
+      const validators = [
+        component => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
+        component => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
+        component => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
+        component => validateString(component, 'zipcode', 'zipcodeErrorText', 'Please enter a zipcode'),
+        component => validateZipcode(component),
+        component => validateEmail(component),
+        component => validateEmailAvailable(component, user.email),
+        component => validatePhoneNumber(component),
+      ];
+
 
       return (
         <div className={s.outerContainer}>
 
-          <Link to="/account/view-profile">
-            <div className={s.primaryButton}>
-              <RaisedButton
-                primary
-                label="Preview Profile"
-              />
+          <Link to="/settings">
+            <div className={[s.navHeader, s.settingsNavHeader].join(' ')}>
+              <FontIcon
+                className={['material-icons', s.backArrow].join(' ')}
+              >arrow_back
+              </FontIcon>
+              Settings
             </div>
           </Link>
 
-          <WrappedUserProfileForm
+          <div className={s.settingsHeader}>Account</div>
+
+          <WrappedAccountForm
             initialState={formData}
             initialErrors={defaultErrorText}
             validators={validators}
             submit={formSubmit}
-            submitOnChange
             submitText="Save Changes"
-            activities={activities}
-            user={user}
+            userId={user.id}
           />
 
         </div>
@@ -156,10 +181,5 @@ export default compose(
       graphqlLoading: data.loading,
     }),
   }),
-  graphql(ActivitiesQuery, {
-    props: ({ data }) => ({
-      activities: !data.loading && data.activities ? data.activities : [],
-    }),
-  }),
   graphql(EditAccountMutation, { name: 'editAccountMutation' }),
-)(EditUserProfile);
+)(Account);

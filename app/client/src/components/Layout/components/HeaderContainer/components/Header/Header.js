@@ -145,7 +145,6 @@ AuthenticatedIcons.propTypes = {
     first_name: PropTypes.string,
     last_name: PropTypes.string,
   }),
-  logout: PropTypes.func.isRequired,
   role: PropTypes.string.isRequired,
 };
 
@@ -160,7 +159,6 @@ function Header(props) {
         { props.loggedIn ?
           <AuthenticatedIcons
             userObject={props.userObject}
-            logout={props.clickedLogout}
             role={props.role}
           /> :
           <UnauthenticatedIcons />
@@ -176,7 +174,6 @@ Header.propTypes = {
     last_name: PropTypes.string,
   }),
   loggedIn: PropTypes.bool.isRequired,
-  clickedLogout: PropTypes.func.isRequired,
   role: PropTypes.string.isRequired,
 };
 

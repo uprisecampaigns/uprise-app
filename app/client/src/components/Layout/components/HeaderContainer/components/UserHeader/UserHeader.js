@@ -1,6 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Link from 'components/Link';
+
+import { attemptLogout } from 'actions/AuthActions';
 
 import s from 'styles/Header.scss';
 
@@ -13,17 +17,21 @@ function UserHeader(props) {
       </div>
       <div className={s.linksContainer}>
         <div>
-          <Link to="/user/profile" useAhref={false}>Profile</Link>
+          <Link to="/account/view-profile" useAhref={false}>Profile</Link>
         </div>
         <div>
-          <Link to="/user/settings" useAhref={false}>Settings</Link>
+          <Link to="/account/settings" useAhref={false}>Settings</Link>
         </div>
         <div>
-          <Link to="/logout" useAhref={false}>Logout</Link>
+          <Link to="" onClick={() => props.dispatch(attemptLogout())} useAhref={false}>Logout</Link>
         </div>
       </div>
     </div>
   );
 }
 
-export default UserHeader;
+UserHeader.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default connect()(UserHeader);

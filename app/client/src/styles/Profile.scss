@@ -218,3 +218,32 @@
     color: $white !important;
   }
 }
+
+.profileContainer {
+  width: 100%;
+  display: flex;
+}
+
+.leftContainer {
+  flex: 1 0 auto;
+  width: 28%;
+  margin-right: 2%;
+}
+
+.rightContainer {
+  flex: 1 0 auto;
+  width: 70%;
+}
+
+.profileBox {
+  padding: 1rem;
+  border: 1px solid $light-grey;
+}
+
+.activitiesContainer {
+  margin-top: 1rem;
+
+  .inlineTogglesContainer {
+    text-transform: capitalize;
+  }
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import UserProfile from 'scenes/UserProfile';
+import ViewUserProfile from 'scenes/ViewUserProfile';
 import Layout from 'components/Layout';
 
 import UserQuery from 'schemas/queries/UserQuery.graphql';
@@ -24,7 +24,7 @@ export default {
           image: result.data.user.profile_image_url,
           component: (
             <Layout>
-              <UserProfile userId={id} />
+              <ViewUserProfile userId={id} />
             </Layout>
           ),
         };

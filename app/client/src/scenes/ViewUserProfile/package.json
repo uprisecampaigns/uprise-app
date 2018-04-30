@@ -1,0 +1,6 @@
+{
+  "name": "ViewUserProfile",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ViewUserProfile.js"
+}

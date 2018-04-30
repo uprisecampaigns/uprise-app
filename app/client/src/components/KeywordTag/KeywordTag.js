@@ -9,8 +9,6 @@ import {
   addSearchItem, clearSearch,
 } from 'actions/SearchActions';
 
-import { setPage } from 'actions/PageNavActions';
-
 
 function KeywordTag(props) {
   const {
@@ -23,8 +21,19 @@ function KeywordTag(props) {
 
     dispatch(clearSearch(type));
     dispatch(addSearchItem(type, 'tags', label));
-    dispatch(setPage('home', type));
-    history.push('/search');
+
+    // TODO: Currently no good way to lead directly to
+    // user search
+    const searchMap = {
+      action: '/browse',
+      campaign: '/follow',
+      user: '/browse',
+    };
+
+    const newPage = searchMap[type];
+    if (typeof newPage === 'string') {
+      history.push(newPage);
+    }
   };
 
   return (

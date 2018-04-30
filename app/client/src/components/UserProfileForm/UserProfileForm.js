@@ -7,8 +7,11 @@ import ImageUploader from 'components/ImageUploader';
 import SearchBar from 'components/SearchBar';
 import SelectedItemsContainer from 'components/SelectedItemsContainer';
 
-import s from 'styles/Form.scss';
+import formStyles from 'styles/Form.scss';
+import profileStyles from 'styles/Profile.scss';
 
+
+const s = { ...profileStyles, ...formStyles };
 
 class UserProfileForm extends PureComponent {
   static propTypes = {
@@ -31,9 +34,9 @@ class UserProfileForm extends PureComponent {
 
     return (
       <div className={s.outerContainer}>
-        <div className={s.editProfileContainer}>
+        <div className={s.profileContainer}>
           <div className={s.leftContainer}>
-            <div className={[s.namePhotoContainer, s.editProfileBox].join(' ')}>
+            <div className={[s.namePhotoContainer, s.profileBox].join(' ')}>
               <ImageUploader
                 onChange={(imgSrc) => { handleInputChange(undefined, 'profileImageUrl', imgSrc); }}
                 imageSrc={data.profileImageUrl}

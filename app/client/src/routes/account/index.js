@@ -1,9 +1,5 @@
 /* eslint-disable global-require */
 
-import React from 'react';
-import Settings from 'scenes/Settings';
-import Layout from 'components/Layout';
-
 import { setRole } from 'actions/PageNavActions';
 
 export default {
@@ -21,14 +17,14 @@ export default {
     {
       path: '',
       action: () => ({
-        title: 'Account',
-        component: <Layout><Settings /></Layout>,
+        redirect: '/account/view-profile',
       }),
     },
     require('./settings').default,
     require('./contact').default,
     require('./privacySecurity').default,
     require('./confirmEmail').default,
+    require('./viewProfile').default,
     require('./editProfile').default,
   ],
 };

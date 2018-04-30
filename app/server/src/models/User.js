@@ -46,12 +46,19 @@ class User {
   static findOne({ selections = [], args }) {
     // If one of the args has a property name 'id', we really want it to
     // refer to 'users.id'
-    const newArgs = Object.assign(...Object.keys(args).map((k) => {
-      if (k === 'id') {
-        return { 'users.id': args[k] };
-      }
-      return { [k]: args[k] };
-    }));
+    const newArgs = Object.keys(args)
+      .reduce((obj, k) => {
+        if (k === 'id') {
+          return {
+            ...obj,
+            'users.id': args.id,
+          };
+        }
+        return {
+          ...obj,
+          k: args[k],
+        };
+      }, {});
 
     const allSelections = [
       ...selections,
