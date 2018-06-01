@@ -37,6 +37,7 @@
     "body-parser": "~1.18.2",
     "bowser": "^1.8.1",
     "camelcase": "^4.0.0",
+    "classnames": "^2.2.5",
     "compression-webpack-plugin": "^1.0.1",
     "connect-redis": "^3.2.0",
     "cookie-parser": "~1.4.3",
@@ -120,7 +121,7 @@
     "zipcode-to-timezone": "0.0.9"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.1",
+    "babel-eslint": "^8.2.3",
     "babel-jest": "^21.2.0",
     "babel-plugin-dynamic-import-node": "^1.1.0",
     "enzyme": "^3.0.0",

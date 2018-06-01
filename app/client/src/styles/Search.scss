@@ -13,7 +13,10 @@
     display: none;
 
     .filterHeaderContainer {
-      padding: 1rem;
+      padding: 0.6rem 1rem;
+      background-color: $azure;
+      color: $white;
+      margin-top: 2rem;
 
       .filterHeader {
         font-size: 1.2rem;
@@ -23,28 +26,30 @@
 
     @media (min-width: $screen-md-min) {
       display: inline-block;
-      width: 25%;
+      width: 19rem;
     }
   }
 
   .allSizesContainer {
     display: block;
     width: 100%;
+    margin: 0;
 
     @media (min-width: $screen-md-min) {
       display: inline-block;
       width: 75%;
+      margin: 2rem 0 0 2rem;
     }
   }
 
   .searchBarContainer {
-    margin: 1rem 1rem 2rem 1rem;
+    margin: 0.9rem 1rem 2rem 1rem;
     display: flex;
     justify-content: space-around;
     align-items: baseline;
 
     @media (min-width: $screen-md-min) {
-      margin: 1rem 0rem 2rem 2.777rem;
+      margin: 0;
     }
 
     .searchBar {
@@ -71,7 +76,7 @@
   }
 
   .selectionsContainer {
-    padding: 0rem 1rem;
+    margin-top: 1rem;
   }
 
   .filterOverlay {
@@ -123,11 +128,12 @@
 
     .card {
       margin: .5rem 1rem .5rem 1rem;
-      box-shadow: 0px 2px 2px 0px darken($white, 50%) !important;
+      box-shadow: none !important;
       padding: 1.111rem 3rem 1.111rem 4.11rem !important;
+      border: 1px solid $medium-light-grey;
 
       @media (min-width: $screen-md-min) {
-        margin: .5rem 0rem .5rem 2.777rem;
+        margin: .5rem 0;
       }
     }
 
@@ -202,25 +208,25 @@
 }
 
 .searchInputsList {
-  padding: 0px 0px !important;
-
-  > div {
-    padding-right: 5%;
-  }
+  padding: 1rem 0 0 !important;
+  background-color: $white;
+  border: 1px solid $medium-light-grey;
+  border-top: none;
 }
 
 .listItemContainer, .listItemContainer >div:first-of-type >span:first-of-type {
   font-size: 1rem !important;
   font-weight: 500 !important;
+  border-bottom: 1px solid $medium-light-grey;
 }
 
 .listItemContainer >div:first-of-type >div:first-of-type {
   max-height: inherit !important;
   overflow-y: inherit !important;
 }
- 
+
 .listItemContainer button svg {
-  color: $brick-red !important;
+  color: $azure !important;
 }
 
 .listItem {
@@ -231,7 +237,7 @@
 }
 
 .dateSearchContainer, .geographySearchContainer {
-  padding: 1rem 2rem;
+  // padding: 1rem 2rem;
 }
 
 label.listItem {

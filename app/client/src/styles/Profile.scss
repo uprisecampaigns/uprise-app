@@ -4,15 +4,16 @@
 @import '~styles/modals';
 
 .outerContainer {
+  background-color: $white;
   width: 100%;
   max-width: $max-content-width;
   margin: 0rem auto 4rem auto;
 }
 
 .innerContainer {
-  width: 90%;
-  margin: 1rem 5% 0 5%;
+  margin: 0;
   font-size: 1rem;
+  padding: 1rem;
 }
 
 .actionTitleSignupContainer {
@@ -86,7 +87,7 @@
   margin: 0 -9999rem;
   padding-left: 9999rem;
   padding-right: 9999rem;
-  background-color: $light-grey;
+  // background-color: $light-grey;
 }
 
 .campaignHeader {

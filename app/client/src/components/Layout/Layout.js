@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ClassNames from 'classnames';
 import Snackbar from 'material-ui/Snackbar';
 import LinearProgress from 'material-ui/LinearProgress';
 import Dialog from 'material-ui/Dialog';
@@ -12,14 +13,11 @@ import LoginModalPrompt from 'components/LoginModalPrompt';
 
 import s from 'styles/Layout.scss';
 
-import {
-  clear,
-  cancelNavFromDirtyForm,
-  confirmNavFromDirtyForm,
-} from 'actions/NotificationsActions';
+import { clear, cancelNavFromDirtyForm, confirmNavFromDirtyForm } from 'actions/NotificationsActions';
 
 import HeaderContainer from './components/HeaderContainer';
 import NavDrawerContainer from './components/NavDrawerContainer';
+import Footer from './components/Footer';
 
 
 export class Layout extends Component {
@@ -42,23 +40,22 @@ export class Layout extends Component {
   handleDrawerToggle = (event) => {
     typeof event.preventDefault === 'function' && event.preventDefault();
     this.setState({ drawerOpen: !this.state.drawerOpen });
-  }
+  };
 
   handleDrawerRequestChange = (open, reason) => {
     this.setState({
       drawerOpen: open,
     });
-  }
+  };
 
   render() {
     return (
-      <div>
-
-        { this.props.pageLoading &&
+      <div className={s.layoutOuterContainer}>
+        {this.props.pageLoading && (
           <div className={s.pageLoadingContainer}>
             <LinearProgress mode="indeterminate" />
           </div>
-        }
+        )}
 
         <HeaderContainer handleDrawerToggle={this.handleDrawerToggle} />
 
@@ -68,14 +65,23 @@ export class Layout extends Component {
           onRequestChange={this.handleDrawerRequestChange}
         />
 
-        {this.props.children}
+        <div
+          className={ClassNames({
+            [s.contentContainer]: true,
+            [s.fillPage]: !this.props.fetchingUpdate && !this.props.loggedIn,
+          })}
+        >
+          {this.props.children}
+        </div>
+
+        <Footer />
 
         <Snackbar
           className={s.snackbar}
           open={this.props.displayNotification}
           message={this.props.notificationMessage}
           autoHideDuration={0}
-          onRequestClose={reason => this.props.dispatch(clear())}
+          onRequestClose={(reason) => this.props.dispatch(clear())}
         />
 
         <LoginModalPrompt />
@@ -89,29 +95,35 @@ export class Layout extends Component {
               label="Leave"
               primary={false}
               className={s.secondaryButton}
-              onClick={(event) => { event.preventDefault(); this.props.dispatch(confirmNavFromDirtyForm()); }}
+              onClick={(event) => {
+                event.preventDefault();
+                this.props.dispatch(confirmNavFromDirtyForm());
+              }}
             />,
             <RaisedButton
               label="Keep Editing"
               primary
               className={s.primaryButton}
-              onClick={(event) => { event.preventDefault(); this.props.dispatch(cancelNavFromDirtyForm()); }}
+              onClick={(event) => {
+                event.preventDefault();
+                this.props.dispatch(cancelNavFromDirtyForm());
+              }}
             />,
           ]}
           open={this.props.displayFormNavWarning}
         >
-          <p>
-            You have unsaved changes. Are you sure you want to leave this page?
-          </p>
+          <p>You have unsaved changes. Are you sure you want to leave this page?</p>
         </Dialog>
       </div>
     );
   }
 }
 
-export default withAuthentication(connect(state => ({
-  pageLoading: state.notifications.pageLoading,
-  notificationMessage: state.notifications.message,
-  displayFormNavWarning: state.notifications.displayFormNavWarning,
-  displayNotification: state.notifications.display,
-}))(Layout));
+export default withAuthentication(
+  connect((state) => ({
+    pageLoading: state.notifications.pageLoading,
+    notificationMessage: state.notifications.message,
+    displayFormNavWarning: state.notifications.displayFormNavWarning,
+    displayNotification: state.notifications.display,
+  }))(Layout),
+);

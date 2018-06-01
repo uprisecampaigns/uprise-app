@@ -6,7 +6,6 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
 
   @media (max-width: $screen-sm-min) {
     margin: 0rem 0rem 1rem 0rem;
@@ -17,29 +16,40 @@
   display: block;
   flex: 1;
   text-align: center;
-  max-width: $max-content-width - 100px;
+  max-width: $max-content-width;
 
 }
 
 .formContainer {
-  padding: 1rem 4rem 1.5rem 3rem;
+  padding: 2rem;
 
   @media (max-width: $screen-sm-min) {
-    padding: 0px 1rem;
+    padding: 1rem;
   }
 }
 
 .form {
   text-align: center;
+  max-width: ($max-content-width / 2);
+  margin: 0 auto;
 }
 
 .button {
-  margin: 30px 10px 10px 10px;
+  margin: 2rem 1rem 1rem 1rem;
   display: inline-block;
+  > div {
+    box-shadow: none !important;
+  }
+
+  button {
+    cursor: pointer;
+    border: 0;
+    transition: background 200ms ease;
+  }
 }
 
 .organizeButton {
-  
+
   @extend .button;
   @extend .primaryButton;
 }
@@ -47,6 +57,8 @@
 .loginButton {
   @extend .secondaryButton;
   margin: 1rem auto 0rem auto;
+  width: 256px;
+  padding: 1rem;
 }
 
 .signupButton {
@@ -57,7 +69,7 @@
 
     height: 4rem !important;
     padding: 1rem !important;
-    
+
     span {
       font-size: 2rem !important;
       font-weight: 500 !important;
@@ -114,9 +126,26 @@
   color: $fire-red;
 }
 
-.forgotPassword {
-  display: block;
-  padding: 10px 0px 20px 0px;
+.forgotPasswordLink {
+  color: $black !important;
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  background-color: $light-grey;
+  border: 1px solid darken($light-grey, 20%);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: background 200ms ease;
+  &:hover {
+    background-color: darken($light-grey, 10%)
+  }
+}
+
+.signUpLink {
+  color: $blue;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .loginHeader {
@@ -143,7 +172,10 @@
 }
 
 .loginContainer {
-  padding-top: 1rem;
+  background-color: $white;
+  margin: 0 auto;
+  max-width: $max-content-width;
+  padding: 1rem 0 3rem;
   text-align: center;
 
   @media (max-width: $screen-sm-min) {
@@ -151,12 +183,9 @@
   }
 
   > p {
-    font-size: 1.5rem;
-    color: $fire-red;
-
     @media (max-width: $screen-sm-min) {
       font-size: 1rem;
-      margin: 0px;
+      margin: 0;
     }
   }
 }
@@ -209,4 +238,23 @@
 
 .shiftLabel {
   margin-right: 1rem;
+}
+
+.actionHeaderContainer {
+  border-bottom: 1px solid $medium-light-grey;
+  padding: 1rem;
+}
+
+.actionHeader {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0;
+  text-align: left;
+}
+
+.actionSubheader {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  text-align: left;
 }

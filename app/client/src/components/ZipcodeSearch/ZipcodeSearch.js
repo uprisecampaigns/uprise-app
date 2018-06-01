@@ -68,7 +68,7 @@ class ZipcodeSearch extends PureComponent {
           pattern="[0-9]{5}"
           value={zipcode}
           style={textFieldStyle}
-          underlineShow={false}
+          underlineShow={true}
           onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
         />
         <div className={s.addToSearchButton}>

@@ -7,7 +7,6 @@
   width: 100%;
   max-width: $max-content-width;
   overflow-x: hidden;
-  min-height: 100vh;
   margin: 0rem auto 0rem auto;
 
   .savingThrobberContainer {
@@ -88,7 +87,7 @@
     font-size: 1.8rem;
     line-height: 1.8rem;
     padding: 1rem;
-    padding: 0rem 1rem; 
+    padding: 0rem 1rem;
   }
 
   .actionListDetailLine {

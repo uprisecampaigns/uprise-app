@@ -1,29 +1,29 @@
 // Colors
 
-$red: #990000;
+$red: #900;
 $brick-red: #d62938;
 $fire-red: #c00000;
 $dark-teal: #0a3b42;
 $dark-blue: #0e4053;
+$blue: #0076c5;
 $azure: #32779a;
 $black: #000;
-$light-grey: lighten($black, 90%);
+$denim: #1976c5;
 $grey: lighten($black, 50%);
 $white: #fff;
-$light-grey: darken($white, 10%);
-$medium-grey: darken($white, 50%);
+$light-grey: #f5f5f5;
+$medium-grey: #808080;
+$medium-light-grey: #e0e0e0;
 $dark-grey: darken($white, 90%);
 
 // Fonts
-$font-family: "Roboto", Helvetica, Arial, sans-serif;
-
+$font-family: 'Roboto', Helvetica, Arial, sans-serif;
 
 // Layout
 $max-content-width: 1100px;
 
-
 // Media Query Screen Sizes
-$screen-xs-min: 480px;  /* Extra small screen / phone */
-$screen-sm-min: 768px;  /* Small screen / tablet */
-$screen-md-min: 992px;  /* Medium screen / desktop */
-$screen-lg-min: 1200px; /* Large screen / wide desktop */
+$screen-xs-min: 480px; // Extra small screen / phone
+$screen-sm-min: 768px; // Small screen / tablet
+$screen-md-min: 992px; // Medium screen / desktop
+$screen-lg-min: 1200px; // Large screen / wide desktop

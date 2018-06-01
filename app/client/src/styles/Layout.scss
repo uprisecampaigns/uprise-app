@@ -9,12 +9,12 @@
  * ========================================================================== */
 
 html {
+  background-color: $light-grey;
   color: lighten($black, 10%);
   font-weight: 400;
   font-family: $font-family;
   line-height: 1.375; /* ~22px */
   overflow-x: hidden;
-
   font-size: 1.125em; /* ~18px; */
 
   @media (max-width: $screen-sm-min) {
@@ -33,6 +33,25 @@ body {
 
 button, button span {
   font-weight: 400 !important;
+}
+
+.layoutOuterContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.contentContainer {
+  background-color: $light-grey;
+  width: 100%;
+  flex: 1;
+  max-width: $max-content-width;
+  margin: 0 auto;
+}
+
+.fillPage {
+  margin: 0;
+  max-width: none;
 }
 
 /*

@@ -1,0 +1,147 @@
+@import '~styles/variables';
+@import '~styles/buttons';
+
+.outerHeaderContainer {
+  background-color: $denim;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  color: $white;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 auto;
+  max-width: $max-content-width;
+  position: relative;
+}
+
+.subHeader {
+  @extend .header;
+  align-items: flex-end;
+  background-color: $white;
+  color: $black;
+  font-size: 0.9rem;
+  justify-content: space-between;
+  span {
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    position: relative;
+    overflow: hidden;
+    &:after {
+      border-color: transparent transparent $medium-grey transparent;
+      border-style: solid;
+      border-width: 0 0.5rem 0.5rem 0.5rem;
+      bottom: -1rem;
+      content: '';
+      height: 0;
+      left: 50%;
+      margin-left: -0.5rem;
+      position: absolute;
+      width: 0;
+      transition: bottom 250ms ease;
+    }
+    &:hover {
+      color: $medium-grey;
+      &:after {
+        bottom: 0;
+      }
+    }
+  }
+}
+
+.browseHeader {
+  @extend .header;
+  color: $black;
+  background-color: $medium-grey;
+  justify-content: space-between;
+
+  .linksContainer > div {
+    margin: 1rem;
+  }
+}
+
+.logoContainer {
+  background-color: $fire-red;
+  a {
+    color: $white;
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 0.5rem 2rem;
+    text-decoration: none;
+  }
+}
+
+.linksContainer {
+  border-bottom: 1px solid $light-grey;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  > div {
+    margin: 0 2rem 0 0;
+    display: flex;
+  }
+}
+
+.menuItemsContainer {
+  display: flex;
+  align-items: flex-end;
+
+  > div {
+    margin-right: 2rem;
+    padding: 1rem 0;
+  }
+}
+
+svg.accountIcon {
+  color: $white !important;
+  height: 1.5rem !important;
+  width: 1.5rem !important;
+  padding-right: 0.55rem;
+}
+
+.headerButton {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  font-size: 1.22rem;
+  line-height: 2rem;
+  > span {
+    display: block;
+    outline: 0;
+  }
+}
+
+.primaryButton {
+  > span {
+    background-color: $white;
+    border-radius: 0.2rem;
+    color: $black;
+    padding: 0 0.5rem;
+  }
+}
+
+.activeButton {
+  &:after {
+    border-color: transparent transparent #ffffff transparent;
+    border-style: solid;
+    border-width: 0 0.5rem 0.5rem 0.5rem;
+    bottom: 0;
+    content: '';
+    height: 0;
+    left: 50%;
+    margin-left: -0.25rem;
+    position: absolute;
+    width: 0;
+  }
+}
+
+.avatarButton {
+  &:after {
+    margin-left: -0.5rem !important;
+  }
+}
+
+@media (max-width: $screen-md-min) {
+}

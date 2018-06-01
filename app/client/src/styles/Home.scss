@@ -5,22 +5,16 @@
 
 .outerContainer {
   width: 100%;
-  background-color: darken($white, 5%);
 
   .searchContainer {
     overflow: hidden;
     padding-bottom: 2rem;
 
     > div {
-      min-height: 100vh;
       position: relative;
       overflow: hidden;
-
-      @media (min-width: $screen-lg-min) {
-        top: 1rem;
-        max-width: $max-content-width;
-        margin: 0rem auto;
-      }
+      max-width: $max-content-width;
+      margin: 0 auto;
     }
   }
 }

@@ -23,10 +23,6 @@ import {
   defaultActionStartState,
 } from 'reducers/SearchReducer';
 
-import {
-  defaultHomeNavStartState,
-} from 'reducers/PageNavReducer';
-
 import { checkSessionStatus } from 'actions/AuthActions';
 import {
   startPageLoad,
@@ -89,7 +85,6 @@ if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
 const store = configureStore({
   actionsSearch: defaultActionStartState,
   campaignsSearch: defaultCampaignStartState,
-  homePageNav: defaultHomeNavStartState,
 });
 
 // eslint-disable-next-line no-unused-vars
@@ -235,7 +230,7 @@ async function onLocationChange(location) {
 
     // Do a full page reload if error occurs during client-side navigation
     if (!isInitialRender && currentLocation.key === location.key) {
-      window.location.reload(true);
+      // TODO: Proper response during production error
     }
   }
 }

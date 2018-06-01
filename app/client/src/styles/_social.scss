@@ -1,0 +1,45 @@
+.shareBtnLink {
+  color: #fff;
+  display: inline-block;
+  margin-right: 0.5em;
+  text-decoration: none;
+}
+.shareBtn {
+  border-radius: 5px;
+  fill: $white;
+  padding: 0.5em 0.75em;
+  transition: 25ms ease-out;
+  svg {
+    height: 1em;
+    vertical-align: middle;
+    width: 1em;
+  }
+}
+
+.shareFacebook {
+  background-color: #3b5998;
+  &:hover {
+    background-color: #2d4373;
+  }
+}
+
+.shareTwitter {
+  background-color: #55acee;
+  &:hover {
+    background-color: #2795e9;
+  }
+}
+
+.shareGoogle {
+  background-color: #dd4b39;
+  &:hover {
+    background-color: #c23321;
+  }
+}
+
+.shareLinkedin {
+  background-color: #0077b5;
+  &:hover {
+    background-color: #046293;
+  }
+}

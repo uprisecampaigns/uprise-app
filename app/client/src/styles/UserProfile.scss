@@ -6,40 +6,41 @@
 
 .userProfileContainer {
   display: flex;
-  min-height: 100vh;
+  margin-top: 2rem;
 }
 
 .leftContent {
+  background-color: $white;
+  border: 1px solid $medium-light-grey;
   flex: 1;
-  background-color: $azure;
-  color: $white;
   font-weight: 300;
+  padding-bottom: 1rem;
   text-align: center;
-  padding: 1rem;
 }
 
 .centerContent {
   flex: 2;
-  background-color: $light-grey;
-  padding: 5%;
+  margin-left: 1rem;
 }
 
 
 .infoBox {
   background-color: $white;
-  border: 1px solid $grey;
-  margin: 1rem 0rem;
+  border: 1px solid $medium-light-grey;
+  margin-bottom: 1rem;
   padding: 1rem;
+  font-size: 0.8rem;
 }
 
 .rightContent {
-  flex: 1;
   border-right: 1px solid $grey;
+  flex: 1;
   padding: 1rem;
 }
 
 .nameHeader {
   font-size: 1.5rem;
+  font-weight: 500;
   margin: 1rem 0;
 }
 
@@ -51,38 +52,57 @@
 }
 
 .profileImage {
-  margin-top: 2rem;
-  border-radius: 50%;
   border: 2px solid $white;
+  border-radius: 50%;
+  margin-top: 2rem;
   max-width: 60%;
 }
 
 .infoBoxContainer {
-  padding: 1rem;
+  // padding: 1rem;
 }
 
 .infoBoxHeader {
-  margin: 1rem 0;
-  color: $grey;
-  font-size: 1.2rem;
-  text-transform: uppercase;
+  color: $dark-grey;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
 }
 
 .keywordsHeader {
-  font-size: 1.2rem;
-  text-transform: uppercase;
+  border-top: 1px solid $medium-light-grey;
   color: $grey;
+  font-size: 0.7rem;
   font-weight: 500;
-  margin-bottom: 1rem;
+  letter-spacing: 0.05rem;
+  margin: 2rem 0 0.5rem;
+  padding: 2rem 0 0 2rem;
+  text-align: left;
+  text-transform: uppercase;
 }
 
 .keywordTag {
+  background-color: $light-grey !important;
+  border-radius: 0.2rem !important;
+  border: 1px solid $medium-light-grey !important;
   cursor: pointer !important;
-  margin-bottom: 0.5rem !important;
-  background-color: transparent !important;
+  margin: 0 0 0.5rem 2rem !important;
+  padding: 0 0.5rem !important;
 
   span {
     color: $azure !important;
     padding: 0px !important;
   }
+}
+
+.primaryButton {
+  width: 80%;
+}
+
+.headerButtonsContainer {
+  text-align: right;
+  margin: 1rem 0;
+}
+.editProfileButton {
+
 }

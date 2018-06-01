@@ -1,9 +1,10 @@
 @import '~styles/variables';
 
 .primaryButton button {
-  background-color: lighten($brick-red, 25%) !important;
-  span {
-    color: darken($brick-red, 10%) !important;
+  background-color: $fire-red;
+  color: $white;
+  &:hover {
+    background-color: darken($fire-red, 10%);
   }
 }
 

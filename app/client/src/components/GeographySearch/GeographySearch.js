@@ -7,22 +7,22 @@ import Checkbox from 'material-ui/Checkbox';
 
 import s from 'styles/Search.scss';
 
-
 const textFieldStyle = {
   display: 'inline-block',
   width: '4rem',
-  padding: '0 1rem',
+  padding: '0',
+  margin: '0.5rem',
 };
 
 class GeographySearch extends PureComponent {
   static propTypes = {
     addItem: PropTypes.func.isRequired,
     showVirtual: PropTypes.bool,
-  }
+  };
 
   static defaultProps = {
     showVirtual: true,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -39,19 +39,17 @@ class GeographySearch extends PureComponent {
   handleInputChange = (event, type, value) => {
     let valid = false;
     if (typeof type === 'string') {
-      if ((type === 'zipcode' && value.length < 6 && (isNumeric(value) || value === '')) ||
-          (type === 'distance' && ((isNumeric(value) && parseInt(value, 10) > 0) || value === '')) ||
-          (type === 'virtual' && typeof value === 'boolean')) {
+      if (
+        (type === 'zipcode' && value.length < 6 && (isNumeric(value) || value === '')) ||
+        (type === 'distance' && ((isNumeric(value) && parseInt(value, 10) > 0) || value === '')) ||
+        (type === 'virtual' && typeof value === 'boolean')
+      ) {
         valid = true;
       }
     }
 
-    valid && this.setState(prevState => (Object.assign(
-      {},
-      prevState,
-      { [type]: value },
-    )));
-  }
+    valid && this.setState((prevState) => Object.assign({}, prevState, { [type]: value }));
+  };
 
   addItem = (event) => {
     const { distance, zipcode, virtual } = this.state;
@@ -60,29 +58,33 @@ class GeographySearch extends PureComponent {
       event.preventDefault();
     }
 
-    const searchItem = this.state.virtual ? {
-      virtual,
-    } : {
-      distance,
-      zipcode,
-    };
+    const searchItem = this.state.virtual
+      ? {
+          virtual,
+        }
+      : {
+          distance,
+          zipcode,
+        };
 
-    if (searchItem.virtual ||
-        (isNumeric(searchItem.distance) && isNumeric(searchItem.zipcode) &&
-         parseInt(searchItem.distance, 10) > 0 && searchItem.zipcode.length === 5)) {
+    if (
+      searchItem.virtual ||
+      (isNumeric(searchItem.distance) &&
+        isNumeric(searchItem.zipcode) &&
+        parseInt(searchItem.distance, 10) > 0 &&
+        searchItem.zipcode.length === 5)
+    ) {
       this.props.addItem('geographies', searchItem);
 
-      this.setState(prevState => (Object.assign(
-        {},
-        prevState,
-        {
+      this.setState((prevState) =>
+        Object.assign({}, prevState, {
           distance: '10',
           zipcode: '',
           virtual: this.props.showVirtual ? false : undefined,
-        },
-      )));
+        }),
+      );
     }
-  }
+  };
 
   render() {
     const { showVirtual } = this.props;
@@ -90,30 +92,31 @@ class GeographySearch extends PureComponent {
     const { addItem, handleInputChange } = this;
 
     return (
-      <form
-        onSubmit={addItem}
-      >
-
+      <form onSubmit={addItem}>
         {showVirtual && (
           <Checkbox
             label="Virtual (anywhere)"
             checked={virtual}
-            onCheck={(event, isChecked) => { handleInputChange(event, 'virtual', isChecked); }}
+            onCheck={(event, isChecked) => {
+              handleInputChange(event, 'virtual', isChecked);
+            }}
             className={s.checkboxContainer}
           />
         )}
 
         {!virtual && (
           <div>
-
             Within
             <TextField
               type="number"
               min="1"
               value={distance}
               style={textFieldStyle}
-              underlineShow={false}
-              onChange={(event) => { handleInputChange(event, 'distance', event.target.value); }}
+              className={s.textField}
+              underlineShow={true}
+              onChange={(event) => {
+                handleInputChange(event, 'distance', event.target.value);
+              }}
             />
             miles of
             <TextField
@@ -122,19 +125,16 @@ class GeographySearch extends PureComponent {
               pattern="[0-9]{5}"
               value={zipcode}
               style={textFieldStyle}
-              underlineShow={false}
-              onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
+              className={s.textField}
+              underlineShow={true}
+              onChange={(event) => {
+                handleInputChange(event, 'zipcode', event.target.value);
+              }}
             />
           </div>
         )}
         <div className={s.addToSearchButton}>
-          <RaisedButton
-            className={s.primaryButton}
-            onClick={addItem}
-            type="submit"
-            primary
-            label="Add to Search"
-          />
+          <RaisedButton className={s.primaryButton} onClick={addItem} type="submit" primary label="Add to Search" />
         </div>
       </form>
     );
