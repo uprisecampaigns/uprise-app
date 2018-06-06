@@ -41,8 +41,6 @@ function Footer(props) {
                     staff@uprise.org
                   </Link>
                 </div>
-                <div>3600 Monument Ave #12</div>
-                <div>Richmond, VA 23230</div>
                 <div>1442A Walnut St #149</div>
                 <div>Berkeley, CA 94709</div>
               </div>
