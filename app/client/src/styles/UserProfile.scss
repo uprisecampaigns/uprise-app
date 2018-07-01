@@ -3,6 +3,8 @@
 @import '~styles/buttons';
 @import '~styles/modals';
 @import '~styles/tabs';
+@import '~styles/tags';
+@import '~styles/headers';
 
 .userProfileContainer {
   display: flex;
@@ -23,13 +25,52 @@
   margin-left: 1rem;
 }
 
+.saveButton {
+  @extend .darkButton;
+  margin: 1rem !important;
+}
+
+.smallHeader {
+  margin: 0;
+  border: 0;
+}
+
+.smallText {
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.bodyText {
+  font-style: italic;
+  padding: 0 1rem;
+}
+
+.profileImageContainer {
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.textareaContainer {
+  border: 1px solid $medium-light-grey;
+  text-align: left;
+  box-sizing: border-box;
+  padding: 0 0.75rem;
+  font-weight: 400;
+}
 
 .infoBox {
   background-color: $white;
   border: 1px solid $medium-light-grey;
-  margin-bottom: 1rem;
   padding: 1rem;
   font-size: 0.8rem;
+  margin-bottom: 1rem;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.formFieldContainer {
+  margin: 0 2rem;
 }
 
 .rightContent {
@@ -69,34 +110,9 @@
   font-weight: 500;
 }
 
-.keywordsHeader {
-  border-top: 1px solid $medium-light-grey;
-  color: $grey;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.05rem;
-  margin: 2rem 0 0.5rem;
-  padding: 2rem 0 0 2rem;
-  text-align: left;
-  text-transform: uppercase;
-}
-
-.keywordTag {
-  background-color: $light-grey !important;
-  border-radius: 0.2rem !important;
-  border: 1px solid $medium-light-grey !important;
-  cursor: pointer !important;
-  margin: 0 0 0.5rem 2rem !important;
-  padding: 0 0.5rem !important;
-
-  span {
-    color: $azure !important;
-    padding: 0px !important;
-  }
-}
-
-.primaryButton {
+.brightButton {
   width: 80%;
+  margin: 0 auto;
 }
 
 .headerButtonsContainer {
@@ -104,5 +120,6 @@
   margin: 1rem 0;
 }
 .editProfileButton {
-
+  @extend .darkButton;
+  margin: 1rem;
 }

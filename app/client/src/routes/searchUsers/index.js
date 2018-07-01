@@ -8,7 +8,7 @@ export default {
   path: '/search/search-volunteers',
 
   action(context) {
-    context.store.dispatch(setPage('home', 'user'));
+    context.store.dispatch(setPage('user'));
 
     return {
       title: 'Search for UpRise Volunteers',

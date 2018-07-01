@@ -14,8 +14,7 @@
 
     .filterHeaderContainer {
       padding: 0.6rem 1rem;
-      background-color: $azure;
-      color: $white;
+      color: $dark-grey;
       margin-top: 2rem;
 
       .filterHeader {
@@ -65,7 +64,7 @@
         display: none;
       }
 
-      >button {
+      > button {
         top: 0.5rem;
       }
     }
@@ -85,7 +84,7 @@
     width: 100%;
     height: 100%;
     z-index: 1;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: rgba(0, 0, 0, 0.6);
   }
 
   .filterOptionsContainer {
@@ -122,18 +121,17 @@
   }
 
   .resultsContainer {
-
     width: 100%;
     overflow-x: hidden;
 
     .card {
-      margin: .5rem 1rem .5rem 1rem;
+      margin: 0.5rem 1rem 0.5rem 1rem;
       box-shadow: none !important;
       padding: 1.111rem 3rem 1.111rem 4.11rem !important;
       border: 1px solid $medium-light-grey;
 
       @media (min-width: $screen-md-min) {
-        margin: .5rem 0;
+        margin: 0.5rem 0;
       }
     }
 
@@ -156,12 +154,12 @@
         margin-left: -2.777rem;
       }
 
-      >div:first-of-type {
+      > div:first-of-type {
         @media (max-width: $screen-xs-min) {
           padding-right: 0px !important;
         }
 
-        >span:first-of-type {
+        > span:first-of-type {
           font-size: 1.111rem !important;
           line-height: 1.4rem !important;
           color: $dark-blue !important;
@@ -208,19 +206,19 @@
 }
 
 .searchInputsList {
-  padding: 1rem 0 0 !important;
   background-color: $white;
   border: 1px solid $medium-light-grey;
   border-top: none;
 }
 
-.listItemContainer, .listItemContainer >div:first-of-type >span:first-of-type {
+.listItemContainer,
+.listItemContainer > div:first-of-type > span:first-of-type {
   font-size: 1rem !important;
   font-weight: 500 !important;
   border-bottom: 1px solid $medium-light-grey;
 }
 
-.listItemContainer >div:first-of-type >div:first-of-type {
+.listItemContainer > div:first-of-type > div:first-of-type {
   max-height: inherit !important;
   overflow-y: inherit !important;
 }
@@ -236,17 +234,18 @@
   font-weight: 400 !important;
 }
 
-.dateSearchContainer, .geographySearchContainer {
+.dateSearchContainer,
+.geographySearchContainer {
   // padding: 1rem 2rem;
 }
 
 label.listItem {
   margin-left: 1rem !important;
-  padding: .4rem 1rem .4rem 2.777rem !important;
+  padding: 0.4rem 1rem 0.4rem 2.777rem !important;
   display: flex !important;
   align-items: center;
 
-  >div:first-of-type {
+  > div:first-of-type {
     top: inherit !important;
   }
 }
@@ -268,9 +267,9 @@ label.listItem {
 }
 
 .datePickerLine {
+  align-items: center;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
 }
 
 .datePickerLabel {
@@ -279,7 +278,7 @@ label.listItem {
 }
 
 .datePicker {
-  >div {
+  > div {
     width: 4rem !important;
   }
 }
@@ -288,6 +287,13 @@ label.listItem {
 }
 
 .addToSearchButton {
+  background-color: $bright-blue;
+  color: $white;
+  font-size: 0.7rem;
+  margin: 1rem 0 0 0;
   text-align: right;
-  margin: 1rem 0rem 0rem 0rem;
+  text-transform: uppercase;
+  &:hover {
+    background-color: lighten($bright-blue, 5%);
+  }
 }

@@ -2,18 +2,20 @@
 @import '~styles/nav';
 @import '~styles/buttons';
 @import '~styles/modals';
+@import '~styles/headers';
+@import '~styles/sections';
 
 .outerContainer {
   width: 100%;
   max-width: $max-content-width;
   overflow-x: hidden;
-  margin: 0rem auto 5rem auto;
+  margin: 0 auto 2rem auto;
 
   .listTitle {
     color: $azure;
     font-size: 1.8rem;
     line-height: 1.8rem;
-    padding: 0rem 1rem; 
+    padding: 0rem 1rem;
   }
 
   .listSecondaryHeader {
@@ -35,4 +37,24 @@
     max-width: $max-content-width;
     text-align: center;
   }
+}
+
+.innerContainer {
+  background-color: $white;
+}
+
+.pageSubHeader {
+  justify-content: flex-start;
+  text-align: left;
+  font-size: 1.3rem;
+  line-height: normal;
+  padding-bottom: 0;
+}
+
+.listTitle {
+  font-size: 1.2rem!important;
+  padding: 0!important;
+}
+.listDetailLine, .listSecondaryHeader {
+  padding: 0.2rem 0!important;
 }

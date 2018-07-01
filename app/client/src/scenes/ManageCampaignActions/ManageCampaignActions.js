@@ -15,14 +15,13 @@ import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
 
 import s from 'styles/Organize.scss';
 
-
 class ManageCampaignActionsContainer extends PureComponent {
   static propTypes = {
     campaign: PropTypes.object.isRequired,
     actions: PropTypes.arrayOf(PropTypes.object).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -39,13 +38,13 @@ class ManageCampaignActionsContainer extends PureComponent {
       createActionDropdownOpen: true,
       createActionDropdownAnchorEl: event.currentTarget,
     });
-  }
+  };
 
   closeCreateActionDropdown = () => {
     this.setState({
       createActionDropdownOpen: false,
     });
-  }
+  };
 
   render() {
     const { toggleCreateActionDropdown, closeCreateActionDropdown } = this;
@@ -54,71 +53,69 @@ class ManageCampaignActionsContainer extends PureComponent {
     if (this.props.campaign && this.props.actions) {
       const { campaign, actions } = this.props;
 
-      const actionsList = actions.map(action => (
+      const actionsList = actions.map((action) => (
         <Link key={action.id} to={`/organize/${campaign.slug}/opportunity/${action.slug}`}>
           <ListItem>
+            <div className={s.actionListTitle}>{action.title}</div>
 
-            <div className={s.actionListTitle}>
-              {action.title}
-            </div>
-
-            {(action.city && action.state) && (
-              <div className={s.actionListDetailLine}>
-                {action.city}, {action.state}
-              </div>
-            )}
-
+            {action.city &&
+              action.state && (
+                <div className={s.actionListDetailLine}>
+                  {action.city}, {action.state}
+                </div>
+              )}
           </ListItem>
         </Link>
       ));
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>{campaign.title}</div>
 
-          <Link to={`/organize/${campaign.slug}`}>
-            <div className={[s.navHeader, s.campaignNavHeader].join(' ')}>
-
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-
-              {campaign.title}
+              {campaign.profile_subheader && <div className={s.sectionSubheader}>{campaign.profile_subheader}</div>}
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>Opportunities</div>
+            <div className={s.crumbs}>
+              <div className={s.navHeader}>
+                <Link to={`/organize/${campaign.slug}`}>{campaign.title}</Link>
+                <FontIcon className={['material-icons', 'arrowRight'].join(' ')}>keyboard_arrow_right</FontIcon>
+                Opportunities
+              </div>
+            </div>
 
-          <div className={s.organizeButton}>
-            <RaisedButton
-              primary
-              type="submit"
-              label="Create Opportunity"
-              onClick={toggleCreateActionDropdown}
-            />
+            <div className={s.centerButtonContainer}>
+              <div
+                className={s.organizeButton}
+                onClick={toggleCreateActionDropdown}
+                onKeyPress={toggleCreateActionDropdown}
+                role="button"
+                tabIndex="0"
+              >
+                Create Opportunity
+              </div>
+            </div>
+
+            <Popover
+              open={createActionDropdownOpen}
+              anchorEl={createActionDropdownAnchorEl}
+              anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+              targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+              onRequestClose={closeCreateActionDropdown}
+            >
+              <Menu>
+                <Link to={`/organize/${campaign.slug}/create-role`}>
+                  <MenuItem primaryText="Create ongoing role or project" />
+                </Link>
+                <Link to={`/organize/${campaign.slug}/create-event`}>
+                  <MenuItem primaryText="Create with specific date/times" />
+                </Link>
+              </Menu>
+            </Popover>
+
+            <List>{actionsList}</List>
           </div>
-
-          <Popover
-            open={createActionDropdownOpen}
-            anchorEl={createActionDropdownAnchorEl}
-            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={closeCreateActionDropdown}
-          >
-            <Menu>
-              <Link to={`/organize/${campaign.slug}/create-role`}>
-                <MenuItem primaryText="Create ongoing role or project" />
-              </Link>
-              <Link to={`/organize/${campaign.slug}/create-event`}>
-                <MenuItem primaryText="Create with specific date/times" />
-              </Link>
-            </Menu>
-          </Popover>
-
-          <List>
-            { actionsList }
-          </List>
-
         </div>
       );
     }
@@ -128,7 +125,7 @@ class ManageCampaignActionsContainer extends PureComponent {
 
 export default compose(
   graphql(CampaignQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.campaignId,
@@ -141,7 +138,7 @@ export default compose(
   }),
 
   graphql(SearchActionsQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       variables: {
         search: {
           campaignIds: [ownProps.campaignId],
@@ -156,5 +153,4 @@ export default compose(
       actions: data.actions ? data.actions.actions : [],
     }),
   }),
-
 )(ManageCampaignActionsContainer);

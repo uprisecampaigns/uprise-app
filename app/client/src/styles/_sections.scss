@@ -1,0 +1,82 @@
+.outerContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  @media (max-width: $screen-sm-min) {
+    margin: 0 0 1rem 0;
+  }
+}
+
+.innerContainer {
+  display: block;
+  flex: 1;
+  max-width: $max-content-width;
+}
+
+.bareContainer {
+  background-color: transparent !important;
+}
+
+.sectionHeaderContainer {
+  border-bottom: 1px solid $medium-light-grey;
+  padding-bottom: 1rem;
+}
+
+.sectionHeader {
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 2rem 2rem 0 2rem;
+  text-align: left;
+}
+
+.sectionSubHeader {
+  @extend .sectionHeader;
+  font-weight: 400;
+  font-size: 1.2rem;
+  padding-top: 1rem;
+}
+
+.pageHeader {
+  @extend .sectionHeader;
+  padding-top: 1rem;
+}
+
+.sectionSubheader {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0 0 0 2rem;
+  text-align: left;
+}
+
+.sectionsContainer {
+  display: flex;
+}
+
+.section {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  &:last-child {
+    margin-left: 2rem;
+  }
+}
+
+.sectionSidebar {
+  max-width: 18rem;
+  input {
+    font-size: 0.8rem !important;
+  }
+}
+
+.sectionContent {
+  background-color: $white;
+  border: 1px solid $medium-light-grey;
+  flex: 1;
+  margin-bottom: 1rem;
+  padding-bottom: 2rem;
+}
+
+.sectionInnerContent {
+  margin: 1rem 2rem;
+}

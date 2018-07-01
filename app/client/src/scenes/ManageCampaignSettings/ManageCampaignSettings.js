@@ -26,7 +26,6 @@ import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql
 
 import s from 'styles/Organize.scss';
 
-
 const WrappedCampaignSettingsForm = formWrapper(CampaignSettingsForm);
 
 export class ManageCampaignSettings extends Component {
@@ -38,11 +37,11 @@ export class ManageCampaignSettings extends Component {
     graphqlLoading: PropTypes.bool.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
-  }
+  };
 
   static defaultProps = {
     campaign: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -50,6 +49,9 @@ export class ManageCampaignSettings extends Component {
     const initialState = {
       formData: {
         title: '',
+        profileSubheader: '',
+        description: '',
+        profileImageUrl: '',
         streetAddress: '',
         streetAddress2: '',
         websiteUrl: '',
@@ -89,12 +91,14 @@ export class ManageCampaignSettings extends Component {
   handleCampaignProps = (nextProps) => {
     if (nextProps.campaign && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
-      const campaign = Object.assign(...Object.keys(nextProps.campaign).map((k) => {
-        if (nextProps.campaign[k] !== null) {
-          return { [camelCase(k)]: nextProps.campaign[k] };
-        }
-        return undefined;
-      }));
+      const campaign = Object.assign(
+        ...Object.keys(nextProps.campaign).map((k) => {
+          if (nextProps.campaign[k] !== null) {
+            return { [camelCase(k)]: nextProps.campaign[k] };
+          }
+          return undefined;
+        }),
+      );
 
       Object.keys(campaign).forEach((k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
@@ -104,11 +108,11 @@ export class ManageCampaignSettings extends Component {
 
       campaign.zipcodeList = typeof campaign.zipcodeList === 'object' ? campaign.zipcodeList.join(',') : '';
 
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         formData: Object.assign({}, prevState.formData, campaign),
       }));
     }
-  }
+  };
 
   defaultErrorText = {
     titleErrorText: null,
@@ -126,7 +130,7 @@ export class ManageCampaignSettings extends Component {
     orgContactPhoneErrorText: null,
     zipcodeListErrorText: null,
     locationDistrictNumberErrorText: null,
-  }
+  };
 
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender with previous form data
@@ -141,7 +145,7 @@ export class ManageCampaignSettings extends Component {
 
     formData.id = this.props.campaign.id;
 
-    formData.zipcodeList = formData.zipcodeList.split(',').map(zip => zip.trim());
+    formData.zipcodeList = formData.zipcodeList.split(',').map((zip) => zip.trim());
 
     try {
       await this.props.editCampaignMutation({
@@ -157,7 +161,7 @@ export class ManageCampaignSettings extends Component {
       console.error(e);
       return { success: false, message: e.message };
     }
-  }
+  };
 
   render() {
     if (this.props.campaign) {
@@ -166,12 +170,12 @@ export class ManageCampaignSettings extends Component {
       const { formData } = state;
 
       const validators = [
-        component => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
-        component => validateString(component, 'phoneNumber', 'phoneNumberErrorText', 'Phone Number is Required'),
-        component => validateZipcode(component),
-        component => validateWebsiteUrl(component),
-        component => validatePhoneNumber(component),
-        component => validateState(component),
+        (component) => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+        (component) => validateString(component, 'phoneNumber', 'phoneNumberErrorText', 'Phone Number is Required'),
+        (component) => validateZipcode(component),
+        (component) => validateWebsiteUrl(component),
+        (component) => validatePhoneNumber(component),
+        (component) => validateState(component),
         (component) => {
           if (component.state.formData.legalOrg) {
             validateString(component, 'orgWebsite', 'orgWebsiteErrorText', 'Organization Website is required');
@@ -183,34 +187,48 @@ export class ManageCampaignSettings extends Component {
             validateEmail(component, 'orgContactEmail', 'orgContactEmailErrorText');
           }
         },
-        (component) => { validateState(component, 'locationState', 'locationStateErrorText'); },
+        (component) => {
+          validateState(component, 'locationState', 'locationStateErrorText');
+        },
         validateZipcodeList,
       ];
 
       return (
         <div className={s.outerContainer}>
+          <div className={[s.innerContainer, s.bareContainer].join(' ')}>
+            {/*
+            <Link to={`/organize/${campaign.slug}`}>
+              <div className={s.navHeader}>
+                <FontIcon className={['material-icons', s.backArrow].join(' ')}>arrow_back</FontIcon>
+                {campaign.title}
+              </div>
+            </Link>
+          */}
 
-          <Link to={`/organize/${campaign.slug}`}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              { campaign.title }
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>{campaign.title}</div>
+
+              {campaign.profile_subheader && <div className={s.sectionSubheader}>{campaign.profile_subheader}</div>}
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>Settings</div>
+            <div className={s.crumbs}>
+              <div className={s.navHeader}>
+                <Link to={`/organize/${campaign.slug}`}>{campaign.title}</Link>
+                <FontIcon className={['material-icons', 'arrowRight'].join(' ')}>keyboard_arrow_right</FontIcon>
+                Campaign Settings
+              </div>
+            </div>
 
-          <WrappedCampaignSettingsForm
-            initialState={formData}
-            initialErrors={defaultErrorText}
-            validators={validators}
-            submit={formSubmit}
-            submitText="Save Changes"
-            user={user}
-          />
-
+            <WrappedCampaignSettingsForm
+              initialState={formData}
+              initialErrors={defaultErrorText}
+              validators={validators}
+              submit={formSubmit}
+              submitText="Save Profile"
+              user={user}
+              campaign={campaign}
+            />
+          </div>
         </div>
       );
     }
@@ -220,14 +238,17 @@ export class ManageCampaignSettings extends Component {
 
 const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
-    user: !data.loading && data.me ? data.me : {
-      email: '',
-    },
+    user:
+      !data.loading && data.me
+        ? data.me
+        : {
+            email: '',
+          },
   }),
 });
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: ownProps => ({
+  options: (ownProps) => ({
     variables: {
       search: {
         slug: ownProps.campaignSlug,

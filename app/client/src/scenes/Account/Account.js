@@ -15,7 +15,6 @@ import {
   validatePhoneNumber,
 } from 'lib/validateComponentForms';
 
-import Link from 'components/Link';
 import AccountForm from 'components/AccountForm';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
@@ -23,7 +22,6 @@ import MeQuery from 'schemas/queries/MeQuery.graphql';
 import EditAccountMutation from 'schemas/mutations/EditAccountMutation.graphql';
 
 import s from 'styles/Settings.scss';
-
 
 const WrappedAccountForm = formWrapper(AccountForm);
 
@@ -33,11 +31,11 @@ class Account extends Component {
     editAccountMutation: PropTypes.func.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     graphqlLoading: PropTypes.bool.isRequired,
-  }
+  };
 
   static defaultProps = {
     user: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -66,12 +64,14 @@ class Account extends Component {
   handleUserProps = (nextProps) => {
     if (nextProps.user && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
-      const user = Object.assign(...Object.keys(nextProps.user).map((k) => {
-        if (nextProps.user[k] !== null) {
-          return { [camelCase(k)]: nextProps.user[k] };
-        }
-        return undefined;
-      }));
+      const user = Object.assign(
+        ...Object.keys(nextProps.user).map((k) => {
+          if (nextProps.user[k] !== null) {
+            return { [camelCase(k)]: nextProps.user[k] };
+          }
+          return undefined;
+        }),
+      );
 
       Object.keys(user).forEach((k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
@@ -79,11 +79,11 @@ class Account extends Component {
         }
       });
 
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         formData: Object.assign({}, prevState.formData, user),
       }));
     }
-  }
+  };
 
   defaultErrorText = {
     firstNameErrorText: null,
@@ -91,7 +91,7 @@ class Account extends Component {
     zipcodeErrorText: null,
     phoneNumberErrorText: null,
     emailErrorText: null,
-  }
+  };
 
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender with previous form data
@@ -119,50 +119,42 @@ class Account extends Component {
     } catch (e) {
       return { success: false, message: e.message };
     }
-  }
+  };
 
   render() {
     if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
-      const { user } = this.props;
+      const { user, privacyContent } = this.props;
       const { formData } = state;
 
       const validators = [
-        component => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
-        component => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
-        component => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
-        component => validateString(component, 'zipcode', 'zipcodeErrorText', 'Please enter a zipcode'),
-        component => validateZipcode(component),
-        component => validateEmail(component),
-        component => validateEmailAvailable(component, user.email),
-        component => validatePhoneNumber(component),
+        (component) => validateString(component, 'firstName', 'firstNameErrorText', 'First Name is Required'),
+        (component) => validateString(component, 'lastName', 'lastNameErrorText', 'Last Name is Required'),
+        (component) => validateString(component, 'email', 'emailErrorText', 'Please enter an email'),
+        (component) => validateString(component, 'zipcode', 'zipcodeErrorText', 'Please enter a zipcode'),
+        (component) => validateZipcode(component),
+        (component) => validateEmail(component),
+        (component) => validateEmailAvailable(component, user.email),
+        (component) => validatePhoneNumber(component),
       ];
-
 
       return (
         <div className={s.outerContainer}>
-
-          <Link to="/settings">
-            <div className={[s.navHeader, s.settingsNavHeader].join(' ')}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              Settings
+          <div className={s.innerContainer}>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.sectionHeader}>Account Settings</div>
             </div>
-          </Link>
 
-          <div className={s.settingsHeader}>Account</div>
-
-          <WrappedAccountForm
-            initialState={formData}
-            initialErrors={defaultErrorText}
-            validators={validators}
-            submit={formSubmit}
-            submitText="Save Changes"
-            userId={user.id}
-          />
-
+            <WrappedAccountForm
+              initialState={formData}
+              initialErrors={defaultErrorText}
+              validators={validators}
+              submit={formSubmit}
+              submitText="Save Changes"
+              userId={user.id}
+              privacyContent={privacyContent}
+            />
+          </div>
         </div>
       );
     }
@@ -173,7 +165,7 @@ class Account extends Component {
 export default compose(
   connect(),
   graphql(MeQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({

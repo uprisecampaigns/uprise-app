@@ -18,7 +18,6 @@ import CreateActionsMutation from 'schemas/mutations/CreateActionsMutation.graph
 
 import s from 'styles/Organize.scss';
 
-
 didYouMean.returnWinningObject = true;
 
 class ManageCampaignUploadActions extends Component {
@@ -28,12 +27,12 @@ class ManageCampaignUploadActions extends Component {
     activities: PropTypes.arrayOf(PropTypes.object),
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
-  }
+  };
 
   static defaultProps = {
     campaign: undefined,
     activities: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -49,16 +48,16 @@ class ManageCampaignUploadActions extends Component {
       timezoneNames: moment.tz.names(),
       moment,
     });
-  }
+  };
 
   handleTimezoneChange = (event, value) => {
     event.stopPropagation();
     event.preventDefault();
     this.setState({ timezone: value });
-  }
+  };
 
   render() {
-    const processString = string => string.trim();
+    const processString = (string) => string.trim();
     const processBoolean = (value) => {
       if (typeof value !== 'string') {
         throw new Error('Can only process strings to boolean');
@@ -90,7 +89,7 @@ class ManageCampaignUploadActions extends Component {
       if (typeof value !== 'string') {
         throw new Error('Can only process strings to tags');
       }
-      return value.split(',').map(i => i.trim());
+      return value.split(',').map((i) => i.trim());
     };
 
     const processRelationships = (collectionName, value) => {
@@ -98,13 +97,14 @@ class ManageCampaignUploadActions extends Component {
         throw new Error('Can only process strings to activities');
       }
 
-      const slugs = value.split(',')
-        .map(i => i.trim().toLowerCase())
-        .filter(i => i !== '');
+      const slugs = value
+        .split(',')
+        .map((i) => i.trim().toLowerCase())
+        .filter((i) => i !== '');
 
       try {
         return slugs.map((slug) => {
-          const found = this.props[collectionName].find(a => getSlug(a.title) === getSlug(slug));
+          const found = this.props[collectionName].find((a) => getSlug(a.title) === getSlug(slug));
           const result = found || didYouMean(slug, this.props[collectionName], 'title');
 
           return result.id;
@@ -197,11 +197,11 @@ class ManageCampaignUploadActions extends Component {
           {
             title: 'Activities',
             slug: 'activities',
-            processData: values => processRelationships('activities', values),
+            processData: (values) => processRelationships('activities', values),
           },
         ],
         onSubmit: async (data) => {
-          const newActions = data.map(action => ({
+          const newActions = data.map((action) => ({
             campaignId: campaign.id,
             ...action,
           }));
@@ -219,35 +219,31 @@ class ManageCampaignUploadActions extends Component {
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            {/*
+            <Link to={`/organize/${campaign.slug}/settings`}>
+              <div className={s.navHeader}>
+                <FontIcon className={['material-icons', s.backArrow].join(' ')}>arrow_back</FontIcon>
+                Settings
+              </div>
+            </Link> */}
 
-          <Link to={`/organize/${campaign.slug}/settings`}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              Settings
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>Upload Opportunities</div>
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>Upload Opportunities</div>
+            <div className={s.timeZoneSelect}>
+              <SelectField
+                floatingLabelText="Timezone"
+                value={this.state.timezone}
+                onChange={(event, i, value) => this.handleTimezoneChange(event, value)}
+              >
+                {this.state.timezoneNames.map((name, index) => <MenuItem key={name} value={name} primaryText={name} />)}
+              </SelectField>
+            </div>
 
-          <div className={s.timeZoneSelect}>
-            <SelectField
-              floatingLabelText="Timezone"
-              value={this.state.timezone}
-              onChange={(event, i, value) => this.handleTimezoneChange(event, value)}
-            >
-              {this.state.timezoneNames.map((name, index) => (
-                <MenuItem key={name} value={name} primaryText={name} />
-              ))}
-            </SelectField>
+            <CsvUploader config={config} />
           </div>
-
-          <CsvUploader
-            config={config}
-          />
-
         </div>
       );
     }
@@ -255,7 +251,7 @@ class ManageCampaignUploadActions extends Component {
   }
 }
 
-const graphqlOptions = collection => ({
+const graphqlOptions = (collection) => ({
   props: ({ data }) => ({
     [collection]: !data.loading && data[collection] ? data[collection] : [],
   }),
@@ -264,7 +260,7 @@ const graphqlOptions = collection => ({
 const withActivitiesQuery = graphql(ActivitiesQuery, graphqlOptions('activities'));
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: ownProps => ({
+  options: (ownProps) => ({
     variables: {
       search: {
         slug: ownProps.campaignSlug,

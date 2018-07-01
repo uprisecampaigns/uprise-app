@@ -19,12 +19,12 @@ class Home extends Component {
     dispatch: PropTypes.func.isRequired,
     page: PropTypes.string,
     // user: PropTypes.object,
-  }
+  };
 
   static defaultProps = {
     page: 'action',
     // user: undefined,
-  }
+  };
 
   handleChange = (value) => {
     this.props.dispatch(setPage('home', value));
@@ -38,20 +38,20 @@ class Home extends Component {
 
     return (
       <div className={s.outerContainer}>
-        <div>
-          { (activeTab === 'action') && (
+        <div className={s.innerContainer}>
+          {activeTab === 'action' && (
             <div className={s.searchContainer}>
               <SearchActions />
             </div>
           )}
 
-          { (activeTab === 'campaign') && (
+          {activeTab === 'campaign' && (
             <div className={s.searchContainer}>
               <SearchCampaigns />
             </div>
           )}
 
-          { (activeTab === 'user') && (
+          {activeTab === 'user' && (
             <div className={s.searchContainer}>
               <SearchUsers />
             </div>
@@ -62,14 +62,14 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   page: state.pageNav.page,
 });
 
 export default compose(
   connect(mapStateToProps),
   graphql(MeQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({

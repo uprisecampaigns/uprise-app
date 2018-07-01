@@ -2,18 +2,38 @@
 @import '~styles/nav';
 @import '~styles/buttons';
 @import '~styles/modals';
+@import '~styles/sections';
+@import '~styles/tags';
+@import '~styles/headers';
 
 .outerContainer {
-  background-color: $white;
   width: 100%;
   max-width: $max-content-width;
-  margin: 0rem auto 4rem auto;
+  margin: 0 auto 4rem auto;
 }
 
-.innerContainer {
-  margin: 0;
-  font-size: 1rem;
-  padding: 1rem;
+.button {
+  margin: 2rem 2rem 0;
+}
+
+.smallText {
+  font-size: 0.8rem;
+  margin: 0 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  a {
+    color: $black;
+  }
+}
+
+.bodyText {
+  font-size: 1.2rem;
+  margin: 0 2rem;
+}
+
+.sectionHeaderContainer {
+  background-color: $white;
+  margin-bottom: 1rem;
 }
 
 .actionTitleSignupContainer {
@@ -24,12 +44,14 @@
 .actionHeaderContainer {
   flex: 3 0;
   display: inline-block;
-  margin: 1rem 0rem;
+  margin: 1rem 0;
 }
 
 .actionTitle {
   font-size: 1.5rem;
   font-weight: 500;
+  margin: 0;
+  padding-top: 1rem;
 }
 
 .actionSubheader {
@@ -37,27 +59,25 @@
 }
 
 .desktopSignupRegisterLogin {
+  display: inline-block;
   flex: 1 0;
   font-size: 1.2rem;
-  display: inline-block;
-  border: 1px solid $light-grey;
-  padding: 1rem;
+  padding: 1rem 1rem 0;
 }
 
 .actionDetailsContainer {
-
   padding-top: 2rem;
-  padding-bottom: 2rem;
 
   .actionDetailsTitle {
-    font-size: 1.3rem;
-    font-weight: 300;
-    margin-bottom: 1rem;
+    color: #1a1a1a;
+    font-size: 1rem;
+    margin: 1rem 0 1rem 2rem;
+    font-weight: 500;
   }
 
   .actionDetailsContent {
     font-size: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem 2rem;
   }
 }
 
@@ -197,25 +217,28 @@
 
 .attendingContainer, .subscribedContainer {
   text-align: center;
-  margin: 1rem auto 1rem auto;
-
-  @extend .primaryButton;
+  margin: 1rem auto;
 
   .calendarLinkContainer {
     margin-bottom: 1rem;
 
-    button {
-      background-color: transparent !important;
-    }
   }
 }
 
-.keywordTag {
-  display: inline-block !important;
-  margin: 0rem .5rem 0rem 0rem !important;
-  background-color: $brick-red !important;
-
-  span {
-    color: $white !important;
+.infoBox {
+  background-color: $white;
+  border: 1px solid $medium-light-grey;
+  padding: 1rem;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+  &:last-child {
+    margin-bottom: 0;
   }
+}
+
+.infoBoxHeader {
+  color: $dark-grey;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
 }

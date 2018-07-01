@@ -133,8 +133,16 @@ class GeographySearch extends PureComponent {
             />
           </div>
         )}
-        <div className={s.addToSearchButton}>
-          <RaisedButton className={s.primaryButton} onClick={addItem} type="submit" primary label="Add to Search" />
+        <div className={s.rightButton}>
+          <div
+            className={[s.addToSearchButton, s.secondaryButton].join(' ')}
+            onClick={addItem}
+            onKeyPress={addItem}
+            role="button"
+            tabIndex="0"
+          >
+            Add to Search
+          </div>
         </div>
       </form>
     );

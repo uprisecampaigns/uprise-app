@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import isNumeric from 'validator/lib/isNumeric';
-import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 import s from 'styles/Search.scss';
-
 
 const textFieldStyle = {
   display: 'inline-block',
@@ -16,7 +14,7 @@ const textFieldStyle = {
 class ZipcodeSearch extends PureComponent {
   static propTypes = {
     addItem: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -29,14 +27,10 @@ class ZipcodeSearch extends PureComponent {
     if (typeof type === 'string' && type === 'zipcode') {
       // TODO: more canonical zipcode validation (across all site)
       if (isNumeric(value) && value.length < 6) {
-        this.setState(Object.assign(
-          {},
-          this.state,
-          { [type]: value },
-        ));
+        this.setState(Object.assign({}, this.state, { [type]: value }));
       }
     }
-  }
+  };
 
   addItem = (event) => {
     const { zipcode } = this.state;
@@ -47,20 +41,15 @@ class ZipcodeSearch extends PureComponent {
 
     this.props.addItem('geographies', { zipcode });
 
-    this.setState(Object.assign(
-      {},
-      this.state, { zipcode: '' },
-    ));
-  }
+    this.setState(Object.assign({}, this.state, { zipcode: '' }));
+  };
 
   render() {
     const { zipcode } = this.state;
     const { addItem, handleInputChange } = this;
 
     return (
-      <form
-        onSubmit={addItem}
-      >
+      <form onSubmit={addItem}>
         Active in zipcode:
         <TextField
           floatingLabelText="Zipcode"
@@ -68,17 +57,21 @@ class ZipcodeSearch extends PureComponent {
           pattern="[0-9]{5}"
           value={zipcode}
           style={textFieldStyle}
-          underlineShow={true}
-          onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
+          underlineShow
+          onChange={(event) => {
+            handleInputChange(event, 'zipcode', event.target.value);
+          }}
         />
-        <div className={s.addToSearchButton}>
-          <RaisedButton
-            className={s.primaryButton}
+        <div className={s.rightButton}>
+          <div
+            className={[s.addToSearchButton, s.secondaryButton].join(' ')}
             onClick={addItem}
-            type="submit"
-            primary
-            label="Add to Search"
-          />
+            onKeyPress={addItem}
+            role="button"
+            tabIndex="0"
+          >
+            Add to Search
+          </div>
         </div>
       </form>
     );

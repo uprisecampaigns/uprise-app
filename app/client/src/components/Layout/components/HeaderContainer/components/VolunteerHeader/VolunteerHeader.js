@@ -13,6 +13,9 @@ function VolunteerHeader(props) {
       </div>
       <div className={s.linksContainer}>
         <div>
+          <Link to="/volunteer">Home</Link>
+        </div>
+        <div>
           <Link to="/search">Opportunities</Link>
         </div>
         <div>

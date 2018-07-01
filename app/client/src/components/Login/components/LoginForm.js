@@ -26,7 +26,9 @@ class LoginForm extends Component {
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
           <Paper zDepth={0}>
-            <div className={s.loginHeader}>Log into UpRise</div>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.sectionHeader}>Log into UpRise</div>
+            </div>
             <div className={s.formContainer}>
               <div className={s.messageContainer}>{message}</div>
               <form className={s.form} onSubmit={formSubmit}>
@@ -52,8 +54,14 @@ class LoginForm extends Component {
                     type="password"
                   />
                 </div>
-                <div className={[s.button, s.primaryButton].join(' ')}>
-                  <button onClick={formSubmit} className={s.loginButton}>Login</button>
+                <div
+                  className={[s.button, s.primaryButton].join(' ')}
+                  onClick={formSubmit}
+                  onKeyPress={formSubmit}
+                  role="button"
+                  tabIndex="0"
+                >
+                  Login
                 </div>
               </form>
             </div>

@@ -5,10 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import s from 'styles/Form.scss';
 
-
-function OldPassword({
-  show, data, errors, handleInputChange, error,
-}) {
+function OldPassword({ show, data, errors, handleInputChange, error }) {
   if (show) {
     return (
       <div className={s.textFieldContainer}>
@@ -17,7 +14,9 @@ function OldPassword({
           value={data.oldPassword}
           errorText={errors.oldPasswordErrorText || error}
           type="password"
-          onChange={(event) => { handleInputChange(event, 'oldPassword', event.target.value); }}
+          onChange={(event) => {
+            handleInputChange(event, 'oldPassword', event.target.value);
+          }}
           fullWidth
         />
       </div>
@@ -40,15 +39,9 @@ OldPassword.defaultProps = {
   error: null,
 };
 
-function ChangePasswordForm({
-  data, errors, handleInputChange, formSubmit,
-  passwordBeingReset, cancel, error,
-}) {
+function ChangePasswordForm({ data, errors, handleInputChange, formSubmit, passwordBeingReset, cancel, error }) {
   return (
-    <form
-      className={s.form}
-      onSubmit={formSubmit}
-    >
+    <form className={s.form} onSubmit={formSubmit}>
       <OldPassword
         show={!passwordBeingReset}
         data={data}
@@ -62,7 +55,9 @@ function ChangePasswordForm({
           value={data.newPassword1}
           errorText={errors.newPassword1ErrorText}
           type="password"
-          onChange={(event) => { handleInputChange(event, 'newPassword1', event.target.value); }}
+          onChange={(event) => {
+            handleInputChange(event, 'newPassword1', event.target.value);
+          }}
           fullWidth
         />
       </div>
@@ -72,17 +67,14 @@ function ChangePasswordForm({
           value={data.newPassword2}
           errorText={errors.newPassword2ErrorText}
           type="password"
-          onChange={(event) => { handleInputChange(event, 'newPassword2', event.target.value); }}
+          onChange={(event) => {
+            handleInputChange(event, 'newPassword2', event.target.value);
+          }}
           fullWidth
         />
       </div>
-      <div className={s.primaryButton}>
-        <RaisedButton
-          onClick={formSubmit}
-          type="submit"
-          primary
-          label="Save Changes"
-        />
+      <div className={s.primaryButton} onClick={formSubmit} onKeyPress={formSubmit} role="button" tabIndex="0">
+        Save Changes
       </div>
     </form>
   );
@@ -105,6 +97,5 @@ ChangePasswordForm.propTypes = {
 ChangePasswordForm.defaultProps = {
   error: null,
 };
-
 
 export default ChangePasswordForm;

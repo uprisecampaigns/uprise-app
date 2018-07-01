@@ -6,7 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import s from 'styles/Form.scss';
 
-
 class ResetPasswordForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
@@ -14,25 +13,20 @@ class ResetPasswordForm extends PureComponent {
     handleInputChange: PropTypes.func.isRequired,
     cancelReset: PropTypes.func.isRequired,
     resetError: PropTypes.string,
-  }
+  };
 
   static defaultProps = {
     resetError: undefined,
-  }
+  };
 
   render() {
-    const {
-      data, handleInputChange, formSubmit, cancelReset, resetError,
-    } = this.props;
+    const { data, handleInputChange, formSubmit, cancelReset, resetError } = this.props;
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
           <Paper zDepth={0}>
             <div className={s.formContainer}>
-              <form
-                className={s.form}
-                onSubmit={formSubmit}
-              >
+              <form className={s.form} onSubmit={formSubmit}>
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Email"
@@ -40,23 +34,23 @@ class ResetPasswordForm extends PureComponent {
                     value={data.email}
                     errorText={data.emailErrorText || resetError}
                     fullWidth
-                    onChange={(event) => { handleInputChange(event, 'email', event.target.value); }}
+                    onChange={(event) => {
+                      handleInputChange(event, 'email', event.target.value);
+                    }}
                   />
                 </div>
-                <div className={s.button}>
-                  <RaisedButton
-                    onClick={cancelReset}
-                    primary={false}
-                    label="Cancel"
-                  />
+                <div className={s.button} onClick={cancelReset} onKeyPress={cancelReset} role="button" tabIndex="0">
+                  Cancel
                 </div>
-                <div className={[s.button, s.secondaryButton].join(' ')}>
-                  <RaisedButton
-                    onClick={formSubmit}
-                    type="submit"
-                    primary
-                    label="Reset"
-                  />
+
+                <div
+                  className={s.secondaryButton}
+                  onClick={formSubmit}
+                  onKeyPress={formSubmit}
+                  role="button"
+                  tabIndex="0"
+                >
+                  Reset
                 </div>
               </form>
             </div>

@@ -1,0 +1,18 @@
+@import '~styles/variables';
+
+.keywordTag {
+  background-color: $light-grey !important;
+  border-radius: 0.2rem !important;
+  border: 1px solid $medium-light-grey !important;
+  cursor: pointer !important;
+  margin: 0 0 0.5rem 2rem !important;
+  padding: 0 0.5rem !important;
+  max-width: 15rem;
+
+  span {
+    color: $azure !important;
+    padding: 0px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

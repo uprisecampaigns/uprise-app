@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import CampaignProfile from 'components/CampaignProfile';
 import ConfirmEmailPrompt from 'components/ConfirmEmailPrompt';
@@ -15,12 +14,9 @@ import CancelCampaignSubscriptionMutation from 'schemas/mutations/CancelCampaign
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 
-import {
-  promptLogin, notify,
-} from 'actions/NotificationsActions';
+import { promptLogin, notify } from 'actions/NotificationsActions';
 
 import s from 'styles/Profile.scss';
-
 
 class Campaign extends Component {
   static propTypes = {
@@ -36,7 +32,7 @@ class Campaign extends Component {
 
   static defaultProps = {
     campaign: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -58,7 +54,7 @@ class Campaign extends Component {
     } else {
       this.props.dispatch(promptLogin({ exitable: true, title: 'Please login to subscribe to this campaign.' }));
     }
-  }
+  };
 
   confirmSubscription = async () => {
     this.setState({ saving: true, subscribeModalOpen: false });
@@ -75,10 +71,12 @@ class Campaign extends Component {
       this.setState({ saving: false });
     } catch (e) {
       console.error(e);
-      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+      this.props.dispatch(
+        notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'),
+      );
       this.setState({ saving: false });
     }
-  }
+  };
 
   cancelSubscription = async () => {
     this.setState({ saving: true });
@@ -95,10 +93,12 @@ class Campaign extends Component {
       this.setState({ saving: false });
     } catch (e) {
       console.error(e);
-      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+      this.props.dispatch(
+        notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'),
+      );
       this.setState({ saving: false });
     }
-  }
+  };
 
   render() {
     if (this.props.campaign) {
@@ -106,17 +106,36 @@ class Campaign extends Component {
       const { subscribeModalOpen, confirmEmailModalOpen } = this.state;
 
       const modalActions = [
-        <RaisedButton
-          label="Cancel"
-          primary={false}
-          onClick={(event) => { event.preventDefault(); this.setState({ subscribeModalOpen: false }); }}
-        />,
-        <RaisedButton
-          label="Confirm"
-          primary
-          onClick={(event) => { event.preventDefault(); this.confirmSubscription(); }}
-          className={s.primaryButton}
-        />,
+        <div
+          className={[s.button, s.inlineButton].join(' ')}
+          onClick={(event) => {
+            event.preventDefault();
+            this.setState({ subscribeModalOpen: false });
+          }}
+          onKeyPress={(event) => {
+            event.preventDefault();
+            this.setState({ subscribeModalOpen: false });
+          }}
+          role="button"
+          tabIndex={0}
+        >
+          Cancel
+        </div>,
+        <div
+          className={[s.primaryButton, s.inlineButton].join(' ')}
+          onClick={(event) => {
+            event.preventDefault();
+            this.confirmSubscription();
+          }}
+          onKeyPress={(event) => {
+            event.preventDefault();
+            this.confirmSubscription();
+          }}
+          role="button"
+          tabIndex={0}
+        >
+          Confirm
+        </div>,
       ];
 
       return (
@@ -129,7 +148,7 @@ class Campaign extends Component {
             saving={this.state.saving}
           />
 
-          { subscribeModalOpen && (
+          {subscribeModalOpen && (
             <Dialog
               title="Permission to Share?"
               modal
@@ -139,13 +158,13 @@ class Campaign extends Component {
               autoScrollBodyContent
             >
               <p>
-                May we have your permission to share your email address and phone number with the coordinator
-                for the purpose of contacting you about volunteering for this campaign?
+                May we have your permission to share your email address and phone number with the coordinator for the
+                purpose of contacting you about volunteering for this campaign?
               </p>
             </Dialog>
           )}
 
-          { confirmEmailModalOpen && (
+          {confirmEmailModalOpen && (
             <ConfirmEmailPrompt
               modal={false}
               handleResend={() => this.setState({ confirmEmailModalOpen: false })}
@@ -153,7 +172,6 @@ class Campaign extends Component {
             />
           )}
         </div>
-
       );
     }
     return null;
@@ -161,7 +179,7 @@ class Campaign extends Component {
 }
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: ownProps => ({
+  options: (ownProps) => ({
     variables: {
       search: {
         slug: ownProps.campaignSlug,
@@ -176,14 +194,17 @@ const withCampaignQuery = graphql(CampaignQuery, {
 
 const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
-    userObject: !data.loading && data.me ? data.me : {
-      email: '',
-    },
+    userObject:
+      !data.loading && data.me
+        ? data.me
+        : {
+            email: '',
+          },
   }),
-  skip: ownProps => !ownProps.loggedIn && !ownProps.fetchingAuthUpdate,
+  skip: (ownProps) => !ownProps.loggedIn && !ownProps.fetchingAuthUpdate,
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loggedIn: state.userAuthSession.isLoggedIn,
   fetchingAuthUpdate: state.userAuthSession.fetchingAuthUpdate,
 });

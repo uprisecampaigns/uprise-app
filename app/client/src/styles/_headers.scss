@@ -1,0 +1,13 @@
+@import '~styles/variables';
+
+.smallHeader {
+  border-top: 1px solid $medium-light-grey;
+  color: $grey;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.05rem;
+  margin: 2rem 0 0.5rem;
+  padding: 2rem 0 0 2rem;
+  text-align: left;
+  text-transform: uppercase;
+}

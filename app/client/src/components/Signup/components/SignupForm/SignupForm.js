@@ -27,9 +27,9 @@ class SignupForm extends PureComponent {
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
           <Paper zDepth={0}>
-            <div className={s.actionHeaderContainer}>
-              <h2 className={s.actionHeader}>Register</h2>
-              <h3 className={s.actionSubheader}>Create an account to get started on UpRise</h3>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.sectionHeader}>Register</div>
+              <div className={s.sectionSubheader}>Create an account to get started on UpRise</div>
             </div>
             <div className={s.formContainer}>
               <form className={s.form} onSubmit={formSubmit}>
@@ -115,11 +115,11 @@ class SignupForm extends PureComponent {
                     errorText={errors.zipcodeErrorText}
                   />
                 </div>
-                <div className={s.button}>
-                  <RaisedButton onClick={cancel} primary={false} label="Cancel" />
+                <div className={s.button} onClick={cancel} onKeyPress={cancel} role="button" tabIndex="0">
+                  Cancel
                 </div>
-                <div className={[s.button, s.secondaryButton].join(' ')}>
-                  <RaisedButton onClick={formSubmit} primary type="submit" label="Create Account" />
+                <div className={s.secondaryButton} onClick={formSubmit} onKeyPress={formSubmit} role="button" tabIndex="0">
+                  Create Account
                 </div>
               </form>
             </div>

@@ -26,6 +26,7 @@ fragment ActionBasicInfo on ActionResult {
   public_url
   campaign {
     id
+    profile_subheader
     title
     slug
     profile_image_url

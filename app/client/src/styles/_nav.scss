@@ -1,19 +1,32 @@
 @import '~styles/variables';
+@import '~styles/sections';
+
+.crumbs {
+  overflow: hidden;
+  background-color: $white;
+}
 
 .navHeader {
   width: 100%;
   display: flex;
-  color: lighten($azure, 10%);
-  height: 3rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 400;
   align-items: center;
   justify-content: left;
+  margin: 1rem 2rem;
+
+  > span:first-child {
+    font-weight: 500;
+  }
 
   :global .material-icons {
     margin-left: 1rem;
     margin-right: 1rem;
     color: darken($white, 30%) !important;
+  }
+  :global .arrowRight {
+    color: $fire-red !important;
+    margin: 0 0.5rem;
   }
 }
 
@@ -32,18 +45,18 @@
   }
 }
 
-.pageHeader {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-  height: 5rem;
-  color: $brick-red !important;
-  font-size: 3rem;
-  font-weight: 500;
-  padding: 2rem 0px;
-}
+// .pageHeader {
+//   width: 100%;
+//   display: flex;
+//   justify-content: center;
+//   text-align: center;
+//   align-items: center;
+//   height: 5rem;
+//   color: $brick-red !important;
+//   font-size: 3rem;
+//   font-weight: 500;
+//   padding: 2rem 0px;
+// }
 
 .pageSubHeader, .campaignHeader, .actionHeader, .settingsHeader, .titleContainer {
   width: 100%;
@@ -53,8 +66,8 @@
   align-items: center;
   padding: 1rem 0px;
   color: darken($azure, 20%) !important;
-  font-size: 2.5rem;
-  line-height: 3rem;
+  font-size: 1.8rem;
+  line-height: 2rem;
   font-weight: 500;
 }
 

@@ -10,7 +10,6 @@ import ImageUploader from 'components/ImageUploader';
 import s from 'styles/Organize.scss';
 import f from 'styles/Form.scss';
 
-
 class CampaignProfileForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
@@ -20,24 +19,22 @@ class CampaignProfileForm extends PureComponent {
     handleInputChange: PropTypes.func.isRequired,
     saving: PropTypes.bool,
     uploading: PropTypes.bool.isRequired,
-  }
+  };
 
   static defaultProps = {
     saving: false,
-  }
+  };
 
   render() {
-    const {
-      data, formSubmit, errors, campaignId,
-      handleInputChange, saving, uploading,
-    } = this.props;
+    const { data, formSubmit, errors, campaignId, handleInputChange, saving, uploading } = this.props;
 
     return (
       <div className={s.outerContainer}>
         <div className={s.editCampaignProfileContainer}>
-
           <ImageUploader
-            onChange={(imgSrc) => { handleInputChange(undefined, 'profileImageUrl', imgSrc); }}
+            onChange={(imgSrc) => {
+              handleInputChange(undefined, 'profileImageUrl', imgSrc);
+            }}
             imageSrc={data.profileImageUrl}
             imageHeight={800}
             imageWidth={800}
@@ -53,7 +50,9 @@ class CampaignProfileForm extends PureComponent {
               value={data.title}
               className={s.textField}
               hintText="Campaign Public Title"
-              onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
+              onChange={(event) => {
+                handleInputChange(event, 'title', event.target.value);
+              }}
               errorText={errors.titleErrorText}
               fullWidth
               underlineShow={false}
@@ -65,7 +64,9 @@ class CampaignProfileForm extends PureComponent {
               className={s.textField}
               value={data.profileSubheader}
               hintText="Subheader"
-              onChange={(event) => { handleInputChange(event, 'profileSubheader', event.target.value); }}
+              onChange={(event) => {
+                handleInputChange(event, 'profileSubheader', event.target.value);
+              }}
               errorText={errors.profileSubheaderErrorText}
               fullWidth
               underlineShow={false}
@@ -77,7 +78,9 @@ class CampaignProfileForm extends PureComponent {
               value={data.websiteUrl}
               className={s.textField}
               hintText="Website Url"
-              onChange={(event) => { handleInputChange(event, 'websiteUrl', event.target.value); }}
+              onChange={(event) => {
+                handleInputChange(event, 'websiteUrl', event.target.value);
+              }}
               errorText={errors.websiteUrlErrorText}
               fullWidth
               underlineShow={false}
@@ -94,40 +97,37 @@ class CampaignProfileForm extends PureComponent {
               value={data.description}
               multiLine
               rows={4}
-              onChange={(event) => { handleInputChange(event, 'description', event.target.value); }}
+              onChange={(event) => {
+                handleInputChange(event, 'description', event.target.value);
+              }}
               errorText={errors.descriptionErrorText}
               fullWidth
               underlineShow={false}
             />
           </div>
 
-          { (saving || uploading) ? (
-
+          {saving || uploading ? (
             <div className={s.savingThrobberContainer}>
-              <CircularProgress
-                size={100}
-                thickness={5}
-              />
+              <CircularProgress size={100} thickness={5} />
             </div>
           ) : (
-
-            <div className={[s.organizeButton, s.saveButton].join(' ')}>
-              <RaisedButton
-                onClick={formSubmit}
-                primary
-                type="submit"
-                label="Save Changes"
-              />
+            <div
+              className={[s.organizeButton, s.saveButton].join(' ')}
+              onClick={formSubmit}
+              onKeyPress={formSubmit}
+              role="button"
+              tabIndex="0"
+            >
+              Save Changes
             </div>
           )}
-
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   uploading: state.uploads.uploading,
 });
 

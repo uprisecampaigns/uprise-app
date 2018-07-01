@@ -42,7 +42,7 @@ class SignupRegisterLogin extends React.PureComponent {
                 </div>
                 { action.ongoing ? (
                   <div
-                    className={s.button}
+                    className={s.darkButton}
                     onClick={event => dispatch(pressedSignup(action))}
                     onKeyPress={event => dispatch(pressedSignup(action))}
                     role="button"
@@ -52,7 +52,7 @@ class SignupRegisterLogin extends React.PureComponent {
                   </div>
                 ) : (
                   <div
-                    className={s.button}
+                    className={s.darkButton}
                     onClick={event => dispatch(pressedSignup(action))}
                     onKeyPress={event => dispatch(pressedSignup(action))}
                     role="button"
@@ -68,20 +68,20 @@ class SignupRegisterLogin extends React.PureComponent {
                   <div>
                     <div className={s.header}>Sign up for this Role</div>
                     <div
-                      className={s.button}
+                      className={s.darkButton}
                       onClick={event => dispatch(pressedSignup(action))}
                       onKeyPress={event => dispatch(pressedSignup(action))}
                       role="button"
                       tabIndex="0"
                     >
-                      Signup
+                      Sign up
                     </div>
                   </div>
                 ) : (
                   <div>
                     <div className={s.header}>Volunteer for this Event</div>
                     <div
-                      className={s.button}
+                      className={s.darkButton}
                       onClick={event => dispatch(pressedSignup(action))}
                       onKeyPress={event => dispatch(pressedSignup(action))}
                       role="button"

@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import { compose, graphql } from 'react-apollo';
 
 import KeywordTag from 'components/KeywordTag';
 
 import history from 'lib/history';
 import Link from 'components/Link';
+
+import MeQuery from 'schemas/queries/MeQuery.graphql';
 
 import s from 'styles/UserProfile.scss';
 
@@ -26,7 +29,7 @@ class UserProfile extends PureComponent {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, me } = this.props;
 
     const keywords =
       Array.isArray(user.tags) && user.tags.length ? (
@@ -52,11 +55,6 @@ class UserProfile extends PureComponent {
 
     return (
       <div>
-        {/*
-        <div className={s.headerButtonsContainer}>
-          <RaisedButton onClick={this.handleEdit} primary label="Edit Profile" className={s.editProfileButton} />
-        </div>
-        */}
         <div className={s.userProfileContainer}>
           <div className={s.leftContent}>
             {user.profile_image_url && (
@@ -77,10 +75,36 @@ class UserProfile extends PureComponent {
 
             {user.subheader && <div className={s.userSubheader}>{user.subheader}</div>}
 
-            <RaisedButton onClick={this.handleContact} primary label="Contact" className={s.primaryButton} />
+            {me && me.id === user.id ? (
+              <div className={s.headerButtonsContainer}>
+                <div
+                  className={s.editProfileButton}
+                  onClick={this.handleEdit}
+                  onKeyPress={this.handleEdit}
+                  role="button"
+                  tabIndex="0"
+                >
+                  Edit Profile
+                </div>
+              </div>
+            ) : (
+              <div
+                className={s.brightButton}
+                onClick={this.handleContact}
+                onKeyPress={this.handleContact}
+                role="button"
+                tabIndex="0"
+              >
+                Contact
+              </div>
+            )}
 
-            <div className={s.keywordsHeader}>Keywords</div>
-            {keywords}
+            {keywords && (
+              <div>
+                <div className={s.smallHeader}>Keywords</div>
+                {keywords}
+              </div>
+            )}
           </div>
 
           <div className={s.centerContent}>
@@ -103,4 +127,13 @@ class UserProfile extends PureComponent {
   }
 }
 
-export default UserProfile;
+export default compose(
+  graphql(MeQuery, {
+    options: (ownProps) => ({
+      fetchPolicy: 'cache-and-network',
+    }),
+    props: ({ data }) => ({
+      me: data.me,
+    }),
+  }),
+)(UserProfile);

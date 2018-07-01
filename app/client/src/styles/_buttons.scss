@@ -1,22 +1,98 @@
 @import '~styles/variables';
 
-.primaryButton button {
+.rightButton {
+  text-align: right;
+  > div {
+    display: inline-block;
+  }
+}
+
+.button {
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  transition: background 250ms ease;
+  &:hover {
+    background-color: $light-grey;
+  }
+}
+
+.cancelButton {
+  @extend .button;
+  background-color: $medium-grey;
+  color: $white;
+  &:hover {
+    background-color: lighten($medium-grey, 10%);
+  }
+}
+
+.primaryButton {
+  @extend .button;
   background-color: $fire-red;
   color: $white;
   &:hover {
-    background-color: darken($fire-red, 10%);
+    background-color: lighten($fire-red, 10%) !important;
   }
 }
 
-.secondaryButton button {
-  background-color: lighten($azure, 40%) !important;
-  span {
-    color: darken($azure, 20%) !important;
+.secondaryButton {
+  @extend .button;
+  background-color: lighten($azure, 40%);
+  &:hover {
+    background-color: lighten($azure, 30%);
   }
 }
 
-.lowerCaseButton button {
-  span {
-    text-transform: none !important;
+.darkButton {
+  @extend .button;
+  background-color: $dark-blue;
+  color: $white;
+  &:hover {
+    background-color: lighten($dark-blue, 10%);
   }
 }
+
+.brightButton {
+  @extend .button;
+  background-color: $bright-blue;
+  color: $white;
+  &:hover {
+    background-color: lighten($bright-blue, 5%);
+  }
+}
+
+.lowerCaseButton {
+  @extend .button;
+  text-transform: none;
+}
+
+.flatButton {
+  @extend .button;
+  border: 1px solid $medium-light-grey;
+  width: 15rem;
+  text-align: left;
+  display: inline-block;
+  margin-left: 1rem;
+  &:first-child {
+    margin-left: 0;
+  }
+  > span {
+    font-size: 0.8rem;
+    display: block;
+  }
+  &:hover {
+    background-color: $light-grey;
+  }
+}
+
+.inlineButton {
+  display: inline-block;
+}
+
+.centerButtons {
+  display: flex;
+  justify-content: center;
+}
+

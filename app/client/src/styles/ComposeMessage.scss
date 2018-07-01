@@ -4,6 +4,8 @@
 
 
 .outerContainer {
+  background-color: $white;
+  padding: 2rem 0;
 
   .innerContainer {
     width: 90%;
@@ -36,5 +38,5 @@
     text-align: center;
   }
 
-  @extend .primaryButton;
+  // @extend .primaryButton;
 }

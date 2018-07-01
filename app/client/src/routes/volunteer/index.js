@@ -9,7 +9,7 @@ export default {
   path: '/volunteer',
 
   action({ store }) {
-    store.dispatch(setRole('user'));
+    store.dispatch(setRole('volunteer'));
 
     return {
       title: 'Volunteer',

@@ -1,22 +1,15 @@
 @import '~styles/variables';
 @import '~styles/buttons';
 @import '~styles/modals';
+@import '~styles/sections';
+@import '~styles/headers';
 
 .outerContainer {
-  width: 100%;
-  display: flex;
   justify-content: center;
-
-  @media (max-width: $screen-sm-min) {
-    margin: 0rem 0rem 1rem 0rem;
-  }
 }
 
 .innerContainer {
-  display: block;
-  flex: 1;
   text-align: center;
-  max-width: $max-content-width;
 
 }
 
@@ -28,10 +21,15 @@
   }
 }
 
+.flexForm {
+  display: flex;
+  flex-direction: column;
+}
+
 .form {
   text-align: center;
   max-width: ($max-content-width / 2);
-  margin: 0 auto;
+  margin-left: 2rem;
 }
 
 .button {
@@ -83,7 +81,7 @@
   text-align: left;
 
   input, label {
-    font-size: 1.1rem !important;
+    font-size: 1.1rem;
   }
 }
 
@@ -175,7 +173,7 @@
   background-color: $white;
   margin: 0 auto;
   max-width: $max-content-width;
-  padding: 1rem 0 3rem;
+  padding: 0 0 3rem;
   text-align: center;
 
   @media (max-width: $screen-sm-min) {
@@ -240,21 +238,46 @@
   margin-right: 1rem;
 }
 
-.actionHeaderContainer {
-  border-bottom: 1px solid $medium-light-grey;
-  padding: 1rem;
-}
-
-.actionHeader {
+.settingsHeader {
   font-size: 1.5rem;
   font-weight: 500;
-  margin: 0;
+  padding: 2rem 2rem 0.5rem 2rem;
+  text-align: left;
+  border-bottom: 1px solid $azure;
+  max-width: ($max-content-width / 2);
+}
+
+.formText {
+  max-width: ($max-content-width / 2);
+  margin: 2rem 0 0 2rem;
   text-align: left;
 }
 
-.actionSubheader {
-  font-size: 1rem;
-  font-weight: 400;
+.formHeader {
+  font-size: 1.3rem;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+.formBody {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.formInnerContent {
+  margin: 0 2rem 1rem;
+}
+
+.link {
+  text-decoration: underline;
+}
+
+.uploadProfileImageContainer {
+  max-width: 10rem;
   margin: 0;
-  text-align: left;
+}
+
+.asideContent {
+  background-color: $light-grey;
+  padding: 1rem;
+  margin: 1rem 0;
 }

@@ -5,7 +5,6 @@ import ClassNames from 'classnames';
 import Snackbar from 'material-ui/Snackbar';
 import LinearProgress from 'material-ui/LinearProgress';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import withAuthentication from 'lib/withAuthentication';
 
@@ -18,7 +17,6 @@ import { clear, cancelNavFromDirtyForm, confirmNavFromDirtyForm } from 'actions/
 import HeaderContainer from './components/HeaderContainer';
 import NavDrawerContainer from './components/NavDrawerContainer';
 import Footer from './components/Footer';
-
 
 export class Layout extends Component {
   static propTypes = {
@@ -91,24 +89,36 @@ export class Layout extends Component {
           modal
           actionsContainerClassName={s.modalActionsContainer}
           actions={[
-            <RaisedButton
-              label="Leave"
-              primary={false}
-              className={s.secondaryButton}
+            <div
+              className={[s.inlineButton, s.button].join(' ')}
               onClick={(event) => {
                 event.preventDefault();
                 this.props.dispatch(confirmNavFromDirtyForm());
               }}
-            />,
-            <RaisedButton
-              label="Keep Editing"
-              primary
-              className={s.primaryButton}
+              onKeyPress={(event) => {
+                event.preventDefault();
+                this.props.dispatch(confirmNavFromDirtyForm());
+              }}
+              role="button"
+              tabIndex="0"
+            >
+              Leave
+            </div>,
+            <div
+              className={[s.primaryButton, s.inlineButton].join(' ')}
               onClick={(event) => {
                 event.preventDefault();
                 this.props.dispatch(cancelNavFromDirtyForm());
               }}
-            />,
+              onKeyPress={(event) => {
+                event.preventDefault();
+                this.props.dispatch(cancelNavFromDirtyForm());
+              }}
+              role="button"
+              tabIndex="0"
+            >
+              Keep Editing
+            </div>,
           ]}
           open={this.props.displayFormNavWarning}
         >

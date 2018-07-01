@@ -17,7 +17,7 @@ function UnauthenticatedIcons(props) {
         <Link to="/login">Log In</Link>
       </div>
 
-      <div className={[s.headerButton, s.primaryButton].join(' ')}>
+      <div className={s.headerButton}>
         <Link to="/signup">Register</Link>
       </div>
     </div>
@@ -45,7 +45,7 @@ function AuthenticatedIcons(props) {
           [s.activeButton]: props.role === 'volunteer',
         })}
       >
-        <Link to="/">Volunteer</Link>
+        <Link to="/volunteer">Volunteer</Link>
       </div>
 
       <div
@@ -64,7 +64,7 @@ function AuthenticatedIcons(props) {
           [s.activeButton]: props.role === 'user',
         })}
       >
-        <Link to="/volunteer">{accountIcon}</Link>
+        <Link to={`/user/${userObject.id}`}>{accountIcon}</Link>
       </div>
     </div>
   );

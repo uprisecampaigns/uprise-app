@@ -1,6 +1,8 @@
 
 @import '~styles/variables';
 @import '~styles/nav';
+@import '~styles/sections';
+@import '~styles/headers';
 
 .root {
   h1 {
@@ -36,7 +38,9 @@
 }
 
 .container {
+  background-color: $white;
   margin: 0 auto;
+  box-sizing: border-box;
   padding: 0rem 1.5rem 3rem 1.5rem;
   max-width: $max-content-width;
 }
@@ -50,8 +54,6 @@
 .termsContainer {
   @extend .container;
   max-height: 55vh;
-  margin-top: 1rem;
-  width: 80%;
   overflow-y: scroll;
   text-align: left;
   border: 1px solid darken($white, 20%);
@@ -203,4 +205,8 @@
     margin-bottom: 1.5rem;
     margin-top: 1.5rem;
   }
+}
+
+.innerContainer {
+  background-color: $white;
 }

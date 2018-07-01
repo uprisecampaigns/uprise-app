@@ -18,7 +18,6 @@ import EditActionMutation from 'schemas/mutations/EditActionMutation.graphql';
 
 import s from 'styles/Organize.scss';
 
-
 class ManageActionSettings extends React.PureComponent {
   static propTypes = {
     action: PropTypes.object,
@@ -31,12 +30,12 @@ class ManageActionSettings extends React.PureComponent {
     campaignId: PropTypes.string.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     actionId: PropTypes.string.isRequired,
-  }
+  };
 
   static defaultProps = {
     action: undefined,
     campaign: undefined,
-  }
+  };
 
   editAction = async (data) => {
     const actionData = { ...data, id: this.props.actionId, campaignId: this.props.campaignId };
@@ -59,9 +58,11 @@ class ManageActionSettings extends React.PureComponent {
       }, 500);
     } catch (e) {
       console.error(e);
-      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+      this.props.dispatch(
+        notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'),
+      );
     }
-  }
+  };
 
   render() {
     if (this.props.action && this.props.campaign) {
@@ -72,23 +73,23 @@ class ManageActionSettings extends React.PureComponent {
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>{campaign.title}</div>
 
-          <Link to={baseActionUrl}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              {action.title}
+              {campaign.profile_subheader && <div className={s.sectionSubheader}>{campaign.profile_subheader}</div>}
             </div>
-          </Link>
 
-          <ActionSettingsContainer
-            submit={editAction}
-            action={action}
-            campaign={campaign}
-          />
+            <div className={s.crumbs}>
+              <div className={s.navHeader}>
+                <Link to={`${baseActionUrl}`}>{action.title}</Link>
+                <FontIcon className={['material-icons', 'arrowRight'].join(' ')}>keyboard_arrow_right</FontIcon>
+                Settings
+              </div>
+            </div>
 
+            <ActionSettingsContainer submit={editAction} action={action} campaign={campaign} />
+          </div>
         </div>
       );
     }
@@ -97,7 +98,7 @@ class ManageActionSettings extends React.PureComponent {
 }
 
 const withActionQuery = graphql(ActionQuery, {
-  options: ownProps => ({
+  options: (ownProps) => ({
     variables: {
       search: {
         id: ownProps.actionId,
@@ -110,9 +111,8 @@ const withActionQuery = graphql(ActionQuery, {
   }),
 });
 
-
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: ownProps => ({
+  options: (ownProps) => ({
     variables: {
       search: {
         id: ownProps.campaignId,

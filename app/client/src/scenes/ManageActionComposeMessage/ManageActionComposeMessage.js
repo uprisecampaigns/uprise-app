@@ -33,30 +33,26 @@ class ManageActionComposeMessage extends Component {
     actionId: PropTypes.string.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignId: PropTypes.string.isRequired,
-  }
+  };
 
   static defaultProps = {
     campaign: undefined,
     action: undefined,
-  }
+  };
 
   handleSend = async ({ subject, body }) => {
-    const {
-      userObject, recipients, sendMessage, ...props
-    } = this.props;
+    const { userObject, recipients, sendMessage, ...props } = this.props;
 
-    const fullBody = `From: ${userObject.first_name} ${userObject.last_name
-    }\nPlease reply to: ${userObject.email
-    }\n${props.campaign.title
-    }\n${props.action.title
-    }\n\n${body}`;
+    const fullBody = `From: ${userObject.first_name} ${userObject.last_name}\nPlease reply to: ${userObject.email}\n${
+      props.campaign.title
+    }\n${props.action.title}\n\n${body}`;
 
     try {
       await sendMessage({
         variables: {
           data: {
             replyToEmail: userObject.email,
-            recipientIds: recipients.map(r => r.id),
+            recipientIds: recipients.map((r) => r.id),
             body: fullBody,
             subject,
           },
@@ -72,13 +68,11 @@ class ManageActionComposeMessage extends Component {
       console.error(e);
       props.dispatch(notify('There was an error sending your message.'));
     }
-  }
+  };
 
   render() {
     if (this.props.campaign && this.props.action && this.props.recipients && this.props.userObject) {
-      const {
-        campaign, action, userObject, recipients,
-      } = this.props;
+      const { campaign, action, userObject, recipients } = this.props;
 
       const baseActionUrl = `/organize/${campaign.slug}/opportunity/${action.slug}`;
 
@@ -91,26 +85,28 @@ class ManageActionComposeMessage extends Component {
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>{campaign.title}</div>
 
-          <Link to={baseActionUrl}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              Dashboard
+              {campaign.profile_subheader && <div className={s.sectionSubheader}>{campaign.profile_subheader}</div>}
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>Compose Message</div>
+            <div className={s.crumbs}>
+              <div className={s.navHeader}>
+                <Link to={`${baseActionUrl}`}>{action.title}</Link>
+                <FontIcon className={['material-icons', 'arrowRight'].join(' ')}>keyboard_arrow_right</FontIcon>
+                Contact Volunteers
+              </div>
+            </div>
 
-          <ComposeMessage
-            fromEmail={userObject.email}
-            detailLines={detailLines}
-            recipients={recipients}
-            handleSend={this.handleSend}
-          />
-
+            <ComposeMessage
+              fromEmail={userObject.email}
+              detailLines={detailLines}
+              recipients={recipients}
+              handleSend={this.handleSend}
+            />
+          </div>
         </div>
       );
     }
@@ -118,14 +114,14 @@ class ManageActionComposeMessage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   recipients: state.messages.recipients,
 });
 
 export default compose(
   connect(mapStateToProps),
   graphql(CampaignQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.campaignId,
@@ -137,7 +133,7 @@ export default compose(
     }),
   }),
   graphql(ActionQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.actionId,

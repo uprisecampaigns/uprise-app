@@ -10,17 +10,13 @@ import Link from 'components/Link';
 
 import formWrapper from 'lib/formWrapper';
 
-import {
-  validateString,
-  validateWebsiteUrl,
-} from 'lib/validateComponentForms';
+import { validateString, validateWebsiteUrl } from 'lib/validateComponentForms';
 
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
 import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql';
 
 import s from 'styles/Organize.scss';
-
 
 const WrappedCampaignProfileForm = formWrapper(CampaignProfileForm);
 
@@ -32,11 +28,11 @@ class ManageCampaignProfileEdit extends Component {
     graphqlLoading: PropTypes.bool.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
-  }
+  };
 
   static defaultProps = {
     campaign: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -65,12 +61,14 @@ class ManageCampaignProfileEdit extends Component {
   handleCampaignProps = (nextProps) => {
     if (nextProps.campaign && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
-      const campaign = Object.assign(...Object.keys(nextProps.campaign).map((k) => {
-        if (nextProps.campaign[k] !== null) {
-          return { [camelCase(k)]: nextProps.campaign[k] };
-        }
-        return undefined;
-      }));
+      const campaign = Object.assign(
+        ...Object.keys(nextProps.campaign).map((k) => {
+          if (nextProps.campaign[k] !== null) {
+            return { [camelCase(k)]: nextProps.campaign[k] };
+          }
+          return undefined;
+        }),
+      );
 
       Object.keys(campaign).forEach((k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
@@ -78,17 +76,17 @@ class ManageCampaignProfileEdit extends Component {
         }
       });
 
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         formData: Object.assign({}, prevState.formData, campaign),
       }));
     }
-  }
+  };
 
   defaultErrorText = {
     titleErrorText: null,
     websiteUrlErrorText: null,
     descriptionErrorText: null,
-  }
+  };
 
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender with previous form data
@@ -117,7 +115,7 @@ class ManageCampaignProfileEdit extends Component {
       console.error(e);
       return { success: false, message: e.message };
     }
-  }
+  };
 
   render() {
     if (this.props.campaign) {
@@ -126,34 +124,40 @@ class ManageCampaignProfileEdit extends Component {
       const { formSubmit, defaultErrorText } = this;
 
       const validators = [
-        (component) => { validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'); },
-        (component) => { validateWebsiteUrl(component); },
+        (component) => {
+          validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required');
+        },
+        (component) => {
+          validateWebsiteUrl(component);
+        },
       ];
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>{campaign.title}</div>
 
-          <Link to={`/organize/${campaign.slug}`}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              { campaign.title }
+              {campaign.profile_subheader && <div className={s.sectionSubheader}>{campaign.profile_subheader}</div>}
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>Profile</div>
+            <div className={s.crumbs}>
+              <div className={s.navHeader}>
+                <Link to={`/organize/${campaign.slug}`}>{campaign.title}</Link>
+                <FontIcon className={['material-icons', 'arrowRight'].join(' ')}>keyboard_arrow_right</FontIcon>
+                Campaign Profile
+              </div>
+            </div>
 
-          <WrappedCampaignProfileForm
-            initialState={formData}
-            initialErrors={defaultErrorText}
-            validators={validators}
-            submit={formSubmit}
-            campaignId={campaign.id}
-            submitText="Save Changes"
-          />
-
+            <WrappedCampaignProfileForm
+              initialState={formData}
+              initialErrors={defaultErrorText}
+              validators={validators}
+              submit={formSubmit}
+              campaignId={campaign.id}
+              submitText="Save Changes"
+            />
+          </div>
         </div>
       );
     }
@@ -164,7 +168,7 @@ class ManageCampaignProfileEdit extends Component {
 export default compose(
   connect(),
   graphql(CampaignQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       variables: {
         search: {
           slug: ownProps.campaignSlug,

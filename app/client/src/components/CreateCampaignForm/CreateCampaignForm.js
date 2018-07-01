@@ -10,7 +10,6 @@ import states from 'lib/states-list';
 
 import s from 'styles/Form.scss';
 
-
 class CreateCampaignForm extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
@@ -29,35 +28,30 @@ class CreateCampaignForm extends Component {
       stateErrorText: PropTypes.string.isRequired,
       zipcodeErrorText: PropTypes.string.isRequired,
     }).isRequired,
-  }
+  };
 
   static defaultProps = {
     saving: false,
-  }
+  };
 
   render() {
-    const {
-      data, refs, formSubmit, errors, saving,
-      handleInputChange, cancel, submitText,
-    } = this.props;
+    const { data, refs, formSubmit, errors, saving, handleInputChange, cancel, submitText } = this.props;
 
     const statesList = Object.keys(states);
-
 
     return (
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
           <Paper zDepth={2}>
             <div className={s.formContainer}>
-              <form
-                className={s.form}
-                onSubmit={formSubmit}
-              >
+              <form className={s.form} onSubmit={formSubmit}>
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Campaign Name"
                     value={data.title}
-                    onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
+                    onChange={(event) => {
+                      handleInputChange(event, 'title', event.target.value);
+                    }}
                     errorText={errors.titleErrorText}
                     fullWidth
                   />
@@ -66,7 +60,9 @@ class CreateCampaignForm extends Component {
                   <TextField
                     floatingLabelText="Website"
                     value={data.websiteUrl}
-                    onChange={(event) => { handleInputChange(event, 'websiteUrl', event.target.value); }}
+                    onChange={(event) => {
+                      handleInputChange(event, 'websiteUrl', event.target.value);
+                    }}
                     errorText={errors.websiteUrlErrorText}
                     fullWidth
                     type="url"
@@ -76,7 +72,9 @@ class CreateCampaignForm extends Component {
                   <TextField
                     floatingLabelText="Phone"
                     value={data.phoneNumber}
-                    onChange={(event) => { handleInputChange(event, 'phoneNumber', event.target.value); }}
+                    onChange={(event) => {
+                      handleInputChange(event, 'phoneNumber', event.target.value);
+                    }}
                     errorText={errors.phoneNumberErrorText}
                     fullWidth
                     type="tel"
@@ -87,7 +85,9 @@ class CreateCampaignForm extends Component {
                   <TextField
                     floatingLabelText="Street Address"
                     value={data.streetAddress}
-                    onChange={(event) => { handleInputChange(event, 'streetAddress', event.target.value); }}
+                    onChange={(event) => {
+                      handleInputChange(event, 'streetAddress', event.target.value);
+                    }}
                     errorText={errors.streetAddressErrorText}
                     fullWidth
                   />
@@ -96,7 +96,9 @@ class CreateCampaignForm extends Component {
                   <TextField
                     floatingLabelText="Street Address 2"
                     value={data.streetAddress2}
-                    onChange={(event) => { handleInputChange(event, 'streetAddress2', event.target.value); }}
+                    onChange={(event) => {
+                      handleInputChange(event, 'streetAddress2', event.target.value);
+                    }}
                     fullWidth
                   />
                 </div>
@@ -105,7 +107,9 @@ class CreateCampaignForm extends Component {
                   <TextField
                     floatingLabelText="City"
                     value={data.city}
-                    onChange={(event) => { handleInputChange(event, 'city', event.target.value); }}
+                    onChange={(event) => {
+                      handleInputChange(event, 'city', event.target.value);
+                    }}
                     errorText={errors.cityErrorText}
                     fullWidth
                   />
@@ -115,8 +119,12 @@ class CreateCampaignForm extends Component {
                     floatingLabelText="State"
                     searchText={data.state}
                     dataSource={statesList}
-                    onUpdateInput={(text) => { handleInputChange(undefined, 'state', text); }}
-                    ref={(input) => { refs.stateInput = input; }}
+                    onUpdateInput={(text) => {
+                      handleInputChange(undefined, 'state', text);
+                    }}
+                    ref={(input) => {
+                      refs.stateInput = input;
+                    }}
                     errorText={errors.stateErrorText}
                     fullWidth
                   />
@@ -128,53 +136,40 @@ class CreateCampaignForm extends Component {
                     value={data.zipcode}
                     type="text"
                     pattern="[0-9]{5}"
-                    onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
+                    onChange={(event) => {
+                      handleInputChange(event, 'zipcode', event.target.value);
+                    }}
                     errorText={errors.zipcodeErrorText}
                   />
                 </div>
 
                 <div className={s.textFieldContainer}>
-                  <TextField
-                    floatingLabelText="Email"
-                    disabled
-                    value={data.email}
-                    fullWidth
-                  />
+                  <TextField floatingLabelText="Email" disabled value={data.email} fullWidth />
                 </div>
 
-                <div className={s.button}>
-                  <RaisedButton
-                    onClick={cancel}
-                    primary={false}
-                    label="Cancel"
-                  />
+                <div className={s.button} onClick={cancel} onKeyPress={cancel} role="button" tabIndex="0">
+                  Cancel
                 </div>
 
-                { saving ? (
-
+                {saving ? (
                   <div className={s.savingThrobberContainer}>
-                    <CircularProgress
-                      size={100}
-                      thickness={5}
-                    />
+                    <CircularProgress size={100} thickness={5} />
                   </div>
                 ) : (
-
-                  <div className={[s.organizeButton, s.button].join(' ')}>
-                    <RaisedButton
-                      onClick={formSubmit}
-                      primary
-                      type="submit"
-                      label={submitText}
-                    />
+                  <div
+                    className={[s.organizeButton, s.button].join(' ')}
+                    onClick={formSubmit}
+                    onKeyPress={formSubmit}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    {submitText}
                   </div>
                 )}
-
               </form>
             </div>
           </Paper>
         </div>
-
       </div>
     );
   }

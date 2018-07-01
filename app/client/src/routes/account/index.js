@@ -7,25 +7,16 @@ import Layout from 'components/Layout';
 import { setRole } from 'actions/PageNavActions';
 
 export default {
-
   path: '/settings/account',
 
   async action({ store, next }) {
     store.dispatch(setRole('user'));
 
-    const route = await next();
-    return route;
-  },
+    const privacyContent = await import(/* webpackChunkName: "privacy" */ 'content/privacy.md');
 
-  children: [
-    {
-      path: '',
-      action: () => ({
+    return {
       title: 'Account',
-      component: <Layout><Account /></Layout>,
-      }),
+      component: <Layout><Account privacyContent={privacyContent} /></Layout>,
+    };
   },
-
-
-  ],
 };

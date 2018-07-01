@@ -21,7 +21,7 @@ function UserHeader(props) {
           <Link to={`/user/${userObject.id}`} useAhref={false}>Profile</Link>
         </div>
         <div>
-          <Link to="/settings" useAhref={false}>Settings</Link>
+          <Link to="/settings/account" useAhref={false}>Settings</Link>
         </div>
         <div>
           <Link to="" onClick={() => props.dispatch(attemptLogout())} useAhref={false}>Logout</Link>

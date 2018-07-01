@@ -25,14 +25,13 @@ import ConfirmEmailPrompt from 'components/ConfirmEmailPrompt';
 
 import s from 'styles/Organize.scss';
 
-
 const WrappedCreateCampaignForm = formWrapper(CreateCampaignForm);
 
 class CreateCampaignContainer extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
     createCampaignMutation: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -77,7 +76,7 @@ class CreateCampaignContainer extends Component {
     cityErrorText: null,
     stateErrorText: null,
     zipcodeErrorText: null,
-  }
+  };
 
   formSubmit = async (data) => {
     try {
@@ -112,7 +111,7 @@ class CreateCampaignContainer extends Component {
     } catch (e) {
       return { success: false, message: e.message };
     }
-  }
+  };
 
   render() {
     const { formSubmit, defaultErrorText } = this;
@@ -120,21 +119,30 @@ class CreateCampaignContainer extends Component {
     const { newCampaign, modalOpen, formData } = this.state;
 
     const modalActions = [
-      <RaisedButton
-        label="Manage Campaign"
-        primary
+      <div
         className={s.primaryButton}
-        onClick={(event) => { event.preventDefault(); history.push(`/organize/${newCampaign.slug}`); }}
-      />,
+        onClick={(event) => {
+          event.preventDefault();
+          history.push(`/organize/${newCampaign.slug}`);
+        }}
+        onKeyPress={(event) => {
+          event.preventDefault();
+          history.push(`/organize/${newCampaign.slug}`);
+        }}
+        role="button"
+        tabIndex="0"
+      >
+        Manage Campaign
+      </div>,
     ];
 
     const validators = [
-      component => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
-      component => validateString(component, 'phoneNumber', 'phoneNumberErrorText', 'Phone Number is Required'),
-      component => validateZipcode(component),
-      component => validateWebsiteUrl(component),
-      component => validatePhoneNumber(component),
-      component => validateState(component),
+      (component) => validateString(component, 'title', 'titleErrorText', 'Campaign Name is Required'),
+      (component) => validateString(component, 'phoneNumber', 'phoneNumberErrorText', 'Phone Number is Required'),
+      (component) => validateZipcode(component),
+      (component) => validateWebsiteUrl(component),
+      (component) => validatePhoneNumber(component),
+      (component) => validateState(component),
       (component) => {
         if (component.state.formData.legalOrg) {
           validateString(component, 'orgWebsite', 'orgWebsiteErrorText', 'Organization Website is required');
@@ -150,45 +158,44 @@ class CreateCampaignContainer extends Component {
 
     return (
       <div className={s.outerContainer}>
-
-        <div className={s.pageSubHeader}>Create Campaign</div>
-
-        { user.email_confirmed ? (
-          <div>
-            <WrappedCreateCampaignForm
-              initialState={formData}
-              initialErrors={defaultErrorText}
-              validators={validators}
-              submit={formSubmit}
-              submitText="Create"
-              user={user}
-            />
-
-            {modalOpen && (
-              <Dialog
-                title="Campaign Created"
-                modal
-                actions={modalActions}
-                open={modalOpen}
-                actionsContainerClassName={s.modalActionsContainer}
-              >
-                <p>
-                  Congratulations, you have created the campaign &apos;{newCampaign.title}&apos;.
-                </p>
-                <p>
-                  You can find your campaign&apos;s public profile at {window.location.origin}/campaign/{newCampaign.slug}
-                </p>
-                <p>
-                  You can manage your campaign here:
-                </p>
-              </Dialog>
-            )}
+        <div className={s.innerContainer}>
+          <div className={s.sectionHeaderContainer}>
+            <div className={s.pageHeader}>Create Campaign</div>
           </div>
-        ) : (
-          <ConfirmEmailPrompt
-            handleResend={() => history.push('/organize')}
-          />
-        )}
+
+          {user.email_confirmed ? (
+            <div>
+              <WrappedCreateCampaignForm
+                initialState={formData}
+                initialErrors={defaultErrorText}
+                validators={validators}
+                submit={formSubmit}
+                submitText="Create"
+                user={user}
+              />
+
+              {modalOpen && (
+                <Dialog
+                  title="Campaign Created"
+                  modal
+                  actions={modalActions}
+                  open={modalOpen}
+                  actionsContainerClassName={s.modalActionsContainer}
+                >
+                  <p>Congratulations, you have created the campaign &apos;{newCampaign.title}&apos;.</p>
+                  <p>
+                    You can find your campaign&apos;s public profile at {window.location.origin}/campaign/{
+                      newCampaign.slug
+                    }
+                  </p>
+                  <p>You can manage your campaign here:</p>
+                </Dialog>
+              )}
+            </div>
+          ) : (
+            <ConfirmEmailPrompt handleResend={() => history.push('/organize')} />
+          )}
+        </div>
       </div>
     );
   }
@@ -196,19 +203,20 @@ class CreateCampaignContainer extends Component {
 
 const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
-    user: !data.loading && data.me ? data.me : {
-      email: '',
-      email_confirmed: true,
-    },
+    user:
+      !data.loading && data.me
+        ? data.me
+        : {
+            email: '',
+            email_confirmed: true,
+          },
     data,
   }),
-  options: ownProps => ({
+  options: (ownProps) => ({
     fetchPolicy: 'cache-and-network',
   }),
 });
 
-export default compose(
-  connect(),
-  withMeQuery,
-  graphql(CreateCampaignMutation, { name: 'createCampaignMutation' }),
-)(CreateCampaignContainer);
+export default compose(connect(), withMeQuery, graphql(CreateCampaignMutation, { name: 'createCampaignMutation' }))(
+  CreateCampaignContainer,
+);

@@ -8,7 +8,6 @@ import { gitCommit, defaultSearchRadiusDistance } from 'config/config';
 import { notify, hideLoginPrompt } from 'actions/NotificationsActions';
 import { addDefaultSearchItem } from 'actions/SearchActions';
 
-
 export const CLICKED_SIGNUP = 'CLICKED_SIGNUP';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAIL = 'SIGNUP_FAIL';
@@ -33,13 +32,12 @@ export const CLICKED_LOGOUT = 'CLICKED_LOGOUT';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAIL = 'LOGOUT_FAIL';
 
-
 function setDefaultSearchTerms(user) {
   return async (dispatch) => {
-    if (typeof user === 'object' &&
-        typeof user.zipcode === 'string' &&
-        user.zipcode.trim() !== '') {
-      dispatch(addDefaultSearchItem('action', 'geographies', { zipcode: user.zipcode, distance: defaultSearchRadiusDistance }));
+    if (typeof user === 'object' && typeof user.zipcode === 'string' && user.zipcode.trim() !== '') {
+      dispatch(
+        addDefaultSearchItem('action', 'geographies', { zipcode: user.zipcode, distance: defaultSearchRadiusDistance }),
+      );
     }
   };
 }
@@ -163,8 +161,7 @@ export function checkedSessionStatus(result) {
     // If the hash of the server commit has changed,
     // hard reload the page to get new code
     // TODO: more elegant solution
-    if (typeof result.gitCommit === 'string' &&
-        result.gitCommit.trim() !== gitCommit.trim()) {
+    if (typeof result.gitCommit === 'string' && result.gitCommit.trim() !== gitCommit.trim()) {
       window.setTimeout(() => {
         // TODO: Replace with service worker sync and/or
         // some solution that can't cause cached clients
@@ -328,10 +325,11 @@ export function attemptChangePassword(data, callback) {
 
         if (!json.error) {
           dispatch(notify('Password changed'));
-          (typeof callback === 'function') && callback({
-            success: true,
-            message: 'Password Changed',
-          });
+          typeof callback === 'function' &&
+            callback({
+              success: true,
+              message: 'Password Changed',
+            });
           dispatch(changePasswordSuccess(json));
         } else {
           console.error(json.error);
