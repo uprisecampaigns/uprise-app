@@ -246,6 +246,7 @@ class Campaign {
                 if (validator.isNumeric(geography.zipcode)) {
                   const { zipcode } = geography;
                   this.orWhereRaw('? = ANY(zipcode_list)', zipcode);
+                  this.orWhereRaw('? = zipcode', zipcode);
                 }
               });
             });
