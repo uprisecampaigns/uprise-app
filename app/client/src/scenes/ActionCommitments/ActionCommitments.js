@@ -83,7 +83,7 @@ class ActionCommitments extends PureComponent {
             {actionsList.length === 0 ? (
               <div className={s.searchPrompt}>
                 You have no current volunteering commitments. You can search for opportunities&nbsp;
-                <Link to="/search/search-opportunities" useAhref>
+                <Link to="/search" useAhref>
                   here
                 </Link>.
               </div>

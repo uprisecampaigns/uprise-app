@@ -17,7 +17,7 @@ function Search(props) {
         <List className={s.navList}>
           <Divider />
 
-          <Link to={'/search/search-opportunities'}>
+          <Link to={'/search'}>
             <ListItem primaryText="Opportunities" />
           </Link>
 

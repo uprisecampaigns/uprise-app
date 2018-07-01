@@ -33,12 +33,12 @@ export default {
         };
       }
       return {
-        redirect: '/search/search-opportunities',
+        redirect: '/search',
       };
     } catch (e) {
       console.error(e);
       return {
-        redirect: '/search/search-opportunities',
+        redirect: '/search',
       };
     }
   },
