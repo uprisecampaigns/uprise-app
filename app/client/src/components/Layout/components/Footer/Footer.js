@@ -38,7 +38,7 @@ function Footer(props) {
                 <div>
                   Email:{' '}
                   <Link to="mailto:help@uprise.org" useAhref mailTo external>
-                    staff@uprise.org
+                    help@uprise.org
                   </Link>
                 </div>
                 <div>1442A Walnut St #149</div>
