@@ -175,12 +175,12 @@ export function checkedSessionStatus(result) {
 
     if (result.isLoggedIn) {
       if (typeof result.userObject === 'object') {
-        dispatch(setDefaultSearchTerms(result.userObject));
+        // dispatch(setDefaultSearchTerms(result.userObject));
       }
       Raven.setUserContext(result.userObject);
       ReactGA.set({ userId: result.userObject.id });
     } else {
-      dispatch(setDefaultSearchTerms());
+      // dispatch(setDefaultSearchTerms());
       Raven.setUserContext();
       ReactGA.set({ userId: undefined });
     }
