@@ -227,6 +227,7 @@ export class ManageCampaignSettings extends Component {
               submitText="Save Profile"
               user={user}
               campaign={campaign}
+              campaignId={campaign.id}
             />
           </div>
         </div>
