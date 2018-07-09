@@ -70,7 +70,7 @@ class Security extends Component {
 
     if (result.success) {
       this.props.dispatch(cleanForm());
-      history.push('/settings');
+      history.push('/settings/account');
     }
 
     return result;
