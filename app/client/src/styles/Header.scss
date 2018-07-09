@@ -70,6 +70,10 @@
     font-weight: 500;
     padding: 0.5rem 2rem;
     text-decoration: none;
+    @media (max-width: $screen-sm-min) {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
   }
 }
 
@@ -81,6 +85,9 @@
   > div {
     margin: 0 2rem 0 0;
     display: flex;
+    @media (max-width: $screen-sm-min) {
+      margin-right: 1rem;
+    }
   }
 }
 
