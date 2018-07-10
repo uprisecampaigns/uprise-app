@@ -17,7 +17,6 @@ import EditAccountMutation from 'schemas/mutations/EditAccountMutation.graphql';
 
 import s from 'styles/Settings.scss';
 
-
 const WrappedUserProfileForm = formWrapper(UserProfileForm);
 
 class EditUserProfile extends Component {
@@ -27,11 +26,11 @@ class EditUserProfile extends Component {
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     graphqlLoading: PropTypes.bool.isRequired,
-  }
+  };
 
   static defaultProps = {
     user: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -42,6 +41,8 @@ class EditUserProfile extends Component {
         description: '',
         profileImageUrl: '',
         activities: [],
+        firstName: '',
+        lastName: '',
         tags: [],
       },
     };
@@ -60,12 +61,14 @@ class EditUserProfile extends Component {
   handleUserProps = (nextProps) => {
     if (nextProps.user && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
-      const user = Object.assign(...Object.keys(nextProps.user).map((k) => {
-        if (nextProps.user[k] !== null) {
-          return { [camelCase(k)]: nextProps.user[k] };
-        }
-        return undefined;
-      }));
+      const user = Object.assign(
+        ...Object.keys(nextProps.user).map((k) => {
+          if (nextProps.user[k] !== null) {
+            return { [camelCase(k)]: nextProps.user[k] };
+          }
+          return undefined;
+        }),
+      );
 
       Object.keys(user).forEach((k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
@@ -73,16 +76,16 @@ class EditUserProfile extends Component {
         }
       });
 
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         formData: Object.assign({}, prevState.formData, user),
       }));
     }
-  }
+  };
 
   defaultErrorText = {
     subheaderErrorText: null,
     descriptionErrorText: null,
-  }
+  };
 
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender with previous form data
@@ -97,7 +100,7 @@ class EditUserProfile extends Component {
 
     formData.id = this.props.user.id;
 
-    formData.activities = formData.activities.map(activity => (activity.id));
+    formData.activities = formData.activities.map((activity) => activity.id);
 
     try {
       await this.props.editAccountMutation({
@@ -112,7 +115,7 @@ class EditUserProfile extends Component {
     } catch (e) {
       return { success: false, message: e.message };
     }
-  }
+  };
 
   render() {
     if (this.props.user) {
@@ -124,7 +127,12 @@ class EditUserProfile extends Component {
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>User Profile</div>
+            </div>
 
+            {/*
           <Link to="/settings">
             <div className={[s.navHeader, s.settingsNavHeader].join(' ')}>
               <FontIcon
@@ -134,19 +142,18 @@ class EditUserProfile extends Component {
               Settings
             </div>
           </Link>
+        */}
 
-          <div className={s.settingsHeader}>User Profile</div>
-
-          <WrappedUserProfileForm
-            initialState={formData}
-            initialErrors={defaultErrorText}
-            validators={validators}
-            submit={formSubmit}
-            submitText="Save Changes"
-            userId={user.id}
-            activities={activities}
-          />
-
+            <WrappedUserProfileForm
+              initialState={formData}
+              initialErrors={defaultErrorText}
+              validators={validators}
+              submit={formSubmit}
+              submitText="Save Profile"
+              userId={user.id}
+              activities={activities}
+            />
+          </div>
         </div>
       );
     }
@@ -157,7 +164,7 @@ class EditUserProfile extends Component {
 export default compose(
   connect(),
   graphql(MeQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({

@@ -15,23 +15,22 @@ import s from 'styles/Form.scss';
 
 import LoginForm from './components/LoginForm';
 
-
 class Login extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     loginError: PropTypes.string,
     message: PropTypes.string,
     handleSignupClick: PropTypes.func,
-  }
+  };
 
   static defaultProps = {
     handleSignupClick: (event) => {
-      (typeof event.preventDefault === 'function') && event.preventDefault();
+      typeof event.preventDefault === 'function' && event.preventDefault();
       history.push('/signup');
     },
     message: undefined,
     loginError: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -43,20 +42,15 @@ class Login extends Component {
     };
   }
 
-  hasErrors = false
+  hasErrors = false;
 
   handleInputChange = (event, type, value) => {
-    this.setState(Object.assign(
-      {},
-      this.state,
-      { [type]: value },
-    ));
-  }
+    this.setState(Object.assign({}, this.state, { [type]: value }));
+  };
 
   // TODO: this is used in SignupForm as well - DRY it out
   validateString = (prop, errorProp, errorMsg) => {
-    if (typeof this.state[prop] !== 'string' ||
-        this.state[prop].trim() === '') {
+    if (typeof this.state[prop] !== 'string' || this.state[prop].trim() === '') {
       this.setState({
         [errorProp]: errorMsg,
       });
@@ -67,7 +61,7 @@ class Login extends Component {
         [errorProp]: null,
       });
     }
-  }
+  };
 
   validateEmail = () => {
     this.setState({
@@ -76,14 +70,13 @@ class Login extends Component {
 
     this.validateString('email', 'emailErrorText', 'Email is Required');
 
-    if (typeof this.state.email === 'string' &&
-        !isEmail(this.state.email)) {
+    if (typeof this.state.email === 'string' && !isEmail(this.state.email)) {
       this.setState({
         emailErrorText: 'Please enter a valid email',
       });
       this.hasErrors = true;
     }
-  }
+  };
 
   formSubmit = (event) => {
     event.preventDefault();
@@ -93,24 +86,18 @@ class Login extends Component {
     this.validateString('password', 'passwordErrorText', 'Password is Required');
 
     if (!this.hasErrors) {
-      this.props.dispatch(attemptLogin({
-        email: this.state.email,
-        password: this.state.password,
-      }));
+      this.props.dispatch(
+        attemptLogin({
+          email: this.state.email,
+          password: this.state.password,
+        }),
+      );
     }
-  }
+  };
 
   render() {
     return (
       <div className={s.loginContainer}>
-        <div className={s.signupButton}>
-          <RaisedButton
-            secondary
-            label="Sign Up"
-            onClick={this.props.handleSignupClick}
-          />
-        </div>
-
         <LoginForm
           data={this.state}
           handleInputChange={this.handleInputChange}
@@ -119,23 +106,22 @@ class Login extends Component {
           message={this.props.message}
         />
 
-        <Link
-          useAhref
-          to="/forgot-password"
-          className={s.forgotPassword}
-        >
+        <Link useAhref to="/forgot-password" className={s.forgotPasswordLink}>
           Forgot Password
         </Link>
+
+        <p>
+          No account yet? <Link onClick={this.props.handleSignupClick} className={s.signUpLink}>Register here</Link>
+        </p>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loggedIn: state.userAuthSession.isLoggedIn,
   loginError: state.userAuthSession.error,
   message: state.userAuthSession.message,
 });
-
 
 export default connect(mapStateToProps)(Login);

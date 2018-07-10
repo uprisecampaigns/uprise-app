@@ -1,89 +1,24 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Menu from 'material-ui/svg-icons/navigation/menu';
+import ClassNames from 'classnames';
+import ArrowDropUp from 'material-ui/svg-icons/navigation/arrow-drop-up';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
-import Assignment from 'material-ui/svg-icons/action/assignment';
+import Avatar from 'material-ui/Avatar';
 
 import Link from 'components/Link';
 import ContentDropdownMenu from 'components/ContentDropdownMenu';
-import HandHeartIcon from 'components/HandHeartIcon';
 
-import upriseLogo from 'img/uprise-logo.png';
-import s from './Header.scss';
-
+import s from 'styles/Header.scss';
 
 function UnauthenticatedIcons(props) {
   return (
     <div className={s.menuItemsContainer}>
-
-      <div className={s.leftHeaderItems}>
-        <div
-          className={s.headerButton}
-        >
-          <Link useAhref={false} to="/login">
-            LOGIN
-          </Link>
-        </div>
-
-        <div
-          className={s.headerButton}
-        >
-          <Link useAhref={false} external to="uprisecampaigns.org/donate">
-          Donate
-          </Link>
-        </div>
+      <div className={s.headerButton}>
+        <Link to="/login">Log In</Link>
       </div>
 
-      <div className={s.rightHeaderItems}>
-        <ContentDropdownMenu
-          title="About UpRise"
-          className={s.rightIcon}
-          dropdowns={[
-            {
-              title: 'About',
-              path: 'http://uprisecampaigns.org/about',
-              external: true,
-              sameTab: true,
-            },
-            {
-              title: 'People',
-              path: 'http://uprisecampaigns.org/people',
-              external: true,
-              sameTab: true,
-            },
-            {
-              title: 'Contact',
-              path: 'http://uprisecampaigns.org/contact',
-              external: true,
-              sameTab: true,
-            },
-          ]}
-        />
-
-        <ContentDropdownMenu
-          title="Campaign Reform"
-          className={s.rightIcon}
-          dropdowns={[
-            {
-              title: 'What Works',
-              path: 'http://uprisecampaigns.org/whatworks',
-              external: true,
-              sameTab: true,
-            },
-            {
-              title: 'Volunteer Engagement',
-              path: 'http://uprisecampaigns.org/volunteerengagement',
-              external: true,
-              sameTab: true,
-            },
-            {
-              title: 'Research',
-              path: 'http://uprisecampaigns.org/research',
-              external: true,
-              sameTab: true,
-            },
-          ]}
-        />
+      <div className={s.headerButton}>
+        <Link to="/signup">Register</Link>
       </div>
     </div>
   );
@@ -93,46 +28,44 @@ function AuthenticatedIcons(props) {
   const { userObject } = props;
 
   const accountIcon = (
-    <span>
-      <AccountCircle className={s.accountIcon} />
-      {userObject.first_name} {userObject.last_name}
-    </span>
+    <div>
+      {userObject.profile_image_url ? (
+        <Avatar className={s.accountIcon} src={userObject.profile_image_url} />
+      ) : (
+        <AccountCircle className={s.accountIcon} />
+      )}
+    </div>
   );
 
   return (
     <div className={s.menuItemsContainer}>
-
-      <div className={s.leftHeaderItems}>
-        <div
-          className={s.headerButton}
-        >
-          <Link useAhref={false} to="/">
-            <HandHeartIcon className={s.accountIcon} />
-            Volunteer
-          </Link>
-        </div>
-
-        <div
-          className={s.headerButton}
-        >
-          <Link useAhref={false} to="/organize">
-            <Assignment className={s.accountIcon} />
-            Organize
-          </Link>
-        </div>
+      <div
+        className={ClassNames({
+          [s.headerButton]: true,
+          [s.activeButton]: props.role === 'volunteer',
+        })}
+      >
+        <Link to="/volunteer">Volunteer</Link>
       </div>
 
-      <div className={s.rightHeaderItems}>
-        <ContentDropdownMenu
-          title={accountIcon}
-          dropdowns={[
-            { title: 'Profile', path: '/volunteer' },
-            { title: 'Settings', path: '/settings' },
-            { title: 'Logout', path: '#', action: props.logout },
-          ]}
-        />
+      <div
+        className={ClassNames({
+          [s.headerButton]: true,
+          [s.activeButton]: props.role === 'organize',
+        })}
+      >
+        <Link to="/organize">Organize</Link>
       </div>
 
+      <div
+        className={ClassNames({
+          [s.headerButton]: true,
+          [s.avatarButton]: true,
+          [s.activeButton]: props.role === 'user',
+        })}
+      >
+        <Link to={`/user/${userObject.id}`}>{accountIcon}</Link>
+      </div>
     </div>
   );
 }
@@ -142,7 +75,7 @@ AuthenticatedIcons.propTypes = {
     first_name: PropTypes.string,
     last_name: PropTypes.string,
   }),
-  logout: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
 };
 
 AuthenticatedIcons.defaultProps = {
@@ -153,33 +86,11 @@ function Header(props) {
   return (
     <div className={s.outerHeaderContainer}>
       <div className={s.header}>
-        <div
-          className={s.menuIconContainer}
-          onClick={props.handleDrawerToggle}
-          onKeyPress={props.handleDrawerToggle}
-          role="button"
-          tabIndex="0"
-        >
-          <Menu />
-        </div>
-
-        <Link useAhref={false} preventDefault={false} to="/">
-          <div className={s.logoContainer}>
-            <img
-              alt="UpRise Campaigns Logo"
-              src={upriseLogo}
-              className={s.logoImage}
-            />
-          </div>
-        </Link>
-
-        { props.loggedIn ?
-          <AuthenticatedIcons
-            userObject={props.userObject}
-            logout={props.clickedLogout}
-          /> :
+        {props.loggedIn ? (
+          <AuthenticatedIcons userObject={props.userObject} role={props.role} />
+        ) : (
           <UnauthenticatedIcons />
-        }
+        )}
       </div>
     </div>
   );
@@ -191,8 +102,7 @@ Header.propTypes = {
     last_name: PropTypes.string,
   }),
   loggedIn: PropTypes.bool.isRequired,
-  clickedLogout: PropTypes.func.isRequired,
-  handleDrawerToggle: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
 };
 
 Header.defaultProps = {

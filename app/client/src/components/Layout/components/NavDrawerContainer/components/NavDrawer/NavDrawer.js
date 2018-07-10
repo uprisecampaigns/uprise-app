@@ -165,7 +165,7 @@ class NavDrawer extends Component {
         >
           <MenuItem
             className={s.navMenuItem}
-            primaryText="Sign Up"
+            primaryText="Register"
           />
         </Link>
 

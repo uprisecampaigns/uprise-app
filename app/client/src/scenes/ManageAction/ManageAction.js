@@ -22,7 +22,6 @@ import { notify } from 'actions/NotificationsActions';
 
 import s from 'styles/Organize.scss';
 
-
 class ManageAction extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -32,12 +31,12 @@ class ManageAction extends Component {
     // eslint-disable-next-line react/no-unused-prop-types
     actionId: PropTypes.string.isRequired,
     deleteActionMutation: PropTypes.func.isRequired,
-  }
+  };
 
   static defaultProps = {
     campaign: undefined,
     action: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -51,15 +50,12 @@ class ManageAction extends Component {
     this.setState({
       deleteModalOpen: true,
     });
-  }
+  };
 
   confirmDelete = async (event) => {
     event.preventDefault();
 
-    const {
-      actionId, campaignId, campaign, action,
-      deleteActionMutation, dispatch,
-    } = this.props;
+    const { actionId, campaignId, campaign, action, deleteActionMutation, dispatch } = this.props;
 
     if (!this.deleting) {
       try {
@@ -71,18 +67,20 @@ class ManageAction extends Component {
               id: action.id,
             },
           },
-          refetchQueries: [{
-            query: SearchActionsQuery,
-            variables: {
-              search: { campaignIds: [campaignId] },
+          refetchQueries: [
+            {
+              query: SearchActionsQuery,
+              variables: {
+                search: { campaignIds: [campaignId] },
+              },
             },
-          },
-          {
-            query: ActionQuery,
-            variables: {
-              search: { id: actionId },
+            {
+              query: ActionQuery,
+              variables: {
+                search: { id: actionId },
+              },
             },
-          }],
+          ],
         });
 
         this.deleting = false;
@@ -92,110 +90,113 @@ class ManageAction extends Component {
           history.push(`/organize/${campaign.slug}/opportunities`);
         } else {
           console.error(results);
-          dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+          dispatch(
+            notify(
+              'There was an error with your request. Please reload the page or contact help@uprise.org for support.',
+            ),
+          );
         }
       } catch (e) {
         console.error(e);
         this.deleting = false;
-        dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+        dispatch(
+          notify(
+            'There was an error with your request. Please reload the page or contact help@uprise.org for support.',
+          ),
+        );
       }
     }
-  }
+  };
 
   render() {
     if (this.props.campaign && this.props.action) {
       const { campaign, action } = this.props;
 
       const modalActions = [
-        <RaisedButton
-          label="Cancel"
-          primary={false}
-          onClick={(event) => { event.preventDefault(); this.setState({ deleteModalOpen: false }); }}
-        />,
-        <RaisedButton
-          label="I'm sure"
-          primary
+        <div
+          className={[s.button, s.inlineButton].join(' ')}
+          onClick={(event) => {
+            event.preventDefault();
+            this.setState({ deleteModalOpen: false });
+          }}
+          onKeyPress={(event) => {
+            event.preventDefault();
+            this.setState({ deleteModalOpen: false });
+          }}
+          role="button"
+          tabIndex="0"
+        >
+          Cancel
+        </div>,
+        <div
+          className={[s.primaryButton, s.inlineButton].join(' ')}
           onClick={this.confirmDelete}
-          className={s.primaryButton}
-        />,
+          onKeyPress={this.confirmDelete}
+          role="button"
+          tabIndex="0"
+        >
+          I'm Sure
+        </div>,
       ];
 
+      const campaignUrl = `/organize/${campaign.slug}`;
       const baseActionUrl = `/organize/${campaign.slug}/opportunity/${action.slug}`;
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
 
-          <Link to={`/organize/${campaign.slug}`}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              {campaign.title}
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>{campaign.title}</div>
+
+              {campaign.profile_subheader && <div className={s.sectionSubheader}>{campaign.profile_subheader}</div>}
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>{action.title}</div>
+            <div className={s.crumbs}>
+              <div className={s.navHeader}>
+                <Link to={`${campaignUrl}`}>{campaign.title}</Link>
+                <FontIcon className={['material-icons', 'arrowRight'].join(' ')}>keyboard_arrow_right</FontIcon>
+                {action.title}
+              </div>
+            </div>
 
-          <List className={s.navList}>
 
-            <Divider />
+            <div className={s.sectionSubHeader}>Manage Volunteers</div>
+            <div className={s.sectionInnerContent}>
+              <Link to={`${baseActionUrl}/volunteers`} className={s.flatButton}>
+                Contact <span>Message followers of this opportunity</span>
+              </Link>
+            </div>
 
-            <Link to={`${baseActionUrl}/volunteers`}>
-              <ListItem
-                primaryText="Volunteers"
-              />
-            </Link>
+            <div className={s.sectionSubHeader}>Opportunity Settings</div>
+            <div className={s.sectionInnerContent}>
+              <Link to={`${baseActionUrl}/settings`} className={s.flatButton}>
+                Opportunity Settings <span>Edit your opportunity profile</span>
+              </Link>
+              <div
+                className={[s.flatButton, s.primaryButton].join(' ')}
+                onClick={this.handleDelete}
+                onKeyPress={this.handleDelete}
+                role="button"
+                tabIndex="0"
+              >
+                Delete Opportunity
+                <span>Note: This cannot be undone</span>
+              </div>
+            </div>
 
-            <Divider />
-
-            <Link to={`${baseActionUrl}/settings`}>
-              <ListItem
-                primaryText="Settings"
-              />
-            </Link>
-
-            <Divider />
-
-            <Link to={`/opportunity/${action.slug}`}>
-              <ListItem
-                primaryText="View Profile"
-              />
-            </Link>
-
-            <Divider />
-
-            <Link to={`${baseActionUrl}/profile/edit`}>
-              <ListItem
-                primaryText="Edit Profile"
-              />
-            </Link>
-
-            <Divider />
-
-            <ListItem
-              primaryText="Delete"
-              onClick={this.handleDelete}
-            />
-
-            <Divider />
-
-          </List>
-
-          {this.state.deleteModalOpen && (
-            <Dialog
-              title="Are You Sure?"
-              modal
-              actions={modalActions}
-              actionsContainerClassName={s.modalActionsContainer}
-              open={this.state.deleteModalOpen}
-            >
-              <p>
-                Are you sure you want to delete this opportunity?
-              </p>
-            </Dialog>
-          )}
-
+            {this.state.deleteModalOpen && (
+              <Dialog
+                title="Are You Sure?"
+                modal
+                actions={modalActions}
+                actionsContainerClassName={s.modalActionsContainer}
+                open={this.state.deleteModalOpen}
+              >
+                <p>Are you sure you want to delete this opportunity?</p>
+              </Dialog>
+            )}
+          </div>
         </div>
       );
     }
@@ -206,7 +207,7 @@ class ManageAction extends Component {
 export default compose(
   connect(),
   graphql(CampaignQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.campaignId,
@@ -218,7 +219,7 @@ export default compose(
     }),
   }),
   graphql(ActionQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.actionId,

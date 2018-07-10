@@ -7,9 +7,7 @@ import history from 'lib/history';
 
 import formWrapper from 'lib/formWrapper';
 
-import {
-  validateString,
-} from 'lib/validateComponentForms';
+import { validateString } from 'lib/validateComponentForms';
 
 import Link from 'components/Link';
 import ContactForm from 'components/ContactForm';
@@ -20,14 +18,13 @@ import ContactMutation from 'schemas/mutations/ContactMutation.graphql';
 
 import s from 'styles/Settings.scss';
 
-
 const WrappedContactForm = formWrapper(ContactForm);
 
 class Contact extends Component {
   static propTypes = {
     contactMutation: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -45,7 +42,7 @@ class Contact extends Component {
   defaultErrorText = {
     subjectErrorText: null,
     bodyErrorText: null,
-  }
+  };
 
   formSubmit = async (data) => {
     const formData = Object.assign({}, data);
@@ -66,7 +63,7 @@ class Contact extends Component {
       console.error(e);
       return { success: false, message: e.message };
     }
-  }
+  };
 
   render() {
     if (this.props.user) {
@@ -75,52 +72,43 @@ class Contact extends Component {
       const { formData } = state;
 
       const validators = [
-        component => validateString(component, 'subject', 'subjectErrorText', 'Please enter a subject'),
-        component => validateString(component, 'body', 'bodyErrorText', 'Please enter a message'),
+        (component) => validateString(component, 'subject', 'subjectErrorText', 'Please enter a subject'),
+        (component) => validateString(component, 'body', 'bodyErrorText', 'Please enter a message'),
       ];
-
 
       return (
         <div className={s.outerContainer}>
-
-          <Link to="/settings">
-            <div className={[s.navHeader, s.settingsNavHeader].join(' ')}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              Settings
-            </div>
-          </Link>
-
-          <div className={s.settingsHeader}>Contact</div>
-
           <div className={s.innerContainer}>
-            <p>
-              Email us at <Link to="mailto:help@uprise.org" useAhref mailTo>help@uprise.org</Link>
-            </p>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>Contact</div>
+            </div>
 
-            <p>
-              UpRise Campaigns, SPC <br />
-              1442A Walnut St. #149 <br />
-              Berkeley, CA 94709
-            </p>
+            <div className={s.innerContainer}>
+              <p>
+                Email us at{' '}
+                <Link to="mailto:help@uprise.org" useAhref mailTo>
+                  help@uprise.org
+                </Link>
+              </p>
 
-            <p>
-              Or send us a message:
-            </p>
+              <p>
+                UpRise Campaigns, SPC <br />
+                1442A Walnut St. #149 <br />
+                Berkeley, CA 94709
+              </p>
 
-            <WrappedContactForm
-              initialState={formData}
-              initialErrors={defaultErrorText}
-              validators={validators}
-              submit={formSubmit}
-              submitText="Send"
-              user={user}
-            />
+              <p>Or send us a message:</p>
 
+              <WrappedContactForm
+                initialState={formData}
+                initialErrors={defaultErrorText}
+                validators={validators}
+                submit={formSubmit}
+                submitText="Send"
+                user={user}
+              />
+            </div>
           </div>
-
         </div>
       );
     }
@@ -130,7 +118,7 @@ class Contact extends Component {
 
 export default compose(
   graphql(MeQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       fetchPolicy: 'cache-and-network',
     }),
     props: ({ data }) => ({

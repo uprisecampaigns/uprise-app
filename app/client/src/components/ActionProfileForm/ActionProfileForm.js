@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
@@ -15,7 +14,6 @@ import togglesList from 'lib/togglesList';
 
 import s from 'styles/Organize.scss';
 import f from 'styles/Form.scss';
-
 
 class ActionProfileForm extends PureComponent {
   static propTypes = {
@@ -30,23 +28,31 @@ class ActionProfileForm extends PureComponent {
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     submitText: PropTypes.string,
     showSaveButton: PropTypes.bool,
-  }
+  };
 
   static defaultProps = {
     showSaveButton: false,
     submitText: 'Save Changes',
-  }
+  };
 
   render() {
     const {
-      data, errors, activities, handleToggle,
-      addItem, removeItem, submitText, saving,
-      handleInputChange, formSubmit, showSaveButton,
+      data,
+      errors,
+      activities,
+      handleToggle,
+      addItem,
+      removeItem,
+      submitText,
+      saving,
+      handleInputChange,
+      formSubmit,
+      showSaveButton,
     } = this.props;
 
     const activitiesTogglesList = togglesList({
       collection: activities,
-      selectedCollection: data.activities.map(a => a.id),
+      selectedCollection: data.activities.map((a) => a.id),
       collectionName: 'activities',
       keyPropName: 'id',
       displayPropName: 'description',
@@ -57,13 +63,14 @@ class ActionProfileForm extends PureComponent {
     return (
       <div className={s.outerContainer}>
         <div className={s.editActionProfileContainer}>
-
           <div className={s.editTitleContainer}>
             <TextField
               value={data.title}
               className={s.textField}
               hintText="Opportunity Public Title"
-              onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
+              onChange={(event) => {
+                handleInputChange(event, 'title', event.target.value);
+              }}
               errorText={errors.titleErrorText}
               fullWidth
               underlineShow={false}
@@ -79,7 +86,9 @@ class ActionProfileForm extends PureComponent {
               value={data.description}
               multiLine
               rows={4}
-              onChange={(event) => { handleInputChange(event, 'description', event.target.value); }}
+              onChange={(event) => {
+                handleInputChange(event, 'description', event.target.value);
+              }}
               errorText={errors.descriptionErrorText}
               fullWidth
               underlineShow={false}
@@ -105,37 +114,36 @@ class ActionProfileForm extends PureComponent {
             />
           </div>
 
-          { showSaveButton && saving && (
+          {showSaveButton &&
+            saving && (
               <div className={s.savingThrobberContainer}>
-                <CircularProgress
-                  size={100}
-                  thickness={5}
-                />
+                <CircularProgress size={100} thickness={5} />
               </div>
-          )}
+            )}
 
-          { showSaveButton && !saving && (
-            <div className={[s.organizeButton, s.button].join(' ')}>
-              <RaisedButton
+          {showSaveButton &&
+            !saving && (
+              <div
+                className={[s.organizeButton, s.button].join(' ')}
                 onClick={formSubmit}
-                primary
-                type="submit"
-                label={submitText}
-              />
-            </div>
-          )}
+                onKeyPress={formSubmit}
+                role="button"
+                tabIndex="0"
+              >
+                {submitText}
+              </div>
+            )}
 
           <div className={f.sectionLabel}>Activities</div>
 
-          { activitiesTogglesList }
-
+          {activitiesTogglesList}
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   uploading: state.uploads.uploading,
 });
 

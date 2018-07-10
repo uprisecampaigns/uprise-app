@@ -23,16 +23,14 @@ class MessageUser extends Component {
     userObject: PropTypes.object,
     sendMessage: PropTypes.func.isRequired,
     recipients: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }
+  };
 
   static defaultProps = {
     userObject: undefined,
-  }
+  };
 
   handleSend = async ({ subject, body }) => {
-    const {
-      userObject, recipients, sendMessage, dispatch,
-    } = this.props;
+    const { userObject, recipients, sendMessage, dispatch } = this.props;
 
     const fullBody = `From: ${userObject.first_name} ${userObject.last_name}\n
       Please reply to: ${userObject.email}\n\n
@@ -47,7 +45,7 @@ class MessageUser extends Component {
           variables: {
             data: {
               replyToEmail: userObject.email,
-              recipientIds: recipients.map(r => r.id),
+              recipientIds: recipients.map((r) => r.id),
               subject,
               body: fullBody,
             },
@@ -66,7 +64,7 @@ class MessageUser extends Component {
         dispatch(notify('There was an error sending your message.'));
       }
     }
-  }
+  };
 
   render() {
     if (this.props.recipients && this.props.userObject) {
@@ -81,26 +79,27 @@ class MessageUser extends Component {
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            {/*
+            <Link to={baseUrl}>
+              <div className={s.navHeader}>
+                <FontIcon className={['material-icons', s.backArrow].join(' ')}>arrow_back</FontIcon>
+                {userObject.first_name} {userObject.last_name}
+              </div>
+            </Link>
+            */}
 
-          <Link to={baseUrl}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              {userObject.first_name} {userObject.last_name}
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>Compose Message</div>
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>Compose Message</div>
-
-          <ComposeMessage
-            fromEmail={userObject.email}
-            detailLines={detailLines}
-            recipients={recipients}
-            handleSend={this.handleSend}
-          />
-
+            <ComposeMessage
+              fromEmail={userObject.email}
+              detailLines={detailLines}
+              recipients={recipients}
+              handleSend={this.handleSend}
+            />
+          </div>
         </div>
       );
     }
@@ -108,7 +107,7 @@ class MessageUser extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   recipients: state.messages.recipients,
 });
 
@@ -118,7 +117,7 @@ export default compose(
     props: ({ data }) => ({
       userObject: data.me,
     }),
-    options: ownProps => ({
+    options: (ownProps) => ({
       fetchPolicy: 'cache-and-network',
       ...ownProps,
     }),

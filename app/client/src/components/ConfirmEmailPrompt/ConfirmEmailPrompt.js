@@ -7,8 +7,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import ResendEmailVerificationMutation from 'schemas/mutations/ResendEmailVerificationMutation.graphql';
 
-import { notify } from 'actions/NotificationsActions';
+import s from 'styles/Form.scss';
 
+import { notify } from 'actions/NotificationsActions';
 
 class ConfirmEmailPrompt extends Component {
   static propTypes = {
@@ -17,18 +18,15 @@ class ConfirmEmailPrompt extends Component {
     handleResend: PropTypes.func.isRequired,
     handleError: PropTypes.func,
     modal: PropTypes.bool,
-  }
+  };
 
   static defaultProps = {
     modal: true,
     handleError: () => {},
-  }
+  };
 
   resendEmailVerification = async (data) => {
-    const {
-      dispatch, resendEmailVerification,
-      handleResend, handleError,
-    } = this.props;
+    const { dispatch, resendEmailVerification, handleResend, handleError } = this.props;
 
     try {
       const results = await resendEmailVerification();
@@ -38,15 +36,23 @@ class ConfirmEmailPrompt extends Component {
         handleResend();
       } else {
         // eslint-disable-next-line max-len
-        dispatch(notify('Error resending email. Please check that your address is valid and can recieve emails. You can change your email address on the accounts settings page.'));
+        dispatch(
+          notify(
+            'Error resending email. Please check that your address is valid and can recieve emails. You can change your email address on the accounts settings page.',
+          ),
+        );
         handleError();
       }
     } catch (e) {
       // eslint-disable-next-line max-len
-      dispatch(notify('Error resending email. Please check that your address is valid and can recieve emails. You can change your email address on the accounts settings page.'));
+      dispatch(
+        notify(
+          'Error resending email. Please check that your address is valid and can recieve emails. You can change your email address on the accounts settings page.',
+        ),
+      );
       handleError(e);
     }
-  }
+  };
 
   render() {
     const { resendEmailVerification } = this;
@@ -57,25 +63,33 @@ class ConfirmEmailPrompt extends Component {
         title="Confirm Email Address to Proceed"
         modal={modal}
         actions={[
-          <RaisedButton
-            label="Resend"
-            primary
-            onClick={(event) => { event.preventDefault(); resendEmailVerification(); }}
-          />]}
+          <div
+            className={s.primaryButton}
+            onClick={(event) => {
+              event.preventDefault();
+              resendEmailVerification();
+            }}
+            onKeyPress={(event) => {
+              event.preventDefault();
+              resendEmailVerification();
+            }}
+            role="button"
+            tabIndex="0"
+          >
+            Resend
+          </div>,
+        ]}
         open
       >
         <p>
-          Please check your inbox for an email verification message.
-          Please check your spam folder.
-          If you don&apos;t see it, you can have it resent.
+          Please check your inbox for an email verification message. Please check your spam folder. If you don&apos;t
+          see it, you can have it resent.
         </p>
       </Dialog>
     );
   }
 }
 
-
-export default compose(
-  connect(),
-  graphql(ResendEmailVerificationMutation, { name: 'resendEmailVerification' }),
-)(ConfirmEmailPrompt);
+export default compose(connect(), graphql(ResendEmailVerificationMutation, { name: 'resendEmailVerification' }))(
+  ConfirmEmailPrompt,
+);

@@ -4,11 +4,14 @@ import Layout from 'components/Layout';
 
 import UserQuery from 'schemas/queries/UserQuery.graphql';
 
+import { setRole } from 'actions/PageNavActions';
+
 export default {
 
   path: '/user/:id',
 
   async action(context) {
+    context.store.dispatch(setRole('user'));
     try {
       const { id } = context.params;
       const result = await context.apolloClient.query({

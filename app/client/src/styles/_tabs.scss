@@ -3,8 +3,8 @@
 .tabsOuterContainer {
   width: 100%;
   background-color: $white;
-  border-bottom: 1px inset darken($white, 25%);
-  box-shadow: 0px 2px 1px 1px darken($white, 10%);;
+  // border-bottom: 1px inset darken($white, 25%);
+  // box-shadow: 0px 2px 1px 1px darken($white, 10%);;
   margin-bottom: 0.5rem;
 }
 
@@ -16,7 +16,7 @@
 .tabs {
   width: 100%;
   max-width: 25rem;
-  
+
   > div {
     background: none !important;
   }

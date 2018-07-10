@@ -18,7 +18,6 @@ import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
 import s from 'styles/Organize.scss';
 
-
 class CreateAction extends Component {
   static propTypes = {
     campaign: PropTypes.object,
@@ -27,11 +26,11 @@ class CreateAction extends Component {
     type: PropTypes.string.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignId: PropTypes.string.isRequired,
-  }
+  };
 
   static defaultProps = {
     campaign: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -64,9 +63,11 @@ class CreateAction extends Component {
       });
     } catch (e) {
       console.error(e);
-      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+      this.props.dispatch(
+        notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'),
+      );
     }
-  }
+  };
 
   render() {
     if (this.props.campaign) {
@@ -75,55 +76,60 @@ class CreateAction extends Component {
       const { createAction } = this;
 
       const modalActions = [
-        <RaisedButton
-          label="Manage Opportunity"
-          primary
+        <div
           className={s.primaryButton}
-          onClick={(event) => { event.preventDefault(); history.push(`/organize/${campaign.slug}/opportunity/${newAction.slug}`); }}
-        />,
+          onClick={(event) => {
+            event.preventDefault();
+            history.push(`/organize/${campaign.slug}/opportunity/${newAction.slug}`);
+          }}
+          onKeyPress={(event) => {
+            event.preventDefault();
+            history.push(`/organize/${campaign.slug}/opportunity/${newAction.slug}`);
+          }}
+          role="button"
+          tabIndex="0"
+        >
+          Manage Opportunity
+        </div>,
       ];
 
       return (
-
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>{campaign.title}</div>
 
-          <Link to={`/organize/${campaign.slug}/opportunities`}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              Opportunities
+              {campaign.profile_subheader && <div className={s.sectionSubheader}>{campaign.profile_subheader}</div>}
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>Create Opportunity</div>
+            <div className={s.crumbs}>
+              <div className={s.navHeader}>
+                <Link to={`/organize/${campaign.slug}`}>{campaign.title}</Link>
+                <FontIcon className={['material-icons', 'arrowRight'].join(' ')}>keyboard_arrow_right</FontIcon>
+                Create Opportunity
+              </div>
+            </div>
 
-          <ActionSettingsContainer
-            campaign={campaign}
-            type={type}
-            submit={createAction}
-          />
+            <ActionSettingsContainer campaign={campaign} type={type} submit={createAction} />
 
-          {modalOpen && (
-            <Dialog
-              title="Opportunity Created"
-              modal
-              actions={modalActions}
-              actionsContainerClassName={s.modalActionsContainer}
-              open={modalOpen}
-            >
-              <p>
-                Congratulations, you have created the opportunity &apos;{newAction.title}&apos;.
-              </p>
-              <p>
-                You can find your opportunity&apos;s public profile at {window.location.origin}/opportunity/{newAction.slug}
-              </p>
-              <p>
-                You can manage your opportunity here:
-              </p>
-            </Dialog>
-          )}
+            {modalOpen && (
+              <Dialog
+                title="Opportunity Created"
+                modal
+                actions={modalActions}
+                actionsContainerClassName={s.modalActionsContainer}
+                open={modalOpen}
+              >
+                <p>Congratulations, you have created the opportunity &apos;{newAction.title}&apos;.</p>
+                <p>
+                  You can find your opportunity&apos;s public profile at {window.location.origin}/opportunity/{
+                    newAction.slug
+                  }
+                </p>
+                <p>You can manage your opportunity here:</p>
+              </Dialog>
+            )}
+          </div>
         </div>
       );
     }
@@ -132,7 +138,7 @@ class CreateAction extends Component {
 }
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: ownProps => ({
+  options: (ownProps) => ({
     variables: {
       search: {
         id: ownProps.campaignId,
@@ -144,8 +150,6 @@ const withCampaignQuery = graphql(CampaignQuery, {
   }),
 });
 
-export default compose(
-  connect(),
-  withCampaignQuery,
-  graphql(CreateActionMutation, { name: 'createActionMutation' }),
-)(CreateAction);
+export default compose(connect(), withCampaignQuery, graphql(CreateActionMutation, { name: 'createActionMutation' }))(
+  CreateAction,
+);

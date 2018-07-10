@@ -21,7 +21,7 @@ class PrivacySecurity extends PureComponent {
     return (
       <div className={s.outerContainer}>
 
-        <Link to="/settings">
+        <Link to="/settings/account">
           <div className={[s.navHeader, s.settingsNavHeader].join(' ')}>
             <FontIcon
               className={['material-icons', s.backArrow].join(' ')}

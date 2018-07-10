@@ -10,17 +10,13 @@ import Link from 'components/Link';
 
 import formWrapper from 'lib/formWrapper';
 
-import {
-  validateState,
-  validateZipcodeList,
-} from 'lib/validateComponentForms';
+import { validateState, validateZipcodeList } from 'lib/validateComponentForms';
 
 import CampaignQuery from 'schemas/queries/CampaignQuery.graphql';
 
 import EditCampaignMutation from 'schemas/mutations/EditCampaignMutation.graphql';
 
 import s from 'styles/Organize.scss';
-
 
 const WrappedCampaignLocationForm = formWrapper(CampaignLocationForm);
 
@@ -32,11 +28,11 @@ class ManageCampaignLocation extends Component {
     graphqlLoading: PropTypes.bool.isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignSlug: PropTypes.string.isRequired,
-  }
+  };
 
   static defaultProps = {
     campaign: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -55,12 +51,14 @@ class ManageCampaignLocation extends Component {
   handleCampaignProps = (nextProps) => {
     if (nextProps.campaign && !nextProps.graphqlLoading) {
       // Just camel-casing property keys and checking for null/undefined
-      const campaign = Object.assign(...Object.keys(nextProps.campaign).map((k) => {
-        if (nextProps.campaign[k] !== null) {
-          return { [camelCase(k)]: nextProps.campaign[k] };
-        }
-        return undefined;
-      }));
+      const campaign = Object.assign(
+        ...Object.keys(nextProps.campaign).map((k) => {
+          if (nextProps.campaign[k] !== null) {
+            return { [camelCase(k)]: nextProps.campaign[k] };
+          }
+          return undefined;
+        }),
+      );
 
       Object.keys(campaign).forEach((k) => {
         if (!Object.keys(this.state.formData).includes(camelCase(k))) {
@@ -70,11 +68,11 @@ class ManageCampaignLocation extends Component {
 
       campaign.zipcodeList = typeof campaign.zipcodeList === 'object' ? campaign.zipcodeList.join(',') : '';
 
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         formData: Object.assign({}, prevState.formData, campaign),
       }));
     }
-  }
+  };
 
   initialState = {
     formData: {
@@ -84,13 +82,13 @@ class ManageCampaignLocation extends Component {
       locationDistrictNumber: '',
       locationState: '',
     },
-  }
+  };
 
   defaultErrorText = {
     zipcodeListErrorText: null,
     locationDistrictNumberErrorText: null,
     stateErrorText: null,
-  }
+  };
 
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender.
@@ -105,7 +103,7 @@ class ManageCampaignLocation extends Component {
 
     formData.id = this.props.campaign.id;
 
-    formData.zipcodeList = formData.zipcodeList.split(',').map(zip => zip.trim());
+    formData.zipcodeList = formData.zipcodeList.split(',').map((zip) => zip.trim());
 
     try {
       await this.props.editCampaignMutation({
@@ -121,7 +119,7 @@ class ManageCampaignLocation extends Component {
       console.error(e);
       return { success: false, message: e.message };
     }
-  }
+  };
 
   render() {
     if (this.props.campaign) {
@@ -130,34 +128,37 @@ class ManageCampaignLocation extends Component {
       const { formData } = this.state;
 
       const validators = [
-        (component) => { validateState(component, 'locationState'); },
+        (component) => {
+          validateState(component, 'locationState');
+        },
         validateZipcodeList,
       ];
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            {/*
+            <Link to={`/organize/${campaign.slug}/settings`}>
+              <div className={s.navHeader}>
+                <FontIcon className={['material-icons', s.backArrow].join(' ')}>arrow_back</FontIcon>
+                Settings
+              </div>
+            </Link>
+          */}
 
-          <Link to={`/organize/${campaign.slug}/settings`}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back</FontIcon>
-              Settings
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>Location</div>
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>Location</div>
-
-          <WrappedCampaignLocationForm
-            initialState={formData}
-            initialErrors={defaultErrorText}
-            validators={validators}
-            submit={formSubmit}
-            submitText="Save Changes"
-          />
-
+            <WrappedCampaignLocationForm
+              initialState={formData}
+              initialErrors={defaultErrorText}
+              validators={validators}
+              submit={formSubmit}
+              submitText="Save Changes"
+            />
+          </div>
         </div>
-
       );
     }
     return null;
@@ -165,7 +166,7 @@ class ManageCampaignLocation extends Component {
 }
 
 const withCampaignQuery = graphql(CampaignQuery, {
-  options: ownProps => ({
+  options: (ownProps) => ({
     variables: {
       search: {
         slug: ownProps.campaignSlug,
@@ -179,8 +180,6 @@ const withCampaignQuery = graphql(CampaignQuery, {
   }),
 });
 
-export default compose(
-  connect(),
-  withCampaignQuery,
-  graphql(EditCampaignMutation, { name: 'editCampaignMutation' }),
-)(ManageCampaignLocation);
+export default compose(connect(), withCampaignQuery, graphql(EditCampaignMutation, { name: 'editCampaignMutation' }))(
+  ManageCampaignLocation,
+);

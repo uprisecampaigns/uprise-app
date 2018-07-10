@@ -12,15 +12,24 @@ class Page extends PureComponent {
 
   static defaultProps = {
     title: undefined,
-  }
+  };
 
   render() {
     const { title, html } = this.props;
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-          {title && <h1>{title}</h1>}
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+      <div className={s.outerContainer}>
+        <div className={s.innerContainer}>
+          {title && (
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>{title}</div>
+            </div>
+          )}
+
+          <div className={s.sectionsContainer}>
+            <div className={s.section}>
+              <div dangerouslySetInnerHTML={{ __html: html }} />
+            </div>
+          </div>
         </div>
       </div>
     );

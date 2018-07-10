@@ -7,7 +7,6 @@ import Checkbox from 'material-ui/Checkbox';
 
 import s from 'styles/Search.scss';
 
-
 class DateTimeSearch extends Component {
   static propTypes = {
     setDates: PropTypes.func.isRequired,
@@ -27,48 +26,42 @@ class DateTimeSearch extends Component {
   }
 
   handleInputChange = (prop, value) => {
-    this.setState(Object.assign({}, this.state, {
-      startDateError: '',
-      endDateError: '',
-    }));
+    this.setState(
+      Object.assign({}, this.state, {
+        startDateError: '',
+        endDateError: '',
+      }),
+    );
 
     if (prop === 'ongoing') {
-      this.setState(Object.assign(
-        {},
-        this.state,
-        {
+      this.setState(
+        Object.assign({}, this.state, {
           ongoing: value,
           onDate: null,
           startDate: null,
           endDate: null,
-        },
-      ));
+        }),
+      );
     } else if (prop === 'onDate') {
-      this.setState(Object.assign(
-        {},
-        this.state,
-        {
+      this.setState(
+        Object.assign({}, this.state, {
           onDate: value,
           startDate: null,
           endDate: null,
-        },
-      ));
+        }),
+      );
     } else {
-      this.setState(Object.assign(
-        {},
-        this.state,
-        {
+      this.setState(
+        Object.assign({}, this.state, {
           [prop]: value,
           onDate: null,
-        },
-      ));
+        }),
+      );
     }
-  }
+  };
 
   formSubmit = () => {
-    const {
-      ongoing, onDate, startDate, endDate,
-    } = this.state;
+    const { ongoing, onDate, startDate, endDate } = this.state;
     const { setDates } = this.props;
 
     if (ongoing) {
@@ -94,21 +87,19 @@ class DateTimeSearch extends Component {
       });
     }
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       ...prevState,
       ongoing: false,
       onDate: null,
       startDate: null,
       endDate: null,
     }));
-  }
+  };
 
-  formatDate = date => moment(date).format('M/D/YYYY')
+  formatDate = (date) => moment(date).format('M/D/YYYY');
 
   render() {
-    const {
-      ongoing, onDate, startDate, endDate,
-    } = this.state;
+    const { ongoing, onDate, startDate, endDate } = this.state;
     const { formSubmit, handleInputChange, formatDate } = this;
 
     const dialogStyle = {
@@ -117,11 +108,12 @@ class DateTimeSearch extends Component {
 
     return (
       <div>
-
         <Checkbox
           label="Ongoing"
           checked={ongoing}
-          onCheck={(event, isChecked) => { handleInputChange('ongoing', isChecked); }}
+          onCheck={(event, isChecked) => {
+            handleInputChange('ongoing', isChecked);
+          }}
           className={s.checkboxContainer}
         />
 
@@ -129,12 +121,12 @@ class DateTimeSearch extends Component {
           <div className={s.datePickersContainer}>
             <div className={s.datePickerGroup}>
               <div className={s.datePickerLine}>
-                <div className={s.datePickerLabel}>
-                  On date:
-                </div>
+                <div className={s.datePickerLabel}>On date:</div>
                 <DatePicker
                   value={onDate}
-                  onChange={(event, date) => { handleInputChange('onDate', date); }}
+                  onChange={(event, date) => {
+                    handleInputChange('onDate', date);
+                  }}
                   container="dialog"
                   dialogContainerStyle={dialogStyle}
                   hintText="On Date"
@@ -147,12 +139,12 @@ class DateTimeSearch extends Component {
 
             <div className={s.datePickerGroup}>
               <div className={s.datePickerLine}>
-                <div className={s.datePickerLabel}>
-                  On or between
-                </div>
+                <div className={s.datePickerLabel}>On or between</div>
                 <DatePicker
                   value={startDate}
-                  onChange={(event, date) => { handleInputChange('startDate', date); }}
+                  onChange={(event, date) => {
+                    handleInputChange('startDate', date);
+                  }}
                   errorText={this.state.startDateError}
                   container="dialog"
                   dialogContainerStyle={dialogStyle}
@@ -164,12 +156,12 @@ class DateTimeSearch extends Component {
               </div>
 
               <div className={s.datePickerLine}>
-                <div className={s.datePickerLabel}>
-                  and
-                </div>
+                <div className={s.datePickerLabel}>and</div>
                 <DatePicker
                   value={endDate}
-                  onChange={(event, date) => { handleInputChange('endDate', date); }}
+                  onChange={(event, date) => {
+                    handleInputChange('endDate', date);
+                  }}
                   errorText={this.state.endDateError}
                   container="dialog"
                   dialogContainerStyle={dialogStyle}
@@ -182,13 +174,16 @@ class DateTimeSearch extends Component {
             </div>
           </div>
         )}
-        <div className={s.addToSearchButton}>
-          <RaisedButton
-            className={s.primaryButton}
+        <div className={s.rightButton}>
+          <div
+            className={[s.addToSearchButton, s.secondaryButton].join(' ')}
             onClick={formSubmit}
-            primary
-            label="Add to Search"
-          />
+            onKeyPress={formSubmit}
+            role="button"
+            tabIndex="0"
+          >
+            Add to Search
+          </div>
         </div>
       </div>
     );

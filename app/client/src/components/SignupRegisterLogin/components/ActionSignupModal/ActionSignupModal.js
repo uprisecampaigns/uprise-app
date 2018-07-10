@@ -190,7 +190,7 @@ export class ActionSignupModal extends Component {
               }
 
               <div
-                className={s.button}
+                className={s.primaryButton}
                 onClick={selectShifts}
                 onKeyPress={selectShifts}
                 role="button"
@@ -266,7 +266,7 @@ export class ActionSignupModal extends Component {
               />
 
               <div
-                className={s.button}
+                className={s.primaryButton}
                 onClick={confirmSignup}
                 onKeyPress={confirmSignup}
                 role="button"

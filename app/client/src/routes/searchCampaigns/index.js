@@ -8,7 +8,7 @@ export default {
   path: '/search/search-campaigns',
 
   action(context) {
-    context.store.dispatch(setPage('home', 'campaign'));
+    context.store.dispatch(setPage('campaign'));
 
     return {
       title: 'Search for Campaigns with Volunteer Opportunities',

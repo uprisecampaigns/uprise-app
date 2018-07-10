@@ -2,9 +2,8 @@
 @import '~styles/buttons';
 
 .imageUploadContainer {
-  max-height: 450px;
   max-width: 450px;
-  margin: 0px auto 5rem auto;
+  margin: 0 auto;
 }
 
 .cropContainer {
@@ -39,17 +38,20 @@
   display: flex;
   position: relative;
   text-align: center;
-  border: 3px dashed $black;
+  border: 1px dashed $grey;
   margin: 1rem auto;
   justify-content: center;
   align-items: center;
-  width: 80vw;
-  height: 80vw;
-  max-height: 450px;
-  max-width: 450px;
+  max-height: 10rem;
+  max-width: 10rem;
+  overflow: hidden;
 
   .instructions {
-    margin: 10%;
+    margin: 2.5rem 0.5rem 1rem 1rem;
+    cursor: pointer;
+    text-align: left;
+    font-size: 1rem;
+    color: $grey;
   }
 
   img {

@@ -7,8 +7,11 @@
   width: 100%;
   max-width: $max-content-width;
   overflow-x: hidden;
-  min-height: 100vh;
   margin: 0rem auto 0rem auto;
+
+  .sectionHeaderContainer {
+    background-color: $white;
+  }
 
   .savingThrobberContainer {
     width: 100%;
@@ -16,8 +19,14 @@
   }
 
   .organizeButton {
-    text-align: center;
     @extend .primaryButton;
+    display: inline-block;
+    text-align: center;
+    background-color: $bright-blue;
+    margin-top: 2rem;
+    &:hover {
+      background-color: lighten($bright-blue, 5%);
+    }
   }
 
   .saveButton {
@@ -32,7 +41,7 @@
   .editCampaignProfileContainer,
   .editActionProfileContainer {
     width: 90%;
-    margin: 1rem 5% 0 5%;
+    margin: 1rem 5%;
   }
 
   .editDescriptionContainer {
@@ -88,7 +97,7 @@
     font-size: 1.8rem;
     line-height: 1.8rem;
     padding: 1rem;
-    padding: 0rem 1rem; 
+    padding: 0rem 1rem;
   }
 
   .actionListDetailLine {
@@ -110,11 +119,12 @@
     }
   }
 
-  .composeMessageButtonContainer {
+  .centerButtonContainer {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 2rem;
   }
 
   .shiftsSelector {
@@ -144,12 +154,24 @@
 
   .stepperContainer {
     flex: 1;
-    background-color: $light-grey;
-    border: 1px solid $dark-grey;
+    // background-color: $light-grey;
+    // border: 1px solid $dark-grey;
     z-index: 100;
+    padding-left: 1rem;
   }
 
   .stepperContentContainer {
     flex: 3;
+    margin-right: 1rem;
   }
+}
+
+.composeButton {
+  @extend .brightButton;
+  margin-bottom: 1rem;
+  flex: none;
+}
+
+.innerContainer {
+  background-color: $white;
 }

@@ -110,8 +110,6 @@ class SearchActionInputs extends PureComponent {
             </div>
           )]}
         />
-
-        <Divider />
       </List>
     );
   }

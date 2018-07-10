@@ -59,7 +59,7 @@ class LoginModalPrompt extends Component {
       <Dialog
         modal
         onRequestClose={this.closeModal}
-        actionsContainerClassName={layoutStyles.modalActionsContainer}
+        paperClassName={layoutStyles.modalActionsContainer}
         open={this.props.loginModal.display}
         autoScrollBodyContent
       >

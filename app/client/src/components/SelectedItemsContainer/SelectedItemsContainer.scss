@@ -11,6 +11,9 @@
     .searchChip {
       padding: 0.2rem;
       text-transform: capitalize;
+      > div {
+        border-radius: 3px !important;
+      }
     }
   }
 }

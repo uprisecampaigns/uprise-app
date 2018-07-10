@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dropzone from 'react-dropzone';
@@ -17,7 +16,6 @@ import { attemptUpload } from 'actions/UploadActions';
 import { base64ToBlob } from 'lib/base64ToBlob';
 
 import s from 'styles/ImageUploader.scss';
-
 
 class ImageUploader extends Component {
   static propTypes = {
@@ -37,7 +35,7 @@ class ImageUploader extends Component {
   static defaultProps = {
     imageHeight: null,
     imageWidth: null,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -85,12 +83,12 @@ class ImageUploader extends Component {
 
       fileReader.readAsDataURL(file);
     }
-  }
+  };
 
   imageCropChange = (crop) => {
     const newCrop = Object.assign({}, crop, { aspect: 1 });
     this.setState({ imageCrop: newCrop });
-  }
+  };
 
   loadImage = (src, callback) => {
     let image = new Image();
@@ -100,7 +98,7 @@ class ImageUploader extends Component {
     };
 
     image.src = src;
-  }
+  };
 
   acceptImageCrop = (event) => {
     event.preventDefault();
@@ -113,11 +111,11 @@ class ImageUploader extends Component {
       const imageWidth = loadedImg.naturalWidth;
       const imageHeight = loadedImg.naturalHeight;
 
-      const cropX = (crop.x / 100) * imageWidth;
-      const cropY = (crop.y / 100) * imageHeight;
+      const cropX = crop.x / 100 * imageWidth;
+      const cropY = crop.y / 100 * imageHeight;
 
-      const cropWidth = (crop.width / 100) * imageWidth;
-      const cropHeight = (crop.height / 100) * imageHeight;
+      const cropWidth = crop.width / 100 * imageWidth;
+      const cropHeight = crop.height / 100 * imageHeight;
 
       let destWidth = cropWidth;
       let destHeight = cropHeight;
@@ -143,15 +141,17 @@ class ImageUploader extends Component {
       ctx.drawImage(loadedImg, cropX, cropY, cropWidth, cropHeight, 0, 0, destWidth, destHeight);
 
       const uploadBlob = (blob) => {
-        this.props.dispatch(attemptUpload({
-          ...this.props.imageUploadOptions,
-          contentType: 'image/jpeg',
-          blob,
-          onSuccess: (src) => {
-            this.setState({ uploading: false });
-            this.props.onChange(src);
-          },
-        }));
+        this.props.dispatch(
+          attemptUpload({
+            ...this.props.imageUploadOptions,
+            contentType: 'image/jpeg',
+            blob,
+            onSuccess: (src) => {
+              this.setState({ uploading: false });
+              this.props.onChange(src);
+            },
+          }),
+        );
 
         this.setState({
           editImageSrc: null,
@@ -172,36 +172,30 @@ class ImageUploader extends Component {
         uploadBlob(blob);
       }
     });
-  }
+  };
 
   cancelImageEdit = (event) => {
     event.stopPropagation();
     event.preventDefault();
     this.setState({ editImageSrc: null });
-  }
+  };
 
   removeImage = (event) => {
     event.stopPropagation();
     event.preventDefault();
     this.props.onChange('');
-  }
+  };
 
   render() {
-    const {
-      imageSrc, editImageSrc, imageCrop, uploading,
-    } = this.state;
+    const { imageSrc, editImageSrc, imageCrop, uploading } = this.state;
 
     return (
-
       <div className={s.imageUploadContainer}>
-        { editImageSrc ? (
+        {editImageSrc ? (
           <div className={s.cropContainer}>
-            { uploading ? (
+            {uploading ? (
               <div className={s.uploadingThrobberContainer}>
-                <CircularProgress
-                  size={100}
-                  thickness={5}
-                />
+                <CircularProgress size={100} thickness={5} />
               </div>
             ) : (
               <div>
@@ -214,33 +208,34 @@ class ImageUploader extends Component {
                   />
                 </div>
                 <div className={s.buttonContainer}>
-                  <RaisedButton
+                  <div
                     className={s.button}
                     onClick={this.cancelImageEdit}
-                    label="Cancel"
-                  />
-                  <RaisedButton
+                    onKeyPress={this.cancelImageEdit}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    Cancel
+                  </div>
+                  <div
                     className={s.primaryButton}
                     onClick={this.acceptImageCrop}
-                    primary
-                    label="Accept"
-                  />
+                    onKeyPress={this.acceptImageCrop}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    Accept
+                  </div>
                 </div>
               </div>
             )}
           </div>
         ) : (
-          <Dropzone
-            className={s.fileDropContainer}
-            onDrop={this.onDrop}
-            multiple={false}
-          >
-            { imageSrc ? (
+          <Dropzone className={s.fileDropContainer} onDrop={this.onDrop} multiple={false}>
+            {imageSrc ? (
               <div>
-                <FontIcon
-                  className={[s.removeImageButton, 'material-icons'].join(' ')}
-                  onClick={this.removeImage}
-                >delete
+                <FontIcon className={[s.removeImageButton, 'material-icons'].join(' ')} onClick={this.removeImage}>
+                  delete
                 </FontIcon>
                 <img alt="Uploaded" src={imageSrc} />
               </div>
@@ -253,13 +248,12 @@ class ImageUploader extends Component {
             <FontIcon className={[s.addImageButton, 'material-icons'].join(' ')}>add_a_photo</FontIcon>
           </Dropzone>
         )}
-
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   uploading: state.uploads.uploading,
   error: state.uploads.error,
 });

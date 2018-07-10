@@ -10,69 +10,65 @@ import CampaignSubscriptionsQuery from 'schemas/queries/CampaignSubscriptionsQue
 
 import s from 'styles/Volunteer.scss';
 
-
 class CampaignSubscriptions extends PureComponent {
   static propTypes = {
     campaignSubscriptions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }
+  };
 
   render() {
     if (this.props.campaignSubscriptions) {
       const { campaignSubscriptions } = this.props;
 
-      const campaignsList = campaignSubscriptions.map(campaign => (
+      const campaignsList = campaignSubscriptions.map((campaign) => (
         <Link key={campaign.id} to={`/campaign/${campaign.slug}`}>
           <ListItem>
+            <div className={s.listTitle}>{campaign.title}</div>
 
-            <div className={s.listTitle}>
-              {campaign.title}
-            </div>
+            {campaign.city &&
+              campaign.state && (
+                <div className={s.listDetailLine}>
+                  {campaign.city}, {campaign.state}
+                </div>
+              )}
 
-            {(campaign.city && campaign.state) && (
+            {campaign.owner && (
               <div className={s.listDetailLine}>
-                {campaign.city}, {campaign.state}
-              </div>
-            )}
-
-            {(campaign.owner) && (
-              <div className={s.listDetailLine}>
-                Coordinator: {campaign.owner.first_name} {campaign.owner.last_name}&nbsp;
+                Coordinator: {campaign.owner.first_name} {campaign.owner.last_name}
+                {/*&nbsp;
                 <Link to={`mailto:${campaign.owner.email}`} mailTo external useAhref>
                   {campaign.owner.email}
-                </Link>
+                </Link>*/}
               </div>
             )}
-
           </ListItem>
         </Link>
       ));
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            {/*
+            <Link to="/volunteer">
+              <div className={[s.navHeader, s.volunteerNavHeader].join(' ')}>
+                <FontIcon className={['material-icons', s.backArrow].join(' ')}>arrow_back</FontIcon>
+                My Profile
+              </div>
+            </Link>
+          */}
 
-          <Link to="/volunteer">
-            <div className={[s.navHeader, s.volunteerNavHeader].join(' ')}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              My Profile
-            </div>
-          </Link>
+            <div className={s.pageSubHeader}>Campaigns I Follow</div>
 
-
-          <div className={s.pageSubHeader}>My Subscriptions</div>
-
-          {campaignsList.length === 0 ? (
-            <div className={s.searchPrompt}>
-              You have no current campaign subscriptions. You can search for campaigns&nbsp;
-              <Link to="/search/search-campaigns" useAhref>here</Link>.
-            </div>
-          ) : (
-            <List>
-              {campaignsList}
-            </List>
-          )}
+            {campaignsList.length === 0 ? (
+              <div className={s.searchPrompt}>
+                You have no current campaign subscriptions. You can search for campaigns&nbsp;
+                <Link to="/search/search-campaigns" useAhref>
+                  here
+                </Link>.
+              </div>
+            ) : (
+              <List>{campaignsList}</List>
+            )}
+          </div>
         </div>
       );
     }
@@ -80,8 +76,10 @@ class CampaignSubscriptions extends PureComponent {
   }
 }
 
-export default compose(graphql(CampaignSubscriptionsQuery, {
-  props: ({ data }) => ({
-    campaignSubscriptions: data.campaignSubscriptions,
+export default compose(
+  graphql(CampaignSubscriptionsQuery, {
+    props: ({ data }) => ({
+      campaignSubscriptions: !data.loading && data.campaignSubscriptions ? data.campaignSubscriptions : [],
+    }),
   }),
-}))(CampaignSubscriptions);
+)(CampaignSubscriptions);

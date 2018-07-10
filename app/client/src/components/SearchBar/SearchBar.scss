@@ -3,22 +3,23 @@
 .searchBarContainer {
   display: block;
   text-align: center;
+  margin-bottom: 1rem;
 
-  >form {
-    border-bottom: 1px solid $dark-blue;
-    display: flex;
+  > form {
     align-items: center;
+    display: flex;
     justify-content: space-around;
+    border-bottom: 2px solid $azure;
   }
 
   :global .searchBarInput {
+    font-size: 1rem !important;
+    height: 1.2rem !important;
     width: 100% !important;
-    height: 2rem !important;
-    font-size: 1.2rem !important;
 
     div:first-child {
-      line-height: 2rem !important;
       bottom: inherit !important;
+      // line-height: 2rem !important;
     }
   }
 }

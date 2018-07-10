@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import s from 'styles/Form.scss';
-
 
 class ContactForm extends Component {
   static propTypes = {
@@ -16,30 +14,25 @@ class ContactForm extends Component {
     saving: PropTypes.bool,
     submitText: PropTypes.string.isRequired,
     errors: PropTypes.object.isRequired,
-  }
+  };
 
   static defaultProps = {
     saving: false,
-  }
+  };
 
   render() {
-    const {
-      data, formSubmit, errors, saving,
-      handleInputChange, cancel, submitText,
-    } = this.props;
+    const { data, formSubmit, errors, saving, handleInputChange, cancel, submitText } = this.props;
 
     return (
-
       <div className={s.formContainer}>
-        <form
-          className={s.form}
-          onSubmit={formSubmit}
-        >
+        <form className={s.form} onSubmit={formSubmit}>
           <div className={s.textFieldContainer}>
             <TextField
               floatingLabelText="Subject"
               value={data.subject}
-              onChange={(event) => { handleInputChange(event, 'subject', event.target.value); }}
+              onChange={(event) => {
+                handleInputChange(event, 'subject', event.target.value);
+              }}
               errorText={errors.subjectErrorText}
               fullWidth
             />
@@ -52,38 +45,32 @@ class ContactForm extends Component {
               value={data.body}
               multiLine
               rows={4}
-              onChange={(event) => { handleInputChange(event, 'body', event.target.value); }}
+              onChange={(event) => {
+                handleInputChange(event, 'body', event.target.value);
+              }}
               errorText={errors.bodyErrorText}
               fullWidth
               underlineShow={false}
             />
           </div>
 
-          <div className={s.button}>
-            <RaisedButton
-              onClick={cancel}
-              primary={false}
-              label="Cancel"
-            />
+          <div className={s.button} onClick={cancel} onKeyPress={cancel} role="button" tabIndex="0">
+            Cancel
           </div>
 
-          { saving ? (
-
+          {saving ? (
             <div className={s.savingThrobberContainer}>
-              <CircularProgress
-                size={100}
-                thickness={5}
-              />
+              <CircularProgress size={100} thickness={5} />
             </div>
           ) : (
-
-            <div className={[s.organizeButton, s.button].join(' ')}>
-              <RaisedButton
-                onClick={formSubmit}
-                primary
-                type="submit"
-                label={submitText}
-              />
+            <div
+              className={[s.organizeButton, s.button].join(' ')}
+              onClick={formSubmit}
+              onKeyPress={formSubmit}
+              role="button"
+              tabIndex="0"
+            >
+              {submitText}
             </div>
           )}
         </form>

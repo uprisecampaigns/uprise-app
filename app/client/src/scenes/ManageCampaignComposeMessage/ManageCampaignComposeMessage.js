@@ -27,17 +27,15 @@ class ManageCampaignComposeMessage extends Component {
     recipients: PropTypes.arrayOf(PropTypes.object).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     campaignId: PropTypes.string.isRequired,
-  }
+  };
 
   static defaultProps = {
     campaign: undefined,
     userObject: undefined,
-  }
+  };
 
   handleSend = async ({ subject, body }) => {
-    const {
-      userObject, recipients, sendMessage, campaign, dispatch,
-    } = this.props;
+    const { userObject, recipients, sendMessage, campaign, dispatch } = this.props;
 
     const fullBody = `From: ${userObject.first_name} ${userObject.last_name}\n
       Please reply to: ${userObject.email}\n
@@ -53,7 +51,7 @@ class ManageCampaignComposeMessage extends Component {
           variables: {
             data: {
               replyToEmail: userObject.email,
-              recipientIds: recipients.map(r => r.id),
+              recipientIds: recipients.map((r) => r.id),
               subject,
               body: fullBody,
             },
@@ -72,7 +70,7 @@ class ManageCampaignComposeMessage extends Component {
         dispatch(notify('There was an error sending your message.'));
       }
     }
-  }
+  };
 
   render() {
     if (this.props.campaign && this.props.recipients && this.props.userObject) {
@@ -88,26 +86,28 @@ class ManageCampaignComposeMessage extends Component {
 
       return (
         <div className={s.outerContainer}>
+          <div className={s.innerContainer}>
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>{campaign.title}</div>
 
-          <Link to={`${baseUrl}/volunteers`}>
-            <div className={s.navHeader}>
-              <FontIcon
-                className={['material-icons', s.backArrow].join(' ')}
-              >arrow_back
-              </FontIcon>
-              Volunteers
+              {campaign.profile_subheader && <div className={s.sectionSubheader}>{campaign.profile_subheader}</div>}
             </div>
-          </Link>
 
-          <div className={s.pageSubHeader}>Compose Message</div>
+            <div className={s.crumbs}>
+              <div className={s.navHeader}>
+                <Link to={baseUrl}>{campaign.title}</Link>
+                <FontIcon className={['material-icons', 'arrowRight'].join(' ')}>keyboard_arrow_right</FontIcon>
+                Contact Volunteers
+              </div>
+            </div>
 
-          <ComposeMessage
-            fromEmail={userObject.email}
-            detailLines={detailLines}
-            recipients={recipients}
-            handleSend={this.handleSend}
-          />
-
+            <ComposeMessage
+              fromEmail={userObject.email}
+              detailLines={detailLines}
+              recipients={recipients}
+              handleSend={this.handleSend}
+            />
+          </div>
         </div>
       );
     }
@@ -115,14 +115,14 @@ class ManageCampaignComposeMessage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   recipients: state.messages.recipients,
 });
 
 export default compose(
   connect(mapStateToProps),
   graphql(CampaignQuery, {
-    options: ownProps => ({
+    options: (ownProps) => ({
       variables: {
         search: {
           id: ownProps.campaignId,

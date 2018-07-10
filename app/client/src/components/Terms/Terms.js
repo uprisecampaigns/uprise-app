@@ -9,12 +9,11 @@ import content from 'content/terms.md';
 import formStyle from 'styles/Form.scss';
 import pageStyle from 'styles/Page.scss';
 
-
 class Terms extends PureComponent {
   static propTypes = {
     agreeToTerms: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
-  }
+  };
 
   render() {
     const { agreeToTerms, cancel } = this.props;
@@ -30,17 +29,18 @@ class Terms extends PureComponent {
         </div>
         <div className={formStyle.outerContainer}>
           <div className={formStyle.innerContainer}>
-            <RaisedButton
-              onClick={cancel}
-              label="Cancel"
-              className={formStyle.button}
-            />
-            <RaisedButton
+            <div className={formStyle.button} onClick={cancel} onKeyPress={cancel} role="button" tabIndex="0">
+              Cancel
+            </div>
+            <div
+              className={formStyle.primaryButton}
               onClick={agreeToTerms}
-              primary
-              label="I Agree"
-              className={[formStyle.secondaryButton, formStyle.button].join(' ')}
-            />
+              onKeyPress={agreeToTerms}
+              role="button"
+              tabIndex="0"
+            >
+              I Agree
+            </div>
           </div>
         </div>
       </div>
