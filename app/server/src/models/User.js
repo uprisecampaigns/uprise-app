@@ -55,7 +55,7 @@ class User {
 
     const allSelections = [
       ...selections,
-      'users.id as id', 'first_name', 'last_name', 'user_profiles.description as description', 'user_profiles.tags as tags',
+      'users.id as id', 'first_name', 'last_name', 'email', 'user_profiles.description as description', 'user_profiles.tags as tags',
       'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
       'campaigns_query.object as campaigns', 'actions_query.object as actions', 'activities_query.object as activities',
     ];
@@ -75,7 +75,7 @@ class User {
     const searchQuery = db('users')
       .leftJoin('user_profiles', 'user_profiles.user_id', 'users.id')
       .select([
-        'users.id as id', 'first_name', 'last_name', 'user_profiles.description as description', 'user_profiles.tags as tags',
+        'users.id as id', 'first_name', 'last_name', 'email', 'user_profiles.description as description', 'user_profiles.tags as tags',
         'user_profiles.profile_image_url as profile_image_url', 'user_profiles.subheader as subheader',
       ])
       .modify((qb) => {
