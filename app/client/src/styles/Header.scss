@@ -62,14 +62,19 @@
 }
 
 .logoContainer {
-  background-color: $fire-red;
+  // background-color: $fire-red;
   a {
+    background: url(img/uprise-logo-text-blue.png) no-repeat 50% 100%;
+    background-size: contain;
     color: $white;
     display: block;
-    font-size: 1.5rem;
+    // font-size: 1.5rem;
     font-weight: 500;
-    padding: 0.5rem 2rem;
+    padding: 0 1rem 2rem;
     text-decoration: none;
+    margin: 0.5rem 1rem;
+    width: 4.5rem;
+    text-indent: -999rem;
     @media (max-width: $screen-sm-min) {
       padding: 0.5rem 1rem;
       font-size: 1rem;
