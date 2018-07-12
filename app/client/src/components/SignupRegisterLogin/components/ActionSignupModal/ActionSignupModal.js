@@ -311,7 +311,7 @@ export class ActionSignupModal extends Component {
               <Divider />
 
               <Link
-                to="/volunteer/opportunity-commitments"
+                to="/volunteer"
                 useAhref={false}
               >
                 <div
