@@ -24,7 +24,6 @@ import CancelActionSignupMutation from 'schemas/mutations/CancelActionSignupMuta
 
 import s from 'styles/SignupRegisterLogin.scss';
 
-
 export class ActionSignupModal extends Component {
   static propTypes = {
     action: PropTypes.object,
@@ -33,11 +32,11 @@ export class ActionSignupModal extends Component {
     dispatch: PropTypes.func.isRequired,
     signup: PropTypes.func.isRequired,
     cancelAttendance: PropTypes.func.isRequired,
-  }
+  };
 
   static defaultProps = {
     action: undefined,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -49,7 +48,7 @@ export class ActionSignupModal extends Component {
 
     if (Array.isArray(action.signedUpShifts)) {
       action.signedUpShifts.forEach((signedUpShift) => {
-        shifts.find(shift => shift.id === signedUpShift.id).selected = true;
+        shifts.find((shift) => shift.id === signedUpShift.id).selected = true;
       });
     }
 
@@ -61,12 +60,12 @@ export class ActionSignupModal extends Component {
     };
   }
 
-  mapShift = shift => ({
+  mapShift = (shift) => ({
     id: shift.id,
     start: shift.start,
     end: shift.end,
     selected: shift.selected,
-  })
+  });
 
   toggleCheck = (toggleShift) => {
     const shifts = [...this.state.shifts].map(this.mapShift);
@@ -79,15 +78,15 @@ export class ActionSignupModal extends Component {
     }
 
     this.setState({ shifts });
-  }
+  };
 
   selectShifts = () => {
-    if (this.state.shifts.filter(shift => shift.selected).length) {
+    if (this.state.shifts.filter((shift) => shift.selected).length) {
       this.setState({ page: 1 });
     } else {
       this.props.dispatch(notify('Please select at least one shift'));
     }
-  }
+  };
 
   confirmSignup = async () => {
     if (this.state.agreeToShare) {
@@ -95,7 +94,9 @@ export class ActionSignupModal extends Component {
         await this.props.signup({
           variables: {
             actionId: this.props.action.id,
-            shifts: this.state.shifts.filter(shift => shift.selected).map(shift => ({ id: shift.id, start: shift.start, end: shift.end })),
+            shifts: this.state.shifts
+              .filter((shift) => shift.selected)
+              .map((shift) => ({ id: shift.id, start: shift.start, end: shift.end })),
           },
           // TODO: decide between refetch and update
           refetchQueries: ['ActionCommitmentsQuery', 'SignedUpVolunteersQuery', 'ActionQuery'],
@@ -105,12 +106,16 @@ export class ActionSignupModal extends Component {
         this.setState({ page: 2 });
       } catch (e) {
         console.error(e);
-        this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+        this.props.dispatch(
+          notify(
+            'There was an error with your request. Please reload the page or contact help@uprise.org for support.',
+          ),
+        );
       }
     } else {
       this.props.dispatch(notify('In order to sign up for this, you must agree to share your contact info.'));
     }
-  }
+  };
 
   cancelAttendance = async () => {
     try {
@@ -125,59 +130,58 @@ export class ActionSignupModal extends Component {
       this.setState({ page: 2 });
     } catch (e) {
       console.error(e);
-      this.props.dispatch(notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'));
+      this.props.dispatch(
+        notify('There was an error with your request. Please reload the page or contact help@uprise.org for support.'),
+      );
     }
-  }
+  };
 
   formatShiftLine = (shift) => {
     const { action, timeWithZone } = this.props;
 
-    return `${timeWithZone(shift.start, action.zipcode, 'ddd MMM Do: h:mm')} - ${timeWithZone(shift.end, action.zipcode, 'h:mm a z')}`;
-  }
+    return `${timeWithZone(shift.start, action.zipcode, 'ddd MMM Do: h:mm')} - ${timeWithZone(
+      shift.end,
+      action.zipcode,
+      'h:mm a z',
+    )}`;
+  };
 
   render() {
     const { action, userObject } = this.props;
 
-    const {
-      shifts, page,
-      agreeToShare, attending,
-    } = this.state;
+    const { shifts, page, agreeToShare, attending } = this.state;
 
-    const {
-      toggleCheck, selectShifts, confirmSignup, formatShiftLine, cancelAttendance,
-    } = this;
+    const { toggleCheck, selectShifts, confirmSignup, formatShiftLine, cancelAttendance } = this;
 
     let dialogContent;
 
     switch (page) {
       case 0: {
-        const shiftsList = [...shifts]
-          .filter(shift => moment(shift.end).isAfter(moment()))
-          .map((shift) => {
-            const timeDisplay = formatShiftLine(shift);
+        const shiftsList = [...shifts].filter((shift) => moment(shift.end).isAfter(moment())).map((shift) => {
+          const timeDisplay = formatShiftLine(shift);
 
-            return (
-              <div key={JSON.stringify(shift)}>
-                <Checkbox
-                  label={timeDisplay}
-                  checked={shift.selected}
-                  onCheck={() => toggleCheck(shift)}
-                  className={s.shiftCheckbox}
-                />
-              </div>
-            );
-          });
+          return (
+            <div key={JSON.stringify(shift)}>
+              <Checkbox
+                label={timeDisplay}
+                checked={shift.selected}
+                onCheck={() => toggleCheck(shift)}
+                className={s.shiftCheckbox}
+              />
+            </div>
+          );
+        });
 
         dialogContent = (
           <div className={s.container}>
             <div className={s.header}>Select Shifts</div>
 
-            { shiftsList }
+            {shiftsList}
 
             <Divider />
 
             <div className={s.buttonContainer}>
-              { attending &&
+              {attending && (
                 <div
                   className={s.cancelButton}
                   onClick={cancelAttendance}
@@ -187,7 +191,7 @@ export class ActionSignupModal extends Component {
                 >
                   I can no longer attend this event
                 </div>
-              }
+              )}
 
               <div
                 className={s.primaryButton}
@@ -211,7 +215,7 @@ export class ActionSignupModal extends Component {
               <div className={s.header}>Cancel</div>
 
               <div className={s.content}>
-                <div>{ action.title }</div>
+                <div>{action.title}</div>
                 <div>Please cancel my sign-up for this volunteer opportunity and notify the campaign coordinator.</div>
               </div>
 
@@ -231,27 +235,27 @@ export class ActionSignupModal extends Component {
         } else {
           dialogContent = (
             <div className={s.container}>
-              { attending ? (
+              {attending ? (
                 <div className={s.header}>Confirm Changes</div>
               ) : (
                 <div className={s.header}>Almost there!</div>
               )}
 
               <div className={s.content}>
-                <div>{ action.title }</div>
+                <div>{action.title}</div>
 
-                { !action.ongoing && (
+                {!action.ongoing && (
                   <div>
                     <div className={s.label}>Shifts selected</div>
-                    { shifts.filter(shift => shift.selected).map(shift => (
-                      <div key={JSON.stringify(shift)}>
-                        { formatShiftLine(shift) }
-                      </div>
-                    ))}
+                    {shifts
+                      .filter((shift) => shift.selected)
+                      .map((shift) => <div key={JSON.stringify(shift)}>{formatShiftLine(shift)}</div>)}
                   </div>
                 )}
                 <div className={s.label}>Your Name:</div>
-                <div>{userObject.first_name} {userObject.last_name}</div>
+                <div>
+                  {userObject.first_name} {userObject.last_name}
+                </div>
                 <div className={s.label}>Your Email:</div>
                 <div>{userObject.email}</div>
               </div>
@@ -274,7 +278,6 @@ export class ActionSignupModal extends Component {
               >
                 Sign up now
               </div>
-
             </div>
           );
         }
@@ -289,8 +292,8 @@ export class ActionSignupModal extends Component {
 
               <div
                 className={s.button}
-                onClick={e => this.props.dispatch(closedModal())}
-                onKeyPress={e => this.props.dispatch(closedModal())}
+                onClick={(e) => this.props.dispatch(closedModal())}
+                onKeyPress={(e) => this.props.dispatch(closedModal())}
                 role="button"
                 tabIndex="0"
               >
@@ -304,20 +307,17 @@ export class ActionSignupModal extends Component {
               <div className={s.header}>You&apos;ve been signed up</div>
 
               <div className={s.content}>
-                Thank you so much for signing up. Saved events will show up
-                in your profile so you can easily view them later.
+                Thank you so much for signing up. Saved events will show up in your profile so you can easily view them
+                later.
               </div>
 
               <Divider />
 
-              <Link
-                to="/volunteer"
-                useAhref={false}
-              >
+              <Link to="/volunteer" useAhref={false}>
                 <div
                   className={s.button}
-                  onClick={e => this.props.dispatch(closedModal())}
-                  onKeyPress={e => this.props.dispatch(closedModal())}
+                  onClick={(e) => this.props.dispatch(closedModal())}
+                  onKeyPress={(e) => this.props.dispatch(closedModal())}
                   role="button"
                   tabIndex="0"
                 >
@@ -336,45 +336,47 @@ export class ActionSignupModal extends Component {
       }
     }
 
-    if (userObject.email_confirmed) {
-      return (
-        <Dialog
-          modal={false}
-          open
-          onRequestClose={() => this.props.dispatch(closedModal())}
-          autoScrollBodyContent
-          autoDetectWindowHeight
-          repositionOnUpdate
-        >
-          { dialogContent }
-        </Dialog>
-      );
-    }
-
+    // if (userObject.email_confirmed) {
     return (
-      <ConfirmEmailPrompt
+      <Dialog
         modal={false}
-        handleResend={() => this.props.dispatch(closedModal())}
-        handleError={() => this.props.dispatch(closedModal())}
-      />
+        open
+        onRequestClose={() => this.props.dispatch(closedModal())}
+        autoScrollBodyContent
+        autoDetectWindowHeight
+        repositionOnUpdate
+      >
+        {dialogContent}
+      </Dialog>
     );
+    // }
+
+    // return (
+    //   <ConfirmEmailPrompt
+    //     modal={false}
+    //     handleResend={() => this.props.dispatch(closedModal())}
+    //     handleError={() => this.props.dispatch(closedModal())}
+    //   />
+    // );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   action: state.actionSignup.action,
   loggedIn: state.userAuthSession.isLoggedIn,
   fetchingAuthUpdate: state.userAuthSession.fetchingAuthUpdate,
 });
 
-
 const withMeQuery = graphql(MeQuery, {
   props: ({ data }) => ({
-    userObject: !data.loading && data.me ? data.me : {
-      email: '',
-    },
+    userObject:
+      !data.loading && data.me
+        ? data.me
+        : {
+            email: '',
+          },
   }),
-  skip: ownProps => !ownProps.loggedIn && !ownProps.fetchingAuthUpdate,
+  skip: (ownProps) => !ownProps.loggedIn && !ownProps.fetchingAuthUpdate,
 });
 
 export default compose(

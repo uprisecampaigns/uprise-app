@@ -5,15 +5,16 @@ const User = require('models/User');
 const sendEmail = require('lib/sendEmail.js');
 
 module.exports = {
-
   Query: {
     campaign: async (root, args, context) => {
       const campaign = await Campaign.findOne(args.search);
 
       // TODO: This is repeated in a bunch of places and should be DRYed
-      campaign.subscribed = (context.user) ? await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id }) : false;
+      campaign.subscribed = context.user
+        ? await Campaign.subscribed({ campaignId: campaign.id, userId: context.user.id })
+        : false;
 
-      campaign.is_owner = (context.user) ? User.ownsObject({ user: context.user, object: campaign }) : false;
+      campaign.is_owner = context.user ? User.ownsObject({ user: context.user, object: campaign }) : false;
 
       return campaign;
     },
@@ -76,9 +77,11 @@ module.exports = {
       }
 
       // Decamelizing property names
-      const input = Object.assign(...Object.keys(args.data).map(k => ({
-        [decamelize(k)]: args.data[k],
-      })));
+      const input = Object.assign(
+        ...Object.keys(args.data).map((k) => ({
+          [decamelize(k)]: args.data[k],
+        })),
+      );
 
       input.owner_id = context.user.id;
 
@@ -93,9 +96,11 @@ module.exports = {
       }
 
       // Decamelizing property names
-      const input = Object.assign(...Object.keys(args.data).map(k => ({
-        [decamelize(k)]: args.data[k],
-      })));
+      const input = Object.assign(
+        ...Object.keys(args.data).map((k) => ({
+          [decamelize(k)]: args.data[k],
+        })),
+      );
 
       const campaign = await Campaign.edit({ input, userId: context.user.id });
 
@@ -119,9 +124,9 @@ module.exports = {
 
       const { user } = context;
 
-      if (!user.email_confirmed) {
-        throw new Error(`User's email not confirmed: ${user.email}`);
-      }
+      // if (!user.email_confirmed) {
+      //   throw new Error(`User's email not confirmed: ${user.email}`);
+      // }
 
       const campaign = await Campaign.subscribe({ userId: user.id, campaignId: args.campaignId });
       campaign.subscribed = await Campaign.subscribed({ campaignId: campaign.id, userId: user.id });
