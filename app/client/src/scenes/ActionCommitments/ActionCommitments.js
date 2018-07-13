@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { compose, graphql } from 'react-apollo';
 import { List, ListItem } from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
+import moment from 'moment';
 
 import withTimeWithZone from 'lib/withTimeWithZone';
 import itemsSort from 'lib/itemsSort';
@@ -24,11 +25,19 @@ class ActionCommitments extends PureComponent {
       const { actionCommitments, timeWithZone } = this.props;
 
       const actionsList = Array.from(actionCommitments)
+        // Filter expired
+        .filter(
+          (action) =>
+            action.ongoing ||
+            (!action.ongoing &&
+              action.signed_up_shifts &&
+              action.signed_up_shifts.filter((shift) => moment(shift.end).isAfter(moment())).length),
+        )
         .sort(itemsSort({ name: 'date', descending: false }))
         .map((action) => {
           const shiftList =
             action.signed_up_shifts && action.signed_up_shifts.length
-              ? action.signed_up_shifts.map((shift) => (
+              ? action.signed_up_shifts.filter((shift) => moment(shift.end).isAfter(moment())).map((shift) => (
                   <div key={shift.id} className={s.listDetailLine}>
                     {timeWithZone(shift.start, action.zipcode, 'ddd, MMM Do YYYY, h:mm')} -{' '}
                     {timeWithZone(shift.end, action.zipcode, 'h:mm a z')}
