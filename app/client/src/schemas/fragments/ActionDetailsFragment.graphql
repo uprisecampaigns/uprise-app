@@ -10,6 +10,7 @@ fragment ActionDetails on ActionResult {
     id
     title
     description
+    long_description
   }
   owner {
     id

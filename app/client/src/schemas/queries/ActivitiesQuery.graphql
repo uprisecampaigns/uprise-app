@@ -3,5 +3,6 @@ query ActivitiesQuery {
     id
     title
     description
+    long_description
   }
 }

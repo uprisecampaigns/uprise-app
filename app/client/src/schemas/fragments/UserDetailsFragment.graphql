@@ -18,6 +18,7 @@ fragment UserDetails on UserResult {
     id
     title
     description
+    long_description
   }
   tags
   campaigns {
