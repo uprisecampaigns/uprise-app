@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
-import RaisedButton from 'material-ui/RaisedButton';
+import Link from 'components/Link';
 
 import SearchBar from 'components/SearchBar';
 
@@ -10,6 +11,7 @@ import s from 'styles/Search.scss';
 
 class SearchPresentation extends Component {
   static propTypes = {
+    loggedIn: PropTypes.bool.isRequired,
     addSelectedItem: PropTypes.func.isRequired,
     searchSelections: PropTypes.node.isRequired,
     searchInputs: PropTypes.func.isRequired,
@@ -48,7 +50,7 @@ class SearchPresentation extends Component {
   };
 
   render() {
-    const { searchSelections, searchInputs, searchResults } = this.props;
+    const { searchSelections, searchInputs, searchResults, loggedIn } = this.props;
 
     return (
       <div className={[s.searchContentContainer, s.innerContainer].join(' ')}>
@@ -88,6 +90,26 @@ class SearchPresentation extends Component {
           </div>
           <div className={s.filterResultsOuterContainer}>
             <div className={s.selectionsResultsContainer}>
+              {!loggedIn && (
+                <div className={s.introCard}>
+                  <div className={s.introBlurb}>
+                    UpRise is reforming political campaigning through effective volunteer-powered campaigns.
+                  </div>
+                  <div className={s.spaceButtons}>
+                    <Link to="/signup" useAhref className={[s.darkButton, s.buttonLink].join(' ')}>
+                      Sign Up
+                    </Link>
+                    <div className={s.centerButtons}>
+                      <Link to="https://uprisecampaigns.org/" useAhref external className={[s.button, s.buttonLinkBlack].join(' ')}>
+                        Learn More
+                      </Link>
+                      <Link to="https://uprisecampaigns.org/donate/" useAhref external className={[s.primaryButton, s.buttonLink].join(' ')}>
+                        Donate to UpRise
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className={s.selectionsContainer}>{searchSelections}</div>
 
               {this.state.filterOpen && (
@@ -131,4 +153,9 @@ class SearchPresentation extends Component {
   }
 }
 
-export default SearchPresentation;
+const mapStateToProps = (state) => ({
+  loggedIn: state.userAuthSession.isLoggedIn,
+  fetchingAuthUpdate: state.userAuthSession.fetchingAuthUpdate,
+});
+
+export default connect(mapStateToProps)(SearchPresentation);
