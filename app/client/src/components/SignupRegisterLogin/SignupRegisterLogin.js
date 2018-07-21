@@ -48,7 +48,7 @@ class SignupRegisterLogin extends React.PureComponent {
                     role="button"
                     tabIndex="0"
                   >
-                    Cancel my comittment
+                    Cancel my commitment
                   </div>
                 ) : (
                   <div

@@ -297,3 +297,23 @@ label.listItem {
     background-color: lighten($bright-blue, 5%);
   }
 }
+
+
+.introCard {
+  background-color: $white;
+  margin: 0.5rem 1rem;
+  padding: 1rem 2rem;
+  border: 1px solid $medium-light-grey;
+
+  @media (min-width: $screen-md-min) {
+    margin: 0.5rem 0;
+  }
+  .introBlurb {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .centerButtons {
+
+  }
+}

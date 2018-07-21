@@ -609,7 +609,7 @@ class Action {
       const activitiesQuery = db('activities')
         .innerJoin('actions_activities', 'actions_activities.activity_id', 'activities.id')
         .where('actions_activities.action_id', action.id)
-        .select('activities.id as id', 'activities.title as title', 'activities.description as description');
+        .select('activities.id as id', 'activities.title as title', 'activities.description as description', 'activities.long_description as long_description');
 
       const shiftsQuery = db('shifts')
         .select(['id',

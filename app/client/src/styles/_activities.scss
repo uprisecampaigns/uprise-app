@@ -1,0 +1,38 @@
+@import '~styles/variables';
+
+.activities {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 0.5rem;
+  font-size: 0.8rem;
+  @media (max-width: $screen-sm-min) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.activity {
+  border: 1px solid $medium-light-grey;
+  border-radius: 0.2rem;
+  display: inline-block;
+  // margin: 0 1rem 0.5rem 0;
+  // max-width: 9rem;
+  padding: 1rem;
+  text-align: center;
+
+  strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    position: relative;
+    &:after {
+      border-bottom: 1px solid $grey;
+      bottom: 0;
+      content: '';
+      left: 0;
+      margin: 0 auto;
+      padding: 0.5rem 0;
+      position: absolute;
+      right: 0;
+      width: 30%;
+    }
+  }
+}

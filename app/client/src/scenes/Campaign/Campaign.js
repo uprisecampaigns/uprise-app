@@ -46,11 +46,11 @@ class Campaign extends Component {
 
   subscribe = () => {
     if (this.props.loggedIn) {
-      if (this.props.userObject.email_confirmed) {
-        this.setState({ subscribeModalOpen: true });
-      } else {
-        this.setState({ confirmEmailModalOpen: true });
-      }
+      // if (this.props.userObject.email_confirmed) {
+      this.setState({ subscribeModalOpen: true });
+      // } else {
+      // this.setState({ confirmEmailModalOpen: true });
+      // }
     } else {
       this.props.dispatch(promptLogin({ exitable: true, title: 'Please login to subscribe to this campaign.' }));
     }

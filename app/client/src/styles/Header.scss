@@ -23,6 +23,7 @@
   color: $black;
   font-size: 0.9rem;
   justify-content: space-between;
+  border-bottom: 1px solid $light-grey;
   span {
     display: inline-block;
     padding-bottom: 0.5rem;
@@ -62,23 +63,29 @@
 }
 
 .logoContainer {
-  background-color: $fire-red;
+  // background-color: $fire-red;
+  // border-bottom: 2px solid $fire-red;
   a {
+    background: url(img/uprise-logo-red.png) no-repeat 50% 100%;
+    // font-size: 1.5rem;
+    background-size: 6rem;
     color: $white;
     display: block;
-    font-size: 1.5rem;
     font-weight: 500;
-    padding: 0.5rem 2rem;
+    height: 2rem;
+    margin: 1rem 0 0.5rem 2rem;
     text-decoration: none;
-    @media (max-width: $screen-sm-min) {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
+    text-indent: -999rem;
+    width: 6rem;
+    @media (max-width: $screen-xs-min) {
+      background-size: 5rem;
+      margin-right: 1rem;
+      width: 5rem;
     }
   }
 }
 
 .linksContainer {
-  border-bottom: 1px solid $light-grey;
   display: flex;
   flex: 1;
   justify-content: flex-end;

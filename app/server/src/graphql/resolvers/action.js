@@ -10,20 +10,26 @@ const sendEmail = require('lib/sendEmail.js');
 
 const { urls } = require('config/config');
 
-
 const getFormattedDates = ({ user, action }) => {
   if (action.ongoing) {
     return { ongoing: true };
   }
 
-  const timezone = (user.zipcode && zipcodeToTimezone.lookup(user.zipcode)) ? zipcodeToTimezone.lookup(user.zipcode) : 'America/New_York';
+  const timezone =
+    user.zipcode && zipcodeToTimezone.lookup(user.zipcode)
+      ? zipcodeToTimezone.lookup(user.zipcode)
+      : 'America/New_York';
 
   return {
     timezone,
-    shifts: action.signed_up_shifts.map(shift => ({
+    shifts: action.signed_up_shifts.map((shift) => ({
       timezone,
-      start: moment(shift.start).tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
-      end: moment(shift.end).tz(timezone).format('dddd, MMMM Do YYYY, h:mma z'),
+      start: moment(shift.start)
+        .tz(timezone)
+        .format('dddd, MMMM Do YYYY, h:mma z'),
+      end: moment(shift.end)
+        .tz(timezone)
+        .format('dddd, MMMM Do YYYY, h:mma z'),
     })),
   };
 };
@@ -40,10 +46,14 @@ module.exports = {
       const action = await Action.findOne(search);
 
       // TODO: This is repeated in a bunch of places and should be DRYed
-      action.attending = (context.user) ? await Action.attending({ actionId: action.id, userId: context.user.id }) : false;
-      action.signed_up_shifts = (context.user) ? await Action.signedUpShifts({ actionId: action.id, userId: context.user.id }) : [];
+      action.attending = context.user
+        ? await Action.attending({ actionId: action.id, userId: context.user.id })
+        : false;
+      action.signed_up_shifts = context.user
+        ? await Action.signedUpShifts({ actionId: action.id, userId: context.user.id })
+        : [];
 
-      action.is_owner = (context.user) ? await User.ownsObject({ user: context.user, object: action }) : false;
+      action.is_owner = context.user ? await User.ownsObject({ user: context.user, object: action }) : false;
 
       return action;
     },
@@ -79,7 +89,6 @@ module.exports = {
         throw new Error('User must be logged in');
       }
 
-
       const { actionSearch, shiftSearch } = args;
       const { user } = context;
 
@@ -112,9 +121,11 @@ module.exports = {
       }
 
       // Decamelizing property names
-      const input = Object.assign(...Object.keys(args.data).map(k => ({
-        [decamelize(k)]: args.data[k],
-      })));
+      const input = Object.assign(
+        ...Object.keys(args.data).map((k) => ({
+          [decamelize(k)]: args.data[k],
+        })),
+      );
 
       input.owner_id = context.user.id;
 
@@ -131,9 +142,11 @@ module.exports = {
 
       args.data.forEach((item) => {
         // Decamelizing property names
-        const input = Object.assign(...Object.keys(item).map(k => ({
-          [decamelize(k)]: item[k],
-        })));
+        const input = Object.assign(
+          ...Object.keys(item).map((k) => ({
+            [decamelize(k)]: item[k],
+          })),
+        );
 
         input.owner_id = context.user.id;
 
@@ -151,9 +164,11 @@ module.exports = {
       }
 
       // Decamelizing property names
-      const input = Object.assign(...Object.keys(args.data).map(k => ({
-        [decamelize(k)]: args.data[k],
-      })));
+      const input = Object.assign(
+        ...Object.keys(args.data).map((k) => ({
+          [decamelize(k)]: args.data[k],
+        })),
+      );
 
       const action = await Action.edit({ input, userId: context.user.id });
       return action;
@@ -168,9 +183,9 @@ module.exports = {
 
       const { user } = context;
 
-      if (!user.email_confirmed) {
-        throw new Error(`User's email not confirmed: ${user.email}`);
-      }
+      // if (!user.email_confirmed) {
+      //   throw new Error(`User's email not confirmed: ${user.email}`);
+      // }
 
       const action = await Action.signup({
         userId: user.id,
@@ -198,7 +213,10 @@ module.exports = {
           subject: `${user.first_name} ${user.last_name} Signed up to Volunteer`,
           templateName: 'action-signup-coordinator',
           context: {
-            action, user, dates, campaign: action.campaign,
+            action,
+            user,
+            dates,
+            campaign: action.campaign,
           },
         });
       } catch (e) {
@@ -214,7 +232,13 @@ module.exports = {
           subject: 'You Signed up to Volunteer',
           templateName: 'action-signup-volunteer',
           context: {
-            action, dates, user, actionCoordinator, campaign: action.campaign, googleCalendarUrl, icsCalendarUrl,
+            action,
+            dates,
+            user,
+            actionCoordinator,
+            campaign: action.campaign,
+            googleCalendarUrl,
+            icsCalendarUrl,
           },
         });
       } catch (e) {

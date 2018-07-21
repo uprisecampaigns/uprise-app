@@ -19,6 +19,16 @@
   }
 }
 
+.buttonLink {
+  color: $white !important;
+  text-decoration: none;
+}
+
+.buttonLinkBlack {
+  color: $black !important;
+  text-decoration: none;
+}
+
 .cancelButton {
   @extend .button;
   background-color: $medium-grey;
@@ -96,3 +106,7 @@
   justify-content: center;
 }
 
+.spaceButtons {
+  display: flex;
+  justify-content: space-between;
+}

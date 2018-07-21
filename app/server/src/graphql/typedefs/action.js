@@ -8,6 +8,7 @@ const ActivityResult = `
     id: String!
     title: String!
     description: String
+    long_description: String
   }
 `;
 

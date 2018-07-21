@@ -243,9 +243,11 @@ class CampaignSettingsForm extends Component {
                     />
                   </div>
 
+                  {/*
                   <div className={s.textFieldContainer}>
                     <TextField floatingLabelText="Email" disabled value={data.email} fullWidth />
                   </div>
+                  */}
 
                   <h3 className={s.formHeader}>Official Organization</h3>
 

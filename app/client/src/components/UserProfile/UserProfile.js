@@ -42,10 +42,11 @@ class UserProfile extends PureComponent {
 
     const infoBoxContent =
       Array.isArray(user.activities) && user.activities.length ? (
-        <div>
+        <div className={s.activities}>
           {user.activities.map((activity, index) => (
-            <div key={JSON.stringify(activity)} className={s.infoBoxLine}>
-              {activity.description}
+            <div key={JSON.stringify(activity)} className={s.activity}>
+              <strong>{activity.description}</strong>{' '}
+              {activity.long_description}
             </div>
           ))}
         </div>

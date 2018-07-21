@@ -4,6 +4,7 @@
 @import '~styles/modals';
 @import '~styles/sections';
 @import '~styles/tags';
+@import '~styles/activities';
 @import '~styles/headers';
 
 .outerContainer {
@@ -28,7 +29,7 @@
 
 .bodyText {
   font-size: 1.2rem;
-  margin: 0 2rem;
+  // margin: 0 2rem;
 }
 
 .sectionHeaderContainer {
@@ -71,13 +72,13 @@
   .actionDetailsTitle {
     color: #1a1a1a;
     font-size: 1rem;
-    margin: 1rem 0 1rem 2rem;
+    margin: 0 0 1rem;
     font-weight: 500;
   }
 
   .actionDetailsContent {
     font-size: 1rem;
-    margin: 1rem 2rem;
+    // margin: 1rem 2rem;
   }
 }
 

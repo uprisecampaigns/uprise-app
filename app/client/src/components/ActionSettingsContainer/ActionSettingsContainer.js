@@ -224,6 +224,7 @@ class ActionSettingsContainer extends Component {
           id: activity.id,
           title: activityMatch.title,
           description: activityMatch.description,
+          long_description: activityMatch.long_description,
         };
       }
       return undefined;

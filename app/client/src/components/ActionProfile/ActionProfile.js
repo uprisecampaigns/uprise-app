@@ -24,13 +24,17 @@ class ActionProfile extends PureComponent {
       );
 
       const activities =
-        Array.isArray(action.activities) && action.activities.length
-          ? action.activities.map((activity, index) => (
-              <div key={JSON.stringify(activity)} className={s.activityLine}>
-                {activity.description}
+        Array.isArray(action.activities) && action.activities.length ? (
+          <div className={s.activities}>
+            {action.activities.map((activity, index) => (
+              <div key={activity.title} className={s.activity}>
+                <strong>{activity.description}</strong> {activity.long_description}
               </div>
-            ))
-          : [];
+            ))}
+          </div>
+        ) : (
+          []
+        );
 
       const keywords =
         Array.isArray(action.tags) && action.tags.length ? (
@@ -70,7 +74,7 @@ class ActionProfile extends PureComponent {
                       </div>
                     )}
                   </div>
-                  {activities.length > 0 && (
+                  {activities && (
                     <div className={[s.actionDetailsContainer, s.infoBox].join(' ')}>
                       <div className={s.actionDetailsTitle}>Activities and Skills:</div>
                       <div className={s.actionDetailsContent}>{activities}</div>

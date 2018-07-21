@@ -4,11 +4,16 @@
 @import '~styles/modals';
 @import '~styles/tabs';
 @import '~styles/tags';
+@import '~styles/activities';
 @import '~styles/headers';
 
 .userProfileContainer {
   display: flex;
   margin-top: 2rem;
+  @media (max-width: $screen-sm-min) {
+    display: block;
+    margin: 0 1rem;
+  }
 }
 
 .leftContent {
@@ -23,6 +28,9 @@
 .centerContent {
   flex: 2;
   margin-left: 1rem;
+  @media (max-width: $screen-sm-min) {
+    margin: 1rem 0 0;
+  }
 }
 
 .saveButton {
@@ -86,7 +94,7 @@
 }
 
 .userSubheader {
-  margin: 1rem 0;
+  padding: 1rem;
 }
 
 .userDescription {
