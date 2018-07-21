@@ -93,7 +93,7 @@ class SearchPresentation extends Component {
               {!loggedIn && (
                 <div className={s.introCard}>
                   <div className={s.introBlurb}>
-                    UpRise is reforming political campaigning through effective volunteer-powered campaigns.
+                    UpRise is reforming political campaigning through effective volunteer mobilization.
                   </div>
                   <div className={s.spaceButtons}>
                     <Link to="/signup" useAhref className={[s.darkButton, s.buttonLink].join(' ')}>
