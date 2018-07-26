@@ -1,8 +1,8 @@
-****UpRise Campaigns - Someone Signed Up for your Opportunity****
+****UpRise - Someone Signed Up for your Opportunity****
 
 <%= user.first_name %> <%= user.last_name %> signed up for the following opportunity:
 
-<%= campaign.title %> 
+<%= campaign.title %>
 <%= action.dashboard_url %>
 <%= action.title %>
 <% if (!action.ongoing) {
@@ -15,6 +15,6 @@
 You may contact <%= user.first_name %> <%= user.last_name %> at email: <%= user.email %> <% if (user.phone_number) { %> or phone: <%= user.phone_number %> <% } %>
 
 
-Regards
+Regards,
 
-UpRise Campaigns
+UpRise
