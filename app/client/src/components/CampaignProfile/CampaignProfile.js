@@ -96,19 +96,6 @@ class CampaignProfile extends PureComponent {
             <div className={s.sectionsContainer}>
               <div className={s.section}>
                 <div className={s.sectionContent}>
-                  <div className={s.sectionHeader}>Learn More</div>
-
-                  {campaign.description && (
-                    <div className={s.actionDetailsContainer}>
-                      {typeof campaign.description === 'string' &&
-                        campaign.description.trim() !== '' && (
-                          <div>
-                            <div className={[s.actionDetailsContent, s.bodyText].join(' ')}>{campaign.description}</div>
-                          </div>
-                        )}
-                    </div>
-                  )}
-
                   {campaign.profile_image_url && (
                     <div className={s.profileImageContainer}>
                       <img
@@ -116,6 +103,19 @@ class CampaignProfile extends PureComponent {
                         src={campaign.profile_image_url}
                         className={s.profileImage}
                       />
+                    </div>
+                  )}
+
+
+                  {campaign.description && (
+                    <div className={s.sectionHeader}>Learn More</div>
+                    <div className={s.actionDetailsContainer}>
+                      {typeof campaign.description === 'string' &&
+                        campaign.description.trim() !== '' && (
+                          <div>
+                            <div className={[s.actionDetailsContent, s.bodyText].join(' ')}>{campaign.description}</div>
+                          </div>
+                        )}
                     </div>
                   )}
                 </div>
