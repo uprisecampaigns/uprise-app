@@ -106,16 +106,19 @@ class CampaignProfile extends PureComponent {
                     </div>
                   )}
 
-
                   {campaign.description && (
-                    <div className={s.sectionHeader}>Learn More</div>
-                    <div className={s.actionDetailsContainer}>
-                      {typeof campaign.description === 'string' &&
-                        campaign.description.trim() !== '' && (
-                          <div>
-                            <div className={[s.actionDetailsContent, s.bodyText].join(' ')}>{campaign.description}</div>
-                          </div>
-                        )}
+                    <div>
+                      <div className={s.sectionHeader}>Learn More</div>
+                      <div className={s.actionDetailsContainer}>
+                        {typeof campaign.description === 'string' &&
+                          campaign.description.trim() !== '' && (
+                            <div>
+                              <div className={[s.actionDetailsContent, s.bodyText].join(' ')}>
+                                {campaign.description}
+                              </div>
+                            </div>
+                          )}
+                      </div>
                     </div>
                   )}
                 </div>
