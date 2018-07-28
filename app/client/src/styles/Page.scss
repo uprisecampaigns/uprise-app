@@ -57,6 +57,15 @@
   overflow-y: scroll;
   text-align: left;
   border: 1px solid darken($white, 20%);
+  h1 {
+    font-style: 1.4rem;
+  }
+  h2, h3 {
+    font-size: 1rem;
+  }
+  p {
+    font-size: 0.8rem;
+  }
 }
 
 .homeContentSection {
