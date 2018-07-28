@@ -92,18 +92,21 @@ class SearchPresentation extends Component {
             <div className={s.selectionsResultsContainer}>
               {!loggedIn && (
                 <div className={s.introCard}>
+                  <div className={s.introHeader}>Take Action</div>
                   <div className={s.introBlurb}>
                     UpRise is reforming political campaigning through effective volunteer mobilization.
                   </div>
-                  <div className={s.spaceButtons}>
-                    <Link to="/signup" useAhref className={[s.darkButton, s.buttonLink].join(' ')}>
-                      Sign Up
-                    </Link>
+                  <div className={s.introButtons}>
                     <div className={s.centerButtons}>
-                      <Link to="https://uprisecampaigns.org/" useAhref external className={[s.button, s.buttonLinkBlack].join(' ')}>
+                      <Link to="/signup" useAhref className={[s.primaryButton, s.buttonLink, s.fullButton].join(' ')}>
+                        Sign Up Now
+                      </Link>
+                    </div>
+                    <div className={[s.spaceButtons, s.extraButtons].join(' ')}>
+                      <Link to="https://uprisecampaigns.org/" useAhref external className={s.buttonLinkBlack}>
                         Learn More
                       </Link>
-                      <Link to="https://uprisecampaigns.org/donate/" useAhref external className={[s.primaryButton, s.buttonLink].join(' ')}>
+                      <Link to="https://uprisecampaigns.org/donate/" useAhref external className={s.buttonLinkRed}>
                         Donate to UpRise
                       </Link>
                     </div>

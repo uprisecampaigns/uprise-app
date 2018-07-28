@@ -29,6 +29,15 @@
   text-decoration: none;
 }
 
+.buttonLinkRed {
+  color: $red !important;
+  text-decoration: none;
+}
+
+.fullButton {
+  width: 100%;
+}
+
 .cancelButton {
   @extend .button;
   background-color: $medium-grey;
