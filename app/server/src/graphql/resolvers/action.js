@@ -18,7 +18,7 @@ const getFormattedDates = ({ user, action }) => {
   const timezone =
     user.zipcode && zipcodeToTimezone.lookup(user.zipcode)
       ? zipcodeToTimezone.lookup(user.zipcode)
-      : 'America/New_York';
+      : 'America/Phoenix';
 
   return {
     timezone,

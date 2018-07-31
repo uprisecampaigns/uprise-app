@@ -301,7 +301,7 @@ class Action {
           '\'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as shifts'),
         db.raw('to_char(actions.created_at at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as created_at'),
         'campaigns.title as campaign_title', 'campaigns.id as campaign_id',
-        'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url'])
+        'campaigns.slug as campaign_slug', 'campaigns.profile_image_url as campaign_profile_image_url', 'campaigns.zipcode as zipcode'])
       .where('actions.deleted', false)
       .andWhere('campaigns.deleted', false)
       .innerJoin('campaigns', 'actions.campaign_id', 'campaigns.id')

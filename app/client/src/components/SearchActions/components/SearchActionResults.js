@@ -72,8 +72,15 @@ class SearchActionResults extends Component {
             const startTime = moment(action.start_time);
             const endTime = moment(action.end_time);
 
-            const startTimeString = timeWithZone(startTime, action.zipcode, 'h:mma');
-            const endTimeString = timeWithZone(endTime, action.zipcode, 'h:mma z');
+            let zipcode;
+            if (action.zipcode) {
+              zipcode = action.zipcode;
+            } else if (action.campaign && action.campaign.zipcode) {
+              zipcode = action.campaign.zipcode;
+            }
+
+            const startTimeString = timeWithZone(startTime, zipcode, 'h:mma');
+            const endTimeString = timeWithZone(endTime, zipcode, 'h:mma z');
 
             try {
               return (
@@ -98,7 +105,7 @@ class SearchActionResults extends Component {
                       {!action.ongoing &&
                         startTime && (
                           <div>
-                            <div>Date: {timeWithZone(startTime, action.zipcode, 'ddd MMM Do, YYYY')}</div>
+                            <div>Date: {timeWithZone(startTime, zipcode, 'ddd MMM Do, YYYY')}</div>
                             <div>Time: {`${startTimeString} - ${endTimeString}`}</div>
                           </div>
                         )}

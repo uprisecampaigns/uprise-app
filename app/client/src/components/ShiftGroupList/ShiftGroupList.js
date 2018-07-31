@@ -5,35 +5,46 @@ import moment from 'moment';
 
 import itemsSort from 'lib/itemsSort';
 
-
 class ShiftGroupList extends PureComponent {
   static propTypes = {
     action: PropTypes.object.isRequired,
     s: PropTypes.object.isRequired,
     timeWithZone: PropTypes.func.isRequired,
-  }
+  };
 
   render() {
     const { action, timeWithZone, s } = this.props;
 
-    let zipcode = '85001'; // Default to AZ zipcode, but shouldn't be needed
+    let zipcode;
     if (action.zipcode) {
       zipcode = action.zipcode;
-    } else if (action.campaign.zipcode) {
+    } else if (action.campaign && action.campaign.zipcode) {
       zipcode = action.campaign.zipcode;
     }
 
-    const shiftGroups = (Array.isArray(action.shifts) && action.shifts.length) ?
-      [...action.shifts]
-        .filter(shift => moment(shift.end).isAfter(moment()))
-        .sort(itemsSort({ name: 'shiftDate' }))
-        .reduce((result, shift) => ({ // performs "group by date"
-          ...result,
-          [moment(shift.start).startOf('day').toDate()]: [
-            ...(result[moment(shift.start).startOf('day').toDate()] || []),
-            shift,
-          ],
-        }), {}) : [];
+    const shiftGroups =
+      Array.isArray(action.shifts) && action.shifts.length
+        ? [...action.shifts]
+            .filter((shift) => moment(shift.end).isAfter(moment()))
+            .sort(itemsSort({ name: 'shiftDate' }))
+            .reduce(
+              (result, shift) => ({
+                // performs "group by date"
+                ...result,
+                [moment(shift.start)
+                  .startOf('day')
+                  .toDate()]: [
+                  ...(result[
+                    moment(shift.start)
+                      .startOf('day')
+                      .toDate()
+                  ] || []),
+                  shift,
+                ],
+              }),
+              {},
+            )
+        : [];
 
     const shiftDisplay = Object.keys(shiftGroups).map((date, index) => {
       const shiftGroup = shiftGroups[date];
@@ -48,9 +59,7 @@ class ShiftGroupList extends PureComponent {
       return (
         <div key={JSON.stringify(shiftGroup)} className={s.shiftDateGroup}>
           {dateString}:
-          <div>
-            {shiftLines}
-          </div>
+          <div>{shiftLines}</div>
         </div>
       );
     });

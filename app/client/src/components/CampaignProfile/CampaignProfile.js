@@ -55,8 +55,12 @@ class CampaignProfile extends PureComponent {
               })
               .sort(itemsSort({ name: 'date', descending: false }))
               .map((action) => {
+                let thisAction = action;
+                if (!action.zipcode && campaign.zipcode) {
+                  thisAction = Object.assign({}, action, { zipcode: campaign.zipcode });
+                }
                 const shiftLines =
-                  action.shifts && action.shifts.length ? <ShiftGroupList action={action} s={s} /> : null;
+                  action.shifts && action.shifts.length ? <ShiftGroupList action={thisAction} s={s} /> : null;
 
                 return (
                   <Link to={`/opportunity/${action.slug}`} key={action.id}>
