@@ -15,7 +15,8 @@ export default (WrappedComponent) => {
 
         this.setState({
           timeWithZone: (date, zipcode, formatString) => {
-            const timezone = (zipcode && zipcodeToTimezone.lookup(zipcode)) ? zipcodeToTimezone.lookup(zipcode) : 'America/New_York';
+            // const timezone = (zipcode && zipcodeToTimezone.lookup(zipcode)) ? zipcodeToTimezone.lookup(zipcode) : 'America/New_York';
+            const timezone = (zipcode && zipcodeToTimezone.lookup(zipcode)) ? zipcodeToTimezone.lookup(zipcode) : 'America/Phoenix';
             return moment(date).tz(timezone).format(formatString);
           },
         });

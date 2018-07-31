@@ -139,9 +139,14 @@ export class ActionSignupModal extends Component {
   formatShiftLine = (shift) => {
     const { action, timeWithZone } = this.props;
 
-    return `${timeWithZone(shift.start, action.zipcode, 'ddd MMM Do: h:mm')} - ${timeWithZone(
+    let zipcode = action.zipcode;
+    if (!action.zipcode && action.campaign && action.campaign.zipcode) {
+      zipcode = action.campaign.zipcode;
+    }
+
+    return `${timeWithZone(shift.start, zipcode, 'ddd MMM Do: h:mm')} - ${timeWithZone(
       shift.end,
-      action.zipcode,
+      zipcode,
       'h:mm a z',
     )}`;
   };
