@@ -30,6 +30,7 @@ fragment ActionBasicInfo on ActionResult {
     title
     slug
     profile_image_url
+    zipcode
   }
   shifts {
     id

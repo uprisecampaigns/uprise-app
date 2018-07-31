@@ -16,6 +16,13 @@ class ShiftGroupList extends PureComponent {
   render() {
     const { action, timeWithZone, s } = this.props;
 
+    let zipcode = '85001'; // Default to AZ zipcode, but shouldn't be needed
+    if (action.zipcode) {
+      zipcode = action.zipcode;
+    } else if (action.campaign.zipcode) {
+      zipcode = action.campaign.zipcode;
+    }
+
     const shiftGroups = (Array.isArray(action.shifts) && action.shifts.length) ?
       [...action.shifts]
         .filter(shift => moment(shift.end).isAfter(moment()))
@@ -30,11 +37,11 @@ class ShiftGroupList extends PureComponent {
 
     const shiftDisplay = Object.keys(shiftGroups).map((date, index) => {
       const shiftGroup = shiftGroups[date];
-      const dateString = timeWithZone(date, action.zipcode, 'ddd MMM Do');
+      const dateString = timeWithZone(date, zipcode, 'ddd MMM Do');
 
       const shiftLines = shiftGroup.map((shift, shiftIndex) => (
         <div key={shift.id}>
-          {timeWithZone(shift.start, action.zipcode, 'h:mm')} - {timeWithZone(shift.end, action.zipcode, 'h:mm a z')}
+          {timeWithZone(shift.start, zipcode, 'h:mm')} - {timeWithZone(shift.end, zipcode, 'h:mm a z')}
         </div>
       ));
 
