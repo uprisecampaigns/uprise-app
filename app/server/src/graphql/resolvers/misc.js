@@ -129,7 +129,7 @@ module.exports = {
         await sendEmail({
           to: contactEmail,
           replyTo: user.email,
-          subject: `[UpRise Campaigns Contact Form Submission] - ${data.subject}`,
+          subject: `[UpRise Contact Form Submission] - ${data.subject}`,
           templateName: 'contact-message',
           context: Object.assign({ user }, data),
         });

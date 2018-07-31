@@ -1,9 +1,9 @@
-****UpRise Campaigns - You Signed up to Volunteer****
+****UpRise - You Signed up to Volunteer****
 
 You signed up for the following opportunity:
 
-<%= campaign.title %> 
-<%= campaign.public_url %> 
+<%= campaign.title %>
+<%= campaign.public_url %>
 <%= action.title %>
 <%= action.public_url %>
 <% if (!action.ongoing) {
@@ -15,16 +15,16 @@ You signed up for the following opportunity:
 ====
 
 <%= action.location_name && action.location_name %>
-<%= action.street_address && action.street_address %> 
-<%= action.street_address2 && action.street_address2 %> 
+<%= action.street_address && action.street_address %>
+<%= action.street_address2 && action.street_address2 %>
 <%= action.city && action.city + ', '%><%= action.state && action.state %> <%= action.zipcode && action.zipcode %>
 <%= action.location_notes && action.location_notes %>
 
 ====
 
-You may contact the Opportunity Coordinator, <%= actionCoordinator.first_name %> <%= actionCoordinator.last_name %> at email: <%= actionCoordinator.email %> 
+You may contact the Opportunity Coordinator, <%= actionCoordinator.first_name %> <%= actionCoordinator.last_name %> at email: <%= actionCoordinator.email %>
 
 
-Regards
+Regards,
 
-UpRise Campaigns
+UpRise

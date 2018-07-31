@@ -12,12 +12,12 @@ const getAction = async (id) => {
 
   const dates = { startTime, endTime };
 
-  const location = `${action.location_name || ''} 
-    ${action.street_address1 || ''} 
-    ${action.street_address2 || ''} 
-    ${action.city || ''}, ${action.state || ''} ${action.zipcode || ''} 
-     
-    ${action.location_notes || ''} 
+  const location = `${action.location_name || ''}
+    ${action.street_address1 || ''}
+    ${action.street_address2 || ''}
+    ${action.city || ''}, ${action.state || ''} ${action.zipcode || ''}
+
+    ${action.location_notes || ''}
   `;
 
   return { action, dates, location };
@@ -52,7 +52,7 @@ module.exports = async (app) => {
       const { action, dates, location } = await getAction(id);
 
       const cal = ical({
-        name: 'UpRise Campaigns Calendar',
+        name: 'UpRise Calendar',
         domain: os.hostname(),
       });
 

@@ -145,11 +145,11 @@ class UserProfileForm extends PureComponent {
                 <div className={s.bodyText}>
                   <p>
                     Describe yourself, choose activities and add keywords so we can match you with the perfect
-                    volunteering opportunites!
+                    volunteering opportunities!
                   </p>
                   <p>
-                    Organizers will email you through UpRise without seeing your email address or phone number, and will
-                    only see your contact info if you reply to their email or sign up for an opportunity.
+                    Organizers will NOT have access to your email or phone unless you give your permission. They may
+                    email you through UpRise internal messaging so watch for UpRise Alerts in your email inbox.
                   </p>
                 </div>
 

@@ -298,22 +298,35 @@ label.listItem {
   }
 }
 
-
 .introCard {
-  background-color: $white;
+  background: $dark-blue url(img/background-image-1.jpg) no-repeat 50% 50%;
+  background-size: cover;
+  color: $white;
   margin: 0.5rem 1rem;
-  padding: 1rem 2rem;
+  padding: 2rem 4rem 4rem;
   border: 1px solid $medium-light-grey;
 
   @media (min-width: $screen-md-min) {
     margin: 0.5rem 0;
   }
+  .introButtons {
+    max-width: 15rem;
+    margin: 0 auto;
+  }
+  .introHeader {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    text-shadow: 1px 1px 0.15em rgba(0, 0, 0, 0.5);
+  }
   .introBlurb {
     font-size: 0.9rem;
     margin-bottom: 1rem;
     text-align: center;
+    text-shadow: 1px 1px 0.15em rgba(0, 0, 0, 0.5);
   }
-  .centerButtons {
-
+  .extraButtons {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
   }
 }

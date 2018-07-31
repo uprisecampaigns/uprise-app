@@ -34,7 +34,7 @@ class HeaderContainer extends Component {
           handleDrawerToggle={this.props.handleDrawerToggle}
           role={this.props.role}
         />
-        {this.props.role === 'volunteer' && <VolunteerHeader />}
+        {this.props.role === 'volunteer' && <VolunteerHeader loggedIn={this.props.loggedIn} />}
         {this.props.role === 'organize' && <OrganizeHeader />}
         {this.props.role === 'user' && <UserHeader userObject={this.props.userObject} />}
       </div>
