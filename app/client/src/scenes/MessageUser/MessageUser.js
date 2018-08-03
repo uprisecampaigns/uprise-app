@@ -98,6 +98,7 @@ class MessageUser extends Component {
               detailLines={detailLines}
               recipients={recipients}
               handleSend={this.handleSend}
+              fromCampaign
             />
           </div>
         </div>
