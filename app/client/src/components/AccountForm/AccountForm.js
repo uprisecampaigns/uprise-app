@@ -21,7 +21,6 @@ class AccountForm extends PureComponent {
     errors: PropTypes.object.isRequired,
     privacyContent: PropTypes.object.isRequired,
   };
-  u;
 
   static defaultProps = {
     saving: false,
