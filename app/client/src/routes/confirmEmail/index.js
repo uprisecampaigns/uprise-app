@@ -1,12 +1,9 @@
 import ConfirmEmailMutation from 'schemas/mutations/ConfirmEmailMutation.graphql';
 
-import {
-  notify,
-} from 'actions/NotificationsActions';
+import { notify } from 'actions/NotificationsActions';
 
-
+let redirectURL = '/';
 export default {
-
   path: '/settings/confirm-email/:token',
 
   async action(context) {
@@ -19,6 +16,7 @@ export default {
 
       if (result.data.confirmEmail) {
         context.store.dispatch(notify('Email successfully confirmed'));
+        redirectURL = '/confirmed';
       } else {
         context.store.dispatch(notify('There was an error confirming your email. Please try again.'));
       }
@@ -27,8 +25,6 @@ export default {
       context.store.dispatch(notify('There was an error confirming your email. Please try again.'));
     }
 
-    return {
-      redirect: '/',
-    };
+    return { redirect: redirectURL };
   },
 };
