@@ -1,19 +1,14 @@
 import React from 'react';
-import Page from 'components/Page';
 import Layout from 'components/Layout';
-
+import Welcome from 'scenes/Welcome';
 
 export default {
-
   path: '/welcome',
 
-  async action() {
-    const data = await import(/* webpackChunkName: "welcome" */ 'content/welcome.md');
-
+  action(context) {
     return {
-      title: data.title,
-      component: <Layout><Page {...data} /></Layout>,
+      title: 'Welcome to UpRise',
+      component: <Layout><Welcome /></Layout>,
     };
   },
-
 };
