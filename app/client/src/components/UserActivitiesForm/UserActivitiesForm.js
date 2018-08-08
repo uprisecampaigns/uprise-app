@@ -70,6 +70,22 @@ class UserProfileForm extends PureComponent {
                 <div className={s.infoBox}>
                   <div className={s.infoBoxHeader}>Let campaigns know what activities you're interested in doing as a volunteer!</div>
 
+                  {saving ? (
+                    <div className={s.savingThrobberContainer}>
+                      <CircularProgress size={100} thickness={5} />
+                    </div>
+                  ) : (
+                    <div
+                      className={s.saveButton}
+                      onClick={formSubmit}
+                      onKeyPress={formSubmit}
+                      role="button"
+                      tabIndex="0"
+                    >
+                      {submitText}
+                    </div>
+                  )}
+
                   <div className={s.infoBoxContainer}>{activitiesTogglesList}</div>
 
                   {saving ? (
