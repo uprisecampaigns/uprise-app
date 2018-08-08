@@ -68,7 +68,7 @@ class UserProfileForm extends PureComponent {
               <div className={s.centerContent}>
 
                 <div className={s.infoBox}>
-                  <div className={s.infoBoxHeader}>Let campaigns know what activities you're interested in doing as a volunteer!</div>
+                  <div className={s.infoBoxHeader}>What do you like to do?</div>
 
                   {saving ? (
                     <div className={s.savingThrobberContainer}>
