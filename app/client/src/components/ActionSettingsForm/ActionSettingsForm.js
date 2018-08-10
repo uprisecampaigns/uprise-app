@@ -8,7 +8,6 @@ import states from 'lib/states-list';
 
 import s from 'styles/Form.scss';
 
-
 class ActionSettingsForm extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
@@ -16,12 +15,10 @@ class ActionSettingsForm extends Component {
     refs: PropTypes.object.isRequired,
     formSubmit: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
-  }
+  };
 
   render() {
-    const {
-      data, refs, formSubmit, errors, handleInputChange,
-    } = this.props;
+    const { data, refs, formSubmit, errors, handleInputChange } = this.props;
 
     const statesList = Object.keys(states);
 
@@ -29,16 +26,15 @@ class ActionSettingsForm extends Component {
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
           <div className={s.formContainer}>
-            <form
-              className={s.form}
-              onSubmit={formSubmit}
-            >
+            <form className={s.form} onSubmit={formSubmit}>
               <div className={s.textFieldContainer}>
                 <TextField
                   floatingLabelText="Name"
                   fullWidth
                   value={data.title}
-                  onChange={(event) => { handleInputChange(event, 'title', event.target.value); }}
+                  onChange={(event) => {
+                    handleInputChange(event, 'title', event.target.value);
+                  }}
                   errorText={errors.titleErrorText}
                 />
               </div>
@@ -48,21 +44,23 @@ class ActionSettingsForm extends Component {
                   label="Virtual Opportunity"
                   toggled={data.virtual}
                   labelPosition="right"
-                  onToggle={(event, checked) => { handleInputChange(event, 'virtual', checked); }}
+                  onToggle={(event, checked) => {
+                    handleInputChange(event, 'virtual', checked);
+                  }}
                 />
               </div>
 
-              { data.virtual || (
-
+              {!data.virtual ? (
                 <div>
-
                   <div className={s.sectionLabel}>Where:</div>
 
                   <div className={s.textFieldContainer}>
                     <TextField
                       floatingLabelText="Place Name"
                       value={data.locationName}
-                      onChange={(event) => { handleInputChange(event, 'locationName', event.target.value); }}
+                      onChange={(event) => {
+                        handleInputChange(event, 'locationName', event.target.value);
+                      }}
                       errorText={errors.locationNameErrorText}
                     />
                   </div>
@@ -71,7 +69,9 @@ class ActionSettingsForm extends Component {
                     <TextField
                       floatingLabelText="Street Address"
                       value={data.streetAddress}
-                      onChange={(event) => { handleInputChange(event, 'streetAddress', event.target.value); }}
+                      onChange={(event) => {
+                        handleInputChange(event, 'streetAddress', event.target.value);
+                      }}
                       errorText={errors.streetAddressErrorText}
                     />
                   </div>
@@ -80,7 +80,9 @@ class ActionSettingsForm extends Component {
                     <TextField
                       floatingLabelText="Street Address 2"
                       value={data.streetAddress2}
-                      onChange={(event) => { handleInputChange(event, 'streetAddress2', event.target.value); }}
+                      onChange={(event) => {
+                        handleInputChange(event, 'streetAddress2', event.target.value);
+                      }}
                     />
                   </div>
 
@@ -88,7 +90,9 @@ class ActionSettingsForm extends Component {
                     <TextField
                       floatingLabelText="City"
                       value={data.city}
-                      onChange={(event) => { handleInputChange(event, 'city', event.target.value); }}
+                      onChange={(event) => {
+                        handleInputChange(event, 'city', event.target.value);
+                      }}
                       errorText={errors.cityErrorText}
                     />
                   </div>
@@ -98,8 +102,12 @@ class ActionSettingsForm extends Component {
                       floatingLabelText="State"
                       searchText={data.state}
                       dataSource={statesList}
-                      onUpdateInput={(text) => { handleInputChange(undefined, 'state', text); }}
-                      ref={(input) => { refs.stateInput = input; }}
+                      onUpdateInput={(text) => {
+                        handleInputChange(undefined, 'state', text);
+                      }}
+                      ref={(input) => {
+                        refs.stateInput = input;
+                      }}
                       errorText={errors.stateErrorText}
                     />
                   </div>
@@ -110,7 +118,9 @@ class ActionSettingsForm extends Component {
                       type="text"
                       pattern="[0-9]{5}"
                       value={data.zipcode}
-                      onChange={(event) => { handleInputChange(event, 'zipcode', event.target.value); }}
+                      onChange={(event) => {
+                        handleInputChange(event, 'zipcode', event.target.value);
+                      }}
                       errorText={errors.zipcodeErrorText}
                     />
                   </div>
@@ -120,8 +130,26 @@ class ActionSettingsForm extends Component {
                       floatingLabelText="Location Notes"
                       fullWidth
                       value={data.locationNotes}
-                      onChange={(event) => { handleInputChange(event, 'locationNotes', event.target.value); }}
+                      onChange={(event) => {
+                        handleInputChange(event, 'locationNotes', event.target.value);
+                      }}
                       errorText={errors.locationNotesErrorText}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className={s.sectionLabel}>Where:</div>
+                  <div className={s.textFieldContainer}>
+                    <TextField
+                      floatingLabelText="Zipcode"
+                      type="text"
+                      pattern="[0-9]{5}"
+                      value={data.zipcode}
+                      onChange={(event) => {
+                        handleInputChange(event, 'zipcode', event.target.value);
+                      }}
+                      errorText={errors.zipcodeErrorText}
                     />
                   </div>
                 </div>

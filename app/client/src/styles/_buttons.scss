@@ -110,9 +110,13 @@
   display: inline-block;
 }
 
-.centerButtons {
+.centerFlexButtons {
   display: flex;
   justify-content: center;
+}
+
+.centerButtons {
+  text-align: center;
 }
 
 .spaceButtons {

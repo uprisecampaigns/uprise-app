@@ -2,7 +2,9 @@
 @import '~styles/variables';
 @import '~styles/nav';
 @import '~styles/sections';
+@import '~styles/panels';
 @import '~styles/headers';
+@import '~styles/buttons';
 
 .root {
   h1 {
@@ -57,6 +59,8 @@
   overflow-y: scroll;
   text-align: left;
   border: 1px solid darken($white, 20%);
+  max-width: 45rem;
+  margin-top: 1rem;
   h1 {
     font-style: 1.4rem;
   }

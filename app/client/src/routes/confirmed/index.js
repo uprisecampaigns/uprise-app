@@ -1,14 +1,14 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import Welcome from 'scenes/Welcome';
+import Confirmed from 'scenes/Confirmed';
 
 export default {
-  path: '/welcome',
+  path: '/confirmed',
 
   action(context) {
     return {
       title: 'Welcome to UpRise',
-      component: <Layout><Welcome /></Layout>,
+      component: <Layout><Confirmed /></Layout>,
     };
   },
 };

@@ -20,6 +20,7 @@ class ComposeMessage extends React.Component {
       }),
     ).isRequired,
     handleSend: PropTypes.func.isRequired,
+    fromCampaign: PropTypes.bool,
   };
 
   constructor(props) {
@@ -27,7 +28,7 @@ class ComposeMessage extends React.Component {
 
     const initialState = {
       formData: {
-        subject: '',
+        subject: !props.fromCampaign ? '' : 'A message from [YOUR CAMPAIGN NAME]',
         body: '',
       },
       errors: {
@@ -68,7 +69,7 @@ class ComposeMessage extends React.Component {
   };
 
   render() {
-    const { recipients, detailLines, fromEmail } = this.props;
+    const { recipients, detailLines, fromEmail, fromCampaign } = this.props;
     const { modalOpen, formData, errors } = this.state;
     const { handleInputChange } = this;
 
@@ -159,15 +160,13 @@ class ComposeMessage extends React.Component {
         </div>
 
         <Dialog
-          title="Are You Sure?"
+          title="Sending Email"
           modal
           actions={modalActions}
           actionsContainerClassName={s.modalActionsContainer}
           open={modalOpen}
         >
           <p>Are you sure you want to send this email?</p>
-          <p>Please double check that subject, recipients, and content are all correct.</p>
-          <p>Pressing send here is final!</p>
         </Dialog>
       </div>
     );

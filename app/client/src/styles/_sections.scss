@@ -33,7 +33,7 @@
 
 .sectionSubHeader {
   @extend .sectionHeader;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 1.2rem;
   padding-top: 1rem;
 }
@@ -64,6 +64,9 @@
   flex-direction: column;
   &:last-child {
     margin-left: 2rem;
+    @media (max-width: $screen-sm-min) {
+      margin: 1rem 0;
+    }
   }
 }
 

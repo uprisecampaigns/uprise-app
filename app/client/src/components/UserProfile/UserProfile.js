@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import { compose, graphql } from 'react-apollo';
 
 import KeywordTag from 'components/KeywordTag';
 
 import history from 'lib/history';
-import Link from 'components/Link';
 
 import MeQuery from 'schemas/queries/MeQuery.graphql';
 
@@ -40,19 +38,27 @@ class UserProfile extends PureComponent {
         </div>
       ) : null;
 
-    const infoBoxContent =
-      Array.isArray(user.activities) && user.activities.length ? (
-        <div className={s.activities}>
-          {user.activities.map((activity, index) => (
-            <div key={JSON.stringify(activity)} className={s.activity}>
-              <strong>{activity.description}</strong>{' '}
-              {activity.long_description}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div>This user doesn&apos;t have any interests selected yet!</div>
-      );
+    let sortedActivities;
+
+    if (Array.isArray(user.activities) && user.activities.length) {
+      sortedActivities = user.activities.slice().sort((a, b) => {
+        if (a.description < b.description) return -1;
+        if (a.description > b.description) return 1;
+        return 0;
+      });
+    }
+
+    const infoBoxContent = sortedActivities ? (
+      <div className={s.activities}>
+        {sortedActivities.map((activity, index) => (
+          <div key={JSON.stringify(activity)} className={s.activity}>
+            <strong>{activity.description}</strong> {activity.long_description}
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div>This user doesn&apos;t have any interests selected yet!</div>
+    );
 
     return (
       <div>

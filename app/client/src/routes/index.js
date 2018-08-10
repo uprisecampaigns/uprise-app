@@ -14,6 +14,7 @@ export default {
     require('./signup').default,
     require('./forgotPassword').default,
     require('./welcome').default,
+    require('./confirmed').default,
     require('./terms').default,
 
     // /settings/
@@ -23,6 +24,7 @@ export default {
     require('./privacySecurity').default,
     require('./confirmEmail').default,
     require('./editProfile').default,
+    require('./activities').default,
 
     // /organize/
     require('./organize').default,

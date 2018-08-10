@@ -26,11 +26,18 @@ class ActionProfile extends PureComponent {
       const activities =
         Array.isArray(action.activities) && action.activities.length ? (
           <div className={s.activities}>
-            {action.activities.map((activity, index) => (
-              <div key={activity.title} className={s.activity}>
-                <strong>{activity.description}</strong> {activity.long_description}
-              </div>
-            ))}
+            {action.activities
+              .slice()
+              .sort((a, b) => {
+                if (a.description < b.description) return -1;
+                if (a.description > b.description) return 1;
+                return 0;
+              })
+              .map((activity, index) => (
+                <div key={activity.title} className={s.activity}>
+                  <strong>{activity.description}</strong> {activity.long_description}
+                </div>
+              ))}
           </div>
         ) : (
           []

@@ -249,6 +249,7 @@ class CampaignSettingsForm extends Component {
                   </div>
                   */}
 
+                {/*
                   <h3 className={s.formHeader}>Official Organization</h3>
 
                   <div className={s.toggleContainer}>
@@ -460,6 +461,7 @@ class CampaignSettingsForm extends Component {
                       </div>
                     </div>
                   )}
+                  */}
 
                   <h3 className={s.formHeader}>Zip Code List</h3>
 
