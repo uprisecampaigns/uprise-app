@@ -174,7 +174,7 @@ class ManageAction extends Component {
                 Opportunity Settings <span>Edit your opportunity profile</span>
               </Link>
               <div
-                className={[s.flatButton, s.primaryButton].join(' ')}
+                className={[s.flatButton, s.dangerButton].join(' ')}
                 onClick={this.handleDelete}
                 onKeyPress={this.handleDelete}
                 role="button"
