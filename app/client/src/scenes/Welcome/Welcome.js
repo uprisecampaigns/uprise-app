@@ -16,11 +16,8 @@ const Welcome = () => (
             <Link to="/settings/activities" className={s.primaryButton}>
               Volunteer
             </Link>
-          </div>
-        </div>
-        <div className={s.section}>
-          <div className={[s.centerButtons, s.panel].join(' ')}>
-            <Link to="/organize" className={s.primaryButton}>
+
+            <Link to="/organize" className={[s.primaryButton, s.nextButton].join(' ')}>
               Recruit Volunteers
             </Link>
           </div>

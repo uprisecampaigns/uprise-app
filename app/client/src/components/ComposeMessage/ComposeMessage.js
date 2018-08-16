@@ -85,8 +85,7 @@ class ComposeMessage extends React.Component {
           this.setState({ modalOpen: false });
         }}
         role="button"
-        tabIndex="0"
-      >
+        tabIndex="0">
         Cancel
       </div>,
       <div
@@ -94,8 +93,7 @@ class ComposeMessage extends React.Component {
         onClick={this.confirmSend}
         onKeyPress={this.confirmSend}
         role="button"
-        tabIndex="0"
-      >
+        tabIndex="0">
         Confirm
       </div>,
     ];
@@ -105,10 +103,7 @@ class ComposeMessage extends React.Component {
         <div className={s.innerContainer}>
           <div className={s.detailLine}>Send From: {fromEmail}</div>
           <div className={s.detailLine}>
-            Recipients:{' '}
-            {recipients
-              .map((r) => (typeof r.email === 'string' ? r.email : `${r.first_name} ${r.last_name}`))
-              .join(', ')}
+            Recipients: {recipients.map((r) => `${r.first_name} ${r.last_name}`).join(', ')}
           </div>
 
           <TextField
@@ -152,8 +147,7 @@ class ComposeMessage extends React.Component {
               onClick={this.clickedSend}
               onKeyPress={this.clickedSend}
               role="button"
-              tabIndex="0"
-            >
+              tabIndex="0">
               Send
             </div>
           </div>
@@ -164,8 +158,7 @@ class ComposeMessage extends React.Component {
           modal
           actions={modalActions}
           actionsContainerClassName={s.modalActionsContainer}
-          open={modalOpen}
-        >
+          open={modalOpen}>
           <p>Are you sure you want to send this email?</p>
         </Dialog>
       </div>

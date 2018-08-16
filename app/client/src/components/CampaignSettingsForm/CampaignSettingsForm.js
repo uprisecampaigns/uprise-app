@@ -112,7 +112,11 @@ class CampaignSettingsForm extends Component {
                     className={s.textField}
                     value={data.profileSubheader}
                     onChange={(event) => {
-                      handleInputChange(event, 'profileSubheader', event.target.value);
+                      handleInputChange(
+                        event,
+                        'profileSubheader',
+                        event.target.value,
+                      );
                     }}
                     errorText={errors.profileSubheaderErrorText}
                     fullWidth
@@ -131,7 +135,9 @@ class CampaignSettingsForm extends Component {
                 Cancel
               </div>
               */}
-              <Link to={`/campaign/${campaign.slug}`} className={[s.inlineButton, s.button].join(' ')}>
+              <Link
+                to={`/campaign/${campaign.slug}`}
+                className={[s.inlineButton, s.button].join(' ')}>
                 Cancel
               </Link>
               {saving || uploading ? (
@@ -140,12 +146,13 @@ class CampaignSettingsForm extends Component {
                 </div>
               ) : (
                 <div
-                  className={[s.organizeButton, s.button, s.inlineButton].join(' ')}
+                  className={[s.organizeButton, s.button, s.inlineButton].join(
+                    ' ',
+                  )}
                   onClick={formSubmit}
                   onKeyPress={formSubmit}
                   role="button"
-                  tabIndex="0"
-                >
+                  tabIndex="0">
                   {submitText}
                 </div>
               )}
@@ -153,7 +160,9 @@ class CampaignSettingsForm extends Component {
             <div className={s.sectionContent}>
               <div className={s.formContainer}>
                 <div className={s.formHeader}>Learn More</div>
-                <div className={s.formBody}>Give volunteers more information about your campaign</div>
+                <div className={s.formBody}>
+                  Give volunteers more information about your campaign
+                </div>
                 <form onSubmit={formSubmit}>
                   <div className={s.textareaContainer}>
                     <TextField
@@ -166,7 +175,11 @@ class CampaignSettingsForm extends Component {
                       multiLine
                       rows={4}
                       onChange={(event) => {
-                        handleInputChange(event, 'description', event.target.value);
+                        handleInputChange(
+                          event,
+                          'description',
+                          event.target.value,
+                        );
                       }}
                       errorText={errors.descriptionErrorText}
                       fullWidth
@@ -179,14 +192,37 @@ class CampaignSettingsForm extends Component {
             <div className={s.sectionContent}>
               <div className={s.formContainer}>
                 <div className={s.formHeader}>Campaign Account</div>
-                <div className={s.formBody}>This information is not displayed on the public profile</div>
+                <div className={s.formBody}>
+                  This information is not displayed on the public profile
+                </div>
                 <form onSubmit={formSubmit}>
+                  <div className={s.textFieldContainer}>
+                    <TextField
+                      floatingLabelText="Phone"
+                      value={data.phoneNumber}
+                      onChange={(event) => {
+                        handleInputChange(
+                          event,
+                          'phoneNumber',
+                          event.target.value,
+                        );
+                      }}
+                      errorText={errors.phoneNumberErrorText}
+                      fullWidth
+                      type="tel"
+                      pattern="[0-9]{10}"
+                    />
+                  </div>
                   <div className={s.textFieldContainer}>
                     <TextField
                       floatingLabelText="Street Address"
                       value={data.streetAddress}
                       onChange={(event) => {
-                        handleInputChange(event, 'streetAddress', event.target.value);
+                        handleInputChange(
+                          event,
+                          'streetAddress',
+                          event.target.value,
+                        );
                       }}
                       errorText={errors.streetAddressErrorText}
                       fullWidth
@@ -197,7 +233,11 @@ class CampaignSettingsForm extends Component {
                       floatingLabelText="Street Address 2"
                       value={data.streetAddress2}
                       onChange={(event) => {
-                        handleInputChange(event, 'streetAddress2', event.target.value);
+                        handleInputChange(
+                          event,
+                          'streetAddress2',
+                          event.target.value,
+                        );
                       }}
                       fullWidth
                     />
@@ -244,12 +284,6 @@ class CampaignSettingsForm extends Component {
                   </div>
 
                   {/*
-                  <div className={s.textFieldContainer}>
-                    <TextField floatingLabelText="Email" disabled value={data.email} fullWidth />
-                  </div>
-                  */}
-
-                {/*
                   <h3 className={s.formHeader}>Official Organization</h3>
 
                   <div className={s.toggleContainer}>
@@ -466,8 +500,9 @@ class CampaignSettingsForm extends Component {
                   <h3 className={s.formHeader}>Zip Code List</h3>
 
                   <div className={s.formBody}>
-                    IMPORTANT: Please insert a list of all of the zip codes in which you will be seeking volunteers for
-                    local in-person volunteering activities. Contact us at{' '}
+                    IMPORTANT: Please insert a list of all of the zip codes in
+                    which you will be seeking volunteers for local in-person
+                    volunteering activities. Contact us at{' '}
                     <Link to="mailto:help@uprise.org" useAhref mailTo external>
                       help@uprise.org
                     </Link>{' '}
@@ -481,7 +516,11 @@ class CampaignSettingsForm extends Component {
                       value={data.zipcodeList}
                       multiLine
                       onChange={(event) => {
-                        handleInputChange(event, 'zipcodeList', event.target.value);
+                        handleInputChange(
+                          event,
+                          'zipcodeList',
+                          event.target.value,
+                        );
                       }}
                       errorText={errors.zipcodeListErrorText}
                       fullWidth
@@ -492,39 +531,54 @@ class CampaignSettingsForm extends Component {
             </div>
           </div>
           <div className={[s.section, s.sectionSidebar].join(' ')}>
-            <Link to={`/campaign/${campaign.slug}`} className={[s.darkButton, s.button].join(' ')}>
+            <Link
+              to={`/campaign/${campaign.slug}`}
+              className={[s.darkButton, s.button].join(' ')}>
               View Profile
             </Link>
             <div className={s.sectionContent}>
               <form onSubmit={formSubmit}>
                 <div className={s.formContainer}>
                   <div className={s.formHeader}>Get in touch</div>
-                  <div className={s.formBody}>How volunteers can contact you</div>
+                  <div className={s.formBody}>
+                    How volunteers can contact you
+                  </div>
 
                   <div className={s.textFieldContainer}>
                     <TextField
                       floatingLabelText="Website"
                       value={data.websiteUrl}
                       onChange={(event) => {
-                        handleInputChange(event, 'websiteUrl', event.target.value);
+                        handleInputChange(
+                          event,
+                          'websiteUrl',
+                          event.target.value,
+                        );
                       }}
                       errorText={errors.websiteUrlErrorText}
                       fullWidth
                       type="url"
                     />
                   </div>
-                  <div className={s.textFieldContainer}>
+                  <div
+                    className={[s.textFieldContainer, s.noMarginTextField].join(
+                      ' ',
+                    )}>
                     <TextField
-                      floatingLabelText="Phone"
-                      value={data.phoneNumber}
-                      onChange={(event) => {
-                        handleInputChange(event, 'phoneNumber', event.target.value);
-                      }}
-                      errorText={errors.phoneNumberErrorText}
+                      floatingLabelText="Email"
+                      disabled
+                      value={data.email}
                       fullWidth
-                      type="tel"
-                      pattern="[0-9]{10}"
                     />
+                  </div>
+                  <div className={s.textFieldContainer}>
+                    <div className={s.formBody}>
+                      Visit{' '}
+                      <Link to="/settings/account" useAhref>
+                        account settings
+                      </Link>{' '}
+                      to change email.
+                    </div>
                   </div>
                 </div>
               </form>

@@ -138,7 +138,7 @@ class ManageCampaignContainer extends Component {
                 Campaign Settings <span>Edit your campaign profile</span>
               </Link>
               <div
-                className={[s.flatButton, s.primaryButton].join(' ')}
+                className={[s.flatButton, s.dangerButton].join(' ')}
                 onClick={this.handleDelete}
                 onKeyPress={this.handleDelete}
                 role="button"

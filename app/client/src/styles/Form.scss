@@ -83,6 +83,9 @@
   input, label {
     font-size: 1.1rem;
   }
+  input[disabled] {
+    margin-top: 0 !important;
+  }
 }
 
 .textFieldContainer.centered {

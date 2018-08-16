@@ -64,6 +64,15 @@
   }
 }
 
+.dangerButton {
+  @extend .button;
+  background-color: $white;
+  color: $fire-red;
+  &:hover {
+    background-color: darken($white, 10%) !important;
+  }
+}
+
 .darkButton {
   @extend .button;
   background-color: $dark-blue;
@@ -122,4 +131,8 @@
 .spaceButtons {
   display: flex;
   justify-content: space-between;
+}
+
+.nextButton {
+  margin-left: 1rem;
 }
