@@ -4,6 +4,9 @@
 
 .outerContainer {
   width: 100%;
+  @media (max-width: $screen-md-min) {
+    min-height: 100vh;
+  }
 
   .searchContentContainer {
     display: flex;
