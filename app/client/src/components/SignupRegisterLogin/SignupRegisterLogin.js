@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import Link from 'components/Link';
 
 import { pressedSignup } from 'actions/ActionSignupActions';
 
@@ -27,7 +26,7 @@ class SignupRegisterLogin extends React.PureComponent {
           <div className={s.container}>
             {action.attending ? (
               <div>
-                <div className={s.header}>You've signed up to volunteer for this event!</div>
+                <div className={s.header}>You&apos;ve signed up to volunteer for this event!</div>
                 <div className={s.content}>
                   We understand things come up and you may need to make changes to your schedule.
                 </div>
@@ -37,8 +36,9 @@ class SignupRegisterLogin extends React.PureComponent {
                     onClick={(event) => dispatch(pressedSignup(action))}
                     onKeyPress={(event) => dispatch(pressedSignup(action))}
                     role="button"
-                    tabIndex="0">
-                    Cancel my commitment
+                    tabIndex="0"
+                  >
+                    Cancel my comittment
                   </div>
                 ) : (
                   <div
@@ -46,7 +46,8 @@ class SignupRegisterLogin extends React.PureComponent {
                     onClick={(event) => dispatch(pressedSignup(action))}
                     onKeyPress={(event) => dispatch(pressedSignup(action))}
                     role="button"
-                    tabIndex="0">
+                    tabIndex="0"
+                  >
                     Edit my Shifts
                   </div>
                 )}
@@ -61,8 +62,9 @@ class SignupRegisterLogin extends React.PureComponent {
                       onClick={(event) => dispatch(pressedSignup(action))}
                       onKeyPress={(event) => dispatch(pressedSignup(action))}
                       role="button"
-                      tabIndex="0">
-                      Sign up
+                      tabIndex="0"
+                    >
+                      Signup
                     </div>
                   </div>
                 ) : (
@@ -71,9 +73,10 @@ class SignupRegisterLogin extends React.PureComponent {
                     <div
                       className={s.darkButton}
                       onClick={(event) => dispatch(pressedSignup(action))}
-                      onKeyPress={(event) => dispatch(pressedSignlup(action))}
+                      onKeyPress={(event) => dispatch(pressedSignup(action))}
                       role="button"
-                      tabIndex="0">
+                      tabIndex="0"
+                    >
                       Select shift(s)
                     </div>
                   </div>
@@ -82,20 +85,13 @@ class SignupRegisterLogin extends React.PureComponent {
             )}
           </div>
         ) : (
-          <div>
-            <div className={s.header}>
-              Please create an account before taking action
-              {/*
-              <ConnectedRegisterLogin />
-            */}
-            </div>
-            <div className={s.centerFlexButtons}>
-              <Link to="/signup" className={s.darkButton}>
-                Create Account
-              </Link>
-            </div>
+          <div className={s.header}>
+            Register or login to volunteer for this
+            <ConnectedRegisterLogin />
           </div>
         )}
+
+        {signupModalOpen && <ConnectedActionSignupModal />}
       </div>
     );
   }
