@@ -1,4 +1,3 @@
-
 export const urls = {
   base: process.env.CLIENT_BASE_URL,
   api: process.env.SERVER_BASE_URL,
@@ -6,6 +5,8 @@ export const urls = {
 };
 
 export const sentryDsn = process.env.SENTRY_PUBLIC_DSN;
+
+export const googleUA = process.env.GOOGLE_UA_ID;
 
 export const gitCommit = process.env.GIT_COMMIT;
 
