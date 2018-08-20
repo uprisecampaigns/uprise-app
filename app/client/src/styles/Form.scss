@@ -83,7 +83,10 @@
   input, label {
     font-size: 1.1rem;
   }
-  input[disabled] {
+}
+
+.noMarginTextField {
+  input {
     margin-top: 0 !important;
   }
 }
