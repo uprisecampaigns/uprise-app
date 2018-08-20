@@ -176,9 +176,8 @@ async function onLocationChange(location) {
       document.title = newTitle;
     }
 
-    console.log('ga', googleUA);
     if (googleUA) {
-      ReactGA.initialize(googleUA, { debug: true });
+      ReactGA.initialize(googleUA);
     }
 
     ReactGA.set({ page: location.pathname });
