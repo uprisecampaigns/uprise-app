@@ -37,6 +37,10 @@ Raven.config(sentryDsn).install();
 
 const container = document.getElementById('app');
 
+if (googleUA) {
+  ReactGA.initialize(googleUA);
+}
+
 if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
   // Delay registration until after the page has loaded, to ensure that our
   // precaching requests don't degrade the first visit experience.
@@ -174,10 +178,6 @@ async function onLocationChange(location) {
     const newTitle = route.title;
     if (document.title !== newTitle) {
       document.title = newTitle;
-    }
-
-    if (googleUA) {
-      ReactGA.initialize(googleUA);
     }
 
     ReactGA.set({ page: location.pathname });
