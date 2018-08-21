@@ -118,9 +118,15 @@ class SignupForm extends PureComponent {
                 <div className={s.button} onClick={cancel} onKeyPress={cancel} role="button" tabIndex="0">
                   Cancel
                 </div>
-                <div className={s.secondaryButton} onClick={formSubmit} onKeyPress={formSubmit} role="button" tabIndex="0">
+                <button
+                  className={s.secondaryButton}
+                  onClick={formSubmit}
+                  onKeyPress={formSubmit}
+                  type="submit"
+                  tabIndex="0"
+                >
                   Create Account
-                </div>
+                </button>
               </form>
             </div>
           </Paper>
