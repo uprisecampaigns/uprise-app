@@ -74,6 +74,9 @@ class ManageCampaignUploadActions extends Component {
     };
 
     const processDate = (value) => {
+      if (!value) {
+        return null;
+      }
       const { timezone } = this.state;
       if (typeof value !== 'string') {
         throw new Error('Can only process strings to dates');
@@ -238,7 +241,9 @@ class ManageCampaignUploadActions extends Component {
                 value={this.state.timezone}
                 onChange={(event, i, value) => this.handleTimezoneChange(event, value)}
               >
-                {this.state.timezoneNames.map((name, index) => <MenuItem key={name} value={name} primaryText={name} />)}
+                {this.state.timezoneNames.map((name, index) => (
+                  <MenuItem key={name} value={name} primaryText={name} />
+                ))}
               </SelectField>
             </div>
 

@@ -41,10 +41,9 @@ class CsvUploader extends React.Component {
       Grid,
       AutoSizer,
     });
-  }
+  };
 
-  componentWillReceiveProps(nextProps) {
-  }
+  componentWillReceiveProps(nextProps) {}
 
   onDrop = async (acceptedFiles, rejectedFiles) => {
     const { dispatch } = this.props;
@@ -58,7 +57,7 @@ class CsvUploader extends React.Component {
     // eslint-disable-next-line no-console
     console.log(csvFile);
 
-    if (!csvFile.type.match('text/csv')) {
+    if (!csvFile.type.match('text/csv') && !csvFile.type.match('application/vnd.ms-excel')) {
       dispatch(notify('File must be a csv'));
       return;
     }
@@ -97,7 +96,7 @@ class CsvUploader extends React.Component {
         this.setState({ rows });
       },
     });
-  }
+  };
 
   cancel = (event) => {
     event.stopPropagation();
@@ -105,7 +104,7 @@ class CsvUploader extends React.Component {
     this.setState({
       rows: null,
     });
-  }
+  };
 
   submit = async (event) => {
     event.stopPropagation();
@@ -119,14 +118,14 @@ class CsvUploader extends React.Component {
     try {
       const selectedHeaders = submissionRows.shift().values;
 
-      submissionRows.filter(i => i.selected).forEach((row) => {
+      submissionRows.filter((i) => i.selected).forEach((row) => {
         const newItem = {};
 
         selectedHeaders.forEach((selection, index) => {
           if (selection !== 'skip') {
-            const selectedHeader = config.headers.find(h => h.slug === selection);
+            const selectedHeader = config.headers.find((h) => h.slug === selection);
             if (selectedHeader === undefined) {
-              throw new Error('Can\'t find matching header');
+              throw new Error("Can't find matching header");
             }
 
             const value = selectedHeader.processData(row.values[index]);
@@ -152,20 +151,24 @@ class CsvUploader extends React.Component {
       console.error(e);
       dispatch(notify(`There was an error importing. Please check and try again. ${e.message}`));
     }
-  }
+  };
 
   handleSelectAll = () => {
     const newRows = Array.from(this.state.rows);
-    if (this.state.rows.every((i => i.selected))) {
-      newRows.forEach((row, index) => { newRows[index].selected = false; });
+    if (this.state.rows.every((i) => i.selected)) {
+      newRows.forEach((row, index) => {
+        newRows[index].selected = false;
+      });
     } else {
-      newRows.forEach((row, index) => { newRows[index].selected = true; });
+      newRows.forEach((row, index) => {
+        newRows[index].selected = true;
+      });
     }
 
     this.setState({
       rows: newRows,
     });
-  }
+  };
 
   toggleRowSelection = (index) => {
     const newRows = Array.from(this.state.rows);
@@ -174,7 +177,7 @@ class CsvUploader extends React.Component {
     this.setState({
       rows: newRows,
     });
-  }
+  };
 
   handleHeaderChange = (event, index, value) => {
     event.stopPropagation();
@@ -196,11 +199,9 @@ class CsvUploader extends React.Component {
     this.setState({
       rows: newRows,
     });
-  }
+  };
 
-  cellRenderer = ({
-    columnIndex, key, parent, rowIndex, style,
-  }) => {
+  cellRenderer = ({ columnIndex, key, parent, rowIndex, style }) => {
     const { config } = this.props;
     const { CellMeasurer } = this.state;
 
@@ -210,45 +211,41 @@ class CsvUploader extends React.Component {
       slug: 'skip',
     });
 
-    const headerRow = (columnIndex === 0) ? (
-      <Checkbox
-        checked={this.state.rows.every((i => i.selected))}
-        onClick={(event) => {
-          event.preventDefault();
-          this.handleSelectAll();
-        }}
-      />
-    ) : (
-      <SelectField
-        value={this.state.rows[0].values[columnIndex]}
-        onChange={(event, i, value) => this.handleHeaderChange(event, columnIndex, value)}
-      >
-        {availableHeaders.map((header, index) => (
-          <MenuItem value={header.slug} primaryText={header.title} />
-        ))}
-      </SelectField>
-    );
+    const headerRow =
+      columnIndex === 0 ? (
+        <Checkbox
+          checked={this.state.rows.every((i) => i.selected)}
+          onClick={(event) => {
+            event.preventDefault();
+            this.handleSelectAll();
+          }}
+        />
+      ) : (
+        <SelectField
+          value={this.state.rows[0].values[columnIndex]}
+          onChange={(event, i, value) => this.handleHeaderChange(event, columnIndex, value)}
+        >
+          {availableHeaders.map((header, index) => (
+            <MenuItem value={header.slug} primaryText={header.title} />
+          ))}
+        </SelectField>
+      );
 
-    const bodyRow = (columnIndex === 0) ? (
-      <Checkbox
-        checked={this.state.rows[rowIndex].selected}
-        onClick={(event) => {
-          event.preventDefault();
-          this.toggleRowSelection(rowIndex);
-        }}
-      />
-    ) : (
-      this.state.rows[rowIndex].values[columnIndex]
-    );
+    const bodyRow =
+      columnIndex === 0 ? (
+        <Checkbox
+          checked={this.state.rows[rowIndex].selected}
+          onClick={(event) => {
+            event.preventDefault();
+            this.toggleRowSelection(rowIndex);
+          }}
+        />
+      ) : (
+        this.state.rows[rowIndex].values[columnIndex]
+      );
 
     return (
-      <CellMeasurer
-        cache={this.measurerCache}
-        columnIndex={columnIndex}
-        key={key}
-        parent={parent}
-        rowIndex={rowIndex}
-      >
+      <CellMeasurer cache={this.measurerCache} columnIndex={columnIndex} key={key} parent={parent} rowIndex={rowIndex}>
         <div
           style={{
             ...style,
@@ -256,14 +253,11 @@ class CsvUploader extends React.Component {
           }}
           className={s.gridCell}
         >
-          <div style={{ margin: '10px' }}>
-            {(rowIndex === 0) ? headerRow : bodyRow}
-
-          </div>
+          <div style={{ margin: '10px' }}>{rowIndex === 0 ? headerRow : bodyRow}</div>
         </div>
       </CellMeasurer>
     );
-  }
+  };
 
   render() {
     const { rows, importsLoaded } = this.state;
@@ -278,13 +272,8 @@ class CsvUploader extends React.Component {
       return (
         <div>
           <div className={s.cancelButton}>
-            <RaisedButton
-              onClick={this.cancel}
-              primary
-              label="Cancel"
-            />
+            <RaisedButton onClick={this.cancel} primary label="Cancel" />
           </div>
-
 
           <AutoSizer disableHeight>
             {({ width }) => (
@@ -298,27 +287,20 @@ class CsvUploader extends React.Component {
                 rowCount={rows.length}
                 rowHeight={this.measurerCache.rowHeight}
                 width={width}
-                selected={rows.map(r => r.selected)}
+                selected={rows.map((r) => r.selected)}
                 headers={rows[0].values}
               />
             )}
           </AutoSizer>
 
-          <RaisedButton
-            onClick={this.submit}
-            primary
-            label="Submit"
-          />
+          <RaisedButton onClick={this.submit} primary label="Submit" />
         </div>
       );
     }
     return (
       <div className={s.dropzoneContainer}>
         <div className={s.dropzone}>
-          <Dropzone
-            onDrop={this.onDrop}
-            multiple={false}
-          >
+          <Dropzone onDrop={this.onDrop} multiple={false}>
             <div className={s.instructions}>
               Drag and drop your csv file here, or click to select an file to upload.
             </div>
@@ -331,7 +313,7 @@ class CsvUploader extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   uploading: state.uploads.uploading,
   error: state.uploads.error,
 });
