@@ -147,7 +147,7 @@ class AccountForm extends PureComponent {
 
               <div className={s.settingsHeader}>Your Privacy Matters: Our Policy</div>
               <div className={s.formText}>
-                At UpRise, we believe in empowering volunteers to engage civically. That mission stats by putting
+                At UpRise, we believe in empowering volunteers to engage civically. That mission starts by putting
                 volunteers in control of their own personal information. Our aim is for you to always feel informed and
                 empowered with respect to your privacy on UpRise.
               </div>

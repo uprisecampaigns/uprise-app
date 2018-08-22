@@ -54,15 +54,15 @@ class LoginForm extends Component {
                     type="password"
                   />
                 </div>
-                <div
+                <button
                   className={[s.button, s.primaryButton].join(' ')}
                   onClick={formSubmit}
                   onKeyPress={formSubmit}
-                  role="button"
+                  type="submit"
                   tabIndex="0"
                 >
                   Login
-                </div>
+                </button>
               </form>
             </div>
           </Paper>

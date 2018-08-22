@@ -18,17 +18,10 @@ import App from 'components/App';
 import configureStore from 'store/configureStore';
 import apolloClient from 'store/apolloClient';
 
-import {
-  defaultCampaignStartState,
-  defaultActionStartState,
-} from 'reducers/SearchReducer';
+import { defaultCampaignStartState, defaultActionStartState } from 'reducers/SearchReducer';
 
 import { checkSessionStatus } from 'actions/AuthActions';
-import {
-  startPageLoad,
-  endPageLoad,
-  attemptNavFromDirtyForm,
-} from 'actions/NotificationsActions';
+import { startPageLoad, endPageLoad, attemptNavFromDirtyForm } from 'actions/NotificationsActions';
 
 import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
@@ -36,7 +29,7 @@ import history from 'lib/history';
 import ReactGA from 'lib/react-ga';
 import routes from 'routes';
 
-import { sentryDsn } from 'config/config';
+import { sentryDsn, googleUA } from 'config/config';
 
 import Raven from 'raven-js';
 
@@ -44,41 +37,48 @@ Raven.config(sentryDsn).install();
 
 const container = document.getElementById('app');
 
+if (googleUA) {
+  ReactGA.initialize(googleUA);
+}
+
 if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
   // Delay registration until after the page has loaded, to ensure that our
   // precaching requests don't degrade the first visit experience.
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js').then((reg) => {
-      // updatefound is fired if service-worker.js changes.
-      // eslint-disable-next-line no-param-reassign
-      reg.onupdatefound = () => {
-        const installingWorker = reg.installing;
+    navigator.serviceWorker
+      .register('./service-worker.js')
+      .then((reg) => {
+        // updatefound is fired if service-worker.js changes.
+        // eslint-disable-next-line no-param-reassign
+        reg.onupdatefound = () => {
+          const installingWorker = reg.installing;
 
-        installingWorker.onstatechange = () => {
-          switch (installingWorker.state) {
-            case 'installed':
-              if (navigator.serviceWorker.controller) {
-                // At this point, the old content will have been purged and the fresh content will
-                // have been added to the cache.
-                // TODO: sure we need to do a hard reload here?
-                window.setTimeout(() => {
-                  window.location.reload(true);
-                }, 100);
-              }
-              break;
+          installingWorker.onstatechange = () => {
+            switch (installingWorker.state) {
+              case 'installed':
+                if (navigator.serviceWorker.controller) {
+                  // At this point, the old content will have been purged and the fresh content will
+                  // have been added to the cache.
+                  // TODO: sure we need to do a hard reload here?
+                  window.setTimeout(() => {
+                    window.location.reload(true);
+                  }, 100);
+                }
+                break;
 
-            case 'redundant':
-              console.error('The installing service worker became redundant.');
-              break;
+              case 'redundant':
+                console.error('The installing service worker became redundant.');
+                break;
 
-            default:
-              break;
-          }
+              default:
+                break;
+            }
+          };
         };
-      };
-    }).catch((e) => {
-      console.error('Error during service worker registration:', e);
-    });
+      })
+      .catch((e) => {
+        console.error('Error during service worker registration:', e);
+      });
   });
 }
 
@@ -100,8 +100,7 @@ if (window.history && 'scrollRestoration' in window.history) {
 
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
-const context = {
-};
+const context = {};
 
 const onRenderComplete = function initialRenderComplete(route, location) {
   store.dispatch(endPageLoad());

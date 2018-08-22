@@ -132,9 +132,9 @@ class RegisterLoginForm extends PureComponent {
             </div>
           )}
 
-          <div className={s.darkButton} onClick={formSubmit} onKeyPress={formSubmit} role="button" tabIndex="0">
+          <button className={s.darkButton} onClick={formSubmit} onKeyPress={formSubmit} type="submit" tabIndex="0">
             Create Account
-          </div>
+          </button>
         </form>
       );
     }

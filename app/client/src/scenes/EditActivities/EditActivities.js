@@ -112,7 +112,9 @@ class EditUserActivities extends Component {
         refetchQueries: ['MeQuery'],
       });
 
-      history.push('/search');
+      setTimeout(() => {
+        history.push('/search');
+      }, 10);
 
       return { success: true, message: 'Great, now find an opportunity!' };
     } catch (e) {

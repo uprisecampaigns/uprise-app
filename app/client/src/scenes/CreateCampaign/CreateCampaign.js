@@ -165,6 +165,14 @@ class CreateCampaignContainer extends Component {
 
           {user.email_confirmed ? (
             <div>
+              <div className={s.listHeader}>1. Create a campaign</div>
+              <div className={s.listText}>A campaign can be anything you want volunteers to help you achieve.</div>
+              <div className={s.listHeader}>2. Add volunteer opportunities</div>
+              <div className={s.listText}>Describe projects, ongoing roles, and specific work shifts.</div>
+              <div className={s.listHeader}>3. Search for volunteers</div>
+              <div className={s.listText}>
+                Ask volunteers to subscribe to your campaign and sign up for your opportunities!
+              </div>
               <WrappedCreateCampaignForm
                 initialState={formData}
                 initialErrors={defaultErrorText}
@@ -182,11 +190,15 @@ class CreateCampaignContainer extends Component {
                   open={modalOpen}
                   actionsContainerClassName={s.modalActionsContainer}
                 >
-                  <p>Congratulations, you have created the campaign &apos;{newCampaign.title}&apos;.</p>
                   <p>
-                    You can find your campaign&apos;s public profile at {window.location.origin}/campaign/{
-                      newCampaign.slug
-                    }
+                    Congratulations, you have created the campaign &apos;
+                    {newCampaign.title}
+                    &apos;.
+                  </p>
+                  <p>
+                    You can find your campaign&apos;s public profile at {window.location.origin}
+                    /campaign/
+                    {newCampaign.slug}
                   </p>
                   <p>You can manage your campaign here:</p>
                 </Dialog>
@@ -217,6 +229,8 @@ const withMeQuery = graphql(MeQuery, {
   }),
 });
 
-export default compose(connect(), withMeQuery, graphql(CreateCampaignMutation, { name: 'createCampaignMutation' }))(
-  CreateCampaignContainer,
-);
+export default compose(
+  connect(),
+  withMeQuery,
+  graphql(CreateCampaignMutation, { name: 'createCampaignMutation' }),
+)(CreateCampaignContainer);
