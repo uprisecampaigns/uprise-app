@@ -41,6 +41,16 @@ if (googleUA) {
   ReactGA.initialize(googleUA);
 }
 
+// TEMP: Unregister all service workers
+if (window.navigator && navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (let registration of registrations) {
+      registration.unregister();
+    }
+  });
+}
+
+/*
 if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
   // Delay registration until after the page has loaded, to ensure that our
   // precaching requests don't degrade the first visit experience.
@@ -81,6 +91,7 @@ if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
       });
   });
 }
+*/
 
 const store = configureStore({
   actionsSearch: defaultActionStartState,
