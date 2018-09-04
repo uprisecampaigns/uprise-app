@@ -1,4 +1,3 @@
-
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
@@ -8,11 +7,10 @@ import Divider from 'material-ui/Divider';
 
 import ActivitiesQuery from 'schemas/queries/ActivitiesQuery.graphql';
 
-import {
-  addSearchItem, setSearchDates, removeSearchItem,
-} from 'actions/SearchActions';
+import { addSearchItem, setSearchDates, removeSearchItem } from 'actions/SearchActions';
 
 import ControlledListItem from 'components/ControlledListItem';
+import TypeSearch from 'components/TypeSearch';
 import GeographySearch from 'components/GeographySearch';
 import DateTimeSearch from 'components/DateTimeSearch';
 
@@ -20,24 +18,25 @@ import togglesList from 'lib/togglesList';
 
 import s from 'styles/Search.scss';
 
-
-const ConnectedDateTimeSearch = connect(state => ({ selectedTimes: state.actionsSearch.times }))(DateTimeSearch);
+const ConnectedDateTimeSearch = connect((state) => ({ selectedTimes: state.actionsSearch.times }))(DateTimeSearch);
 
 class SearchActionInputs extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedCollection: PropTypes.arrayOf(PropTypes.string).isRequired,
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+    showOngoing: PropTypes.bool,
     allOpen: PropTypes.bool,
-  }
+  };
 
   static defaultProps = {
+    showOngoing: false,
     allOpen: false,
-  }
+  };
 
   setDates = (dates) => {
     this.props.dispatch(setSearchDates('action', dates));
-  }
+  };
 
   handleToggle = (collectionName, on, value) => {
     if (on) {
@@ -45,20 +44,16 @@ class SearchActionInputs extends PureComponent {
     } else {
       this.props.dispatch(removeSearchItem('action', collectionName, value));
     }
-  }
+  };
 
   addSelectedItem = (collectionName, value) => {
     this.props.dispatch(addSearchItem('action', collectionName, value));
-  }
+  };
 
   render() {
-    const {
-      handleToggle,
-      addSelectedItem,
-      setDates,
-    } = this;
+    const { handleToggle, addSelectedItem, setDates } = this;
 
-    const { allOpen } = this.props;
+    const { allOpen, showOngoing } = this.props;
 
     const activitiesTogglesList = togglesList({
       collection: this.props.activities,
@@ -72,18 +67,28 @@ class SearchActionInputs extends PureComponent {
 
     return (
       <List className={s.searchInputsList}>
+        <ControlledListItem
+          primaryText="Type"
+          className={s.listItemContainer}
+          initiallyOpen={allOpen}
+          nestedItems={[
+            <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
+              <TypeSearch addItem={addSelectedItem} />
+            </div>,
+          ]}
+        />
+
+        <Divider />
 
         <ControlledListItem
           primaryText="Location"
           className={s.listItemContainer}
           initiallyOpen={allOpen}
-          nestedItems={[(
+          nestedItems={[
             <div key={0} className={[s.listItem, s.geographySearchContainer].join(' ')}>
-              <GeographySearch
-                addItem={addSelectedItem}
-              />
-            </div>
-          )]}
+              <GeographySearch addItem={addSelectedItem} />
+            </div>,
+          ]}
         />
 
         <Divider />
@@ -97,19 +102,19 @@ class SearchActionInputs extends PureComponent {
 
         <Divider />
 
-        <ControlledListItem
-          primaryText="Date"
-          className={s.listItemContainer}
-          initiallyOpen={allOpen}
-          nestedItems={[(
-            <div key={0} className={[s.listItem, s.dateSearchContainer].join(' ')}>
-              <ConnectedDateTimeSearch
-                setDates={setDates}
-                handleToggle={handleToggle}
-              />
-            </div>
-          )]}
-        />
+        {!showOngoing && (
+          <ControlledListItem
+            primaryText="Date"
+            className={s.listItemContainer}
+            initiallyOpen={allOpen}
+            nestedItems={[
+              <div key={0} className={[s.listItem, s.dateSearchContainer].join(' ')}>
+                <ConnectedDateTimeSearch setDates={setDates} handleToggle={handleToggle} showOngoing={showOngoing} />
+              </div>,
+            ]}
+          />
+        )}
+        {!showOngoing && <Divider />}
       </List>
     );
   }
@@ -121,5 +126,5 @@ export default compose(
       activities: !data.loading && data.activities ? data.activities : [],
     }),
   }),
-  connect(state => ({ selectedCollection: state.actionsSearch.activities })),
+  connect((state) => ({ selectedCollection: state.actionsSearch.activities })),
 )(SearchActionInputs);

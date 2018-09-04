@@ -10,6 +10,11 @@ import s from 'styles/Search.scss';
 class DateTimeSearch extends Component {
   static propTypes = {
     setDates: PropTypes.func.isRequired,
+    showOngoing: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    showOngoing: true,
   };
 
   constructor(props) {
@@ -99,6 +104,7 @@ class DateTimeSearch extends Component {
   formatDate = (date) => moment(date).format('M/D/YYYY');
 
   render() {
+    const { showOngoing } = this.props;
     const { ongoing, onDate, startDate, endDate } = this.state;
     const { formSubmit, handleInputChange, formatDate } = this;
 
@@ -108,14 +114,16 @@ class DateTimeSearch extends Component {
 
     return (
       <div>
-        <Checkbox
-          label="Ongoing"
-          checked={ongoing}
-          onCheck={(event, isChecked) => {
-            handleInputChange('ongoing', isChecked);
-          }}
-          className={s.checkboxContainer}
-        />
+        {showOngoing && (
+          <Checkbox
+            label="Ongoing"
+            checked={ongoing}
+            onCheck={(event, isChecked) => {
+              handleInputChange('ongoing', isChecked);
+            }}
+            className={s.checkboxContainer}
+          />
+        )}
 
         {ongoing || (
           <div className={s.datePickersContainer}>

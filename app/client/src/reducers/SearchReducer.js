@@ -24,6 +24,8 @@ export const defaultStartState = {
     name: 'date',
     descending: false,
   },
+  events: true,
+  roles: true,
 };
 
 export const defaultCampaignStartState = {
@@ -39,27 +41,34 @@ export const defaultActionStartState = { ...defaultStartState };
 export function updateSearch(searchState = defaultStartState, action) {
   switch (action.type) {
     case ADD_SEARCH_ITEM: {
-      let collection = Array.from(searchState[action.collection]);
+      if (typeof searchState[action.collection] === 'boolean') {
+        return Object.assign({}, searchState, {
+          [action.collection]: action.value,
+        });
+      } else {
+        let collection = Array.from(searchState[action.collection]);
 
-      if ((typeof action.value === 'string' &&
+        if (
+          (typeof action.value === 'string' &&
             action.value.trim() !== '' &&
-            !collection.find(item => item.trim().toLowerCase() === action.value.trim().toLowerCase())) ||
-          (typeof action.value === 'object' &&
-            !collection.find(item => isEqual(item, action.value)))) {
-        // If doing geography search, replace item if the zipcode is already in the collection
-        if (action.collection === 'geographies' && typeof action.value.zipcode !== 'undefined') {
-          const existing = collection.find(item => item.zipcode === action.value.zipcode);
-          if (existing) {
-            collection = collection.filter(item => item.zipcode !== action.value.zipcode);
+            !collection.find((item) => item.trim().toLowerCase() === action.value.trim().toLowerCase())) ||
+          (typeof action.value === 'object' && !collection.find((item) => isEqual(item, action.value)))
+        ) {
+          // If doing geography search, replace item if the zipcode is already in the collection
+          if (action.collection === 'geographies' && typeof action.value.zipcode !== 'undefined') {
+            const existing = collection.find((item) => item.zipcode === action.value.zipcode);
+            if (existing) {
+              collection = collection.filter((item) => item.zipcode !== action.value.zipcode);
+            }
           }
+
+          collection.push(typeof action.value === 'string' ? action.value.trim() : action.value);
         }
 
-        collection.push(typeof action.value === 'string' ? action.value.trim() : action.value);
+        return Object.assign({}, searchState, {
+          [action.collection]: collection,
+        });
       }
-
-      return Object.assign({}, searchState, {
-        [action.collection]: collection,
-      });
     }
 
     case ADD_DEFAULT_SEARCH_ITEM: {
@@ -67,8 +76,7 @@ export function updateSearch(searchState = defaultStartState, action) {
 
       // Only add this search type if none exists already
       if (!collection.length) {
-        if ((typeof action.value === 'string' && action.value.trim() !== '') ||
-            (typeof action.value === 'object')) {
+        if ((typeof action.value === 'string' && action.value.trim() !== '') || typeof action.value === 'object') {
           collection.push(typeof action.value === 'string' ? action.value.trim() : action.value);
         }
       }
@@ -80,7 +88,9 @@ export function updateSearch(searchState = defaultStartState, action) {
 
     case REMOVE_SEARCH_ITEM: {
       return Object.assign({}, searchState, {
-        [action.collection]: searchState[action.collection].filter(item => item !== action.value && !isEqual(item, action.value)),
+        [action.collection]: searchState[action.collection].filter(
+          (item) => item !== action.value && !isEqual(item, action.value),
+        ),
       });
     }
 
@@ -105,7 +115,7 @@ export function updateSearch(searchState = defaultStartState, action) {
       if (typeof action.descending === 'boolean') {
         sortBy.descending = action.descending;
       } else {
-        sortBy.descending = (state.sortBy.name === action.selection) ? !state.sortBy.descending : false;
+        sortBy.descending = state.sortBy.name === action.selection ? !state.sortBy.descending : false;
       }
 
       return Object.assign({}, searchState, { sortBy });
