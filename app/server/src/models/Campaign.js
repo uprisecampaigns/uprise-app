@@ -11,9 +11,16 @@ const getValidSlug = require('models/getValidSlug');
 
 const config = require('config/config.js');
 
+const milesInMeter = 0.000621371192237;
+const defaultTargetZipcode = config.geography.defaultZipcode;
+const distanceQueryString = `round(ST_DISTANCE(zipcodes.location, target_zip.location) * ${milesInMeter})`;
+
 class Campaign {
   static async findOne(...args) {
-    const campaign = await db.table('campaigns').where(...args).first();
+    const campaign = await db
+      .table('campaigns')
+      .where(...args)
+      .first();
 
     if (!campaign) {
       throw new Error('Campaign not found');
@@ -24,7 +31,10 @@ class Campaign {
   }
 
   static async find(...args) {
-    const campaigns = await db.table('campaigns').where(...args).orderBy('slug', 'asc');
+    const campaigns = await db
+      .table('campaigns')
+      .where(...args)
+      .orderBy('slug', 'asc');
 
     for (const campaign of campaigns) {
       // eslint-disable-next-line no-await-in-loop
@@ -35,7 +45,10 @@ class Campaign {
   }
 
   static async create(options) {
-    const user = await db.table('users').where('id', options.owner_id).first('id', 'email_confirmed');
+    const user = await db
+      .table('users')
+      .where('id', options.owner_id)
+      .first('id', 'email_confirmed');
 
     if (!user.email_confirmed) {
       throw new Error('User must confirm email to create a campaign');
@@ -49,9 +62,9 @@ class Campaign {
 
     const newCampaignData = Object.assign({}, options, { slug });
 
-    const campaignResult = await db.table('campaigns').insert(newCampaignData, [
-      'id', 'title', 'slug', 'description', 'tags', 'owner_id',
-    ]);
+    const campaignResult = await db
+      .table('campaigns')
+      .insert(newCampaignData, ['id', 'title', 'slug', 'description', 'tags', 'owner_id']);
 
     const newCampaign = campaignResult[0];
 
@@ -59,18 +72,21 @@ class Campaign {
   }
 
   static async edit({ input, userId }) {
-    const user = await db.table('users').where('id', userId).first('id', 'superuser');
+    const user = await db
+      .table('users')
+      .where('id', userId)
+      .first('id', 'superuser');
     const campaignId = input.id;
 
     if (user) {
-      const campaign = await db('campaigns').where('id', campaignId).first();
+      const campaign = await db('campaigns')
+        .where('id', campaignId)
+        .first();
 
       if (await User.ownsObject({ user, object: campaign })) {
         const updateResult = await db('campaigns')
           .where('id', campaignId)
-          .update(input, [
-            'id', 'title', 'slug', 'description', 'tags', 'owner_id',
-          ]);
+          .update(input, ['id', 'title', 'slug', 'description', 'tags', 'owner_id']);
 
         const campaignResult = updateResult[0];
 
@@ -83,7 +99,10 @@ class Campaign {
   }
 
   static async delete({ input, userId }) {
-    const user = await db.table('users').where('id', userId).first('id', 'superuser');
+    const user = await db
+      .table('users')
+      .where('id', userId)
+      .first('id', 'superuser');
 
     if (!user) {
       throw new Error('User not found');
@@ -95,7 +114,7 @@ class Campaign {
       throw new Error('Campaign not found');
     }
 
-    if (!await User.ownsObject({ userId, object: campaign })) {
+    if (!(await User.ownsObject({ userId, object: campaign }))) {
       throw new Error('User must own campaign');
     }
 
@@ -111,11 +130,10 @@ class Campaign {
   }
 
   static async subscribed({ userId, campaignId }) {
-    const subscription = await db('campaign_signups')
-      .where({
-        campaign_id: campaignId,
-        user_id: userId,
-      });
+    const subscription = await db('campaign_signups').where({
+      campaign_id: campaignId,
+      user_id: userId,
+    });
 
     if (subscription.length > 1) {
       throw new Error(`More than one subscription for user with id: ${userId}for campaign with id: ${campaignId}`);
@@ -129,17 +147,16 @@ class Campaign {
       return Campaign.findOne({ id: campaignId });
     }
 
-    await db('campaign_signups')
-      .insert({
-        user_id: userId,
-        campaign_id: campaignId,
-      });
+    await db('campaign_signups').insert({
+      user_id: userId,
+      campaign_id: campaignId,
+    });
 
     return Campaign.findOne({ id: campaignId });
   }
 
   static async cancelSubscription({ userId, campaignId }) {
-    if (!await this.subscribed({ userId, campaignId })) {
+    if (!(await this.subscribed({ userId, campaignId }))) {
       return Campaign.findOne({ id: campaignId });
     }
 
@@ -167,13 +184,14 @@ class Campaign {
       .andWhere('deleted', false)
       .innerJoin('campaigns', 'campaign_signups.campaign_id', 'campaigns.id');
 
-    await Promise.all(results.map(async (campaign) => {
-      Object.assign(campaign, await this.details(campaign));
-    }));
+    await Promise.all(
+      results.map(async (campaign) => {
+        Object.assign(campaign, await this.details(campaign));
+      }),
+    );
 
     return results;
   }
-
 
   static async search(search) {
     const searchQuery = db('campaigns')
@@ -205,7 +223,8 @@ class Campaign {
 
             search.tags.forEach((tag) => {
               qb.andWhere(function tagsQueryBuilder() {
-                const tagQuery = db.select('id')
+                const tagQuery = db
+                  .select('id')
                   .distinct()
                   .from(tags)
                   .whereRaw('tag ILIKE ?', tag);
@@ -222,7 +241,9 @@ class Campaign {
 
             search.keywords.forEach((keyword) => {
               qb.andWhere(function keywordQueryBuilder() {
-                const stringOverlapComparator = /^#/.test(keyword) ? "SIMILAR TO '%(,| )\\?' || ? || '(,| )\\?%'" : '%> ?';
+                const stringOverlapComparator = /^#/.test(keyword)
+                  ? "SIMILAR TO '%(,| )\\?' || ? || '(,| )\\?%'"
+                  : '%> ?';
 
                 this.orWhere(db.raw(`title ${stringOverlapComparator}`, keyword));
 
@@ -230,7 +251,8 @@ class Campaign {
 
                 this.orWhere(db.raw(`description ${stringOverlapComparator}`, keyword));
 
-                const tagKeywordQuery = db.select('id')
+                const tagKeywordQuery = db
+                  .select('id')
                   .distinct()
                   .from(tags)
                   .whereRaw(`tag ${stringOverlapComparator}`, keyword);
@@ -244,9 +266,34 @@ class Campaign {
             qb.andWhere(function geographyQueryBuilder() {
               search.geographies.forEach((geography) => {
                 if (validator.isNumeric(geography.zipcode)) {
-                  const { zipcode } = geography;
-                  this.orWhereRaw('? = ANY(zipcode_list)', zipcode);
-                  this.orWhereRaw('? = zipcode', zipcode);
+                  const { distance = 10, zipcode } = geography; // default to 10 miles
+
+                  // TODO: It would be nice to refactor some of this out into knex language
+                  const distanceQuery = db
+                    .select('id')
+                    .from(function() {
+                      this.select(
+                        'campaigns.id',
+                        db.raw('ST_DISTANCE(campaigns.location, target_zip.location) * ? AS distance', milesInMeter),
+                      )
+                        .as('distances')
+                        .from(
+                          db.raw(
+                            `
+                          (SELECT postal_code, location from zipcodes where postal_code=?) target_zip
+                          CROSS JOIN
+                          (select * from campaigns join zipcodes on zipcodes.postal_code = campaigns.zipcode) campaigns
+                        `,
+                            zipcode,
+                          ),
+                        );
+                    })
+                    .where('distance', '<=', distance);
+
+                  this.orWhere('campaigns.id', 'in', distanceQuery);
+
+                  // this.orWhereRaw('? = ANY(zipcode_list)', zipcode);
+                  // this.orWhereRaw('? = zipcode', zipcode);
                 }
               });
             });
@@ -261,11 +308,28 @@ class Campaign {
 
   static async findActions(campaignId) {
     const actionsQuery = db('actions')
-      .select(['id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing', 'campaign_id', 'owner_id', 'description',
+      .select([
+        'id',
+        'title',
+        'slug',
+        'city',
+        'state',
+        'zipcode',
+        'ongoing',
+        'campaign_id',
+        'owner_id',
+        'description',
         db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
         db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
-        'location_name', 'street_address', 'street_address2',
-        'city', 'state', 'zipcode', 'location_notes', 'virtual', 'ongoing',
+        'location_name',
+        'street_address',
+        'street_address2',
+        'city',
+        'state',
+        'zipcode',
+        'location_notes',
+        'virtual',
+        'ongoing',
       ])
       .where('campaign_id', campaignId)
       .andWhere('deleted', false);
@@ -278,15 +342,34 @@ class Campaign {
 
     if (!quick) {
       const actionsQuery = db('actions')
-        .select(['actions.id as id', 'title', 'slug', 'city', 'state', 'zipcode', 'ongoing', 'campaign_id', 'owner_id', 'description',
+        .select([
+          'actions.id as id',
+          'title',
+          'slug',
+          'city',
+          'state',
+          'zipcode',
+          'ongoing',
+          'campaign_id',
+          'owner_id',
+          'description',
           db.raw('to_char(start_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as start_time'),
           db.raw('to_char(end_time at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\') as end_time'),
-          db.raw('(case when count(shifts.id)=0 then \'[]\'::json else ' +
-            'json_agg(json_build_object(\'id\', shifts.id, \'start\', ' +
-            '(to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), ' +
-            '\'end\', (to_char(shifts.end at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')) )) end) as shifts'),
-          'location_name', 'street_address', 'street_address2',
-          'city', 'state', 'zipcode', 'location_notes', 'virtual', 'ongoing',
+          db.raw(
+            "(case when count(shifts.id)=0 then '[]'::json else " +
+              "json_agg(json_build_object('id', shifts.id, 'start', " +
+              '(to_char(shifts.start at time zone \'UTC\', \'YYYY-MM-DD"T"HH24:MI:SS"Z"\')), ' +
+              "'end', (to_char(shifts.end at time zone 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"')) )) end) as shifts",
+          ),
+          'location_name',
+          'street_address',
+          'street_address2',
+          'city',
+          'state',
+          'zipcode',
+          'location_notes',
+          'virtual',
+          'ongoing',
         ])
         .leftOuterJoin('shifts', 'shifts.action_id', 'actions.id')
         .where('campaign_id', campaign.id)
