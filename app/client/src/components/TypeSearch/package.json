@@ -1,0 +1,6 @@
+{
+  "name": "TypeSearch",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./TypeSearch.js"
+}

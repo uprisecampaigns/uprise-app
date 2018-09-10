@@ -7,9 +7,7 @@ import moment from 'moment';
 
 import SearchPresentation from 'components/SearchPresentation';
 
-import {
-  addSearchItem,
-} from 'actions/SearchActions';
+import { addSearchItem } from 'actions/SearchActions';
 
 import SearchActionsQuery from 'schemas/queries/SearchActionsQuery.graphql';
 
@@ -33,7 +31,7 @@ const graphqlOptions = {
       isInfiniteLoading: false,
       allItemsLoaded,
       handleInfiniteLoad: () => {
-        if (!allItemsLoaded) {
+        if (!allItemsLoaded && result.cursor) {
           return data.fetchMore({
             query: SearchActionsQuery,
             variables: {
@@ -52,7 +50,7 @@ const graphqlOptions = {
               const previousActions = previousResult.actions.actions;
               const newActions = fetchMoreResult.actions.actions;
 
-              const mergedActions = uniqWith([...previousActions, ...newActions], (a, b) => (a.id === b.id));
+              const mergedActions = uniqWith([...previousActions, ...newActions], (a, b) => a.id === b.id);
 
               return {
                 actions: {
@@ -70,7 +68,7 @@ const graphqlOptions = {
       },
     };
   },
-  options: ownProps => ({
+  options: (ownProps) => ({
     // Refresh every 5 min should be safe
     pollInterval: 60000 * 5,
     fetchPolicy: 'cache-and-network',
@@ -81,13 +79,27 @@ const graphqlOptions = {
   }),
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const aSearch = state.actionsSearch;
+
+  let searchDates;
 
   const hasDateSearch = Object.keys(aSearch.dates).length > 0;
 
   // TODO: this will reset the infinite scroll if the time rolls over to the next hour
-  const searchDates = hasDateSearch ? aSearch.dates : { ongoing: true, startDate: moment().startOf('hour').format() };
+  searchDates = hasDateSearch
+    ? aSearch.dates
+    : {
+        startDate: moment()
+          .startOf('hour')
+          .format(),
+      };
+
+  if (aSearch.roles) {
+    searchDates.ongoing = true;
+  } else {
+    searchDates.ongoing = false;
+  }
 
   return {
     search: {
@@ -99,6 +111,7 @@ const mapStateToProps = (state) => {
       times: aSearch.times,
       geographies: aSearch.geographies,
       sortBy: aSearch.sortBy,
+      showEvents: aSearch.events,
     },
     sortBy: aSearch.sortBy,
   };
@@ -109,27 +122,25 @@ const SearchActionResultsWithData = compose(
   graphql(SearchActionsQuery, graphqlOptions),
 )(SearchActionResults);
 
-
 class SearchActions extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    showRoles: PropTypes.bool.isRequired,
   };
 
   addSelectedItem = (collectionName, value) => {
     this.props.dispatch(addSearchItem('action', collectionName, value));
-  }
+  };
 
   render() {
     return (
       <div className={s.outerContainer}>
-
         <SearchPresentation
           addSelectedItem={this.addSelectedItem}
           searchSelections={<SearchActionSelections />}
-          searchInputs={allOpen => <SearchActionInputs allOpen={allOpen} />}
-          searchResults={<SearchActionResultsWithData />}
+          searchInputs={(allOpen) => <SearchActionInputs allOpen={allOpen} showOngoing={this.props.showRoles} />}
+          searchResults={<SearchActionResultsWithData showOngoing={this.props.showRoles} />}
         />
-
       </div>
     );
   }

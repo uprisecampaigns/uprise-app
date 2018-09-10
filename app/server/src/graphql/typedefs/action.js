@@ -2,7 +2,6 @@
 const { UserResult } = require('./user.js');
 const { CampaignResult } = require('./campaign.js');
 
-
 const ActivityResult = `
   type ActivityResult {
     id: String!
@@ -48,6 +47,7 @@ const ActionResult = `
     tags: [String]
     virtual: Boolean
     ongoing: Boolean
+    showEvents: Boolean
     attending: Boolean
     signed_up_shifts: [ShiftResult]
     is_owner: Boolean
@@ -92,6 +92,7 @@ const ActionSearchInput = `
     sortBy: SortByInput
     cursor: ActionCursorInput
     limit: Int
+    showEvents: Boolean
   }
 `;
 
@@ -187,12 +188,21 @@ const ActionMutations = `
   }
 `;
 
-module.exports = function () {
+module.exports = function() {
   return [
-    ActivityResult, ActionResult, ActionSearchResult,
-    ActionSearchInput, ActionCursorInput, ActionQueryInput,
-    DeleteActionInput, CreateActionInput, EditActionInput,
-    ShiftResult, ShiftInput, ShiftQueryInput,
-    ActionQueries, ActionMutations,
+    ActivityResult,
+    ActionResult,
+    ActionSearchResult,
+    ActionSearchInput,
+    ActionCursorInput,
+    ActionQueryInput,
+    DeleteActionInput,
+    CreateActionInput,
+    EditActionInput,
+    ShiftResult,
+    ShiftInput,
+    ShiftQueryInput,
+    ActionQueries,
+    ActionMutations,
   ];
 };

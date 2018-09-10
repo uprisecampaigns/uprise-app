@@ -18,7 +18,7 @@ const SelectedGeographiesContainer = connect((state) => ({ items: state.campaign
   SelectedItemsContainer,
 );
 
-const renderSelectedGeographyLabel = (geography) => `Active in: ${geography.zipcode}`;
+const renderSelectedGeographyLabel = (geography) => `Within ${geography.distance} miles of ${geography.zipcode}`;
 
 class SearchCampaignSelections extends PureComponent {
   static propTypes = {
