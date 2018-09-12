@@ -267,7 +267,7 @@ class Action {
       ])
       .where('actions.id', actionId)
       .modify((qb) => {
-        if (shiftSearch) {
+        if (shiftSearch && shiftSearch.id) {
           qb.andWhere('shifts.id', shiftSearch.id);
         }
       })
