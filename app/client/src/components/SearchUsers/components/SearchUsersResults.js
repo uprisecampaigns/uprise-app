@@ -80,9 +80,7 @@ class SearchUsersResults extends Component {
                 <strong>Recruit volunteers</strong> Adjust your search terms or activities to find new volunteers!
               </div>
             )}
-            <Infinite elementHeight={138} useWindowAsScrollContainer>
-              {users}
-            </Infinite>
+            {users}
           </div>
         )}
       </div>
