@@ -6,4 +6,7 @@
   svg {
     color: $azure !important;
   }
+  button {
+    pointer-events: none;
+  }
 }

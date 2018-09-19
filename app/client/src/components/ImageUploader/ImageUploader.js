@@ -49,7 +49,6 @@ class ImageUploader extends Component {
         height: 90,
         x: 5,
         y: 5,
-        aspect: 1,
       },
     };
   }
@@ -86,7 +85,7 @@ class ImageUploader extends Component {
   };
 
   imageCropChange = (crop) => {
-    const newCrop = Object.assign({}, crop, { aspect: 1 });
+    const newCrop = Object.assign({}, crop);
     this.setState({ imageCrop: newCrop });
   };
 
@@ -111,11 +110,11 @@ class ImageUploader extends Component {
       const imageWidth = loadedImg.naturalWidth;
       const imageHeight = loadedImg.naturalHeight;
 
-      const cropX = crop.x / 100 * imageWidth;
-      const cropY = crop.y / 100 * imageHeight;
+      const cropX = (crop.x / 100) * imageWidth;
+      const cropY = (crop.y / 100) * imageHeight;
 
-      const cropWidth = crop.width / 100 * imageWidth;
-      const cropHeight = crop.height / 100 * imageHeight;
+      const cropWidth = (crop.width / 100) * imageWidth;
+      const cropHeight = (crop.height / 100) * imageHeight;
 
       let destWidth = cropWidth;
       let destHeight = cropHeight;
