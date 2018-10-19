@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'react-apollo';
 import Infinite from 'react-infinite';
 import moment from 'moment';
 import isEqual from 'lodash.isequal';
@@ -24,6 +26,7 @@ class SearchActionResults extends Component {
     handleInfiniteLoad: PropTypes.func.isRequired,
     allItemsLoaded: PropTypes.bool,
     timeWithZone: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -117,7 +120,7 @@ class SearchActionResults extends Component {
                             Place: {action.city}, {action.state}
                           </div>
                         )}
-                      {action.distance && <div>{action.distance} miles away</div>}
+                      {action.distance && this.props.loggedIn && <div>{action.distance} miles away</div>}
                     </CardHeader>
                   </Card>
                 </Link>
@@ -161,4 +164,9 @@ class SearchActionResults extends Component {
   }
 }
 
-export default withTimeWithZone(SearchActionResults);
+const mapStateToProps = (state) => ({
+  loggedIn: state.userAuthSession.isLoggedIn,
+  fetchingAuthUpdate: state.userAuthSession.fetchingAuthUpdate,
+});
+
+export default compose(connect(mapStateToProps))(withTimeWithZone(SearchActionResults));
