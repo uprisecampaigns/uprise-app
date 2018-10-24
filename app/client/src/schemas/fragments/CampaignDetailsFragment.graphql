@@ -27,6 +27,8 @@ fragment CampaignDetails on CampaignResult {
   org_contact_position
   org_contact_email
   org_contact_phone
+  ngp_name
+  ngp_key
   owner {
     id
     first_name

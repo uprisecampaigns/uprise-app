@@ -196,3 +196,17 @@
     color: $black;
   }
 }
+
+.statusText {
+  text-align: center;
+}
+
+.statusGray {
+  color: $grey !important;
+}
+.statusRed {
+  color: $brick-red !important;
+}
+.statusBlue {
+  color: $bright-blue !important;
+}

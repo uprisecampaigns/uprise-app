@@ -3,7 +3,6 @@
 import { setRole } from 'actions/PageNavActions';
 
 export default {
-
   path: '',
 
   // Routes are evaluated in order
@@ -34,6 +33,7 @@ export default {
     require('./manageCampaign').default,
     require('./manageCampaignSettings').default,
     require('./manageCampaignVolunteers').default,
+    require('./manageNGPVANIntegration').default,
     require('./manageCampaignComposeMessage').default,
     require('./manageCampaignProfileEdit').default,
     require('./manageCampaignActions').default,
@@ -87,9 +87,10 @@ export default {
     route.pageTitle = route.title || 'Untitled Page';
     route.title = `${route.pageTitle} - UpRise.org`;
     // eslint-disable-next-line max-len
-    route.description = route.description || 'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.';
+    route.description =
+      route.description ||
+      'Sign up now to find volunteering opportunities or create a page so volunteers can find you. UpRise is reforming our political campaign process by putting you back in the drivers’ seat.';
 
     return route;
   },
-
 };

@@ -137,3 +137,9 @@
 .nextButton {
   margin-left: 1rem;
 }
+
+.disabledButton {
+  pointer-events: none;
+  color: $black !important;
+  background-color: $light-grey !important;
+}

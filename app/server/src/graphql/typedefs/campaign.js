@@ -3,7 +3,6 @@ const { UserResult } = require('./user.js');
 const { ActionResult } = require('./action.js');
 const { GeographySearchInput } = require('./searchInputs.js');
 
-
 const CampaignResult = `
   type CampaignResult {
     id: String!
@@ -36,6 +35,8 @@ const CampaignResult = `
     org_contact_position: String
     org_contact_email: String
     org_contact_phone: String
+    ngp_name: String
+    ngp_key: String
     owner: UserResult
     tags: [String]
     actions: [ActionResult]
@@ -58,7 +59,6 @@ const CampaignQueryInput = `
     id: String
   }
 `;
-
 
 const CreateCampaignInput = `
   input CreateCampaignInput {
@@ -103,6 +103,8 @@ const EditCampaignInput = `
     orgContactPosition: String
     orgContactEmail: String
     orgContactPhone: String
+    ngpName: String
+    ngpKey: String
     tags: [String]
   }
 `;
@@ -133,11 +135,15 @@ const CampaignMutations = `
   }
 `;
 
-module.exports = function () {
+module.exports = function() {
   return [
-    CampaignResult, CampaignSearchInput,
-    CampaignQueryInput, CreateCampaignInput,
-    EditCampaignInput, DeleteCampaignInput,
-    CampaignQueries, CampaignMutations,
+    CampaignResult,
+    CampaignSearchInput,
+    CampaignQueryInput,
+    CreateCampaignInput,
+    EditCampaignInput,
+    DeleteCampaignInput,
+    CampaignQueries,
+    CampaignMutations,
   ];
 };
