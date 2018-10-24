@@ -129,15 +129,6 @@ class ManageNGPVANIntegration extends Component {
     locationDistrictNumberErrorText: null,
   };
 
-  resetSubscribers = () => {
-    this.setState({
-      syncStatus: {
-        error: null,
-        result: null,
-      },
-    });
-  };
-
   formSubmit = async (data) => {
     // A little hackish to avoid an annoying rerender with previous form data
     // If I could figure out how to avoid keeping state here
@@ -161,7 +152,10 @@ class ManageNGPVANIntegration extends Component {
         // TODO: decide between refetch and update
         refetchQueries: ['CampaignQuery', 'CampaignsQuery', 'MyCampaignsQuery'],
       });
-      this.resetSubscribers();
+
+      this.setState({
+        syncStatus: {},
+      });
 
       return { success: true, message: 'Changes Saved' };
     } catch (e) {
@@ -185,8 +179,6 @@ class ManageNGPVANIntegration extends Component {
   };
 
   APISync = async () => {
-    event.preventDefault();
-
     const { campaign, subscribers } = this.props;
 
     let count = 0;
@@ -195,6 +187,13 @@ class ManageNGPVANIntegration extends Component {
     const processSubscribers = async () => {
       if (subscribers[count]) {
         const subscriber = subscribers[count];
+
+        this.setState({
+          syncStatus: {
+            ...this.state.syncStatus,
+            [subscriber.id]: 'processing',
+          },
+        });
 
         const data = {
           campaignId: campaign.id,
@@ -248,8 +247,12 @@ class ManageNGPVANIntegration extends Component {
       }
     };
 
-    this.resetSubscribers();
-    processSubscribers();
+    this.setState(
+      {
+        syncStatus: {},
+      },
+      () => processSubscribers(),
+    );
   };
 
   render() {
@@ -275,6 +278,9 @@ class ManageNGPVANIntegration extends Component {
 
       const statusColor = (status) => {
         let response = s.statusGray;
+        if (status === 'processing') {
+          response = s.rotating;
+        }
         if (status === 'success') {
           response = s.statusBlue;
         }
