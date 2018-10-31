@@ -37,7 +37,7 @@ class ManageCampaignUploadActions extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timezone: 'America/Los_Angeles',
+      timezone: 'America/Phoenix',
       timezoneNames: [],
     };
   }
