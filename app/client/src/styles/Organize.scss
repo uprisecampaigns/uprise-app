@@ -52,7 +52,8 @@
     padding: 1rem;
     border: 1px solid rgba($black, 0.1);
 
-    div,input {
+    div,
+    input {
       text-align: center !important;
     }
 
@@ -67,7 +68,8 @@
     padding: 1rem;
     border: 1px solid rgba($black, 0.1);
 
-    div,input {
+    div,
+    input {
       text-align: center !important;
     }
 
@@ -77,13 +79,13 @@
     }
   }
 
-
   .editWebsiteUrlContainer {
     margin-top: 2rem;
     padding: 1rem;
     border: 1px solid rgba($black, 0.1);
 
-    div,input {
+    div,
+    input {
       text-align: center !important;
     }
 
@@ -139,11 +141,10 @@
   }
 
   .keywordsInputContainer {
-
     width: 50%;
     margin: 0rem 0rem 1rem 0rem;
 
-    >div:first-of-type {
+    > div:first-of-type {
       padding: 0px;
     }
   }
@@ -194,5 +195,53 @@
   text-overflow: ellipsis;
   a {
     color: $black;
+  }
+}
+
+.statusText {
+  text-align: center;
+}
+
+.statusGray {
+  color: $grey !important;
+}
+.statusRed {
+  color: $brick-red !important;
+}
+.statusBlue {
+  color: $bright-blue !important;
+}
+.rotating {
+  -webkit-animation: rotating 1s linear infinite;
+  -moz-animation: rotating 1s linear infinite;
+  -ms-animation: rotating 1s linear infinite;
+  -o-animation: rotating 1s linear infinite;
+  animation: rotating 1s linear infinite;
+}
+
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes rotating {
+  from {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
   }
 }

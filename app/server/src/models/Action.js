@@ -899,7 +899,8 @@ class Action {
         const newActionData = Object.assign({}, options, { slug });
 
         try {
-          const { activities, shifts, ...newActionInput } = newActionData;
+          const { activities, ...newActionInput } = newActionData;
+          let { shifts } = newActionData;
 
           const newInsertInput =
             user.superuser === true ? { ...newActionInput, owner_id: campaign.owner_id } : newActionInput;
@@ -912,6 +913,10 @@ class Action {
 
           if (activities && activities.length) {
             await updateProperties(activities, 'activity', action.id);
+          }
+
+          if (!shifts && newActionData.start_time && newActionData.end_time) {
+            shifts = [{ start: newActionData.start_time, end: newActionData.end_time }];
           }
 
           if (shifts && shifts.length) {

@@ -30,7 +30,6 @@ class ControlledListItem extends PureComponent {
     const { className, ...props } = this.props;
 
     const handleClick = (event) => {
-      console.log('test', props, this.props);
       event.preventDefault();
       event.stopPropagation();
       this.setState((prevState) => ({
@@ -39,7 +38,12 @@ class ControlledListItem extends PureComponent {
     };
 
     return (
-      <ListItem open={open} className={[className].concat([s.listItem]).join(' ')} onClick={handleClick} {...props} />
+      <ListItem
+        open={open}
+        className={[className].concat([s.listItem, s.controlledListItem]).join(' ')}
+        onClick={handleClick}
+        {...props}
+      />
     );
   }
 }

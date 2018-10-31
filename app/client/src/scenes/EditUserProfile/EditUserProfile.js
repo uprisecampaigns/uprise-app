@@ -102,6 +102,10 @@ class EditUserProfile extends Component {
 
     formData.activities = formData.activities.map((activity) => activity.id);
 
+    if (!formData.activities.length) {
+      return { success: false, message: 'At least one activity is required' };
+    }
+
     try {
       await this.props.editAccountMutation({
         variables: {
