@@ -63,20 +63,28 @@ class CsvUploader extends React.Component {
     }
 
     Parser.parse(csvFile, {
+      skipEmptyLines: 'greedy',
       error: (err, file, inputElem, reason) => {
         console.error(err);
       },
       complete: (results, file) => {
         // eslint-disable-next-line no-console
-        console.log(results);
-        const rows = Array.from(results.data).map((row) => {
+        let rows = Array.from(results.data).map((row) => {
           const values = Array.from(row);
-          values.unshift('SELECT_BOX_PLACEHOLDER');
-          return {
-            selected: true,
-            values,
-          };
+          const hasData = values.filter(function(el) {
+            return el;
+          }).length;
+          if (hasData) {
+            values.unshift('SELECT_BOX_PLACEHOLDER');
+            return {
+              selected: true,
+              values,
+            };
+          }
         });
+
+        // Remove 'undefined' entries
+        rows = rows.filter(Boolean);
 
         const selectedHeaders = Array(results.data[0].length);
         selectedHeaders.fill('skip').unshift('skip'); // Skip first checkbox row
@@ -92,6 +100,12 @@ class CsvUploader extends React.Component {
           defaultHeight: 60,
           fixedHeight: false,
         });
+
+        if (rows && rows[1]) {
+          rows[1].selected = false;
+        }
+
+        console.log('rows', rows);
 
         this.setState({ rows });
       },
