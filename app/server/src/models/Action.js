@@ -711,7 +711,7 @@ class Action {
             });
           } else if (sortBy.name === 'date') {
             qb.andWhere(function() {
-              if (typeof search.cursor.start_type !== 'undefined' && moment(search.cursor.start_time).isValid()) {
+              if (typeof search.cursor.start_time !== 'undefined' && moment(search.cursor.start_time).isValid()) {
                 this.orWhere(
                   db.raw('?::timestamptz', search.cursor.start_time),
                   sortBy.descending ? '>' : '<',
@@ -754,6 +754,8 @@ class Action {
                 );
               });
             });
+          } else if (sortBy.name === 'slug') {
+            qb.andWhere('actions.slug', '>', search.cursor.slug);
           }
         }
 
@@ -763,10 +765,10 @@ class Action {
           qb.limit(defaultPageLimit);
         }
 
-        qb.orderBy('actions.created_at', 'desc');
+        qb.orderBy('actions.slug', 'asc');
       });
 
-    const searchTotalsQuery = db.count('id').from(searchQuery.as('count_rows'));
+    const searchTotalsQuery = db.count('id').from(currentSearchQuery().as('count_rows'));
 
     const total = (await searchTotalsQuery)[0].count;
     const actionResults = await searchPageQuery;

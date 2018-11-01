@@ -21,7 +21,7 @@ export const defaultStartState = {
   times: [],
   geographies: [],
   sortBy: {
-    name: 'date',
+    name: 'slug',
     descending: false,
   },
   events: true,
