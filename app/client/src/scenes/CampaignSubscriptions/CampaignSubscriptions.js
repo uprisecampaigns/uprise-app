@@ -24,12 +24,11 @@ class CampaignSubscriptions extends PureComponent {
           <ListItem>
             <div className={s.listTitle}>{campaign.title}</div>
 
-            {campaign.city &&
-              campaign.state && (
-                <div className={s.listDetailLine}>
-                  {campaign.city}, {campaign.state}
-                </div>
-              )}
+            {campaign.city && campaign.state && (
+              <div className={s.listDetailLine}>
+                {campaign.city}, {campaign.state}
+              </div>
+            )}
 
             {campaign.owner && (
               <div className={s.listDetailLine}>
@@ -47,27 +46,27 @@ class CampaignSubscriptions extends PureComponent {
       return (
         <div className={s.outerContainer}>
           <div className={s.innerContainer}>
-            {/*
-            <Link to="/volunteer">
-              <div className={[s.navHeader, s.volunteerNavHeader].join(' ')}>
-                <FontIcon className={['material-icons', s.backArrow].join(' ')}>arrow_back</FontIcon>
-                My Profile
-              </div>
-            </Link>
-          */}
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>Campaigns I Follow</div>
+            </div>
 
-            <div className={s.pageSubHeader}>Campaigns I Follow</div>
-
-            {campaignsList.length === 0 ? (
-              <div className={s.searchPrompt}>
-                You have no current campaign subscriptions. You can search for campaigns&nbsp;
-                <Link to="/search/search-campaigns" useAhref>
-                  here
-                </Link>.
+            <div className={s.sectionsContainer}>
+              <div className={s.section}>
+                <div className={s.sectionInnerContent}>
+                  {campaignsList.length === 0 ? (
+                    <div className={s.searchPrompt}>
+                      You have no current campaign subscriptions. You can search for campaigns&nbsp;
+                      <Link to="/search/search-campaigns" useAhref>
+                        here
+                      </Link>
+                      .
+                    </div>
+                  ) : (
+                    <List>{campaignsList}</List>
+                  )}
+                </div>
               </div>
-            ) : (
-              <List>{campaignsList}</List>
-            )}
+            </div>
           </div>
         </div>
       );
@@ -80,6 +79,10 @@ export default compose(
   graphql(CampaignSubscriptionsQuery, {
     props: ({ data }) => ({
       campaignSubscriptions: !data.loading && data.campaignSubscriptions ? data.campaignSubscriptions : [],
+    }),
+    options: (ownProps) => ({
+      fetchPolicy: 'network-only',
+      ...ownProps,
     }),
   }),
 )(CampaignSubscriptions);

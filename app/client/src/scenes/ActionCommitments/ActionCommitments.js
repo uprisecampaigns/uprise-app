@@ -37,12 +37,14 @@ class ActionCommitments extends PureComponent {
         .map((action) => {
           const shiftList =
             action.signed_up_shifts && action.signed_up_shifts.length
-              ? action.signed_up_shifts.filter((shift) => moment(shift.end).isAfter(moment())).map((shift) => (
-                  <div key={shift.id} className={s.listDetailLine}>
-                    {timeWithZone(shift.start, action.zipcode, 'ddd, MMM Do YYYY, h:mm')} -{' '}
-                    {timeWithZone(shift.end, action.zipcode, 'h:mm a z')}
-                  </div>
-                ))
+              ? action.signed_up_shifts
+                  .filter((shift) => moment(shift.end).isAfter(moment()))
+                  .map((shift) => (
+                    <div key={shift.id} className={s.listDetailLine}>
+                      {timeWithZone(shift.start, action.zipcode, 'ddd, MMM Do YYYY, h:mm')} -{' '}
+                      {timeWithZone(shift.end, action.zipcode, 'h:mm a z')}
+                    </div>
+                  ))
               : null;
 
           return (
@@ -54,12 +56,11 @@ class ActionCommitments extends PureComponent {
 
                 {shiftList}
 
-                {action.city &&
-                  action.state && (
-                    <div className={s.listDetailLine}>
-                      {action.city}, {action.state}
-                    </div>
-                  )}
+                {action.city && action.state && (
+                  <div className={s.listDetailLine}>
+                    {action.city}, {action.state}
+                  </div>
+                )}
 
                 {action.owner && (
                   <div className={s.listDetailLine}>
@@ -78,27 +79,27 @@ class ActionCommitments extends PureComponent {
       return (
         <div className={s.outerContainer}>
           <div className={s.innerContainer}>
-            {/*
-            <Link to="/volunteer">
-              <div className={[s.navHeader, s.volunteerNavHeader].join(' ')}>
-                <FontIcon className={['material-icons', s.backArrow].join(' ')}>arrow_back</FontIcon>
-                My Profile
-              </div>
-            </Link>
-          */}
+            <div className={s.sectionHeaderContainer}>
+              <div className={s.pageHeader}>My Opportunities</div>
+            </div>
 
-            <div className={s.pageSubHeader}>My Opportunities</div>
-
-            {actionsList.length === 0 ? (
-              <div className={s.searchPrompt}>
-                You have no current volunteering commitments. You can search for opportunities&nbsp;
-                <Link to="/search" useAhref>
-                  here
-                </Link>.
+            <div className={s.sectionsContainer}>
+              <div className={s.section}>
+                <div className={s.sectionInnerContent}>
+                  {actionsList.length === 0 ? (
+                    <div className={s.searchPrompt}>
+                      You have no current volunteering commitments. You can search for opportunities&nbsp;
+                      <Link to="/search" useAhref>
+                        here
+                      </Link>
+                      .
+                    </div>
+                  ) : (
+                    <List>{actionsList}</List>
+                  )}
+                </div>
               </div>
-            ) : (
-              <List>{actionsList}</List>
-            )}
+            </div>
           </div>
         </div>
       );
@@ -111,6 +112,11 @@ export default compose(
   graphql(ActionCommitmentsQuery, {
     props: ({ data }) => ({
       actionCommitments: !data.loading && data.actionCommitments ? data.actionCommitments : [],
+      graphqlLoading: data.loading,
+    }),
+    options: (ownProps) => ({
+      fetchPolicy: 'network-only',
+      ...ownProps,
     }),
   }),
 )(withTimeWithZone(ActionCommitments));
