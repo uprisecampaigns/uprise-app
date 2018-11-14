@@ -311,9 +311,9 @@ class Action {
         'actions.virtual as virtual',
         'actions.ongoing as ongoing',
       ])
-      .where('action_signups.user_id', user.id)
+      .where('actions.deleted', false)
+      .andWhere('action_signups.user_id', user.id)
       .orWhere('shift_signups.user_id', user.id)
-      .andWhere('actions.deleted', false)
       .leftOuterJoin('zipcodes', 'zipcodes.postal_code', 'actions.zipcode')
       .crossJoin(db.raw('(SELECT postal_code, location from zipcodes where postal_code=?) target_zip', targetZipcode))
       .leftOuterJoin('action_signups', 'action_signups.action_id', 'actions.id')
