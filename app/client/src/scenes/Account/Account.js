@@ -124,7 +124,7 @@ class Account extends Component {
   render() {
     if (this.props.user) {
       const { state, formSubmit, defaultErrorText } = this;
-      const { user, privacyContent } = this.props;
+      const { user, privacyContent, termsContent } = this.props;
       const { formData } = state;
 
       const validators = [
@@ -153,6 +153,7 @@ class Account extends Component {
               submitText="Save Changes"
               userId={user.id}
               privacyContent={privacyContent}
+              termsContent={termsContent}
             />
           </div>
         </div>

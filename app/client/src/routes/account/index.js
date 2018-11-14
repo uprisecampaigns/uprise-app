@@ -13,10 +13,15 @@ export default {
     store.dispatch(setRole('user'));
 
     const privacyContent = await import(/* webpackChunkName: "privacy" */ 'content/privacy.md');
+    const termsContent = await import(/* webpackChunkName: "terms" */ 'content/terms.md');
 
     return {
       title: 'Account',
-      component: <Layout><Account privacyContent={privacyContent} /></Layout>,
+      component: (
+        <Layout>
+          <Account privacyContent={privacyContent} termsContent={termsContent} />
+        </Layout>
+      ),
     };
   },
 };

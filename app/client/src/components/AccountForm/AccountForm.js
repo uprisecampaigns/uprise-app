@@ -10,6 +10,7 @@ import s from 'styles/Form.scss';
 
 import Security from './components/Security';
 import Privacy from './components/Privacy';
+import Terms from './components/Terms';
 
 class AccountForm extends PureComponent {
   static propTypes = {
@@ -20,6 +21,7 @@ class AccountForm extends PureComponent {
     submitText: PropTypes.string.isRequired,
     errors: PropTypes.object.isRequired,
     privacyContent: PropTypes.object.isRequired,
+    termsContent: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -35,7 +37,16 @@ class AccountForm extends PureComponent {
   }
 
   render() {
-    const { data, formSubmit, errors, saving, handleInputChange, submitText, privacyContent } = this.props;
+    const {
+      data,
+      formSubmit,
+      errors,
+      saving,
+      handleInputChange,
+      submitText,
+      privacyContent,
+      termsContent,
+    } = this.props;
     const { modalOpen } = this.state;
 
     const modalActions = [
@@ -156,12 +167,28 @@ class AccountForm extends PureComponent {
                   to=""
                   onClick={(event) => {
                     event.preventDefault();
-                    this.setState({ modalOpen: true });
+                    this.setState({ modalOpen: 'privacy' });
                   }}
                   useAhref={false}
                   className={s.link}
                 >
                   Read our privacy policy
+                </Link>
+              </div>
+
+              <div className={s.settingsHeader}>Terms of Use</div>
+              <div className={s.formText}>Use of the UpRise Platforms implies you agree to our Terms of Use.</div>
+              <div className={s.formText}>
+                <Link
+                  to=""
+                  onClick={(event) => {
+                    event.preventDefault();
+                    this.setState({ modalOpen: 'terms' });
+                  }}
+                  useAhref={false}
+                  className={s.link}
+                >
+                  Read our Terms of Use
                 </Link>
               </div>
             </div>
@@ -174,7 +201,7 @@ class AccountForm extends PureComponent {
           actionsContainerClassName={s.modalActionsContainer}
           open={modalOpen}
         >
-          <Privacy content={privacyContent} />
+          {modalOpen === 'privacy' ? <Privacy content={privacyContent} /> : <Terms content={termsContent} />}
         </Dialog>
       </div>
     );
