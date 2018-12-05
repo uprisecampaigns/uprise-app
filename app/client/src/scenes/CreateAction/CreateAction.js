@@ -77,7 +77,7 @@ class CreateAction extends Component {
 
       const modalActions = [
         <div
-          className={s.primaryButton}
+          className={[s.primaryButton, s.inlineButton].join(' ')}
           onClick={(event) => {
             event.preventDefault();
             history.push(`/organize/${campaign.slug}/opportunity/${newAction.slug}`);
@@ -90,6 +90,19 @@ class CreateAction extends Component {
           tabIndex="0"
         >
           Manage Opportunity
+        </div>,
+        <div
+          className={[s.inlineButton, s.button].join(' ')}
+          onClick={(event) => {
+            event.preventDefault();
+            window.location.reload(true);
+          }}
+          onKeyPress={(event) => {
+            event.preventDefault();
+            window.location.reload(true);
+          }}
+        >
+          Create New Opportunity
         </div>,
       ];
 
@@ -113,18 +126,11 @@ class CreateAction extends Component {
             <ActionSettingsContainer campaign={campaign} type={type} submit={createAction} />
 
             {modalOpen && (
-              <Dialog
-                title="Opportunity Created"
-                modal
-                actions={modalActions}
-                actionsContainerClassName={s.modalActionsContainer}
-                open={modalOpen}
-              >
+              <Dialog title="Opportunity Created" modal actions={modalActions} open={modalOpen}>
                 <p>Congratulations, you have created the opportunity &apos;{newAction.title}&apos;.</p>
                 <p>
-                  You can find your opportunity&apos;s public profile at {window.location.origin}/opportunity/{
-                    newAction.slug
-                  }
+                  You can find your opportunity&apos;s public profile at {window.location.origin}/opportunity/
+                  {newAction.slug}
                 </p>
                 <p>You can manage your opportunity here:</p>
               </Dialog>
@@ -150,6 +156,8 @@ const withCampaignQuery = graphql(CampaignQuery, {
   }),
 });
 
-export default compose(connect(), withCampaignQuery, graphql(CreateActionMutation, { name: 'createActionMutation' }))(
-  CreateAction,
-);
+export default compose(
+  connect(),
+  withCampaignQuery,
+  graphql(CreateActionMutation, { name: 'createActionMutation' }),
+)(CreateAction);
