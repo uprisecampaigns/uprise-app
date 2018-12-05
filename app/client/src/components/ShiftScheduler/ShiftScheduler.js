@@ -9,11 +9,16 @@ import RemoveCircle from 'material-ui/svg-icons/content/remove-circle';
 
 import s from 'styles/Form.scss';
 
-
-const blankShift = (date = moment().startOf('day').toDate()) => ({
+const blankShift = (
+  date = moment()
+    .startOf('day')
+    .toDate(),
+) => ({
   id: undefined,
-  start: moment(date).add(12, 'hour').toDate(),
-  end: moment(date).add(16, 'hour').toDate(),
+  start: undefined,
+  end: moment(date)
+    .add(16, 'hour')
+    .toDate(),
   startError: null,
   endError: null,
 });
@@ -22,21 +27,25 @@ class ShiftScheduler extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     submit: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
 
     // TODO change to Date objects?
-    const shifts = (props.data.shifts.length === 0) ? [blankShift()] : props.data.shifts;
+    const shifts = props.data.shifts.length === 0 ? [blankShift()] : props.data.shifts;
 
     const shiftDates = [];
 
     shifts.forEach((shift) => {
-      const placeholderShift = (typeof shift.start === 'undefined');
-      const shiftDate = placeholderShift ? undefined : moment(shift.start).startOf('day').toDate();
+      const placeholderShift = typeof shift.start === 'undefined';
+      const shiftDate = placeholderShift
+        ? undefined
+        : moment(shift.start)
+            .startOf('day')
+            .toDate();
 
-      const foundIndex = placeholderShift ? -1 : shiftDates.findIndex(d => moment(d.date).isSame(shiftDate, 'day'));
+      const foundIndex = placeholderShift ? -1 : shiftDates.findIndex((d) => moment(d.date).isSame(shiftDate, 'day'));
 
       const newShift = {
         id: shift.id,
@@ -110,13 +119,13 @@ class ShiftScheduler extends Component {
     this.setState({ shiftDates: newShiftDates });
 
     return hasErrors;
-  }
+  };
 
   formSubmit = () => {
     const hasErrors = this.validate();
     if (!hasErrors) {
       const shifts = this.state.shiftDates.reduce((accumulator, shiftDate) => {
-        const newShifts = shiftDate.shifts.map(shift => ({
+        const newShifts = shiftDate.shifts.map((shift) => ({
           start: moment(shift.start).format(),
           end: moment(shift.end).format(),
           id: shift.id,
@@ -126,16 +135,18 @@ class ShiftScheduler extends Component {
       }, []);
       this.props.submit({ shifts });
     }
-  }
+  };
 
   addDate = () => {
     const newShifts = [...this.state.shiftDates];
 
-    const newDate = moment().startOf('day').toDate();
+    const newDate = moment()
+      .startOf('day')
+      .toDate();
     newShifts.push({ date: newDate, dateError: null, shifts: [blankShift(newDate)] });
 
     this.setState({ shiftDates: newShifts });
-  }
+  };
 
   addShift = (dateIndex) => {
     const newShifts = [...this.state.shiftDates];
@@ -145,14 +156,14 @@ class ShiftScheduler extends Component {
     newShifts[dateIndex].shifts.push(blankShift(date));
 
     this.setState({ shiftDates: newShifts });
-  }
+  };
 
   removeDate = (dateIndex) => {
     const newShifts = [...this.state.shiftDates];
     newShifts.splice(dateIndex, 1);
 
     this.setState({ shiftDates: newShifts });
-  }
+  };
 
   removeShift = (dateIndex, shiftIndex) => {
     const newShifts = [...this.state.shiftDates];
@@ -160,7 +171,7 @@ class ShiftScheduler extends Component {
     newShifts[dateIndex].shifts.splice(shiftIndex, 1);
 
     this.setState({ shiftDates: newShifts });
-  }
+  };
 
   changeShift = (type, time, dateIndex, shiftIndex) => {
     const newShifts = [...this.state.shiftDates];
@@ -173,7 +184,7 @@ class ShiftScheduler extends Component {
     newShifts[dateIndex].shifts[shiftIndex][`${type}Error`] = null;
 
     this.setState({ shiftDates: newShifts });
-  }
+  };
 
   changeDate = (dateIndex, date) => {
     const newShifts = [...this.state.shiftDates];
@@ -197,15 +208,13 @@ class ShiftScheduler extends Component {
     }
 
     this.setState({ shiftDates: newShifts });
-  }
+  };
 
   render() {
     const { shiftDates } = this.state;
-    const {
-      formSubmit, addShift, addDate, changeDate, changeShift, removeShift, removeDate,
-    } = this;
+    const { formSubmit, addShift, addDate, changeDate, changeShift, removeShift, removeDate } = this;
 
-    const formatDate = date => moment(date).format('M/D/YYYY');
+    const formatDate = (date) => moment(date).format('M/D/YYYY');
 
     const dialogStyle = {
       zIndex: '3200',
@@ -213,21 +222,26 @@ class ShiftScheduler extends Component {
 
     const renderDateForm = (shiftDate, dateIndex) => {
       const renderedShifts = shiftDate.shifts.map((shift, shiftIndex) => (
-        <div
-          key={JSON.stringify(shift)}
-          className={s.shiftContainer}
-        >
+        <div key={JSON.stringify(shift)} className={s.shiftContainer}>
           <div
             className={s.shiftPicker}
-            ref={(input) => { if (shift.startError || shift.endError) { this.errorElem = input; } }}
+            ref={(input) => {
+              if (shift.startError || shift.endError) {
+                this.errorElem = input;
+              }
+            }}
           >
-            <div className={s.shiftLabel}><span>Shift { shiftIndex + 1 }:</span></div>
+            <div className={s.shiftLabel}>
+              <span>Shift {shiftIndex + 1}:</span>
+            </div>
             <TimePicker
               floatingLabelText="Start Time"
               value={shift.start}
               errorText={shift.startError}
               minutesStep={5}
-              onChange={(event, time) => { changeShift('start', time, dateIndex, shiftIndex); }}
+              onChange={(event, time) => {
+                changeShift('start', time, dateIndex, shiftIndex);
+              }}
               className={s.shiftTimePicker}
             />
 
@@ -236,25 +250,33 @@ class ShiftScheduler extends Component {
               value={shift.end}
               errorText={shift.endError}
               minutesStep={5}
-              onChange={(event, time) => { changeShift('end', time, dateIndex, shiftIndex); }}
+              onChange={(event, time) => {
+                changeShift('end', time, dateIndex, shiftIndex);
+              }}
               className={s.shiftTimePicker}
             />
           </div>
 
-          { shiftIndex > 0 && (
+          {shiftIndex > 0 && (
             <div className={s.removeShiftContainer}>
               <div
-                onClick={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
-                onKeyPress={(event) => { event.preventDefault(); removeShift(dateIndex, shiftIndex); }}
+                onClick={(event) => {
+                  event.preventDefault();
+                  removeShift(dateIndex, shiftIndex);
+                }}
+                onKeyPress={(event) => {
+                  event.preventDefault();
+                  removeShift(dateIndex, shiftIndex);
+                }}
                 role="button"
                 tabIndex="0"
                 className={s.touchIcon}
               >
-                <RemoveCircle />Remove Shift
+                <RemoveCircle />
+                Remove Shift
               </div>
             </div>
           )}
-
         </div>
       ));
 
@@ -263,12 +285,18 @@ class ShiftScheduler extends Component {
           <div className={s.dateShiftContainer}>
             <div
               className={s.textFieldContainer}
-              ref={(input) => { if (shiftDate.dateError) { this.errorElem = input; } }}
+              ref={(input) => {
+                if (shiftDate.dateError) {
+                  this.errorElem = input;
+                }
+              }}
             >
               <DatePicker
                 value={shiftDate.date}
                 errorText={shiftDate.dateError}
-                onChange={(event, date) => { changeDate(dateIndex, date); }}
+                onChange={(event, date) => {
+                  changeDate(dateIndex, date);
+                }}
                 container="dialog"
                 dialogContainerStyle={dialogStyle}
                 floatingLabelText="Date"
@@ -277,32 +305,45 @@ class ShiftScheduler extends Component {
               />
             </div>
 
-
-            { dateIndex > 0 && (
+            {dateIndex > 0 && (
               <div className={s.removeDateContainer}>
                 <div
-                  onClick={(event) => { event.preventDefault(); removeDate(dateIndex); }}
-                  onKeyPress={(event) => { event.preventDefault(); removeDate(dateIndex); }}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    removeDate(dateIndex);
+                  }}
+                  onKeyPress={(event) => {
+                    event.preventDefault();
+                    removeDate(dateIndex);
+                  }}
                   role="button"
                   tabIndex="0"
                   className={s.touchIcon}
                 >
-                  <RemoveCircle />Remove Date
+                  <RemoveCircle />
+                  Remove Date
                 </div>
               </div>
             )}
           </div>
 
-          { renderedShifts }
+          {renderedShifts}
 
           <div
-            onClick={(event) => { event.preventDefault(); addShift(dateIndex); }}
-            onKeyPress={(event) => { event.preventDefault(); addShift(dateIndex); }}
+            onClick={(event) => {
+              event.preventDefault();
+              addShift(dateIndex);
+            }}
+            onKeyPress={(event) => {
+              event.preventDefault();
+              addShift(dateIndex);
+            }}
             role="button"
             tabIndex="0"
             className={s.touchIcon}
           >
-            <AddCircle />Add Shift
+            <AddCircle />
+            Add Shift
           </div>
 
           <Divider />
@@ -316,22 +357,25 @@ class ShiftScheduler extends Component {
       <div className={s.outerContainer}>
         <div className={s.innerContainer}>
           <div className={s.formContainer}>
-            <form
-              className={s.form}
-              onSubmit={formSubmit}
-            >
-
+            <form className={s.form} onSubmit={formSubmit}>
               <div className={s.sectionLabel}>When:</div>
 
-              { dateForm }
+              {dateForm}
               <div
-                onClick={(event) => { event.preventDefault(); addDate(); }}
-                onKeyPress={(event) => { event.preventDefault(); addDate(); }}
+                onClick={(event) => {
+                  event.preventDefault();
+                  addDate();
+                }}
+                onKeyPress={(event) => {
+                  event.preventDefault();
+                  addDate();
+                }}
                 role="button"
                 tabIndex="0"
                 className={s.touchIcon}
               >
-                <AddCircle />Add Date
+                <AddCircle />
+                Add Date
               </div>
             </form>
           </div>
