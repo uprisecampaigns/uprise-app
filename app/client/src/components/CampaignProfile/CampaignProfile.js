@@ -114,14 +114,11 @@ class CampaignProfile extends PureComponent {
                     <div>
                       <div className={s.sectionHeader}>Learn More</div>
                       <div className={s.actionDetailsContainer}>
-                        {typeof campaign.description === 'string' &&
-                          campaign.description.trim() !== '' && (
-                            <div>
-                              <div className={[s.actionDetailsContent, s.bodyText].join(' ')}>
-                                {campaign.description}
-                              </div>
-                            </div>
-                          )}
+                        {typeof campaign.description === 'string' && campaign.description.trim() !== '' && (
+                          <div>
+                            <div className={[s.actionDetailsContent, s.bodyText].join(' ')}>{campaign.description}</div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -175,9 +172,9 @@ class CampaignProfile extends PureComponent {
                     )}
                   </div>
                 )}
-                <div className={s.smallHeader}>Get in touch</div>
                 {campaign.owner && (
                   <div>
+                    <div className={s.smallHeader}>Get in touch</div>
                     <div className={s.smallText}>
                       {campaign.owner.first_name} {campaign.owner.last_name}
                     </div>
@@ -191,10 +188,13 @@ class CampaignProfile extends PureComponent {
                   </div>
                 )}
                 {campaign.website_url && (
-                  <div className={s.smallText}>
-                    <Link to={campaign.website_url} external useAhref>
-                      {campaign.website_url}
-                    </Link>
+                  <div>
+                    <div className={s.smallHeader}>Visit Website</div>
+                    <div className={s.smallText}>
+                      <Link to={campaign.website_url} external useAhref>
+                        {campaign.website_url}
+                      </Link>
+                    </div>
                   </div>
                 )}
 
