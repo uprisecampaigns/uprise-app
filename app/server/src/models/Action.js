@@ -901,8 +901,12 @@ class Action {
         const newActionData = Object.assign({}, options, { slug });
 
         try {
-          const { activities, ...newActionInput } = newActionData;
-          let { shifts } = newActionData;
+          const { activities, shifts, ...newActionInput } = newActionData;
+
+          let actionShifts = shifts;
+          if (!actionShifts && newActionData.start_time && newActionData.end_time) {
+            actionShifts = [{ start: newActionData.start_time, end: newActionData.end_time }];
+          }
 
           const newInsertInput =
             user.superuser === true ? { ...newActionInput, owner_id: campaign.owner_id } : newActionInput;
@@ -917,12 +921,8 @@ class Action {
             await updateProperties(activities, 'activity', action.id);
           }
 
-          if (!shifts && newActionData.start_time && newActionData.end_time) {
-            shifts = [{ start: newActionData.start_time, end: newActionData.end_time }];
-          }
-
-          if (shifts && shifts.length) {
-            await createShifts(shifts, action.id);
+          if (actionShifts && actionShifts.length) {
+            await createShifts(actionShifts, action.id);
           }
 
           return Object.assign({}, action, await this.details(action));
