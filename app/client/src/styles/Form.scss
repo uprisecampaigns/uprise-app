@@ -10,7 +10,6 @@
 
 .innerContainer {
   text-align: center;
-
 }
 
 .formContainer {
@@ -47,7 +46,6 @@
 }
 
 .organizeButton {
-
   @extend .button;
   @extend .primaryButton;
 }
@@ -64,7 +62,6 @@
   font-size: 2rem;
 
   button {
-
     height: 4rem !important;
     padding: 1rem !important;
 
@@ -80,7 +77,8 @@
   display: flex;
   text-align: left;
 
-  input, label {
+  input,
+  label {
     font-size: 1.1rem;
   }
 }
@@ -110,6 +108,7 @@
 .toggleContainer {
   font-size: 1.1rem;
   text-align: left;
+  margin-top: 1.2rem;
 }
 
 .helpText {
@@ -140,7 +139,7 @@
   font-size: 0.8rem;
   transition: background 200ms ease;
   &:hover {
-    background-color: darken($light-grey, 10%)
+    background-color: darken($light-grey, 10%);
   }
 }
 
@@ -163,7 +162,6 @@
 }
 
 .keywordsContainer {
-
   .keywordsInputContainer {
     margin-top: 0.5rem;
     padding: 0px !important;
@@ -230,7 +228,8 @@
   margin-left: 1rem;
 }
 
-.dateShiftPicker, .shiftPicker {
+.dateShiftPicker,
+.shiftPicker {
   display: flex;
   text-align: left;
   align-items: baseline;
