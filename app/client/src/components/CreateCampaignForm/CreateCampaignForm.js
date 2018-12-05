@@ -67,6 +67,10 @@ class CreateCampaignForm extends Component {
                   type="url"
                 />
               </div>
+              <div className={s.formText}>
+                <div className={s.formHeader}>Campaign Information</div>
+                <div className={s.formBody}>The following information is not displayed publicly</div>
+              </div>
               <div className={s.textFieldContainer}>
                 <TextField
                   floatingLabelText="Phone"
