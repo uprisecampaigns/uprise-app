@@ -564,6 +564,31 @@ class CampaignSettingsForm extends Component {
             </div>
           </div>
         </div>
+        <div className={s.centerButtons}>
+          {/*
+          <div className={s.button} onClick={cancel} onKeyPress={cancel} role="button" tabIndex="0">
+            Cancel
+          </div>
+          */}
+          <Link to={`/campaign/${campaign.slug}`} className={[s.inlineButton, s.button].join(' ')}>
+            Cancel
+          </Link>
+          {saving || uploading ? (
+            <div className={s.savingThrobberContainer}>
+              <CircularProgress size={100} thickness={5} />
+            </div>
+          ) : (
+            <div
+              className={[s.organizeButton, s.button, s.inlineButton].join(' ')}
+              onClick={formSubmit}
+              onKeyPress={formSubmit}
+              role="button"
+              tabIndex="0"
+            >
+              {submitText}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
