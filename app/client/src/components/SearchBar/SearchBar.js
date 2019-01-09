@@ -6,7 +6,6 @@ import IconButton from 'material-ui/IconButton';
 
 import s from './SearchBar.scss';
 
-
 class SearchBar extends PureComponent {
   static propTypes = {
     collectionName: PropTypes.string.isRequired,
@@ -14,15 +13,17 @@ class SearchBar extends PureComponent {
     collectionToSearch: PropTypes.arrayOf(PropTypes.string),
     addItem: PropTypes.func.isRequired,
     inputLabel: PropTypes.string.isRequired,
+    hintText: PropTypes.string,
     inputRef: PropTypes.func.isRequired,
     iconName: PropTypes.string,
-  }
+  };
 
   static defaultProps = {
     collectionToSearch: undefined,
     iconName: undefined,
     className: '',
-  }
+    hintText: null,
+  };
 
   constructor(props) {
     super(props);
@@ -32,12 +33,8 @@ class SearchBar extends PureComponent {
   }
 
   handleInputChange = (value) => {
-    this.setState(Object.assign(
-      {},
-      this.state,
-      { value },
-    ));
-  }
+    this.setState(Object.assign({}, this.state, { value }));
+  };
 
   addItem = (event) => {
     if (typeof event === 'object' && typeof event.preventDefault === 'function') {
@@ -50,51 +47,45 @@ class SearchBar extends PureComponent {
 
     this.props.addItem(this.props.collectionName, this.state.value);
 
-    this.setState(Object.assign(
-      {},
-      this.state,
-      { value: '' },
-    ));
-  }
+    this.setState(Object.assign({}, this.state, { value: '' }));
+  };
 
   render() {
-    const {
-      collectionToSearch, inputLabel, iconName, inputRef, className,
-    } = this.props;
+    const { collectionToSearch, inputLabel, iconName, inputRef, className, hintText } = this.props;
 
-    const input = (typeof collectionToSearch === 'object' && collectionToSearch.length) ? (
-      <AutoComplete
-        hintText={inputLabel}
-        searchText={this.state.value}
-        className="searchBarInput"
-        underlineShow={false}
-        onUpdateInput={this.handleInputChange}
-        onNewRequest={item => this.addItem()}
-        dataSource={collectionToSearch}
-        openOnFocus
-        filter={(searchText, item) => searchText !== '' && item.toLowerCase().includes(searchText.toLowerCase())}
-        ref={inputRef}
-      />
-    ) : (
-      <TextField
-        hintText={inputLabel}
-        underlineShow={false}
-        className="searchBarInput"
-        value={this.state.value}
-        onChange={(event) => { this.handleInputChange(event.target.value); }}
-        ref={inputRef}
-      />
-    );
+    const input =
+      typeof collectionToSearch === 'object' && collectionToSearch.length ? (
+        <AutoComplete
+          hintText={hintText ? hintText : inputLabel}
+          searchText={this.state.value}
+          className="searchBarInput"
+          underlineShow={false}
+          onUpdateInput={this.handleInputChange}
+          onNewRequest={(item) => this.addItem()}
+          dataSource={collectionToSearch}
+          openOnFocus
+          filter={(searchText, item) => searchText !== '' && item.toLowerCase().includes(searchText.toLowerCase())}
+          ref={inputRef}
+        />
+      ) : (
+        <TextField
+          hintText={hintText ? hintText : inputLabel}
+          underlineShow={false}
+          className="searchBarInput"
+          value={this.state.value}
+          onChange={(event) => {
+            this.handleInputChange(event.target.value);
+          }}
+          ref={inputRef}
+        />
+      );
 
     return (
       <div className={[s.searchBarContainer, className].join(' ')}>
         <form onSubmit={this.addItem}>
           {input}
-          <IconButton
-            iconClassName="material-icons"
-            type="submit"
-            onClick={this.addItem}
-          >{iconName || 'search'}
+          <IconButton iconClassName="material-icons" type="submit" onClick={this.addItem}>
+            {iconName || 'search'}
           </IconButton>
         </form>
       </div>
