@@ -395,8 +395,9 @@ h4{
                                                     <tbody><tr>
 
                                                         <td valign="top" class="mcnTextContent" style="padding-top: 9px;padding-left: 18px;padding-bottom: 9px;padding-right: 0;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;color: #808080;font-family: Helvetica;font-size: 10px;line-height: 150%;text-align: left;">
-
-                                                            Don't forget to put it on your calendar!<br>
+                                                            <% if (!action.ongoing) { %>
+                                                              Don't forget to put it on your calendar!<br>
+                                                            <% } %>
 
                                                         </td>
                                                     </tr>
