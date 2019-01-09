@@ -98,12 +98,11 @@ class UserProfileForm extends PureComponent {
                   </div>
                 )}
 
-                {data.city &&
-                  data.state && (
-                    <div className={s.userLocation}>
-                      {data.city}, {data.state}
-                    </div>
-                  )}
+                {data.city && data.state && (
+                  <div className={s.userLocation}>
+                    {data.city}, {data.state}
+                  </div>
+                )}
 
                 <div className={s.smallHeader}>Your Blurb</div>
                 <div className={s.formFieldContainer}>
@@ -127,6 +126,7 @@ class UserProfileForm extends PureComponent {
                   <SearchBar
                     collectionName="tags"
                     inputLabel="Keyword"
+                    hintText="Enter keyword then press Enter"
                     addItem={addItem}
                     iconName="add"
                     className={s.keywordsInputContainer}

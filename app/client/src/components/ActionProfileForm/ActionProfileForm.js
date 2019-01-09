@@ -101,6 +101,7 @@ class ActionProfileForm extends PureComponent {
             <SearchBar
               collectionName="tags"
               inputLabel="Keyword"
+              hintText="Enter keyword then press Enter"
               addItem={addItem}
               iconName="add"
               className={s.keywordsInputContainer}
@@ -114,25 +115,23 @@ class ActionProfileForm extends PureComponent {
             />
           </div>
 
-          {showSaveButton &&
-            saving && (
-              <div className={s.savingThrobberContainer}>
-                <CircularProgress size={100} thickness={5} />
-              </div>
-            )}
+          {showSaveButton && saving && (
+            <div className={s.savingThrobberContainer}>
+              <CircularProgress size={100} thickness={5} />
+            </div>
+          )}
 
-          {showSaveButton &&
-            !saving && (
-              <div
-                className={[s.organizeButton, s.button].join(' ')}
-                onClick={formSubmit}
-                onKeyPress={formSubmit}
-                role="button"
-                tabIndex="0"
-              >
-                {submitText}
-              </div>
-            )}
+          {showSaveButton && !saving && (
+            <div
+              className={[s.organizeButton, s.button].join(' ')}
+              onClick={formSubmit}
+              onKeyPress={formSubmit}
+              role="button"
+              tabIndex="0"
+            >
+              {submitText}
+            </div>
+          )}
 
           <div className={f.sectionLabel}>Activities</div>
 
