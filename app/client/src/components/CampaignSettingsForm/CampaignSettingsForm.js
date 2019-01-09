@@ -126,31 +126,6 @@ class CampaignSettingsForm extends Component {
 
         <div className={s.sectionsContainer}>
           <div className={s.section}>
-            <div className={s.centerButtons}>
-              {/*
-              <div className={s.button} onClick={cancel} onKeyPress={cancel} role="button" tabIndex="0">
-                Cancel
-              </div>
-              */}
-              <Link to={`/campaign/${campaign.slug}`} className={[s.inlineButton, s.button].join(' ')}>
-                Cancel
-              </Link>
-              {saving || uploading ? (
-                <div className={s.savingThrobberContainer}>
-                  <CircularProgress size={100} thickness={5} />
-                </div>
-              ) : (
-                <div
-                  className={[s.organizeButton, s.button, s.inlineButton].join(' ')}
-                  onClick={formSubmit}
-                  onKeyPress={formSubmit}
-                  role="button"
-                  tabIndex="0"
-                >
-                  {submitText}
-                </div>
-              )}
-            </div>
             <div className={s.sectionContent}>
               <div className={s.formContainer}>
                 <div className={s.formHeader}>Learn More</div>
@@ -507,9 +482,6 @@ class CampaignSettingsForm extends Component {
             </div>
           </div>
           <div className={[s.section, s.sectionSidebar].join(' ')}>
-            <Link to={`/campaign/${campaign.slug}`} className={[s.darkButton, s.button].join(' ')}>
-              View Profile
-            </Link>
             <div className={s.sectionContent}>
               <form onSubmit={formSubmit}>
                 <div className={s.formContainer}>
@@ -549,6 +521,7 @@ class CampaignSettingsForm extends Component {
                   <SearchBar
                     collectionName="tags"
                     inputLabel="Keyword"
+                    hintText="Enter keyword then press Enter"
                     addItem={addItem}
                     iconName="add"
                     className={s.keywordsInputContainer}
@@ -589,6 +562,9 @@ class CampaignSettingsForm extends Component {
               {submitText}
             </div>
           )}
+          <Link to={`/campaign/${campaign.slug}`} className={[s.darkButton, s.button].join(' ')}>
+            View Profile
+          </Link>
         </div>
       </div>
     );
