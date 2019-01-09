@@ -109,6 +109,7 @@ class CampaignSettingsForm extends Component {
                 <div className={s.textFieldContainer}>
                   <TextField
                     floatingLabelText="Subtitle"
+                    hintText="The essential details, in a few words"
                     className={s.textField}
                     value={data.profileSubheader}
                     onChange={(event) => {
