@@ -1,5 +1,5 @@
 ---
-title: "Your Privacy Matters: Our Policy"
+title: 'Your Privacy Matters: Our Policy'
 ---
 
 At UpRise, we believe in empowering volunteers to engage civically. That
@@ -7,8 +7,7 @@ mission starts by putting volunteers in control of their own personal
 information. Our aim is for you to always feel informed and empowered
 with respect to your privacy on UpRise.
 
-Overview
-------------
+## Overview
 
 We are an online platform for volunteers and campaigns. Our registered
 users (“Members”) share their volunteer identities, exchange knowledge
@@ -33,8 +32,7 @@ required by law, subpoena or other legal process; or (5) as necessary to
 protect the rights, property, or safety of UpRise, our Members, and the
 public.
 
-**1. What information do we collect?**
-------------
+## **1. What information do we collect?**
 
 **1.1. Registration**
 
@@ -70,8 +68,7 @@ the Web. Most mobile devices may also send us location data, though they
 generally allow you to prevent the device from sending this to us, and
 we will of course honor your settings.
 
-**2. What do we use your information for?**
--------------------------------------------
+## **2. What do we use your information for?**
 
 **2.1. Consent to UpRise Processing Information About You**
 
@@ -149,8 +146,7 @@ These third parties have limited access to your information only to
 perform these tasks on our behalf and are obligated to UpRise not to
 disclose or use it for other purposes.
 
-**3. Your Choices & Obligations**
----------------------------------
+## **3. Your Choices & Obligations**
 
 **3.1. Rights to Access, Correct, or Delete Your Information, and
 Closing Your Account**
@@ -168,8 +164,7 @@ close your account if it is necessary to comply with our legal
 obligations, meet regulatory requirements, resolve disputes, prevent
 fraud and abuse, or enforce this agreement.
 
-**4. How Do We Protect Your Information?**
-------------------------------------------
+## **4. How Do We Protect Your Information?**
 
 **4.1. Security**
 
@@ -206,8 +201,7 @@ those third parties. Requests may be made only once a year and are free
 of charge. Under Section 1798.83, we currently do not share any personal
 information with third parties for their direct marketing purposes.
 
-**5. Changes to this privacy policy**
--------------------------------------
+## **5. Changes to this privacy policy**
 
 We will notify you when we change this Privacy Policy, which may change
 from time to time. Please review such changes carefully. If you agree to
@@ -219,8 +213,7 @@ Using UpRise after a notice of changes has been communicated to you or
 published on the UpRise platform shall constitute consent to the changed
 terms or practices.
 
-How To Contact Us
--------------------
+## How To Contact Us
 
 ### If you have questions or concerns regarding this Policy, you should contact UpRise online:
 
@@ -230,8 +223,8 @@ help@uprise.org
 
 UpRise Campaigns, SPC: Privacy Policy Issues
 
-1442A Walnut St \#149
+21001 N Tatum Blvd STE 1630 \#618
 
-Berkeley, CA 94709
+Phoenix AZ 85050-4242
 
 USA

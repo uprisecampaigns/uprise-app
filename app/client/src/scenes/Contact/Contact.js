@@ -93,8 +93,8 @@ class Contact extends Component {
 
               <p>
                 UpRise Campaigns, SPC <br />
-                1442A Walnut St. #149 <br />
-                Berkeley, CA 94709
+                21001 N Tatum Blvd STE 1630 #618 <br />
+                Phoenix, AZ 85050-4242
               </p>
 
               <p>Or send us a message:</p>

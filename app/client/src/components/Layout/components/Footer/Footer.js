@@ -41,8 +41,8 @@ function Footer(props) {
                     help@uprise.org
                   </Link>
                 </div>
-                <div>1442A Walnut St #149</div>
-                <div>Berkeley, CA 94709</div>
+                <div>21001 N Tatum Blvd STE 1630 #618</div>
+                <div>Phoenix, AZ 85050-4242</div>
               </div>
             </div>
           </div>

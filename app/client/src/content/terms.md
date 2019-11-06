@@ -1,9 +1,8 @@
 ---
-title: "UpRise Campaigns Terms of Use"
+title: 'UpRise Campaigns Terms of Use'
 ---
 
-(Effective as of June 15, 2017)
------------------------------------
+## (Effective as of June 15, 2017)
 
 Welcome to the UpRise service (the “Service”). The following Terms of Use apply when you view or use the Service (via our website located at Uprise.org). Please review the following terms carefully. By accessing or using the Service, you signify your agreement to these Terms of Use. If you do not agree to these Terms of Use, you may not access or use the Service.
 
@@ -75,15 +74,17 @@ As part of the Service, the Company may provide you with convenient links to thi
 
 ### Copyright Complaints and Copyright Agent
 
-###### **(a) Termination of Repeat Infringer Accounts.** 
+###### **(a) Termination of Repeat Infringer Accounts.**
+
 The Company respects the intellectual property rights of others and requests that the users do the same. Pursuant to 17 U.S.C. 512(i) of the United States Copyright Act, the Company has adopted and implemented a policy that provides for the termination in appropriate circumstances of users of the Service who are repeat infringers. The Company may terminate access for participants or users who are found repeatedly to provide or post protected third party content without necessary rights and permissions.
 
-###### **(b) DMCA Take-Down Notices.** 
+###### **(b) DMCA Take-Down Notices.**
+
 If you are a copyright owner or an agent thereof and believe, in good faith, that any materials provided on the Service infringe upon your copyrights, you may submit a notification pursuant to the Digital Millennium Copyright Act (see 17 U.S.C 512) (“DMCA”) by sending the following information in writing to the Company’s designated copyright agent at
 
 UpRise Campaigns, SPC\
-1442A Walnut St \#149\
-Berkeley, CA 94709
+21001 N Tatum Blvd STE 1630 \#618
+Phoenix AZ 85050-4242
 
 1. The date of your notification;
 
@@ -133,8 +134,8 @@ We may also use your email address, to send you other messages, including inform
 
 Customer Support\
 UpRise Campaigns, SPC\
-1442A Walnut St \#149\
-Berkeley, CA 94709
+21001 N Tatum Blvd STE 1630 \#618\
+Phoenix AZ 85050-4242
 
 Opting out may prevent you from receiving messages regarding the Company or special offers.
 
@@ -164,4 +165,4 @@ The Company may assign or delegate these Terms of Service and/or the Company’s
 
 YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS OF USE, UNDERSTAND THE TERMS OF USE, AND WILL BE BOUND BY THESE TERMS AND CONDITIONS. YOU FURTHER ACKNOWLEDGE THAT THESE TERMS OF USE TOGETHER WITH THE PRIVACY POLICY AT [PRIVACY](/settings/privacy-security) REPRESENT THE COMPLETE AND EXCLUSIVE STATEMENT OF THE AGREEMENT BETWEEN US AND THAT IT SUPERSEDES ANY PROPOSAL OR PRIOR AGREEMENT ORAL OR WRITTEN, AND ANY OTHER COMMUNICATIONS BETWEEN US RELATING TO THE SUBJECT MATTER OF THIS AGREEMENT.
 
-###### 
+######
