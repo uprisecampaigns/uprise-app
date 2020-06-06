@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "apollo-client": "^1.0.0-rc.2",
-    "apollo-server-express": "^1.2.0",
+    "apollo-server-express": "^2.14.2",
     "aws-sdk": "^2.38.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
